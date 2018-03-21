@@ -6,7 +6,7 @@
 
 ###  What is TSDoc?
 
-**TSDoc** is a proposal to standardize the doc comments used in [TypeScript](http://www.typescriptlang.org/) source files.  This will allow different tools to extract content from comments without getting confused by each other's syntax.   Here's an example of the TSDoc notation:
+**TSDoc** is a proposal to standardize the doc comments used in [TypeScript](http://www.typescriptlang.org/) source files.  It allows different tools to extract content from comments without getting confused by each other's syntax.   The **TSDoc** notation looks like this:
 
 ```typescript
 /**
@@ -26,33 +26,40 @@ function add(x: number, y: number): number;
 
 
 
-This project will also publish an NPM package **@microsoft/tsdoc** with an open source reference implementation of a parser.  This provides an easy way for a tool to ensure that it's 100% compatible with the standard.
+This project will also publish an NPM package **@microsoft/tsdoc** that provides an open source reference implementation of a parser.  Using this library is an easy way to ensure that a tool is 100% compatible with the **TSDoc** standard.
 
 ###  Why do we need TSDoc?
 
-This scenario originated from a several tools that were all trying to process source code for projects inside Microsoft:
+This scenario originally arose from TypeScript projects at Microsoft that needed to be processed by  multiple tools:
 
-- [Visual Studio Code](https://code.visualstudio.com): provides syntax highlighting and interactive refactoring for TypeScript doc comments
-- [TypeDoc](https://github.com/TypeStrong/typedoc): a tool that can generate an API reference web site based on doc comments
-- [DocFX](https://dotnet.github.io/docfx/):  A integrated pipeline that extracts doc comments from many different languages, but then applies its own Markdown renderer and custom tag parsing
-- [API Extractor](https://aka.ms/extractor): A tool which is used for tracking API review workflows and trimming *.d.ts files
+- [Visual Studio Code](https://code.visualstudio.com): an editor that supports syntax highlighting and interactive refactoring for TypeScript doc comments
+- [TypeDoc](https://github.com/TypeStrong/typedoc): an API reference website generator that extracts its content from doc comments
+- [DocFX](https://dotnet.github.io/docfx/):  a integrated pipeline that ingests API reference content for many different programming languages, but then applies its own Markdown renderer and custom tag parsing
+- [API Extractor](https://aka.ms/extractor): a build tool that tracks TypeScript API review workflows and generates *.d.ts rollups for third-party SDKs
 
-These are just examples.  For example, the **SimplrJS** authors recently joined the discussion since they use a documentation tool [ts-docs-gen](https://github.com/SimplrJS/ts-docs-gen) that wants to interoperate.  Each of these tools accepts a syntax that is loosely based on [JSDoc](http://usejsdoc.org), but encounters frustrating incompatibilities when attempting to coexist with other tools.
+These are just examples.  Many other tools in the web developer ecosystem interact with TypeScript doc comments.  Each of these tools accepts a syntax that is loosely based on [JSDoc](http://usejsdoc.org), but encounters frustrating incompatibilities when attempting to coexist with other tools.
 
-Why can't JSDoc be the standard?  Unfortunately the JSDoc syntax is not rigorously specified, but vaguely determined by the behavior of a particular tool.  More importantly, the majority of JSDoc tags are preoccupied with providing type annotations for plain JavaScript, which is not useful for a strongly-typed language such as TypeScript.  **TSDoc** addresses these limitations, while also tackling a more sophisticated set of requirements (see below).
+*Why can't JSDoc be the standard?*  Unfortunately the JSDoc grammar is not rigorously specified, but rather inferred from the behavior of a particular tool.  More importantly, the majority of JSDoc tags are preoccupied with providing type annotations for plain JavaScript, an irrelevant requirement for a strongly-typed language such as TypeScript.  **TSDoc** addresses these limitations, while also tackling a more sophisticated set of goals (see below).
 
 ### What are the goals?
 
 The TSDoc specification has these requirements:
 
 - **Designed for TypeScript**: ...while aligning as closely as possible with the familiar JSDoc notations we know and love.
-- **Markdown support**: Doc comments can incorporate [CommonMark](http://commonmark.org) notations for rich text elements such as boldface, code fences, headings, tables, etc.  Special accommodations are made for entrenched pipelines (e.g. GitHub Pages) that expect to bring their own Markdown renderer to the party.
+- **Markdown integration**: Doc comments can incorporate [CommonMark](http://commonmark.org) notations for rich text elements such as boldface, code fences, headings, tables, etc.  Special accommodations are made for entrenched pipelines (e.g. GitHub Pages) that expect to bring their own Markdown renderer to the party.
 - **Common core**: Common  tags such as `@param` and `@returns` will have consistent behavior across all tools.
-- **Extensible**: Each tool can supplement the core tags with custom notations for specialized scenarios.
-- **Interoperable**: The TSDoc syntax guarantees that unsupported custom tags don't interfere with parsing of other content. (For example, if you didn't recognize the `@remarks` or `@link` tag in our example above, what to do with the text between or after? Are they part of the tag or not?) TSDoc also avoids Markdown ambiguities.  (How would you handle a single backtick inside a `{@link}` tag? I can't even write this example because my Markdown editor chokes on it!) 
-- **Strict Mode**: Many projects don’t have the time/desire to change their existing code, so they want a "*loose*" mode that makes a best attempt to render their doc comments as-is.  Other projects want a "*strict*" mode that ensures consistency and catches mistakes.  Some projects want to be "strict" eventually but, they can't migrate everything overnight; they need a "*transitional*" mechanism similar to tslint suppressions.
-- **Package aware**:  TSDoc treats NPM packages as first-class citizens.  It allows processing groups of packages, with doc comments that contain cross-references to items from other libraries.  It standardizes the *package.json* metadata that enables tooling to detect whether a dependency supports TSDoc or not.
+- **Extensible**: Each tool can supplement the core tags with custom tags for specialized scenarios.
+- **Interoperable**: The TSDoc syntax guarantees that unsupported custom tags don't interfere with parsing of other content. (For example, if you didn't recognize the `@remarks` or `@link` tag in our example above, how would you handle the text around them? Should it be skipped or not?) TSDoc also avoids Markdown ambiguities.  (How to handle a single backtick inside a `{@link}` tag?) 
+- **Package aware**:  TSDoc treats NPM packages as first-class citizens.  It allows processing groups of packages, with doc comments that contain cross-references to items from other libraries.  It defines *package.json* metadata that enables tooling to detect whether a dependency supports TSDoc or not.
 - **Open standard**: TSDoc is an open source, community-driven standard.  You are encouraged to contribute your ideas and pull requests.
+
+
+
+The **@microsoft/tsdoc** library package brings in some additional goals:
+
+- **"Strict" and "Lax" modes**: Many projects don’t have the time/desire to change their existing code, so they want a "*lax*" mode that makes a best attempt to render their doc comments as-is.  Other projects want a "*strict*" mode that ensures consistent syntax everywhere and catches typos that might result in rendering errors.  Some projects want to be "*strict*" eventually, but they can't migrate everything overnight; they need a "*transitional*" mode similar to tslint suppressions.
+- **Roundtripping**:  The parser accepts code comments as input, and produces an abstract syntax tree (AST) as output.  This is reversible:  given a (potentially modified) AST input, the library can regenerate the TypeScript code comment in a normalized form.
+- **Self-contained**: The implementation will be small, fast, and self-contained.  It will not have a dependency on the TypeScript compiler API.  The doc comments will be received as a plain text string, and the AST will be a simple JavaScript tree object.  This makes it easier for tools to accept this package as a dependency.
 
 ### How do I use it?
 
