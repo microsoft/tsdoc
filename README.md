@@ -63,7 +63,7 @@ The **@microsoft/tsdoc** library package brings in some additional goals:
 
 ### How do I use it?
 
-Currently TSDoc is in the early design stages.  We are using GitHub issues to discuss various implementation strategies.  The **@microsoft/tsdoc** library is under development but has not been published yet.  If you have ideas, please feel free to participate!
+Currently TSDoc is in the early design stages.  We are using [GitHub issues](https://github.com/Microsoft/tsdoc/issues) to discuss various implementation strategies.  The **@microsoft/tsdoc** library is under development but has not been published yet.  If you have ideas, please feel free to participate!
 
 ### Who's involved ?
 
