@@ -73,7 +73,7 @@ The collaborators currently driving the TSDoc standard are:
 - [API Extractor](https://aka.ms/extractor) project owners 
 - [TypeDoc](http://typedoc.org) maintainers
 - [DocFX ](https://dotnet.github.io/docfx/)pipeline owners
-- [SimplrJS](https://github.com/simplrteam/SimplrJS) developers, who maintain the [ts-docs-gen](https://github.com/SimplrJS/ts-docs-gen) tool
+- [SimplrJS](https://simplrjs.com/) developers, who maintain the [ts-docs-gen](https://github.com/SimplrJS/ts-docs-gen) tool
 - [Tom Dale](https://github.com/tomdale), who's working on the documentation engine for [Ember.js](https://www.emberjs.com), [Glimmer.js](https://glimmerjs.com), and other projects
 
 
