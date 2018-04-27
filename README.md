@@ -75,6 +75,7 @@ The collaborators currently driving the TSDoc standard are:
 - [DocFX ](https://dotnet.github.io/docfx/)pipeline owners
 - [SimplrJS](https://simplrjs.com/) developers, who maintain the [ts-docs-gen](https://github.com/SimplrJS/ts-docs-gen) tool
 - [Tom Dale](https://github.com/tomdale), who's working on the documentation engine for [Ember.js](https://www.emberjs.com), [Glimmer.js](https://glimmerjs.com), and other projects
+- [Rob Eisenberg](https://github.com/EisenbergEffect), who's working on the documentation engine for [Aurelia](http://aurelia.io/).
 
 
 
