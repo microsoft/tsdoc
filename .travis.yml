@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - '8.9.4'
+script:
+  - set -e
+  - echo 'git fetch' && echo -en 'travis_fold:start:fetch\\r'
+  - git fetch origin master:refs/remotes/origin/master -a
+  - echo -en 'travis_fold:end:fetch\\r'
+  - echo 'npm install' && echo -en 'travis_fold:start:install\\r'
+  - cd tsdoc
+  - npm install
+  - echo -en 'travis_fold:end:install\\r'
+  - echo 'npm run build' && echo -en 'travis_fold:start:build\\r'
+  - npm run build
+  - echo -en 'travis_fold:end:build\\r'
