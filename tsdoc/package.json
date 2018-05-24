@@ -1,0 +1,51 @@
+{
+  "name": "@microsoft/tsdoc",
+  "version": "0.1.0",
+  "description": "A parser for the TypeScript doc comment syntax",
+  "keywords": [
+    "TypeScript",
+    "documentation",
+    "doc",
+    "comments",
+    "JSDoc",
+    "parser",
+    "standard"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Microsoft/tsdoc"
+  },
+  "homepage": "https://github.com/Microsoft/tsdoc",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "~22.2.3",
+    "jest": "~23.0.0",
+    "ts-jest": "~22.4.6",
+    "rimraf": "~2.6.2",
+    "tslint": "~5.10.0",
+    "tslint-microsoft-contrib": "~5.0.3",
+    "typescript": "~2.8.3"
+  },
+  "scripts": {
+    "build": "rimraf ./lib/ && tsc && tslint --config tslint.json --project . --rules-dir node_modules/tslint-microsoft-contrib",
+    "test": "jest",
+    "start": "jest --watch"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testMatch": [
+      "<rootDir>/src/**/*.test.ts"
+    ]
+  }
+}
