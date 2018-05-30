@@ -48,7 +48,7 @@
       "timeEnd",
       "trace"
     ],
-    "no-constant-condition": false,
+    "no-constant-condition": true,
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-switch-case": true,
