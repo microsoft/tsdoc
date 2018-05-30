@@ -4,6 +4,18 @@ import { DocComment, IDocCommentParameters } from './DocComment';
 import { TextRange } from './TextRange';
 import { ParseError } from './ParseError';
 
+// Internal parser state
+enum State {
+  // Initial state, looking for "/**"
+  Start,
+  // Waiting for first star in "/**"
+  ExpectOpeningStar1,
+  // Waiting for second star in "/**"
+  ExpectOpeningStar2,
+  // Existing the parser loop
+  Done
+}
+
 /**
  * The main API for parsing TSDoc comments.
  */
@@ -26,13 +38,6 @@ export class TSDocParser {
 
     let index: number = range.pos;
 
-    enum State {
-      Start,
-      ExpectOpeningStar1,
-      ExpectOpeningStar2,
-      Scanning,
-      Done
-    }
     let state: State = State.Start;
 
     let commentRangeStart: number = 0;

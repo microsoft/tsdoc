@@ -81,29 +81,29 @@ export class TextRange {
 
     let index: number = 0;
 
-    if (offset >= 0 && offset < this.buffer.length) {
-      while (index < offset) {
-        const c: string = this.buffer[index];
-        ++index;
-
-        if (c === '\r') {
-          continue;
-        }
-
-        if (this.buffer[index] === '\n') {
-          ++line;
-          column = 1;
-          continue;
-        }
-
-        ++column;
-      }
-
-      return { line: line, column: column };
+    if (offset < 0 || offset > this.buffer.length) {
+      // No match
+      return { line: 0, column: 0 };
     }
 
-    // No match
-    return { line: 0, column: 0 };
+    while (index < offset) {
+      const c: string = this.buffer[index];
+      ++index;
+
+      if (c === '\r') {
+        continue;
+      }
+
+      if (this.buffer[index] === '\n') {
+        ++line;
+        column = 1;
+        continue;
+      }
+
+      ++column;
+    }
+
+    return { line: line, column: column };
   }
 
   private constructor(buffer: string, pos: number, end: number) {
