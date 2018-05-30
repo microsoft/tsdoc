@@ -27,7 +27,11 @@ export class TSDocParser {
   private static _addError(parameters: IDocCommentParameters, range: TextRange,
     message: string, pos: number, end?: number): void {
     if (!end) {
-      end = pos + 1;
+      if (pos + 1 <= range.buffer.length) {
+        end = pos + 1;
+      } else {
+        end = pos;
+      }
     }
     parameters.parseErrors.push(
       new ParseError(message, range.getNewRange(pos, end))
@@ -68,10 +72,11 @@ export class TSDocParser {
         // reached the end of the input
         switch (state) {
           case State.BeginComment1:
-            TSDocParser._addError(parameters, range, 'Expecting a leading "/**"', nextIndex);
-            return parameters;
+          case State.BeginComment2:
+            TSDocParser._addError(parameters, range, 'Expecting a "/**" comment', range.pos);
+              return parameters;
           default:
-            TSDocParser._addError(parameters, range, 'Unexpected end of input', nextIndex);
+            TSDocParser._addError(parameters, range, 'Unexpected end of input', range.pos);
             return parameters;
         }
       }

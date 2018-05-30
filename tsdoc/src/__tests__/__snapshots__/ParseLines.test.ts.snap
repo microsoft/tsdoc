@@ -1,40 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Newline examples 1`] = `
-Object {
-  "buffer": "[r][n]/**[r][n] * L1[r][n] */[r][n]",
-  "comment": "/**[r][n] * L1[r][n] */",
-  "errors": Array [],
-  "lines": Array [
-    "L1",
-  ],
-}
-`;
-
-exports[`Newline examples 2`] = `
-Object {
-  "buffer": "/**[r][n]L1[r][n]L2[r][n]*/",
-  "comment": "/**[r][n]L1[r][n]L2[r][n]*/",
-  "errors": Array [],
-  "lines": Array [
-    "L1",
-    "L2",
-  ],
-}
-`;
-
-exports[`Newline examples 3`] = `
-Object {
-  "buffer": "/** L [r] 1 */",
-  "comment": "/** L [r] 1 */",
-  "errors": Array [],
-  "lines": Array [
-    "L [r] 1",
-  ],
-}
-`;
-
-exports[`Spacing variations 1`] = `
+exports[`A. Whitespace variations 1`] = `
 Object {
   "buffer": "/***/",
   "comment": "/***/",
@@ -43,7 +9,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 2`] = `
+exports[`A. Whitespace variations 2`] = `
 Object {
   "buffer": " /***/ ",
   "comment": "/***/",
@@ -52,7 +18,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 3`] = `
+exports[`A. Whitespace variations 3`] = `
 Object {
   "buffer": " /** */ ",
   "comment": "/** */",
@@ -61,7 +27,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 4`] = `
+exports[`A. Whitespace variations 4`] = `
 Object {
   "buffer": " /**[n][n]*/ ",
   "comment": "/**[n][n]*/",
@@ -72,7 +38,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 5`] = `
+exports[`A. Whitespace variations 5`] = `
 Object {
   "buffer": " /**L1*/ ",
   "comment": "/**L1*/",
@@ -83,7 +49,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 6`] = `
+exports[`A. Whitespace variations 6`] = `
 Object {
   "buffer": " /** L1 */ ",
   "comment": "/** L1 */",
@@ -94,7 +60,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 7`] = `
+exports[`A. Whitespace variations 7`] = `
 Object {
   "buffer": " /**L1[n]*/ ",
   "comment": "/**L1[n]*/",
@@ -105,7 +71,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 8`] = `
+exports[`A. Whitespace variations 8`] = `
 Object {
   "buffer": " /**L1*[n]*/ ",
   "comment": "/**L1*[n]*/",
@@ -116,7 +82,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 9`] = `
+exports[`A. Whitespace variations 9`] = `
 Object {
   "buffer": " /**[n]L1*/ ",
   "comment": "/**[n]L1*/",
@@ -127,7 +93,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 10`] = `
+exports[`A. Whitespace variations 10`] = `
 Object {
   "buffer": " /**[n] L1 */ ",
   "comment": "/**[n] L1 */",
@@ -138,7 +104,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 11`] = `
+exports[`A. Whitespace variations 11`] = `
 Object {
   "buffer": " /**[n]L1[n]*/ ",
   "comment": "/**[n]L1[n]*/",
@@ -149,7 +115,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 12`] = `
+exports[`A. Whitespace variations 12`] = `
 Object {
   "buffer": " /**[n]L1[n][n]L2*/ ",
   "comment": "/**[n]L1[n][n]L2*/",
@@ -162,7 +128,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 13`] = `
+exports[`A. Whitespace variations 13`] = `
 Object {
   "buffer": " /**[n]*L1[n]*/ ",
   "comment": "/**[n]*L1[n]*/",
@@ -173,7 +139,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 14`] = `
+exports[`A. Whitespace variations 14`] = `
 Object {
   "buffer": " /**[n] * L1[n]*/ ",
   "comment": "/**[n] * L1[n]*/",
@@ -184,7 +150,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 15`] = `
+exports[`A. Whitespace variations 15`] = `
 Object {
   "buffer": " /**[n] * L1[n] */ ",
   "comment": "/**[n] * L1[n] */",
@@ -195,7 +161,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 16`] = `
+exports[`A. Whitespace variations 16`] = `
 Object {
   "buffer": " /**L1[n] *L2[n]L3*/ ",
   "comment": "/**L1[n] *L2[n]L3*/",
@@ -208,7 +174,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 17`] = `
+exports[`A. Whitespace variations 17`] = `
 Object {
   "buffer": " /** L1[n] * L2[n] L3*/ ",
   "comment": "/** L1[n] * L2[n] L3*/",
@@ -221,7 +187,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 18`] = `
+exports[`A. Whitespace variations 18`] = `
 Object {
   "buffer": " /** L1 [n] * L2 [n] L3 */ ",
   "comment": "/** L1 [n] * L2 [n] L3 */",
@@ -234,7 +200,7 @@ Object {
 }
 `;
 
-exports[`Spacing variations 19`] = `
+exports[`A. Whitespace variations 19`] = `
 Object {
   "buffer": "/**  L1  [r][n] *  L2  [r][n]  L3  [r][n]  L4 */",
   "comment": "/**  L1  [r][n] *  L2  [r][n]  L3  [r][n]  L4 */",
@@ -248,7 +214,7 @@ Object {
 }
 `;
 
-exports[`Stars added 1`] = `
+exports[`B. Extra stars 1`] = `
 Object {
   "buffer": " /****/ ",
   "comment": "/****/",
@@ -259,7 +225,7 @@ Object {
 }
 `;
 
-exports[`Stars added 2`] = `
+exports[`B. Extra stars 2`] = `
 Object {
   "buffer": " /**L1**/ ",
   "comment": "/**L1**/",
@@ -270,7 +236,7 @@ Object {
 }
 `;
 
-exports[`Stars added 3`] = `
+exports[`B. Extra stars 3`] = `
 Object {
   "buffer": " /***L1*/ ",
   "comment": "/***L1*/",
@@ -281,7 +247,7 @@ Object {
 }
 `;
 
-exports[`Stars added 4`] = `
+exports[`B. Extra stars 4`] = `
 Object {
   "buffer": "[n]/*****[n] **X**[n] *****/ ",
   "comment": "/*****[n] **X**[n] *****/",
@@ -291,5 +257,96 @@ Object {
     "*X**",
     "***",
   ],
+}
+`;
+
+exports[`C. Newline styles 1`] = `
+Object {
+  "buffer": "[r][n]/**[r][n] * L1[r][n] */[r][n]",
+  "comment": "/**[r][n] * L1[r][n] */",
+  "errors": Array [],
+  "lines": Array [
+    "L1",
+  ],
+}
+`;
+
+exports[`C. Newline styles 2`] = `
+Object {
+  "buffer": "/**[r][n]L1[r][n]L2[r][n]*/",
+  "comment": "/**[r][n]L1[r][n]L2[r][n]*/",
+  "errors": Array [],
+  "lines": Array [
+    "L1",
+    "L2",
+  ],
+}
+`;
+
+exports[`C. Newline styles 3`] = `
+Object {
+  "buffer": "/** L [r] 1 */",
+  "comment": "/** L [r] 1 */",
+  "errors": Array [],
+  "lines": Array [
+    "L [r] 1",
+  ],
+}
+`;
+
+exports[`D. Parser errors 1`] = `
+Object {
+  "buffer": "",
+  "comment": "",
+  "errors": Array [
+    "Expecting a \\"/**\\" comment",
+  ],
+  "lines": Array [],
+}
+`;
+
+exports[`D. Parser errors 2`] = `
+Object {
+  "buffer": "/*",
+  "comment": "",
+  "errors": Array [
+    "(1,1): Expecting a \\"/**\\" comment",
+  ],
+  "lines": Array [],
+}
+`;
+
+exports[`D. Parser errors 3`] = `
+Object {
+  "buffer": "//",
+  "comment": "",
+  "errors": Array [
+    "(1,2): Expecting a leading \\"/**\\"",
+  ],
+  "lines": Array [],
+}
+`;
+
+exports[`D. Parser errors 4`] = `
+Object {
+  "buffer": "/** L1[n] L2",
+  "comment": "",
+  "errors": Array [
+    "(1,1): Unexpected end of input",
+  ],
+  "lines": Array [
+    "L1",
+  ],
+}
+`;
+
+exports[`D. Parser errors 5`] = `
+Object {
+  "buffer": "/** L1 *",
+  "comment": "",
+  "errors": Array [
+    "(1,1): Unexpected end of input",
+  ],
+  "lines": Array [],
 }
 `;

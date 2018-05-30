@@ -10,33 +10,13 @@ function parseAndMatchSnapshot(buffer: string): void {
   const docComment: DocComment = tsdocParser.parseString(buffer);
   expect({
     buffer: escape(buffer),
-    errors: docComment.parseErrors,
+    errors: docComment.parseErrors.map(error => error.message),
     comment: escape(docComment.range.toString()),
     lines: docComment.lines.map(line => escape(line.toString()))
   }).toMatchSnapshot();
 }
 
-test('Newline examples', () => {
-  parseAndMatchSnapshot([
-    '',
-    '/**',
-    ' * L1',
-    ' */',
-    ''
-  ].join('\r\n'));
-  parseAndMatchSnapshot([
-    '/**',
-    'L1',
-    'L2',
-    '*/'
-  ].join('\r\n'));
-
-  // We currently don't support CR or LFCR, so a single "\r" is treated
-  // as part of the line.
-  parseAndMatchSnapshot(`/** L \r 1 */`);
-});
-
-test('Spacing variations', () => {
+test('A. Whitespace variations', () => {
   parseAndMatchSnapshot(`/***/`);                      // 1
   parseAndMatchSnapshot(` /***/ `);                    // 2
   parseAndMatchSnapshot(` /** */ `);                   // 3
@@ -64,7 +44,7 @@ test('Spacing variations', () => {
 });
 
 // TODO: Special handling for these somewhat common ornamentations
-test('Stars added', () => {
+test('B. Extra stars', () => {
   parseAndMatchSnapshot(` /****/ `);
   parseAndMatchSnapshot(` /**L1**/ `);
   parseAndMatchSnapshot(` /***L1*/ `);
@@ -72,4 +52,32 @@ test('Stars added', () => {
 /*****
  **X**
  *****/ `);
+});
+
+test('C. Newline styles', () => {
+  parseAndMatchSnapshot([
+    '',
+    '/**',
+    ' * L1',
+    ' */',
+    ''
+  ].join('\r\n'));
+  parseAndMatchSnapshot([
+    '/**',
+    'L1',
+    'L2',
+    '*/'
+  ].join('\r\n'));
+
+  // We currently don't support CR or LFCR, so a single "\r" is treated
+  // as part of the line.
+  parseAndMatchSnapshot(`/** L \r 1 */`);
+});
+
+test('D. Parser errors', () => {
+  parseAndMatchSnapshot('');
+  parseAndMatchSnapshot('/*');
+  parseAndMatchSnapshot('//');
+  parseAndMatchSnapshot('/** L1\n L2');
+  parseAndMatchSnapshot('/** L1 *');
 });
