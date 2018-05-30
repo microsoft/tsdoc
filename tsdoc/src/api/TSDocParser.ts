@@ -12,11 +12,11 @@ enum State {
   BeginComment2,
   // Like State.CollectingLine except immediately after the "/**"
   CollectingFirstLine,
-  // Collecting characters until we reach CR or LF
+  // Collecting characters until we reach a newline
   CollectingLine,
-  // Looking for the '*" to start a new line, or "*/" to end the comment
+  // After a newline, looking for the "*" that begins a new line, or the "*/" to end the comment
   AdvancingLine,
-  // Existing the parser loop
+  // Exiting the parser loop
   Done
 }
 
