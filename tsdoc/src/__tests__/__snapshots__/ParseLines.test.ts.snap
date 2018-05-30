@@ -32,7 +32,9 @@ Object {
   "buffer": " /**[n][n]*/ ",
   "comment": "/**[n][n]*/",
   "errors": Array [],
-  "lines": Array [],
+  "lines": Array [
+    "",
+  ],
 }
 `;
 
@@ -97,7 +99,7 @@ Object {
   "comment": "/**[n] L1 */",
   "errors": Array [],
   "lines": Array [
-    "L1",
+    " L1",
   ],
 }
 `;
@@ -115,11 +117,12 @@ Object {
 
 exports[`Spacing variations 12`] = `
 Object {
-  "buffer": " /**[n]L1[n]L2*/ ",
-  "comment": "/**[n]L1[n]L2*/",
+  "buffer": " /**[n]L1[n][n]L2*/ ",
+  "comment": "/**[n]L1[n][n]L2*/",
   "errors": Array [],
   "lines": Array [
     "L1",
+    "",
     "L2",
   ],
 }
@@ -179,7 +182,7 @@ Object {
   "lines": Array [
     "L1",
     "L2",
-    "L3",
+    " L3",
   ],
 }
 `;
@@ -192,20 +195,21 @@ Object {
   "lines": Array [
     "L1",
     "L2",
-    "L3",
+    " L3",
   ],
 }
 `;
 
 exports[`Spacing variations 19`] = `
 Object {
-  "buffer": " /**  L1  [n] *  L2  [n]  L3  */ ",
-  "comment": "/**  L1  [n] *  L2  [n]  L3  */",
+  "buffer": " /**  L1  [n] *  L2  [n]  L3  [n]  L4  */ ",
+  "comment": "/**  L1  [n] *  L2  [n]  L3  [n]  L4  */",
   "errors": Array [],
   "lines": Array [
     " L1",
     " L2",
-    "L3",
+    "  L3",
+    "  L4",
   ],
 }
 `;

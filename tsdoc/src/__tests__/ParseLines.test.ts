@@ -28,14 +28,14 @@ test('Spacing variations', () => {
   parseAndMatchSnapshot(` /**\nL1*/ `);                // 9
   parseAndMatchSnapshot(` /**\n L1 */ `);              // 10
   parseAndMatchSnapshot(` /**\nL1\n*/ `);              // 11
-  parseAndMatchSnapshot(` /**\nL1\nL2*/ `);            // 12
+  parseAndMatchSnapshot(` /**\nL1\n\nL2*/ `);          // 12
   parseAndMatchSnapshot(` /**\n*L1\n*/ `);             // 13
   parseAndMatchSnapshot(` /**\n * L1\n*/ `);           // 14
   parseAndMatchSnapshot(` /**\n * L1\n */ `);          // 15
   parseAndMatchSnapshot(` /**L1\n *L2\nL3*/ `);        // 16
   parseAndMatchSnapshot(` /** L1\n * L2\n L3*/ `);     // 17
   parseAndMatchSnapshot(` /** L1 \n * L2 \n L3 */ `);  // 18
-  parseAndMatchSnapshot(` /**  L1  \n *  L2  \n  L3  */ `);  // 19
+  parseAndMatchSnapshot(` /**  L1  \n *  L2  \n  L3  \n  L4  */ `);
 });
 
 // TODO: Special handling for these somewhat common ornamentations

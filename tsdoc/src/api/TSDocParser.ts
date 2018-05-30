@@ -56,6 +56,7 @@ export class TSDocParser {
     let commentRangeStart: number = 0;
     let commentRangeEnd: number = 0;
 
+    // These must be set before entering CollectingFirstLine, CollectingLine, or AdvancingLine
     let collectingLineStart: number = 0;
     let collectingLineEnd: number = 0;
 
@@ -106,14 +107,14 @@ export class TSDocParser {
           break;
         case State.CollectingFirstLine:
         case State.CollectingLine:
-          if (current === '\r' || current === '\n') {
+          if (current === '\n') {
             // Ignore an empty line if it is immediately after the "/**"
             if (state !== State.CollectingFirstLine || collectingLineEnd > collectingLineStart) {
               // Record the line that we collected
               parameters.lines.push(range.getNewRange(collectingLineStart, collectingLineEnd));
             }
-            collectingLineStart = 0;
-            collectingLineEnd = 0;
+            collectingLineStart = nextIndex;
+            collectingLineEnd = nextIndex;
             state = State.AdvancingLine;
           } else if (current === '*' && next === '/') {
             if (collectingLineEnd > collectingLineStart) {
@@ -131,6 +132,9 @@ export class TSDocParser {
         case State.AdvancingLine:
           if (current === '*') {
             if (next === '/') {
+              collectingLineStart = 0;
+              collectingLineEnd = 0;
+
               ++nextIndex; // skip the slash
               commentRangeEnd = nextIndex;
               state = State.Done;
@@ -145,10 +149,15 @@ export class TSDocParser {
               collectingLineEnd = nextIndex;
               state = State.CollectingLine;
             }
+          } else if (current === '\n') {
+            // Blank line
+            parameters.lines.push(range.getNewRange(currentIndex, currentIndex));
+            collectingLineStart = nextIndex;
           } else if (!Character.isWhitespace(current)) {
             // If the star is missing, then start the line here
             // Example: "/**\nL1*/"
-            collectingLineStart = currentIndex;
+
+            // (collectingLineStart was the start of this line)
             collectingLineEnd = currentIndex;
             state = State.CollectingLine;
           }
