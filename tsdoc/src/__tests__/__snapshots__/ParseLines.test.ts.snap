@@ -1,5 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Newline examples 1`] = `
+Object {
+  "buffer": "[r][n]/**[r][n] * L1[r][n] */[r][n]",
+  "comment": "/**[r][n] * L1[r][n] */",
+  "errors": Array [],
+  "lines": Array [
+    "L1",
+  ],
+}
+`;
+
+exports[`Newline examples 2`] = `
+Object {
+  "buffer": "/**[r][n]L1[r][n]L2[r][n]*/",
+  "comment": "/**[r][n]L1[r][n]L2[r][n]*/",
+  "errors": Array [],
+  "lines": Array [
+    "L1",
+    "L2",
+  ],
+}
+`;
+
+exports[`Newline examples 3`] = `
+Object {
+  "buffer": "/** L [r] 1 */",
+  "comment": "/** L [r] 1 */",
+  "errors": Array [],
+  "lines": Array [
+    "L [r] 1",
+  ],
+}
+`;
+
 exports[`Spacing variations 1`] = `
 Object {
   "buffer": "/***/",
@@ -202,8 +236,8 @@ Object {
 
 exports[`Spacing variations 19`] = `
 Object {
-  "buffer": " /**  L1  [n] *  L2  [n]  L3  [n]  L4  */ ",
-  "comment": "/**  L1  [n] *  L2  [n]  L3  [n]  L4  */",
+  "buffer": "/**  L1  [r][n] *  L2  [r][n]  L3  [r][n]  L4 */",
+  "comment": "/**  L1  [r][n] *  L2  [r][n]  L3  [r][n]  L4 */",
   "errors": Array [],
   "lines": Array [
     " L1",

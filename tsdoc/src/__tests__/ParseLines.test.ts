@@ -16,6 +16,26 @@ function parseAndMatchSnapshot(buffer: string): void {
   }).toMatchSnapshot();
 }
 
+test('Newline examples', () => {
+  parseAndMatchSnapshot([
+    '',
+    '/**',
+    ' * L1',
+    ' */',
+    ''
+  ].join('\r\n'));
+  parseAndMatchSnapshot([
+    '/**',
+    'L1',
+    'L2',
+    '*/'
+  ].join('\r\n'));
+
+  // We currently don't support CR or LFCR, so a single "\r" is treated
+  // as part of the line.
+  parseAndMatchSnapshot(`/** L \r 1 */`);
+});
+
 test('Spacing variations', () => {
   parseAndMatchSnapshot(`/***/`);                      // 1
   parseAndMatchSnapshot(` /***/ `);                    // 2
@@ -35,7 +55,12 @@ test('Spacing variations', () => {
   parseAndMatchSnapshot(` /**L1\n *L2\nL3*/ `);        // 16
   parseAndMatchSnapshot(` /** L1\n * L2\n L3*/ `);     // 17
   parseAndMatchSnapshot(` /** L1 \n * L2 \n L3 */ `);  // 18
-  parseAndMatchSnapshot(` /**  L1  \n *  L2  \n  L3  \n  L4  */ `);
+  parseAndMatchSnapshot([                              // 19
+    '/**  L1  ',
+    ' *  L2  ',
+    '  L3  ',
+    '  L4 */'
+  ].join('\r\n'));
 });
 
 // TODO: Special handling for these somewhat common ornamentations
