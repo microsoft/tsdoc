@@ -17,9 +17,9 @@ function matchSnapshot(textRange: TextRange): void {
     const context: string = escape(textRange.buffer.substr(Math.max(i, 0), 10));
 
     expect({
-      i: i,
       c: c,
       context: context,
+      i: i,
       location: textRange.getLocation(i)
     }).toMatchSnapshot();
   }
