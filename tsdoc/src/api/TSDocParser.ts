@@ -6,13 +6,17 @@ import { ParseError } from './ParseError';
 
 // Internal parser state
 enum State {
-  // Initial state, looking for "/**"
-  Start,
-  // Waiting for first star in "/**"
-  ExpectOpeningStar1,
-  // Waiting for second star in "/**"
-  ExpectOpeningStar2,
-  // Existing the parser loop
+  // Initial state, looking for "/*"
+  BeginComment1,
+  // Looking for "*" or "* " after "/*"
+  BeginComment2,
+  // Like State.CollectingLine except immediately after the "/**"
+  CollectingFirstLine,
+  // Collecting characters until we reach a newline
+  CollectingLine,
+  // After a newline, looking for the "*" that begins a new line, or the "*/" to end the comment
+  AdvancingLine,
+  // Exiting the parser loop
   Done
 }
 
@@ -20,75 +24,148 @@ enum State {
  * The main API for parsing TSDoc comments.
  */
 export class TSDocParser {
-  public parseRange(range: TextRange): DocComment {
-    return new DocComment(this._parseRange(range));
+  private static _addError(parameters: IDocCommentParameters, range: TextRange,
+    message: string, pos: number, end?: number): void {
+    if (!end) {
+      if (pos + 1 <= range.buffer.length) {
+        end = pos + 1;
+      } else {
+        end = pos;
+      }
+    }
+    parameters.parseErrors.push(
+      new ParseError(message, range.getNewRange(pos, end))
+    );
   }
 
   public parseString(text: string): DocComment {
     return this.parseRange(TextRange.fromString(text));
   }
 
-  private _parseRange(range: TextRange): IDocCommentParameters {
+  public parseRange(range: TextRange): DocComment {
     const parameters: IDocCommentParameters = {
       sourceRange: range,
       commentRange: TextRange.empty,
       lines: [],
       parseErrors: []
     };
+    this._parseLines(parameters);
+    return new DocComment(parameters);
+  }
 
-    let current: number = range.pos;
-
-    let state: State = State.Start;
+  private _parseLines(parameters: IDocCommentParameters): IDocCommentParameters {
+    const range: TextRange = parameters.sourceRange;
+    const buffer: string = range.buffer;
 
     let commentRangeStart: number = 0;
     let commentRangeEnd: number = 0;
 
-    const buffer: string = range.buffer;
+    // These must be set before entering CollectingFirstLine, CollectingLine, or AdvancingLine
+    let collectingLineStart: number = 0;
+    let collectingLineEnd: number = 0;
+
+    let nextIndex: number = range.pos;
+    let state: State = State.BeginComment1;
 
     while (state !== State.Done) {
-      if (current > range.end) {
-        parameters.parseErrors.push(
-          new ParseError('Expecting a leading "/**"', range.getNewRange(current, 1))
-        );
-        return parameters;
+      if (nextIndex >= range.end) {
+        // reached the end of the input
+        switch (state) {
+          case State.BeginComment1:
+          case State.BeginComment2:
+            TSDocParser._addError(parameters, range, 'Expecting a "/**" comment', range.pos);
+              return parameters;
+          default:
+            TSDocParser._addError(parameters, range, 'Unexpected end of input', range.pos);
+            return parameters;
+        }
       }
 
-      const c: string = buffer[current];
+      const current: string = buffer[nextIndex];
+      const currentIndex: number = nextIndex;
+      ++nextIndex;
+      const next: string = nextIndex < range.end ? buffer[nextIndex] : '';
 
       switch (state) {
-        case State.Start:
-          if (c === '/') {
-            state = State.ExpectOpeningStar1;
-          } else if (!Character.isWhitespace(c)) {
-            parameters.parseErrors.push(
-              new ParseError('Expecting a leading "/**"', range.getNewRange(current, 1))
-            );
+        case State.BeginComment1:
+          if (current === '/' && next === '*') {
+            commentRangeStart = currentIndex;
+            ++nextIndex; // skip the star
+            state = State.BeginComment2;
+          } else if (!Character.isWhitespace(current)) {
+            TSDocParser._addError(parameters, range, 'Expecting a leading "/**"', nextIndex);
             return parameters;
           }
-          commentRangeStart = current;
-          ++current;
           break;
-        case State.ExpectOpeningStar1:
-          if (c !== '*') {
-            parameters.parseErrors.push(
-              new ParseError('Expecting a leading "/**"', range.getNewRange(current, 1))
-            );
+        case State.BeginComment2:
+          if (current === '*') {
+            if (next === ' ') {
+              ++nextIndex; // Discard the space after the star
+            }
+            collectingLineStart = nextIndex;
+            collectingLineEnd = nextIndex;
+            state = State.CollectingFirstLine;
+          } else {
+            TSDocParser._addError(parameters, range, 'Expecting a leading "/**"', nextIndex);
             return parameters;
           }
-          state = State.ExpectOpeningStar2;
-          ++current;
           break;
-        case State.ExpectOpeningStar2:
-          if (c !== '*') {
-            parameters.parseErrors.push(
-              // We can relax this later
-              new ParseError('Expecting a "/**" comment instead of "/*"', range.getNewRange(current, 1))
-            );
-            return parameters;
+        case State.CollectingFirstLine:
+        case State.CollectingLine:
+          if (current === '\n') {
+            // Ignore an empty line if it is immediately after the "/**"
+            if (state !== State.CollectingFirstLine || collectingLineEnd > collectingLineStart) {
+              // Record the line that we collected
+              parameters.lines.push(range.getNewRange(collectingLineStart, collectingLineEnd));
+            }
+            collectingLineStart = nextIndex;
+            collectingLineEnd = nextIndex;
+            state = State.AdvancingLine;
+          } else if (current === '*' && next === '/') {
+            if (collectingLineEnd > collectingLineStart) {
+              parameters.lines.push(range.getNewRange(collectingLineStart, collectingLineEnd));
+            }
+            collectingLineStart = 0;
+            collectingLineEnd = 0;
+            ++nextIndex; // skip the slash
+            commentRangeEnd = nextIndex;
+            state = State.Done;
+          } else if (!Character.isWhitespace(current)) {
+            collectingLineEnd = nextIndex;
           }
-          commentRangeEnd = current + 1;
-          state = State.Done;
-          ++current;
+          break;
+        case State.AdvancingLine:
+          if (current === '*') {
+            if (next === '/') {
+              collectingLineStart = 0;
+              collectingLineEnd = 0;
+
+              ++nextIndex; // skip the slash
+              commentRangeEnd = nextIndex;
+              state = State.Done;
+            } else {
+              // Discard the "*" at the start of a line
+
+              if (next === ' ') {
+                ++nextIndex; // Discard the space after the star
+              }
+
+              collectingLineStart = nextIndex;
+              collectingLineEnd = nextIndex;
+              state = State.CollectingLine;
+            }
+          } else if (current === '\n') {
+            // Blank line
+            parameters.lines.push(range.getNewRange(currentIndex, currentIndex));
+            collectingLineStart = nextIndex;
+          } else if (!Character.isWhitespace(current)) {
+            // If the star is missing, then start the line here
+            // Example: "/**\nL1*/"
+
+            // (collectingLineStart was the start of this line)
+            collectingLineEnd = currentIndex;
+            state = State.CollectingLine;
+          }
           break;
       }
     }
