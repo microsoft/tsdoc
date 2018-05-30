@@ -1,5 +1,4 @@
-import { TextRange } from './TextRange';
-import { TextBuffer, ITextLocation } from '../internal/TextBuffer';
+import { TextRange, ITextLocation } from './TextRange';
 
 /**
  * An Error subclass used to report errors that occur while parsing an input.
@@ -17,13 +16,13 @@ export class ParseError extends Error {
    * "(2,5): An error occurred"
    * ```
    */
-  private static _formatMessage(message: string, range: TextRange, buffer: string): string {
+  private static _formatMessage(message: string, range: TextRange): string {
     if (!message) {
       message = 'An unknown error occurred';
     }
 
     if (range.pos !== 0 || range.end !== 0) {
-      const location: ITextLocation = TextBuffer.getLocation(range.pos, buffer);
+      const location: ITextLocation = range.getLocation(range.pos);
       if (location.line) {
         return `(${location.line},${location.column}): ` + message;
       }
@@ -31,8 +30,8 @@ export class ParseError extends Error {
     return message;
   }
 
-  public constructor(message: string, range: TextRange, buffer: string, innerError?: Error) {
-    super(ParseError._formatMessage(message, range, buffer));
+  public constructor(message: string, range: TextRange, innerError?: Error) {
+    super(ParseError._formatMessage(message, range));
 
     // Boilerplate for extending a system class
     //
@@ -45,7 +44,6 @@ export class ParseError extends Error {
     this.unformattedMessage = message;
 
     this.range = range;
-    this.buffer = buffer;
     this.innerError = innerError;
   }
 }

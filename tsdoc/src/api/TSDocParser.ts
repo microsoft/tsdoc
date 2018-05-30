@@ -8,27 +8,21 @@ import { ParseError } from './ParseError';
  * The main API for parsing TSDoc comments.
  */
 export class TSDocParser {
-  public parseRange(range: TextRange, buffer: string): DocComment {
-    return new DocComment(this._parseRange(range, buffer));
+  public parseRange(range: TextRange): DocComment {
+    return new DocComment(this._parseRange(range));
   }
 
   public parseString(text: string): DocComment {
-    return this.parseRange(
-      new TextRange(0, text.length),
-      text
-    );
+    return this.parseRange(TextRange.fromString(text));
   }
 
-  private _parseRange(range: TextRange, buffer: string): IDocCommentParameters {
+  private _parseRange(range: TextRange): IDocCommentParameters {
     const parameters: IDocCommentParameters = {
-      buffer: buffer,
       sourceRange: range,
       commentRange: TextRange.empty,
       lines: [],
       parseErrors: []
     };
-
-    range.validateBounds(buffer);
 
     let index: number = range.pos;
 
@@ -44,10 +38,12 @@ export class TSDocParser {
     let commentRangeStart: number = 0;
     let commentRangeEnd: number = 0;
 
+    const buffer: string = range.buffer;
+
     while (state !== State.Done) {
       if (index > range.end) {
         parameters.parseErrors.push(
-          new ParseError('Expecting a leading "/**"', new TextRange(index, 1), buffer)
+          new ParseError('Expecting a leading "/**"', range.getNewRange(index, 1))
         );
         return parameters;
       }
@@ -60,7 +56,7 @@ export class TSDocParser {
             state = State.ExpectOpeningStar1;
           } else if (!Character.isWhitespace(c)) {
             parameters.parseErrors.push(
-              new ParseError('Expecting a leading "/**"', new TextRange(index, 1), buffer)
+              new ParseError('Expecting a leading "/**"', range.getNewRange(index, 1))
             );
             return parameters;
           }
@@ -70,7 +66,7 @@ export class TSDocParser {
         case State.ExpectOpeningStar1:
           if (c !== '*') {
             parameters.parseErrors.push(
-              new ParseError('Expecting a leading "/**"', new TextRange(index, 1), buffer)
+              new ParseError('Expecting a leading "/**"', range.getNewRange(index, 1))
             );
             return parameters;
           }
@@ -81,7 +77,7 @@ export class TSDocParser {
           if (c !== '*') {
             parameters.parseErrors.push(
               // We can relax this later
-              new ParseError('Expecting a "/**" comment instead of "/*"', new TextRange(index, 1), buffer)
+              new ParseError('Expecting a "/**" comment instead of "/*"', range.getNewRange(index, 1))
             );
             return parameters;
           }
@@ -92,7 +88,7 @@ export class TSDocParser {
       }
     }
 
-    parameters.commentRange = new TextRange(commentRangeStart, commentRangeEnd);
+    parameters.commentRange = range.getNewRange(commentRangeStart, commentRangeEnd);
 
     return parameters;
   }

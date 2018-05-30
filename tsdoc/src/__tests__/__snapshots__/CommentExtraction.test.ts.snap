@@ -1,35 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
-DocComment {
-  "buffer": "
-    /**
-     * This is an example doc comment.
-     * @remarks
-     * Here are some remarks
-     *
-     * @public
-     */
-",
-  "kind": 0,
-  "lines": Array [],
-  "parseErrors": Array [],
-  "range": TextRange {
-    "end": 8,
-    "pos": 5,
-  },
-  "sourceRange": TextRange {
-    "end": 123,
-    "pos": 0,
-  },
-}
-`;
-
-exports[` 2`] = `"/**"`;
-
 exports[`Comment extraction: docComment 1`] = `
 DocComment {
-  "buffer": "
+  "kind": 0,
+  "lines": Array [],
+  "parseErrors": Array [],
+  "range": TextRange {
+    "buffer": "
     /**
      * This is an example doc comment.
      * @remarks
@@ -38,14 +15,19 @@ DocComment {
      * @public
      */
 ",
-  "kind": 0,
-  "lines": Array [],
-  "parseErrors": Array [],
-  "range": TextRange {
     "end": 8,
     "pos": 5,
   },
   "sourceRange": TextRange {
+    "buffer": "
+    /**
+     * This is an example doc comment.
+     * @remarks
+     * Here are some remarks
+     *
+     * @public
+     */
+",
     "end": 123,
     "pos": 0,
   },

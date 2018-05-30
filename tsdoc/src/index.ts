@@ -6,4 +6,7 @@ export {
 
 export { TSDocParser } from './api/TSDocParser';
 
-export { TextRange } from './api/TextRange';
+export {
+  TextRange,
+  ITextLocation
+} from './api/TextRange';

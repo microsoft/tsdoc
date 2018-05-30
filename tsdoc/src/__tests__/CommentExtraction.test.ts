@@ -16,5 +16,5 @@ test('Comment extraction', () => {
 
   const docComment: DocComment = parser.parseString(input);
   expect(docComment).toMatchSnapshot('docComment');
-  expect(docComment.range.getText(docComment.buffer)).toMatchSnapshot('docComment.range');
+  expect(docComment.range.toString()).toMatchSnapshot('docComment.range');
 });

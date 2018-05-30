@@ -28,9 +28,6 @@ export abstract class DocNode {
  * Constructor parameters for {@link DocComment}.
  */
 export interface IDocCommentParameters {
-  /** {@inheritdoc DocComment.text} */
-  buffer: string;
-
   /** {@inheritdoc DocComment.sourceRange} */
   sourceRange: TextRange;
 
@@ -51,11 +48,6 @@ export class DocComment extends DocNode {
 
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.DocComment;
-
-  /**
-   * The text buffer that the various TextRange objects refer to.
-   */
-  public readonly buffer: string;
 
   /**
    * Whereas {@link DocComment.range} tracks the start and end of the `/**` and `*\/` delimiters,
@@ -80,7 +72,6 @@ export class DocComment extends DocNode {
   public constructor(parameters: IDocCommentParameters) {
     super(parameters.commentRange);
 
-    this.buffer = parameters.buffer;
     this.sourceRange = parameters.sourceRange;
 
     this.lines = parameters.lines;
