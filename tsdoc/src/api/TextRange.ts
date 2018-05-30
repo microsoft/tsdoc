@@ -71,39 +71,53 @@ export class TextRange {
    * @remarks
    * This is a potentially expensive operation.
    *
-   * @param offset - an integer offset
+   * @param index - an integer offset
    * @param buffer - the buffer
    */
-  public getLocation(offset: number): ITextLocation {
+  public getLocation(index: number): ITextLocation {
     // TODO: Consider caching or optimizing this somehow
-    let line: number = 1;
-    let column: number = 1;
+    let line: number = 0;
+    let column: number = 0;
 
-    let index: number = 0;
-
-    if (offset < 0 || offset > this.buffer.length) {
+    if (index < 0 || index > this.buffer.length) {
       // No match
-      return { line: 0, column: 0 };
+      return { line, column };
     }
 
-    while (index < offset) {
-      const c: string = this.buffer[index];
-      ++index;
+    let currentIndex: number = 0;
 
-      if (c === '\r') {
+    let pendingNewline: boolean = true;
+
+    while (currentIndex <= index) {
+      const current: string = this.buffer[currentIndex];
+      ++currentIndex;
+
+      // CR
+      if (current === '\r') {
+        // Ignore '\r' and assume it will always have an accompanying '\n'
         continue;
       }
 
-      if (this.buffer[index] === '\n') {
+      const newLine: boolean = pendingNewline;
+      pendingNewline = false;
+
+      if (current === '\n') {
+        // We consider the '\n' itself to appear on the next column.
+        // The following character starts the new line.
+        pendingNewline = true;
+        ++column;
+      } else {
+        // Otherwise assume it's a printing character
+        ++column;
+      }
+
+      if (newLine) {
         ++line;
         column = 1;
-        continue;
       }
-
-      ++column;
     }
 
-    return { line: line, column: column };
+    return { line, column };
   }
 
   private constructor(buffer: string, pos: number, end: number) {

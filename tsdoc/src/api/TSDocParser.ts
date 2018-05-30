@@ -36,7 +36,7 @@ export class TSDocParser {
       parseErrors: []
     };
 
-    let index: number = range.pos;
+    let current: number = range.pos;
 
     let state: State = State.Start;
 
@@ -46,14 +46,14 @@ export class TSDocParser {
     const buffer: string = range.buffer;
 
     while (state !== State.Done) {
-      if (index > range.end) {
+      if (current > range.end) {
         parameters.parseErrors.push(
-          new ParseError('Expecting a leading "/**"', range.getNewRange(index, 1))
+          new ParseError('Expecting a leading "/**"', range.getNewRange(current, 1))
         );
         return parameters;
       }
 
-      const c: string = buffer[index];
+      const c: string = buffer[current];
 
       switch (state) {
         case State.Start:
@@ -61,34 +61,34 @@ export class TSDocParser {
             state = State.ExpectOpeningStar1;
           } else if (!Character.isWhitespace(c)) {
             parameters.parseErrors.push(
-              new ParseError('Expecting a leading "/**"', range.getNewRange(index, 1))
+              new ParseError('Expecting a leading "/**"', range.getNewRange(current, 1))
             );
             return parameters;
           }
-          commentRangeStart = index;
-          ++index;
+          commentRangeStart = current;
+          ++current;
           break;
         case State.ExpectOpeningStar1:
           if (c !== '*') {
             parameters.parseErrors.push(
-              new ParseError('Expecting a leading "/**"', range.getNewRange(index, 1))
+              new ParseError('Expecting a leading "/**"', range.getNewRange(current, 1))
             );
             return parameters;
           }
           state = State.ExpectOpeningStar2;
-          ++index;
+          ++current;
           break;
         case State.ExpectOpeningStar2:
           if (c !== '*') {
             parameters.parseErrors.push(
               // We can relax this later
-              new ParseError('Expecting a "/**" comment instead of "/*"', range.getNewRange(index, 1))
+              new ParseError('Expecting a "/**" comment instead of "/*"', range.getNewRange(current, 1))
             );
             return parameters;
           }
-          commentRangeEnd = index + 1;
+          commentRangeEnd = current + 1;
           state = State.Done;
-          ++index;
+          ++current;
           break;
       }
     }
