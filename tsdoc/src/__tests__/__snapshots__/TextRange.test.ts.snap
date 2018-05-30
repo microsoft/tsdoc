@@ -8,9 +8,105 @@ TextRange {
 }
 `;
 
-exports[`location calculation 1`] = `
+exports[`getLocation() CR string 1`] = `
 Object {
-  "c": undefined,
+  "c": "[r]",
+  "context": "[r]",
+  "i": -1,
+  "location": Object {
+    "column": 0,
+    "line": 0,
+  },
+}
+`;
+
+exports[`getLocation() CR string 2`] = `
+Object {
+  "c": "[r]",
+  "context": "[r]",
+  "i": 0,
+  "location": Object {
+    "column": 1,
+    "line": 1,
+  },
+}
+`;
+
+exports[`getLocation() CR string 3`] = `
+Object {
+  "c": "",
+  "context": "",
+  "i": 1,
+  "location": Object {
+    "column": 1,
+    "line": 1,
+  },
+}
+`;
+
+exports[`getLocation() CR string 4`] = `
+Object {
+  "c": "",
+  "context": "",
+  "i": 2,
+  "location": Object {
+    "column": 0,
+    "line": 0,
+  },
+}
+`;
+
+exports[`getLocation() LF string 1`] = `
+Object {
+  "c": "[n]",
+  "context": "[n]",
+  "i": -1,
+  "location": Object {
+    "column": 0,
+    "line": 0,
+  },
+}
+`;
+
+exports[`getLocation() LF string 2`] = `
+Object {
+  "c": "[n]",
+  "context": "[n]",
+  "i": 0,
+  "location": Object {
+    "column": 1,
+    "line": 1,
+  },
+}
+`;
+
+exports[`getLocation() LF string 3`] = `
+Object {
+  "c": "",
+  "context": "",
+  "i": 1,
+  "location": Object {
+    "column": 1,
+    "line": 2,
+  },
+}
+`;
+
+exports[`getLocation() LF string 4`] = `
+Object {
+  "c": "",
+  "context": "",
+  "i": 2,
+  "location": Object {
+    "column": 0,
+    "line": 0,
+  },
+}
+`;
+
+exports[`getLocation() basic 1`] = `
+Object {
+  "c": "L",
   "context": "L1[n]L2[n][n]L4[n]",
   "i": -1,
   "location": Object {
@@ -20,7 +116,7 @@ Object {
 }
 `;
 
-exports[`location calculation 2`] = `
+exports[`getLocation() basic 2`] = `
 Object {
   "c": "L",
   "context": "L1[n]L2[n][n]L4[n]",
@@ -32,7 +128,7 @@ Object {
 }
 `;
 
-exports[`location calculation 3`] = `
+exports[`getLocation() basic 3`] = `
 Object {
   "c": "1",
   "context": "1[n]L2[n][n]L4[n]L",
@@ -44,10 +140,9 @@ Object {
 }
 `;
 
-exports[`location calculation 4`] = `
+exports[`getLocation() basic 4`] = `
 Object {
-  "c": "
-",
+  "c": "[n]",
   "context": "[n]L2[n][n]L4[n]L5",
   "i": 2,
   "location": Object {
@@ -57,7 +152,7 @@ Object {
 }
 `;
 
-exports[`location calculation 5`] = `
+exports[`getLocation() basic 5`] = `
 Object {
   "c": "L",
   "context": "L2[n][n]L4[n]L5+",
@@ -69,7 +164,7 @@ Object {
 }
 `;
 
-exports[`location calculation 6`] = `
+exports[`getLocation() basic 6`] = `
 Object {
   "c": "2",
   "context": "2[n][n]L4[n]L5+C",
@@ -81,10 +176,9 @@ Object {
 }
 `;
 
-exports[`location calculation 7`] = `
+exports[`getLocation() basic 7`] = `
 Object {
-  "c": "
-",
+  "c": "[n]",
   "context": "[n][n]L4[n]L5+CR",
   "i": 5,
   "location": Object {
@@ -94,10 +188,9 @@ Object {
 }
 `;
 
-exports[`location calculation 8`] = `
+exports[`getLocation() basic 8`] = `
 Object {
-  "c": "
-",
+  "c": "[n]",
   "context": "[n]L4[n]L5+CR[r]",
   "i": 6,
   "location": Object {
@@ -107,7 +200,7 @@ Object {
 }
 `;
 
-exports[`location calculation 9`] = `
+exports[`getLocation() basic 9`] = `
 Object {
   "c": "L",
   "context": "L4[n]L5+CR[r]L",
@@ -119,7 +212,7 @@ Object {
 }
 `;
 
-exports[`location calculation 10`] = `
+exports[`getLocation() basic 10`] = `
 Object {
   "c": "4",
   "context": "4[n]L5+CR[r]L5",
@@ -131,10 +224,9 @@ Object {
 }
 `;
 
-exports[`location calculation 11`] = `
+exports[`getLocation() basic 11`] = `
 Object {
-  "c": "
-",
+  "c": "[n]",
   "context": "[n]L5+CR[r]L5+",
   "i": 9,
   "location": Object {
@@ -144,7 +236,7 @@ Object {
 }
 `;
 
-exports[`location calculation 12`] = `
+exports[`getLocation() basic 12`] = `
 Object {
   "c": "L",
   "context": "L5+CR[r]L5+C",
@@ -156,7 +248,7 @@ Object {
 }
 `;
 
-exports[`location calculation 13`] = `
+exports[`getLocation() basic 13`] = `
 Object {
   "c": "5",
   "context": "5+CR[r]L5+CR",
@@ -168,7 +260,7 @@ Object {
 }
 `;
 
-exports[`location calculation 14`] = `
+exports[`getLocation() basic 14`] = `
 Object {
   "c": "+",
   "context": "+CR[r]L5+CRL",
@@ -180,7 +272,7 @@ Object {
 }
 `;
 
-exports[`location calculation 15`] = `
+exports[`getLocation() basic 15`] = `
 Object {
   "c": "C",
   "context": "CR[r]L5+CRLF",
@@ -192,7 +284,7 @@ Object {
 }
 `;
 
-exports[`location calculation 16`] = `
+exports[`getLocation() basic 16`] = `
 Object {
   "c": "R",
   "context": "R[r]L5+CRLF[r]",
@@ -204,20 +296,19 @@ Object {
 }
 `;
 
-exports[`location calculation 17`] = `
+exports[`getLocation() basic 17`] = `
 Object {
-  "c": "
-",
+  "c": "[r]",
   "context": "[r]L5+CRLF[r][n]",
   "i": 15,
   "location": Object {
-    "column": 5,
+    "column": 6,
     "line": 5,
   },
 }
 `;
 
-exports[`location calculation 18`] = `
+exports[`getLocation() basic 18`] = `
 Object {
   "c": "L",
   "context": "L5+CRLF[r][n]L",
@@ -229,7 +320,7 @@ Object {
 }
 `;
 
-exports[`location calculation 19`] = `
+exports[`getLocation() basic 19`] = `
 Object {
   "c": "5",
   "context": "5+CRLF[r][n]L6",
@@ -241,7 +332,7 @@ Object {
 }
 `;
 
-exports[`location calculation 20`] = `
+exports[`getLocation() basic 20`] = `
 Object {
   "c": "+",
   "context": "+CRLF[r][n]L6+",
@@ -253,7 +344,7 @@ Object {
 }
 `;
 
-exports[`location calculation 21`] = `
+exports[`getLocation() basic 21`] = `
 Object {
   "c": "C",
   "context": "CRLF[r][n]L6+L",
@@ -265,7 +356,7 @@ Object {
 }
 `;
 
-exports[`location calculation 22`] = `
+exports[`getLocation() basic 22`] = `
 Object {
   "c": "R",
   "context": "RLF[r][n]L6+LF",
@@ -277,7 +368,7 @@ Object {
 }
 `;
 
-exports[`location calculation 23`] = `
+exports[`getLocation() basic 23`] = `
 Object {
   "c": "L",
   "context": "LF[r][n]L6+LFC",
@@ -289,7 +380,7 @@ Object {
 }
 `;
 
-exports[`location calculation 24`] = `
+exports[`getLocation() basic 24`] = `
 Object {
   "c": "F",
   "context": "F[r][n]L6+LFCR",
@@ -301,23 +392,21 @@ Object {
 }
 `;
 
-exports[`location calculation 25`] = `
+exports[`getLocation() basic 25`] = `
 Object {
-  "c": "
-",
+  "c": "[r]",
   "context": "[r][n]L6+LFCR[n]",
   "i": 23,
   "location": Object {
-    "column": 12,
+    "column": 13,
     "line": 5,
   },
 }
 `;
 
-exports[`location calculation 26`] = `
+exports[`getLocation() basic 26`] = `
 Object {
-  "c": "
-",
+  "c": "[n]",
   "context": "[n]L6+LFCR[n][r]",
   "i": 24,
   "location": Object {
@@ -327,7 +416,7 @@ Object {
 }
 `;
 
-exports[`location calculation 27`] = `
+exports[`getLocation() basic 27`] = `
 Object {
   "c": "L",
   "context": "L6+LFCR[n][r]L",
@@ -339,7 +428,7 @@ Object {
 }
 `;
 
-exports[`location calculation 28`] = `
+exports[`getLocation() basic 28`] = `
 Object {
   "c": "6",
   "context": "6+LFCR[n][r]L7",
@@ -351,7 +440,7 @@ Object {
 }
 `;
 
-exports[`location calculation 29`] = `
+exports[`getLocation() basic 29`] = `
 Object {
   "c": "+",
   "context": "+LFCR[n][r]L7",
@@ -363,7 +452,7 @@ Object {
 }
 `;
 
-exports[`location calculation 30`] = `
+exports[`getLocation() basic 30`] = `
 Object {
   "c": "L",
   "context": "LFCR[n][r]L7",
@@ -375,7 +464,7 @@ Object {
 }
 `;
 
-exports[`location calculation 31`] = `
+exports[`getLocation() basic 31`] = `
 Object {
   "c": "F",
   "context": "FCR[n][r]L7",
@@ -387,7 +476,7 @@ Object {
 }
 `;
 
-exports[`location calculation 32`] = `
+exports[`getLocation() basic 32`] = `
 Object {
   "c": "C",
   "context": "CR[n][r]L7",
@@ -399,7 +488,7 @@ Object {
 }
 `;
 
-exports[`location calculation 33`] = `
+exports[`getLocation() basic 33`] = `
 Object {
   "c": "R",
   "context": "R[n][r]L7",
@@ -411,10 +500,9 @@ Object {
 }
 `;
 
-exports[`location calculation 34`] = `
+exports[`getLocation() basic 34`] = `
 Object {
-  "c": "
-",
+  "c": "[n]",
   "context": "[n][r]L7",
   "i": 32,
   "location": Object {
@@ -424,20 +512,19 @@ Object {
 }
 `;
 
-exports[`location calculation 35`] = `
+exports[`getLocation() basic 35`] = `
 Object {
-  "c": "
-",
+  "c": "[r]",
   "context": "[r]L7",
   "i": 33,
   "location": Object {
-    "column": 8,
-    "line": 6,
+    "column": 1,
+    "line": 7,
   },
 }
 `;
 
-exports[`location calculation 36`] = `
+exports[`getLocation() basic 36`] = `
 Object {
   "c": "L",
   "context": "L7",
@@ -449,7 +536,7 @@ Object {
 }
 `;
 
-exports[`location calculation 37`] = `
+exports[`getLocation() basic 37`] = `
 Object {
   "c": "7",
   "context": "7",
@@ -461,9 +548,9 @@ Object {
 }
 `;
 
-exports[`location calculation 38`] = `
+exports[`getLocation() basic 38`] = `
 Object {
-  "c": undefined,
+  "c": "",
   "context": "",
   "i": 36,
   "location": Object {
@@ -473,9 +560,9 @@ Object {
 }
 `;
 
-exports[`location calculation 39`] = `
+exports[`getLocation() basic 39`] = `
 Object {
-  "c": undefined,
+  "c": "",
   "context": "",
   "i": 37,
   "location": Object {
@@ -485,9 +572,9 @@ Object {
 }
 `;
 
-exports[`location calculation empty string 1`] = `
+exports[`getLocation() empty string 1`] = `
 Object {
-  "c": undefined,
+  "c": "",
   "context": "",
   "i": -1,
   "location": Object {
@@ -497,9 +584,9 @@ Object {
 }
 `;
 
-exports[`location calculation empty string 2`] = `
+exports[`getLocation() empty string 2`] = `
 Object {
-  "c": undefined,
+  "c": "",
   "context": "",
   "i": 0,
   "location": Object {
@@ -509,9 +596,9 @@ Object {
 }
 `;
 
-exports[`location calculation empty string 3`] = `
+exports[`getLocation() empty string 3`] = `
 Object {
-  "c": undefined,
+  "c": "",
   "context": "",
   "i": 1,
   "location": Object {
@@ -521,10 +608,10 @@ Object {
 }
 `;
 
-exports[`location calculation newline string 1`] = `
+exports[`getLocation() tab characters 1`] = `
 Object {
-  "c": undefined,
-  "context": "[n]",
+  "c": "1",
+  "context": "1[t]3",
   "i": -1,
   "location": Object {
     "column": 0,
@@ -533,11 +620,10 @@ Object {
 }
 `;
 
-exports[`location calculation newline string 2`] = `
+exports[`getLocation() tab characters 2`] = `
 Object {
-  "c": "
-",
-  "context": "[n]",
+  "c": "1",
+  "context": "1[t]3",
   "i": 0,
   "location": Object {
     "column": 1,
@@ -546,23 +632,47 @@ Object {
 }
 `;
 
-exports[`location calculation newline string 3`] = `
+exports[`getLocation() tab characters 3`] = `
 Object {
-  "c": undefined,
-  "context": "",
+  "c": "[t]",
+  "context": "[t]3",
   "i": 1,
   "location": Object {
-    "column": 1,
-    "line": 2,
+    "column": 2,
+    "line": 1,
   },
 }
 `;
 
-exports[`location calculation newline string 4`] = `
+exports[`getLocation() tab characters 4`] = `
 Object {
-  "c": undefined,
-  "context": "",
+  "c": "3",
+  "context": "3",
   "i": 2,
+  "location": Object {
+    "column": 3,
+    "line": 1,
+  },
+}
+`;
+
+exports[`getLocation() tab characters 5`] = `
+Object {
+  "c": "",
+  "context": "",
+  "i": 3,
+  "location": Object {
+    "column": 4,
+    "line": 1,
+  },
+}
+`;
+
+exports[`getLocation() tab characters 6`] = `
+Object {
+  "c": "",
+  "context": "",
+  "i": 4,
   "location": Object {
     "column": 0,
     "line": 0,

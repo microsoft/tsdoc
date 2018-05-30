@@ -22,13 +22,17 @@ export class TextRange {
 
   /**
    * The starting index into the associated text buffer.
+   *
+   * @remarks
+   * The text range corresponds to the `range.buffer.substring(range.pos, range.end)`.
    */
   public readonly pos: number;
 
   /**
    * The (non-inclusive) ending index for the associated text buffer.
-   * For example if the string is called `text`, then the range would correspond
-   * to `text.substring(pos, end)`.
+   *
+   * @remarks
+   * The text range corresponds to the `range.buffer.substring(range.pos, range.end)`.
    */
   public readonly end: number;
 
@@ -75,45 +79,33 @@ export class TextRange {
    * @param buffer - the buffer
    */
   public getLocation(index: number): ITextLocation {
-    // TODO: Consider caching or optimizing this somehow
-    let line: number = 0;
-    let column: number = 0;
-
     if (index < 0 || index > this.buffer.length) {
       // No match
-      return { line, column };
+      return { line: 0, column: 0 };
     }
+
+    // TODO: Consider caching or optimizing this somehow
+    let line: number = 1;
+    let column: number = 1;
 
     let currentIndex: number = 0;
 
-    let pendingNewline: boolean = true;
-
-    while (currentIndex <= index) {
+    while (currentIndex < index) {
       const current: string = this.buffer[currentIndex];
       ++currentIndex;
 
-      // CR
-      if (current === '\r') {
+      if (current === '\r') { // CR
         // Ignore '\r' and assume it will always have an accompanying '\n'
         continue;
       }
 
-      const newLine: boolean = pendingNewline;
-      pendingNewline = false;
-
-      if (current === '\n') {
-        // We consider the '\n' itself to appear on the next column.
-        // The following character starts the new line.
-        pendingNewline = true;
-        ++column;
-      } else {
-        // Otherwise assume it's a printing character
-        ++column;
-      }
-
-      if (newLine) {
+      if (current === '\n') { // LF
         ++line;
         column = 1;
+      } else {
+        // NOTE: For consistency with the TypeScript compiler, a tab character is assumed
+        // to advance by one column
+        ++column;
       }
     }
 

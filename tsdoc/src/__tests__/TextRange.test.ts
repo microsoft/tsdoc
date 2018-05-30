@@ -1,14 +1,24 @@
 import { TextRange } from '../index';
 
+function escape(s: string): string {
+  return s.replace(/\n/g, '[n]')
+    .replace(/\r/g, '[r]')
+    .replace(/\t/g, '[t]');
+}
+
 function matchSnapshot(textRange: TextRange): void {
   for (let i: number = -1; i <= textRange.end + 1; ++i) {
-      // Show the next 10 characters
-    const context: string = textRange.buffer.substr(Math.max(i, 0), 10)
+
+    // Show the current character
+    const c: string = escape(textRange.buffer.substr(Math.max(i, 0), 1))
       .replace(/\n/g, '[n]').replace(/\r/g, '[r]');
+
+    // Show the next 10 characters of context
+    const context: string = escape(textRange.buffer.substr(Math.max(i, 0), 10));
 
     expect({
       i: i,
-      c: textRange.buffer[i],
+      c: c,
       context: context,
       location: textRange.getLocation(i)
     }).toMatchSnapshot();
@@ -24,7 +34,7 @@ test('construction scenarios', () => {
   expect(subRange).toMatchSnapshot('subRange');
 });
 
-test('location calculation', () => {
+test('getLocation() basic', () => {
   const textRange: TextRange = TextRange.fromString([
     'L1',
     'L2',
@@ -35,12 +45,23 @@ test('location calculation', () => {
   matchSnapshot(textRange);
 });
 
-test('location calculation empty string', () => {
+test('getLocation() empty string', () => {
   const textRange: TextRange = TextRange.fromString('');
   matchSnapshot(textRange);
 });
 
-test('location calculation newline string', () => {
+test('getLocation() CR string', () => {
+  const textRange: TextRange = TextRange.fromString('\r');
+  matchSnapshot(textRange);
+});
+
+test('getLocation() LF string', () => {
   const textRange: TextRange = TextRange.fromString('\n');
+  matchSnapshot(textRange);
+});
+
+test('getLocation() tab characters', () => {
+  // Tab character advances by only one column
+  const textRange: TextRange = TextRange.fromString('1\t3');
   matchSnapshot(textRange);
 });

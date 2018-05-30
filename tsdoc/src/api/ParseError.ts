@@ -4,9 +4,20 @@ import { TextRange, ITextLocation } from './TextRange';
  * An Error subclass used to report errors that occur while parsing an input.
  */
 export class ParseError extends Error {
+  /**
+   * The text range where the error occurred.
+   */
   public readonly range: TextRange;
-  public readonly buffer: string;
+
+  /**
+   * The message string passed to the constructor, before the line/column
+   * numbering information was added.
+   */
   public readonly unformattedMessage: string;
+
+  /**
+   * The underlying error, if this error is resulted from an earlier error.
+   */
   public readonly innerError: Error | undefined;
 
   /**
