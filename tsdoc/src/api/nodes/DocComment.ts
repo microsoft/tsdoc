@@ -1,16 +1,13 @@
 import { TextRange } from '../TextRange';
 import { ParseError } from '../ParseError';
-import { DocNode, DocNodeKind } from './DocNode';
+import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 
 /**
  * Constructor parameters for {@link DocComment}.
  */
-export interface IDocCommentParameters {
+export interface IDocCommentParameters extends IDocNodeParameters {
   /** {@inheritdoc DocComment.sourceRange} */
   sourceRange: TextRange;
-
-  /** {@inheritdoc DocComment.commentRange} */
-  commentRange: TextRange;
 
   /** {@inheritdoc DocComment.lines} */
   lines: TextRange[];
@@ -20,12 +17,13 @@ export interface IDocCommentParameters {
 }
 
 /**
- * Represents a parsed documentation comment.
+ * Represents an entire parsed documentation comment.  This is typically the
+ * root of the expression tree returned by the parser.
  */
 export class DocComment extends DocNode {
 
   /** {@inheritdoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.DocComment;
+  public readonly kind: DocNodeKind = DocNodeKind.Comment;
 
   /**
    * Whereas {@link DocComment.range} tracks the start and end of the `/**` and `*\/` delimiters,
@@ -48,7 +46,7 @@ export class DocComment extends DocNode {
    * @internal
    */
   public constructor(parameters: IDocCommentParameters) {
-    super(parameters.commentRange);
+    super(parameters);
 
     this.sourceRange = parameters.sourceRange;
 

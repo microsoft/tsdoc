@@ -4,8 +4,17 @@ import { TextRange } from '../TextRange';
  * Indicates the type of {@link DocNode}.
  */
 export enum DocNodeKind {
-  DocComment,
-  DocText
+  BackslashEscape,
+  Comment,
+  HtmlTag,
+  PlainText
+}
+
+/**
+ * Constructor parameters for DocNode.
+ */
+export interface IDocNodeParameters {
+  range: TextRange;
 }
 
 /**
@@ -17,9 +26,12 @@ export abstract class DocNode {
    */
   public abstract readonly kind: DocNodeKind;
 
+  /**
+   * The text range corresponding to this documentation node.
+   */
   public readonly range: TextRange;
 
-  public constructor(range: TextRange) {
-    this.range = range;
+  public constructor(parameters: IDocNodeParameters) {
+    this.range = parameters.range;
   }
 }

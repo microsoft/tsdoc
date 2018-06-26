@@ -44,8 +44,8 @@ export class TSDocParser {
 
   public parseRange(range: TextRange): DocComment {
     const parameters: IDocCommentParameters = {
+      range: TextRange.empty,
       sourceRange: range,
-      commentRange: TextRange.empty,
       lines: [],
       parseErrors: []
     };
@@ -170,7 +170,7 @@ export class TSDocParser {
       }
     }
 
-    parameters.commentRange = range.getNewRange(commentRangeStart, commentRangeEnd);
+    parameters.range = range.getNewRange(commentRangeStart, commentRangeEnd);
 
     return parameters;
   }
