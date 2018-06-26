@@ -1,6 +1,6 @@
 import { Character } from '../internal/Character';
 
-import { DocComment, IDocCommentParameters } from './DocComment';
+import { DocComment, IDocCommentParameters } from './nodes/DocComment';
 import { TextRange } from './TextRange';
 import { ParseError } from './ParseError';
 
