@@ -68,42 +68,48 @@ export class Tokenizer {
    */
   public readonly lines: TextRange[];
 
-  // Index into the lines array
+  // Index into the lines array, indicating the current line being processed.
   private _linesIndex: number;
 
-  // index into the TextRange's buffer
+  // Index into Tokenizer._cachedBuffer, which is the same as this.lines[i].buffer.
   private _bufferIndex: number;
 
-  private _injectingNewline: boolean;
-
-  // If we've reached the end of the input, this is the final Token object
+  // If we've reached the end of the input, this is the final Token object.
   private _endToken: Token | undefined;
 
+  // Storage for Token.peekCharacter()
   private _peekedCharacter: ICharacter | undefined;
+
+  // A temporary state used when generating a TokenKind.Newline token
+  private _injectedNewline: boolean;
 
   // To improve performance, this is a cached storage of this.lines[this._linesIndex].
   private _cachedCurrentLine: TextRange | undefined;
 
-  // To improve performance, this is a cached storage of TextRange.buffer for the Tokenizer.lines items.
-  // The lines are assumed to all come from a common buffer.
+  // To improve performance, this is a cached storage of this.lines[i].buffer for all values of i;
+  // the lines are assumed to all come from a common buffer.
   private readonly _cachedBuffer: string;
 
   public constructor(lines: TextRange[]) {
     this.lines = lines;
     this._linesIndex = 0;
+
     if (this.lines.length === 0) {
-      this._cachedBuffer = '';
       this._cachedCurrentLine = undefined;
+      this._cachedBuffer = '';
+
       this._bufferIndex = 0;
       this._endToken = new Token(TokenKind.EndOfInput, TextRange.empty);
     } else {
-      this._cachedBuffer = this.lines[0].buffer;
       this._cachedCurrentLine = this.lines[0];
+      this._cachedBuffer = this.lines[0].buffer;
+
       this._bufferIndex = this._cachedCurrentLine.pos;
       this._endToken = undefined;
     }
-    this._injectingNewline = false;
+
     this._peekedCharacter = undefined;
+    this._injectedNewline = false;
   }
 
   /**
@@ -183,14 +189,14 @@ export class Tokenizer {
       // When we reach the logical end of line, we inject a "\n" character (since the
       // real EOL may be disembodied by the doc comment delimiters).
       // Since we don't want to move _bufferIndex, we need a little bit of extra state.
-      if (!this._injectingNewline) {
-        this._injectingNewline = true;
+      if (!this._injectedNewline) {
+        this._injectedNewline = true;
         return {
           value: '\n',
           index: this._bufferIndex
         };
       }
-      this._injectingNewline = false;
+      this._injectedNewline = false;
 
       // Advance to the next line
       ++this._linesIndex;
