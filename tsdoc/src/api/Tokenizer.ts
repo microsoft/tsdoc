@@ -1,11 +1,29 @@
 import { TextRange } from './TextRange';
 
+/**
+ * Distinguishes different types of Token objects.
+ */
 export enum TokenKind {
+  /**
+   * A token representing a sequence of plain text with no special meaning.
+   */
   PlainText,
+  /**
+   * A token representing a virtual newline.  The Token.range will be an empty range,
+   * because the actual newline character may be noncontiguous or nonexistent.
+   */
   Newline,
+  /**
+   * A token representing the end of the input.
+   */
   EndOfInput
 }
 
+/**
+ * Represents a contiguous range of characters extracted from one of the doc comment lines
+ * being processed by the Tokenizer.  There is a token representing a newline, but otherwise
+ * a single token cannot span multiple lines.
+ */
 export class Token {
   public readonly kind: TokenKind;
   public readonly range: TextRange;
@@ -20,8 +38,26 @@ export class Token {
   }
 }
 
+/**
+ * The ICharacter structure uses an empty string to represent the end of the input.
+ */
+const EOI_CHARACTER: string = '';
+
+/**
+ * This helps the Tokenizer keep track of indexes needed to accurately calculated Token.range,
+ * given that the buffer index can skip characters when advancing to the next line inside
+ * a documentation comment.
+ */
 interface ICharacter {
+  /**
+   * Either EOI_CHARACTER (an empty string) to indicate that the end of the input has been reached,
+   * or else a string of length one representing a single character extracted from the input buffer.
+   */
   value: string;
+
+  /**
+   * The buffer index of the character.  This is an index into Tokenizer._buffer.
+   */
   index: number;
 }
 
@@ -70,6 +106,12 @@ export class Tokenizer {
     this._peekedCharacter = undefined;
   }
 
+  /**
+   * Extracts and returns the next token from the input stream.
+   * @remarks
+   * When the end of the input is reached, getToken() will (repeatedly) return
+   * the TokenKind.EndOfInput token.
+   */
   public getToken(): Token {
     if (this._endToken) {
       return this._endToken;
@@ -90,6 +132,10 @@ export class Tokenizer {
     }
   }
 
+  /**
+   * Advances the stream pointer until one of the specified ending characters is reached,
+   * or until the end of the input is reached.
+   */
   private _skipUntil(endingCharacters: string[]): void {
     while (true) {
       const character: ICharacter = this._peekCharacter();
@@ -102,8 +148,8 @@ export class Tokenizer {
   }
 
   /**
-   * Extracts the next virtual character from the input lines.
-   * After each line, a '\n' character is returned.
+   * Extracts and returns the next character from the input lines.
+   * After each input line is processed, a virtual newline character is returned.
    * When the end of the input is reached, an empty string is returned.
    * The length of the returned string will always be 0 or 1.
    */
@@ -158,7 +204,7 @@ export class Tokenizer {
   }
 
   /**
-   * Similar to _getCharacter(), except it does not advance the input stream pointer.
+   * Similar to _getCharacter(), except it does not advance the (conceptual) input stream pointer.
    */
   private _peekCharacter(): ICharacter {
     if (this._peekedCharacter === undefined) {
