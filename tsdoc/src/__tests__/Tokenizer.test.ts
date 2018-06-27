@@ -20,6 +20,11 @@ function matchSnapshot(buffer: string): void {
     tokens.push(token);
   }
 
+  // Assert that getToken() should return EndOfInput repeatedly
+  expect(tokenizer.getToken().kind).toEqual(TokenKind.EndOfInput);
+  expect(tokenizer.getToken().kind).toEqual(TokenKind.EndOfInput);
+
+  // Generate a snapshot of the token list
   expect(tokens.map(token => {
     return {
       tokenKind: TokenKind[token.kind],

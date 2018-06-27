@@ -119,10 +119,6 @@ export class Tokenizer {
    * the TokenKind.EndOfInput token.
    */
   public getToken(): Token {
-    if (this._endToken) {
-      return this._endToken;
-    }
-
     const startCharacter: ICharacter = this._getCharacter();
 
     switch (startCharacter.value) {
