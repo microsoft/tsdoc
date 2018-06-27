@@ -68,15 +68,8 @@ export class Tokenizer {
    */
   public readonly lines: TextRange[];
 
-  // The TextRange.buffer shared for the lines, which are assumed to all share
-  // a common buffer
-  private _buffer: string;
-
   // Index into the lines array
   private _linesIndex: number;
-
-  // This is a cached pointer to this.lines[this._linesIndex].
-  private _currentLine: TextRange | undefined;
 
   // index into the TextRange's buffer
   private _bufferIndex: number;
@@ -88,18 +81,25 @@ export class Tokenizer {
 
   private _peekedCharacter: ICharacter | undefined;
 
+  // To improve performance, this is a cached storage of this.lines[this._linesIndex].
+  private _cachedCurrentLine: TextRange | undefined;
+
+  // To improve performance, this is a cached storage of TextRange.buffer for the Tokenizer.lines items.
+  // The lines are assumed to all come from a common buffer.
+  private readonly _cachedBuffer: string;
+
   public constructor(lines: TextRange[]) {
     this.lines = lines;
     this._linesIndex = 0;
     if (this.lines.length === 0) {
-      this._buffer = '';
-      this._currentLine = undefined;
+      this._cachedBuffer = '';
+      this._cachedCurrentLine = undefined;
       this._bufferIndex = 0;
       this._endToken = new Token(TokenKind.EndOfInput, TextRange.empty);
     } else {
-      this._buffer = this.lines[0].buffer;
-      this._currentLine = this.lines[0];
-      this._bufferIndex = this._currentLine.pos;
+      this._cachedBuffer = this.lines[0].buffer;
+      this._cachedCurrentLine = this.lines[0];
+      this._bufferIndex = this._cachedCurrentLine.pos;
       this._endToken = undefined;
     }
     this._injectingNewline = false;
@@ -120,15 +120,15 @@ export class Tokenizer {
     const startCharacter: ICharacter = this._getCharacter();
 
     switch (startCharacter.value) {
-      case '':
+      case EOI_CHARACTER:
         return this._endToken!;
       case '\n':
         return new Token(TokenKind.Newline, TextRange.fromStringRange(
-          this._buffer, startCharacter.index, startCharacter.index));
+          this._cachedBuffer, startCharacter.index, startCharacter.index));
       default:
         this._skipUntil(['\n']);
         return new Token(TokenKind.PlainText, TextRange.fromStringRange(
-          this._buffer, startCharacter.index, this._peekCharacter().index));
+          this._cachedBuffer, startCharacter.index, this._peekCharacter().index));
     }
   }
 
@@ -140,7 +140,10 @@ export class Tokenizer {
     while (true) {
       const character: ICharacter = this._peekCharacter();
 
-      if (character.value === '' || endingCharacters.indexOf(character.value) >= 0) {
+      if (character.value === EOI_CHARACTER) {
+        return;
+      }
+      if (endingCharacters.indexOf(character.value) >= 0) {
         return;
       }
       this._getCharacter();
@@ -162,17 +165,17 @@ export class Tokenizer {
 
     if (this._endToken) {
       // already reached the end of the input
-      return { value: '', index: this._endToken.range.pos };
+      return { value: EOI_CHARACTER, index: this._endToken.range.pos };
     }
-    if (!this._currentLine) {
+    if (!this._cachedCurrentLine) {
       // Sanity check
       throw new Error('Tokenizer._currentLine should not be undeifned');
     }
 
     while (true) {
-      if (this._bufferIndex < this._currentLine.end) {
+      if (this._bufferIndex < this._cachedCurrentLine.end) {
         return {
-          value: this._buffer[this._bufferIndex],
+          value: this._cachedBuffer[this._bufferIndex],
           index: this._bufferIndex++
         };
       }
@@ -194,12 +197,12 @@ export class Tokenizer {
       if (this._linesIndex >= this.lines.length) {
         // We advanced past the final line
         this._endToken = new Token(TokenKind.EndOfInput,
-          this._currentLine.getNewRange(this._currentLine.end, this._currentLine.end));
-        return { value: '', index: this._endToken.range.pos };
+          this._cachedCurrentLine.getNewRange(this._cachedCurrentLine.end, this._cachedCurrentLine.end));
+        return { value: EOI_CHARACTER, index: this._endToken.range.pos };
       }
 
-      this._currentLine = this.lines[this._linesIndex];
-      this._bufferIndex = this._currentLine.pos;
+      this._cachedCurrentLine = this.lines[this._linesIndex];
+      this._bufferIndex = this._cachedCurrentLine.pos;
     }
   }
 
