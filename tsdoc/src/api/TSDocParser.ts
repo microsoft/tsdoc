@@ -1,6 +1,6 @@
 import { Character } from '../internal/Character';
 
-import { DocComment, IDocCommentParameters } from './DocComment';
+import { DocComment, IDocCommentParameters } from './nodes/DocComment';
 import { TextRange } from './TextRange';
 import { ParseError } from './ParseError';
 
@@ -44,16 +44,22 @@ export class TSDocParser {
 
   public parseRange(range: TextRange): DocComment {
     const parameters: IDocCommentParameters = {
+      range: TextRange.empty,
       sourceRange: range,
-      commentRange: TextRange.empty,
       lines: [],
       parseErrors: []
     };
     this._parseLines(parameters);
+
     return new DocComment(parameters);
   }
 
-  private _parseLines(parameters: IDocCommentParameters): IDocCommentParameters {
+  /**
+   * This step parses an entire code comment from slash-star-star until star-slash,
+   * and extracts the content lines.  The lines are stored in IDocCommentParameters.lines
+   * and the overall text range is assigned to IDocCommentParameters.range.
+   */
+  private _parseLines(parameters: IDocCommentParameters): void {
     const range: TextRange = parameters.sourceRange;
     const buffer: string = range.buffer;
 
@@ -74,10 +80,10 @@ export class TSDocParser {
           case State.BeginComment1:
           case State.BeginComment2:
             TSDocParser._addError(parameters, range, 'Expecting a "/**" comment', range.pos);
-              return parameters;
+              return;
           default:
             TSDocParser._addError(parameters, range, 'Unexpected end of input', range.pos);
-            return parameters;
+            return;
         }
       }
 
@@ -94,7 +100,7 @@ export class TSDocParser {
             state = State.BeginComment2;
           } else if (!Character.isWhitespace(current)) {
             TSDocParser._addError(parameters, range, 'Expecting a leading "/**"', nextIndex);
-            return parameters;
+            return;
           }
           break;
         case State.BeginComment2:
@@ -107,7 +113,7 @@ export class TSDocParser {
             state = State.CollectingFirstLine;
           } else {
             TSDocParser._addError(parameters, range, 'Expecting a leading "/**"', nextIndex);
-            return parameters;
+            return;
           }
           break;
         case State.CollectingFirstLine:
@@ -170,8 +176,6 @@ export class TSDocParser {
       }
     }
 
-    parameters.commentRange = range.getNewRange(commentRangeStart, commentRangeEnd);
-
-    return parameters;
+    parameters.range = range.getNewRange(commentRangeStart, commentRangeEnd);
   }
 }

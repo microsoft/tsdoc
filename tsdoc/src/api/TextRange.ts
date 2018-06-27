@@ -70,6 +70,20 @@ export class TextRange {
   }
 
   /**
+   * Returns a debugging dump of the range, indicated via custom delimiters.
+   * @remarks
+   * For example if the delimiters are "[" and "]", and the range is 3..5 inside "1234567",
+   * then the output would be "12[345]67".
+   */
+  public getDebugDump(posDelimiter: string, endDelimiter: string): string {
+    return this.buffer.substring(0, this.pos)
+      + posDelimiter
+      + this.buffer.substring(this.pos, this.end)
+      + endDelimiter
+      + this.buffer.substring(this.end);
+  }
+
+  /**
    * Calculates the line and column number for the specified offset into the buffer.
    *
    * @remarks
