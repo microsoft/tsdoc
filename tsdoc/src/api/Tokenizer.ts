@@ -27,10 +27,16 @@ export enum TokenKind {
 export class Token {
   public readonly kind: TokenKind;
   public readonly range: TextRange;
+  public readonly line: TextRange;
 
-  public constructor(kind: TokenKind, range: TextRange) {
+  public constructor(kind: TokenKind, range: TextRange, line: TextRange) {
     this.kind = kind;
     this.range = range;
+    this.line = line;
+    if (range.pos < line.pos || range.end > line.end) {
+      // Sanity check
+      throw new Error('Wrong line');
+    }
   }
 
   public toString(): string {
@@ -59,6 +65,11 @@ interface ICharacter {
    * The buffer index of the character.  This is an index into Tokenizer._buffer.
    */
   index: number;
+
+  /**
+   * The input line that this character came from.
+   */
+  line: TextRange;
 }
 
 export class Tokenizer {
@@ -99,7 +110,7 @@ export class Tokenizer {
       this._cachedBuffer = '';
 
       this._bufferIndex = 0;
-      this._endToken = new Token(TokenKind.EndOfInput, TextRange.empty);
+      this._endToken = new Token(TokenKind.EndOfInput, TextRange.empty, TextRange.empty);
     } else {
       this._cachedCurrentLine = this.lines[0];
       this._cachedBuffer = this.lines[0].buffer;
@@ -124,13 +135,17 @@ export class Tokenizer {
     switch (startCharacter.value) {
       case EOI_CHARACTER:
         return this._endToken!;
+
       case '\n':
-        return new Token(TokenKind.Newline, TextRange.fromStringRange(
-          this._cachedBuffer, startCharacter.index, startCharacter.index));
+        return new Token(TokenKind.Newline,
+          TextRange.fromStringRange(this._cachedBuffer, startCharacter.index, startCharacter.index),
+          startCharacter.line);
+
       default:
         this._skipUntil(['\n']);
-        return new Token(TokenKind.PlainText, TextRange.fromStringRange(
-          this._cachedBuffer, startCharacter.index, this._peekCharacter().index));
+        return new Token(TokenKind.PlainText,
+          TextRange.fromStringRange(this._cachedBuffer, startCharacter.index, this._peekCharacter().index + 1),
+          startCharacter.line);
     }
   }
 
@@ -167,7 +182,11 @@ export class Tokenizer {
 
     if (this._endToken) {
       // already reached the end of the input
-      return { value: EOI_CHARACTER, index: this._endToken.range.pos };
+      return {
+        value: EOI_CHARACTER,
+        index: this._endToken.range.pos,
+        line: this._endToken.line
+      };
     }
     if (!this._cachedCurrentLine) {
       // Sanity check
@@ -178,7 +197,8 @@ export class Tokenizer {
       if (this._bufferIndex < this._cachedCurrentLine.end) {
         return {
           value: this._cachedBuffer[this._bufferIndex],
-          index: this._bufferIndex++
+          index: this._bufferIndex++,
+          line: this._cachedCurrentLine
         };
       }
 
@@ -189,7 +209,8 @@ export class Tokenizer {
         this._injectedNewline = true;
         return {
           value: '\n',
-          index: this._bufferIndex
+          index: this._bufferIndex,
+          line: this._cachedCurrentLine
         };
       }
       this._injectedNewline = false;
@@ -199,8 +220,14 @@ export class Tokenizer {
       if (this._linesIndex >= this.lines.length) {
         // We advanced past the final line
         this._endToken = new Token(TokenKind.EndOfInput,
-          this._cachedCurrentLine.getNewRange(this._cachedCurrentLine.end, this._cachedCurrentLine.end));
-        return { value: EOI_CHARACTER, index: this._endToken.range.pos };
+          this._cachedCurrentLine.getNewRange(this._cachedCurrentLine.end, this._cachedCurrentLine.end),
+          this._cachedCurrentLine
+        );
+        return {
+          value: EOI_CHARACTER,
+          index: this._endToken.range.pos,
+          line: this._endToken.line
+        };
       }
 
       this._cachedCurrentLine = this.lines[this._linesIndex];
