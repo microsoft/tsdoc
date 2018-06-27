@@ -4,6 +4,7 @@
  */
 export class Character {
   private static _whitespaceRegExp: RegExp = /^\s$/;
+  private static _punctuationRegExp: RegExp = /^[!"#$%&'()*+,\-.\/:;<=>?@[\\\]^_`{|}~]$/;
 
   /**
    * Returns true if "c" is a whitespace character.
@@ -12,5 +13,12 @@ export class Character {
    */
   public static isWhitespace(c: string): boolean {
     return Character._whitespaceRegExp.test(c);
+  }
+
+  /**
+   * Returns true if "c" is an ASCII punctuation character, as defined by the CommonMark spec.
+   */
+  public static isPunctuation(c: string): boolean {
+    return Character._punctuationRegExp.test(c);
   }
 }

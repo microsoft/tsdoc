@@ -7,7 +7,7 @@ Object {
     Object {
       "indexOfLine": 0,
       "line": ">line 1<",
-      "span": ">       <  ",
+      "span": ">      <",
       "tokenKind": "PlainText",
     },
     Object {
@@ -19,7 +19,7 @@ Object {
     Object {
       "indexOfLine": 1,
       "line": ">line 2<",
-      "span": ">         <",
+      "span": ">      <",
       "tokenKind": "PlainText",
     },
     Object {
@@ -92,6 +92,70 @@ Object {
       "indexOfLine": 1,
       "line": "><",
       "span": "><",
+      "tokenKind": "EndOfInput",
+    },
+  ],
+}
+`;
+
+exports[`02 Backslash escapes: positive examples 1`] = `
+Object {
+  "buffer": "/**[n] * [b]$[b]@param[n] */",
+  "tokens": Array [
+    Object {
+      "indexOfLine": 0,
+      "line": ">[b]$[b]@param<",
+      "span": ">    <        ",
+      "tokenKind": "BackslashEscapedCharacter",
+    },
+    Object {
+      "indexOfLine": 0,
+      "line": ">[b]$[b]@param<",
+      "span": "    >    <    ",
+      "tokenKind": "BackslashEscapedCharacter",
+    },
+    Object {
+      "indexOfLine": 0,
+      "line": ">[b]$[b]@param<",
+      "span": "        >     <",
+      "tokenKind": "PlainText",
+    },
+    Object {
+      "indexOfLine": 0,
+      "line": ">[b]$[b]@param<",
+      "span": "             ><",
+      "tokenKind": "Newline",
+    },
+    Object {
+      "indexOfLine": 0,
+      "line": ">[b]$[b]@param<",
+      "span": "             ><",
+      "tokenKind": "EndOfInput",
+    },
+  ],
+}
+`;
+
+exports[`03 Backslash escapes: negative examples 1`] = `
+Object {
+  "buffer": "/**[n] * letter: [b]A space: [b]  end of line: [b][n] */",
+  "tokens": Array [
+    Object {
+      "indexOfLine": 0,
+      "line": ">letter: [b]A space: [b]  end of line: [b]<",
+      "span": ">                                         <",
+      "tokenKind": "PlainText",
+    },
+    Object {
+      "indexOfLine": 0,
+      "line": ">letter: [b]A space: [b]  end of line: [b]<",
+      "span": "                                         ><",
+      "tokenKind": "Newline",
+    },
+    Object {
+      "indexOfLine": 0,
+      "line": ">letter: [b]A space: [b]  end of line: [b]<",
+      "span": "                                         ><",
       "tokenKind": "EndOfInput",
     },
   ],

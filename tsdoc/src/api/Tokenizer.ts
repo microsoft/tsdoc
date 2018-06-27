@@ -1,9 +1,14 @@
 import { TextRange } from './TextRange';
+import { Character } from '../internal/Character';
 
 /**
  * Distinguishes different types of Token objects.
  */
 export enum TokenKind {
+  /**
+   * A token representing the end of the input.
+   */
+  EndOfInput,
   /**
    * A token representing a sequence of plain text with no special meaning.
    */
@@ -13,10 +18,23 @@ export enum TokenKind {
    * because the actual newline character may be noncontiguous or nonexistent.
    */
   Newline,
+
   /**
-   * A token representing the end of the input.
+   * A single character that can be used as general punctuation.
+   * @remarks
+   * The Token.range will always be a string of length 1.
+   * When a backslash is interpreted as a literal backslash, it will be returned as
+   * PunctuationCharacter instead of BackslashEscapedCharacter.
    */
-  EndOfInput
+  PunctuationCharacter,
+
+  /**
+   * A backslash followed by another punctuation character.  This disables any special meaning
+   * the other character may have (if any).  The backslash itself should not be rendered.
+   * @remarks
+   * The Token.range will always be a string of length 2.
+   */
+  BackslashEscapedCharacter
 }
 
 /**
@@ -141,10 +159,26 @@ export class Tokenizer {
           TextRange.fromStringRange(this._cachedBuffer, startCharacter.index, startCharacter.index),
           startCharacter.line);
 
+      case '\\':
+        const next: ICharacter = this._peekCharacter();
+        // CommonMark Spec: "Any ASCII punctuation character may be backslash-escaped.'
+        // Backslashes before other characters are treated as literal backslashes."
+        if (Character.isPunctuation(next.value)) {
+          this._getCharacter(); // extract next
+
+          return new Token(TokenKind.BackslashEscapedCharacter,
+            TextRange.fromStringRange(this._cachedBuffer, startCharacter.index, next.index + 1),
+            startCharacter.line);
+        }
+        // Treat it as a literal backslash
+        return new Token(TokenKind.PunctuationCharacter,
+          TextRange.fromStringRange(this._cachedBuffer, startCharacter.index, startCharacter.index + 1),
+          startCharacter.line);
+
       default:
-        this._skipUntil(['\n']);
+        const lastCharacter: ICharacter = this._skipUntil(['\n']) || startCharacter;
         return new Token(TokenKind.PlainText,
-          TextRange.fromStringRange(this._cachedBuffer, startCharacter.index, this._peekCharacter().index + 1),
+          TextRange.fromStringRange(this._cachedBuffer, startCharacter.index, lastCharacter.index + 1),
           startCharacter.line);
     }
   }
@@ -152,18 +186,20 @@ export class Tokenizer {
   /**
    * Advances the stream pointer until one of the specified ending characters is reached,
    * or until the end of the input is reached.
+   * @returns the last skipped character, or undefined if no characters were skipped
    */
-  private _skipUntil(endingCharacters: string[]): void {
+  private _skipUntil(endingCharacters: string[]): ICharacter | undefined {
+    let lastSkipped: ICharacter | undefined = undefined;
     while (true) {
       const character: ICharacter = this._peekCharacter();
 
       if (character.value === EOI_CHARACTER) {
-        return;
+        return lastSkipped;
       }
       if (endingCharacters.indexOf(character.value) >= 0) {
-        return;
+        return lastSkipped;
       }
-      this._getCharacter();
+      lastSkipped = this._getCharacter();
     }
   }
 

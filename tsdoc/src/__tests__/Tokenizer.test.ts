@@ -100,3 +100,19 @@ test('01 Tokenizer degenerate cases', () => {
   ].join('\n'));
 
 });
+
+test('02 Backslash escapes: positive examples', () => {
+  matchSnapshot([
+    '/**',
+    ' * \\$\\@param',
+    ' */'
+  ].join('\n'));
+});
+
+test('03 Backslash escapes: negative examples', () => {
+  matchSnapshot([
+    '/**',
+    ' * letter: \\A space: \\  end of line: \\',
+    ' */'
+  ].join('\n'));
+});
