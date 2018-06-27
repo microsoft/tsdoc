@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test 1`] = `
+exports[`00 Tokenizer simple case 1`] = `
 Array [
   Object {
     "range": "/**[n] * |line 1| [n] * line 2[n] */",
@@ -16,6 +16,30 @@ Array [
   },
   Object {
     "range": "/**[n] * line 1 [n] * line 2||[n] */",
+    "tokenKind": "Newline",
+  },
+]
+`;
+
+exports[`01 Tokenizer degenerate cases 1`] = `Array []`;
+
+exports[`01 Tokenizer degenerate cases 2`] = `
+Array [
+  Object {
+    "range": "/**[n] *||[n] */",
+    "tokenKind": "Newline",
+  },
+]
+`;
+
+exports[`01 Tokenizer degenerate cases 3`] = `
+Array [
+  Object {
+    "range": "/**[n] ||[n] [n] */",
+    "tokenKind": "Newline",
+  },
+  Object {
+    "range": "/**[n] [n] ||[n] */",
     "tokenKind": "Newline",
   },
 ]

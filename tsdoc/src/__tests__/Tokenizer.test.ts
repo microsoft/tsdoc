@@ -28,12 +28,29 @@ function matchSnapshot(buffer: string): void {
   })).toMatchSnapshot();
 }
 
-test('test', () => {
-  const buffer: string = [
+test('00 Tokenizer simple case', () => {
+  matchSnapshot([
     '/**',
     ' * line 1 ', // extra space at end of line
     ' * line 2',
     ' */'
-  ].join('\n');
-  matchSnapshot(buffer);
+  ].join('\n'));
+});
+
+test('01 Tokenizer degenerate cases', () => {
+  matchSnapshot('/***/');
+
+  matchSnapshot([
+    '/**',
+    ' *',
+    ' */'
+  ].join('\n'));
+
+  matchSnapshot([
+    '/**',
+    ' ',
+    ' ',
+    ' */'
+  ].join('\n'));
+
 });
