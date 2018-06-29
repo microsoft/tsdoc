@@ -1,5 +1,3 @@
-import { Character } from '../internal/Character';
-
 import { DocComment, IDocCommentParameters } from './nodes/DocComment';
 import { TextRange } from './TextRange';
 import { ParseError } from './ParseError';
@@ -24,6 +22,8 @@ enum State {
  * The main API for parsing TSDoc comments.
  */
 export class TSDocParser {
+  private static readonly _whitespaceRegExp: RegExp = /^\s$/;
+
   private static _addError(parameters: IDocCommentParameters, range: TextRange,
     message: string, pos: number, end?: number): void {
     if (!end) {
@@ -98,7 +98,7 @@ export class TSDocParser {
             commentRangeStart = currentIndex;
             ++nextIndex; // skip the star
             state = State.BeginComment2;
-          } else if (!Character.isWhitespace(current)) {
+          } else if (!TSDocParser._whitespaceRegExp.test(current)) {
             TSDocParser._addError(parameters, range, 'Expecting a leading "/**"', nextIndex);
             return;
           }
@@ -136,7 +136,7 @@ export class TSDocParser {
             ++nextIndex; // skip the slash
             commentRangeEnd = nextIndex;
             state = State.Done;
-          } else if (!Character.isWhitespace(current)) {
+          } else if (!TSDocParser._whitespaceRegExp.test(current)) {
             collectingLineEnd = nextIndex;
           }
           break;
@@ -164,7 +164,7 @@ export class TSDocParser {
             // Blank line
             parameters.lines.push(range.getNewRange(currentIndex, currentIndex));
             collectingLineStart = nextIndex;
-          } else if (!Character.isWhitespace(current)) {
+          } else if (!TSDocParser._whitespaceRegExp.test(current)) {
             // If the star is missing, then start the line here
             // Example: "/**\nL1*/"
 

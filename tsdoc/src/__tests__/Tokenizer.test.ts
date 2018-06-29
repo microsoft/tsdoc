@@ -16,16 +16,14 @@ interface ISnapshotItem {
 function matchSnapshot(buffer: string): void {
   const tsdocParser: TSDocParser = new TSDocParser();
   const docComment: DocComment = tsdocParser.parseString(buffer);
-  const tokenizer: Tokenizer = new Tokenizer(docComment.lines);
+  const tokens: Token[] = Tokenizer.readTokens(docComment.lines);
 
   const items: ISnapshotItem[] = [];
   const paddedSpace: string[]  = [ '',   ' ',  '  ',  '   ',  '    ' ];
   const paddedLArrow: string[] = [ '',   '>',  ' >',  '  >',  '   >' ];
   const paddedRArrow: string[] = [ '',   '<',  '< ',  '<  ',  '<   ' ];
 
-  while (true) {
-    const token: Token = tokenizer.getToken();
-
+  for (const token of tokens) {
     let span: string = '';
     if (token.line.end > 0) {
       let i: number = token.line.pos - 1;
@@ -63,10 +61,6 @@ function matchSnapshot(buffer: string): void {
       break;
     }
   }
-
-  // Assert that getToken() should return EndOfInput repeatedly
-  expect(tokenizer.getToken().kind).toEqual(TokenKind.EndOfInput);
-  expect(tokenizer.getToken().kind).toEqual(TokenKind.EndOfInput);
 
   expect({
     buffer: escape(buffer),
@@ -113,6 +107,25 @@ test('03 Backslash escapes: negative examples', () => {
   matchSnapshot([
     '/**',
     ' * letter: \\A space: \\  end of line: \\',
+    ' */'
+  ].join('\n'));
+});
+
+test('04 Block tags: positive examples', () => {
+  matchSnapshot([
+    '/**',
+    ' * @one @TWO @thRee',
+    ' */'
+  ].join('\n'));
+});
+
+test('05 Block tags: negative examples', () => {
+  matchSnapshot([
+    '/**',
+    ' * @ @@',
+    ' * @one@two',
+    ' * \\@three',
+    ' * @four, @five\\a',
     ' */'
   ].join('\n'));
 });
