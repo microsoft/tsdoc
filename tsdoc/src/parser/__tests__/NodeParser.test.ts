@@ -2,6 +2,7 @@ import { TSDocParser } from '../TSDocParser';
 import { DocComment, DocNodeKind } from '../../nodes';
 import { TokenKind } from '../Tokenizer';
 
+// Workaround various characters that get ugly escapes in Jest snapshots
 function escape(s: string): string {
   return s.replace(/\n/g, '[n]')
     .replace(/\\/g, '[b]');

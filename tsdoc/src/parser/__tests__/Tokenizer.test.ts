@@ -2,9 +2,14 @@ import { TSDocParser } from '../TSDocParser';
 import { DocComment } from '../../nodes';
 import { Tokenizer, Token, TokenKind } from '../Tokenizer';
 
+// Workaround various characters that get ugly escapes in Jest snapshots
 function escape(s: string): string {
   return s.replace(/\n/g, '[n]')
-    .replace(/\\/g, '[b]');
+    .replace(/\t/g, '[t]')
+    .replace(/\f/g, '[f]')
+    .replace(/\\/g, '[b]')
+    .replace(/\"/g, '[q]')
+    .replace(/`/g, '[c]');
 }
 
 interface ISnapshotItem {
@@ -122,21 +127,18 @@ test('03 Backslash escapes: negative examples', () => {
   ].join('\n'));
 });
 
-test('04 Block tags: positive examples', () => {
+test('04 General characters', () => {
   matchSnapshot([
     '/**',
-    ' * @one @TWO @thRee',
+    ' * !"#$%&\'()*+,\-.\/:;<=>?@[]^_`{|}~',
     ' */'
   ].join('\n'));
 });
 
-test('05 Block tags: negative examples', () => {
+test('05 Spacing characters', () => {
   matchSnapshot([
     '/**',
-    ' * @ @@',
-    ' * @one@two',
-    ' * \\@three',
-    ' * @four, @five\\a',
+    ' * space:  tab: \t  form feed: \f end',
     ' */'
   ].join('\n'));
 });

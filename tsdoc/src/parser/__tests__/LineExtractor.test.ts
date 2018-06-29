@@ -1,6 +1,7 @@
 import { TSDocParser } from '../TSDocParser';
 import { DocComment } from '../../nodes';
 
+// Workaround various characters that get ugly escapes in Jest snapshots
 function escape(s: string): string {
   return s.replace(/\n/g, '[n]')
     .replace(/\r/g, '[r]');
