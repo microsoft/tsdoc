@@ -1,7 +1,7 @@
-import { TextRange } from '../TextRange';
-import { ParseError } from '../ParseError';
+import { TextRange } from '../parser/TextRange';
+import { ParseError } from '../parser/ParseError';
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
-import { ParserContext } from '../ParserContext';
+import { ParserContext } from '../parser/ParserContext';
 
 /**
  * Constructor parameters for {@link DocComment}.

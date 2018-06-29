@@ -1,10 +1,12 @@
 import { ParserContext } from './ParserContext';
 import { Token, TokenKind, Tokenizer } from './Tokenizer';
-import { DocNode } from './nodes/DocNode';
-import { DocPlainText } from './nodes/DocPlainText';
-import { DocHtmlElement } from './nodes/DocHtmlElement';
-import { DocBackslashEscape } from './nodes/DocBackslashEscape';
-import { DocError } from './nodes/DocError';
+import {
+  DocNode,
+  DocPlainText,
+  DocHtmlElement,
+  DocBackslashEscape,
+  DocError
+} from '../nodes';
 
 export class NodeParser {
   private _tokens: Token[] = [];

@@ -1,5 +1,6 @@
-import { TSDocParser, DocComment } from '../index';
-import { Tokenizer, Token, TokenKind } from '../api/Tokenizer';
+import { TSDocParser } from '../TSDocParser';
+import { DocComment } from '../../nodes';
+import { Tokenizer, Token, TokenKind } from '../Tokenizer';
 
 function escape(s: string): string {
   return s.replace(/\n/g, '[n]')

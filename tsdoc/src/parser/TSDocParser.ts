@@ -1,4 +1,4 @@
-import { DocComment } from './nodes/DocComment';
+import { DocComment } from '../nodes';
 import { TextRange } from './TextRange';
 import { ParserContext } from './ParserContext';
 import { LineExtractor } from './LineExtractor';

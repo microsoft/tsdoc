@@ -1,4 +1,5 @@
-import { TSDocParser, DocComment } from '../index';
+import { TSDocParser } from '../TSDocParser';
+import { DocComment } from '../../nodes';
 
 function escape(s: string): string {
   return s.replace(/\n/g, '[n]')

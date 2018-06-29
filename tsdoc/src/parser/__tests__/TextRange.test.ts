@@ -1,4 +1,4 @@
-import { TextRange } from '../index';
+import { TextRange } from '../TextRange';
 
 function escape(s: string): string {
   return s.replace(/\n/g, '[n]')

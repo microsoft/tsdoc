@@ -1,7 +1,7 @@
 import { TextRange } from './TextRange';
 import { Token } from './Tokenizer';
 import { ParseError } from './ParseError';
-import { DocNode } from './nodes/DocNode';
+import { DocNode } from '../nodes';
 
 export class ParserContext {
   /**

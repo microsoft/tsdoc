@@ -1,4 +1,4 @@
-import { Token } from '../Tokenizer';
+import { Token } from '../parser/Tokenizer';
 
 /**
  * Indicates the type of {@link DocNode}.
