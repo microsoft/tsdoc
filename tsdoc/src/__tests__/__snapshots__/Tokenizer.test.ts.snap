@@ -130,25 +130,25 @@ Object {
       "indexOfLine": 0,
       "line": ">[b]$[b]@param<",
       "span": ">   <         ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "Backslash",
     },
     Object {
       "indexOfLine": 0,
       "line": ">[b]$[b]@param<",
       "span": "   > <        ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 0,
       "line": ">[b]$[b]@param<",
       "span": "    >   <     ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "Backslash",
     },
     Object {
       "indexOfLine": 0,
       "line": ">[b]$[b]@param<",
       "span": "       > <    ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 0,
@@ -186,7 +186,7 @@ Object {
       "indexOfLine": 0,
       "line": ">letter: [b]A space: [b]  end of line: [b]<",
       "span": "      > <                                 ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 0,
@@ -198,7 +198,7 @@ Object {
       "indexOfLine": 0,
       "line": ">letter: [b]A space: [b]  end of line: [b]<",
       "span": "        >   <                             ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "Backslash",
     },
     Object {
       "indexOfLine": 0,
@@ -222,7 +222,7 @@ Object {
       "indexOfLine": 0,
       "line": ">letter: [b]A space: [b]  end of line: [b]<",
       "span": "                  > <                     ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 0,
@@ -234,7 +234,7 @@ Object {
       "indexOfLine": 0,
       "line": ">letter: [b]A space: [b]  end of line: [b]<",
       "span": "                    >   <                 ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "Backslash",
     },
     Object {
       "indexOfLine": 0,
@@ -276,7 +276,7 @@ Object {
       "indexOfLine": 0,
       "line": ">letter: [b]A space: [b]  end of line: [b]<",
       "span": "                                    > <   ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 0,
@@ -288,7 +288,7 @@ Object {
       "indexOfLine": 0,
       "line": ">letter: [b]A space: [b]  end of line: [b]<",
       "span": "                                      >   <",
-      "tokenKind": "Punctuation",
+      "tokenKind": "Backslash",
     },
     Object {
       "indexOfLine": 0,
@@ -314,7 +314,7 @@ Object {
       "indexOfLine": 0,
       "line": ">@one @TWO @thRee<",
       "span": "> <              ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 0,
@@ -332,7 +332,7 @@ Object {
       "indexOfLine": 0,
       "line": ">@one @TWO @thRee<",
       "span": "     > <         ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 0,
@@ -350,7 +350,7 @@ Object {
       "indexOfLine": 0,
       "line": ">@one @TWO @thRee<",
       "span": "          > <    ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 0,
@@ -382,7 +382,7 @@ Object {
       "indexOfLine": 0,
       "line": ">@ @@<",
       "span": "> <  ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 0,
@@ -394,13 +394,13 @@ Object {
       "indexOfLine": 0,
       "line": ">@ @@<",
       "span": "  > <",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 0,
       "line": ">@ @@<",
       "span": "   > <",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 0,
@@ -412,7 +412,7 @@ Object {
       "indexOfLine": 1,
       "line": ">@one@two<",
       "span": "> <      ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 1,
@@ -424,7 +424,7 @@ Object {
       "indexOfLine": 1,
       "line": ">@one@two<",
       "span": "    > <  ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 1,
@@ -442,13 +442,13 @@ Object {
       "indexOfLine": 2,
       "line": ">[b]@three<",
       "span": ">   <     ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "Backslash",
     },
     Object {
       "indexOfLine": 2,
       "line": ">[b]@three<",
       "span": "   > <    ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 2,
@@ -466,7 +466,7 @@ Object {
       "indexOfLine": 3,
       "line": ">@four, @five[b]a<",
       "span": "> <              ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 3,
@@ -478,7 +478,7 @@ Object {
       "indexOfLine": 3,
       "line": ">@four, @five[b]a<",
       "span": "     > <         ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 3,
@@ -490,7 +490,7 @@ Object {
       "indexOfLine": 3,
       "line": ">@four, @five[b]a<",
       "span": "       > <       ",
-      "tokenKind": "Punctuation",
+      "tokenKind": "OtherPunctuation",
     },
     Object {
       "indexOfLine": 3,
@@ -502,7 +502,7 @@ Object {
       "indexOfLine": 3,
       "line": ">@four, @five[b]a<",
       "span": "            >   <",
-      "tokenKind": "Punctuation",
+      "tokenKind": "Backslash",
     },
     Object {
       "indexOfLine": 3,

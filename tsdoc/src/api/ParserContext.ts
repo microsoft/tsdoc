@@ -1,6 +1,7 @@
 import { TextRange } from './TextRange';
 import { Token } from './Tokenizer';
 import { ParseError } from './ParseError';
+import { DocNode } from './nodes/DocNode';
 
 export class ParserContext {
   /**
@@ -14,14 +15,19 @@ export class ParserContext {
   public commentRange: TextRange;
 
   /**
-   * The line ranges inside the doc comment.
+   * The line ranges inside the doc comment by LineExtractor
    */
   public lines: TextRange[];
 
   /**
-   * The list of tokens extracted from the lines.
+   * The list of tokens extracted from the lines by Tokenizer;
    */
   public tokens: Token[];
+
+  /**
+   * The nodes that were parsed from the tokens by NodeParser.
+   */
+  public nodes: DocNode[];
 
   public parseErrors: ParseError[];
 
@@ -30,6 +36,7 @@ export class ParserContext {
     this.commentRange = TextRange.empty;
     this.lines = [];
     this.tokens = [];
+    this.nodes = [];
     this.parseErrors = [];
   }
 

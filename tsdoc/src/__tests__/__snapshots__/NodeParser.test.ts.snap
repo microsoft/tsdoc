@@ -1,0 +1,462 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`00 Tokenizer simple case 1`] = `
+Object {
+  "buffer": "/**[n] * line 1 [n] * line 2[n] */",
+  "lines": Array [
+    "line 1",
+    "line 2",
+  ],
+  "nodes": Array [
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "line",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "1",
+        },
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "line",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "2",
+        },
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`01 Tokenizer degenerate cases 1`] = `
+Object {
+  "buffer": "/***/",
+  "lines": Array [],
+  "nodes": Array [],
+}
+`;
+
+exports[`01 Tokenizer degenerate cases 2`] = `
+Object {
+  "buffer": "/**[n] *[n] */",
+  "lines": Array [
+    "",
+  ],
+  "nodes": Array [
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`01 Tokenizer degenerate cases 3`] = `
+Object {
+  "buffer": "/**[n] [n] [n] */",
+  "lines": Array [
+    "",
+    "",
+  ],
+  "nodes": Array [
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`02 Backslash escapes: positive examples 1`] = `
+Object {
+  "buffer": "/**[n] * [b]$[b]@param[n] */",
+  "lines": Array [
+    "[b]$[b]@param",
+  ],
+  "nodes": Array [
+    Object {
+      "nodeKind": "BackslashEscape",
+      "tokens": Array [
+        Object {
+          "tokenKind": "Backslash",
+          "value": "[b]",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "$",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "BackslashEscape",
+      "tokens": Array [
+        Object {
+          "tokenKind": "Backslash",
+          "value": "[b]",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "param",
+        },
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`03 Backslash escapes: negative examples 1`] = `
+Object {
+  "buffer": "/**[n] * letter: [b]A space: [b]  end of line: [b][n] */",
+  "lines": Array [
+    "letter: [b]A space: [b]  end of line: [b]",
+  ],
+  "nodes": Array [
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "letter",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": ":",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "Error",
+      "tokens": Array [
+        Object {
+          "tokenKind": "Backslash",
+          "value": "[b]",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "A",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "space",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": ":",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "Error",
+      "tokens": Array [
+        Object {
+          "tokenKind": "Backslash",
+          "value": "[b]",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "Spacing",
+          "value": "  ",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "end",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "of",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "line",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": ":",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "Error",
+      "tokens": Array [
+        Object {
+          "tokenKind": "Backslash",
+          "value": "[b]",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`04 Block tags: positive examples 1`] = `
+Object {
+  "buffer": "/**[n] * @one @TWO @thRee[n] */",
+  "lines": Array [
+    "@one @TWO @thRee",
+  ],
+  "nodes": Array [
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "one",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "TWO",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "thRee",
+        },
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`05 Block tags: negative examples 1`] = `
+Object {
+  "buffer": "/**[n] * @ @@[n] * @one@two[n] * [b]@three[n] * @four, @five[b]a[n] */",
+  "lines": Array [
+    "@ @@",
+    "@one@two",
+    "[b]@three",
+    "@four, @five[b]a",
+  ],
+  "nodes": Array [
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "one",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "two",
+        },
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "BackslashEscape",
+      "tokens": Array [
+        Object {
+          "tokenKind": "Backslash",
+          "value": "[b]",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "three",
+        },
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "four",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": ",",
+        },
+        Object {
+          "tokenKind": "Spacing",
+          "value": " ",
+        },
+        Object {
+          "tokenKind": "OtherPunctuation",
+          "value": "@",
+        },
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "five",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "Error",
+      "tokens": Array [
+        Object {
+          "tokenKind": "Backslash",
+          "value": "[b]",
+        },
+      ],
+    },
+    Object {
+      "nodeKind": "PlainText",
+      "tokens": Array [
+        Object {
+          "tokenKind": "AsciiWord",
+          "value": "a",
+        },
+        Object {
+          "tokenKind": "Newline",
+          "value": "",
+        },
+      ],
+    },
+  ],
+}
+`;

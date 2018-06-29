@@ -68,6 +68,16 @@ function matchSnapshot(buffer: string): void {
   }).toMatchSnapshot();
 }
 
+test('Tokenizer.isPunctuation()', () => {
+  expect(Tokenizer.isPunctuation(TokenKind.OtherPunctuation)).toEqual(true);
+  expect(Tokenizer.isPunctuation(TokenKind.DoubleQuote)).toEqual(true);
+  expect(Tokenizer.isPunctuation(TokenKind.Slash)).toEqual(true);
+
+  expect(Tokenizer.isPunctuation(TokenKind.EndOfInput)).toEqual(false);
+  expect(Tokenizer.isPunctuation(TokenKind.Spacing)).toEqual(false);
+  expect(Tokenizer.isPunctuation(TokenKind.AsciiWord)).toEqual(false);
+});
+
 test('00 Tokenizer simple case', () => {
   matchSnapshot([
     '/**',

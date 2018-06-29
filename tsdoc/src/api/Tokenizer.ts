@@ -28,15 +28,57 @@ export enum TokenKind {
   AsciiWord,
 
   /**
-   * A single ASCII character that can participate in punctuation.
-   * The Token.range will always be a string of length 1.
+   * A single ASCII character that behaves like punctuation, e.g. doesn't need whitespace
+   * around it when adjacent to a letter.  The Token.range will always be a string of length 1.
    */
-  Punctuation,
+  OtherPunctuation,
 
   /**
    * A token representing a sequence of non-ASCII printable characters that are not punctuation.
    */
-  Other
+  Other,
+
+  /**
+   * The backslash character `\`.
+   * The Token.range will always be a string of length 1.
+   */
+  Backslash,
+
+  /**
+   * The less-than character `<`.
+   * The Token.range will always be a string of length 1.
+   */
+  LessThan,
+
+  /**
+   * The greater-than character `>`.
+   * The Token.range will always be a string of length 1.
+   */
+  GreaterThan,
+
+  /**
+   * The equals character `=`.
+   * The Token.range will always be a string of length 1.
+   */
+  Equals,
+
+  /**
+   * The single-quote character `'`.
+   * The Token.range will always be a string of length 1.
+   */
+  SingleQuote,
+
+  /**
+   * The double-quote character `"`.
+   * The Token.range will always be a string of length 1.
+   */
+  DoubleQuote,
+
+  /**
+   * The slash character `/`.
+   * The Token.range will always be a string of length 1.
+   */
+  Slash
 }
 
 /**
@@ -72,7 +114,13 @@ export class Token {
 }
 
 export class Tokenizer {
+  private static readonly _commonMarkPunctuationCharacters: string
+    = '!"#$%&\'()*+,\-.\/:;<=>?@[\\]^_`{|}~';
+  private static readonly _wordCharacters: string
+    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
   private static _charCodeMap: { [charCode: number]: TokenKind | undefined };
+  private static _punctuationTokens: { [tokenKind: number]: boolean };
 
   /**
    * Given a list of input lines, this returns an array of extracted tokens.
@@ -102,6 +150,15 @@ export class Tokenizer {
     return tokens;
   }
 
+  /**
+   * Returns true if the token is a CommonMark punctuation character.
+   * These are basically all the ASCII punctuation characters.
+   */
+  public static isPunctuation(tokenKind: TokenKind): boolean {
+    Tokenizer._ensureInitialized();
+    return Tokenizer._punctuationTokens[tokenKind] || false;
+  }
+
   private static _pushTokensForLine(tokens: Token[], line: TextRange): void {
     const buffer: string = line.buffer;
     const end: number = line.end;
@@ -124,7 +181,7 @@ export class Tokenizer {
       // 3. It's not punctuation (which is always one character)
       if (tokenKind !== undefined
         && characterKind === tokenKind
-        && tokenKind !== TokenKind.Punctuation) {
+        && tokenKind !== TokenKind.OtherPunctuation) {
         // yes, append
       } else {
         // Is there a previous completed token to push?
@@ -153,13 +210,33 @@ export class Tokenizer {
     }
 
     Tokenizer._charCodeMap = {};
+    Tokenizer._punctuationTokens = {};
 
-    const punctuation: string = '!"#$%&\'()*+,\-.\/:;<=>?@[\\]^_`{|}~';
+    // All Markdown punctuation characters
+    const punctuation: string = Tokenizer._commonMarkPunctuationCharacters;
     for (let i: number = 0; i < punctuation.length; ++i) {
       const charCode: number = punctuation.charCodeAt(i);
-      Tokenizer._charCodeMap[charCode] = TokenKind.Punctuation;
+      Tokenizer._charCodeMap[charCode] = TokenKind.OtherPunctuation;
     }
-    const word: string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+    // Special symbols
+    const specialMap: { [character: string]: TokenKind } = {
+      '\\' : TokenKind.Backslash,
+      '<' : TokenKind.LessThan,
+      '>' : TokenKind.GreaterThan,
+      '=' : TokenKind.Equals,
+      '\'' : TokenKind.SingleQuote,
+      '"' : TokenKind.DoubleQuote,
+      '/' : TokenKind.Slash
+    };
+    for (const key of Object.getOwnPropertyNames(specialMap)) {
+      Tokenizer._charCodeMap[key.charCodeAt(0)] = specialMap[key];
+      Tokenizer._punctuationTokens[specialMap[key]] = true;
+    }
+
+    Tokenizer._punctuationTokens[TokenKind.OtherPunctuation] = true;
+
+    const word: string = Tokenizer._wordCharacters;
     for (let i: number = 0; i < word.length; ++i) {
       const charCode: number = word.charCodeAt(i);
       Tokenizer._charCodeMap[charCode] = TokenKind.AsciiWord;

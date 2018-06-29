@@ -12,7 +12,7 @@ export interface IDocBackslashEscapeParameters extends IDocNodeParameters {
  */
 export class DocBackslashEscape extends DocNode {
   /** {@inheritdoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.HtmlTag;
+  public readonly kind: DocNodeKind = DocNodeKind.BackslashEscape;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

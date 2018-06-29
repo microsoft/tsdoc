@@ -11,7 +11,7 @@ function parseAndMatchSnapshot(buffer: string): void {
   expect({
     buffer: escape(buffer),
     errors: docComment.parseErrors.map(error => error.message),
-    comment: escape(docComment.range.toString()),
+    comment: escape(docComment.commentRange.toString()),
     lines: docComment.lines.map(line => escape(line.toString()))
   }).toMatchSnapshot();
 }
