@@ -135,7 +135,6 @@ export class TextRange {
 
   private _validateBounds(): TextRange {
     if (this.pos < 0) {
-      debugger;
       throw new Error('TextRange.pos cannot be negative');
     }
     if (this.end < 0) {
