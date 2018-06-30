@@ -1,5 +1,5 @@
 import { TextRange } from './TextRange';
-import { Token } from './Tokenizer';
+import { Token } from './Token';
 import { ParseError } from './ParseError';
 import { DocNode } from '../nodes';
 

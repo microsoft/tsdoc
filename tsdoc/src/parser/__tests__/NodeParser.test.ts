@@ -1,6 +1,6 @@
 import { TSDocParser } from '../TSDocParser';
 import { DocComment, DocNodeKind } from '../../nodes';
-import { TokenKind } from '../Tokenizer';
+import { TokenKind } from '../Token';
 
 // Workaround various characters that get ugly escapes in Jest snapshots
 function escape(s: string): string {

@@ -1,5 +1,6 @@
 import { ParserContext } from './ParserContext';
-import { Token, TokenKind, Tokenizer } from './Tokenizer';
+import { Token, TokenKind } from './Token';
+import { Tokenizer } from './Tokenizer';
 import {
   DocNode,
   DocPlainText,
