@@ -30,7 +30,7 @@ export class TSDocParser {
 
     return new DocComment({
       parserContext: parserContext,
-      tokens: parserContext.tokens
+      childNodes: parserContext.nodes
     });
   }
 }

@@ -5,80 +5,91 @@ import { TextRange } from './TextRange';
  */
 export enum TokenKind {
   /**
+   * A null/undefined value.
+   */
+  None = 2000,
+
+  /**
    * A token representing the end of the input.  The Token.range will be an empty range
    * at the end of the provided input.
    */
-  EndOfInput,
+  EndOfInput = 2001,
 
   /**
    * A token representing a virtual newline.
    * The Token.range will be an empty range, because the actual newline character may
    * be noncontiguous due to the doc comment delimiter trimming.
    */
-  Newline,
+  Newline = 2002,
 
   /**
    * A token representing one or more spaces and tabs (but not newlines or end of input).
    */
-  Spacing,
+  Spacing = 2003,
 
   /**
    * A token representing one or more ASCII letters and numbers.
    */
-  AsciiWord,
+  AsciiWord = 2004,
 
   /**
    * A single ASCII character that behaves like punctuation, e.g. doesn't need whitespace
    * around it when adjacent to a letter.  The Token.range will always be a string of length 1.
    */
-  OtherPunctuation,
+  OtherPunctuation = 2005,
 
   /**
    * A token representing a sequence of non-ASCII printable characters that are not punctuation.
    */
-  Other,
+  Other = 2006,
 
   /**
    * The backslash character `\`.
    * The Token.range will always be a string of length 1.
    */
-  Backslash,
+  Backslash = 2007,
 
   /**
    * The less-than character `<`.
    * The Token.range will always be a string of length 1.
    */
-  LessThan,
+  LessThan = 2008,
 
   /**
    * The greater-than character `>`.
    * The Token.range will always be a string of length 1.
    */
-  GreaterThan,
+  GreaterThan = 2009,
 
   /**
    * The equals character `=`.
    * The Token.range will always be a string of length 1.
    */
-  Equals,
+  Equals = 2010,
 
   /**
    * The single-quote character `'`.
    * The Token.range will always be a string of length 1.
    */
-  SingleQuote,
+  SingleQuote = 2011,
 
   /**
    * The double-quote character `"`.
    * The Token.range will always be a string of length 1.
    */
-  DoubleQuote,
+  DoubleQuote = 2012,
 
   /**
    * The slash character `/`.
    * The Token.range will always be a string of length 1.
    */
-  Slash
+  Slash = 2013,
+
+  /**
+   * The hyphen character `-`.
+   * The Token.range will always be a string of length 1.
+   */
+  Hyphen = 2014
 }
 
 /**
@@ -109,6 +120,9 @@ export class Token {
   }
 
   public toString(): string {
+    if (this.kind === TokenKind.Newline) {
+      return '\n';
+    }
     return this.range.toString();
   }
 }
