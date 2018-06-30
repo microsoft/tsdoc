@@ -2,16 +2,7 @@ import { TSDocParser } from '../TSDocParser';
 import { DocComment } from '../../nodes';
 import { Tokenizer } from '../Tokenizer';
 import { Token, TokenKind }  from '../Token';
-
-// Workaround various characters that get ugly escapes in Jest snapshots
-function escape(s: string): string {
-  return s.replace(/\n/g, '[n]')
-    .replace(/\t/g, '[t]')
-    .replace(/\f/g, '[f]')
-    .replace(/\\/g, '[b]')
-    .replace(/\"/g, '[q]')
-    .replace(/`/g, '[c]');
-}
+import { TestHelpers } from './TestHelpers';
 
 interface ISnapshotItem {
   indexOfLine: number;
@@ -26,41 +17,12 @@ function matchSnapshot(buffer: string): void {
   const tokens: Token[] = Tokenizer.readTokens(docComment.lines);
 
   const items: ISnapshotItem[] = [];
-  const paddedSpace: string[]  = [ '',   ' ',  '  ',  '   ',  '    ' ];
-  const paddedLArrow: string[] = [ '',   '>',  ' >',  '  >',  '   >' ];
-  const paddedRArrow: string[] = [ '',   '<',  '< ',  '<  ',  '<   ' ];
 
   for (const token of tokens) {
-    let span: string = '';
-    if (token.line.end > 0) {
-      let i: number = token.line.pos - 1;
-      while (i < token.range.pos - 1) {
-        span += paddedSpace[escape(buffer[i]).length];
-        ++i;
-      }
-      span += paddedLArrow[escape(buffer[i]).length];
-      ++i;
-      while (i < token.range.end) {
-        span += paddedSpace[escape(buffer[i]).length];
-        ++i;
-      }
-      if (i === token.line.end) {
-        span += '<';
-      } else {
-        span += paddedRArrow[escape(buffer[i]).length];
-        ++i;
-        while (i < token.line.end) {
-          span += paddedSpace[escape(buffer[i]).length];
-          ++i;
-        }
-
-      }
-    }
-
     items.push({
       indexOfLine: docComment.lines.indexOf(token.line),
-      line: '>' + escape(token.line.toString()) + '<',
-      span: span,
+      line: '>' + TestHelpers.getEscaped(token.line.toString()) + '<',
+      span: TestHelpers.formatLineSpan(token.line, token.range),
       tokenKind: TokenKind[token.kind]
     });
 

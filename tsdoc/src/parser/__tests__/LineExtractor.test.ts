@@ -1,20 +1,15 @@
 import { TSDocParser } from '../TSDocParser';
 import { DocComment } from '../../nodes';
-
-// Workaround various characters that get ugly escapes in Jest snapshots
-function escape(s: string): string {
-  return s.replace(/\n/g, '[n]')
-    .replace(/\r/g, '[r]');
-}
+import { TestHelpers } from './TestHelpers';
 
 function parseAndMatchSnapshot(buffer: string): void {
   const tsdocParser: TSDocParser = new TSDocParser();
   const docComment: DocComment = tsdocParser.parseString(buffer);
   expect({
-    buffer: escape(buffer),
+    buffer: TestHelpers.getEscaped(buffer),
     errors: docComment.parseErrors.map(error => error.message),
-    comment: escape(docComment.commentRange.toString()),
-    lines: docComment.lines.map(line => escape(line.toString()))
+    comment: TestHelpers.getEscaped(docComment.commentRange.toString()),
+    lines: docComment.lines.map(line => TestHelpers.getEscaped(line.toString()))
   }).toMatchSnapshot();
 }
 

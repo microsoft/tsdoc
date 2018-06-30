@@ -1,0 +1,1219 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`01 HTML start tags: simple, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag/[>][n] * [<]tag-a /[>][n] * [<]tag-b /[>][<]tag-c /[>][n] * [<]tag-d[n] * [>][n] * [<]tag-e[n] *      /[>]  [n] */",
+  "lines": Array [
+    "[<]tag/[>]",
+    "[<]tag-a /[>]",
+    "[<]tag-b /[>][<]tag-c /[>]",
+    "[<]tag-d",
+    "[>]",
+    "[<]tag-e",
+    "     /[>]",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag/[>]<",
+            "nodeSpan": ">   <      ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag/[>]<",
+            "nodeSpan": "   >   <   ",
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag/[>]<",
+            "nodeSpan": "      >    <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">[<]tag/[>]<",
+        "nodeSpan": "          ><",
+      },
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-a /[>]<",
+            "nodeSpan": ">   <         ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-a /[>]<",
+            "nodeSpan": "   >     <    ",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-a /[>]<",
+            "nodeSpan": "        > <   ",
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-a /[>]<",
+            "nodeSpan": "         >    <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 1,
+        "nodeLine": ">[<]tag-a /[>]<",
+        "nodeSpan": "             ><",
+      },
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 2,
+            "nodeLine": ">[<]tag-b /[>][<]tag-c /[>]<",
+            "nodeSpan": ">   <                      ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 2,
+            "nodeLine": ">[<]tag-b /[>][<]tag-c /[>]<",
+            "nodeSpan": "   >     <                 ",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 2,
+            "nodeLine": ">[<]tag-b /[>][<]tag-c /[>]<",
+            "nodeSpan": "        > <                ",
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 2,
+            "nodeLine": ">[<]tag-b /[>][<]tag-c /[>]<",
+            "nodeSpan": "         >    <            ",
+          },
+        ],
+      },
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 2,
+            "nodeLine": ">[<]tag-b /[>][<]tag-c /[>]<",
+            "nodeSpan": "             >   <         ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 2,
+            "nodeLine": ">[<]tag-b /[>][<]tag-c /[>]<",
+            "nodeSpan": "                >     <    ",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 2,
+            "nodeLine": ">[<]tag-b /[>][<]tag-c /[>]<",
+            "nodeSpan": "                     > <   ",
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 2,
+            "nodeLine": ">[<]tag-b /[>][<]tag-c /[>]<",
+            "nodeSpan": "                      >    <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 2,
+        "nodeLine": ">[<]tag-b /[>][<]tag-c /[>]<",
+        "nodeSpan": "                          ><",
+      },
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 3,
+            "nodeLine": ">[<]tag-d<",
+            "nodeSpan": ">   <    ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 3,
+            "nodeLine": ">[<]tag-d<",
+            "nodeSpan": "   >     <",
+          },
+          Object {
+            "kind": "Newline",
+            "lineIndex": 3,
+            "nodeLine": ">[<]tag-d<",
+            "nodeSpan": "        ><",
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 4,
+            "nodeLine": ">[>]<",
+            "nodeSpan": ">   <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 4,
+        "nodeLine": ">[>]<",
+        "nodeSpan": "   ><",
+      },
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 5,
+            "nodeLine": ">[<]tag-e<",
+            "nodeSpan": ">   <    ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 5,
+            "nodeLine": ">[<]tag-e<",
+            "nodeSpan": "   >     <",
+          },
+          Object {
+            "kind": "Newline",
+            "lineIndex": 5,
+            "nodeLine": ">[<]tag-e<",
+            "nodeSpan": "        ><",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 6,
+            "nodeLine": ">     /[>]<",
+            "nodeSpan": ">     <   ",
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 6,
+            "nodeLine": ">     /[>]<",
+            "nodeSpan": "     >    <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 6,
+        "nodeLine": ">     /[>]<",
+        "nodeSpan": "         ><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`02 HTML start tags: simple, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<] tag/[>][n] * [<]tag -a /[>][n] * [<]tag-b /[<]tag-c / [>][n] * [<]tag-d[n] */",
+  "lines": Array [
+    "[<] tag/[>]",
+    "[<]tag -a /[>]",
+    "[<]tag-b /[<]tag-c / [>]",
+    "[<]tag-d",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "errorLocation": " ",
+        "errorMessage": "Expecting an HTML tag name: Expecting an HTML name",
+        "kind": "Error",
+        "lineIndex": 0,
+        "nodeLine": ">[<] tag/[>]<",
+        "nodeSpan": ">   <       ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">[<] tag/[>]<",
+        "nodeSpan": "   >        <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">[<] tag/[>]<",
+        "nodeSpan": "           ><",
+      },
+      Object {
+        "errorLocation": "-",
+        "errorMessage": "The HTML tag has invalid syntax; expecting an attribute or \\">\\" or \\"/>\\"",
+        "kind": "Error",
+        "lineIndex": 1,
+        "nodeLine": ">[<]tag -a /[>]<",
+        "nodeSpan": ">   <          ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 1,
+        "nodeLine": ">[<]tag -a /[>]<",
+        "nodeSpan": "   >           <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 1,
+        "nodeLine": ">[<]tag -a /[>]<",
+        "nodeSpan": "              ><",
+      },
+      Object {
+        "errorLocation": "[<]",
+        "errorMessage": "The HTML tag has invalid syntax; expecting an attribute or \\">\\" or \\"/>\\"",
+        "kind": "Error",
+        "lineIndex": 2,
+        "nodeLine": ">[<]tag-b /[<]tag-c / [>]<",
+        "nodeSpan": ">   <                    ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 2,
+        "nodeLine": ">[<]tag-b /[<]tag-c / [>]<",
+        "nodeSpan": "   >       <             ",
+      },
+      Object {
+        "errorLocation": " ",
+        "errorMessage": "The HTML tag has invalid syntax; expecting an attribute or \\">\\" or \\"/>\\"",
+        "kind": "Error",
+        "lineIndex": 2,
+        "nodeLine": ">[<]tag-b /[<]tag-c / [>]<",
+        "nodeSpan": "          >   <          ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 2,
+        "nodeLine": ">[<]tag-b /[<]tag-c / [>]<",
+        "nodeSpan": "             >           <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 2,
+        "nodeLine": ">[<]tag-b /[<]tag-c / [>]<",
+        "nodeSpan": "                        ><",
+      },
+      Object {
+        "errorLocation": "",
+        "errorMessage": "The HTML tag has invalid syntax; expecting an attribute or \\">\\" or \\"/>\\"",
+        "kind": "Error",
+        "lineIndex": 3,
+        "nodeLine": ">[<]tag-d<",
+        "nodeSpan": ">   <    ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 3,
+        "nodeLine": ">[<]tag-d<",
+        "nodeSpan": "   >     <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 3,
+        "nodeLine": ">[<]tag-d<",
+        "nodeSpan": "        ><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`03 HTML start tags: with attributes, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-a attr-one=[q]one[q] /[>][n] * [<]tag-b[n] *   attr-two[n] *   = [q]2[q][n] * /[>][n] */",
+  "lines": Array [
+    "[<]tag-a attr-one=[q]one[q] /[>]",
+    "[<]tag-b",
+    "  attr-two",
+    "  = [q]2[q]",
+    "/[>]",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-a attr-one=[q]one[q] /[>]<",
+            "nodeSpan": ">   <                            ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-a attr-one=[q]one[q] /[>]<",
+            "nodeSpan": "   >     <                       ",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-a attr-one=[q]one[q] /[>]<",
+            "nodeSpan": "        > <                      ",
+          },
+          Object {
+            "kind": "HtmlAttribute",
+            "nodes": Array [
+              Object {
+                "kind": "Word",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-a attr-one=[q]one[q] /[>]<",
+                "nodeSpan": "         >        <              ",
+              },
+              Object {
+                "kind": "Delimiter",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-a attr-one=[q]one[q] /[>]<",
+                "nodeSpan": "                 > <             ",
+              },
+              Object {
+                "kind": "HtmlString",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-a attr-one=[q]one[q] /[>]<",
+                "nodeSpan": "                  >         <    ",
+              },
+            ],
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-a attr-one=[q]one[q] /[>]<",
+            "nodeSpan": "                           > <   ",
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-a attr-one=[q]one[q] /[>]<",
+            "nodeSpan": "                            >    <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">[<]tag-a attr-one=[q]one[q] /[>]<",
+        "nodeSpan": "                                ><",
+      },
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-b<",
+            "nodeSpan": ">   <    ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-b<",
+            "nodeSpan": "   >     <",
+          },
+          Object {
+            "kind": "Newline",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-b<",
+            "nodeSpan": "        ><",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 2,
+            "nodeLine": ">  attr-two<",
+            "nodeSpan": ">  <       ",
+          },
+          Object {
+            "kind": "HtmlAttribute",
+            "nodes": Array [
+              Object {
+                "kind": "Word",
+                "lineIndex": 2,
+                "nodeLine": ">  attr-two<",
+                "nodeSpan": "  >        <",
+              },
+              Object {
+                "kind": "Newline",
+                "lineIndex": 2,
+                "nodeLine": ">  attr-two<",
+                "nodeSpan": "          ><",
+              },
+              Object {
+                "kind": "Spacing",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]2[q]<",
+                "nodeSpan": ">  <        ",
+              },
+              Object {
+                "kind": "Delimiter",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]2[q]<",
+                "nodeSpan": "  > <       ",
+              },
+              Object {
+                "kind": "Spacing",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]2[q]<",
+                "nodeSpan": "   > <      ",
+              },
+              Object {
+                "kind": "HtmlString",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]2[q]<",
+                "nodeSpan": "    >       <",
+              },
+            ],
+          },
+          Object {
+            "kind": "Newline",
+            "lineIndex": 3,
+            "nodeLine": ">  = [q]2[q]<",
+            "nodeSpan": "           ><",
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 4,
+            "nodeLine": ">/[>]<",
+            "nodeSpan": ">    <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 4,
+        "nodeLine": ">/[>]<",
+        "nodeSpan": "    ><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`03 HTML start tags: with attributes, positive 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-c attr-three=[q]3[q] four='4'/[>][n] * [<]tag-d[n] *   attr-five[n] *   = [q]5[q][n] *   six[n] *   = '6'[n] * /[>][n] */",
+  "lines": Array [
+    "[<]tag-c attr-three=[q]3[q] four='4'/[>]",
+    "[<]tag-d",
+    "  attr-five",
+    "  = [q]5[q]",
+    "  six",
+    "  = '6'",
+    "/[>]",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+            "nodeSpan": ">   <                                    ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+            "nodeSpan": "   >     <                               ",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+            "nodeSpan": "        > <                              ",
+          },
+          Object {
+            "kind": "HtmlAttribute",
+            "nodes": Array [
+              Object {
+                "kind": "Word",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+                "nodeSpan": "         >          <                    ",
+              },
+              Object {
+                "kind": "Delimiter",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+                "nodeSpan": "                   > <                   ",
+              },
+              Object {
+                "kind": "HtmlString",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+                "nodeSpan": "                    >       <            ",
+              },
+            ],
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+            "nodeSpan": "                           > <           ",
+          },
+          Object {
+            "kind": "HtmlAttribute",
+            "nodes": Array [
+              Object {
+                "kind": "Word",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+                "nodeSpan": "                            >    <       ",
+              },
+              Object {
+                "kind": "Delimiter",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+                "nodeSpan": "                                > <      ",
+              },
+              Object {
+                "kind": "HtmlString",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+                "nodeSpan": "                                 >   <   ",
+              },
+            ],
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+            "nodeSpan": "                                    >    <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">[<]tag-c attr-three=[q]3[q] four='4'/[>]<",
+        "nodeSpan": "                                        ><",
+      },
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-d<",
+            "nodeSpan": ">   <    ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-d<",
+            "nodeSpan": "   >     <",
+          },
+          Object {
+            "kind": "Newline",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-d<",
+            "nodeSpan": "        ><",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 2,
+            "nodeLine": ">  attr-five<",
+            "nodeSpan": ">  <        ",
+          },
+          Object {
+            "kind": "HtmlAttribute",
+            "nodes": Array [
+              Object {
+                "kind": "Word",
+                "lineIndex": 2,
+                "nodeLine": ">  attr-five<",
+                "nodeSpan": "  >         <",
+              },
+              Object {
+                "kind": "Newline",
+                "lineIndex": 2,
+                "nodeLine": ">  attr-five<",
+                "nodeSpan": "           ><",
+              },
+              Object {
+                "kind": "Spacing",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]5[q]<",
+                "nodeSpan": ">  <        ",
+              },
+              Object {
+                "kind": "Delimiter",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]5[q]<",
+                "nodeSpan": "  > <       ",
+              },
+              Object {
+                "kind": "Spacing",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]5[q]<",
+                "nodeSpan": "   > <      ",
+              },
+              Object {
+                "kind": "HtmlString",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]5[q]<",
+                "nodeSpan": "    >       <",
+              },
+            ],
+          },
+          Object {
+            "kind": "Newline",
+            "lineIndex": 3,
+            "nodeLine": ">  = [q]5[q]<",
+            "nodeSpan": "           ><",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 4,
+            "nodeLine": ">  six<",
+            "nodeSpan": ">  <  ",
+          },
+          Object {
+            "kind": "HtmlAttribute",
+            "nodes": Array [
+              Object {
+                "kind": "Word",
+                "lineIndex": 4,
+                "nodeLine": ">  six<",
+                "nodeSpan": "  >   <",
+              },
+              Object {
+                "kind": "Newline",
+                "lineIndex": 4,
+                "nodeLine": ">  six<",
+                "nodeSpan": "     ><",
+              },
+              Object {
+                "kind": "Spacing",
+                "lineIndex": 5,
+                "nodeLine": ">  = '6'<",
+                "nodeSpan": ">  <    ",
+              },
+              Object {
+                "kind": "Delimiter",
+                "lineIndex": 5,
+                "nodeLine": ">  = '6'<",
+                "nodeSpan": "  > <   ",
+              },
+              Object {
+                "kind": "Spacing",
+                "lineIndex": 5,
+                "nodeLine": ">  = '6'<",
+                "nodeSpan": "   > <  ",
+              },
+              Object {
+                "kind": "HtmlString",
+                "lineIndex": 5,
+                "nodeLine": ">  = '6'<",
+                "nodeSpan": "    >   <",
+              },
+            ],
+          },
+          Object {
+            "kind": "Newline",
+            "lineIndex": 5,
+            "nodeLine": ">  = '6'<",
+            "nodeSpan": "       ><",
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 6,
+            "nodeLine": ">/[>]<",
+            "nodeSpan": ">    <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 6,
+        "nodeLine": ">/[>]<",
+        "nodeSpan": "    ><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`03 HTML start tags: with attributes, positive 3`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-e attr-one=[q]one[q] two='two'/[>][n] * [<]tag-f[n] *   attr-one[n] *   = [q]one[q][n] *   two[n] *   = 'two'[n] * /[>][n] */",
+  "lines": Array [
+    "[<]tag-e attr-one=[q]one[q] two='two'/[>]",
+    "[<]tag-f",
+    "  attr-one",
+    "  = [q]one[q]",
+    "  two",
+    "  = 'two'",
+    "/[>]",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+            "nodeSpan": ">   <                                     ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+            "nodeSpan": "   >     <                                ",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+            "nodeSpan": "        > <                               ",
+          },
+          Object {
+            "kind": "HtmlAttribute",
+            "nodes": Array [
+              Object {
+                "kind": "Word",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+                "nodeSpan": "         >        <                       ",
+              },
+              Object {
+                "kind": "Delimiter",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+                "nodeSpan": "                 > <                      ",
+              },
+              Object {
+                "kind": "HtmlString",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+                "nodeSpan": "                  >         <             ",
+              },
+            ],
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+            "nodeSpan": "                           > <            ",
+          },
+          Object {
+            "kind": "HtmlAttribute",
+            "nodes": Array [
+              Object {
+                "kind": "Word",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+                "nodeSpan": "                            >   <         ",
+              },
+              Object {
+                "kind": "Delimiter",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+                "nodeSpan": "                               > <        ",
+              },
+              Object {
+                "kind": "HtmlString",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+                "nodeSpan": "                                >     <   ",
+              },
+            ],
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+            "nodeSpan": "                                     >    <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">[<]tag-e attr-one=[q]one[q] two='two'/[>]<",
+        "nodeSpan": "                                         ><",
+      },
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-f<",
+            "nodeSpan": ">   <    ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-f<",
+            "nodeSpan": "   >     <",
+          },
+          Object {
+            "kind": "Newline",
+            "lineIndex": 1,
+            "nodeLine": ">[<]tag-f<",
+            "nodeSpan": "        ><",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 2,
+            "nodeLine": ">  attr-one<",
+            "nodeSpan": ">  <       ",
+          },
+          Object {
+            "kind": "HtmlAttribute",
+            "nodes": Array [
+              Object {
+                "kind": "Word",
+                "lineIndex": 2,
+                "nodeLine": ">  attr-one<",
+                "nodeSpan": "  >        <",
+              },
+              Object {
+                "kind": "Newline",
+                "lineIndex": 2,
+                "nodeLine": ">  attr-one<",
+                "nodeSpan": "          ><",
+              },
+              Object {
+                "kind": "Spacing",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]one[q]<",
+                "nodeSpan": ">  <          ",
+              },
+              Object {
+                "kind": "Delimiter",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]one[q]<",
+                "nodeSpan": "  > <         ",
+              },
+              Object {
+                "kind": "Spacing",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]one[q]<",
+                "nodeSpan": "   > <        ",
+              },
+              Object {
+                "kind": "HtmlString",
+                "lineIndex": 3,
+                "nodeLine": ">  = [q]one[q]<",
+                "nodeSpan": "    >         <",
+              },
+            ],
+          },
+          Object {
+            "kind": "Newline",
+            "lineIndex": 3,
+            "nodeLine": ">  = [q]one[q]<",
+            "nodeSpan": "             ><",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 4,
+            "nodeLine": ">  two<",
+            "nodeSpan": ">  <  ",
+          },
+          Object {
+            "kind": "HtmlAttribute",
+            "nodes": Array [
+              Object {
+                "kind": "Word",
+                "lineIndex": 4,
+                "nodeLine": ">  two<",
+                "nodeSpan": "  >   <",
+              },
+              Object {
+                "kind": "Newline",
+                "lineIndex": 4,
+                "nodeLine": ">  two<",
+                "nodeSpan": "     ><",
+              },
+              Object {
+                "kind": "Spacing",
+                "lineIndex": 5,
+                "nodeLine": ">  = 'two'<",
+                "nodeSpan": ">  <      ",
+              },
+              Object {
+                "kind": "Delimiter",
+                "lineIndex": 5,
+                "nodeLine": ">  = 'two'<",
+                "nodeSpan": "  > <     ",
+              },
+              Object {
+                "kind": "Spacing",
+                "lineIndex": 5,
+                "nodeLine": ">  = 'two'<",
+                "nodeSpan": "   > <    ",
+              },
+              Object {
+                "kind": "HtmlString",
+                "lineIndex": 5,
+                "nodeLine": ">  = 'two'<",
+                "nodeSpan": "    >     <",
+              },
+            ],
+          },
+          Object {
+            "kind": "Newline",
+            "lineIndex": 5,
+            "nodeLine": ">  = 'two'<",
+            "nodeSpan": "         ><",
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 6,
+            "nodeLine": ">/[>]<",
+            "nodeSpan": ">    <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 6,
+        "nodeLine": ">/[>]<",
+        "nodeSpan": "    ><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`04 HTML start tags: with attributes, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-a attr -one=[q]one[q] /[>][n] * [<]tag-b attr- two=[q]two[q] /[>][n] * [<]tag-c attr-three='three[q] /[>][n] * [<]tag-d attr-four=@[q]four[q] /[>][n] * [<]tag-e attr-five@=[q]five[q] /[>][n] * [<]tag-f attr-six=[q]six[q]seven=[q]seven[q] /[>][n] */",
+  "lines": Array [
+    "[<]tag-a attr -one=[q]one[q] /[>]",
+    "[<]tag-b attr- two=[q]two[q] /[>]",
+    "[<]tag-c attr-three='three[q] /[>]",
+    "[<]tag-d attr-four=@[q]four[q] /[>]",
+    "[<]tag-e attr-five@=[q]five[q] /[>]",
+    "[<]tag-f attr-six=[q]six[q]seven=[q]seven[q] /[>]",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "errorLocation": "-",
+        "errorMessage": "Expecting \\"=\\" after HTML attribute name",
+        "kind": "Error",
+        "lineIndex": 0,
+        "nodeLine": ">[<]tag-a attr -one=[q]one[q] /[>]<",
+        "nodeSpan": ">   <                             ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">[<]tag-a attr -one=[q]one[q] /[>]<",
+        "nodeSpan": "   >                              <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">[<]tag-a attr -one=[q]one[q] /[>]<",
+        "nodeSpan": "                                 ><",
+      },
+      Object {
+        "errorLocation": "attr",
+        "errorMessage": "Expecting an HTML tag name: An HTML name must be a sequence of letters separated by hyphens",
+        "kind": "Error",
+        "lineIndex": 1,
+        "nodeLine": ">[<]tag-b attr- two=[q]two[q] /[>]<",
+        "nodeSpan": ">   <                             ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 1,
+        "nodeLine": ">[<]tag-b attr- two=[q]two[q] /[>]<",
+        "nodeSpan": "   >                              <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 1,
+        "nodeLine": ">[<]tag-b attr- two=[q]two[q] /[>]<",
+        "nodeSpan": "                                 ><",
+      },
+      Object {
+        "errorLocation": "'",
+        "errorMessage": "The HTML string is missing its closing quote",
+        "kind": "Error",
+        "lineIndex": 2,
+        "nodeLine": ">[<]tag-c attr-three='three[q] /[>]<",
+        "nodeSpan": ">   <                              ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 2,
+        "nodeLine": ">[<]tag-c attr-three='three[q] /[>]<",
+        "nodeSpan": "   >                               <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 2,
+        "nodeLine": ">[<]tag-c attr-three='three[q] /[>]<",
+        "nodeSpan": "                                  ><",
+      },
+      Object {
+        "errorLocation": "@",
+        "errorMessage": "Expecting an HTML string starting with a single-quote or double-quote character",
+        "kind": "Error",
+        "lineIndex": 3,
+        "nodeLine": ">[<]tag-d attr-four=@[q]four[q] /[>]<",
+        "nodeSpan": ">   <                               ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 3,
+        "nodeLine": ">[<]tag-d attr-four=@[q]four[q] /[>]<",
+        "nodeSpan": "   >                                <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 3,
+        "nodeLine": ">[<]tag-d attr-four=@[q]four[q] /[>]<",
+        "nodeSpan": "                                   ><",
+      },
+      Object {
+        "errorLocation": "@",
+        "errorMessage": "Expecting \\"=\\" after HTML attribute name",
+        "kind": "Error",
+        "lineIndex": 4,
+        "nodeLine": ">[<]tag-e attr-five@=[q]five[q] /[>]<",
+        "nodeSpan": ">   <                               ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 4,
+        "nodeLine": ">[<]tag-e attr-five@=[q]five[q] /[>]<",
+        "nodeSpan": "   >                                <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 4,
+        "nodeLine": ">[<]tag-e attr-five@=[q]five[q] /[>]<",
+        "nodeSpan": "                                   ><",
+      },
+      Object {
+        "errorLocation": "seven",
+        "errorMessage": "Missing space before attribute name",
+        "kind": "Error",
+        "lineIndex": 5,
+        "nodeLine": ">[<]tag-f attr-six=[q]six[q]seven=[q]seven[q] /[>]<",
+        "nodeSpan": ">   <                                             ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 5,
+        "nodeLine": ">[<]tag-f attr-six=[q]six[q]seven=[q]seven[q] /[>]<",
+        "nodeSpan": "   >                                              <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 5,
+        "nodeLine": ">[<]tag-f attr-six=[q]six[q]seven=[q]seven[q] /[>]<",
+        "nodeSpan": "                                                 ><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`05 Eclipsed TSDoc 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag attr-one=[q]@tag[q] /[>][n] */",
+  "lines": Array [
+    "[<]tag attr-one=[q]@tag[q] /[>]",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "HtmlStartTag",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag attr-one=[q]@tag[q] /[>]<",
+            "nodeSpan": ">   <                           ",
+          },
+          Object {
+            "kind": "Word",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag attr-one=[q]@tag[q] /[>]<",
+            "nodeSpan": "   >   <                        ",
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag attr-one=[q]@tag[q] /[>]<",
+            "nodeSpan": "      > <                       ",
+          },
+          Object {
+            "kind": "HtmlAttribute",
+            "nodes": Array [
+              Object {
+                "kind": "Word",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag attr-one=[q]@tag[q] /[>]<",
+                "nodeSpan": "       >        <               ",
+              },
+              Object {
+                "kind": "Delimiter",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag attr-one=[q]@tag[q] /[>]<",
+                "nodeSpan": "               > <              ",
+              },
+              Object {
+                "kind": "HtmlString",
+                "lineIndex": 0,
+                "nodeLine": ">[<]tag attr-one=[q]@tag[q] /[>]<",
+                "nodeSpan": "                >          <    ",
+              },
+            ],
+          },
+          Object {
+            "kind": "Spacing",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag attr-one=[q]@tag[q] /[>]<",
+            "nodeSpan": "                          > <   ",
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">[<]tag attr-one=[q]@tag[q] /[>]<",
+            "nodeSpan": "                           >    <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">[<]tag attr-one=[q]@tag[q] /[>]<",
+        "nodeSpan": "                               ><",
+      },
+    ],
+  },
+}
+`;

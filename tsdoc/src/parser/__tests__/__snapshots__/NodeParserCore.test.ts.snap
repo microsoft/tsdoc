@@ -1,0 +1,192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`00 Tokenizer simple case 1`] = `
+Object {
+  "buffer": "/**[n] * line 1 [n] * line 2[n] */",
+  "lines": Array [
+    "line 1",
+    "line 2",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">line 1<",
+        "nodeSpan": ">      <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">line 1<",
+        "nodeSpan": "      ><",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 1,
+        "nodeLine": ">line 2<",
+        "nodeSpan": ">      <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 1,
+        "nodeLine": ">line 2<",
+        "nodeSpan": "      ><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`01 Tokenizer degenerate cases 1`] = `
+Object {
+  "buffer": "/***/",
+  "lines": Array [],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [],
+  },
+}
+`;
+
+exports[`01 Tokenizer degenerate cases 2`] = `
+Object {
+  "buffer": "/**[n] *[n] */",
+  "lines": Array [
+    "",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": "><",
+        "nodeSpan": "><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`01 Tokenizer degenerate cases 3`] = `
+Object {
+  "buffer": "/**[n] [n] [n] */",
+  "lines": Array [
+    "",
+    "",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": "><",
+        "nodeSpan": "><",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 1,
+        "nodeLine": "><",
+        "nodeSpan": "><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`02 Backslash escapes: positive examples 1`] = `
+Object {
+  "buffer": "/**[n] * [b]$[b]@param[n] */",
+  "lines": Array [
+    "[b]$[b]@param",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "BackslashEscape",
+        "lineIndex": 0,
+        "nodeLine": ">[b]$[b]@param<",
+        "nodeSpan": ">    <        ",
+      },
+      Object {
+        "kind": "BackslashEscape",
+        "lineIndex": 0,
+        "nodeLine": ">[b]$[b]@param<",
+        "nodeSpan": "    >    <    ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">[b]$[b]@param<",
+        "nodeSpan": "        >     <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">[b]$[b]@param<",
+        "nodeSpan": "             ><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`03 Backslash escapes: negative examples 1`] = `
+Object {
+  "buffer": "/**[n] * letter: [b]A space: [b]  end of line: [b][n] */",
+  "lines": Array [
+    "letter: [b]A space: [b]  end of line: [b]",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">letter: [b]A space: [b]  end of line: [b]<",
+        "nodeSpan": ">        <                                ",
+      },
+      Object {
+        "errorLocation": "[b]",
+        "errorMessage": "A backslash can only be used to escape a punctuation character",
+        "kind": "Error",
+        "lineIndex": 0,
+        "nodeLine": ">letter: [b]A space: [b]  end of line: [b]<",
+        "nodeSpan": "        >    <                            ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">letter: [b]A space: [b]  end of line: [b]<",
+        "nodeSpan": "            >        <                    ",
+      },
+      Object {
+        "errorLocation": "[b]",
+        "errorMessage": "A backslash can only be used to escape a punctuation character",
+        "kind": "Error",
+        "lineIndex": 0,
+        "nodeLine": ">letter: [b]A space: [b]  end of line: [b]<",
+        "nodeSpan": "                    >     <               ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">letter: [b]A space: [b]  end of line: [b]<",
+        "nodeSpan": "                         >             <  ",
+      },
+      Object {
+        "errorLocation": "[b]",
+        "errorMessage": "A backslash can only be used to escape a punctuation character",
+        "kind": "Error",
+        "lineIndex": 0,
+        "nodeLine": ">letter: [b]A space: [b]  end of line: [b]<",
+        "nodeSpan": "                                      >   <",
+      },
+    ],
+  },
+}
+`;
