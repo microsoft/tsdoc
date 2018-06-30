@@ -1,12 +1,12 @@
 import { TextRange } from '../parser/TextRange';
 import { ParseError } from '../parser/ParseError';
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNodeContainer, DocNodeKind, IDocNodeContainerParameters } from './DocNode';
 import { ParserContext } from '../parser/ParserContext';
 
 /**
  * Constructor parameters for {@link DocComment}.
  */
-export interface IDocCommentParameters extends IDocNodeParameters {
+export interface IDocCommentParameters extends IDocNodeContainerParameters {
   parserContext: ParserContext;
 }
 
@@ -14,7 +14,7 @@ export interface IDocCommentParameters extends IDocNodeParameters {
  * Represents an entire parsed documentation comment.  This is typically the
  * root of the expression tree returned by the parser.
  */
-export class DocComment extends DocNode {
+export class DocComment extends DocNodeContainer {
 
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Comment;
@@ -36,11 +36,6 @@ export class DocComment extends DocNode {
   public readonly lines: TextRange[];
 
   /**
-   * The nodes that were parsed from the input.
-   */
-  public readonly nodes: DocNode[];
-
-  /**
    * If any errors occurred during parsing, they are returned in this list.
    */
   public readonly parseErrors: ParseError[] = [];
@@ -55,7 +50,6 @@ export class DocComment extends DocNode {
     this.sourceRange = parameters.parserContext.sourceRange;
     this.commentRange = parameters.parserContext.commentRange;
     this.lines = parameters.parserContext.lines;
-    this.nodes = parameters.parserContext.nodes;
     this.parseErrors = parameters.parserContext.parseErrors;
   }
 }
