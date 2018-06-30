@@ -2,7 +2,7 @@ import { ParserContext } from './ParserContext';
 import { Token, TokenKind, Tokenizer } from './Tokenizer';
 import { DocNode } from './nodes/DocNode';
 import { DocPlainText } from './nodes/DocPlainText';
-import { DocHtmlTag } from './nodes/DocHtmlTag';
+import { DocHtmlElement } from './nodes/DocHtmlElement';
 import { DocBackslashEscape } from './nodes/DocBackslashEscape';
 import { DocError } from './nodes/DocError';
 
@@ -79,7 +79,7 @@ export class NodeParser {
       if (scannedToken.kind === TokenKind.GreaterThan) {
         // Found the matching ">"
         this._nodes.push(
-          new DocHtmlTag({
+          new DocHtmlElement({
             tokens: this._tokens.slice(this._tokenIndex, i)
           })
         );
