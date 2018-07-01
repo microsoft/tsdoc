@@ -257,7 +257,7 @@ Object {
         "nodeSpan": "           ><",
       },
       Object {
-        "errorLocation": "-",
+        "errorLocation": "[<]",
         "errorMessage": "The HTML tag has invalid syntax; expecting an attribute or \\">\\" or \\"/>\\"",
         "kind": "Error",
         "lineIndex": 1,
@@ -291,7 +291,7 @@ Object {
         "nodeSpan": "   >       <             ",
       },
       Object {
-        "errorLocation": " ",
+        "errorLocation": "[<]",
         "errorMessage": "The HTML tag has invalid syntax; expecting an attribute or \\">\\" or \\"/>\\"",
         "kind": "Error",
         "lineIndex": 2,
@@ -311,7 +311,7 @@ Object {
         "nodeSpan": "                        ><",
       },
       Object {
-        "errorLocation": "",
+        "errorLocation": "[<]",
         "errorMessage": "The HTML tag has invalid syntax; expecting an attribute or \\">\\" or \\"/>\\"",
         "kind": "Error",
         "lineIndex": 3,
@@ -1144,7 +1144,7 @@ Object {
         "nodeSpan": "                                   ><",
       },
       Object {
-        "errorLocation": "seven",
+        "errorLocation": "[<]",
         "errorMessage": "Missing space before attribute name",
         "kind": "Error",
         "lineIndex": 5,

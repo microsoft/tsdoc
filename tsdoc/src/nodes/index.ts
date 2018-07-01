@@ -7,6 +7,8 @@ export * from './DocError';
 export * from './DocHtmlAttribute';
 export * from './DocHtmlStartTag';
 export * from './DocHtmlString';
+export * from './DocInlineTag';
+export * from './DocInlineTagContent';
 export * from './DocNewline';
 export * from './DocNode';
 export * from './DocPlainText';

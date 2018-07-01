@@ -14,9 +14,11 @@ export enum DocNodeKind {
   HtmlStartTag = 1007,
   HtmlString = 1008,
   Newline = 1009,
-  PlainText = 1010,
-  Spacing = 1011,
-  Word = 1012
+  InlineTag = 1010,
+  InlineTagContent = 1011,
+  PlainText = 1012,
+  Spacing = 1013,
+  Word = 1014
 }
 
 /**

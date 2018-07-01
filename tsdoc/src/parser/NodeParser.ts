@@ -14,32 +14,31 @@ import {
   DocNodeKind,
   DocPlainText,
   DocSpacing,
-  DocWord
+  DocWord,
+  DocInlineTagContent,
+  DocInlineTag
 } from '../nodes';
+import { TextRange } from './TextRange';
 
 export class NodeParser {
   // https://www.w3.org/TR/html5/syntax.html#tag-name
   // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
   private static readonly htmlNameRegExp: RegExp = /^[a-z]+(\-[a-z]+)*$/i;
 
-  private static readonly tsdocTagNameRegExp: RegExp = /^@[a-z][a-z0-9]*$/i;
+  private static readonly tsdocTagNameRegExp: RegExp = /^[a-z][a-z0-9]*$/i;
 
   private _tokens: Token[] = [];
   // The index into the _tokens array, of the current token being processed.
   private _tokenIndex: number = 0;
 
-  /**
-   * When we are accumulating a DocPlainText node, these are the tokens.
-   */
-  private _accumulatedPlainText: Token[];
-
   public constructor(parserContext: ParserContext) {
     this._tokens = parserContext.tokens;
-    this._accumulatedPlainText = [];
   }
 
   public parse(): DocNode[] {
     const childNodes: DocNode[] = [];
+
+    const accumulatedPlainTextTokens: Token[] = [];
 
     let done: boolean = false;
     while (!done) {
@@ -49,39 +48,49 @@ export class NodeParser {
           done = true;
           break;
         case TokenKind.Newline:
-          this._pushAccumulatedPlainText(childNodes);
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
           childNodes.push(new DocNewline({
             tokens: [ this._readToken() ]
           }));
           break;
         case TokenKind.Backslash:
-          this._pushAccumulatedPlainText(childNodes);
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
           childNodes.push(this._parseBackslashEscape());
           break;
         case TokenKind.AtSign:
-          this._pushAccumulatedPlainText(childNodes);
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
           childNodes.push(this._parseBlockTag());
           break;
+          case TokenKind.LeftCurlyBracket:
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
+          childNodes.push(this._parseInlineTag());
+          break;
+        case TokenKind.RightCurlyBracket:
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
+          childNodes.push(this._createError(
+            'The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag'));
+          break;
         case TokenKind.LessThan:
-          this._pushAccumulatedPlainText(childNodes);
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
           childNodes.push(this._parseHtmlStartTag());
           break;
         default:
           // If nobody recognized this token, then accumulate plain text
-          this._accumulatedPlainText.push(this._readToken());
+          accumulatedPlainTextTokens.push(this._readToken());
           break;
       }
     }
-    this._pushAccumulatedPlainText(childNodes);
+    this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
     return childNodes;
   }
 
-  private _pushAccumulatedPlainText(childNodes: DocNode[]): void {
-    if (this._accumulatedPlainText.length > 0) {
+  private _pushAccumulatedPlainText(childNodes: DocNode[],
+    accumulatedPlainTextTokens: Token[]): void {
+    if (accumulatedPlainTextTokens.length > 0) {
       childNodes.push(
-        new DocPlainText({ tokens: this._accumulatedPlainText })
+        new DocPlainText({ tokens: accumulatedPlainTextTokens })
       );
-      this._accumulatedPlainText = [];
+      accumulatedPlainTextTokens.length = 0;
     }
   }
 
@@ -138,7 +147,8 @@ export class NodeParser {
 
     // Read the words
     while (this._peekTokenKind() === TokenKind.AsciiWord) {
-      tokens.push(this._readToken());
+      const token: Token = this._readToken();
+      tokens.push(token);
     }
 
     if (tokens.length === 1) {
@@ -153,19 +163,141 @@ export class NodeParser {
       case TokenKind.EndOfInput:
         break;
       default:
-        return this._backtrackAndCreateError(marker, 'A TSDoc tag must be followed by whitespace',
-          this._peekToken());
+        return this._backtrackAndCreateError(marker, 'A TSDoc tag must be followed by whitespace');
     }
 
+    // The tag name is everything except the "@" character
+    const tagName: TextRange = tokens[0].range.getNewRange(
+      tokens[0].range.pos + 1, // skip the "@"
+      tokens[tokens.length - 1].range.end
+    );
+
     const blockTagNode: DocBlockTag = new DocBlockTag({
-      tokens: tokens
+      tokens: tokens,
+      tagName: tagName
     });
 
-    if (!NodeParser.tsdocTagNameRegExp.test(blockTagNode.toString())) {
+    if (!NodeParser.tsdocTagNameRegExp.test(tagName.toString())) {
       return this._backtrackAndCreateError(marker,
         'A TSDoc tag name must start with a letter and contain only letters and numbers');
     }
     return blockTagNode;
+  }
+
+  private _parseInlineTag(): DocNode {
+    const marker: number = this._createMarker();
+    if (this._peekTokenKind() !== TokenKind.LeftCurlyBracket) {
+      return this._backtrackAndCreateError(marker, 'Expecting a TSDoc tag starting with "{"');
+    }
+
+    const openingTokens: Token[] = [];
+    openingTokens.push(this._readToken());
+
+    if (this._peekTokenKind() !== TokenKind.AtSign) {
+      return this._backtrackAndCreateError(marker, 'Expecting a TSDoc tag starting with "{@"');
+    }
+    openingTokens.push(this._readToken());
+
+    const childNodes: DocNode[] = [];
+
+    // Push the "{@" opening delimiter
+    childNodes.push(new DocDelimiter({
+      tokens: openingTokens
+    }));
+
+    const endMarker: number = this._createMarker();
+
+    // Read the words
+    const tagNameTokens: Token[] = [];
+    while (this._peekTokenKind() === TokenKind.AsciiWord) {
+      tagNameTokens.push(this._readToken());
+    }
+
+    if (tagNameTokens.length === 0) {
+      return this._backtrackAndCreateError(marker,
+        'Expecting a TSDoc inline tag name after the "{@" characters',
+        endMarker);
+    }
+
+    const tagName: TextRange = tagNameTokens[0].range.getNewRange(
+      tagNameTokens[0].range.pos,
+      tagNameTokens[tagNameTokens.length - 1].range.end
+    );
+
+    if (!NodeParser.tsdocTagNameRegExp.test(tagName.toString())) {
+      return this._backtrackAndCreateError(marker,
+        'A TSDoc tag name must start with a letter and contain only letters and numbers',
+        endMarker);
+    }
+
+    childNodes.push(new DocWord({
+      tokens: tagNameTokens
+    }));
+
+    // Parse the DocInlineTagContent child
+    const tagContentNodes: DocNode[] = [];
+
+    // We give the space to the DocInlineTagContent in case the implementor
+    // wants to assign some special meaning to spaces for their tag.
+    if (!this._parseSpacingAndNewlinesInto(tagContentNodes)) {
+      if (this._peekTokenKind() !== TokenKind.RightCurlyBracket) {
+        return this._backtrackAndCreateError(marker,
+          'Expecting a space after the TSDoc inline tag name',
+          endMarker);
+      }
+    }
+
+    const accumulatedPlainText: Token[] = [];
+    let done: boolean = false;
+    while (!done) {
+      switch (this._peekTokenKind()) {
+        case TokenKind.EndOfInput:
+          return this._backtrackAndCreateError(marker,
+            'The TSDoc inline tag name is missing its closing "}"',
+            endMarker);
+        case TokenKind.Newline:
+        this._pushAccumulatedPlainText(tagContentNodes, accumulatedPlainText);
+          tagContentNodes.push(new DocNewline({
+            tokens: [ this._readToken() ]
+          }));
+          break;
+        case TokenKind.Backslash:
+          this._pushAccumulatedPlainText(tagContentNodes, accumulatedPlainText);
+          // http://usejsdoc.org/about-block-inline-tags.html
+          // "If your tag's text includes a closing curly brace (}), you must escape it with
+          // a leading backslash (\)."
+          tagContentNodes.push(this._parseBackslashEscape());
+          break;
+        case TokenKind.LeftCurlyBracket:
+          return this._backtrackAndCreateError(marker,
+            'The "{" character must be escaped with a backslash when used inside a TSDoc inline tag',
+            endMarker);
+        case TokenKind.RightCurlyBracket:
+          done = true;
+          break;
+        default:
+          accumulatedPlainText.push(this._readToken());
+          break;
+      }
+    }
+    this._pushAccumulatedPlainText(tagContentNodes, accumulatedPlainText);
+
+    const docInlineTagContent: DocInlineTagContent = new DocInlineTagContent({
+      childNodes: tagContentNodes
+    });
+
+    childNodes.push(docInlineTagContent);
+
+    // Parse the closing "}"
+    childNodes.push(new DocDelimiter({
+      tokens: [ this._readToken() ]
+    }));
+
+    return new DocInlineTag({
+      childNodes: childNodes,
+      tagName: tagName,
+      tagContent: docInlineTagContent
+    });
   }
 
   private _parseHtmlStartTag(): DocNode {
@@ -199,8 +331,7 @@ export class NodeParser {
       }
 
       if (!parsedSpaces) {
-        return this._backtrackAndCreateError(marker, 'Missing space before attribute name',
-          this._readToken());
+        return this._backtrackAndCreateError(marker, 'Missing space before attribute name');
       }
 
       // Read the attribute
@@ -220,8 +351,7 @@ export class NodeParser {
     }
     if (this._peekTokenKind() !== TokenKind.GreaterThan) {
       return this._backtrackAndCreateError(marker,
-        'The HTML tag has invalid syntax; expecting an attribute or ">" or "/>"',
-        this._readToken());
+        'The HTML tag has invalid syntax; expecting an attribute or ">" or "/>"');
     }
     delimiterTokens.push(this._readToken());
 
@@ -362,10 +492,6 @@ export class NodeParser {
     return nodesPushed;
   }
 
-  private _peekToken(): Token {
-    return this._tokens[this._tokenIndex];
-  }
-
   private _peekTokenKind(): TokenKind {
     return this._tokens[this._tokenIndex].kind;
   }
@@ -388,24 +514,35 @@ export class NodeParser {
     return this._tokens[this._tokenIndex - 1].kind;
   }
 
-
   private _createError(errorMessage: string): DocError {
     return this._backtrackAndCreateError(this._createMarker(), errorMessage);
   }
 
   /**
    * Rewind to the specified marker, read the next token, and report it as an error.
+   * @remarks
+   * If `endmarker` is specified, then the DocError will encompass the range of
+   * tokens starting with `marker` up to (but not including) `endMarker`.
+   * Otherwise, `endMarker` is taken to be `marker + 1`.
    */
   private _backtrackAndCreateError(marker: number, errorMessage: string,
-    errorLocationToken?: Token): DocError {
+    endMarker?: number): DocError {
+    if (endMarker === undefined) {
+      endMarker = marker + 1;
+    }
 
     this._backtrack(marker);
-    const token: Token = this._readToken();
+
+    const tokens: Token[] = [];
+
+    while (this._tokenIndex < endMarker) {
+      tokens.push(this._readToken());
+    }
 
     return new DocError({
-      tokens: [ token ],
+      tokens: tokens,
       errorMessage,
-      errorLocation: errorLocationToken !== undefined ? errorLocationToken.range : token.range
+      errorLocation: tokens[0].range
     });
   }
 
