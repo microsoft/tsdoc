@@ -71,6 +71,12 @@ test('04 HTML start tags: with attributes, negative', () => {
     ' * <tag-f attr-six="six"seven="seven" />',
     ' */'
   ].join('\n'));
+  TestHelpers.parseAndMatchSnapshot([
+    '/**',
+    ' * <tag-g attr="multi',
+    ' * line" />',
+    ' */'
+  ].join('\n'));
 });
 
 test('05 Eclipsed TSDoc', () => {

@@ -1181,6 +1181,54 @@ Object {
 }
 `;
 
+exports[`04 HTML start tags: with attributes, negative 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-g attr=[q]multi[n] * line[q] /[>][n] */",
+  "lines": Array [
+    "[<]tag-g attr=[q]multi",
+    "line[q] /[>]",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "error": "The HTML string is missing its closing quote",
+        "failLine": ">[<]tag-g attr=[q]multi<",
+        "failSpan": "              >   <    ",
+        "kind": "Error",
+        "lineIndex": 0,
+        "nodeLine": ">[<]tag-g attr=[q]multi<",
+        "nodeSpan": ">   <                  ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">[<]tag-g attr=[q]multi<",
+        "nodeSpan": "   >                   <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">[<]tag-g attr=[q]multi<",
+        "nodeSpan": "                      ><",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 1,
+        "nodeLine": ">line[q] /[>]<",
+        "nodeSpan": ">            <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 1,
+        "nodeLine": ">line[q] /[>]<",
+        "nodeSpan": "            ><",
+      },
+    ],
+  },
+}
+`;
+
 exports[`05 Eclipsed TSDoc 1`] = `
 Object {
   "buffer": "/**[n] * [<]tag attr-one=[q]@tag[q] /[>][n] */",
