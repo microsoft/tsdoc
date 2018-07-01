@@ -148,7 +148,7 @@ Object {
       "indexOfLine": 0,
       "line": ">[b]$[b]@param<",
       "span": "       > <    ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "AtSign",
     },
     Object {
       "indexOfLine": 0,
@@ -440,7 +440,7 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "                           > <          ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "AtSign",
     },
     Object {
       "indexOfLine": 0,

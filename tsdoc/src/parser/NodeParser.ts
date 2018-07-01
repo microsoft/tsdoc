@@ -2,24 +2,27 @@ import { ParserContext } from './ParserContext';
 import { Token, TokenKind } from './Token';
 import { Tokenizer } from './Tokenizer';
 import {
-  DocDelimiter,
-  DocNode,
-  DocPlainText,
   DocBackslashEscape,
+  DocBlockTag,
+  DocDelimiter,
   DocError,
-  DocHtmlStartTag,
-  DocNodeKind,
-  DocWord,
-  DocSpacing,
-  DocNewline,
   DocHtmlAttribute,
-  DocHtmlString
+  DocHtmlStartTag,
+  DocHtmlString,
+  DocNewline,
+  DocNode,
+  DocNodeKind,
+  DocPlainText,
+  DocSpacing,
+  DocWord
 } from '../nodes';
 
 export class NodeParser {
   // https://www.w3.org/TR/html5/syntax.html#tag-name
   // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
   private static readonly htmlNameRegExp: RegExp = /^[a-z]+(\-[a-z]+)*$/i;
+
+  private static readonly tsdocTagNameRegExp: RegExp = /^@[a-z][a-z0-9]*$/i;
 
   private _tokens: Token[] = [];
   // The index into the _tokens array, of the current token being processed.
@@ -54,6 +57,10 @@ export class NodeParser {
         case TokenKind.Backslash:
           this._pushAccumulatedPlainText(childNodes);
           childNodes.push(this._parseBackslashEscape());
+          break;
+        case TokenKind.AtSign:
+          this._pushAccumulatedPlainText(childNodes);
+          childNodes.push(this._parseBlockTag());
           break;
         case TokenKind.LessThan:
           this._pushAccumulatedPlainText(childNodes);
@@ -106,6 +113,59 @@ export class NodeParser {
     return new DocBackslashEscape({
       tokens: [ backslashToken, escapedToken ]
     });
+  }
+
+  private _parseBlockTag(): DocNode {
+    const marker: number = this._createMarker();
+    if (this._peekTokenKind() !== TokenKind.AtSign) {
+      return this._backtrackAndCreateError(marker, 'Expecting a TSDoc tag starting with "@"');
+    }
+
+    // "@one" is a valid TSDoc tag at the start of a line, but "@one@two" is
+    // a syntax error.  For two tags it should be "@one @two", or for literal text it
+    // should be "\@one\@two".
+    switch (this._peekPreviousTokenKind()) {
+      case TokenKind.None:
+      case TokenKind.Spacing:
+      case TokenKind.Newline:
+        break;
+      default:
+        return this._backtrackAndCreateError(marker, 'A TSDoc tag must be preceded by whitespace');
+    }
+
+    const tokens: Token[] = [];
+    tokens.push(this._readToken()); // extract the @ sign
+
+    // Read the words
+    while (this._peekTokenKind() === TokenKind.AsciiWord) {
+      tokens.push(this._readToken());
+    }
+
+    if (tokens.length === 1) {
+      return this._backtrackAndCreateError(marker,
+        'Expecting a TSDoc tag after the "@" character (or use a backslash to escape this character)');
+    }
+
+    switch (this._peekTokenKind()) {
+      case TokenKind.None:
+      case TokenKind.Spacing:
+      case TokenKind.Newline:
+      case TokenKind.EndOfInput:
+        break;
+      default:
+        return this._backtrackAndCreateError(marker, 'A TSDoc tag must be followed by whitespace',
+          this._peekToken());
+    }
+
+    const blockTagNode: DocBlockTag = new DocBlockTag({
+      tokens: tokens
+    });
+
+    if (!NodeParser.tsdocTagNameRegExp.test(blockTagNode.toString())) {
+      return this._backtrackAndCreateError(marker,
+        'A TSDoc tag name must start with a letter and contain only letters and numbers');
+    }
+    return blockTagNode;
   }
 
   private _parseHtmlStartTag(): DocNode {
@@ -302,6 +362,10 @@ export class NodeParser {
     return nodesPushed;
   }
 
+  private _peekToken(): Token {
+    return this._tokens[this._tokenIndex];
+  }
+
   private _peekTokenKind(): TokenKind {
     return this._tokens[this._tokenIndex].kind;
   }
@@ -313,6 +377,17 @@ export class NodeParser {
     }
     return this._tokens[this._tokenIndex++];
   }
+
+  /**
+   * Returns the kind of the token immediately before the current token.
+   */
+  private _peekPreviousTokenKind(): TokenKind {
+    if (this._tokenIndex === 0) {
+      return TokenKind.None;
+    }
+    return this._tokens[this._tokenIndex - 1].kind;
+  }
+
 
   private _createError(errorMessage: string): DocError {
     return this._backtrackAndCreateError(this._createMarker(), errorMessage);

@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`00 Block tags: positive examples 1`] = `
+Object {
+  "buffer": "/**[n] * @one [n] * @two[n] */",
+  "lines": Array [
+    "@one",
+    "@two",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "BlockTag",
+        "lineIndex": 0,
+        "nodeLine": ">@one<",
+        "nodeSpan": ">    <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">@one<",
+        "nodeSpan": "    ><",
+      },
+      Object {
+        "kind": "BlockTag",
+        "lineIndex": 1,
+        "nodeLine": ">@two<",
+        "nodeSpan": ">    <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 1,
+        "nodeLine": ">@two<",
+        "nodeSpan": "    ><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`01 Block tags: negative examples 1`] = `
+Object {
+  "buffer": "/**[n] * @ one [n] * +@two [n] * @two+ [n] */",
+  "lines": Array [
+    "@ one",
+    "+@two",
+    "@two+",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "errorLocation": "@",
+        "errorMessage": "Expecting a TSDoc tag after the \\"@\\" character (or use a backslash to escape this character)",
+        "kind": "Error",
+        "lineIndex": 0,
+        "nodeLine": ">@ one<",
+        "nodeSpan": "> <   ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">@ one<",
+        "nodeSpan": " >    <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">@ one<",
+        "nodeSpan": "     ><",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 1,
+        "nodeLine": ">+@two<",
+        "nodeSpan": "> <   ",
+      },
+      Object {
+        "errorLocation": "@",
+        "errorMessage": "A TSDoc tag must be preceded by whitespace",
+        "kind": "Error",
+        "lineIndex": 1,
+        "nodeLine": ">+@two<",
+        "nodeSpan": " > <  ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 1,
+        "nodeLine": ">+@two<",
+        "nodeSpan": "  >   <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 1,
+        "nodeLine": ">+@two<",
+        "nodeSpan": "     ><",
+      },
+      Object {
+        "errorLocation": "+",
+        "errorMessage": "A TSDoc tag must be followed by whitespace",
+        "kind": "Error",
+        "lineIndex": 2,
+        "nodeLine": ">@two+<",
+        "nodeSpan": "> <   ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 2,
+        "nodeLine": ">@two+<",
+        "nodeSpan": " >    <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 2,
+        "nodeLine": ">@two+<",
+        "nodeSpan": "     ><",
+      },
+    ],
+  },
+}
+`;

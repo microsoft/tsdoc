@@ -116,7 +116,8 @@ export class Tokenizer {
       '\'' : TokenKind.SingleQuote,
       '"' : TokenKind.DoubleQuote,
       '/' : TokenKind.Slash,
-      '-' : TokenKind.Hyphen
+      '-' : TokenKind.Hyphen,
+      '@' : TokenKind.AtSign
     };
     for (const key of Object.getOwnPropertyNames(specialMap)) {
       Tokenizer._charCodeMap[key.charCodeAt(0)] = specialMap[key];

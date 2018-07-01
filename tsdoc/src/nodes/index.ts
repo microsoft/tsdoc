@@ -1,5 +1,6 @@
 
 export * from './DocBackslashEscape';
+export * from './DocBlockTag';
 export * from './DocComment';
 export * from './DocDelimiter';
 export * from './DocError';
