@@ -20,12 +20,6 @@ export enum DocNodeKind {
 
 /**
  * The base class for the parser's Abstract Syntax Tree nodes.
- *
- * @remarks
- * A DocNode represents a contiguous sequence of characters from the
- * input source file.  Except for DocNewline, the DocNode objects will
- * never contain a newline character as part of their text range; they always
- * exist on a single line.
  */
 export abstract class DocNode {
   /**
@@ -33,6 +27,12 @@ export abstract class DocNode {
    */
   public abstract readonly kind: DocNodeKind;
 
+  /**
+   * Returns the list of child nodes for this node.
+   * @remarks
+   * For subclasses of DocNodeLeaf, the list will always be empty.
+   * @virtual
+   */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [];
   }
@@ -45,6 +45,18 @@ export interface IDocNodeLeafParameters {
   tokens: Token[];
 }
 
+/**
+ * The base class for Abstract Syntax Tree nodes that correspond to a text range.
+ * @remarks
+ * The AST tree has two basic types of nodes: DocNodeLeaf which represents a
+ * text range, and DocNodeContainer which is a logical grouping of other nodes
+ * that does not itself capture any text.
+ *
+ * A DocNodeLeaf represents a contiguous sequence of characters from the
+ * input source file.  Except for DocNewline, the DocNodeLeaf objects will
+ * never contain a newline character as part of their text range; they always
+ * exist on a single line.
+ */
 export abstract class DocNodeLeaf extends DocNode {
   public readonly range: TextRange;
 
@@ -55,6 +67,10 @@ export abstract class DocNodeLeaf extends DocNode {
    */
   public readonly docCommentLine: TextRange;
 
+  /**
+   * Don't call this directly.  Instead use {@link TSDocParser}
+   * @internal
+   */
   public constructor(parameters: IDocNodeLeafParameters) {
     super();
 
@@ -112,6 +128,11 @@ export interface IDocNodeContainerParameters {
  * The base class for DocNode subclasses that act as a container for other
  * child nodes.  Container nodes are purely structural and should not have
  * any associated text characters.
+ *
+ * @remarks
+ * The AST tree has two basic types of nodes: DocNodeLeaf which represents a
+ * text range, and DocNodeContainer which is a logical grouping of other nodes
+ * that does not itself capture any text.
  */
 export abstract class DocNodeContainer extends DocNode {
   /**
@@ -119,12 +140,20 @@ export abstract class DocNodeContainer extends DocNode {
    */
   public readonly childNodes: ReadonlyArray<DocNode>;
 
+  /**
+   * Don't call this directly.  Instead use {@link TSDocParser}
+   * @internal
+   */
   public constructor(parameters: IDocNodeContainerParameters) {
     super();
 
     this.childNodes = parameters.childNodes;
   }
 
+  /**
+   * {@inheritdoc DocNode.getChildNodes}
+   * @override
+   */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return this.childNodes;
   }
