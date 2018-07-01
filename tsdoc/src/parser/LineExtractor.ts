@@ -1,8 +1,5 @@
-import { Character } from '../internal/Character';
-
-import { DocComment, IDocCommentParameters } from './nodes/DocComment';
 import { TextRange } from './TextRange';
-import { ParseError } from './ParseError';
+import { ParserContext } from './ParserContext';
 
 // Internal parser state
 enum State {
@@ -23,44 +20,16 @@ enum State {
 /**
  * The main API for parsing TSDoc comments.
  */
-export class TSDocParser {
-  private static _addError(parameters: IDocCommentParameters, range: TextRange,
-    message: string, pos: number, end?: number): void {
-    if (!end) {
-      if (pos + 1 <= range.buffer.length) {
-        end = pos + 1;
-      } else {
-        end = pos;
-      }
-    }
-    parameters.parseErrors.push(
-      new ParseError(message, range.getNewRange(pos, end))
-    );
-  }
-
-  public parseString(text: string): DocComment {
-    return this.parseRange(TextRange.fromString(text));
-  }
-
-  public parseRange(range: TextRange): DocComment {
-    const parameters: IDocCommentParameters = {
-      range: TextRange.empty,
-      sourceRange: range,
-      lines: [],
-      parseErrors: []
-    };
-    this._parseLines(parameters);
-
-    return new DocComment(parameters);
-  }
+export class LineExtractor {
+  private static readonly _whitespaceRegExp: RegExp = /^\s$/;
 
   /**
    * This step parses an entire code comment from slash-star-star until star-slash,
    * and extracts the content lines.  The lines are stored in IDocCommentParameters.lines
    * and the overall text range is assigned to IDocCommentParameters.range.
    */
-  private _parseLines(parameters: IDocCommentParameters): void {
-    const range: TextRange = parameters.sourceRange;
+  public static extract(parserContext: ParserContext): void {
+    const range: TextRange = parserContext.sourceRange;
     const buffer: string = range.buffer;
 
     let commentRangeStart: number = 0;
@@ -73,16 +42,18 @@ export class TSDocParser {
     let nextIndex: number = range.pos;
     let state: State = State.BeginComment1;
 
+    const lines: TextRange[] = [];
+
     while (state !== State.Done) {
       if (nextIndex >= range.end) {
         // reached the end of the input
         switch (state) {
           case State.BeginComment1:
           case State.BeginComment2:
-            TSDocParser._addError(parameters, range, 'Expecting a "/**" comment', range.pos);
+            parserContext.addError(range, 'Expecting a "/**" comment', range.pos);
               return;
           default:
-            TSDocParser._addError(parameters, range, 'Unexpected end of input', range.pos);
+            parserContext.addError(range, 'Unexpected end of input', range.pos);
             return;
         }
       }
@@ -98,8 +69,8 @@ export class TSDocParser {
             commentRangeStart = currentIndex;
             ++nextIndex; // skip the star
             state = State.BeginComment2;
-          } else if (!Character.isWhitespace(current)) {
-            TSDocParser._addError(parameters, range, 'Expecting a leading "/**"', nextIndex);
+          } else if (!LineExtractor._whitespaceRegExp.test(current)) {
+            parserContext.addError(range, 'Expecting a leading "/**"', nextIndex);
             return;
           }
           break;
@@ -112,7 +83,7 @@ export class TSDocParser {
             collectingLineEnd = nextIndex;
             state = State.CollectingFirstLine;
           } else {
-            TSDocParser._addError(parameters, range, 'Expecting a leading "/**"', nextIndex);
+            parserContext.addError(range, 'Expecting a leading "/**"', nextIndex);
             return;
           }
           break;
@@ -122,21 +93,21 @@ export class TSDocParser {
             // Ignore an empty line if it is immediately after the "/**"
             if (state !== State.CollectingFirstLine || collectingLineEnd > collectingLineStart) {
               // Record the line that we collected
-              parameters.lines.push(range.getNewRange(collectingLineStart, collectingLineEnd));
+              lines.push(range.getNewRange(collectingLineStart, collectingLineEnd));
             }
             collectingLineStart = nextIndex;
             collectingLineEnd = nextIndex;
             state = State.AdvancingLine;
           } else if (current === '*' && next === '/') {
             if (collectingLineEnd > collectingLineStart) {
-              parameters.lines.push(range.getNewRange(collectingLineStart, collectingLineEnd));
+              lines.push(range.getNewRange(collectingLineStart, collectingLineEnd));
             }
             collectingLineStart = 0;
             collectingLineEnd = 0;
             ++nextIndex; // skip the slash
             commentRangeEnd = nextIndex;
             state = State.Done;
-          } else if (!Character.isWhitespace(current)) {
+          } else if (!LineExtractor._whitespaceRegExp.test(current)) {
             collectingLineEnd = nextIndex;
           }
           break;
@@ -162,9 +133,9 @@ export class TSDocParser {
             }
           } else if (current === '\n') {
             // Blank line
-            parameters.lines.push(range.getNewRange(currentIndex, currentIndex));
+            lines.push(range.getNewRange(currentIndex, currentIndex));
             collectingLineStart = nextIndex;
-          } else if (!Character.isWhitespace(current)) {
+          } else if (!LineExtractor._whitespaceRegExp.test(current)) {
             // If the star is missing, then start the line here
             // Example: "/**\nL1*/"
 
@@ -176,6 +147,10 @@ export class TSDocParser {
       }
     }
 
-    parameters.range = range.getNewRange(commentRangeStart, commentRangeEnd);
+    /**
+     * Only fill in these if we successfully scanned a comment
+     */
+    parserContext.commentRange = range.getNewRange(commentRangeStart, commentRangeEnd);
+    parserContext.lines = lines;
   }
 }

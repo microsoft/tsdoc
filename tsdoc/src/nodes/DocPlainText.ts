@@ -1,16 +1,16 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNodeLeaf, DocNodeKind, IDocNodeLeafParameters } from './DocNode';
 
 /**
  * Constructor parameters for {@link DocPlainText}.
  */
-export interface IDocPlainTextParameters extends IDocNodeParameters {
+export interface IDocPlainTextParameters extends IDocNodeLeafParameters {
 }
 
 /**
  * Represents a span of comment text that is considered by the parser
- * to contain no special symbols  or meaning.
+ * to contain no special symbols or meaning.
  */
-export class DocPlainText extends DocNode {
+export class DocPlainText extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.PlainText;
 

@@ -1,20 +1,14 @@
-import { TextRange } from '../index';
-
-function escape(s: string): string {
-  return s.replace(/\n/g, '[n]')
-    .replace(/\r/g, '[r]')
-    .replace(/\t/g, '[t]');
-}
+import { TextRange } from '../TextRange';
+import { TestHelpers } from './TestHelpers';
 
 function matchSnapshot(textRange: TextRange): void {
   for (let i: number = -1; i <= textRange.end + 1; ++i) {
 
     // Show the current character
-    const c: string = escape(textRange.buffer.substr(Math.max(i, 0), 1))
-      .replace(/\n/g, '[n]').replace(/\r/g, '[r]');
+    const c: string = TestHelpers.getEscaped(textRange.buffer.substr(Math.max(i, 0), 1));
 
     // Show the next 10 characters of context
-    const context: string = escape(textRange.buffer.substr(Math.max(i, 0), 10));
+    const context: string = TestHelpers.getEscaped(textRange.buffer.substr(Math.max(i, 0), 10));
 
     expect({
       c: c,

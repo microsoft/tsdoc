@@ -334,9 +334,7 @@ Object {
   "errors": Array [
     "(1,1): Unexpected end of input",
   ],
-  "lines": Array [
-    "L1",
-  ],
+  "lines": Array [],
 }
 `;
 

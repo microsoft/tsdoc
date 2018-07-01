@@ -12,4 +12,7 @@ script:
   - echo -en 'travis_fold:end:install\\r'
   - echo 'npm run build' && echo -en 'travis_fold:start:build\\r'
   - npm run build
-  - echo -en 'travis_fold:end:build\\r'
+  - echo -en 'travis_fold:end:test\\r'
+  - echo 'npm run test' && echo -en 'travis_fold:start:test\\r'
+  - npm run test
+  - echo -en 'travis_fold:end:test\\r'
