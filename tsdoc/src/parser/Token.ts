@@ -95,7 +95,19 @@ export enum TokenKind {
    * The at-sign character `@`.
    * The Token.range will always be a string of length 1.
    */
-  AtSign = 2015
+  AtSign = 2015,
+
+  /**
+   * The left curly bracket character `{`.
+   * The Token.range will always be a string of length 1.
+   */
+  LeftCurlyBracket = 2016,
+
+  /**
+   * The right curly bracket character `}`.
+   * The Token.range will always be a string of length 1.
+   */
+  RightCurlyBracket = 2017
 }
 
 /**

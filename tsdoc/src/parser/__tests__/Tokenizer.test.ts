@@ -32,7 +32,7 @@ function matchSnapshot(buffer: string): void {
   }
 
   expect({
-    buffer: escape(buffer),
+    buffer: TestHelpers.getEscaped(buffer),
     tokens: items
   }).toMatchSnapshot();
 }
@@ -78,6 +78,7 @@ test('02 Backslash escapes: positive examples', () => {
   matchSnapshot([
     '/**',
     ' * \\$\\@param',
+    ' * double-backslash: \\\\',
     ' */'
   ].join('\n'));
 });

@@ -69,7 +69,7 @@ export class Tokenizer {
       // 3. It's not punctuation (which is always one character)
       if (tokenKind !== undefined
         && characterKind === tokenKind
-        && tokenKind !== TokenKind.OtherPunctuation) {
+        && Tokenizer._isMultiCharacterToken(tokenKind)) {
         // yes, append
       } else {
         // Is there a previous completed token to push?
@@ -90,6 +90,19 @@ export class Tokenizer {
     }
 
     tokens.push(new Token(TokenKind.Newline, line.getNewRange(line.end, line.end), line));
+  }
+
+  /**
+   * Returns true if the token can be comprised of multiple characters
+   */
+  private static _isMultiCharacterToken(kind: TokenKind): boolean {
+    switch (kind) {
+      case TokenKind.Spacing:
+      case TokenKind.AsciiWord:
+      case TokenKind.Other:
+        return true;
+    }
+    return false;
   }
 
   private static _ensureInitialized(): void {
@@ -117,7 +130,9 @@ export class Tokenizer {
       '"' : TokenKind.DoubleQuote,
       '/' : TokenKind.Slash,
       '-' : TokenKind.Hyphen,
-      '@' : TokenKind.AtSign
+      '@' : TokenKind.AtSign,
+      '{' : TokenKind.LeftCurlyBracket,
+      '}' : TokenKind.RightCurlyBracket
     };
     for (const key of Object.getOwnPropertyNames(specialMap)) {
       Tokenizer._charCodeMap[key.charCodeAt(0)] = specialMap[key];
