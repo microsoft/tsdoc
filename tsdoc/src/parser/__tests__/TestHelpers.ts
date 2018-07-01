@@ -10,8 +10,9 @@ import {
 } from '../../nodes';
 
 interface ISnapshotItem {
-  errorMessage?: string;
-  errorLocation?: string;
+  error?: string;
+  failLine?: string;
+  failSpan?: string;
   kind: string;
   nodes?: ISnapshotItem[];
   lineIndex?: number;
@@ -95,8 +96,9 @@ export class TestHelpers {
       item.nodeSpan = TestHelpers.formatLineSpan(docNode.docCommentLine, docNode.range);
 
       if (docNode instanceof DocError) {
-        item.errorMessage = docNode.errorMessage;
-        item.errorLocation = TestHelpers.getEscaped(docNode.errorLocation.toString());
+        item.error = docNode.errorMessage;
+        item.failLine = '>' + TestHelpers.getEscaped(docNode.errorDocCommentLine.toString()) + '<';
+        item.failSpan = TestHelpers.formatLineSpan(docNode.errorDocCommentLine, docNode.errorLocation);
       }
     } else {
       throw new Error('Unsupported node type');

@@ -115,7 +115,8 @@ export class NodeParser {
       return new DocError({
         tokens: [ backslashToken, escapedToken ],
         errorMessage: 'A backslash can only be used to escape a punctuation character',
-        errorLocation: backslashToken.range
+        errorLocation: backslashToken.range,
+        errorDocCommentLine: backslashToken.line
       });
     }
 
@@ -254,7 +255,7 @@ export class NodeParser {
         case TokenKind.EndOfInput:
           return this._backtrackAndCreateError(marker,
             'The TSDoc inline tag name is missing its closing "}"',
-            endMarker);
+            endMarker, openingTokens[0]);
         case TokenKind.Newline:
         this._pushAccumulatedPlainText(tagContentNodes, accumulatedPlainText);
           tagContentNodes.push(new DocNewline({
@@ -406,7 +407,8 @@ export class NodeParser {
       return this._createError('Expecting an HTML string starting with a single-quote or double-quote character');
     }
     const tokens: Token[] = [];
-    tokens.push(this._readToken()); // extract the quote
+    const quoteToken: Token = this._readToken();
+    tokens.push(quoteToken); // extract the quote
 
     while (true) {
       const peekedTokenKind: TokenKind = this._peekTokenKind();
@@ -417,7 +419,7 @@ export class NodeParser {
       }
       if (peekedTokenKind === TokenKind.EndOfInput ||  peekedTokenKind === TokenKind.Newline) {
         return this._backtrackAndCreateError(marker,
-          'The HTML string is missing its closing quote');
+          'The HTML string is missing its closing quote', undefined, quoteToken);
       }
       tokens.push(this._readToken());
     }
@@ -492,6 +494,10 @@ export class NodeParser {
     return nodesPushed;
   }
 
+  private _peekToken(): Token {
+    return this._tokens[this._tokenIndex];
+  }
+
   private _peekTokenKind(): TokenKind {
     return this._tokens[this._tokenIndex].kind;
   }
@@ -501,7 +507,16 @@ export class NodeParser {
       // If this happens, it's a parser bug
       throw new Error('Cannot read past end of stream');
     }
-    return this._tokens[this._tokenIndex++];
+    const token: Token = this._tokens[this._tokenIndex];
+    if (token.kind === TokenKind.EndOfInput) {
+      // We don't allow reading the EndOfInput token, because we want _peekToken()
+      // to be always guaranteed to return a valid result.
+
+      // If this happens, it's a parser bug
+      throw new Error('The EndOfInput token cannot be read');
+    }
+    this._tokenIndex++;
+    return token;
   }
 
   /**
@@ -526,9 +541,13 @@ export class NodeParser {
    * Otherwise, `endMarker` is taken to be `marker + 1`.
    */
   private _backtrackAndCreateError(marker: number, errorMessage: string,
-    endMarker?: number): DocError {
+    endMarker?: number, errorToken?: Token): DocError {
     if (endMarker === undefined) {
       endMarker = marker + 1;
+    }
+
+    if (!errorToken) {
+      errorToken = this._peekToken();
     }
 
     this._backtrack(marker);
@@ -542,7 +561,8 @@ export class NodeParser {
     return new DocError({
       tokens: tokens,
       errorMessage,
-      errorLocation: tokens[0].range
+      errorLocation: errorToken.range,
+      errorDocCommentLine: errorToken.line
     });
   }
 
@@ -563,7 +583,8 @@ export class NodeParser {
     return new DocError({
       tokens: [ token ],
       errorMessage: casted.errorMessage,
-      errorLocation: casted.errorLocation
+      errorLocation: casted.errorLocation,
+      errorDocCommentLine: casted.docCommentLine
     });
   }
 
@@ -585,7 +606,8 @@ export class NodeParser {
     return new DocError({
       tokens: [ token ],
       errorMessage: errorMessage + ': ' + casted.errorMessage,
-      errorLocation: casted.errorLocation
+      errorLocation: casted.errorLocation,
+      errorDocCommentLine: casted.errorDocCommentLine
     });
   }
 
