@@ -107,7 +107,13 @@ export enum TokenKind {
    * The right curly bracket character `}`.
    * The Token.range will always be a string of length 1.
    */
-  RightCurlyBracket = 2017
+  RightCurlyBracket = 2017,
+
+  /**
+   * The backtick character.
+   * The Token.range will always be a string of length 1.
+   */
+  Backtick = 2018
 }
 
 /**

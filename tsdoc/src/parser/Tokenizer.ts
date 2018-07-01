@@ -132,7 +132,8 @@ export class Tokenizer {
       '-' : TokenKind.Hyphen,
       '@' : TokenKind.AtSign,
       '{' : TokenKind.LeftCurlyBracket,
-      '}' : TokenKind.RightCurlyBracket
+      '}' : TokenKind.RightCurlyBracket,
+      '`' : TokenKind.Backtick
     };
     for (const key of Object.getOwnPropertyNames(specialMap)) {
       Tokenizer._charCodeMap[key.charCodeAt(0)] = specialMap[key];

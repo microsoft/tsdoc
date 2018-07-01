@@ -17,7 +17,9 @@ import {
   DocNodeKind,
   DocPlainText,
   DocSpacing,
-  DocWord
+  DocWord,
+  DocCodeContent,
+  DocCodeSpan
 } from '../nodes';
 import { TextRange } from './TextRange';
 
@@ -62,7 +64,7 @@ export class NodeParser {
           this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
           childNodes.push(this._parseBlockTag());
           break;
-          case TokenKind.LeftCurlyBracket:
+        case TokenKind.LeftCurlyBracket:
           this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
           childNodes.push(this._parseInlineTag());
           break;
@@ -84,6 +86,10 @@ export class NodeParser {
           this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
           childNodes.push(this._createError(
             'The ">" character should be escaped using a backslash to avoid confusion with an HTML tag'));
+          break;
+        case TokenKind.Backtick:
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
+          childNodes.push(this._parseCodeSpan());
           break;
         default:
           // If nobody recognized this token, then accumulate plain text
@@ -518,6 +524,79 @@ export class NodeParser {
     }
 
     return word;
+  }
+
+  private _parseCodeSpan(): DocNode {
+    const marker: number = this._createMarker();
+
+    const childNodes: DocNode[] = [];
+
+    // Parse the opening backtick
+    if (this._peekTokenKind() !== TokenKind.Backtick) {
+      return this._createError('Expecting a code span starting with a backtick character "`"');
+    }
+
+    switch (this._peekPreviousTokenKind()) {
+      case TokenKind.Spacing:
+      case TokenKind.Newline:
+      case TokenKind.None:
+        break;
+      default:
+        return this._createError('The opening backtick for a code span must be preceded by whitespace');
+    }
+
+    const openingBacktickToken: Token = this._readToken();
+
+    childNodes.push(new DocDelimiter({
+      tokens: [ openingBacktickToken ]
+    }));
+
+    const contentTokens: Token[] = [];
+
+    // Parse the content backtick
+    while (true) {
+      const peekedTokenKind: TokenKind = this._peekTokenKind();
+      // Did we find the matching token?
+      if (peekedTokenKind === TokenKind.Backtick) {
+        break;
+      }
+      if (peekedTokenKind === TokenKind.EndOfInput ||  peekedTokenKind === TokenKind.Newline) {
+        return this._backtrackAndCreateError(marker,
+          'The code span is missing its closing backtick', undefined, openingBacktickToken);
+      }
+      contentTokens.push(this._readToken());
+    }
+
+    const contentNode: DocNode = new DocCodeContent({
+      childNodes: [
+        new DocPlainText({
+          tokens: contentTokens
+        })
+      ]
+    });
+    childNodes.push(contentNode);
+
+    // Parse the closing backtick
+    const closingBacktickToken: Token = this._readToken();
+    childNodes.push(new DocDelimiter({
+      tokens: [ closingBacktickToken ]
+    }));
+
+    // Make sure there's whitespace after
+    switch (this._peekTokenKind()) {
+      case TokenKind.Spacing:
+      case TokenKind.EndOfInput:
+      case TokenKind.Newline:
+        break;
+      default:
+        return this._backtrackAndCreateError(marker,
+          'The closing backtick for a code span must be followed by whitespace', this._createMarker(),
+          closingBacktickToken);
+    }
+
+    return new DocCodeSpan({
+      childNodes: childNodes
+    });
   }
 
   private _parseSpacingAndNewlinesInto(childNodes: DocNode[]): boolean {

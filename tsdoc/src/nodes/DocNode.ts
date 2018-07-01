@@ -7,19 +7,21 @@ import { TextRange } from '../parser/TextRange';
 export enum DocNodeKind {
   BackslashEscape = 1001,
   BlockTag = 1002,
-  Comment = 1003,
-  Delimiter = 1004,
-  Error = 1005,
-  HtmlAttribute  = 1006,
-  HtmlEndTag = 1007,
-  HtmlStartTag = 1008,
-  HtmlString = 1009,
-  Newline = 1010,
-  InlineTag = 1011,
-  InlineTagContent = 1012,
-  PlainText = 1013,
-  Spacing = 1014,
-  Word = 1015
+  CodeContent = 1003,
+  CodeSpan = 1004,
+  Comment = 1005,
+  Delimiter = 1006,
+  Error = 1007,
+  HtmlAttribute  = 1008,
+  HtmlEndTag = 1009,
+  HtmlStartTag = 1010,
+  HtmlString = 1011,
+  Newline = 1012,
+  InlineTag = 1013,
+  InlineTagContent = 1014,
+  PlainText = 1015,
+  Spacing = 1016,
+  Word = 1017
 }
 
 /**

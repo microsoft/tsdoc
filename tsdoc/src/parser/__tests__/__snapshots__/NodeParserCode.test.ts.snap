@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`00 Code span basic, positive 1`] = `
+Object {
+  "buffer": "/**[n] * line [c]1[c][n] * line [c] 2[c] sdf[n] */",
+  "lines": Array [
+    "line [c]1[c]",
+    "line [c] 2[c] sdf",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">line [c]1[c]<",
+        "nodeSpan": ">     <      ",
+      },
+      Object {
+        "kind": "CodeSpan",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">line [c]1[c]<",
+            "nodeSpan": "     >   <   ",
+          },
+          Object {
+            "kind": "CodeContent",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "lineIndex": 0,
+                "nodeLine": ">line [c]1[c]<",
+                "nodeSpan": "        > <  ",
+              },
+            ],
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 0,
+            "nodeLine": ">line [c]1[c]<",
+            "nodeSpan": "         >   <",
+          },
+        ],
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">line [c]1[c]<",
+        "nodeSpan": "            ><",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 1,
+        "nodeLine": ">line [c] 2[c] sdf<",
+        "nodeSpan": ">     <           ",
+      },
+      Object {
+        "kind": "CodeSpan",
+        "nodes": Array [
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 1,
+            "nodeLine": ">line [c] 2[c] sdf<",
+            "nodeSpan": "     >   <        ",
+          },
+          Object {
+            "kind": "CodeContent",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "lineIndex": 1,
+                "nodeLine": ">line [c] 2[c] sdf<",
+                "nodeSpan": "        >  <      ",
+              },
+            ],
+          },
+          Object {
+            "kind": "Delimiter",
+            "lineIndex": 1,
+            "nodeLine": ">line [c] 2[c] sdf<",
+            "nodeSpan": "          >   <   ",
+          },
+        ],
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 1,
+        "nodeLine": ">line [c] 2[c] sdf<",
+        "nodeSpan": "             >    <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 1,
+        "nodeLine": ">line [c] 2[c] sdf<",
+        "nodeSpan": "                 ><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`01 Code span basic, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [c]multi[n] * line[c][n] */",
+  "lines": Array [
+    "[c]multi",
+    "line[c]",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "error": "The code span is missing its closing backtick",
+        "failLine": ">[c]multi<",
+        "failSpan": ">   <    ",
+        "kind": "Error",
+        "lineIndex": 0,
+        "nodeLine": ">[c]multi<",
+        "nodeSpan": ">   <    ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">[c]multi<",
+        "nodeSpan": "   >     <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">[c]multi<",
+        "nodeSpan": "        ><",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 1,
+        "nodeLine": ">line[c]<",
+        "nodeSpan": ">    <  ",
+      },
+      Object {
+        "error": "The opening backtick for a code span must be preceded by whitespace",
+        "failLine": ">line[c]<",
+        "failSpan": "    >   <",
+        "kind": "Error",
+        "lineIndex": 1,
+        "nodeLine": ">line[c]<",
+        "nodeSpan": "    >   <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 1,
+        "nodeLine": ">line[c]<",
+        "nodeSpan": "       ><",
+      },
+    ],
+  },
+}
+`;
+
+exports[`01 Code span basic, negative 2`] = `
+Object {
+  "buffer": "/**[n] * one[c]two[n] * [c]three[c]four[n] */",
+  "lines": Array [
+    "one[c]two",
+    "[c]three[c]four",
+  ],
+  "rootNode": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">one[c]two<",
+        "nodeSpan": ">   <     ",
+      },
+      Object {
+        "error": "The opening backtick for a code span must be preceded by whitespace",
+        "failLine": ">one[c]two<",
+        "failSpan": "   >   <  ",
+        "kind": "Error",
+        "lineIndex": 0,
+        "nodeLine": ">one[c]two<",
+        "nodeSpan": "   >   <  ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 0,
+        "nodeLine": ">one[c]two<",
+        "nodeSpan": "      >   <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 0,
+        "nodeLine": ">one[c]two<",
+        "nodeSpan": "         ><",
+      },
+      Object {
+        "error": "The closing backtick for a code span must be followed by whitespace",
+        "failLine": ">[c]three[c]four<",
+        "failSpan": "        >   <   ",
+        "kind": "Error",
+        "lineIndex": 1,
+        "nodeLine": ">[c]three[c]four<",
+        "nodeSpan": ">           <   ",
+      },
+      Object {
+        "kind": "PlainText",
+        "lineIndex": 1,
+        "nodeLine": ">[c]three[c]four<",
+        "nodeSpan": "           >    <",
+      },
+      Object {
+        "kind": "Newline",
+        "lineIndex": 1,
+        "nodeLine": ">[c]three[c]four<",
+        "nodeSpan": "               ><",
+      },
+    ],
+  },
+}
+`;

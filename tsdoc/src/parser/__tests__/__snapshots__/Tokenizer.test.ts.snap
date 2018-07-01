@@ -518,7 +518,7 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "                                >   <   ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Backtick",
     },
     Object {
       "indexOfLine": 0,
