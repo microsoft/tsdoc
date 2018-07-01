@@ -5,6 +5,7 @@ export * from './DocComment';
 export * from './DocDelimiter';
 export * from './DocError';
 export * from './DocHtmlAttribute';
+export * from './DocHtmlEndTag';
 export * from './DocHtmlStartTag';
 export * from './DocHtmlString';
 export * from './DocInlineTag';

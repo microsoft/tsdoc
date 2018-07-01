@@ -11,14 +11,15 @@ export enum DocNodeKind {
   Delimiter = 1004,
   Error = 1005,
   HtmlAttribute  = 1006,
-  HtmlStartTag = 1007,
-  HtmlString = 1008,
-  Newline = 1009,
-  InlineTag = 1010,
-  InlineTagContent = 1011,
-  PlainText = 1012,
-  Spacing = 1013,
-  Word = 1014
+  HtmlEndTag = 1007,
+  HtmlStartTag = 1008,
+  HtmlString = 1009,
+  Newline = 1010,
+  InlineTag = 1011,
+  InlineTagContent = 1012,
+  PlainText = 1013,
+  Spacing = 1014,
+  Word = 1015
 }
 
 /**

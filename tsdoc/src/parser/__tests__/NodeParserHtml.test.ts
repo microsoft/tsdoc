@@ -86,3 +86,24 @@ test('05 Eclipsed TSDoc', () => {
     ' */'
   ].join('\n'));
 });
+
+test('06 Closing tags, positive', () => {
+  TestHelpers.parseAndMatchSnapshot([
+    '/**',
+    ' * </tag-a>',
+    ' * </tag-b  >',
+    ' * </tag-c',
+    ' *   >',
+    ' */'
+  ].join('\n'));
+});
+
+test('07 Closing tags, negative', () => {
+  TestHelpers.parseAndMatchSnapshot([
+    '/**',
+    ' * </tag-a/>',
+    ' * </ tag-b>',
+    ' * </tag-c',
+    ' */'
+  ].join('\n'));
+});

@@ -7,16 +7,17 @@ import {
   DocDelimiter,
   DocError,
   DocHtmlAttribute,
+  DocHtmlEndTag,
   DocHtmlStartTag,
   DocHtmlString,
+  DocInlineTag,
+  DocInlineTagContent,
   DocNewline,
   DocNode,
   DocNodeKind,
   DocPlainText,
   DocSpacing,
-  DocWord,
-  DocInlineTagContent,
-  DocInlineTag
+  DocWord
 } from '../nodes';
 import { TextRange } from './TextRange';
 
@@ -72,7 +73,17 @@ export class NodeParser {
           break;
         case TokenKind.LessThan:
           this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
-          childNodes.push(this._parseHtmlStartTag());
+          // Look ahead two tokens to see if this is "<a>" or "</a>".
+          if (this._peekTokenAfterKind() === TokenKind.Slash) {
+            childNodes.push(this._parseHtmlEndTag());
+          } else {
+            childNodes.push(this._parseHtmlStartTag());
+          }
+          break;
+        case TokenKind.GreaterThan:
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
+          childNodes.push(this._createError(
+            'The ">" character should be escaped using a backslash to avoid confusion with an HTML tag'));
           break;
         default:
           // If nobody recognized this token, then accumulate plain text
@@ -429,6 +440,52 @@ export class NodeParser {
     });
   }
 
+  private _parseHtmlEndTag(): DocNode {
+    const marker: number = this._createMarker();
+
+    const childNodes: DocNode[] = [];
+
+    // Read the "<" delimiter
+    const lessThanToken: Token = this._readToken();
+    if (lessThanToken.kind !== TokenKind.LessThan) {
+      return this._backtrackAndCreateError(marker, 'Expecting an HTML tag starting with "</"');
+    }
+    const slashToken: Token = this._readToken();
+    if (slashToken.kind !== TokenKind.Slash) {
+      return this._backtrackAndCreateError(marker, 'Expecting an HTML tag starting with "</"');
+    }
+    childNodes.push(new DocDelimiter({
+      tokens: [ lessThanToken, slashToken ]
+    }));
+
+    // NOTE: Spaces are not permitted here
+    // https://www.w3.org/TR/html5/syntax.html#end-tags
+
+    // Read the tag name
+    const tagNameNode: DocNode = this._parseHtmlWord();
+    if (tagNameNode.kind === DocNodeKind.Error) {
+      return this._backtrackAndCreateParentError(marker,
+        'Expecting an HTML tag name', tagNameNode);
+    }
+    childNodes.push(tagNameNode);
+
+    this._parseSpacingAndNewlinesInto(childNodes);
+
+    // Read the closing ">"
+    if (this._peekTokenKind() !== TokenKind.GreaterThan) {
+      return this._backtrackAndCreateError(marker,
+        'Expecting a closing ">" for the HTML tag');
+    }
+
+    childNodes.push(new DocDelimiter({
+      tokens: [ this._readToken() ]
+    }));
+
+    return new DocHtmlEndTag({
+      childNodes: childNodes
+    });
+  }
+
   private _parseHtmlWord(): DocNode {
     const tokens: Token[] = [];
 
@@ -494,14 +551,36 @@ export class NodeParser {
     return nodesPushed;
   }
 
+  /**
+   * Show the next token that will be returned by _readToken(), without
+   * consuming anything.
+   */
   private _peekToken(): Token {
     return this._tokens[this._tokenIndex];
   }
 
+  /**
+   * Show the TokenKind for the next token that will be returned by _readToken(), without
+   * consuming anything.
+   */
   private _peekTokenKind(): TokenKind {
     return this._tokens[this._tokenIndex].kind;
   }
 
+  /**
+   * Show the TokenKind for the token after the next token that will be returned by _readToken(),
+   * without consuming anything.  In other words, look ahead two tokens.
+   */
+  private _peekTokenAfterKind(): TokenKind {
+    if (this._tokenIndex + 1 >= this._tokens.length) {
+      return TokenKind.None;
+    }
+    return this._tokens[this._tokenIndex + 1].kind;
+  }
+
+  /**
+   * Extract the next token from the input stream and return it.
+   */
   private _readToken(): Token {
     if (this._tokenIndex >= this._tokens.length) {
       // If this happens, it's a parser bug
