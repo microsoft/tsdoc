@@ -89,7 +89,31 @@ export enum TokenKind {
    * The hyphen character `-`.
    * The Token.range will always be a string of length 1.
    */
-  Hyphen = 2014
+  Hyphen = 2014,
+
+  /**
+   * The at-sign character `@`.
+   * The Token.range will always be a string of length 1.
+   */
+  AtSign = 2015,
+
+  /**
+   * The left curly bracket character `{`.
+   * The Token.range will always be a string of length 1.
+   */
+  LeftCurlyBracket = 2016,
+
+  /**
+   * The right curly bracket character `}`.
+   * The Token.range will always be a string of length 1.
+   */
+  RightCurlyBracket = 2017,
+
+  /**
+   * The backtick character.
+   * The Token.range will always be a string of length 1.
+   */
+  Backtick = 2018
 }
 
 /**

@@ -2,41 +2,46 @@ import { ParserContext } from './ParserContext';
 import { Token, TokenKind } from './Token';
 import { Tokenizer } from './Tokenizer';
 import {
-  DocDelimiter,
-  DocNode,
-  DocPlainText,
   DocBackslashEscape,
+  DocBlockTag,
+  DocDelimiter,
   DocError,
-  DocHtmlStartTag,
-  DocNodeKind,
-  DocWord,
-  DocSpacing,
-  DocNewline,
   DocHtmlAttribute,
-  DocHtmlString
+  DocHtmlEndTag,
+  DocHtmlStartTag,
+  DocHtmlString,
+  DocInlineTag,
+  DocInlineTagContent,
+  DocNewline,
+  DocNode,
+  DocNodeKind,
+  DocPlainText,
+  DocSpacing,
+  DocWord,
+  DocCodeContent,
+  DocCodeSpan
 } from '../nodes';
+import { TextRange } from './TextRange';
 
 export class NodeParser {
   // https://www.w3.org/TR/html5/syntax.html#tag-name
   // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
   private static readonly htmlNameRegExp: RegExp = /^[a-z]+(\-[a-z]+)*$/i;
 
+  private static readonly tsdocTagNameRegExp: RegExp = /^[a-z][a-z0-9]*$/i;
+
   private _tokens: Token[] = [];
   // The index into the _tokens array, of the current token being processed.
   private _tokenIndex: number = 0;
 
-  /**
-   * When we are accumulating a DocPlainText node, these are the tokens.
-   */
-  private _accumulatedPlainText: Token[];
-
   public constructor(parserContext: ParserContext) {
     this._tokens = parserContext.tokens;
-    this._accumulatedPlainText = [];
   }
 
   public parse(): DocNode[] {
     const childNodes: DocNode[] = [];
+
+    const accumulatedPlainTextTokens: Token[] = [];
 
     let done: boolean = false;
     while (!done) {
@@ -46,35 +51,63 @@ export class NodeParser {
           done = true;
           break;
         case TokenKind.Newline:
-          this._pushAccumulatedPlainText(childNodes);
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
           childNodes.push(new DocNewline({
             tokens: [ this._readToken() ]
           }));
           break;
         case TokenKind.Backslash:
-          this._pushAccumulatedPlainText(childNodes);
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
           childNodes.push(this._parseBackslashEscape());
           break;
+        case TokenKind.AtSign:
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
+          childNodes.push(this._parseBlockTag());
+          break;
+        case TokenKind.LeftCurlyBracket:
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
+          childNodes.push(this._parseInlineTag());
+          break;
+        case TokenKind.RightCurlyBracket:
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
+          childNodes.push(this._createError(
+            'The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag'));
+          break;
         case TokenKind.LessThan:
-          this._pushAccumulatedPlainText(childNodes);
-          childNodes.push(this._parseHtmlStartTag());
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
+          // Look ahead two tokens to see if this is "<a>" or "</a>".
+          if (this._peekTokenAfterKind() === TokenKind.Slash) {
+            childNodes.push(this._parseHtmlEndTag());
+          } else {
+            childNodes.push(this._parseHtmlStartTag());
+          }
+          break;
+        case TokenKind.GreaterThan:
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
+          childNodes.push(this._createError(
+            'The ">" character should be escaped using a backslash to avoid confusion with an HTML tag'));
+          break;
+        case TokenKind.Backtick:
+          this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
+          childNodes.push(this._parseCodeSpan());
           break;
         default:
           // If nobody recognized this token, then accumulate plain text
-          this._accumulatedPlainText.push(this._readToken());
+          accumulatedPlainTextTokens.push(this._readToken());
           break;
       }
     }
-    this._pushAccumulatedPlainText(childNodes);
+    this._pushAccumulatedPlainText(childNodes, accumulatedPlainTextTokens);
     return childNodes;
   }
 
-  private _pushAccumulatedPlainText(childNodes: DocNode[]): void {
-    if (this._accumulatedPlainText.length > 0) {
+  private _pushAccumulatedPlainText(childNodes: DocNode[],
+    accumulatedPlainTextTokens: Token[]): void {
+    if (accumulatedPlainTextTokens.length > 0) {
       childNodes.push(
-        new DocPlainText({ tokens: this._accumulatedPlainText })
+        new DocPlainText({ tokens: accumulatedPlainTextTokens })
       );
-      this._accumulatedPlainText = [];
+      accumulatedPlainTextTokens.length = 0;
     }
   }
 
@@ -99,12 +132,189 @@ export class NodeParser {
       return new DocError({
         tokens: [ backslashToken, escapedToken ],
         errorMessage: 'A backslash can only be used to escape a punctuation character',
-        errorLocation: backslashToken.range
+        errorLocation: backslashToken.range,
+        errorDocCommentLine: backslashToken.line
       });
     }
 
     return new DocBackslashEscape({
       tokens: [ backslashToken, escapedToken ]
+    });
+  }
+
+  private _parseBlockTag(): DocNode {
+    const marker: number = this._createMarker();
+    if (this._peekTokenKind() !== TokenKind.AtSign) {
+      return this._backtrackAndCreateError(marker, 'Expecting a TSDoc tag starting with "@"');
+    }
+
+    // "@one" is a valid TSDoc tag at the start of a line, but "@one@two" is
+    // a syntax error.  For two tags it should be "@one @two", or for literal text it
+    // should be "\@one\@two".
+    switch (this._peekPreviousTokenKind()) {
+      case TokenKind.None:
+      case TokenKind.Spacing:
+      case TokenKind.Newline:
+        break;
+      default:
+        return this._backtrackAndCreateError(marker, 'A TSDoc tag must be preceded by whitespace');
+    }
+
+    const tokens: Token[] = [];
+    tokens.push(this._readToken()); // extract the @ sign
+
+    // Read the words
+    while (this._peekTokenKind() === TokenKind.AsciiWord) {
+      const token: Token = this._readToken();
+      tokens.push(token);
+    }
+
+    if (tokens.length === 1) {
+      return this._backtrackAndCreateError(marker,
+        'Expecting a TSDoc tag after the "@" character (or use a backslash to escape this character)');
+    }
+
+    switch (this._peekTokenKind()) {
+      case TokenKind.None:
+      case TokenKind.Spacing:
+      case TokenKind.Newline:
+      case TokenKind.EndOfInput:
+        break;
+      default:
+        return this._backtrackAndCreateError(marker, 'A TSDoc tag must be followed by whitespace');
+    }
+
+    // The tag name is everything except the "@" character
+    const tagName: TextRange = tokens[0].range.getNewRange(
+      tokens[0].range.pos + 1, // skip the "@"
+      tokens[tokens.length - 1].range.end
+    );
+
+    const blockTagNode: DocBlockTag = new DocBlockTag({
+      tokens: tokens,
+      tagName: tagName
+    });
+
+    if (!NodeParser.tsdocTagNameRegExp.test(tagName.toString())) {
+      return this._backtrackAndCreateError(marker,
+        'A TSDoc tag name must start with a letter and contain only letters and numbers');
+    }
+    return blockTagNode;
+  }
+
+  private _parseInlineTag(): DocNode {
+    const marker: number = this._createMarker();
+    if (this._peekTokenKind() !== TokenKind.LeftCurlyBracket) {
+      return this._backtrackAndCreateError(marker, 'Expecting a TSDoc tag starting with "{"');
+    }
+
+    const openingTokens: Token[] = [];
+    openingTokens.push(this._readToken());
+
+    if (this._peekTokenKind() !== TokenKind.AtSign) {
+      return this._backtrackAndCreateError(marker, 'Expecting a TSDoc tag starting with "{@"');
+    }
+    openingTokens.push(this._readToken());
+
+    const childNodes: DocNode[] = [];
+
+    // Push the "{@" opening delimiter
+    childNodes.push(new DocDelimiter({
+      tokens: openingTokens
+    }));
+
+    const endMarker: number = this._createMarker();
+
+    // Read the words
+    const tagNameTokens: Token[] = [];
+    while (this._peekTokenKind() === TokenKind.AsciiWord) {
+      tagNameTokens.push(this._readToken());
+    }
+
+    if (tagNameTokens.length === 0) {
+      return this._backtrackAndCreateError(marker,
+        'Expecting a TSDoc inline tag name after the "{@" characters',
+        endMarker);
+    }
+
+    const tagName: TextRange = tagNameTokens[0].range.getNewRange(
+      tagNameTokens[0].range.pos,
+      tagNameTokens[tagNameTokens.length - 1].range.end
+    );
+
+    if (!NodeParser.tsdocTagNameRegExp.test(tagName.toString())) {
+      return this._backtrackAndCreateError(marker,
+        'A TSDoc tag name must start with a letter and contain only letters and numbers',
+        endMarker);
+    }
+
+    childNodes.push(new DocWord({
+      tokens: tagNameTokens
+    }));
+
+    // Parse the DocInlineTagContent child
+    const tagContentNodes: DocNode[] = [];
+
+    // We give the space to the DocInlineTagContent in case the implementor
+    // wants to assign some special meaning to spaces for their tag.
+    if (!this._parseSpacingAndNewlinesInto(tagContentNodes)) {
+      if (this._peekTokenKind() !== TokenKind.RightCurlyBracket) {
+        return this._backtrackAndCreateError(marker,
+          'Expecting a space after the TSDoc inline tag name',
+          endMarker);
+      }
+    }
+
+    const accumulatedPlainText: Token[] = [];
+    let done: boolean = false;
+    while (!done) {
+      switch (this._peekTokenKind()) {
+        case TokenKind.EndOfInput:
+          return this._backtrackAndCreateError(marker,
+            'The TSDoc inline tag name is missing its closing "}"',
+            endMarker, openingTokens[0]);
+        case TokenKind.Newline:
+        this._pushAccumulatedPlainText(tagContentNodes, accumulatedPlainText);
+          tagContentNodes.push(new DocNewline({
+            tokens: [ this._readToken() ]
+          }));
+          break;
+        case TokenKind.Backslash:
+          this._pushAccumulatedPlainText(tagContentNodes, accumulatedPlainText);
+          // http://usejsdoc.org/about-block-inline-tags.html
+          // "If your tag's text includes a closing curly brace (}), you must escape it with
+          // a leading backslash (\)."
+          tagContentNodes.push(this._parseBackslashEscape());
+          break;
+        case TokenKind.LeftCurlyBracket:
+          return this._backtrackAndCreateError(marker,
+            'The "{" character must be escaped with a backslash when used inside a TSDoc inline tag',
+            endMarker);
+        case TokenKind.RightCurlyBracket:
+          done = true;
+          break;
+        default:
+          accumulatedPlainText.push(this._readToken());
+          break;
+      }
+    }
+    this._pushAccumulatedPlainText(tagContentNodes, accumulatedPlainText);
+
+    const docInlineTagContent: DocInlineTagContent = new DocInlineTagContent({
+      childNodes: tagContentNodes
+    });
+
+    childNodes.push(docInlineTagContent);
+
+    // Parse the closing "}"
+    childNodes.push(new DocDelimiter({
+      tokens: [ this._readToken() ]
+    }));
+
+    return new DocInlineTag({
+      childNodes: childNodes,
+      tagName: tagName,
+      tagContent: docInlineTagContent
     });
   }
 
@@ -139,8 +349,7 @@ export class NodeParser {
       }
 
       if (!parsedSpaces) {
-        return this._backtrackAndCreateError(marker, 'Missing space before attribute name',
-          this._readToken());
+        return this._backtrackAndCreateError(marker, 'Missing space before attribute name');
       }
 
       // Read the attribute
@@ -160,8 +369,7 @@ export class NodeParser {
     }
     if (this._peekTokenKind() !== TokenKind.GreaterThan) {
       return this._backtrackAndCreateError(marker,
-        'The HTML tag has invalid syntax; expecting an attribute or ">" or "/>"',
-        this._readToken());
+        'The HTML tag has invalid syntax; expecting an attribute or ">" or "/>"');
     }
     delimiterTokens.push(this._readToken());
 
@@ -216,7 +424,8 @@ export class NodeParser {
       return this._createError('Expecting an HTML string starting with a single-quote or double-quote character');
     }
     const tokens: Token[] = [];
-    tokens.push(this._readToken()); // extract the quote
+    const quoteToken: Token = this._readToken();
+    tokens.push(quoteToken); // extract the quote
 
     while (true) {
       const peekedTokenKind: TokenKind = this._peekTokenKind();
@@ -227,13 +436,59 @@ export class NodeParser {
       }
       if (peekedTokenKind === TokenKind.EndOfInput ||  peekedTokenKind === TokenKind.Newline) {
         return this._backtrackAndCreateError(marker,
-          'The HTML string is missing its closing quote');
+          'The HTML string is missing its closing quote', undefined, quoteToken);
       }
       tokens.push(this._readToken());
     }
 
     return new DocHtmlString({
       tokens: tokens
+    });
+  }
+
+  private _parseHtmlEndTag(): DocNode {
+    const marker: number = this._createMarker();
+
+    const childNodes: DocNode[] = [];
+
+    // Read the "<" delimiter
+    const lessThanToken: Token = this._readToken();
+    if (lessThanToken.kind !== TokenKind.LessThan) {
+      return this._backtrackAndCreateError(marker, 'Expecting an HTML tag starting with "</"');
+    }
+    const slashToken: Token = this._readToken();
+    if (slashToken.kind !== TokenKind.Slash) {
+      return this._backtrackAndCreateError(marker, 'Expecting an HTML tag starting with "</"');
+    }
+    childNodes.push(new DocDelimiter({
+      tokens: [ lessThanToken, slashToken ]
+    }));
+
+    // NOTE: Spaces are not permitted here
+    // https://www.w3.org/TR/html5/syntax.html#end-tags
+
+    // Read the tag name
+    const tagNameNode: DocNode = this._parseHtmlWord();
+    if (tagNameNode.kind === DocNodeKind.Error) {
+      return this._backtrackAndCreateParentError(marker,
+        'Expecting an HTML tag name', tagNameNode);
+    }
+    childNodes.push(tagNameNode);
+
+    this._parseSpacingAndNewlinesInto(childNodes);
+
+    // Read the closing ">"
+    if (this._peekTokenKind() !== TokenKind.GreaterThan) {
+      return this._backtrackAndCreateError(marker,
+        'Expecting a closing ">" for the HTML tag');
+    }
+
+    childNodes.push(new DocDelimiter({
+      tokens: [ this._readToken() ]
+    }));
+
+    return new DocHtmlEndTag({
+      childNodes: childNodes
     });
   }
 
@@ -271,6 +526,79 @@ export class NodeParser {
     return word;
   }
 
+  private _parseCodeSpan(): DocNode {
+    const marker: number = this._createMarker();
+
+    const childNodes: DocNode[] = [];
+
+    // Parse the opening backtick
+    if (this._peekTokenKind() !== TokenKind.Backtick) {
+      return this._createError('Expecting a code span starting with a backtick character "`"');
+    }
+
+    switch (this._peekPreviousTokenKind()) {
+      case TokenKind.Spacing:
+      case TokenKind.Newline:
+      case TokenKind.None:
+        break;
+      default:
+        return this._createError('The opening backtick for a code span must be preceded by whitespace');
+    }
+
+    const openingBacktickToken: Token = this._readToken();
+
+    childNodes.push(new DocDelimiter({
+      tokens: [ openingBacktickToken ]
+    }));
+
+    const contentTokens: Token[] = [];
+
+    // Parse the content backtick
+    while (true) {
+      const peekedTokenKind: TokenKind = this._peekTokenKind();
+      // Did we find the matching token?
+      if (peekedTokenKind === TokenKind.Backtick) {
+        break;
+      }
+      if (peekedTokenKind === TokenKind.EndOfInput ||  peekedTokenKind === TokenKind.Newline) {
+        return this._backtrackAndCreateError(marker,
+          'The code span is missing its closing backtick', undefined, openingBacktickToken);
+      }
+      contentTokens.push(this._readToken());
+    }
+
+    const contentNode: DocNode = new DocCodeContent({
+      childNodes: [
+        new DocPlainText({
+          tokens: contentTokens
+        })
+      ]
+    });
+    childNodes.push(contentNode);
+
+    // Parse the closing backtick
+    const closingBacktickToken: Token = this._readToken();
+    childNodes.push(new DocDelimiter({
+      tokens: [ closingBacktickToken ]
+    }));
+
+    // Make sure there's whitespace after
+    switch (this._peekTokenKind()) {
+      case TokenKind.Spacing:
+      case TokenKind.EndOfInput:
+      case TokenKind.Newline:
+        break;
+      default:
+        return this._backtrackAndCreateError(marker,
+          'The closing backtick for a code span must be followed by whitespace', this._createMarker(),
+          closingBacktickToken);
+    }
+
+    return new DocCodeSpan({
+      childNodes: childNodes
+    });
+  }
+
   private _parseSpacingAndNewlinesInto(childNodes: DocNode[]): boolean {
     let nodesPushed: boolean = false;
     const spacingTokens: Token[] = [];
@@ -302,16 +630,61 @@ export class NodeParser {
     return nodesPushed;
   }
 
+  /**
+   * Show the next token that will be returned by _readToken(), without
+   * consuming anything.
+   */
+  private _peekToken(): Token {
+    return this._tokens[this._tokenIndex];
+  }
+
+  /**
+   * Show the TokenKind for the next token that will be returned by _readToken(), without
+   * consuming anything.
+   */
   private _peekTokenKind(): TokenKind {
     return this._tokens[this._tokenIndex].kind;
   }
 
+  /**
+   * Show the TokenKind for the token after the next token that will be returned by _readToken(),
+   * without consuming anything.  In other words, look ahead two tokens.
+   */
+  private _peekTokenAfterKind(): TokenKind {
+    if (this._tokenIndex + 1 >= this._tokens.length) {
+      return TokenKind.None;
+    }
+    return this._tokens[this._tokenIndex + 1].kind;
+  }
+
+  /**
+   * Extract the next token from the input stream and return it.
+   */
   private _readToken(): Token {
     if (this._tokenIndex >= this._tokens.length) {
       // If this happens, it's a parser bug
       throw new Error('Cannot read past end of stream');
     }
-    return this._tokens[this._tokenIndex++];
+    const token: Token = this._tokens[this._tokenIndex];
+    if (token.kind === TokenKind.EndOfInput) {
+      // We don't allow reading the EndOfInput token, because we want _peekToken()
+      // to be always guaranteed to return a valid result.
+
+      // If this happens, it's a parser bug
+      throw new Error('The EndOfInput token cannot be read');
+    }
+    this._tokenIndex++;
+    return token;
+  }
+
+  /**
+   * Returns the kind of the token immediately before the current token.
+   */
+  private _peekPreviousTokenKind(): TokenKind {
+    if (this._tokenIndex === 0) {
+      return TokenKind.None;
+    }
+    return this._tokens[this._tokenIndex - 1].kind;
   }
 
   private _createError(errorMessage: string): DocError {
@@ -320,17 +693,34 @@ export class NodeParser {
 
   /**
    * Rewind to the specified marker, read the next token, and report it as an error.
+   * @remarks
+   * If `endmarker` is specified, then the DocError will encompass the range of
+   * tokens starting with `marker` up to (but not including) `endMarker`.
+   * Otherwise, `endMarker` is taken to be `marker + 1`.
    */
   private _backtrackAndCreateError(marker: number, errorMessage: string,
-    errorLocationToken?: Token): DocError {
+    endMarker?: number, errorToken?: Token): DocError {
+    if (endMarker === undefined) {
+      endMarker = marker + 1;
+    }
+
+    if (!errorToken) {
+      errorToken = this._peekToken();
+    }
 
     this._backtrack(marker);
-    const token: Token = this._readToken();
+
+    const tokens: Token[] = [];
+
+    while (this._tokenIndex < endMarker) {
+      tokens.push(this._readToken());
+    }
 
     return new DocError({
-      tokens: [ token ],
+      tokens: tokens,
       errorMessage,
-      errorLocation: errorLocationToken !== undefined ? errorLocationToken.range : token.range
+      errorLocation: errorToken.range,
+      errorDocCommentLine: errorToken.line
     });
   }
 
@@ -351,7 +741,8 @@ export class NodeParser {
     return new DocError({
       tokens: [ token ],
       errorMessage: casted.errorMessage,
-      errorLocation: casted.errorLocation
+      errorLocation: casted.errorLocation,
+      errorDocCommentLine: casted.docCommentLine
     });
   }
 
@@ -373,7 +764,8 @@ export class NodeParser {
     return new DocError({
       tokens: [ token ],
       errorMessage: errorMessage + ': ' + casted.errorMessage,
-      errorLocation: casted.errorLocation
+      errorLocation: casted.errorLocation,
+      errorDocCommentLine: casted.errorDocCommentLine
     });
   }
 

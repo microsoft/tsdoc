@@ -71,12 +71,39 @@ test('04 HTML start tags: with attributes, negative', () => {
     ' * <tag-f attr-six="six"seven="seven" />',
     ' */'
   ].join('\n'));
+  TestHelpers.parseAndMatchSnapshot([
+    '/**',
+    ' * <tag-g attr="multi',
+    ' * line" />',
+    ' */'
+  ].join('\n'));
 });
 
 test('05 Eclipsed TSDoc', () => {
   TestHelpers.parseAndMatchSnapshot([
     '/**',
     ' * <tag attr-one="@tag" />',
+    ' */'
+  ].join('\n'));
+});
+
+test('06 Closing tags, positive', () => {
+  TestHelpers.parseAndMatchSnapshot([
+    '/**',
+    ' * </tag-a>',
+    ' * </tag-b  >',
+    ' * </tag-c',
+    ' *   >',
+    ' */'
+  ].join('\n'));
+});
+
+test('07 Closing tags, negative', () => {
+  TestHelpers.parseAndMatchSnapshot([
+    '/**',
+    ' * </tag-a/>',
+    ' * </ tag-b>',
+    ' * </tag-c',
     ' */'
   ].join('\n'));
 });

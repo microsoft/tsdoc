@@ -7,6 +7,7 @@ import { TextRange } from '../parser/TextRange';
 export interface IDocErrorParameters extends IDocNodeLeafParameters {
   errorMessage: string;
   errorLocation: TextRange;
+  errorDocCommentLine: TextRange;
 }
 
 /**
@@ -34,6 +35,13 @@ export class DocError extends DocNodeLeaf {
   public readonly errorLocation: TextRange;
 
   /**
+   * The virtual line inside the doc comment that the errorLocation was extracted from.
+   * Note that this line excludes prefixes (e.g. doc comment delimiters) and suffixes
+   * (e.g. trailing whitespace).
+   */
+  public readonly errorDocCommentLine: TextRange;
+
+  /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
@@ -41,5 +49,6 @@ export class DocError extends DocNodeLeaf {
     super(parameters);
     this.errorMessage = parameters.errorMessage;
     this.errorLocation = parameters.errorLocation;
+    this.errorDocCommentLine = parameters.errorDocCommentLine;
   }
 }
