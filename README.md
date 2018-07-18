@@ -39,7 +39,7 @@ This scenario originally arose from projects at Microsoft that are processed by 
 
 These are just examples.  Many other tools in today's web developer community want to interact with TypeScript doc comments.  Each of these tools accepts a syntax that is loosely based on [JSDoc](http://usejsdoc.org), but encounters frustrating incompatibilities when attempting to coexist with other parsers.
 
-*Why can't JSDoc be the standard?*  Unfortunately the JSDoc grammar is not rigorously specified, but rather inferred from the behavior of a particular implementation.  The majority of the standard JSDoc tags are preoccupied with providing type annotations for plain JavaScript, which is an irrelevant concern for a strongly-typed language such as TypeScript.  **TSDoc** addresses these limitations, while also tackling a more sophisticated set of goals.
+*Why can't JSDoc be the standard?*  Unfortunately the JSDoc grammar is not rigorously specified, but rather inferred from the behavior of a particular implementation.  The majority of the standard JSDoc tags are preoccupied with providing type annotations for plain JavaScript, which is an irrelevant concern for a strongly-typed language such as TypeScript.  **TSDoc** addresses these limitations while also tackling a more sophisticated set of goals.
 
 ### What are the goals?
 
