@@ -2,12 +2,12 @@ import { TSDocParser } from '../TSDocParser';
 import { TextRange } from '../TextRange';
 import {
   DocNode,
-  DocComment,
   DocNodeKind,
   DocNodeContainer,
   DocNodeLeaf,
   DocError
 } from '../../nodes';
+import { ParserContext } from '../ParserContext';
 
 interface ISnapshotItem {
   error?: string;
@@ -74,12 +74,12 @@ export class TestHelpers {
 
   public static parseAndMatchSnapshot(buffer: string): void {
     const tsdocParser: TSDocParser = new TSDocParser();
-    const docComment: DocComment = tsdocParser.parseString(buffer);
+    const parserContext: ParserContext = tsdocParser.parseString(buffer);
 
     expect({
       buffer: TestHelpers.getEscaped(buffer),
-      lines: docComment.lines.map(x => TestHelpers.getEscaped(x.toString())),
-      rootNode: TestHelpers._getNodeSnapshot(docComment, docComment.lines)
+      lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
+      rootNode: TestHelpers._getNodeSnapshot(parserContext.docComment, parserContext.lines)
     }).toMatchSnapshot();
   }
 

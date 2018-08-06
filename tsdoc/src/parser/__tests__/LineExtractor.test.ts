@@ -1,15 +1,15 @@
 import { TSDocParser } from '../TSDocParser';
-import { DocComment } from '../../nodes';
 import { TestHelpers } from './TestHelpers';
+import { ParserContext } from '../ParserContext';
 
 function parseAndMatchSnapshot(buffer: string): void {
   const tsdocParser: TSDocParser = new TSDocParser();
-  const docComment: DocComment = tsdocParser.parseString(buffer);
+  const parserContext: ParserContext = tsdocParser.parseString(buffer);
   expect({
     buffer: TestHelpers.getEscaped(buffer),
-    errors: docComment.parseErrors.map(error => error.message),
-    comment: TestHelpers.getEscaped(docComment.commentRange.toString()),
-    lines: docComment.lines.map(line => TestHelpers.getEscaped(line.toString()))
+    errors: parserContext.parseErrors.map(error => error.message),
+    comment: TestHelpers.getEscaped(parserContext.commentRange.toString()),
+    lines: parserContext.lines.map(line => TestHelpers.getEscaped(line.toString()))
   }).toMatchSnapshot();
 }
 

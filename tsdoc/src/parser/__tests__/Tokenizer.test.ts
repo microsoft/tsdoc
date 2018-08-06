@@ -1,8 +1,8 @@
 import { TSDocParser } from '../TSDocParser';
-import { DocComment } from '../../nodes';
 import { Tokenizer } from '../Tokenizer';
 import { Token, TokenKind }  from '../Token';
 import { TestHelpers } from './TestHelpers';
+import { ParserContext } from '../ParserContext';
 
 interface ISnapshotItem {
   indexOfLine: number;
@@ -13,14 +13,14 @@ interface ISnapshotItem {
 
 function matchSnapshot(buffer: string): void {
   const tsdocParser: TSDocParser = new TSDocParser();
-  const docComment: DocComment = tsdocParser.parseString(buffer);
-  const tokens: Token[] = Tokenizer.readTokens(docComment.lines);
+  const parserContext: ParserContext = tsdocParser.parseString(buffer);
+  const tokens: Token[] = parserContext.tokens;
 
   const items: ISnapshotItem[] = [];
 
   for (const token of tokens) {
     items.push({
-      indexOfLine: docComment.lines.indexOf(token.line),
+      indexOfLine: parserContext.lines.indexOf(token.line),
       line: '>' + TestHelpers.getEscaped(token.line.toString()) + '<',
       span: TestHelpers.formatLineSpan(token.line, token.range),
       tokenKind: TokenKind[token.kind]
