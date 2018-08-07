@@ -2,10 +2,7 @@ import { TSDocParser } from '../TSDocParser';
 import { TextRange } from '../TextRange';
 import {
   DocNode,
-  DocNodeKind,
-  DocNodeContainer,
-  DocNodeLeaf,
-  DocError
+  DocNodeKind
 } from '../../nodes';
 import { ParserContext } from '../ParserContext';
 
@@ -87,22 +84,22 @@ export class TestHelpers {
     const item: ISnapshotItem = {
       kind: DocNodeKind[docNode.kind]
     };
+    /*
 
-    if (docNode instanceof DocNodeContainer) {
+    if (docNode.getChildNodes().length === 0) {
       item.nodes = docNode.getChildNodes().map(x => TestHelpers._getNodeSnapshot(x, lines));
-    } else if (docNode instanceof DocNodeLeaf) {
-      item.lineIndex = lines.indexOf(docNode.docCommentLine);
+    } else {
+      item.lineIndex = lines.indexOf(docNode.excerpt);
       item.nodeLine = '>' + TestHelpers.getEscaped(docNode.docCommentLine.toString()) + '<';
       item.nodeSpan = TestHelpers.formatLineSpan(docNode.docCommentLine, docNode.range);
 
-      if (docNode instanceof DocError) {
+      if (docNode instanceof DocErrorText) {
         item.error = docNode.errorMessage;
         item.failLine = '>' + TestHelpers.getEscaped(docNode.errorDocCommentLine.toString()) + '<';
         item.failSpan = TestHelpers.formatLineSpan(docNode.errorDocCommentLine, docNode.errorLocation);
       }
-    } else {
-      throw new Error('Unsupported node type');
     }
+    */
     return item;
   }
 }
