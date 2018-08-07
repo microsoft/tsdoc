@@ -14,7 +14,8 @@ export enum DocNodeKind {
   HtmlStartTag = 1007,
   InlineTag = 1008,
   PlainText = 1009,
-  SoftBreak = 1010
+  Section = 1010,
+  SoftBreak = 1011
 }
 
 /**

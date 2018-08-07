@@ -41,6 +41,8 @@ export class ParserContext {
 
   public constructor(sourceRange: TextRange) {
     this.sourceRange = sourceRange;
+    // TODO: This is a circular reference -- is it really necessary?
+    this.docComment = new DocComment({ parserContext: this });
   }
 
   public addError(range: TextRange, message: string, pos: number, end?: number): void {
