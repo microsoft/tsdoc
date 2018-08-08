@@ -1,5 +1,5 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
-import { TextRange } from '../parser/TextRange';
+import { TokenRange } from '../parser/TokenRange';
 
 /**
  * Constructor parameters for {@link DocErrorText}.
@@ -7,8 +7,7 @@ import { TextRange } from '../parser/TextRange';
 export interface IDocErrorTextParameters extends IDocNodeParameters {
   text: string;
   errorMessage: string;
-  errorLocation: TextRange;
-  errorDocCommentLine: TextRange;
+  errorLocation: TokenRange;
 }
 
 /**
@@ -37,16 +36,9 @@ export class DocErrorText extends DocNode {
    * @remarks
    * For example, for the malformed HTML tag `<a href="123 /a>`, the DocErrorText node
    * will correspond to the `<` character that looked like an HTML tag, whereas the
-   * error location will be the `"` character that was missing its closing pair.
+   * error location might be the `"` character that was missing its closing pair.
    */
-  public readonly errorLocation: TextRange;
-
-  /**
-   * The virtual line inside the doc comment that the errorLocation was extracted from.
-   * Note that this line excludes prefixes (e.g. doc comment delimiters) and suffixes
-   * (e.g. trailing whitespace).
-   */
-  public readonly errorDocCommentLine: TextRange;
+  public readonly errorLocation: TokenRange;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -57,6 +49,5 @@ export class DocErrorText extends DocNode {
     this.text = parameters.text;
     this.errorMessage = parameters.errorMessage;
     this.errorLocation = parameters.errorLocation;
-    this.errorDocCommentLine = parameters.errorDocCommentLine;
   }
 }

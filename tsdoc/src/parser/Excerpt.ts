@@ -2,10 +2,9 @@ import { ParserContext } from './ParserContext';
 import { TokenRange } from './TokenRange';
 
 export interface IExcerptParameters {
-  parserContext: ParserContext;
   prefix: TokenRange;
-  suffix: TokenRange;
-  separator: TokenRange;
+  suffix?: TokenRange;
+  separator?: TokenRange;
 }
 
 /**
@@ -48,9 +47,9 @@ export class Excerpt {
   public readonly separator: TokenRange;
 
   public constructor(parameters: IExcerptParameters) {
-    this.parserContext = parameters.parserContext;
+    this.parserContext = parameters.prefix.parserContext;
     this.prefix = parameters.prefix;
-    this.suffix = parameters.suffix;
-    this.separator = parameters.separator;
+    this.suffix = parameters.suffix || TokenRange.createEmpty(this.parserContext);
+    this.separator = parameters.separator || TokenRange.createEmpty(this.parserContext);
   }
 }

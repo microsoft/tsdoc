@@ -1,4 +1,5 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocHtmlAttribute } from './DocHtmlAttribute';
 
 /**
  * Constructor parameters for {@link DocHtmlStartTag}.
@@ -6,6 +7,7 @@ import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 export interface IDocHtmlStartTagParameters extends IDocNodeParameters {
   elementName: string;
   spacingAfterElementName?: string;
+  htmlAttributes: DocHtmlAttribute[];
   selfClosingTag: boolean;
 }
 
@@ -34,6 +36,8 @@ export class DocHtmlStartTag extends DocNode {
    */
   public readonly selfClosingTag: boolean;
 
+  private _htmlAttributes: DocHtmlAttribute[];
+
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
@@ -43,6 +47,22 @@ export class DocHtmlStartTag extends DocNode {
     this.elementName = parameters.elementName;
     DocNode.validateSpacing(parameters.spacingAfterElementName, 'spacingAfterElementName');
     this.spacingAfterElementName = parameters.spacingAfterElementName;
+    this._htmlAttributes = parameters.htmlAttributes;
     this.selfClosingTag = parameters.selfClosingTag;
+  }
+
+  /**
+   * The HTML attributes belonging to this HTML element.
+   */
+  public get htmlAttributes(): ReadonlyArray<DocHtmlAttribute> {
+    return this._htmlAttributes;
+  }
+
+  /**
+   * {@inheritdoc}
+   * @override
+   */
+  public getChildNodes(): ReadonlyArray<DocNode> {
+    return this._htmlAttributes;
   }
 }

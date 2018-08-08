@@ -133,7 +133,7 @@ export class TextRange {
     this._validateBounds();
   }
 
-  private _validateBounds(): TextRange {
+  private _validateBounds(): void {
     if (this.pos < 0) {
       throw new Error('TextRange.pos cannot be negative');
     }
@@ -149,7 +149,5 @@ export class TextRange {
     if (this.end > this.buffer.length) {
       throw new Error('TextRange.end cannot exceed the associated text buffer length');
     }
-
-    return this;
   }
 }

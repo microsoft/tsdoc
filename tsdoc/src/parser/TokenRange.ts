@@ -1,6 +1,12 @@
 import { ParserContext } from './ParserContext';
 import { Token } from './Token';
 
+export interface ITokenRangeParameters {
+  parserContext: ParserContext;
+  pos: number;
+  end: number;
+}
+
 /**
  * Represents a range of tokens extracted from `ParserContext.tokens`.
  */
@@ -13,9 +19,18 @@ export class TokenRange {
   private _pos: number;
   private _end: number;
 
-  public constructor(parserContext: ParserContext) {
-    this._pos = -1;
-    this._end = -1;
+  /**
+   * Constructs a TokenRange object with no tokens.
+   */
+  public static createEmpty(parserContext: ParserContext): TokenRange {
+    return new TokenRange({ parserContext, pos: 0, end: 0 });
+  }
+
+  public constructor(parameters: ITokenRangeParameters) {
+    this.parserContext = parameters.parserContext;
+    this._pos = parameters.pos;
+    this._end = parameters.end;
+    this._validateBounds();
   }
 
   /**
@@ -34,5 +49,30 @@ export class TokenRange {
 
   public get tokens(): ReadonlyArray<Token> {
     return this.parserContext.tokens.slice(this._pos, this._end);
+  }
+
+  /**
+   * Returns the concatenated text of all the tokens.
+   */
+  public toString(): string {
+    return this.tokens.map(x => x.toString()).join('');
+  }
+
+  private _validateBounds(): void {
+    if (this.pos < 0) {
+      throw new Error('TokenRange.pos cannot be negative');
+    }
+    if (this.end < 0) {
+      throw new Error('TokenRange.end cannot be negative');
+    }
+    if (this.end < this.pos) {
+      throw new Error('TokenRange.end cannot be smaller than TokenRange.pos');
+    }
+    if (this.pos > this.parserContext.tokens.length) {
+      throw new Error('TokenRange.pos cannot exceed the associated token array');
+    }
+    if (this.end > this.parserContext.tokens.length) {
+      throw new Error('TokenRange.end cannot exceed the associated token array');
+    }
   }
 }

@@ -7,6 +7,7 @@ export interface IDocHtmlAttributeParameters extends IDocNodeParameters {
   attributeName: string;
   spacingAfterAttributeName: string | undefined;
   attributeValue: string;
+  spacingBeforeAttributeValue: string | undefined;
   spacingAfterAttributeValue: string | undefined;
 }
 
@@ -36,6 +37,12 @@ export class DocHtmlAttribute extends DocNode {
   public readonly attributeValue: string;
 
   /**
+   * Explicit whitespace that a renderer should insert after the "=".
+   * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
+   */
+  public readonly spacingBeforeAttributeValue: string | undefined;
+
+  /**
    * Explicit whitespace that a renderer should insert after the HTML attribute name.
    * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
    */
@@ -51,6 +58,8 @@ export class DocHtmlAttribute extends DocNode {
     DocNode.validateSpacing(parameters.spacingAfterAttributeName, 'spacingAfterAttributeName');
     this.spacingAfterAttributeName = parameters.spacingAfterAttributeName;
     this.attributeValue = parameters.attributeValue;
+    DocNode.validateSpacing(parameters.spacingBeforeAttributeValue, 'spacingBeforeAttributeValue');
+    this.spacingBeforeAttributeValue = parameters.spacingBeforeAttributeValue;
     DocNode.validateSpacing(parameters.spacingAfterAttributeName, 'spacingAfterAttributeValue');
     this.spacingAfterAttributeValue = parameters.spacingAfterAttributeValue;
   }

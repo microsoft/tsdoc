@@ -12,6 +12,7 @@ export class Tokenizer {
 
   /**
    * Given a list of input lines, this returns an array of extracted tokens.
+   * The last token will always be TokenKind.EndOfInput.
    */
   public static readTokens(lines: TextRange[]): Token[] {
     Tokenizer._ensureInitialized();
