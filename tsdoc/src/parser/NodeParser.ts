@@ -104,6 +104,7 @@ export class NodeParser {
           break;
         default:
           // If nobody recognized this token, then accumulate plain text
+          this._tokenReader.readToken();
           break;
       }
     }
@@ -117,7 +118,7 @@ export class NodeParser {
   }
 
   private _pushAccumulatedPlainText(childNodes: DocNode[]): void {
-    if (this._tokenReader.isQueueEmpty()) {
+    if (!this._tokenReader.isQueueEmpty()) {
       const plainTextRange: TokenRange = this._tokenReader.extractQueue();
 
       childNodes.push(new DocPlainText({
@@ -144,7 +145,7 @@ export class NodeParser {
     // character.  In all other contexts, the backslash is interpreted as a
     // literal character.
     if (!Tokenizer.isPunctuation(escapedToken.kind)) {
-      this._backtrackAndCreateError(marker,
+      return this._backtrackAndCreateError(marker,
         'A backslash can only be used to escape a punctuation character');
     }
 
@@ -177,10 +178,9 @@ export class NodeParser {
         return this._backtrackAndCreateError(marker, 'A TSDoc tag must be preceded by whitespace');
     }
 
-    this._tokenReader.readToken(); // extract the @ sign
+    // extract the @ sign
+    let tagName: string = this._tokenReader.readToken().toString();
 
-    // Read the words
-    let tagName: string = '';
     while (this._tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
       tagName += this._tokenReader.readToken().toString();
     }
@@ -223,11 +223,10 @@ export class NodeParser {
     if (this._tokenReader.peekTokenKind() !== TokenKind.AtSign) {
       return this._backtrackAndCreateError(marker, 'Expecting a TSDoc tag starting with "{@"');
     }
-    this._tokenReader.readToken();
 
     // Read the tagName
     const tagNameMarker: number = this._tokenReader.createMarker();
-    let tagName: string = '';
+    let tagName: string = this._tokenReader.readToken().toString();
 
     while (this._tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
       tagName += this._tokenReader.readToken().toString();
@@ -655,7 +654,7 @@ export class NodeParser {
     }
     return {
       failureMessage,
-      failureLocation: this._createTokenRange(startMarker, endMarker + 1)
+      failureLocation: this._createTokenRange(startMarker, endMarker)
     };
   }
 

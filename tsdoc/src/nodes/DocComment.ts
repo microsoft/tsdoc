@@ -35,4 +35,12 @@ export class DocComment extends DocNode {
 
     this.remarks = new DocSection(parameters);
   }
+
+  /**
+   * {@inheritdoc}
+   * @override
+   */
+  public getChildNodes(): ReadonlyArray<DocNode> {
+    return [ this.remarks ];
+  }
 }
