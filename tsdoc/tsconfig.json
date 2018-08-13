@@ -20,6 +20,7 @@
       "dom"
     ],
     "strictNullChecks": true,
+    "noUnusedLocals": true,
 
     "outDir": "lib"
   },
