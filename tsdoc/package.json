@@ -30,7 +30,7 @@
     "typescript": "~3.0.1"
   },
   "scripts": {
-    "build": "rimraf ./lib/ && tsc && tslint --config tslint.json --project . --rules-dir node_modules/tslint-microsoft-contrib",
+    "build": "rimraf ./lib/ && echo -- TYPESCRIPT -- && tsc && echo -- TSLINT -- && tslint --config tslint.json --project . --rules-dir node_modules/tslint-microsoft-contrib",
     "test": "jest",
     "start": "jest --watch"
   },
