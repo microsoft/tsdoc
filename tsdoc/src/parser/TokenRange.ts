@@ -51,6 +51,10 @@ export class TokenRange {
     return this.parserContext.tokens.slice(this._pos, this._end);
   }
 
+  public isEmpty(): boolean {
+    return this._pos === this._end;
+  }
+
   /**
    * Returns the concatenated text of all the tokens.
    */

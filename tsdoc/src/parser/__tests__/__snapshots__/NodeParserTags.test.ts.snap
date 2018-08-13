@@ -11,28 +11,25 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "kind": "BlockTag",
-        "lineIndex": 0,
-        "nodeLine": ">@one<",
-        "nodeSpan": ">    <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">@one<",
-        "nodeSpan": "    ><",
-      },
-      Object {
-        "kind": "BlockTag",
-        "lineIndex": 1,
-        "nodeLine": ">@two<",
-        "nodeSpan": ">    <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 1,
-        "nodeLine": ">@two<",
-        "nodeSpan": "    ><",
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "BlockTag",
+            "nodePrefix": "@one",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+          Object {
+            "kind": "BlockTag",
+            "nodePrefix": "@two",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+        ],
       },
     ],
   },
@@ -51,73 +48,58 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "error": "Expecting a TSDoc tag after the \\"@\\" character (or use a backslash to escape this character)",
-        "failLine": ">@ one<",
-        "failSpan": " > <  ",
-        "kind": "Error",
-        "lineIndex": 0,
-        "nodeLine": ">@ one<",
-        "nodeSpan": "> <   ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 0,
-        "nodeLine": ">@ one<",
-        "nodeSpan": " >    <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">@ one<",
-        "nodeSpan": "     ><",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 1,
-        "nodeLine": ">+@two<",
-        "nodeSpan": "> <   ",
-      },
-      Object {
-        "error": "A TSDoc tag must be preceded by whitespace",
-        "failLine": ">+@two<",
-        "failSpan": " > <  ",
-        "kind": "Error",
-        "lineIndex": 1,
-        "nodeLine": ">+@two<",
-        "nodeSpan": " > <  ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 1,
-        "nodeLine": ">+@two<",
-        "nodeSpan": "  >   <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 1,
-        "nodeLine": ">+@two<",
-        "nodeSpan": "     ><",
-      },
-      Object {
-        "error": "A TSDoc tag must be followed by whitespace",
-        "failLine": ">@two+<",
-        "failSpan": "    > <",
-        "kind": "Error",
-        "lineIndex": 2,
-        "nodeLine": ">@two+<",
-        "nodeSpan": "> <   ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 2,
-        "nodeLine": ">@two+<",
-        "nodeSpan": " >    <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 2,
-        "nodeLine": ">@two+<",
-        "nodeSpan": "     ><",
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "errorLocation": "@",
+            "errorMessage": "Expecting a TSDoc tag name after the [q]@[q] character (or use a backslash to escape this character)",
+            "kind": "ErrorText",
+            "nodePrefix": "@",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": " one",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "+",
+          },
+          Object {
+            "errorLocation": "@",
+            "errorLocationPrecedingToken": "+",
+            "errorMessage": "A TSDoc tag must be preceded by whitespace",
+            "kind": "ErrorText",
+            "nodePrefix": "@",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "two",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+          Object {
+            "errorLocation": "@",
+            "errorLocationPrecedingToken": "
+",
+            "errorMessage": "A TSDoc tag must be followed by whitespace",
+            "kind": "ErrorText",
+            "nodePrefix": "@",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "two+",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+        ],
       },
     ],
   },
@@ -138,183 +120,45 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "kind": "InlineTag",
+        "kind": "Section",
         "nodes": Array [
           Object {
-            "kind": "Delimiter",
-            "lineIndex": 0,
-            "nodeLine": ">{@one}<",
-            "nodeSpan": ">  <   ",
+            "kind": "InlineTag",
+            "nodePrefix": "{@one}",
           },
           Object {
-            "kind": "Word",
-            "lineIndex": 0,
-            "nodeLine": ">{@one}<",
-            "nodeSpan": "  >   <",
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
           },
           Object {
-            "kind": "InlineTagContent",
-            "nodes": Array [],
+            "kind": "InlineTag",
+            "nodePrefix": "{@two }",
           },
           Object {
-            "kind": "Delimiter",
-            "lineIndex": 0,
-            "nodeLine": ">{@one}<",
-            "nodeSpan": "     > <",
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+          Object {
+            "kind": "InlineTag",
+            "nodePrefix": "{@three}",
+          },
+          Object {
+            "kind": "InlineTag",
+            "nodePrefix": "{@four}",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+          Object {
+            "kind": "InlineTag",
+            "nodePrefix": "{@five[n]  }",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
           },
         ],
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">{@one}<",
-        "nodeSpan": "      ><",
-      },
-      Object {
-        "kind": "InlineTag",
-        "nodes": Array [
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 1,
-            "nodeLine": ">{@two }<",
-            "nodeSpan": ">  <    ",
-          },
-          Object {
-            "kind": "Word",
-            "lineIndex": 1,
-            "nodeLine": ">{@two }<",
-            "nodeSpan": "  >   < ",
-          },
-          Object {
-            "kind": "InlineTagContent",
-            "nodes": Array [
-              Object {
-                "kind": "Spacing",
-                "lineIndex": 1,
-                "nodeLine": ">{@two }<",
-                "nodeSpan": "     > <",
-              },
-            ],
-          },
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 1,
-            "nodeLine": ">{@two }<",
-            "nodeSpan": "      > <",
-          },
-        ],
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 1,
-        "nodeLine": ">{@two }<",
-        "nodeSpan": "       ><",
-      },
-      Object {
-        "kind": "InlineTag",
-        "nodes": Array [
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 2,
-            "nodeLine": ">{@three}{@four}<",
-            "nodeSpan": ">  <            ",
-          },
-          Object {
-            "kind": "Word",
-            "lineIndex": 2,
-            "nodeLine": ">{@three}{@four}<",
-            "nodeSpan": "  >     <       ",
-          },
-          Object {
-            "kind": "InlineTagContent",
-            "nodes": Array [],
-          },
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 2,
-            "nodeLine": ">{@three}{@four}<",
-            "nodeSpan": "       > <      ",
-          },
-        ],
-      },
-      Object {
-        "kind": "InlineTag",
-        "nodes": Array [
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 2,
-            "nodeLine": ">{@three}{@four}<",
-            "nodeSpan": "        >  <    ",
-          },
-          Object {
-            "kind": "Word",
-            "lineIndex": 2,
-            "nodeLine": ">{@three}{@four}<",
-            "nodeSpan": "          >    <",
-          },
-          Object {
-            "kind": "InlineTagContent",
-            "nodes": Array [],
-          },
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 2,
-            "nodeLine": ">{@three}{@four}<",
-            "nodeSpan": "              > <",
-          },
-        ],
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 2,
-        "nodeLine": ">{@three}{@four}<",
-        "nodeSpan": "               ><",
-      },
-      Object {
-        "kind": "InlineTag",
-        "nodes": Array [
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 3,
-            "nodeLine": ">{@five<",
-            "nodeSpan": ">  <   ",
-          },
-          Object {
-            "kind": "Word",
-            "lineIndex": 3,
-            "nodeLine": ">{@five<",
-            "nodeSpan": "  >    <",
-          },
-          Object {
-            "kind": "InlineTagContent",
-            "nodes": Array [
-              Object {
-                "kind": "Newline",
-                "lineIndex": 3,
-                "nodeLine": ">{@five<",
-                "nodeSpan": "      ><",
-              },
-              Object {
-                "kind": "Spacing",
-                "lineIndex": 4,
-                "nodeLine": ">  }<",
-                "nodeSpan": ">  <",
-              },
-            ],
-          },
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 4,
-            "nodeLine": ">  }<",
-            "nodeSpan": "  > <",
-          },
-        ],
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 4,
-        "nodeLine": ">  }<",
-        "nodeSpan": "   ><",
       },
     ],
   },
@@ -323,110 +167,114 @@ Object {
 
 exports[`03 Inline tags: simple, negative 1`] = `
 Object {
-  "buffer": "/**[n] * {@ one} [n] * { @two} [n] * {@three[n] */",
+  "buffer": "/**[n] * {@ one} [n] * {@two~} [n] * { @three} [n] * {@four[n] */",
   "lines": Array [
     "{@ one}",
-    "{ @two}",
-    "{@three",
+    "{@two~}",
+    "{ @three}",
+    "{@four",
   ],
   "rootNode": Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "error": "Expecting a TSDoc inline tag name after the \\"{@\\" characters",
-        "failLine": ">{@ one}<",
-        "failSpan": "  > <   ",
-        "kind": "Error",
-        "lineIndex": 0,
-        "nodeLine": ">{@ one}<",
-        "nodeSpan": ">  <    ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 0,
-        "nodeLine": ">{@ one}<",
-        "nodeSpan": "  >    <",
-      },
-      Object {
-        "error": "The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-        "failLine": ">{@ one}<",
-        "failSpan": "      > <",
-        "kind": "Error",
-        "lineIndex": 0,
-        "nodeLine": ">{@ one}<",
-        "nodeSpan": "      > <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">{@ one}<",
-        "nodeSpan": "       ><",
-      },
-      Object {
-        "error": "Expecting a TSDoc tag starting with \\"{@\\"",
-        "failLine": ">{ @two}<",
-        "failSpan": " > <    ",
-        "kind": "Error",
-        "lineIndex": 1,
-        "nodeLine": ">{ @two}<",
-        "nodeSpan": "> <     ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 1,
-        "nodeLine": ">{ @two}<",
-        "nodeSpan": " > <    ",
-      },
-      Object {
-        "error": "A TSDoc tag must be followed by whitespace",
-        "failLine": ">{ @two}<",
-        "failSpan": "      > <",
-        "kind": "Error",
-        "lineIndex": 1,
-        "nodeLine": ">{ @two}<",
-        "nodeSpan": "  > <   ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 1,
-        "nodeLine": ">{ @two}<",
-        "nodeSpan": "   >   <",
-      },
-      Object {
-        "error": "The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-        "failLine": ">{ @two}<",
-        "failSpan": "      > <",
-        "kind": "Error",
-        "lineIndex": 1,
-        "nodeLine": ">{ @two}<",
-        "nodeSpan": "      > <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 1,
-        "nodeLine": ">{ @two}<",
-        "nodeSpan": "       ><",
-      },
-      Object {
-        "error": "The TSDoc inline tag name is missing its closing \\"}\\"",
-        "failLine": ">{@three<",
-        "failSpan": "> <     ",
-        "kind": "Error",
-        "lineIndex": 2,
-        "nodeLine": ">{@three<",
-        "nodeSpan": ">  <    ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 2,
-        "nodeLine": ">{@three<",
-        "nodeSpan": "  >     <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 2,
-        "nodeLine": ">{@three<",
-        "nodeSpan": "       ><",
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "errorLocation": "@",
+            "errorLocationPrecedingToken": "{",
+            "errorMessage": "Expecting a TSDoc inline tag name after the [q]{@[q] characters",
+            "kind": "ErrorText",
+            "nodePrefix": "{@",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": " one",
+          },
+          Object {
+            "errorLocation": "}",
+            "errorLocationPrecedingToken": "one",
+            "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+            "kind": "ErrorText",
+            "nodePrefix": "}",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+          Object {
+            "errorLocation": "~",
+            "errorLocationPrecedingToken": "two",
+            "errorMessage": "Expecting a space after the TSDoc inline tag name",
+            "kind": "ErrorText",
+            "nodePrefix": "{@",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "two~",
+          },
+          Object {
+            "errorLocation": "}",
+            "errorLocationPrecedingToken": "~",
+            "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+            "kind": "ErrorText",
+            "nodePrefix": "}",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+          Object {
+            "errorLocation": "{",
+            "errorLocationPrecedingToken": "
+",
+            "errorMessage": "Expecting a TSDoc tag starting with [q]{@[q]",
+            "kind": "ErrorText",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": " ",
+          },
+          Object {
+            "errorLocation": "@",
+            "errorLocationPrecedingToken": " ",
+            "errorMessage": "A TSDoc tag must be followed by whitespace",
+            "kind": "ErrorText",
+            "nodePrefix": "@",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "three",
+          },
+          Object {
+            "errorLocation": "}",
+            "errorLocationPrecedingToken": "three",
+            "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+            "kind": "ErrorText",
+            "nodePrefix": "}",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+          Object {
+            "errorLocation": "{@",
+            "errorLocationPrecedingToken": "
+",
+            "errorMessage": "The TSDoc inline tag name is missing its closing [q]}[q]",
+            "kind": "ErrorText",
+            "nodePrefix": "{@",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "four",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+        ],
       },
     ],
   },
@@ -445,108 +293,25 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "kind": "InlineTag",
+        "kind": "Section",
         "nodes": Array [
           Object {
-            "kind": "Delimiter",
-            "lineIndex": 0,
-            "nodeLine": ">{@one some content}<",
-            "nodeSpan": ">  <                ",
+            "kind": "InlineTag",
+            "nodePrefix": "{@one some content}",
           },
           Object {
-            "kind": "Word",
-            "lineIndex": 0,
-            "nodeLine": ">{@one some content}<",
-            "nodeSpan": "  >   <             ",
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
           },
           Object {
-            "kind": "InlineTagContent",
-            "nodes": Array [
-              Object {
-                "kind": "Spacing",
-                "lineIndex": 0,
-                "nodeLine": ">{@one some content}<",
-                "nodeSpan": "     > <            ",
-              },
-              Object {
-                "kind": "PlainText",
-                "lineIndex": 0,
-                "nodeLine": ">{@one some content}<",
-                "nodeSpan": "      >            <",
-              },
-            ],
+            "kind": "InlineTag",
+            "nodePrefix": "{@two multi[n]line}",
           },
           Object {
-            "kind": "Delimiter",
-            "lineIndex": 0,
-            "nodeLine": ">{@one some content}<",
-            "nodeSpan": "                  > <",
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
           },
         ],
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">{@one some content}<",
-        "nodeSpan": "                   ><",
-      },
-      Object {
-        "kind": "InlineTag",
-        "nodes": Array [
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 1,
-            "nodeLine": ">{@two multi<",
-            "nodeSpan": ">  <        ",
-          },
-          Object {
-            "kind": "Word",
-            "lineIndex": 1,
-            "nodeLine": ">{@two multi<",
-            "nodeSpan": "  >   <     ",
-          },
-          Object {
-            "kind": "InlineTagContent",
-            "nodes": Array [
-              Object {
-                "kind": "Spacing",
-                "lineIndex": 1,
-                "nodeLine": ">{@two multi<",
-                "nodeSpan": "     > <    ",
-              },
-              Object {
-                "kind": "PlainText",
-                "lineIndex": 1,
-                "nodeLine": ">{@two multi<",
-                "nodeSpan": "      >     <",
-              },
-              Object {
-                "kind": "Newline",
-                "lineIndex": 1,
-                "nodeLine": ">{@two multi<",
-                "nodeSpan": "           ><",
-              },
-              Object {
-                "kind": "PlainText",
-                "lineIndex": 2,
-                "nodeLine": ">line}<",
-                "nodeSpan": ">    <",
-              },
-            ],
-          },
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 2,
-            "nodeLine": ">line}<",
-            "nodeSpan": "    > <",
-          },
-        ],
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 2,
-        "nodeLine": ">line}<",
-        "nodeSpan": "     ><",
       },
     ],
   },
@@ -563,50 +328,17 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "kind": "InlineTag",
+        "kind": "Section",
         "nodes": Array [
           Object {
-            "kind": "Delimiter",
-            "lineIndex": 0,
-            "nodeLine": ">{@three @taglike}<",
-            "nodeSpan": ">  <              ",
+            "kind": "InlineTag",
+            "nodePrefix": "{@three @taglike}",
           },
           Object {
-            "kind": "Word",
-            "lineIndex": 0,
-            "nodeLine": ">{@three @taglike}<",
-            "nodeSpan": "  >     <         ",
-          },
-          Object {
-            "kind": "InlineTagContent",
-            "nodes": Array [
-              Object {
-                "kind": "Spacing",
-                "lineIndex": 0,
-                "nodeLine": ">{@three @taglike}<",
-                "nodeSpan": "       > <        ",
-              },
-              Object {
-                "kind": "PlainText",
-                "lineIndex": 0,
-                "nodeLine": ">{@three @taglike}<",
-                "nodeSpan": "        >        <",
-              },
-            ],
-          },
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 0,
-            "nodeLine": ">{@three @taglike}<",
-            "nodeSpan": "                > <",
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
           },
         ],
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">{@three @taglike}<",
-        "nodeSpan": "                 ><",
       },
     ],
   },
@@ -623,86 +355,17 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "kind": "InlineTag",
+        "kind": "Section",
         "nodes": Array [
           Object {
-            "kind": "Delimiter",
-            "lineIndex": 0,
-            "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-            "nodeSpan": ">  <                                          ",
+            "kind": "InlineTag",
+            "nodePrefix": "{@one left [b]{ right [b]} backslash [b][b] }",
           },
           Object {
-            "kind": "Word",
-            "lineIndex": 0,
-            "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-            "nodeSpan": "  >   <                                       ",
-          },
-          Object {
-            "kind": "InlineTagContent",
-            "nodes": Array [
-              Object {
-                "kind": "Spacing",
-                "lineIndex": 0,
-                "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-                "nodeSpan": "     > <                                      ",
-              },
-              Object {
-                "kind": "PlainText",
-                "lineIndex": 0,
-                "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-                "nodeSpan": "      >     <                                 ",
-              },
-              Object {
-                "kind": "BackslashEscape",
-                "lineIndex": 0,
-                "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-                "nodeSpan": "           >    <                             ",
-              },
-              Object {
-                "kind": "PlainText",
-                "lineIndex": 0,
-                "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-                "nodeSpan": "               >       <                      ",
-              },
-              Object {
-                "kind": "BackslashEscape",
-                "lineIndex": 0,
-                "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-                "nodeSpan": "                      >    <                  ",
-              },
-              Object {
-                "kind": "PlainText",
-                "lineIndex": 0,
-                "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-                "nodeSpan": "                          >           <       ",
-              },
-              Object {
-                "kind": "BackslashEscape",
-                "lineIndex": 0,
-                "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-                "nodeSpan": "                                     >      < ",
-              },
-              Object {
-                "kind": "PlainText",
-                "lineIndex": 0,
-                "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-                "nodeSpan": "                                           > <",
-              },
-            ],
-          },
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 0,
-            "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-            "nodeSpan": "                                            > <",
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
           },
         ],
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">{@one left [b]{ right [b]} backslash [b][b] }<",
-        "nodeSpan": "                                             ><",
       },
     ],
   },
@@ -719,31 +382,27 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "error": "The TSDoc inline tag name is missing its closing \\"}\\"",
-        "failLine": ">{@one curly[b]}<",
-        "failSpan": "> <             ",
-        "kind": "Error",
-        "lineIndex": 0,
-        "nodeLine": ">{@one curly[b]}<",
-        "nodeSpan": ">  <            ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 0,
-        "nodeLine": ">{@one curly[b]}<",
-        "nodeSpan": "  >         <   ",
-      },
-      Object {
-        "kind": "BackslashEscape",
-        "lineIndex": 0,
-        "nodeLine": ">{@one curly[b]}<",
-        "nodeSpan": "           >    <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">{@one curly[b]}<",
-        "nodeSpan": "               ><",
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "errorLocation": "{@",
+            "errorMessage": "The TSDoc inline tag name is missing its closing [q]}[q]",
+            "kind": "ErrorText",
+            "nodePrefix": "{@",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "one curly",
+          },
+          Object {
+            "kind": "EscapedText",
+            "nodePrefix": "[b]}",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+        ],
       },
     ],
   },
@@ -760,52 +419,45 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "error": "The \\"{\\" character must be escaped with a backslash when used inside a TSDoc inline tag",
-        "failLine": ">{@two curly{}}<",
-        "failSpan": "           > < ",
-        "kind": "Error",
-        "lineIndex": 0,
-        "nodeLine": ">{@two curly{}}<",
-        "nodeSpan": ">  <           ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 0,
-        "nodeLine": ">{@two curly{}}<",
-        "nodeSpan": "  >         <  ",
-      },
-      Object {
-        "error": "Expecting a TSDoc tag starting with \\"{@\\"",
-        "failLine": ">{@two curly{}}<",
-        "failSpan": "            > <",
-        "kind": "Error",
-        "lineIndex": 0,
-        "nodeLine": ">{@two curly{}}<",
-        "nodeSpan": "           > < ",
-      },
-      Object {
-        "error": "The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-        "failLine": ">{@two curly{}}<",
-        "failSpan": "            > <",
-        "kind": "Error",
-        "lineIndex": 0,
-        "nodeLine": ">{@two curly{}}<",
-        "nodeSpan": "            > <",
-      },
-      Object {
-        "error": "The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-        "failLine": ">{@two curly{}}<",
-        "failSpan": "             > <",
-        "kind": "Error",
-        "lineIndex": 0,
-        "nodeLine": ">{@two curly{}}<",
-        "nodeSpan": "             > <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">{@two curly{}}<",
-        "nodeSpan": "              ><",
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "errorLocation": "{",
+            "errorLocationPrecedingToken": "curly",
+            "errorMessage": "The [q]{[q] character must be escaped with a backslash when used inside a TSDoc inline tag",
+            "kind": "ErrorText",
+            "nodePrefix": "{@",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "two curly",
+          },
+          Object {
+            "errorLocation": "{",
+            "errorLocationPrecedingToken": "curly",
+            "errorMessage": "Expecting a TSDoc tag starting with [q]{@[q]",
+            "kind": "ErrorText",
+            "nodePrefix": "{",
+          },
+          Object {
+            "errorLocation": "}",
+            "errorLocationPrecedingToken": "{",
+            "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+            "kind": "ErrorText",
+            "nodePrefix": "}",
+          },
+          Object {
+            "errorLocation": "}",
+            "errorLocationPrecedingToken": "}",
+            "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+            "kind": "ErrorText",
+            "nodePrefix": "}",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+        ],
       },
     ],
   },
@@ -822,25 +474,24 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "kind": "PlainText",
-        "lineIndex": 0,
-        "nodeLine": ">three: }<",
-        "nodeSpan": ">       <",
-      },
-      Object {
-        "error": "The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-        "failLine": ">three: }<",
-        "failSpan": "       > <",
-        "kind": "Error",
-        "lineIndex": 0,
-        "nodeLine": ">three: }<",
-        "nodeSpan": "       > <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">three: }<",
-        "nodeSpan": "        ><",
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "three: ",
+          },
+          Object {
+            "errorLocation": "}",
+            "errorLocationPrecedingToken": " ",
+            "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+            "kind": "ErrorText",
+            "nodePrefix": "}",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+        ],
       },
     ],
   },

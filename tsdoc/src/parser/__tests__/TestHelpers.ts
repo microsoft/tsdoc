@@ -2,19 +2,21 @@ import { TSDocParser } from '../TSDocParser';
 import { TextRange } from '../TextRange';
 import {
   DocNode,
-  DocNodeKind
+  DocNodeKind,
+  DocErrorText
 } from '../../nodes';
 import { ParserContext } from '../ParserContext';
+import { Excerpt } from '../Excerpt';
 
 interface ISnapshotItem {
-  error?: string;
-  failLine?: string;
-  failSpan?: string;
   kind: string;
+  errorMessage?: string;
+  errorLocation?: string;
+  errorLocationPrecedingToken?: string;
+  nodePrefix?: string;
+  nodeSuffix?: string;
+  nodeSeparator?: string;
   nodes?: ISnapshotItem[];
-  lineIndex?: number;
-  nodeLine?: string;
-  nodeSpan?: string;
 }
 
 export class TestHelpers {
@@ -84,22 +86,33 @@ export class TestHelpers {
     const item: ISnapshotItem = {
       kind: DocNodeKind[docNode.kind]
     };
-    /*
 
-    if (docNode.getChildNodes().length === 0) {
-      item.nodes = docNode.getChildNodes().map(x => TestHelpers._getNodeSnapshot(x, lines));
-    } else {
-      item.lineIndex = lines.indexOf(docNode.excerpt);
-      item.nodeLine = '>' + TestHelpers.getEscaped(docNode.docCommentLine.toString()) + '<';
-      item.nodeSpan = TestHelpers.formatLineSpan(docNode.docCommentLine, docNode.range);
-
-      if (docNode instanceof DocErrorText) {
-        item.error = docNode.errorMessage;
-        item.failLine = '>' + TestHelpers.getEscaped(docNode.errorDocCommentLine.toString()) + '<';
-        item.failSpan = TestHelpers.formatLineSpan(docNode.errorDocCommentLine, docNode.errorLocation);
+    if (docNode.excerpt) {
+      const excerpt: Excerpt = docNode.excerpt;
+      item.nodePrefix = TestHelpers.getEscaped(excerpt.prefix.toString());
+      if (!excerpt.suffix.isEmpty()) {
+        item.nodeSuffix = TestHelpers.getEscaped(excerpt.suffix.toString());
+      }
+      if (!excerpt.separator.isEmpty()) {
+        item.nodeSeparator = TestHelpers.getEscaped(excerpt.separator.toString());
       }
     }
-    */
+
+    if (docNode instanceof DocErrorText) {
+      item.errorMessage = TestHelpers.getEscaped(docNode.errorMessage);
+      item.errorLocation = TestHelpers.getEscaped(docNode.errorLocation.toString());
+      if (docNode.errorLocation.pos > 0) {
+        // Show the preceding token to provide some context (e.g. is this the opening quote
+        // or closing quote?)
+        item.errorLocationPrecedingToken = docNode.errorLocation.parserContext.tokens[
+          docNode.errorLocation.pos - 1].toString();
+      }
+    }
+
+    if (docNode.getChildNodes().length > 0) {
+      item.nodes = docNode.getChildNodes().map(x => TestHelpers._getNodeSnapshot(x, lines));
+    }
+
     return item;
   }
 }

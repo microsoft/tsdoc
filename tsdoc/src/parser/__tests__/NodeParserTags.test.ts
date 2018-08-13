@@ -35,8 +35,9 @@ test('03 Inline tags: simple, negative', () => {
   TestHelpers.parseAndMatchSnapshot([
     '/**',
     ' * {@ one} ',
-    ' * { @two} ',
-    ' * {@three',
+    ' * {@two~} ',
+    ' * { @three} ',
+    ' * {@four',
     ' */'
   ].join('\n'));
 });

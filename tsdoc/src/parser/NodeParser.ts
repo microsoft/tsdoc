@@ -38,7 +38,7 @@ export class NodeParser {
   // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
   private static readonly htmlNameRegExp: RegExp = /^[a-z]+(\-[a-z]+)*$/i;
 
-  private static readonly tsdocTagNameRegExp: RegExp = /^[a-z][a-z0-9]*$/i;
+  private static readonly tsdocTagNameRegExp: RegExp = /^@[a-z][a-z0-9]*$/i;
 
   private readonly _parserContext: ParserContext;
   private readonly _tokenReader: TokenReader;
@@ -60,11 +60,9 @@ export class NodeParser {
           break;
         case TokenKind.Newline:
           this._pushAccumulatedPlainText(childNodes);
-          const marker: number = this._tokenReader.createMarker();
           this._tokenReader.readToken();
-          const tokenRange: TokenRange = this._createTokenRange(marker, this._tokenReader.createMarker());
           childNodes.push(new DocSoftBreak({
-            excerpt: new Excerpt({ prefix: tokenRange })
+            excerpt: new Excerpt({ prefix: this._tokenReader.extractQueue() })
           }));
           break;
         case TokenKind.Backslash:
@@ -178,16 +176,28 @@ export class NodeParser {
         return this._backtrackAndCreateError(marker, 'A TSDoc tag must be preceded by whitespace');
     }
 
-    // extract the @ sign
+    // Include the "@" as part of the tagName
     let tagName: string = this._tokenReader.readToken().toString();
+
+    if (this._tokenReader.peekTokenKind() !== TokenKind.AsciiWord) {
+      return this._backtrackAndCreateError(marker,
+        'Expecting a TSDoc tag name after the "@" character (or use a backslash to escape this character)');
+    }
+
+    const tagNameMarker: number = this._tokenReader.createMarker();
 
     while (this._tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
       tagName += this._tokenReader.readToken().toString();
     }
 
-    if (this._tokenReader.peekTokenKind() !== TokenKind.AsciiWord) {
-      return this._backtrackAndCreateError(marker,
-        'Expecting a TSDoc tag after the "@" character (or use a backslash to escape this character)');
+    if (tagName.length === 0) {
+      return this._backtrackAndCreateError(marker, 'Expecting an inline TSDoc tag name immediately after "{@"');
+    }
+
+    if (!NodeParser.tsdocTagNameRegExp.test(tagName)) {
+      const failure: IFailure = this._createFailureForTokensSince(
+        'A TSDoc tag name must start with a letter and contain only letters and numbers', tagNameMarker);
+      return this._backtrackAndCreateErrorForFailure(marker, '', failure);
     }
 
     switch (this._tokenReader.peekTokenKind()) {
@@ -198,11 +208,6 @@ export class NodeParser {
         break;
       default:
         return this._backtrackAndCreateError(marker, 'A TSDoc tag must be followed by whitespace');
-    }
-
-    if (!NodeParser.tsdocTagNameRegExp.test(tagName)) {
-      return this._backtrackAndCreateError(marker,
-        'A TSDoc tag name must start with a letter and contain only letters and numbers');
     }
 
     return new DocBlockTag({
@@ -220,11 +225,17 @@ export class NodeParser {
     }
     this._tokenReader.readToken();
 
+    // For inline tags, if we handle errors by backtracking to the "{"  token, then the main loop
+    // will then interpret the "@" as a block tag, which is almost certainly incorrect.  So the
+    // DocErrorText needs to include both the "{" and "@" tokens.
+    // We will use _backtrackAndCreateErrorRangeForFailure() for that.
+    const atSignMarker: number = this._tokenReader.createMarker();
+
     if (this._tokenReader.peekTokenKind() !== TokenKind.AtSign) {
       return this._backtrackAndCreateError(marker, 'Expecting a TSDoc tag starting with "{@"');
     }
 
-    // Read the tagName
+    // Include the "@" as part of the tagName
     const tagNameMarker: number = this._tokenReader.createMarker();
     let tagName: string = this._tokenReader.readToken().toString();
 
@@ -232,16 +243,17 @@ export class NodeParser {
       tagName += this._tokenReader.readToken().toString();
     }
 
-    if (tagName.length === 0) {
+    if (tagName === '@') {
+      // This is an unusual case
       const failure: IFailure = this._createFailureForTokensSince(
         'Expecting a TSDoc inline tag name after the "{@" characters', tagNameMarker);
-      return this._backtrackAndCreateErrorForFailure(marker, '', failure);
+      return this._backtrackAndCreateErrorRangeForFailure(marker, atSignMarker, '', failure);
     }
 
     if (!NodeParser.tsdocTagNameRegExp.test(tagName)) {
       const failure: IFailure = this._createFailureForTokensSince(
         'A TSDoc tag name must start with a letter and contain only letters and numbers', tagNameMarker);
-      return this._backtrackAndCreateErrorForFailure(marker, '', failure);
+      return this._backtrackAndCreateErrorRangeForFailure(marker, atSignMarker, '', failure);
     }
 
     // We include the space in tagContent in case the implementor wants to assign some
@@ -252,7 +264,7 @@ export class NodeParser {
       if (this._tokenReader.peekTokenKind() !== TokenKind.RightCurlyBracket) {
         const failure: IFailure = this._createFailureForToken(
           'Expecting a space after the TSDoc inline tag name');
-        return this._backtrackAndCreateErrorForFailure(marker, '', failure);
+        return this._backtrackAndCreateErrorRangeForFailure(marker, atSignMarker, '', failure);
       }
     }
 
@@ -260,7 +272,7 @@ export class NodeParser {
     while (!done) {
       switch (this._tokenReader.peekTokenKind()) {
         case TokenKind.EndOfInput:
-          return this._backtrackAndCreateError(marker,
+          return this._backtrackAndCreateErrorRange(marker, atSignMarker,
             'The TSDoc inline tag name is missing its closing "}"');
         case TokenKind.Backslash:
           // http://usejsdoc.org/about-block-inline-tags.html
@@ -274,7 +286,8 @@ export class NodeParser {
           if (!Tokenizer.isPunctuation(this._tokenReader.peekTokenKind())) {
             const failure: IFailure = this._createFailureForToken(
               'A backslash can only be used to escape a punctuation character');
-            return this._backtrackAndCreateErrorForFailure(marker, 'Error reading inline TSDoc tag: ', failure);
+              return this._backtrackAndCreateErrorRangeForFailure(marker, atSignMarker,
+                'Error reading inline TSDoc tag: ', failure);
           }
 
           tagContent += this._tokenReader.readToken().toString();
@@ -283,7 +296,7 @@ export class NodeParser {
           {
             const failure: IFailure = this._createFailureForToken(
               'The "{" character must be escaped with a backslash when used inside a TSDoc inline tag');
-            return this._backtrackAndCreateErrorForFailure(marker, '' , failure);
+              return this._backtrackAndCreateErrorRangeForFailure(marker, atSignMarker, '' , failure);
           }
         case TokenKind.RightCurlyBracket:
           this._tokenReader.readToken();
@@ -316,7 +329,7 @@ export class NodeParser {
 
     const elementName: ResultOrFailure<string> = this._parseHtmlName();
     if (isFailure(elementName)) {
-      return this._backtrackAndCreateErrorForFailure(marker, 'Expecting an HTML element name: ', elementName);
+      return this._backtrackAndCreateErrorForFailure(marker, 'Invalid HTML element: ', elementName);
     }
 
     const spacingAfterElementName: string = this._readSpacingAndNewlines();
@@ -330,15 +343,12 @@ export class NodeParser {
     const htmlAttributes: DocHtmlAttribute[] = [];
 
     // Read the attributes until we see a ">" or "/>"
-    while (true) {
-      if (this._tokenReader.peekTokenAfterKind() !== TokenKind.AsciiWord) {
-        break;
-      }
-
+    while (this._tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
       // Read the attribute
       const attributeNode: ResultOrFailure<DocHtmlAttribute> = this._parseHtmlAttribute();
       if (isFailure(attributeNode)) {
-        return this._backtrackAndCreateErrorForFailure(marker, 'Problem parsing HTML attribute: ', attributeNode);
+        return this._backtrackAndCreateErrorForFailure(marker,
+          'The HTML element has an invalid attribute: ', attributeNode);
       }
 
       htmlAttributes.push(attributeNode);
@@ -399,7 +409,9 @@ export class NodeParser {
     };
 
     const spacingAfterAttributeValue: string = this._readSpacingAndNewlines();
-    excerptParameters.separator = this._tokenReader.extractQueue();
+    if (!this._tokenReader.isQueueEmpty()) {
+      excerptParameters.separator = this._tokenReader.extractQueue();
+    }
 
     return new DocHtmlAttribute({
       excerpt: new Excerpt(excerptParameters),
@@ -435,6 +447,12 @@ export class NodeParser {
       textWithoutQuotes += this._tokenReader.readToken().toString();
     }
 
+    // The next attribute cannot start immedaitely after this one
+    if (this._tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
+      return this._createFailureForToken(
+        'The next character after a closing quote must be spacing or punctuation');
+    }
+
     return textWithoutQuotes;
   }
 
@@ -443,14 +461,17 @@ export class NodeParser {
     const marker: number = this._tokenReader.createMarker();
 
     // Read the "<" delimiter
-    const lessThanToken: Token = this._tokenReader.readToken();
+    const lessThanToken: Token = this._tokenReader.peekToken();
     if (lessThanToken.kind !== TokenKind.LessThan) {
       return this._backtrackAndCreateError(marker, 'Expecting an HTML tag starting with "</"');
     }
+    this._tokenReader.readToken();
+
     const slashToken: Token = this._tokenReader.peekToken();
     if (slashToken.kind !== TokenKind.Slash) {
       return this._backtrackAndCreateError(marker, 'Expecting an HTML tag starting with "</"');
     }
+    this._tokenReader.readToken();
 
     // NOTE: Spaces are not permitted here
     // https://www.w3.org/TR/html5/syntax.html#end-tags
@@ -465,8 +486,10 @@ export class NodeParser {
 
     // Read the closing ">"
     if (this._tokenReader.peekTokenKind() !== TokenKind.GreaterThan) {
-      return this._backtrackAndCreateError(marker, 'Expecting a closing ">" for the HTML tag');
+      const failure: IFailure = this._createFailureForToken('Expecting a closing ">" for the HTML tag');
+      return this._backtrackAndCreateErrorForFailure(marker, '', failure);
     }
+    this._tokenReader.readToken();
 
     return new DocHtmlEndTag({
       excerpt: new Excerpt({ prefix: this._tokenReader.extractQueue() }),
@@ -481,6 +504,10 @@ export class NodeParser {
     let htmlName: string = '';
 
     const marker: number = this._tokenReader.createMarker();
+
+    if (this._tokenReader.peekTokenKind() === TokenKind.Spacing) {
+      return this._createFailureForTokensSince('A space is not allowed here', marker);
+    }
 
     let done: boolean = false;
     while (!done) {
@@ -528,12 +555,14 @@ export class NodeParser {
     this._tokenReader.readToken(); // read the backtick
 
     let text: string = '';
+    let closingBacktickMarker: number;
 
     // Parse the content backtick
     while (true) {
       const peekedTokenKind: TokenKind = this._tokenReader.peekTokenKind();
       // Did we find the matching token?
       if (peekedTokenKind === TokenKind.Backtick) {
+        closingBacktickMarker = this._tokenReader.createMarker();
         this._tokenReader.readToken();
         break;
       }
@@ -552,7 +581,7 @@ export class NodeParser {
         break;
       default:
         const failure: IFailure = this._createFailureForToken(
-          'The closing backtick for a code span must be followed by whitespace');
+          'The closing backtick for a code span must be followed by whitespace', closingBacktickMarker);
         return this._backtrackAndCreateErrorForFailure(marker, 'Error parsing code span: ', failure);
     }
 
@@ -606,6 +635,30 @@ export class NodeParser {
   }
 
   /**
+   * Rewind to the specified marker, read the next token, and report it as a DocErrorText node.
+   */
+  private _backtrackAndCreateErrorRange(errorStartMarker: number, errorEndMarker: number,
+    errorMessage: string): DocErrorText {
+
+    this._tokenReader.backtrackToMarker(errorStartMarker);
+    while (this._tokenReader.createMarker() !== errorEndMarker) {
+      this._tokenReader.readToken();
+    }
+    if (this._tokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
+      this._tokenReader.readToken();
+    }
+
+    const tokenRange: TokenRange = this._tokenReader.extractQueue();
+
+    return new DocErrorText({
+      excerpt: new Excerpt({ prefix: tokenRange }),
+      text: tokenRange.toString(),
+      errorMessage: errorMessage,
+      errorLocation: tokenRange
+    });
+  }
+
+  /**
    * Rewind to the specified marker, read the next token, and report it as a DocErrorText node
    * whose location is based on an IFailure.
    */
@@ -614,6 +667,31 @@ export class NodeParser {
 
     this._tokenReader.backtrackToMarker(marker);
     this._tokenReader.readToken();
+
+    const tokenRange: TokenRange = this._tokenReader.extractQueue();
+
+    return new DocErrorText({
+      excerpt: new Excerpt({ prefix: tokenRange }),
+      text: tokenRange.toString(),
+      errorMessage: errorMessagePrefix + failure.failureMessage,
+      errorLocation: failure.failureLocation
+    });
+  }
+
+  /**
+   * Rewind to the specified errorStartMarker, read the tokens up to and including errorEndMarker,
+   * and report it as a DocErrorText node whose location is based on an IFailure.
+   */
+  private _backtrackAndCreateErrorRangeForFailure(errorStartMarker: number, errorEndMarker: number,
+    errorMessagePrefix: string, failure: IFailure): DocErrorText {
+
+    this._tokenReader.backtrackToMarker(errorStartMarker);
+    while (this._tokenReader.createMarker() !== errorEndMarker) {
+      this._tokenReader.readToken();
+    }
+    if (this._tokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
+      this._tokenReader.readToken();
+    }
 
     const tokenRange: TokenRange = this._tokenReader.extractQueue();
 
