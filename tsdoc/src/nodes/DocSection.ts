@@ -3,13 +3,19 @@ import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 /**
  * Constructor parameters for {@link DocSection}.
  */
-export interface IDocDocSectionParameters extends IDocNodeParameters {
+export interface IDocSectionParameters extends IDocNodeParameters {
 
 }
 
 /**
  * Represents a general block of rich text.  DocSection is a simple container
  * for other DocNode child nodes.
+ *
+ * @remarks
+ *
+ * Some terminology: A "block" is a section that is introduced by a TSDoc block tag (e.g. `@example`).
+ * Since in many cases the block tag may not always be required or part of the structure being discussed,
+ * "section" is often used interchangeably with "block".
  */
 export class DocSection extends DocNode {
   /** {@inheritdoc} */
@@ -21,7 +27,7 @@ export class DocSection extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocDocSectionParameters) {
+  public constructor(parameters: IDocSectionParameters) {
     super(parameters);
   }
 
@@ -47,6 +53,7 @@ export class DocSection extends DocNode {
     switch (docNode.kind) {
       case DocNodeKind.Comment:
       case DocNodeKind.Section:
+      case DocNodeKind.ParamSection:
         throw new Error(`A DocSection cannot contain nodes of type ${DocNodeKind[docNode.kind]}`);
     }
     this._nodes.push(docNode);

@@ -2,6 +2,7 @@ import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 import { ParserContext } from '../parser/ParserContext';
 import { DocSection } from './DocSection';
 import { CoreModifierTagSet } from '../details/CoreModifierTagSet';
+import { DocParamSection } from './DocParamSection';
 
 /**
  * Constructor parameters for {@link DocComment}.
@@ -25,12 +26,37 @@ export class DocComment extends DocNode {
   public readonly modifierTagSet: CoreModifierTagSet;
 
   /**
-   * The main documentation for an API item is separated into a brief "summary" section
-   * followed by more detailed "remarks" section.  On a documentation web site, a table of
-   * API item members will typically show only the summaries, whereas the detail page
-   * for an API item will show the summary followed by the remarks and other sections.
+   * The main documentation for an API item is separated into a brief "summary" section,
+   * optionally followed by more detailed "remarks" section.
+   *
+   * @remarks
+   * The summary section should be brief. On a documentation web site, it will be shown
+   * on a page that lists summaries for many different API items.  On a detail page for
+   * a single item, the summary will be shown followed by the remarks section (if any).
    */
-  public remarks: DocSection;
+  public summarySection: DocSection;
+
+  /**
+   * The main documentation for an API item is separated into a brief "summary" section
+   * followed by more detailed "remarks" section.
+   *
+   * @remarks
+   * Unlike the summary, the remarks block may contain lengthy documentation content.
+   * The remarks should not restate information from the summary, since the summary section
+   * will always be displayed wherever the remarks section appears.  Other sections
+   * (e.g. an `@example` block) will be shown after the remarks section.
+   */
+  public remarksSection: DocSection | undefined;
+
+  /**
+   * The collection of parsed `@param` blocks for this doc comment.
+   */
+  public paramSections: DocParamSection[];
+
+  /**
+   * The `@returns` block for this doc comment, or undefined if there is not one.
+   */
+  public returnsSection: DocSection | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -40,7 +66,11 @@ export class DocComment extends DocNode {
     super(parameters);
 
     this.modifierTagSet = new CoreModifierTagSet();
-    this.remarks = new DocSection(parameters);
+
+    this.summarySection = new DocSection(parameters);
+    this.remarksSection = undefined;
+    this.paramSections = [];
+    this.returnsSection = undefined;
   }
 
   /**
@@ -48,6 +78,19 @@ export class DocComment extends DocNode {
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    return [ this.remarks ];
+    const result: DocNode[] = [ this.summarySection ];
+
+    if (this.remarksSection) {
+      result.push(this.remarksSection);
+    }
+
+    result.push(...this.paramSections);
+
+    if (this.returnsSection) {
+      result.push(this.returnsSection);
+    }
+
+    result.push(...this.modifierTagSet.nodes);
+    return result;
   }
 }

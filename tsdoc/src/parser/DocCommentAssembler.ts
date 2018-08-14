@@ -59,6 +59,6 @@ export class DocCommentAssembler {
       }
     }
 
-    this._docComment.remarks.appendNodes(prunedDocNodes);
+    this._docComment.summarySection.appendNodes(prunedDocNodes);
   }
 }
