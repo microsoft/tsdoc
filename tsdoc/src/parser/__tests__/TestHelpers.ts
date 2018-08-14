@@ -3,7 +3,8 @@ import { TextRange } from '../TextRange';
 import {
   DocNodeKind,
   DocErrorText,
-  DocNode
+  DocNode,
+  DocComment
 } from '../../nodes';
 import { ParserContext } from '../ParserContext';
 import { Excerpt } from '../Excerpt';
@@ -96,10 +97,17 @@ export class TestHelpers {
   public static parseAndMatchDocCommentSnapshot(buffer: string): ParserContext {
     const tsdocParser: TSDocParser = new TSDocParser();
     const parserContext: ParserContext = tsdocParser.parseString(buffer);
+    const docComment: DocComment = parserContext.docComment;
 
     expect({
-      lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
-      docComment: TestHelpers.getDocNodeSnapshot(parserContext.docComment)
+      _0_lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
+      _1_summarySection: TestHelpers.getDocNodeSnapshot(docComment.summarySection),
+      _2_remarksBlock: TestHelpers.getDocNodeSnapshot(docComment.remarksBlock),
+      _3_customBlocks: docComment.customBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _4_paramBlocks: docComment.paramBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _5_returnsBlock: docComment.returnsBlock,
+      _6_modifierTags: docComment.modifierTagSet.nodes.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _7_errors: parserContext.parseErrors.map(x => x.message)
     }).toMatchSnapshot();
 
     return parserContext;
@@ -108,7 +116,11 @@ export class TestHelpers {
   /**
    * Render a nice Jest snapshot object for a DocNode tree.
    */
-  public static getDocNodeSnapshot(docNode: DocNode): ISnapshotItem {
+  public static getDocNodeSnapshot(docNode: DocNode | undefined): ISnapshotItem | undefined {
+    if (!docNode) {
+      return undefined;
+    }
+
     const item: ISnapshotItem = {
       kind: DocNodeKind[docNode.kind]
     };
@@ -136,7 +148,7 @@ export class TestHelpers {
     }
 
     if (docNode.getChildNodes().length > 0) {
-      item.nodes = docNode.getChildNodes().map(x => TestHelpers.getDocNodeSnapshot(x));
+      item.nodes = docNode.getChildNodes().map(x => TestHelpers.getDocNodeSnapshot(x)!);
     }
 
     return item;

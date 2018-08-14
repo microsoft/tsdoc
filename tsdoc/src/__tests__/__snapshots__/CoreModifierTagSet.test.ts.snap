@@ -2,47 +2,58 @@
 
 exports[`01 Simple @beta and @internal extraction 1`] = `
 Object {
-  "docComment": Object {
-    "kind": "Comment",
+  "_0_lines": Array [
+    "START @beta",
+    "@unknownTag",
+    "@internal @internal END",
+  ],
+  "_1_summarySection": Object {
+    "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "Section",
-        "nodes": Array [
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "START ",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": " ",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": " END",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-        ],
+        "kind": "PlainText",
+        "nodePrefix": "START ",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
       },
       Object {
         "kind": "BlockTag",
-        "nodePrefix": "@beta",
+        "nodePrefix": "@unknownTag",
       },
       Object {
-        "kind": "BlockTag",
-        "nodePrefix": "@internal",
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": " ",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": " END",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
       },
     ],
   },
-  "lines": Array [
-    "START @beta",
-    "@internal @internal END",
+  "_2_remarksBlock": undefined,
+  "_3_customBlocks": Array [],
+  "_4_paramBlocks": Array [],
+  "_5_returnsBlock": undefined,
+  "_6_modifierTags": Array [
+    Object {
+      "kind": "BlockTag",
+      "nodePrefix": "@beta",
+    },
+    Object {
+      "kind": "BlockTag",
+      "nodePrefix": "@internal",
+    },
   ],
+  "_7_errors": Array [],
 }
 `;

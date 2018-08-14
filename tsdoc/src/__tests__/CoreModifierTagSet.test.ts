@@ -9,6 +9,7 @@ test('01 Simple @beta and @internal extraction', () => {
   const parserContext: ParserContext = TestHelpers.parseAndMatchDocCommentSnapshot([
     '/**',
     ' * START @beta',
+    ' * @unknownTag',
     ' * @internal @internal END',
     ' */'
   ].join('\n'));
