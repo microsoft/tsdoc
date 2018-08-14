@@ -18,7 +18,6 @@ import {
 import { TokenSequence } from './TokenSequence';
 import { Excerpt, IExcerptParameters } from './Excerpt';
 import { TokenReader } from './TokenReader';
-import { DocSection } from '../nodes/DocSection';
 import { StringChecks } from './StringChecks';
 
 interface IFailure {
@@ -114,10 +113,7 @@ export class NodeParser {
     }
     this._pushAccumulatedPlainText(childNodes);
 
-    const verbatimSection: DocSection = this._parserContext.verbatimSection;
-    for (const childNode of childNodes) {
-      verbatimSection.appendNode(childNode);
-    }
+    this._parserContext.verbatimSection.appendNodes(childNodes);
   }
 
   private _pushAccumulatedPlainText(childNodes: DocNode[]): void {

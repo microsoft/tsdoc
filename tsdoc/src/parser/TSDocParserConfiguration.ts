@@ -81,6 +81,14 @@ export class TSDocParserConfiguration {
   }
 
   /**
+   * Return the tag that was defined with the specified name, or undefined
+   * if not found.
+   */
+  public tryGetTagDefinitionUpperCase(alreadyUpperCaseTagName: string): TSDocTagDefinition | undefined {
+    return this._tagDefinitionsByName.get(alreadyUpperCaseTagName);
+  }
+
+  /**
    * Define a new TSDoc tag to be recognized by the TSDocParser.
    */
   public addTagDefinition(tagDefinition: TSDocTagDefinition): void {

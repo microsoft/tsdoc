@@ -51,4 +51,10 @@ export class DocSection extends DocNode {
     }
     this._nodes.push(docNode);
   }
+
+  public appendNodes(docNodes: ReadonlyArray<DocNode>): void {
+    for (const docNode of docNodes) {
+      this.appendNode(docNode);
+    }
+  }
 }

@@ -3,12 +3,18 @@ import { Token } from './Token';
 import { ParseError } from './ParseError';
 import { DocComment } from '../nodes';
 import { DocSection } from '../nodes/DocSection';
+import { TSDocParserConfiguration } from './TSDocParserConfiguration';
 
 /**
  * An internal data structure that tracks all the state being built up by the various
  * parser stages.
  */
 export class ParserContext {
+  /**
+   * The configuration that was provided for the TSDocParser.
+   */
+  public readonly configuration: TSDocParserConfiguration;
+
   /**
    * The `sourceRange` indicates the start and end of the original input that was parsed.
    */
@@ -47,7 +53,8 @@ export class ParserContext {
    */
   public readonly parseErrors: ParseError[] = [];
 
-  public constructor(sourceRange: TextRange) {
+  public constructor(configuration: TSDocParserConfiguration, sourceRange: TextRange) {
+    this.configuration = configuration;
     this.sourceRange = sourceRange;
 
     this.verbatimSection = new DocSection({ });
