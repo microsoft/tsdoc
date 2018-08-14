@@ -85,6 +85,13 @@ export class DocComment extends DocNode {
   }
 
   /**
+   * Append an item to the customBlocks collection.
+   */
+  public appendCustomBlock(block: DocBlock): void {
+    this._customBlocks.push(block);
+  }
+
+  /**
    * {@inheritdoc}
    * @override
    */
