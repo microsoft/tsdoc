@@ -8,7 +8,8 @@ export interface ITokenSequenceParameters {
 }
 
 /**
- * Represents a range of tokens extracted from `ParserContext.tokens`.
+ * Represents a sequence of tokens extracted from `ParserContext.tokens`.
+ * This sequence is defined by a starting index and ending index into that array.
  */
 export class TokenSequence {
   /**

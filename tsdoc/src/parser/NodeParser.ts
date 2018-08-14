@@ -62,7 +62,7 @@ export class NodeParser {
           this._pushAccumulatedPlainText(childNodes);
           this._tokenReader.readToken();
           childNodes.push(new DocSoftBreak({
-            excerpt: new Excerpt({ prefix: this._tokenReader.extractQueue() })
+            excerpt: new Excerpt({ prefix: this._tokenReader.extractAccumulatedSequence() })
           }));
           break;
         case TokenKind.Backslash:
@@ -116,8 +116,8 @@ export class NodeParser {
   }
 
   private _pushAccumulatedPlainText(childNodes: DocNode[]): void {
-    if (!this._tokenReader.isQueueEmpty()) {
-      const plainTextRange: TokenSequence = this._tokenReader.extractQueue();
+    if (!this._tokenReader.isAccumulatedSequenceEmpty()) {
+      const plainTextRange: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
       childNodes.push(new DocPlainText({
         text: plainTextRange.toString(),
@@ -127,7 +127,7 @@ export class NodeParser {
   }
 
   private _parseBackslashEscape(): DocNode {
-    this._tokenReader.assertQueueEmpty();
+    this._tokenReader.assertAccumulatedSequenceIsEmpty();
     const marker: number = this._tokenReader.createMarker();
 
     this._tokenReader.readToken();
@@ -147,7 +147,7 @@ export class NodeParser {
         'A backslash can only be used to escape a punctuation character');
     }
 
-    const tokenSequence: TokenSequence = this._tokenReader.extractQueue();
+    const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
     return new DocEscapedText({
       excerpt: new Excerpt({ prefix: tokenSequence }),
@@ -157,7 +157,7 @@ export class NodeParser {
   }
 
   private _parseBlockTag(): DocNode {
-    this._tokenReader.assertQueueEmpty();
+    this._tokenReader.assertAccumulatedSequenceIsEmpty();
     const marker: number = this._tokenReader.createMarker();
 
     if (this._tokenReader.peekTokenKind() !== TokenKind.AtSign) {
@@ -211,13 +211,13 @@ export class NodeParser {
     }
 
     return new DocBlockTag({
-      excerpt: new Excerpt({ prefix: this._tokenReader.extractQueue() }),
+      excerpt: new Excerpt({ prefix: this._tokenReader.extractAccumulatedSequence() }),
       tagName
     });
   }
 
   private _parseInlineTag(): DocNode {
-    this._tokenReader.assertQueueEmpty();
+    this._tokenReader.assertAccumulatedSequenceIsEmpty();
     const marker: number = this._tokenReader.createMarker();
 
     if (this._tokenReader.peekTokenKind() !== TokenKind.LeftCurlyBracket) {
@@ -309,14 +309,14 @@ export class NodeParser {
     }
 
     return new DocInlineTag({
-      excerpt: new Excerpt({ prefix: this._tokenReader.extractQueue() }),
+      excerpt: new Excerpt({ prefix: this._tokenReader.extractAccumulatedSequence() }),
       tagName: tagName,
       tagContent: tagContent
     });
   }
 
   private _parseHtmlStartTag(): DocNode {
-    this._tokenReader.assertQueueEmpty();
+    this._tokenReader.assertAccumulatedSequenceIsEmpty();
     const marker: number = this._tokenReader.createMarker();
 
     // Read the "<" delimiter
@@ -337,7 +337,7 @@ export class NodeParser {
     // Extract everything from the "<" up to the start of the first attribute and make that
     // the Excerpt prefix.  Example: "<table "
     const excerptParameters: IExcerptParameters = {
-      prefix: this._tokenReader.extractQueue()
+      prefix: this._tokenReader.extractAccumulatedSequence()
     };
 
     const htmlAttributes: DocHtmlAttribute[] = [];
@@ -355,7 +355,7 @@ export class NodeParser {
     }
 
     // Read the closing "/>" or ">" as the Excerpt.suffix
-    this._tokenReader.assertQueueEmpty();
+    this._tokenReader.assertAccumulatedSequenceIsEmpty();
     const endDelimiterMarker: number = this._tokenReader.createMarker();
 
     let selfClosingTag: boolean = false;
@@ -369,7 +369,7 @@ export class NodeParser {
       return this._backtrackAndCreateErrorForFailure(marker, 'The HTML tag has invalid syntax: ', failure);
     }
     this._tokenReader.readToken();
-    excerptParameters.suffix = this._tokenReader.extractQueue();
+    excerptParameters.suffix = this._tokenReader.extractAccumulatedSequence();
 
     // NOTE: We don't read excerptParameters.separator here, since if there is any it
     // will be represented as DocPlainText.
@@ -405,12 +405,12 @@ export class NodeParser {
     }
 
     const excerptParameters: IExcerptParameters = {
-      prefix: this._tokenReader.extractQueue()
+      prefix: this._tokenReader.extractAccumulatedSequence()
     };
 
     const spacingAfterAttributeValue: string = this._readSpacingAndNewlines();
-    if (!this._tokenReader.isQueueEmpty()) {
-      excerptParameters.separator = this._tokenReader.extractQueue();
+    if (!this._tokenReader.isAccumulatedSequenceEmpty()) {
+      excerptParameters.separator = this._tokenReader.extractAccumulatedSequence();
     }
 
     return new DocHtmlAttribute({
@@ -457,7 +457,7 @@ export class NodeParser {
   }
 
   private _parseHtmlEndTag(): DocNode {
-    this._tokenReader.assertQueueEmpty();
+    this._tokenReader.assertAccumulatedSequenceIsEmpty();
     const marker: number = this._tokenReader.createMarker();
 
     // Read the "<" delimiter
@@ -492,7 +492,7 @@ export class NodeParser {
     this._tokenReader.readToken();
 
     return new DocHtmlEndTag({
-      excerpt: new Excerpt({ prefix: this._tokenReader.extractQueue() }),
+      excerpt: new Excerpt({ prefix: this._tokenReader.extractAccumulatedSequence() }),
       elementName
     });
   }
@@ -535,7 +535,7 @@ export class NodeParser {
   }
 
   private _parseCodeSpan(): DocNode {
-    this._tokenReader.assertQueueEmpty();
+    this._tokenReader.assertAccumulatedSequenceIsEmpty();
     const marker: number = this._tokenReader.createMarker();
 
     // Parse the opening backtick
@@ -586,7 +586,7 @@ export class NodeParser {
     }
 
     return new DocCodeSpan({
-      excerpt: new Excerpt({ prefix: this._tokenReader.extractQueue() }),
+      excerpt: new Excerpt({ prefix: this._tokenReader.extractAccumulatedSequence() }),
       text
     });
   }
@@ -616,7 +616,7 @@ export class NodeParser {
   private _createError(errorMessage: string): DocErrorText {
     this._tokenReader.readToken();
 
-    const tokenSequence: TokenSequence = this._tokenReader.extractQueue();
+    const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
     return new DocErrorText({
       excerpt: new Excerpt({ prefix: tokenSequence }),
@@ -648,7 +648,7 @@ export class NodeParser {
       this._tokenReader.readToken();
     }
 
-    const tokenSequence: TokenSequence = this._tokenReader.extractQueue();
+    const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
     return new DocErrorText({
       excerpt: new Excerpt({ prefix: tokenSequence }),
@@ -668,7 +668,7 @@ export class NodeParser {
     this._tokenReader.backtrackToMarker(marker);
     this._tokenReader.readToken();
 
-    const tokenSequence: TokenSequence = this._tokenReader.extractQueue();
+    const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
     return new DocErrorText({
       excerpt: new Excerpt({ prefix: tokenSequence }),
@@ -693,7 +693,7 @@ export class NodeParser {
       this._tokenReader.readToken();
     }
 
-    const tokenSequence: TokenSequence = this._tokenReader.extractQueue();
+    const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
     return new DocErrorText({
       excerpt: new Excerpt({ prefix: tokenSequence }),

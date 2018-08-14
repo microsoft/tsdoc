@@ -2,6 +2,16 @@ import { Token, TokenKind } from './Token';
 import { TokenSequence } from './TokenSequence';
 import { ParserContext } from './ParserContext';
 
+/**
+ * Manages a stream of tokens that are read by the parser.
+ *
+ * @remarks
+ * Use TokenReader.readToken() to read a token and advance the stream pointer.
+ * Use TokenReader.peekToken() to preview the next token.
+ * Use TokeNreader.createMarker() and backtrackToMarker() to rewind to an earlier point.
+ * Whenever readToken() is called, the token is added to an accumulated TokenSequence
+ * that can be extracted by calling extractAccumulatedSequence().
+ */
 export class TokenReader {
   public readonly tokens: ReadonlyArray<Token>;
 
@@ -16,10 +26,15 @@ export class TokenReader {
     this._currentIndex = 0;
   }
 
-  public extractQueue(): TokenSequence {
+  /**
+   * Extracts and returns the TokenSequence that was accumulated so far by calls to readToken().
+   * The next call to readToken() will start a new accumulated sequence.
+   */
+  public extractAccumulatedSequence(): TokenSequence {
     if (this._rangeStartIndex === this._currentIndex) {
       // If this happens, it indicates a parser bug:
-      throw new Error('Parser assertion failed: The queue should not be empty when extractQueue() is called');
+      throw new Error('Parser assertion failed: The queue should not be empty when'
+        + ' extractAccumulatedSequence() is called');
     }
 
     const range: TokenSequence = new TokenSequence({
@@ -33,12 +48,22 @@ export class TokenReader {
     return range;
   }
 
-  public isQueueEmpty(): boolean {
+  /**
+   * Returns true if the accumulated sequence has any tokens yet.  This will be false
+   * when the TokenReader starts, and it will be false immediately after a call
+   * to extractAccumulatedSequence().  Otherwise, it will become true whenever readToken()
+   * is called.
+   */
+  public isAccumulatedSequenceEmpty(): boolean {
     return this._rangeStartIndex === this._currentIndex;
   }
 
-  public assertQueueEmpty(): void {
-    if (!this.isQueueEmpty()) {
+  /**
+   * Asserts that isAccumulatedSequenceEmpty() should return false.  If not, an exception
+   * is throw indicating a parser bug.
+   */
+  public assertAccumulatedSequenceIsEmpty(): void {
+    if (!this.isAccumulatedSequenceEmpty()) {
       // If this happens, it indicates a parser bug:
       const range: TokenSequence = new TokenSequence({
         parserContext: this._parserContext,
@@ -80,6 +105,8 @@ export class TokenReader {
 
   /**
    * Extract the next token from the input stream and return it.
+   * The token will also be appended to the accumulated sequence, which can
+   * later be accessed via extractAccumulatedSequence().
    */
   public readToken(): Token {
     if (this._currentIndex >= this.tokens.length) {
@@ -108,10 +135,16 @@ export class TokenReader {
     return this.tokens[this._currentIndex - 1].kind;
   }
 
+  /**
+   * Remembers the current position in the stream.
+   */
   public createMarker(): number {
     return this._currentIndex;
   }
 
+  /**
+   * Rewinds the stream pointer to a previous position in the stream.
+   */
   public backtrackToMarker(marker: number): void {
     if (marker > this._currentIndex) {
       // If this happens, it's a parser bug
