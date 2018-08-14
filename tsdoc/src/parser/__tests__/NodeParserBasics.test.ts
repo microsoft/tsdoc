@@ -1,7 +1,7 @@
 import { TestHelpers } from './TestHelpers';
 
 test('00 Tokenizer simple case', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * line 1 ', // extra space at end of line
     ' * line 2',
@@ -10,15 +10,15 @@ test('00 Tokenizer simple case', () => {
 });
 
 test('01 Tokenizer degenerate cases', () => {
-  TestHelpers.parseAndMatchSnapshot('/***/');
+  TestHelpers.parseAndMatchNodeParserSnapshot('/***/');
 
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' *',
     ' */'
   ].join('\n'));
 
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' ',
     ' ',
@@ -28,7 +28,7 @@ test('01 Tokenizer degenerate cases', () => {
 });
 
 test('02 Backslash escapes: positive examples', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * \\$\\@param',
     ' */'
@@ -36,7 +36,7 @@ test('02 Backslash escapes: positive examples', () => {
 });
 
 test('03 Backslash escapes: negative examples', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * letter: \\A space: \\  end of line: \\',
     ' */'

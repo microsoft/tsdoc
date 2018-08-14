@@ -1,7 +1,7 @@
 import { TestHelpers } from './TestHelpers';
 
 test('00 Block tags: positive examples', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * @one ',
     ' * @two',
@@ -10,7 +10,7 @@ test('00 Block tags: positive examples', () => {
 });
 
 test('01 Block tags: negative examples', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * @ one ',
     ' * +@two ',
@@ -20,7 +20,7 @@ test('01 Block tags: negative examples', () => {
 });
 
 test('02 Inline tags: simple, positive', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * {@one} ',
     ' * {@two } ',
@@ -32,7 +32,7 @@ test('02 Inline tags: simple, positive', () => {
 });
 
 test('03 Inline tags: simple, negative', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * {@ one} ',
     ' * {@two~} ',
@@ -43,14 +43,14 @@ test('03 Inline tags: simple, negative', () => {
 });
 
 test('04 Inline tags: complex, positive', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * {@one some content}',
     ' * {@two multi',
     ' * line}',
     ' */'
   ].join('\n'));
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * {@three @taglike}',
     ' */'
@@ -58,7 +58,7 @@ test('04 Inline tags: complex, positive', () => {
 });
 
 test('05 Inline tags: escaping, positive', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * {@one left \\{ right \\} backslash \\\\ }',
     ' */'
@@ -66,17 +66,17 @@ test('05 Inline tags: escaping, positive', () => {
 });
 
 test('06 Inline tags: escaping, negative', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * {@one curly\\}',
     ' */'
   ].join('\n'));
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * {@two curly{}}',
     ' */'
   ].join('\n'));
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * three: }',
     ' */'

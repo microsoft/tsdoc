@@ -1,9 +1,9 @@
 import { TSDocParser } from '../TSDocParser';
 import { TextRange } from '../TextRange';
 import {
-  DocNode,
   DocNodeKind,
-  DocErrorText
+  DocErrorText,
+  DocNode
 } from '../../nodes';
 import { ParserContext } from '../ParserContext';
 import { Excerpt } from '../Excerpt';
@@ -20,6 +20,9 @@ interface ISnapshotItem {
 }
 
 export class TestHelpers {
+  /**
+   * Pretty print a line with "<" and ">" markers to indicate a text range.
+   */
   public static formatLineSpan(line: TextRange, range: TextRange): string {
     if (range.pos < line.pos || range.end > line.end) {
       throw new Error('Range must fall within the associated line');
@@ -58,7 +61,9 @@ export class TestHelpers {
     return span;
   }
 
-  // Workaround various characters that get ugly escapes in Jest snapshots
+  /**
+   * Workaround various characters that get ugly escapes in Jest snapshots
+   */
   public static getEscaped(s: string): string {
     return s.replace(/\n/g, '[n]')
       .replace(/\r/g, '[r]')
@@ -71,18 +76,39 @@ export class TestHelpers {
       .replace(/\>/g, '[>]');
   }
 
-  public static parseAndMatchSnapshot(buffer: string): void {
+  /**
+   * Main harness for tests under `./parser/*`.
+   */
+  public static parseAndMatchNodeParserSnapshot(buffer: string): void {
     const tsdocParser: TSDocParser = new TSDocParser();
     const parserContext: ParserContext = tsdocParser.parseString(buffer);
 
     expect({
       buffer: TestHelpers.getEscaped(buffer),
       lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
-      rootNode: TestHelpers._getNodeSnapshot(parserContext.verbatimSection, parserContext.lines)
+      rootNode: TestHelpers.getDocNodeSnapshot(parserContext.verbatimSection)
     }).toMatchSnapshot();
   }
 
-  private static _getNodeSnapshot(docNode: DocNode, lines: TextRange[]): ISnapshotItem {
+  /**
+   * Main harness for tests under `./details/*`.
+   */
+  public static parseAndMatchDocCommentSnapshot(buffer: string): ParserContext {
+    const tsdocParser: TSDocParser = new TSDocParser();
+    const parserContext: ParserContext = tsdocParser.parseString(buffer);
+
+    expect({
+      lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
+      docComment: TestHelpers.getDocNodeSnapshot(parserContext.docComment)
+    }).toMatchSnapshot();
+
+    return parserContext;
+  }
+
+  /**
+   * Render a nice Jest snapshot object for a DocNode tree.
+   */
+  public static getDocNodeSnapshot(docNode: DocNode): ISnapshotItem {
     const item: ISnapshotItem = {
       kind: DocNodeKind[docNode.kind]
     };
@@ -110,7 +136,7 @@ export class TestHelpers {
     }
 
     if (docNode.getChildNodes().length > 0) {
-      item.nodes = docNode.getChildNodes().map(x => TestHelpers._getNodeSnapshot(x, lines));
+      item.nodes = docNode.getChildNodes().map(x => TestHelpers.getDocNodeSnapshot(x));
     }
 
     return item;

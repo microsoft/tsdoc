@@ -1,7 +1,7 @@
 import { TestHelpers } from './TestHelpers';
 
 test('01 HTML start tags: simple, positive', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * <tag/>',
     ' * <tag-a />',
@@ -15,7 +15,7 @@ test('01 HTML start tags: simple, positive', () => {
 });
 
 test('02 HTML start tags: simple, negative', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * < tag/>',
     ' * <tag -a />',
@@ -27,7 +27,7 @@ test('02 HTML start tags: simple, negative', () => {
 });
 
 test('03 HTML start tags: with attributes, positive', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * <tag-a attr-one="one" />',
     ' * <tag-b',
@@ -36,7 +36,7 @@ test('03 HTML start tags: with attributes, positive', () => {
     ' * />',
     ' */'
   ].join('\n'));
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * <tag-c attr-three="3" four=\'4\'/>',
     ' * <tag-d',
@@ -47,7 +47,7 @@ test('03 HTML start tags: with attributes, positive', () => {
     ' * />',
     ' */'
   ].join('\n'));
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * <tag-e attr-one="one" two=\'two\'/>',
     ' * <tag-f',
@@ -61,7 +61,7 @@ test('03 HTML start tags: with attributes, positive', () => {
 });
 
 test('04 HTML start tags: with attributes, negative', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * <tag-a attr -one="one" />',
     ' * <tag-b attr- two="two" />',
@@ -71,7 +71,7 @@ test('04 HTML start tags: with attributes, negative', () => {
     ' * <tag-f attr-six="six"seven="seven" />',
     ' */'
   ].join('\n'));
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * <tag-g attr="multi',
     ' * line" />',
@@ -80,7 +80,7 @@ test('04 HTML start tags: with attributes, negative', () => {
 });
 
 test('05 Eclipsed TSDoc', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * <tag attr-one="@tag" />',
     ' */'
@@ -88,7 +88,7 @@ test('05 Eclipsed TSDoc', () => {
 });
 
 test('06 Closing tags, positive', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * </tag-a>',
     ' * </tag-b  >',
@@ -99,7 +99,7 @@ test('06 Closing tags, positive', () => {
 });
 
 test('07 Closing tags, negative', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * </tag-a/>',
     ' * </ tag-b>',
