@@ -1,5 +1,5 @@
 import { Token, TokenKind } from './Token';
-import { TokenRange } from './TokenRange';
+import { TokenSequence } from './TokenSequence';
 import { ParserContext } from './ParserContext';
 
 export class TokenReader {
@@ -16,13 +16,13 @@ export class TokenReader {
     this._currentIndex = 0;
   }
 
-  public extractQueue(): TokenRange {
+  public extractQueue(): TokenSequence {
     if (this._rangeStartIndex === this._currentIndex) {
       // If this happens, it indicates a parser bug:
       throw new Error('Parser assertion failed: The queue should not be empty when extractQueue() is called');
     }
 
-    const range: TokenRange = new TokenRange({
+    const range: TokenSequence = new TokenSequence({
       parserContext: this._parserContext,
       pos: this._rangeStartIndex,
       end: this._currentIndex
@@ -40,7 +40,7 @@ export class TokenReader {
   public assertQueueEmpty(): void {
     if (!this.isQueueEmpty()) {
       // If this happens, it indicates a parser bug:
-      const range: TokenRange = new TokenRange({
+      const range: TokenSequence = new TokenSequence({
         parserContext: this._parserContext,
         pos: this._rangeStartIndex,
         end: this._currentIndex

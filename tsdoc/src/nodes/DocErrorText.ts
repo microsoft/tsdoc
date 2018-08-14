@@ -1,5 +1,5 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
-import { TokenRange } from '../parser/TokenRange';
+import { TokenSequence } from '../parser/TokenSequence';
 
 /**
  * Constructor parameters for {@link DocErrorText}.
@@ -7,7 +7,7 @@ import { TokenRange } from '../parser/TokenRange';
 export interface IDocErrorTextParameters extends IDocNodeParameters {
   text: string;
   errorMessage: string;
-  errorLocation: TokenRange;
+  errorLocation: TokenSequence;
 }
 
 /**
@@ -38,7 +38,7 @@ export class DocErrorText extends DocNode {
    * will correspond to the `<` character that looked like an HTML tag, whereas the
    * error location might be the `@` character that caused the trouble.
    */
-  public readonly errorLocation: TokenRange;
+  public readonly errorLocation: TokenSequence;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

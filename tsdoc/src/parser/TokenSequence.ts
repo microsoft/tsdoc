@@ -1,7 +1,7 @@
 import { ParserContext } from './ParserContext';
 import { Token } from './Token';
 
-export interface ITokenRangeParameters {
+export interface ITokenSequenceParameters {
   parserContext: ParserContext;
   pos: number;
   end: number;
@@ -10,7 +10,7 @@ export interface ITokenRangeParameters {
 /**
  * Represents a range of tokens extracted from `ParserContext.tokens`.
  */
-export class TokenRange {
+export class TokenSequence {
   /**
    * The associated parser context that the tokens come from.
    */
@@ -20,13 +20,13 @@ export class TokenRange {
   private _end: number;
 
   /**
-   * Constructs a TokenRange object with no tokens.
+   * Constructs a TokenSequence object with no tokens.
    */
-  public static createEmpty(parserContext: ParserContext): TokenRange {
-    return new TokenRange({ parserContext, pos: 0, end: 0 });
+  public static createEmpty(parserContext: ParserContext): TokenSequence {
+    return new TokenSequence({ parserContext, pos: 0, end: 0 });
   }
 
-  public constructor(parameters: ITokenRangeParameters) {
+  public constructor(parameters: ITokenSequenceParameters) {
     this.parserContext = parameters.parserContext;
     this._pos = parameters.pos;
     this._end = parameters.end;
@@ -64,19 +64,19 @@ export class TokenRange {
 
   private _validateBounds(): void {
     if (this.pos < 0) {
-      throw new Error('TokenRange.pos cannot be negative');
+      throw new Error('TokenSequence.pos cannot be negative');
     }
     if (this.end < 0) {
-      throw new Error('TokenRange.end cannot be negative');
+      throw new Error('TokenSequence.end cannot be negative');
     }
     if (this.end < this.pos) {
-      throw new Error('TokenRange.end cannot be smaller than TokenRange.pos');
+      throw new Error('TokenSequence.end cannot be smaller than TokenSequence.pos');
     }
     if (this.pos > this.parserContext.tokens.length) {
-      throw new Error('TokenRange.pos cannot exceed the associated token array');
+      throw new Error('TokenSequence.pos cannot exceed the associated token array');
     }
     if (this.end > this.parserContext.tokens.length) {
-      throw new Error('TokenRange.end cannot exceed the associated token array');
+      throw new Error('TokenSequence.end cannot exceed the associated token array');
     }
   }
 }

@@ -15,7 +15,7 @@ import {
   DocSoftBreak,
   EscapeStyle
 } from '../nodes';
-import { TokenRange } from './TokenRange';
+import { TokenSequence } from './TokenSequence';
 import { Excerpt, IExcerptParameters } from './Excerpt';
 import { TokenReader } from './TokenReader';
 import { DocSection } from '../nodes/DocSection';
@@ -24,7 +24,7 @@ interface IFailure {
   // (We use "failureMessage" instead of "errorMessage" here so that DocErrorText doesn't
   // accidentally implement this interface.)
   failureMessage: string;
-  failureLocation: TokenRange;
+  failureLocation: TokenSequence;
 }
 
 type ResultOrFailure<T> = T | IFailure;
@@ -117,7 +117,7 @@ export class NodeParser {
 
   private _pushAccumulatedPlainText(childNodes: DocNode[]): void {
     if (!this._tokenReader.isQueueEmpty()) {
-      const plainTextRange: TokenRange = this._tokenReader.extractQueue();
+      const plainTextRange: TokenSequence = this._tokenReader.extractQueue();
 
       childNodes.push(new DocPlainText({
         text: plainTextRange.toString(),
@@ -147,10 +147,10 @@ export class NodeParser {
         'A backslash can only be used to escape a punctuation character');
     }
 
-    const tokenRange: TokenRange = this._tokenReader.extractQueue();
+    const tokenSequence: TokenSequence = this._tokenReader.extractQueue();
 
     return new DocEscapedText({
-      excerpt: new Excerpt({ prefix: tokenRange }),
+      excerpt: new Excerpt({ prefix: tokenSequence }),
       escapeStyle: EscapeStyle.CommonMarkBackslash,
       text: escapedToken.toString()
     });
@@ -616,13 +616,13 @@ export class NodeParser {
   private _createError(errorMessage: string): DocErrorText {
     this._tokenReader.readToken();
 
-    const tokenRange: TokenRange = this._tokenReader.extractQueue();
+    const tokenSequence: TokenSequence = this._tokenReader.extractQueue();
 
     return new DocErrorText({
-      excerpt: new Excerpt({ prefix: tokenRange }),
-      text: tokenRange.toString(),
+      excerpt: new Excerpt({ prefix: tokenSequence }),
+      text: tokenSequence.toString(),
       errorMessage,
-      errorLocation: tokenRange
+      errorLocation: tokenSequence
     });
   }
 
@@ -648,13 +648,13 @@ export class NodeParser {
       this._tokenReader.readToken();
     }
 
-    const tokenRange: TokenRange = this._tokenReader.extractQueue();
+    const tokenSequence: TokenSequence = this._tokenReader.extractQueue();
 
     return new DocErrorText({
-      excerpt: new Excerpt({ prefix: tokenRange }),
-      text: tokenRange.toString(),
+      excerpt: new Excerpt({ prefix: tokenSequence }),
+      text: tokenSequence.toString(),
       errorMessage: errorMessage,
-      errorLocation: tokenRange
+      errorLocation: tokenSequence
     });
   }
 
@@ -668,11 +668,11 @@ export class NodeParser {
     this._tokenReader.backtrackToMarker(marker);
     this._tokenReader.readToken();
 
-    const tokenRange: TokenRange = this._tokenReader.extractQueue();
+    const tokenSequence: TokenSequence = this._tokenReader.extractQueue();
 
     return new DocErrorText({
-      excerpt: new Excerpt({ prefix: tokenRange }),
-      text: tokenRange.toString(),
+      excerpt: new Excerpt({ prefix: tokenSequence }),
+      text: tokenSequence.toString(),
       errorMessage: errorMessagePrefix + failure.failureMessage,
       errorLocation: failure.failureLocation
     });
@@ -693,18 +693,18 @@ export class NodeParser {
       this._tokenReader.readToken();
     }
 
-    const tokenRange: TokenRange = this._tokenReader.extractQueue();
+    const tokenSequence: TokenSequence = this._tokenReader.extractQueue();
 
     return new DocErrorText({
-      excerpt: new Excerpt({ prefix: tokenRange }),
-      text: tokenRange.toString(),
+      excerpt: new Excerpt({ prefix: tokenSequence }),
+      text: tokenSequence.toString(),
       errorMessage: errorMessagePrefix + failure.failureMessage,
       errorLocation: failure.failureLocation
     });
   }
 
   /**
-   * Creates an IFailure whose TokenRange is a single token.  If a marker is not specified,
+   * Creates an IFailure whose TokenSequence is a single token.  If a marker is not specified,
    * then it is the current token.
    */
   private _createFailureForToken(failureMessage: string, tokenMarker?: number): IFailure {
@@ -713,12 +713,12 @@ export class NodeParser {
     }
     return {
       failureMessage,
-      failureLocation: this._createTokenRange(tokenMarker, tokenMarker + 1)
+      failureLocation: this._createTokenSequence(tokenMarker, tokenMarker + 1)
     };
   }
 
   /**
-   * Creates an IFailure whose TokenRange starts from the specified marker and
+   * Creates an IFailure whose TokenSequence starts from the specified marker and
    * encompases all tokens read since then.  If none were read, then the next token used.
    */
   private _createFailureForTokensSince(failureMessage: string, startMarker: number): IFailure {
@@ -732,11 +732,11 @@ export class NodeParser {
     }
     return {
       failureMessage,
-      failureLocation: this._createTokenRange(startMarker, endMarker)
+      failureLocation: this._createTokenSequence(startMarker, endMarker)
     };
   }
 
-  private _createTokenRange(pos: number, end: number): TokenRange {
-    return new TokenRange({ parserContext: this._parserContext, pos, end });
+  private _createTokenSequence(pos: number, end: number): TokenSequence {
+    return new TokenSequence({ parserContext: this._parserContext, pos, end });
   }
 }

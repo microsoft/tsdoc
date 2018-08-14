@@ -1,10 +1,10 @@
 import { ParserContext } from './ParserContext';
-import { TokenRange } from './TokenRange';
+import { TokenSequence } from './TokenSequence';
 
 export interface IExcerptParameters {
-  prefix: TokenRange;
-  suffix?: TokenRange;
-  separator?: TokenRange;
+  prefix: TokenSequence;
+  suffix?: TokenSequence;
+  separator?: TokenSequence;
 }
 
 /**
@@ -33,24 +33,24 @@ export class Excerpt {
   /**
    * The main textual content for the associated node.
    */
-  public readonly prefix: TokenRange;
+  public readonly prefix: TokenSequence;
 
   /**
    * An optional suffix that captures any delimiters that might appear after the
    * child nodes.  If there are no child nodes, this is always an empty list.
    */
-  public readonly suffix: TokenRange;
+  public readonly suffix: TokenSequence;
 
   /**
    * Captures any whitespace that may separate this node from a sibling that follows it.
    * The tokens will always be of type Spacing or Newline.
    */
-  public readonly separator: TokenRange;
+  public readonly separator: TokenSequence;
 
   public constructor(parameters: IExcerptParameters) {
     this.parserContext = parameters.prefix.parserContext;
     this.prefix = parameters.prefix;
-    this.suffix = parameters.suffix || TokenRange.createEmpty(this.parserContext);
-    this.separator = parameters.separator || TokenRange.createEmpty(this.parserContext);
+    this.suffix = parameters.suffix || TokenSequence.createEmpty(this.parserContext);
+    this.separator = parameters.separator || TokenSequence.createEmpty(this.parserContext);
   }
 }
