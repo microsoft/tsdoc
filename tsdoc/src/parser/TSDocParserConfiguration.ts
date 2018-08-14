@@ -1,3 +1,4 @@
+import { StringChecks } from './StringChecks';
 
 /**
  * Determines the type of syntax for a TSDocTagDefinition
@@ -43,6 +44,7 @@ export class TSDocTagDefinition {
   public readonly syntaxKind: TSDocTagSyntaxKind;
 
   public constructor(tagName: string, syntaxKind: TSDocTagSyntaxKind) {
+    StringChecks.validateTSDocTagName(tagName);
     this.tagName = tagName;
     this.tagNameForComparisons = tagName.toUpperCase();
     this.syntaxKind = syntaxKind;

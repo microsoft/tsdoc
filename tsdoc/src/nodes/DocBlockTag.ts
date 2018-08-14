@@ -1,4 +1,5 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { StringChecks } from '../parser/StringChecks';
 
 /**
  * Constructor parameters for {@link DocBlockTag}.
@@ -33,7 +34,7 @@ export class DocBlockTag extends DocNode {
   public constructor(parameters: IDocBlockTagParameters) {
     super(parameters);
 
-    DocNode.validateTSDocTagName(parameters.tagName);
+    StringChecks.validateTSDocTagName(parameters.tagName);
     this.tagName = parameters.tagName;
     this.tagNameForComparisons = this.tagName.toUpperCase();
   }
