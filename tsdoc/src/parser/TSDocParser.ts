@@ -3,11 +3,22 @@ import { ParserContext } from './ParserContext';
 import { LineExtractor } from './LineExtractor';
 import { Tokenizer } from './Tokenizer';
 import { NodeParser } from './NodeParser';
+import { TSDocParserConfiguration } from './TSDocParserConfiguration';
 
 /**
  * The main API for parsing TSDoc comments.
  */
 export class TSDocParser {
+  public readonly configuration: TSDocParserConfiguration;
+
+  public constructor(configuration?: TSDocParserConfiguration) {
+    if (configuration) {
+      this.configuration = configuration;
+    } else {
+      this.configuration = new TSDocParserConfiguration();
+    }
+  }
+
   public parseString(text: string): ParserContext {
     return this.parseRange(TextRange.fromString(text));
   }
