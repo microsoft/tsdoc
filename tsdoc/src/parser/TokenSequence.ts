@@ -1,6 +1,9 @@
 import { ParserContext } from './ParserContext';
 import { Token } from './Token';
 
+/**
+ * Constructor parameters for {@link TokenSequence}
+ */
 export interface ITokenSequenceParameters {
   parserContext: ParserContext;
   startIndex: number;
