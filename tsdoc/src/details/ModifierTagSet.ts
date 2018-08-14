@@ -34,15 +34,24 @@ export class ModifierTagSet {
   }
 
   /**
+   * Returns true if a DocBlockTag with the specified tag name was added to this set.
+   * Note that synonyms are not considered.  The comparison is case-insensitive.
+   * @param tagName - The name of the tag, including the `@` prefix  For example, `@internal`
+   */
+  public hasModifierTagWithUpperCase(alreadyUpperCaseModifierTag: string): boolean {
+    return this._names.has(alreadyUpperCaseModifierTag);
+  }
+
+  /**
    * Adds a new modifier tag to the set.  If a tag already exists with the same name,
    * then no change is made, and the return value is false.
    */
   public addModifierTag(blockTag: DocBlockTag): boolean {
-    if (this._names.has(blockTag.tagNameForComparisons)) {
+    if (this._names.has(blockTag.tagNameWithUpperCase)) {
       return false;
     }
 
-    this._names.add(blockTag.tagNameForComparisons);
+    this._names.add(blockTag.tagNameWithUpperCase);
     this._nodes.push(blockTag);
 
     return true;

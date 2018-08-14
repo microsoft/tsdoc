@@ -25,7 +25,7 @@ export class DocBlockTag extends DocNode {
    * The TSDoc tag name in all capitals, which is used for performing
    * case-insensitive comparisons or lookups.
    */
-  public readonly tagNameForComparisons: string;
+  public readonly tagNameWithUpperCase: string;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -36,6 +36,6 @@ export class DocBlockTag extends DocNode {
 
     StringChecks.validateTSDocTagName(parameters.tagName);
     this.tagName = parameters.tagName;
-    this.tagNameForComparisons = this.tagName.toUpperCase();
+    this.tagNameWithUpperCase = this.tagName.toUpperCase();
   }
 }
