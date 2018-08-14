@@ -2,7 +2,8 @@ import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 import { ParserContext } from '../parser/ParserContext';
 import { DocSection } from './DocSection';
 import { CoreModifierTagSet } from '../details/CoreModifierTagSet';
-import { DocParamSection } from './DocParamSection';
+import { DocBlock } from './DocBlock';
+import { DocParamBlock } from './DocParamBlock';
 
 /**
  * Constructor parameters for {@link DocComment}.
@@ -16,14 +17,8 @@ export interface IDocCommentParameters extends IDocNodeParameters {
  * This is the root of the DocNode tree.
  */
 export class DocComment extends DocNode {
-
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Comment;
-
-  /**
-   * The modifier tags for this DocComment.
-   */
-  public readonly modifierTagSet: CoreModifierTagSet;
 
   /**
    * The main documentation for an API item is separated into a brief "summary" section,
@@ -46,17 +41,24 @@ export class DocComment extends DocNode {
    * will always be displayed wherever the remarks section appears.  Other sections
    * (e.g. an `@example` block) will be shown after the remarks section.
    */
-  public remarksSection: DocSection | undefined;
+  public remarksBlock: DocBlock | undefined;
 
   /**
    * The collection of parsed `@param` blocks for this doc comment.
    */
-  public paramSections: DocParamSection[];
+  public paramBlocks: DocParamBlock[];
 
   /**
    * The `@returns` block for this doc comment, or undefined if there is not one.
    */
-  public returnsSection: DocSection | undefined;
+  public returnsBlock: DocBlock | undefined;
+
+  /**
+   * The modifier tags for this DocComment.
+   */
+  public readonly modifierTagSet: CoreModifierTagSet;
+
+  private _customBlocks: DocBlock[];
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -65,12 +67,21 @@ export class DocComment extends DocNode {
   public constructor(parameters: IDocCommentParameters) {
     super(parameters);
 
+    this.summarySection = new DocSection(parameters);
+    this.remarksBlock = undefined;
+    this.paramBlocks = [];
+    this.returnsBlock = undefined;
+
     this.modifierTagSet = new CoreModifierTagSet();
 
-    this.summarySection = new DocSection(parameters);
-    this.remarksSection = undefined;
-    this.paramSections = [];
-    this.returnsSection = undefined;
+    this._customBlocks = [];
+  }
+
+  /**
+   * The collection of all DocBlock nodes belonging to this doc comment.
+   */
+  public get customBlocks(): ReadonlyArray<DocBlock> {
+    return this._customBlocks;
   }
 
   /**
@@ -80,14 +91,16 @@ export class DocComment extends DocNode {
   public getChildNodes(): ReadonlyArray<DocNode> {
     const result: DocNode[] = [ this.summarySection ];
 
-    if (this.remarksSection) {
-      result.push(this.remarksSection);
+    if (this.remarksBlock) {
+      result.push(this.remarksBlock);
     }
 
-    result.push(...this.paramSections);
+    result.push(...this._customBlocks);
 
-    if (this.returnsSection) {
-      result.push(this.returnsSection);
+    result.push(...this.paramBlocks);
+
+    if (this.returnsBlock) {
+      result.push(this.returnsBlock);
     }
 
     result.push(...this.modifierTagSet.nodes);

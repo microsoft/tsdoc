@@ -4,19 +4,21 @@ import { Excerpt } from '../parser/Excerpt';
  * Indicates the type of {@link DocNode}.
  */
 export enum DocNodeKind {
-  BlockTag = 1000,
-  CodeSpan = 1001,
-  Comment = 1002,
-  ErrorText = 1003,
-  EscapedText = 1004,
-  HtmlAttribute = 1005,
-  HtmlEndTag = 1006,
-  HtmlStartTag = 1007,
-  InlineTag = 1008,
-  ParamSection = 1009,
-  PlainText = 1010,
-  Section = 1011,
-  SoftBreak = 1012
+  Block = 1000,
+  BlockTag = 1001,
+  CodeSpan = 1002,
+  Comment = 1003,
+  ErrorText = 1004,
+  EscapedText = 1005,
+  HtmlAttribute = 1006,
+  HtmlEndTag = 1007,
+  HtmlStartTag = 1008,
+  InlineTag = 1009,
+  Paragraph = 1010,
+  ParamBlock = 1011,
+  PlainText = 1012,
+  Section = 1013,
+  SoftBreak = 1014
 }
 
 /**

@@ -8,14 +8,8 @@ export interface IDocSectionParameters extends IDocNodeParameters {
 }
 
 /**
- * Represents a general block of rich text.  DocSection is a simple container
- * for other DocNode child nodes.
- *
- * @remarks
- *
- * Some terminology: A "block" is a section that is introduced by a TSDoc block tag (e.g. `@example`).
- * Since in many cases the block tag may not always be required or part of the structure being discussed,
- * "section" is often used interchangeably with "block".
+ * Represents a general block of rich text.  DocSection is the base class for DocNode classes that
+ * act as a simple container for other child nodes.
  */
 export class DocSection extends DocNode {
   /** {@inheritdoc} */
@@ -32,7 +26,8 @@ export class DocSection extends DocNode {
   }
 
   /**
-   * The child nodes.
+   * The child nodes.  Note that for subclasses {@link getChildNodes()} may enumerate
+   * additional nodes that are not part of this collection.
    */
   public get nodes(): ReadonlyArray<DocNode> {
     return this._nodes;
@@ -47,14 +42,35 @@ export class DocSection extends DocNode {
   }
 
   /**
+   * Returns true if the specified `docNode` is allowed to be added as a child node.
+   * The {@link appendNode()} and {@link appendNodes()} functions use this to validate their
+   * inputs.
+   *
+   * @virtual
+   */
+  public isAllowedChildNode(docNode: DocNode): boolean {
+    switch (docNode.kind) {
+      case DocNodeKind.BlockTag:
+      case DocNodeKind.CodeSpan:
+      case DocNodeKind.ErrorText:
+      case DocNodeKind.EscapedText:
+      case DocNodeKind.HtmlStartTag:
+      case DocNodeKind.HtmlEndTag:
+      case DocNodeKind.InlineTag:
+      case DocNodeKind.Paragraph:
+      case DocNodeKind.PlainText:
+      case DocNodeKind.SoftBreak:
+        return true;
+    }
+    return false;
+  }
+
+  /**
    * Append a node to the collection.
    */
   public appendNode(docNode: DocNode): void {
-    switch (docNode.kind) {
-      case DocNodeKind.Comment:
-      case DocNodeKind.Section:
-      case DocNodeKind.ParamSection:
-        throw new Error(`A DocSection cannot contain nodes of type ${DocNodeKind[docNode.kind]}`);
+    if (!this.isAllowedChildNode(docNode)) {
+      throw new Error(`A DocSection cannot contain nodes of type ${DocNodeKind[docNode.kind]}`);
     }
     this._nodes.push(docNode);
   }
