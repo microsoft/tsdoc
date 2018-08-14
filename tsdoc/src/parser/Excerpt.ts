@@ -34,6 +34,7 @@ export class Excerpt {
    * The main textual content for the associated node.
    */
   public readonly prefix: TokenRange;
+
   /**
    * An optional suffix that captures any delimiters that might appear after the
    * child nodes.  If there are no child nodes, this is always an empty list.

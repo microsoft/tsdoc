@@ -34,9 +34,9 @@ export class DocErrorText extends DocNode {
    * somewhat farther ahead in the input stream from the DocErrorText node itself.
    *
    * @remarks
-   * For example, for the malformed HTML tag `<a href="123 /a>`, the DocErrorText node
+   * For example, for the malformed HTML tag `<a href="123" @ /a>`, the DocErrorText node
    * will correspond to the `<` character that looked like an HTML tag, whereas the
-   * error location might be the `"` character that was missing its closing pair.
+   * error location might be the `@` character that caused the trouble.
    */
   public readonly errorLocation: TokenRange;
 
