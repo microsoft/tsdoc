@@ -36,6 +36,8 @@ export class DocCommentAssembler {
 
     for (const docNode of this._parserContext.verbatimSection.getChildNodes()) {
 
+      let pruneNode: boolean = false;
+
       switch (docNode.kind) {
         case DocNodeKind.BlockTag:
           const docBlockTag: DocBlockTag = docNode as DocBlockTag;
@@ -45,12 +47,15 @@ export class DocCommentAssembler {
           if (tagDefinition) {
             if (tagDefinition.syntaxKind === TSDocTagSyntaxKind.ModifierTag) {
               modifierTagSet.addModifierTag(docBlockTag);
+              pruneNode = true;
             }
           }
           break;
         default:
-          prunedDocNodes.push(docNode);
           break;
+      }
+      if (!pruneNode) {
+        prunedDocNodes.push(docNode);
       }
     }
 
