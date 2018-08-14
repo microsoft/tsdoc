@@ -8,28 +8,23 @@ Object {
     "line 2",
   ],
   "rootNode": Object {
-    "kind": "Comment",
+    "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "Section",
-        "nodes": Array [
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "line 1",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "line 2",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-        ],
+        "kind": "PlainText",
+        "nodePrefix": "line 1",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "line 2",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
       },
     ],
   },
@@ -41,12 +36,7 @@ Object {
   "buffer": "/***/",
   "lines": Array [],
   "rootNode": Object {
-    "kind": "Comment",
-    "nodes": Array [
-      Object {
-        "kind": "Section",
-      },
-    ],
+    "kind": "Section",
   },
 }
 `;
@@ -58,16 +48,11 @@ Object {
     "",
   ],
   "rootNode": Object {
-    "kind": "Comment",
+    "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "Section",
-        "nodes": Array [
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-        ],
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
       },
     ],
   },
@@ -82,20 +67,15 @@ Object {
     "",
   ],
   "rootNode": Object {
-    "kind": "Comment",
+    "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "Section",
-        "nodes": Array [
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-        ],
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
       },
     ],
   },
@@ -109,28 +89,23 @@ Object {
     "[b]$[b]@param",
   ],
   "rootNode": Object {
-    "kind": "Comment",
+    "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "Section",
-        "nodes": Array [
-          Object {
-            "kind": "EscapedText",
-            "nodePrefix": "[b]$",
-          },
-          Object {
-            "kind": "EscapedText",
-            "nodePrefix": "[b]@",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "param",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-        ],
+        "kind": "EscapedText",
+        "nodePrefix": "[b]$",
+      },
+      Object {
+        "kind": "EscapedText",
+        "nodePrefix": "[b]@",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "param",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
       },
     ],
   },
@@ -144,49 +119,44 @@ Object {
     "letter: [b]A space: [b]  end of line: [b]",
   ],
   "rootNode": Object {
-    "kind": "Comment",
+    "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "Section",
-        "nodes": Array [
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "letter: ",
-          },
-          Object {
-            "errorLocation": "[b]",
-            "errorLocationPrecedingToken": " ",
-            "errorMessage": "A backslash can only be used to escape a punctuation character",
-            "kind": "ErrorText",
-            "nodePrefix": "[b]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "A space: ",
-          },
-          Object {
-            "errorLocation": "[b]",
-            "errorLocationPrecedingToken": " ",
-            "errorMessage": "A backslash can only be used to escape a punctuation character",
-            "kind": "ErrorText",
-            "nodePrefix": "[b]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "  end of line: ",
-          },
-          Object {
-            "errorLocation": "[b]",
-            "errorLocationPrecedingToken": " ",
-            "errorMessage": "A backslash can only be used to escape a punctuation character",
-            "kind": "ErrorText",
-            "nodePrefix": "[b]",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-        ],
+        "kind": "PlainText",
+        "nodePrefix": "letter: ",
+      },
+      Object {
+        "errorLocation": "[b]",
+        "errorLocationPrecedingToken": " ",
+        "errorMessage": "A backslash can only be used to escape a punctuation character",
+        "kind": "ErrorText",
+        "nodePrefix": "[b]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "A space: ",
+      },
+      Object {
+        "errorLocation": "[b]",
+        "errorLocationPrecedingToken": " ",
+        "errorMessage": "A backslash can only be used to escape a punctuation character",
+        "kind": "ErrorText",
+        "nodePrefix": "[b]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "  end of line: ",
+      },
+      Object {
+        "errorLocation": "[b]",
+        "errorLocationPrecedingToken": " ",
+        "errorMessage": "A backslash can only be used to escape a punctuation character",
+        "kind": "ErrorText",
+        "nodePrefix": "[b]",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
       },
     ],
   },

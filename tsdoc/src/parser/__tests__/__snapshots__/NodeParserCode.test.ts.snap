@@ -8,40 +8,35 @@ Object {
     "line [c] 2[c] sdf",
   ],
   "rootNode": Object {
-    "kind": "Comment",
+    "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "Section",
-        "nodes": Array [
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "line ",
-          },
-          Object {
-            "kind": "CodeSpan",
-            "nodePrefix": "[c]1[c]",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "line ",
-          },
-          Object {
-            "kind": "CodeSpan",
-            "nodePrefix": "[c] 2[c]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": " sdf",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-        ],
+        "kind": "PlainText",
+        "nodePrefix": "line ",
+      },
+      Object {
+        "kind": "CodeSpan",
+        "nodePrefix": "[c]1[c]",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "line ",
+      },
+      Object {
+        "kind": "CodeSpan",
+        "nodePrefix": "[c] 2[c]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": " sdf",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
       },
     ],
   },
@@ -56,41 +51,36 @@ Object {
     "line[c]",
   ],
   "rootNode": Object {
-    "kind": "Comment",
+    "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "Section",
-        "nodes": Array [
-          Object {
-            "errorLocation": "[c]",
-            "errorMessage": "The code span is missing its closing backtick",
-            "kind": "ErrorText",
-            "nodePrefix": "[c]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "multi",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "line",
-          },
-          Object {
-            "errorLocation": "[c]",
-            "errorLocationPrecedingToken": "line",
-            "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
-            "kind": "ErrorText",
-            "nodePrefix": "[c]",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-        ],
+        "errorLocation": "[c]",
+        "errorMessage": "The code span is missing its closing backtick",
+        "kind": "ErrorText",
+        "nodePrefix": "[c]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "multi",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "line",
+      },
+      Object {
+        "errorLocation": "[c]",
+        "errorLocationPrecedingToken": "line",
+        "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
+        "kind": "ErrorText",
+        "nodePrefix": "[c]",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
       },
     ],
   },
@@ -105,57 +95,52 @@ Object {
     "[c]three[c]four",
   ],
   "rootNode": Object {
-    "kind": "Comment",
+    "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "Section",
-        "nodes": Array [
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "one",
-          },
-          Object {
-            "errorLocation": "[c]",
-            "errorLocationPrecedingToken": "one",
-            "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
-            "kind": "ErrorText",
-            "nodePrefix": "[c]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "two",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-          Object {
-            "errorLocation": "[c]",
-            "errorLocationPrecedingToken": "three",
-            "errorMessage": "Error parsing code span: The closing backtick for a code span must be followed by whitespace",
-            "kind": "ErrorText",
-            "nodePrefix": "[c]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "three",
-          },
-          Object {
-            "errorLocation": "[c]",
-            "errorLocationPrecedingToken": "three",
-            "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
-            "kind": "ErrorText",
-            "nodePrefix": "[c]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodePrefix": "four",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodePrefix": "[n]",
-          },
-        ],
+        "kind": "PlainText",
+        "nodePrefix": "one",
+      },
+      Object {
+        "errorLocation": "[c]",
+        "errorLocationPrecedingToken": "one",
+        "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
+        "kind": "ErrorText",
+        "nodePrefix": "[c]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "two",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+      Object {
+        "errorLocation": "[c]",
+        "errorLocationPrecedingToken": "three",
+        "errorMessage": "Error parsing code span: The closing backtick for a code span must be followed by whitespace",
+        "kind": "ErrorText",
+        "nodePrefix": "[c]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "three",
+      },
+      Object {
+        "errorLocation": "[c]",
+        "errorLocationPrecedingToken": "three",
+        "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
+        "kind": "ErrorText",
+        "nodePrefix": "[c]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "four",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
       },
     ],
   },

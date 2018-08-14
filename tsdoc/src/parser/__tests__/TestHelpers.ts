@@ -78,7 +78,7 @@ export class TestHelpers {
     expect({
       buffer: TestHelpers.getEscaped(buffer),
       lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
-      rootNode: TestHelpers._getNodeSnapshot(parserContext.docComment, parserContext.lines)
+      rootNode: TestHelpers._getNodeSnapshot(parserContext.verbatimSection, parserContext.lines)
     }).toMatchSnapshot();
   }
 

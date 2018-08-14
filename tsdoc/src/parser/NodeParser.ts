@@ -33,6 +33,13 @@ function isFailure<T>(resultOrFailure: ResultOrFailure<T>): resultOrFailure is I
   return resultOrFailure !== undefined && resultOrFailure.hasOwnProperty('failureMessage');
 }
 
+/**
+ * This class manages the first phase of the parser, which constructs
+ * ParserContext.verbatimSection, which is a literal representation of the DocNode
+ * objects as they appeared in the input stream.
+ *
+ * The DocCommentAssembler will then reorganize these nodes into a DocComment object.
+ */
 export class NodeParser {
   // https://www.w3.org/TR/html5/syntax.html#tag-name
   // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
@@ -108,10 +115,9 @@ export class NodeParser {
     }
     this._pushAccumulatedPlainText(childNodes);
 
-    // TODO: Split the content into the appropriate sections.
-    const remarksSection: DocSection = this._parserContext.docComment.remarks;
+    const verbatimSection: DocSection = this._parserContext.verbatimSection;
     for (const childNode of childNodes) {
-      remarksSection.appendNode(childNode);
+      verbatimSection.appendNode(childNode);
     }
   }
 

@@ -2,6 +2,7 @@ import { TextRange } from './TextRange';
 import { Token } from './Token';
 import { ParseError } from './ParseError';
 import { DocComment } from '../nodes';
+import { DocSection } from '../nodes/DocSection';
 
 /**
  * An internal data structure that tracks all the state being built up by the various
@@ -30,7 +31,14 @@ export class ParserContext {
   public tokens: Token[] = [];
 
   /**
-   * The doc comment object that was constructed from parsing the tokens.
+   * A flat list of all DocNode objects that were encountered during the first
+   * pass of the parser, i.e. before the normalization and cleanup that produces
+   * ParserContext.docComment.
+   */
+  public verbatimSection: DocSection;
+
+  /**
+   * The parsed doc comment object.  This is the primary output of the parser.
    */
   public readonly docComment: DocComment;
 
@@ -41,7 +49,9 @@ export class ParserContext {
 
   public constructor(sourceRange: TextRange) {
     this.sourceRange = sourceRange;
-    // TODO: This is a circular reference -- is it really necessary?
+
+    this.verbatimSection = new DocSection({ });
+
     this.docComment = new DocComment({ parserContext: this });
   }
 
