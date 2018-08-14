@@ -11,90 +11,37 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "kind": "PlainText",
-        "lineIndex": 0,
-        "nodeLine": ">line [c]1[c]<",
-        "nodeSpan": ">     <      ",
-      },
-      Object {
-        "kind": "CodeSpan",
+        "kind": "Section",
         "nodes": Array [
           Object {
-            "kind": "Delimiter",
-            "lineIndex": 0,
-            "nodeLine": ">line [c]1[c]<",
-            "nodeSpan": "     >   <   ",
+            "kind": "PlainText",
+            "nodePrefix": "line ",
           },
           Object {
-            "kind": "CodeContent",
-            "nodes": Array [
-              Object {
-                "kind": "PlainText",
-                "lineIndex": 0,
-                "nodeLine": ">line [c]1[c]<",
-                "nodeSpan": "        > <  ",
-              },
-            ],
+            "kind": "CodeSpan",
+            "nodePrefix": "[c]1[c]",
           },
           Object {
-            "kind": "Delimiter",
-            "lineIndex": 0,
-            "nodeLine": ">line [c]1[c]<",
-            "nodeSpan": "         >   <",
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "line ",
+          },
+          Object {
+            "kind": "CodeSpan",
+            "nodePrefix": "[c] 2[c]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": " sdf",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
           },
         ],
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">line [c]1[c]<",
-        "nodeSpan": "            ><",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 1,
-        "nodeLine": ">line [c] 2[c] sdf<",
-        "nodeSpan": ">     <           ",
-      },
-      Object {
-        "kind": "CodeSpan",
-        "nodes": Array [
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 1,
-            "nodeLine": ">line [c] 2[c] sdf<",
-            "nodeSpan": "     >   <        ",
-          },
-          Object {
-            "kind": "CodeContent",
-            "nodes": Array [
-              Object {
-                "kind": "PlainText",
-                "lineIndex": 1,
-                "nodeLine": ">line [c] 2[c] sdf<",
-                "nodeSpan": "        >  <      ",
-              },
-            ],
-          },
-          Object {
-            "kind": "Delimiter",
-            "lineIndex": 1,
-            "nodeLine": ">line [c] 2[c] sdf<",
-            "nodeSpan": "          >   <   ",
-          },
-        ],
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 1,
-        "nodeLine": ">line [c] 2[c] sdf<",
-        "nodeSpan": "             >    <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 1,
-        "nodeLine": ">line [c] 2[c] sdf<",
-        "nodeSpan": "                 ><",
       },
     ],
   },
@@ -112,46 +59,38 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "error": "The code span is missing its closing backtick",
-        "failLine": ">[c]multi<",
-        "failSpan": ">   <    ",
-        "kind": "Error",
-        "lineIndex": 0,
-        "nodeLine": ">[c]multi<",
-        "nodeSpan": ">   <    ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 0,
-        "nodeLine": ">[c]multi<",
-        "nodeSpan": "   >     <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">[c]multi<",
-        "nodeSpan": "        ><",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 1,
-        "nodeLine": ">line[c]<",
-        "nodeSpan": ">    <  ",
-      },
-      Object {
-        "error": "The opening backtick for a code span must be preceded by whitespace",
-        "failLine": ">line[c]<",
-        "failSpan": "    >   <",
-        "kind": "Error",
-        "lineIndex": 1,
-        "nodeLine": ">line[c]<",
-        "nodeSpan": "    >   <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 1,
-        "nodeLine": ">line[c]<",
-        "nodeSpan": "       ><",
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "errorLocation": "[c]",
+            "errorMessage": "The code span is missing its closing backtick",
+            "kind": "ErrorText",
+            "nodePrefix": "[c]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "multi",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "line",
+          },
+          Object {
+            "errorLocation": "[c]",
+            "errorLocationPrecedingToken": "line",
+            "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
+            "kind": "ErrorText",
+            "nodePrefix": "[c]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+        ],
       },
     ],
   },
@@ -169,52 +108,54 @@ Object {
     "kind": "Comment",
     "nodes": Array [
       Object {
-        "kind": "PlainText",
-        "lineIndex": 0,
-        "nodeLine": ">one[c]two<",
-        "nodeSpan": ">   <     ",
-      },
-      Object {
-        "error": "The opening backtick for a code span must be preceded by whitespace",
-        "failLine": ">one[c]two<",
-        "failSpan": "   >   <  ",
-        "kind": "Error",
-        "lineIndex": 0,
-        "nodeLine": ">one[c]two<",
-        "nodeSpan": "   >   <  ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 0,
-        "nodeLine": ">one[c]two<",
-        "nodeSpan": "      >   <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 0,
-        "nodeLine": ">one[c]two<",
-        "nodeSpan": "         ><",
-      },
-      Object {
-        "error": "The closing backtick for a code span must be followed by whitespace",
-        "failLine": ">[c]three[c]four<",
-        "failSpan": "        >   <   ",
-        "kind": "Error",
-        "lineIndex": 1,
-        "nodeLine": ">[c]three[c]four<",
-        "nodeSpan": ">           <   ",
-      },
-      Object {
-        "kind": "PlainText",
-        "lineIndex": 1,
-        "nodeLine": ">[c]three[c]four<",
-        "nodeSpan": "           >    <",
-      },
-      Object {
-        "kind": "Newline",
-        "lineIndex": 1,
-        "nodeLine": ">[c]three[c]four<",
-        "nodeSpan": "               ><",
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "one",
+          },
+          Object {
+            "errorLocation": "[c]",
+            "errorLocationPrecedingToken": "one",
+            "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
+            "kind": "ErrorText",
+            "nodePrefix": "[c]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "two",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+          Object {
+            "errorLocation": "[c]",
+            "errorLocationPrecedingToken": "three",
+            "errorMessage": "Error parsing code span: The closing backtick for a code span must be followed by whitespace",
+            "kind": "ErrorText",
+            "nodePrefix": "[c]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "three",
+          },
+          Object {
+            "errorLocation": "[c]",
+            "errorLocationPrecedingToken": "three",
+            "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
+            "kind": "ErrorText",
+            "nodePrefix": "[c]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodePrefix": "four",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodePrefix": "[n]",
+          },
+        ],
       },
     ],
   },

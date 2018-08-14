@@ -28,9 +28,10 @@ export class LineExtractor {
    * and extracts the content lines.  The lines are stored in IDocCommentParameters.lines
    * and the overall text range is assigned to IDocCommentParameters.range.
    */
-  public static extract(parserContext: ParserContext): void {
-    const range: TextRange = parserContext.sourceRange;
+  public static extract(range: TextRange): ParserContext {
     const buffer: string = range.buffer;
+
+    const parserContext: ParserContext = new ParserContext(range);
 
     let commentRangeStart: number = 0;
     let commentRangeEnd: number = 0;
@@ -51,10 +52,10 @@ export class LineExtractor {
           case State.BeginComment1:
           case State.BeginComment2:
             parserContext.addError(range, 'Expecting a "/**" comment', range.pos);
-              return;
+              return parserContext;
           default:
             parserContext.addError(range, 'Unexpected end of input', range.pos);
-            return;
+            return parserContext;
         }
       }
 
@@ -71,7 +72,7 @@ export class LineExtractor {
             state = State.BeginComment2;
           } else if (!LineExtractor._whitespaceRegExp.test(current)) {
             parserContext.addError(range, 'Expecting a leading "/**"', nextIndex);
-            return;
+            return parserContext;
           }
           break;
         case State.BeginComment2:
@@ -84,7 +85,7 @@ export class LineExtractor {
             state = State.CollectingFirstLine;
           } else {
             parserContext.addError(range, 'Expecting a leading "/**"', nextIndex);
-            return;
+            return parserContext;
           }
           break;
         case State.CollectingFirstLine:
@@ -152,5 +153,6 @@ export class LineExtractor {
      */
     parserContext.commentRange = range.getNewRange(commentRangeStart, commentRangeEnd);
     parserContext.lines = lines;
+    return parserContext;
   }
 }

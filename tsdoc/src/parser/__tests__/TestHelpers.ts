@@ -2,22 +2,21 @@ import { TSDocParser } from '../TSDocParser';
 import { TextRange } from '../TextRange';
 import {
   DocNode,
-  DocComment,
   DocNodeKind,
-  DocNodeContainer,
-  DocNodeLeaf,
-  DocError
+  DocErrorText
 } from '../../nodes';
+import { ParserContext } from '../ParserContext';
+import { Excerpt } from '../Excerpt';
 
 interface ISnapshotItem {
-  error?: string;
-  failLine?: string;
-  failSpan?: string;
   kind: string;
+  errorMessage?: string;
+  errorLocation?: string;
+  errorLocationPrecedingToken?: string;
+  nodePrefix?: string;
+  nodeSuffix?: string;
+  nodeSeparator?: string;
   nodes?: ISnapshotItem[];
-  lineIndex?: number;
-  nodeLine?: string;
-  nodeSpan?: string;
 }
 
 export class TestHelpers {
@@ -74,12 +73,12 @@ export class TestHelpers {
 
   public static parseAndMatchSnapshot(buffer: string): void {
     const tsdocParser: TSDocParser = new TSDocParser();
-    const docComment: DocComment = tsdocParser.parseString(buffer);
+    const parserContext: ParserContext = tsdocParser.parseString(buffer);
 
     expect({
       buffer: TestHelpers.getEscaped(buffer),
-      lines: docComment.lines.map(x => TestHelpers.getEscaped(x.toString())),
-      rootNode: TestHelpers._getNodeSnapshot(docComment, docComment.lines)
+      lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
+      rootNode: TestHelpers._getNodeSnapshot(parserContext.docComment, parserContext.lines)
     }).toMatchSnapshot();
   }
 
@@ -88,21 +87,32 @@ export class TestHelpers {
       kind: DocNodeKind[docNode.kind]
     };
 
-    if (docNode instanceof DocNodeContainer) {
-      item.nodes = docNode.getChildNodes().map(x => TestHelpers._getNodeSnapshot(x, lines));
-    } else if (docNode instanceof DocNodeLeaf) {
-      item.lineIndex = lines.indexOf(docNode.docCommentLine);
-      item.nodeLine = '>' + TestHelpers.getEscaped(docNode.docCommentLine.toString()) + '<';
-      item.nodeSpan = TestHelpers.formatLineSpan(docNode.docCommentLine, docNode.range);
-
-      if (docNode instanceof DocError) {
-        item.error = docNode.errorMessage;
-        item.failLine = '>' + TestHelpers.getEscaped(docNode.errorDocCommentLine.toString()) + '<';
-        item.failSpan = TestHelpers.formatLineSpan(docNode.errorDocCommentLine, docNode.errorLocation);
+    if (docNode.excerpt) {
+      const excerpt: Excerpt = docNode.excerpt;
+      item.nodePrefix = TestHelpers.getEscaped(excerpt.prefix.toString());
+      if (!excerpt.suffix.isEmpty()) {
+        item.nodeSuffix = TestHelpers.getEscaped(excerpt.suffix.toString());
       }
-    } else {
-      throw new Error('Unsupported node type');
+      if (!excerpt.separator.isEmpty()) {
+        item.nodeSeparator = TestHelpers.getEscaped(excerpt.separator.toString());
+      }
     }
+
+    if (docNode instanceof DocErrorText) {
+      item.errorMessage = TestHelpers.getEscaped(docNode.errorMessage);
+      item.errorLocation = TestHelpers.getEscaped(docNode.errorLocation.toString());
+      if (docNode.errorLocation.startIndex > 0) {
+        // Show the preceding token to provide some context (e.g. is this the opening quote
+        // or closing quote?)
+        item.errorLocationPrecedingToken = docNode.errorLocation.parserContext.tokens[
+          docNode.errorLocation.startIndex - 1].toString();
+      }
+    }
+
+    if (docNode.getChildNodes().length > 0) {
+      item.nodes = docNode.getChildNodes().map(x => TestHelpers._getNodeSnapshot(x, lines));
+    }
+
     return item;
   }
 }

@@ -1,43 +1,48 @@
 import { TextRange } from './TextRange';
 import { Token } from './Token';
 import { ParseError } from './ParseError';
-import { DocNode } from '../nodes';
+import { DocComment } from '../nodes';
 
+/**
+ * An internal data structure that tracks all the state being built up by the various
+ * parser stages.
+ */
 export class ParserContext {
   /**
-   * The input text
+   * The `sourceRange` indicates the start and end of the original input that was parsed.
    */
-  public sourceRange: TextRange;
+  public readonly sourceRange: TextRange;
 
   /**
-   * The range from the opening comment delimiter ("/**" to the closing comment delimiter.
+   * The text range starting from the opening `/**` and ending with
+   * the closing `*\/` delimiter.
    */
-  public commentRange: TextRange;
+  public commentRange: TextRange = TextRange.empty;
 
   /**
-   * The line ranges inside the doc comment by LineExtractor
+   * The text ranges corresponding to the lines of content inside the comment.
    */
-  public lines: TextRange[];
+  public lines: TextRange[] = [];
 
   /**
-   * The list of tokens extracted from the lines by Tokenizer;
+   * A complete list of all tokens that were extracted from the input lines.
    */
-  public tokens: Token[];
+  public tokens: Token[] = [];
 
   /**
-   * The nodes that were parsed from the tokens by NodeParser.
+   * The doc comment object that was constructed from parsing the tokens.
    */
-  public nodes: DocNode[];
+  public readonly docComment: DocComment;
 
-  public parseErrors: ParseError[];
+  /**
+   * If any errors occurred during parsing, they are returned in this list.
+   */
+  public readonly parseErrors: ParseError[] = [];
 
-  public constructor(range: TextRange) {
-    this.sourceRange = range;
-    this.commentRange = TextRange.empty;
-    this.lines = [];
-    this.tokens = [];
-    this.nodes = [];
-    this.parseErrors = [];
+  public constructor(sourceRange: TextRange) {
+    this.sourceRange = sourceRange;
+    // TODO: This is a circular reference -- is it really necessary?
+    this.docComment = new DocComment({ parserContext: this });
   }
 
   public addError(range: TextRange, message: string, pos: number, end?: number): void {
