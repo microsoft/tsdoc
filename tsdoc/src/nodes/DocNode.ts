@@ -53,14 +53,6 @@ export abstract class DocNode {
     }
   }
 
-  protected static validateTSDocTagName(tagName: string): void {
-    if (tagName[0] !== '@') {
-      throw new Error('A TSDoc tag name must start with an "@" symbol');
-    }
-
-    // TODO: Validate using NodeParser.tsdocTagNameRegExp
-  }
-
   public constructor(parameters: IDocNodeParameters) {
     this.excerpt = parameters.excerpt;
   }

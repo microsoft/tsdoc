@@ -1,4 +1,5 @@
 import { DocNodeKind, IDocNodeParameters, DocNode } from './DocNode';
+import { StringChecks } from '../parser/StringChecks';
 
 /**
  * Constructor parameters for {@link DocInlineTag}.
@@ -36,7 +37,7 @@ export class DocInlineTag extends DocNode {
   public constructor(parameters: IDocInlineTagParameters) {
     super(parameters);
 
-    DocNode.validateTSDocTagName(parameters.tagName);
+    StringChecks.validateTSDocTagName(parameters.tagName);
     this.tagName = parameters.tagName;
     this.tagContent = parameters.tagContent;
   }

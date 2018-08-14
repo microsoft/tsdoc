@@ -1,7 +1,7 @@
 import { TestHelpers } from './TestHelpers';
 
 test('00 Code span basic, positive', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * line `1`',
     ' * line ` 2` sdf',
@@ -10,13 +10,13 @@ test('00 Code span basic, positive', () => {
 });
 
 test('01 Code span basic, negative', () => {
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * `multi',
     ' * line`',
     ' */'
   ].join('\n'));
-  TestHelpers.parseAndMatchSnapshot([
+  TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * one`two',
     ' * `three`four',

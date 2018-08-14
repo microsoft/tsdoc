@@ -18,7 +18,7 @@ import {
 import { TokenSequence } from './TokenSequence';
 import { Excerpt, IExcerptParameters } from './Excerpt';
 import { TokenReader } from './TokenReader';
-import { DocSection } from '../nodes/DocSection';
+import { StringChecks } from './StringChecks';
 
 interface IFailure {
   // (We use "failureMessage" instead of "errorMessage" here so that DocErrorText doesn't
@@ -33,12 +33,17 @@ function isFailure<T>(resultOrFailure: ResultOrFailure<T>): resultOrFailure is I
   return resultOrFailure !== undefined && resultOrFailure.hasOwnProperty('failureMessage');
 }
 
+/**
+ * This class manages the first phase of the parser, which constructs
+ * ParserContext.verbatimSection, which is a literal representation of the DocNode
+ * objects as they appeared in the input stream.
+ *
+ * The DocCommentAssembler will then reorganize these nodes into a DocComment object.
+ */
 export class NodeParser {
   // https://www.w3.org/TR/html5/syntax.html#tag-name
   // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
   private static readonly htmlNameRegExp: RegExp = /^[a-z]+(\-[a-z]+)*$/i;
-
-  private static readonly tsdocTagNameRegExp: RegExp = /^@[a-z][a-z0-9]*$/i;
 
   private readonly _parserContext: ParserContext;
   private readonly _tokenReader: TokenReader;
@@ -108,11 +113,7 @@ export class NodeParser {
     }
     this._pushAccumulatedPlainText(childNodes);
 
-    // TODO: Split the content into the appropriate sections.
-    const remarksSection: DocSection = this._parserContext.docComment.remarks;
-    for (const childNode of childNodes) {
-      remarksSection.appendNode(childNode);
-    }
+    this._parserContext.verbatimSection.appendNodes(childNodes);
   }
 
   private _pushAccumulatedPlainText(childNodes: DocNode[]): void {
@@ -194,7 +195,7 @@ export class NodeParser {
       return this._backtrackAndCreateError(marker, 'Expecting an inline TSDoc tag name immediately after "{@"');
     }
 
-    if (!NodeParser.tsdocTagNameRegExp.test(tagName)) {
+    if (StringChecks.explainIfNotTSDocTagName(tagName)) {
       const failure: IFailure = this._createFailureForTokensSince(
         'A TSDoc tag name must start with a letter and contain only letters and numbers', tagNameMarker);
       return this._backtrackAndCreateErrorForFailure(marker, '', failure);
@@ -250,7 +251,7 @@ export class NodeParser {
       return this._backtrackAndCreateErrorRangeForFailure(marker, atSignMarker, '', failure);
     }
 
-    if (!NodeParser.tsdocTagNameRegExp.test(tagName)) {
+    if (StringChecks.explainIfNotTSDocTagName(tagName)) {
       const failure: IFailure = this._createFailureForTokensSince(
         'A TSDoc tag name must start with a letter and contain only letters and numbers', tagNameMarker);
       return this._backtrackAndCreateErrorRangeForFailure(marker, atSignMarker, '', failure);

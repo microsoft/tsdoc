@@ -1,6 +1,7 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 import { ParserContext } from '../parser/ParserContext';
 import { DocSection } from './DocSection';
+import { CoreModifierTagSet } from '../details/CoreModifierTagSet';
 
 /**
  * Constructor parameters for {@link DocComment}.
@@ -19,6 +20,11 @@ export class DocComment extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.Comment;
 
   /**
+   * The modifier tags for this DocComment.
+   */
+  public readonly modifierTagSet: CoreModifierTagSet;
+
+  /**
    * The main documentation for an API item is separated into a brief "summary" section
    * followed by more detailed "remarks" section.  On a documentation web site, a table of
    * API item members will typically show only the summaries, whereas the detail page
@@ -33,6 +39,7 @@ export class DocComment extends DocNode {
   public constructor(parameters: IDocCommentParameters) {
     super(parameters);
 
+    this.modifierTagSet = new CoreModifierTagSet();
     this.remarks = new DocSection(parameters);
   }
 
