@@ -117,11 +117,11 @@ export class NodeParser {
 
   private _pushAccumulatedPlainText(childNodes: DocNode[]): void {
     if (!this._tokenReader.isAccumulatedSequenceEmpty()) {
-      const plainTextRange: TokenSequence = this._tokenReader.extractAccumulatedSequence();
+      const plainTextSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
       childNodes.push(new DocPlainText({
-        text: plainTextRange.toString(),
-        excerpt: new Excerpt({ prefix: plainTextRange })
+        text: plainTextSequence.toString(),
+        excerpt: new Excerpt({ prefix: plainTextSequence })
       }));
     }
   }

@@ -14,7 +14,7 @@ export interface IExcerptParameters {
  * match or error location.
  *
  * @remarks
- * The excerpt is separated into three token lists: the "prefix" (which is the main textual
+ * The excerpt is separated into three token sequences: the "prefix" (which is the main textual
  * content for the node), the "suffix" (which captures a closing delimiter which sometimes
  * appears after child nodes), and the "separator" which captures whitespace separating
  * child nodes.

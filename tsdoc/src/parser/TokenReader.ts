@@ -37,7 +37,7 @@ export class TokenReader {
         + ' extractAccumulatedSequence() is called');
     }
 
-    const range: TokenSequence = new TokenSequence({
+    const sequence: TokenSequence = new TokenSequence({
       parserContext: this._parserContext,
       pos: this._rangeStartIndex,
       end: this._currentIndex
@@ -45,7 +45,7 @@ export class TokenReader {
 
     this._rangeStartIndex = this._currentIndex;
 
-    return range;
+    return sequence;
   }
 
   /**
@@ -65,12 +65,12 @@ export class TokenReader {
   public assertAccumulatedSequenceIsEmpty(): void {
     if (!this.isAccumulatedSequenceEmpty()) {
       // If this happens, it indicates a parser bug:
-      const range: TokenSequence = new TokenSequence({
+      const sequence: TokenSequence = new TokenSequence({
         parserContext: this._parserContext,
         pos: this._rangeStartIndex,
         end: this._currentIndex
       });
-      const tokenStrings: string[] = range.tokens.map(x => x.toString());
+      const tokenStrings: string[] = sequence.tokens.map(x => x.toString());
       throw new Error('Parser assertion failed: The queue should be empty, but it contains:\n'
         + JSON.stringify(tokenStrings));
     }
