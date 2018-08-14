@@ -39,8 +39,8 @@ export class TokenReader {
 
     const sequence: TokenSequence = new TokenSequence({
       parserContext: this._parserContext,
-      pos: this._rangeStartIndex,
-      end: this._currentIndex
+      startIndex: this._rangeStartIndex,
+      endIndex: this._currentIndex
     });
 
     this._rangeStartIndex = this._currentIndex;
@@ -67,8 +67,8 @@ export class TokenReader {
       // If this happens, it indicates a parser bug:
       const sequence: TokenSequence = new TokenSequence({
         parserContext: this._parserContext,
-        pos: this._rangeStartIndex,
-        end: this._currentIndex
+        startIndex: this._rangeStartIndex,
+        endIndex: this._currentIndex
       });
       const tokenStrings: string[] = sequence.tokens.map(x => x.toString());
       throw new Error('Parser assertion failed: The queue should be empty, but it contains:\n'

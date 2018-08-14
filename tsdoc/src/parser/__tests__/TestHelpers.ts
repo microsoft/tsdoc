@@ -101,11 +101,11 @@ export class TestHelpers {
     if (docNode instanceof DocErrorText) {
       item.errorMessage = TestHelpers.getEscaped(docNode.errorMessage);
       item.errorLocation = TestHelpers.getEscaped(docNode.errorLocation.toString());
-      if (docNode.errorLocation.pos > 0) {
+      if (docNode.errorLocation.startIndex > 0) {
         // Show the preceding token to provide some context (e.g. is this the opening quote
         // or closing quote?)
         item.errorLocationPrecedingToken = docNode.errorLocation.parserContext.tokens[
-          docNode.errorLocation.pos - 1].toString();
+          docNode.errorLocation.startIndex - 1].toString();
       }
     }
 

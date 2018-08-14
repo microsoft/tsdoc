@@ -3,8 +3,8 @@ import { Token } from './Token';
 
 export interface ITokenSequenceParameters {
   parserContext: ParserContext;
-  pos: number;
-  end: number;
+  startIndex: number;
+  endIndex: number;
 }
 
 /**
@@ -17,43 +17,43 @@ export class TokenSequence {
    */
   public readonly parserContext: ParserContext;
 
-  private _pos: number;
-  private _end: number;
+  private _startIndex: number;
+  private _endIndex: number;
 
   /**
    * Constructs a TokenSequence object with no tokens.
    */
   public static createEmpty(parserContext: ParserContext): TokenSequence {
-    return new TokenSequence({ parserContext, pos: 0, end: 0 });
+    return new TokenSequence({ parserContext, startIndex: 0, endIndex: 0 });
   }
 
   public constructor(parameters: ITokenSequenceParameters) {
     this.parserContext = parameters.parserContext;
-    this._pos = parameters.pos;
-    this._end = parameters.end;
+    this._startIndex = parameters.startIndex;
+    this._endIndex = parameters.endIndex;
     this._validateBounds();
   }
 
   /**
    * The starting index into the associated `ParserContext.tokens` list.
    */
-  public get pos(): number {
-    return this._pos;
+  public get startIndex(): number {
+    return this._startIndex;
   }
 
   /**
    * The (non-inclusive) ending index into the associated `ParserContext.tokens` list.
    */
-  public get end(): number {
-    return this._end;
+  public get endIndex(): number {
+    return this._endIndex;
   }
 
   public get tokens(): ReadonlyArray<Token> {
-    return this.parserContext.tokens.slice(this._pos, this._end);
+    return this.parserContext.tokens.slice(this._startIndex, this._endIndex);
   }
 
   public isEmpty(): boolean {
-    return this._pos === this._end;
+    return this._startIndex === this._endIndex;
   }
 
   /**
@@ -64,20 +64,20 @@ export class TokenSequence {
   }
 
   private _validateBounds(): void {
-    if (this.pos < 0) {
-      throw new Error('TokenSequence.pos cannot be negative');
+    if (this.startIndex < 0) {
+      throw new Error('TokenSequence.startIndex cannot be negative');
     }
-    if (this.end < 0) {
-      throw new Error('TokenSequence.end cannot be negative');
+    if (this.endIndex < 0) {
+      throw new Error('TokenSequence.endIndex cannot be negative');
     }
-    if (this.end < this.pos) {
-      throw new Error('TokenSequence.end cannot be smaller than TokenSequence.pos');
+    if (this.endIndex < this.startIndex) {
+      throw new Error('TokenSequence.endIndex cannot be smaller than TokenSequence.startIndex');
     }
-    if (this.pos > this.parserContext.tokens.length) {
-      throw new Error('TokenSequence.pos cannot exceed the associated token array');
+    if (this.startIndex > this.parserContext.tokens.length) {
+      throw new Error('TokenSequence.startIndex cannot exceed the associated token array');
     }
-    if (this.end > this.parserContext.tokens.length) {
-      throw new Error('TokenSequence.end cannot exceed the associated token array');
+    if (this.endIndex > this.parserContext.tokens.length) {
+      throw new Error('TokenSequence.endIndex cannot exceed the associated token array');
     }
   }
 }

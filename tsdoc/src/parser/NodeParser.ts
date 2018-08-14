@@ -635,13 +635,14 @@ export class NodeParser {
   }
 
   /**
-   * Rewind to the specified marker, read the next token, and report it as a DocErrorText node.
+   * Rewind to the errorStartMarker, read the tokens up to and including errorInclusiveEndMarker,
+   * and report it as a DocErrorText node.
    */
-  private _backtrackAndCreateErrorRange(errorStartMarker: number, errorEndMarker: number,
+  private _backtrackAndCreateErrorRange(errorStartMarker: number, errorInclusiveEndMarker: number,
     errorMessage: string): DocErrorText {
 
     this._tokenReader.backtrackToMarker(errorStartMarker);
-    while (this._tokenReader.createMarker() !== errorEndMarker) {
+    while (this._tokenReader.createMarker() !== errorInclusiveEndMarker) {
       this._tokenReader.readToken();
     }
     if (this._tokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
@@ -679,14 +680,14 @@ export class NodeParser {
   }
 
   /**
-   * Rewind to the specified errorStartMarker, read the tokens up to and including errorEndMarker,
+   * Rewind to the errorStartMarker, read the tokens up to and including errorInclusiveEndMarker,
    * and report it as a DocErrorText node whose location is based on an IFailure.
    */
-  private _backtrackAndCreateErrorRangeForFailure(errorStartMarker: number, errorEndMarker: number,
-    errorMessagePrefix: string, failure: IFailure): DocErrorText {
+  private _backtrackAndCreateErrorRangeForFailure(errorStartMarker: number,
+    errorInclusiveEndMarker: number, errorMessagePrefix: string, failure: IFailure): DocErrorText {
 
     this._tokenReader.backtrackToMarker(errorStartMarker);
-    while (this._tokenReader.createMarker() !== errorEndMarker) {
+    while (this._tokenReader.createMarker() !== errorInclusiveEndMarker) {
       this._tokenReader.readToken();
     }
     if (this._tokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
@@ -711,15 +712,22 @@ export class NodeParser {
     if (!tokenMarker) {
       tokenMarker = this._tokenReader.createMarker();
     }
+
+    const tokenSequence: TokenSequence = new TokenSequence({
+      parserContext: this._parserContext,
+      startIndex: tokenMarker,
+      endIndex: tokenMarker + 1
+    });
+
     return {
       failureMessage,
-      failureLocation: this._createTokenSequence(tokenMarker, tokenMarker + 1)
+      failureLocation: tokenSequence
     };
   }
 
   /**
    * Creates an IFailure whose TokenSequence starts from the specified marker and
-   * encompases all tokens read since then.  If none were read, then the next token used.
+   * encompasses all tokens read since then.  If none were read, then the next token used.
    */
   private _createFailureForTokensSince(failureMessage: string, startMarker: number): IFailure {
     let endMarker: number = this._tokenReader.createMarker();
@@ -727,16 +735,20 @@ export class NodeParser {
       // This would be a parser bug
       throw new Error('Invalid startMarker');
     }
+
     if (endMarker === startMarker) {
       ++endMarker;
     }
+
+    const tokenSequence: TokenSequence = new TokenSequence({
+      parserContext: this._parserContext,
+      startIndex: startMarker,
+      endIndex: endMarker
+    });
+
     return {
       failureMessage,
-      failureLocation: this._createTokenSequence(startMarker, endMarker)
+      failureLocation: tokenSequence
     };
-  }
-
-  private _createTokenSequence(pos: number, end: number): TokenSequence {
-    return new TokenSequence({ parserContext: this._parserContext, pos, end });
   }
 }
