@@ -1,4 +1,5 @@
 import { StringChecks } from './StringChecks';
+import { CoreModifierTagSet } from '../details/CoreModifierTagSet';
 
 /**
  * Determines the type of syntax for a TSDocTagDefinition
@@ -57,6 +58,13 @@ export class TSDocTagDefinition {
 export class TSDocParserConfiguration {
   private _tagDefinitions: TSDocTagDefinition[];
   private _tagDefinitionsByName: Map<string, TSDocTagDefinition>;
+
+  public constructor() {
+    this._tagDefinitions = [];
+    this._tagDefinitionsByName = new Map<string, TSDocTagDefinition>();
+    CoreModifierTagSet.defineTags(this);
+  }
+
   /**
    * The TSDoc block tag names that will be interpreted as modifier tags.
    */
@@ -85,5 +93,11 @@ export class TSDocParserConfiguration {
 
     this._tagDefinitions.push(tagDefinition);
     this._tagDefinitionsByName.set(tagDefinition.tagNameForComparisons, tagDefinition);
+  }
+
+  public addTagDefinitions(tagDefinitions: TSDocTagDefinition[]): void {
+    for (const tagDefinition of tagDefinitions) {
+      this.addTagDefinition(tagDefinition);
+    }
   }
 }
