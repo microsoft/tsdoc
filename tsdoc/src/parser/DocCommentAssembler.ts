@@ -1,9 +1,11 @@
 import { ParserContext } from './ParserContext';
 import {
+  DocBlock,
   DocNodeKind,
   DocBlockTag,
   DocComment,
-  DocNode
+  DocNode,
+  DocParamBlock
 } from '../nodes';
 import {
   TSDocTagDefinition,
@@ -11,6 +13,7 @@ import {
   TSDocTagSyntaxKind
 } from './TSDocParserConfiguration';
 import { ModifierTagSet } from '../details/ModifierTagSet';
+import { CoreTags } from '../details/CoreTags';
 
 /**
  * After the NodeParser has constructed the  ParserContext.verbatimSection,
@@ -28,37 +31,89 @@ export class DocCommentAssembler {
   }
 
   public assemble(): void {
+    const blocks: DocBlock[] = this._collectBlocks();
+    this._arrangeBlocks(blocks);
+  }
 
+  private _collectBlocks(): DocBlock[] {
     const modifierTagSet: ModifierTagSet = this._docComment.modifierTagSet;
 
-    // Scan all the top-level nodes and weed out the modifier tags
-    const prunedDocNodes: DocNode[] = [];
+    const summaryNodes: DocNode[] = [];
+
+    const blocks: DocBlock[] = [];
+    let currentBlock: DocBlock | undefined = undefined;
 
     for (const docNode of this._parserContext.verbatimSection.getChildNodes()) {
 
-      let pruneNode: boolean = false;
+      let skipNode: boolean = false;
 
       switch (docNode.kind) {
         case DocNodeKind.BlockTag:
           const docBlockTag: DocBlockTag = docNode as DocBlockTag;
           // Do we have a definition for this tag?
           const tagDefinition: TSDocTagDefinition | undefined
-            = this._configuration.tryGetTagDefinitionUpperCase(docBlockTag.tagNameForComparisons);
+            = this._configuration.tryGetTagDefinitionWithUpperCase(docBlockTag.tagNameWithUpperCase);
           if (tagDefinition) {
-            if (tagDefinition.syntaxKind === TSDocTagSyntaxKind.ModifierTag) {
-              modifierTagSet.addModifierTag(docBlockTag);
-              pruneNode = true;
+            switch (tagDefinition.syntaxKind) {
+              case TSDocTagSyntaxKind.BlockTag:
+                // This is a block tag, so start a new block
+                currentBlock = new DocBlock({
+                  blockTag: docBlockTag
+                });
+                skipNode = true;
+                blocks.push(currentBlock);
+                break;
+              case TSDocTagSyntaxKind.ModifierTag:
+                // The block tag was recognized as a modifier, so add it to the modifier tag set
+                modifierTagSet.addModifierTag(docBlockTag);
+                skipNode = true;
+                break;
             }
           }
           break;
-        default:
-          break;
       }
-      if (!pruneNode) {
-        prunedDocNodes.push(docNode);
+
+      if (!skipNode) {
+        if (currentBlock) {
+          currentBlock.appendNode(docNode);
+        } else {
+          summaryNodes.push(docNode);
+        }
       }
     }
 
-    this._docComment.remarks.appendNodes(prunedDocNodes);
+    // TODO: If there is no "@remarks" block, then we could treat the first non-trivial DocParagraph
+    // as the summary, and the rest as the remarks.
+    this._docComment.summarySection.appendNodes(summaryNodes);
+    return blocks;
   }
+
+  private _arrangeBlocks(blocks: DocBlock[]): void {
+    // Now sift the blocks into normal and "custom" blocks
+    for (const block of blocks) {
+      switch (block.blockTag.tagNameWithUpperCase) {
+        case CoreTags.remarks.tagNameWithUpperCase:
+          this._docComment.remarksBlock = block;
+          break;
+          case CoreTags.param.tagNameWithUpperCase:
+          this._docComment.paramBlocks.push(this._constructParamBlock(block));
+          break;
+        case CoreTags.returns.tagNameWithUpperCase:
+          this._docComment.returnsBlock = block;
+          break;
+        default:
+          this._docComment.appendCustomBlock(block);
+      }
+    }
+  }
+
+  private _constructParamBlock(block: DocBlock): DocParamBlock {
+    const paramBlock: DocParamBlock = new DocParamBlock({
+      excerpt: block.excerpt,
+      parameterName: block.blockTag.tagName
+    });
+    paramBlock.appendNodes(block.nodes);
+    return paramBlock;
+  }
+
 }

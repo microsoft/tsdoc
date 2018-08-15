@@ -19,8 +19,14 @@
       "es2015.iterable",
       "dom"
     ],
-    "strictNullChecks": true,
+
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
     "noUnusedLocals": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
 
     "outDir": "lib"
   },
