@@ -57,3 +57,184 @@ Object {
   "_7_errors": Array [],
 }
 `;
+
+exports[`02 A basic TSDoc comment with all components 1`] = `
+Object {
+  "_0_lines": Array [
+    "Adds two numbers together.",
+    "",
+    "@remarks",
+    "This method is part of the {@link core-libary/Math | Math subsystem}.",
+    "",
+    "@customBlock",
+    "This is a custom block containing an @undefinedBlockTag",
+    "",
+    "@param x - The first number to add",
+    "@param y - The second number to add",
+    "@returns The sum of [c]x[c] and [c]y[c]",
+    "",
+    "@beta @customModifier",
+  ],
+  "_1_summarySection": Object {
+    "kind": "Section",
+    "nodes": Array [
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "Adds two numbers together.",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+    ],
+  },
+  "_2_remarksBlock": Object {
+    "kind": "Block",
+    "nodes": Array [
+      Object {
+        "kind": "BlockTag",
+        "nodePrefix": "@remarks",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": "This method is part of the ",
+      },
+      Object {
+        "kind": "InlineTag",
+        "nodePrefix": "{@link core-libary/Math | Math subsystem}",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": ".",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+    ],
+  },
+  "_3_customBlocks": Array [
+    Object {
+      "kind": "Block",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodePrefix": "@customBlock",
+        },
+        Object {
+          "kind": "SoftBreak",
+          "nodePrefix": "[n]",
+        },
+        Object {
+          "kind": "PlainText",
+          "nodePrefix": "This is a custom block containing an ",
+        },
+        Object {
+          "kind": "BlockTag",
+          "nodePrefix": "@undefinedBlockTag",
+        },
+        Object {
+          "kind": "SoftBreak",
+          "nodePrefix": "[n]",
+        },
+        Object {
+          "kind": "SoftBreak",
+          "nodePrefix": "[n]",
+        },
+      ],
+    },
+  ],
+  "_4_paramBlocks": Array [
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "PlainText",
+          "nodePrefix": " x - The first number to add",
+        },
+        Object {
+          "kind": "SoftBreak",
+          "nodePrefix": "[n]",
+        },
+      ],
+    },
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "PlainText",
+          "nodePrefix": " y - The second number to add",
+        },
+        Object {
+          "kind": "SoftBreak",
+          "nodePrefix": "[n]",
+        },
+      ],
+    },
+  ],
+  "_5_returnsBlock": Object {
+    "kind": "Block",
+    "nodes": Array [
+      Object {
+        "kind": "BlockTag",
+        "nodePrefix": "@returns",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": " The sum of ",
+      },
+      Object {
+        "kind": "CodeSpan",
+        "nodePrefix": "[c]x[c]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": " and ",
+      },
+      Object {
+        "kind": "CodeSpan",
+        "nodePrefix": "[c]y[c]",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodePrefix": " ",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodePrefix": "[n]",
+      },
+    ],
+  },
+  "_6_modifierTags": Array [
+    Object {
+      "kind": "BlockTag",
+      "nodePrefix": "@beta",
+    },
+    Object {
+      "kind": "BlockTag",
+      "nodePrefix": "@customModifier",
+    },
+  ],
+  "_7_errors": Array [],
+}
+`;

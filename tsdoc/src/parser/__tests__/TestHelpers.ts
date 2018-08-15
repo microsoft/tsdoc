@@ -8,6 +8,7 @@ import {
 } from '../../nodes';
 import { ParserContext } from '../ParserContext';
 import { Excerpt } from '../Excerpt';
+import { TSDocParserConfiguration } from '../TSDocParserConfiguration';
 
 interface ISnapshotItem {
   kind: string;
@@ -94,8 +95,10 @@ export class TestHelpers {
   /**
    * Main harness for tests under `./details/*`.
    */
-  public static parseAndMatchDocCommentSnapshot(buffer: string): ParserContext {
-    const tsdocParser: TSDocParser = new TSDocParser();
+  public static parseAndMatchDocCommentSnapshot(buffer: string,
+    configuration?: TSDocParserConfiguration): ParserContext {
+
+    const tsdocParser: TSDocParser = new TSDocParser(configuration);
     const parserContext: ParserContext = tsdocParser.parseString(buffer);
     const docComment: DocComment = parserContext.docComment;
 
@@ -105,7 +108,7 @@ export class TestHelpers {
       _2_remarksBlock: TestHelpers.getDocNodeSnapshot(docComment.remarksBlock),
       _3_customBlocks: docComment.customBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
       _4_paramBlocks: docComment.paramBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
-      _5_returnsBlock: docComment.returnsBlock,
+      _5_returnsBlock: TestHelpers.getDocNodeSnapshot(docComment.returnsBlock),
       _6_modifierTags: docComment.modifierTagSet.nodes.map(x => TestHelpers.getDocNodeSnapshot(x)),
       _7_errors: parserContext.parseErrors.map(x => x.message)
     }).toMatchSnapshot();
