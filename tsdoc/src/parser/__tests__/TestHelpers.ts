@@ -14,9 +14,8 @@ interface ISnapshotItem {
   errorMessage?: string;
   errorLocation?: string;
   errorLocationPrecedingToken?: string;
-  nodePrefix?: string;
-  nodeSuffix?: string;
-  nodeSeparator?: string;
+  nodeExcerpt?: string;
+  nodeSpacing?: string;
   nodes?: ISnapshotItem[];
 }
 
@@ -129,9 +128,9 @@ export class TestHelpers {
 
     if (docNode.excerpt) {
       const excerpt: Excerpt = docNode.excerpt;
-      item.nodePrefix = TestHelpers.getEscaped(excerpt.content.toString());
+      item.nodeExcerpt = TestHelpers.getEscaped(excerpt.content.toString());
       if (!excerpt.spacingAfterContent.isEmpty()) {
-        item.nodeSeparator = TestHelpers.getEscaped(excerpt.spacingAfterContent.toString());
+        item.nodeSpacing = TestHelpers.getEscaped(excerpt.spacingAfterContent.toString());
       }
     }
 

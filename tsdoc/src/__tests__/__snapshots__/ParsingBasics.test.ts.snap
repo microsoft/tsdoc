@@ -12,31 +12,31 @@ Object {
     "nodes": Array [
       Object {
         "kind": "PlainText",
-        "nodePrefix": "START ",
+        "nodeExcerpt": "START ",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "BlockTag",
-        "nodePrefix": "@unknownTag",
+        "nodeExcerpt": "@unknownTag",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " ",
+        "nodeExcerpt": " ",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " END",
+        "nodeExcerpt": " END",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -47,11 +47,11 @@ Object {
   "_6_modifierTags": Array [
     Object {
       "kind": "BlockTag",
-      "nodePrefix": "@beta",
+      "nodeExcerpt": "@beta",
     },
     Object {
       "kind": "BlockTag",
-      "nodePrefix": "@internal",
+      "nodeExcerpt": "@internal",
     },
   ],
   "_7_errors": Array [],
@@ -80,15 +80,15 @@ Object {
     "nodes": Array [
       Object {
         "kind": "PlainText",
-        "nodePrefix": "Adds two numbers together.",
+        "nodeExcerpt": "Adds two numbers together.",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -97,48 +97,48 @@ Object {
     "nodes": Array [
       Object {
         "kind": "BlockTag",
-        "nodePrefix": "@remarks",
+        "nodeExcerpt": "@remarks",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "This method is part of the ",
+        "nodeExcerpt": "This method is part of the ",
       },
       Object {
         "kind": "InlineTag",
         "nodes": Array [
           Object {
             "kind": "Particle",
-            "nodePrefix": "{",
+            "nodeExcerpt": "{",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "@link",
+            "nodeExcerpt": "@link",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": " core-libary/Math | Math subsystem",
+            "nodeExcerpt": " core-libary/Math | Math subsystem",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "}",
+            "nodeExcerpt": "}",
           },
         ],
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": ".",
+        "nodeExcerpt": ".",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -148,27 +148,27 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodePrefix": "@customBlock",
+          "nodeExcerpt": "@customBlock",
         },
         Object {
           "kind": "SoftBreak",
-          "nodePrefix": "[n]",
+          "nodeExcerpt": "[n]",
         },
         Object {
           "kind": "PlainText",
-          "nodePrefix": "This is a custom block containing an ",
+          "nodeExcerpt": "This is a custom block containing an ",
         },
         Object {
           "kind": "BlockTag",
-          "nodePrefix": "@undefinedBlockTag",
+          "nodeExcerpt": "@undefinedBlockTag",
         },
         Object {
           "kind": "SoftBreak",
-          "nodePrefix": "[n]",
+          "nodeExcerpt": "[n]",
         },
         Object {
           "kind": "SoftBreak",
-          "nodePrefix": "[n]",
+          "nodeExcerpt": "[n]",
         },
       ],
     },
@@ -179,11 +179,11 @@ Object {
       "nodes": Array [
         Object {
           "kind": "PlainText",
-          "nodePrefix": " x - The first number to add",
+          "nodeExcerpt": " x - The first number to add",
         },
         Object {
           "kind": "SoftBreak",
-          "nodePrefix": "[n]",
+          "nodeExcerpt": "[n]",
         },
       ],
     },
@@ -192,11 +192,11 @@ Object {
       "nodes": Array [
         Object {
           "kind": "PlainText",
-          "nodePrefix": " y - The second number to add",
+          "nodeExcerpt": " y - The second number to add",
         },
         Object {
           "kind": "SoftBreak",
-          "nodePrefix": "[n]",
+          "nodeExcerpt": "[n]",
         },
       ],
     },
@@ -206,50 +206,50 @@ Object {
     "nodes": Array [
       Object {
         "kind": "BlockTag",
-        "nodePrefix": "@returns",
+        "nodeExcerpt": "@returns",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " The sum of ",
+        "nodeExcerpt": " The sum of ",
       },
       Object {
         "kind": "CodeSpan",
-        "nodePrefix": "[c]x[c]",
+        "nodeExcerpt": "[c]x[c]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " and ",
+        "nodeExcerpt": " and ",
       },
       Object {
         "kind": "CodeSpan",
-        "nodePrefix": "[c]y[c]",
+        "nodeExcerpt": "[c]y[c]",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " ",
+        "nodeExcerpt": " ",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
   "_6_modifierTags": Array [
     Object {
       "kind": "BlockTag",
-      "nodePrefix": "@beta",
+      "nodeExcerpt": "@beta",
     },
     Object {
       "kind": "BlockTag",
-      "nodePrefix": "@customModifier",
+      "nodeExcerpt": "@customModifier",
     },
   ],
   "_7_errors": Array [],
@@ -272,7 +272,7 @@ Object {
     "nodes": Array [
       Object {
         "kind": "PlainText",
-        "nodePrefix": "Adds two numbers together. ",
+        "nodeExcerpt": "Adds two numbers together. ",
       },
     ],
   },
@@ -281,52 +281,52 @@ Object {
     "nodes": Array [
       Object {
         "kind": "BlockTag",
-        "nodePrefix": "@remarks",
+        "nodeExcerpt": "@remarks",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " This method is part of the",
+        "nodeExcerpt": " This method is part of the",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "InlineTag",
         "nodes": Array [
           Object {
             "kind": "Particle",
-            "nodePrefix": "{",
+            "nodeExcerpt": "{",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "@link",
+            "nodeExcerpt": "@link",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": " core-libary/Math | Math subsystem",
+            "nodeExcerpt": " core-libary/Math | Math subsystem",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "}",
+            "nodeExcerpt": "}",
           },
         ],
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": ".",
+        "nodeExcerpt": ".",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " ",
+        "nodeExcerpt": " ",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -336,23 +336,23 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodePrefix": "@customBlock",
+          "nodeExcerpt": "@customBlock",
         },
         Object {
           "kind": "SoftBreak",
-          "nodePrefix": "[n]",
+          "nodeExcerpt": "[n]",
         },
         Object {
           "kind": "PlainText",
-          "nodePrefix": "This is a custom block containing an ",
+          "nodeExcerpt": "This is a custom block containing an ",
         },
         Object {
           "kind": "BlockTag",
-          "nodePrefix": "@undefinedBlockTag",
+          "nodeExcerpt": "@undefinedBlockTag",
         },
         Object {
           "kind": "SoftBreak",
-          "nodePrefix": "[n]",
+          "nodeExcerpt": "[n]",
         },
       ],
     },
@@ -363,7 +363,7 @@ Object {
       "nodes": Array [
         Object {
           "kind": "PlainText",
-          "nodePrefix": " x - The first number to add ",
+          "nodeExcerpt": " x - The first number to add ",
         },
       ],
     },
@@ -372,11 +372,11 @@ Object {
       "nodes": Array [
         Object {
           "kind": "PlainText",
-          "nodePrefix": " y - The second number to add",
+          "nodeExcerpt": " y - The second number to add",
         },
         Object {
           "kind": "SoftBreak",
-          "nodePrefix": "[n]",
+          "nodeExcerpt": "[n]",
         },
       ],
     },
@@ -386,38 +386,38 @@ Object {
     "nodes": Array [
       Object {
         "kind": "BlockTag",
-        "nodePrefix": "@returns",
+        "nodeExcerpt": "@returns",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " The sum of ",
+        "nodeExcerpt": " The sum of ",
       },
       Object {
         "kind": "CodeSpan",
-        "nodePrefix": "[c]x[c]",
+        "nodeExcerpt": "[c]x[c]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " and ",
+        "nodeExcerpt": " and ",
       },
       Object {
         "kind": "CodeSpan",
-        "nodePrefix": "[c]y[c]",
+        "nodeExcerpt": "[c]y[c]",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
   "_6_modifierTags": Array [
     Object {
       "kind": "BlockTag",
-      "nodePrefix": "@beta",
+      "nodeExcerpt": "@beta",
     },
     Object {
       "kind": "BlockTag",
-      "nodePrefix": "@customModifier",
+      "nodeExcerpt": "@customModifier",
     },
   ],
   "_7_errors": Array [],

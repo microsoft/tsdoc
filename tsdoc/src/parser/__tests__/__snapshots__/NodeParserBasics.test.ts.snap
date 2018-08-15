@@ -12,19 +12,19 @@ Object {
     "nodes": Array [
       Object {
         "kind": "PlainText",
-        "nodePrefix": "line 1",
+        "nodeExcerpt": "line 1",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "line 2",
+        "nodeExcerpt": "line 2",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -52,7 +52,7 @@ Object {
     "nodes": Array [
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -71,11 +71,11 @@ Object {
     "nodes": Array [
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -93,19 +93,19 @@ Object {
     "nodes": Array [
       Object {
         "kind": "EscapedText",
-        "nodePrefix": "[b]$",
+        "nodeExcerpt": "[b]$",
       },
       Object {
         "kind": "EscapedText",
-        "nodePrefix": "[b]@",
+        "nodeExcerpt": "[b]@",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "param",
+        "nodeExcerpt": "param",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -123,40 +123,40 @@ Object {
     "nodes": Array [
       Object {
         "kind": "PlainText",
-        "nodePrefix": "letter: ",
+        "nodeExcerpt": "letter: ",
       },
       Object {
         "errorLocation": "[b]",
         "errorLocationPrecedingToken": " ",
         "errorMessage": "A backslash can only be used to escape a punctuation character",
         "kind": "ErrorText",
-        "nodePrefix": "[b]",
+        "nodeExcerpt": "[b]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "A space: ",
+        "nodeExcerpt": "A space: ",
       },
       Object {
         "errorLocation": "[b]",
         "errorLocationPrecedingToken": " ",
         "errorMessage": "A backslash can only be used to escape a punctuation character",
         "kind": "ErrorText",
-        "nodePrefix": "[b]",
+        "nodeExcerpt": "[b]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "  end of line: ",
+        "nodeExcerpt": "  end of line: ",
       },
       Object {
         "errorLocation": "[b]",
         "errorLocationPrecedingToken": " ",
         "errorMessage": "A backslash can only be used to escape a punctuation character",
         "kind": "ErrorText",
-        "nodePrefix": "[b]",
+        "nodeExcerpt": "[b]",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },

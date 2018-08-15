@@ -12,19 +12,19 @@ Object {
     "nodes": Array [
       Object {
         "kind": "BlockTag",
-        "nodePrefix": "@one",
+        "nodeExcerpt": "@one",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "BlockTag",
-        "nodePrefix": "@two",
+        "nodeExcerpt": "@two",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -46,34 +46,34 @@ Object {
         "errorLocation": "@",
         "errorMessage": "Expecting a TSDoc tag name after the [q]@[q] character (or use a backslash to escape this character)",
         "kind": "ErrorText",
-        "nodePrefix": "@",
+        "nodeExcerpt": "@",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " one",
+        "nodeExcerpt": " one",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "+",
+        "nodeExcerpt": "+",
       },
       Object {
         "errorLocation": "@",
         "errorLocationPrecedingToken": "+",
         "errorMessage": "A TSDoc tag must be preceded by whitespace",
         "kind": "ErrorText",
-        "nodePrefix": "@",
+        "nodeExcerpt": "@",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "two",
+        "nodeExcerpt": "two",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "errorLocation": "@",
@@ -81,15 +81,15 @@ Object {
 ",
         "errorMessage": "A TSDoc tag must be followed by whitespace",
         "kind": "ErrorText",
-        "nodePrefix": "@",
+        "nodeExcerpt": "@",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "two+",
+        "nodeExcerpt": "two+",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -114,67 +114,67 @@ Object {
         "nodes": Array [
           Object {
             "kind": "Particle",
-            "nodePrefix": "{",
+            "nodeExcerpt": "{",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "@one",
+            "nodeExcerpt": "@one",
           },
           Object {
             "kind": "Particle",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "}",
+            "nodeExcerpt": "}",
           },
         ],
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "InlineTag",
         "nodes": Array [
           Object {
             "kind": "Particle",
-            "nodePrefix": "{",
+            "nodeExcerpt": "{",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "@two",
+            "nodeExcerpt": "@two",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": " ",
+            "nodeExcerpt": " ",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "}",
+            "nodeExcerpt": "}",
           },
         ],
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "InlineTag",
         "nodes": Array [
           Object {
             "kind": "Particle",
-            "nodePrefix": "{",
+            "nodeExcerpt": "{",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "@three",
+            "nodeExcerpt": "@three",
           },
           Object {
             "kind": "Particle",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "}",
+            "nodeExcerpt": "}",
           },
         ],
       },
@@ -183,49 +183,49 @@ Object {
         "nodes": Array [
           Object {
             "kind": "Particle",
-            "nodePrefix": "{",
+            "nodeExcerpt": "{",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "@four",
+            "nodeExcerpt": "@four",
           },
           Object {
             "kind": "Particle",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "}",
+            "nodeExcerpt": "}",
           },
         ],
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "InlineTag",
         "nodes": Array [
           Object {
             "kind": "Particle",
-            "nodePrefix": "{",
+            "nodeExcerpt": "{",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "@five",
+            "nodeExcerpt": "@five",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "[n]  ",
+            "nodeExcerpt": "[n]  ",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "}",
+            "nodeExcerpt": "}",
           },
         ],
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -249,44 +249,44 @@ Object {
         "errorLocationPrecedingToken": "{",
         "errorMessage": "Expecting a TSDoc inline tag name after the [q]{@[q] characters",
         "kind": "ErrorText",
-        "nodePrefix": "{@",
+        "nodeExcerpt": "{@",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " one",
+        "nodeExcerpt": " one",
       },
       Object {
         "errorLocation": "}",
         "errorLocationPrecedingToken": "one",
         "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
         "kind": "ErrorText",
-        "nodePrefix": "}",
+        "nodeExcerpt": "}",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "errorLocation": "~",
         "errorLocationPrecedingToken": "two",
         "errorMessage": "Expecting a space after the TSDoc inline tag name",
         "kind": "ErrorText",
-        "nodePrefix": "{@",
+        "nodeExcerpt": "{@",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "two~",
+        "nodeExcerpt": "two~",
       },
       Object {
         "errorLocation": "}",
         "errorLocationPrecedingToken": "~",
         "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
         "kind": "ErrorText",
-        "nodePrefix": "}",
+        "nodeExcerpt": "}",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "errorLocation": "{",
@@ -294,33 +294,33 @@ Object {
 ",
         "errorMessage": "Expecting a TSDoc tag starting with [q]{@[q]",
         "kind": "ErrorText",
-        "nodePrefix": "{",
+        "nodeExcerpt": "{",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " ",
+        "nodeExcerpt": " ",
       },
       Object {
         "errorLocation": "@",
         "errorLocationPrecedingToken": " ",
         "errorMessage": "A TSDoc tag must be followed by whitespace",
         "kind": "ErrorText",
-        "nodePrefix": "@",
+        "nodeExcerpt": "@",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "three",
+        "nodeExcerpt": "three",
       },
       Object {
         "errorLocation": "}",
         "errorLocationPrecedingToken": "three",
         "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
         "kind": "ErrorText",
-        "nodePrefix": "}",
+        "nodeExcerpt": "}",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "errorLocation": "{@",
@@ -328,15 +328,15 @@ Object {
 ",
         "errorMessage": "The TSDoc inline tag name is missing its closing [q]}[q]",
         "kind": "ErrorText",
-        "nodePrefix": "{@",
+        "nodeExcerpt": "{@",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "four",
+        "nodeExcerpt": "four",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -359,50 +359,50 @@ Object {
         "nodes": Array [
           Object {
             "kind": "Particle",
-            "nodePrefix": "{",
+            "nodeExcerpt": "{",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "@one",
+            "nodeExcerpt": "@one",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": " some content",
+            "nodeExcerpt": " some content",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "}",
+            "nodeExcerpt": "}",
           },
         ],
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "InlineTag",
         "nodes": Array [
           Object {
             "kind": "Particle",
-            "nodePrefix": "{",
+            "nodeExcerpt": "{",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "@two",
+            "nodeExcerpt": "@two",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": " multi[n]line",
+            "nodeExcerpt": " multi[n]line",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "}",
+            "nodeExcerpt": "}",
           },
         ],
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -423,25 +423,25 @@ Object {
         "nodes": Array [
           Object {
             "kind": "Particle",
-            "nodePrefix": "{",
+            "nodeExcerpt": "{",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "@three",
+            "nodeExcerpt": "@three",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": " @taglike",
+            "nodeExcerpt": " @taglike",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "}",
+            "nodeExcerpt": "}",
           },
         ],
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -462,25 +462,25 @@ Object {
         "nodes": Array [
           Object {
             "kind": "Particle",
-            "nodePrefix": "{",
+            "nodeExcerpt": "{",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "@one",
+            "nodeExcerpt": "@one",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": " left [b]{ right [b]} backslash [b][b] ",
+            "nodeExcerpt": " left [b]{ right [b]} backslash [b][b] ",
           },
           Object {
             "kind": "Particle",
-            "nodePrefix": "}",
+            "nodeExcerpt": "}",
           },
         ],
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -500,19 +500,19 @@ Object {
         "errorLocation": "{@",
         "errorMessage": "The TSDoc inline tag name is missing its closing [q]}[q]",
         "kind": "ErrorText",
-        "nodePrefix": "{@",
+        "nodeExcerpt": "{@",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "one curly",
+        "nodeExcerpt": "one curly",
       },
       Object {
         "kind": "EscapedText",
-        "nodePrefix": "[b]}",
+        "nodeExcerpt": "[b]}",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -533,36 +533,36 @@ Object {
         "errorLocationPrecedingToken": "curly",
         "errorMessage": "The [q]{[q] character must be escaped with a backslash when used inside a TSDoc inline tag",
         "kind": "ErrorText",
-        "nodePrefix": "{@",
+        "nodeExcerpt": "{@",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "two curly",
+        "nodeExcerpt": "two curly",
       },
       Object {
         "errorLocation": "{",
         "errorLocationPrecedingToken": "curly",
         "errorMessage": "Expecting a TSDoc tag starting with [q]{@[q]",
         "kind": "ErrorText",
-        "nodePrefix": "{",
+        "nodeExcerpt": "{",
       },
       Object {
         "errorLocation": "}",
         "errorLocationPrecedingToken": "{",
         "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
         "kind": "ErrorText",
-        "nodePrefix": "}",
+        "nodeExcerpt": "}",
       },
       Object {
         "errorLocation": "}",
         "errorLocationPrecedingToken": "}",
         "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
         "kind": "ErrorText",
-        "nodePrefix": "}",
+        "nodeExcerpt": "}",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -580,18 +580,18 @@ Object {
     "nodes": Array [
       Object {
         "kind": "PlainText",
-        "nodePrefix": "three: ",
+        "nodeExcerpt": "three: ",
       },
       Object {
         "errorLocation": "}",
         "errorLocationPrecedingToken": " ",
         "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
         "kind": "ErrorText",
-        "nodePrefix": "}",
+        "nodeExcerpt": "}",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
