@@ -67,7 +67,7 @@ export class NodeParser {
           this._pushAccumulatedPlainText(childNodes);
           this._tokenReader.readToken();
           childNodes.push(new DocSoftBreak({
-            excerpt: new Excerpt({ prefix: this._tokenReader.extractAccumulatedSequence() })
+            excerpt: new Excerpt({ content: this._tokenReader.extractAccumulatedSequence() })
           }));
           break;
         case TokenKind.Backslash:
@@ -122,7 +122,7 @@ export class NodeParser {
 
       childNodes.push(new DocPlainText({
         text: plainTextSequence.toString(),
-        excerpt: new Excerpt({ prefix: plainTextSequence })
+        excerpt: new Excerpt({ content: plainTextSequence })
       }));
     }
   }
@@ -151,7 +151,7 @@ export class NodeParser {
     const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
     return new DocEscapedText({
-      excerpt: new Excerpt({ prefix: tokenSequence }),
+      excerpt: new Excerpt({ content: tokenSequence }),
       escapeStyle: EscapeStyle.CommonMarkBackslash,
       text: escapedToken.toString()
     });
@@ -212,7 +212,7 @@ export class NodeParser {
     }
 
     return new DocBlockTag({
-      excerpt: new Excerpt({ prefix: this._tokenReader.extractAccumulatedSequence() }),
+      excerpt: new Excerpt({ content: this._tokenReader.extractAccumulatedSequence() }),
       tagName
     });
   }
@@ -310,7 +310,7 @@ export class NodeParser {
     }
 
     return new DocInlineTag({
-      excerpt: new Excerpt({ prefix: this._tokenReader.extractAccumulatedSequence() }),
+      excerpt: new Excerpt({ content: this._tokenReader.extractAccumulatedSequence() }),
       tagName: tagName,
       tagContent: tagContent
     });
@@ -329,7 +329,7 @@ export class NodeParser {
     // NOTE: CommonMark does not permit whitespace after the "<"
 
     const openingDelimiterExcerptParameters: IExcerptParameters = {
-      prefix: this._tokenReader.extractAccumulatedSequence()
+      content: this._tokenReader.extractAccumulatedSequence()
     };
 
     // Read the element name
@@ -339,11 +339,11 @@ export class NodeParser {
     }
 
     const elementNameExcerptParameters: IExcerptParameters = {
-      prefix: this._tokenReader.extractAccumulatedSequence()
+      content: this._tokenReader.extractAccumulatedSequence()
     };
 
     const spacingAfterElementName: string = this._readSpacingAndNewlines();
-    elementNameExcerptParameters.separator = this._tokenReader.tryExtractAccumulatedSequence();
+    elementNameExcerptParameters.spacingAfterContent = this._tokenReader.tryExtractAccumulatedSequence();
 
     const htmlAttributes: DocHtmlAttribute[] = [];
 
@@ -376,7 +376,7 @@ export class NodeParser {
     this._tokenReader.readToken();
 
     const closingDelimiterExcerptParameters: IExcerptParameters = {
-      prefix: this._tokenReader.extractAccumulatedSequence()
+      content: this._tokenReader.extractAccumulatedSequence()
     };
 
     // NOTE: We don't read excerptParameters.separator here, since if there is any it
@@ -407,11 +407,11 @@ export class NodeParser {
     }
 
     const attributeNameExcerptParameters: IExcerptParameters = {
-      prefix: this._tokenReader.extractAccumulatedSequence()
+      content: this._tokenReader.extractAccumulatedSequence()
     };
 
     const spacingAfterAttributeName: string = this._readSpacingAndNewlines();
-    attributeNameExcerptParameters.separator = this._tokenReader.tryExtractAccumulatedSequence();
+    attributeNameExcerptParameters.spacingAfterContent = this._tokenReader.tryExtractAccumulatedSequence();
 
     // Read the equals
     if (this._tokenReader.peekTokenKind() !== TokenKind.Equals) {
@@ -420,11 +420,11 @@ export class NodeParser {
     this._tokenReader.readToken();
 
     const equalsExcerptParameters: IExcerptParameters = {
-      prefix: this._tokenReader.extractAccumulatedSequence()
+      content: this._tokenReader.extractAccumulatedSequence()
     };
 
     const spacingAfterEquals: string = this._readSpacingAndNewlines();
-    equalsExcerptParameters.separator = this._tokenReader.tryExtractAccumulatedSequence();
+    equalsExcerptParameters.spacingAfterContent = this._tokenReader.tryExtractAccumulatedSequence();
 
     // Read the attribute value
     const attributeValue: ResultOrFailure<string> = this._parseHtmlString();
@@ -433,11 +433,11 @@ export class NodeParser {
     }
 
     const attributeValueExcerptParameters: IExcerptParameters = {
-      prefix: this._tokenReader.extractAccumulatedSequence()
+      content: this._tokenReader.extractAccumulatedSequence()
     };
 
     const spacingAfterAttributeValue: string = this._readSpacingAndNewlines();
-    attributeValueExcerptParameters.separator = this._tokenReader.tryExtractAccumulatedSequence();
+    attributeValueExcerptParameters.spacingAfterContent = this._tokenReader.tryExtractAccumulatedSequence();
 
     return new DocHtmlAttribute({
       attributeNameExcerpt: new Excerpt(attributeNameExcerptParameters),
@@ -522,7 +522,7 @@ export class NodeParser {
     this._tokenReader.readToken();
 
     return new DocHtmlEndTag({
-      excerpt: new Excerpt({ prefix: this._tokenReader.extractAccumulatedSequence() }),
+      excerpt: new Excerpt({ content: this._tokenReader.extractAccumulatedSequence() }),
       elementName
     });
   }
@@ -616,7 +616,7 @@ export class NodeParser {
     }
 
     return new DocCodeSpan({
-      excerpt: new Excerpt({ prefix: this._tokenReader.extractAccumulatedSequence() }),
+      excerpt: new Excerpt({ content: this._tokenReader.extractAccumulatedSequence() }),
       text
     });
   }
@@ -649,7 +649,7 @@ export class NodeParser {
     const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
     return new DocErrorText({
-      excerpt: new Excerpt({ prefix: tokenSequence }),
+      excerpt: new Excerpt({ content: tokenSequence }),
       text: tokenSequence.toString(),
       errorMessage,
       errorLocation: tokenSequence
@@ -682,7 +682,7 @@ export class NodeParser {
     const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
     return new DocErrorText({
-      excerpt: new Excerpt({ prefix: tokenSequence }),
+      excerpt: new Excerpt({ content: tokenSequence }),
       text: tokenSequence.toString(),
       errorMessage: errorMessage,
       errorLocation: tokenSequence
@@ -702,7 +702,7 @@ export class NodeParser {
     const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
     return new DocErrorText({
-      excerpt: new Excerpt({ prefix: tokenSequence }),
+      excerpt: new Excerpt({ content: tokenSequence }),
       text: tokenSequence.toString(),
       errorMessage: errorMessagePrefix + failure.failureMessage,
       errorLocation: failure.failureLocation
@@ -727,7 +727,7 @@ export class NodeParser {
     const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
     return new DocErrorText({
-      excerpt: new Excerpt({ prefix: tokenSequence }),
+      excerpt: new Excerpt({ content: tokenSequence }),
       text: tokenSequence.toString(),
       errorMessage: errorMessagePrefix + failure.failureMessage,
       errorLocation: failure.failureLocation

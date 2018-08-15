@@ -129,12 +129,9 @@ export class TestHelpers {
 
     if (docNode.excerpt) {
       const excerpt: Excerpt = docNode.excerpt;
-      item.nodePrefix = TestHelpers.getEscaped(excerpt.prefix.toString());
-      if (!excerpt.suffix.isEmpty()) {
-        item.nodeSuffix = TestHelpers.getEscaped(excerpt.suffix.toString());
-      }
-      if (!excerpt.separator.isEmpty()) {
-        item.nodeSeparator = TestHelpers.getEscaped(excerpt.separator.toString());
+      item.nodePrefix = TestHelpers.getEscaped(excerpt.content.toString());
+      if (!excerpt.spacingAfterContent.isEmpty()) {
+        item.nodeSeparator = TestHelpers.getEscaped(excerpt.spacingAfterContent.toString());
       }
     }
 
