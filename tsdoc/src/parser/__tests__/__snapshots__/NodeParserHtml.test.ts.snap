@@ -921,7 +921,20 @@ Object {
     "nodes": Array [
       Object {
         "kind": "HtmlEndTag",
-        "nodePrefix": "[<]/tag-a[>]",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]/",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-a",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[>]",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -929,7 +942,21 @@ Object {
       },
       Object {
         "kind": "HtmlEndTag",
-        "nodePrefix": "[<]/tag-b  [>]",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]/",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-b",
+            "nodeSeparator": "  ",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[>]",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -937,7 +964,21 @@ Object {
       },
       Object {
         "kind": "HtmlEndTag",
-        "nodePrefix": "[<]/tag-c[n]  [>]",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]/",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-c",
+            "nodeSeparator": "[n]  ",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[>]",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",

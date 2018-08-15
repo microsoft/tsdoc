@@ -490,7 +490,7 @@ export class NodeParser {
     this._tokenReader.assertAccumulatedSequenceIsEmpty();
     const marker: number = this._tokenReader.createMarker();
 
-    // Read the "<" delimiter
+    // Read the "</" delimiter
     const lessThanToken: Token = this._tokenReader.peekToken();
     if (lessThanToken.kind !== TokenKind.LessThan) {
       return this._backtrackAndCreateError(marker, 'Expecting an HTML tag starting with "</"');
@@ -506,13 +506,22 @@ export class NodeParser {
     // NOTE: Spaces are not permitted here
     // https://www.w3.org/TR/html5/syntax.html#end-tags
 
+    const openingDelimiterExcerptParameters: IExcerptParameters = {
+      content: this._tokenReader.extractAccumulatedSequence()
+    };
+
     // Read the tag name
     const elementName: ResultOrFailure<string> = this._parseHtmlName();
     if (isFailure(elementName)) {
       return this._backtrackAndCreateErrorForFailure(marker, 'Expecting an HTML element name: ', elementName);
     }
 
+    const elementNameExcerptParameters: IExcerptParameters = {
+      content: this._tokenReader.extractAccumulatedSequence()
+    };
+
     this._readSpacingAndNewlines();
+    elementNameExcerptParameters.spacingAfterContent = this._tokenReader.tryExtractAccumulatedSequence();
 
     // Read the closing ">"
     if (this._tokenReader.peekTokenKind() !== TokenKind.GreaterThan) {
@@ -521,9 +530,17 @@ export class NodeParser {
     }
     this._tokenReader.readToken();
 
+    const closingDelimiterExcerptParameters: IExcerptParameters = {
+      content: this._tokenReader.extractAccumulatedSequence()
+    };
+
     return new DocHtmlEndTag({
-      excerpt: new Excerpt({ content: this._tokenReader.extractAccumulatedSequence() }),
-      elementName
+      openingDelimiterExcerpt: new Excerpt(openingDelimiterExcerptParameters),
+
+      elementNameExcerpt: new Excerpt(elementNameExcerptParameters),
+      elementName,
+
+      closingDelimiterExcerpt: new Excerpt(closingDelimiterExcerptParameters)
     });
   }
 
