@@ -328,18 +328,22 @@ export class NodeParser {
 
     // NOTE: CommonMark does not permit whitespace after the "<"
 
+    const openingDelimiterExcerptParameters: IExcerptParameters = {
+      prefix: this._tokenReader.extractAccumulatedSequence()
+    };
+
+    // Read the element name
     const elementName: ResultOrFailure<string> = this._parseHtmlName();
     if (isFailure(elementName)) {
       return this._backtrackAndCreateErrorForFailure(marker, 'Invalid HTML element: ', elementName);
     }
 
-    const spacingAfterElementName: string = this._readSpacingAndNewlines();
-
-    // Extract everything from the "<" up to the start of the first attribute and make that
-    // the Excerpt prefix.  Example: "<table "
-    const excerptParameters: IExcerptParameters = {
+    const elementNameExcerptParameters: IExcerptParameters = {
       prefix: this._tokenReader.extractAccumulatedSequence()
     };
+
+    const spacingAfterElementName: string = this._readSpacingAndNewlines();
+    elementNameExcerptParameters.separator = this._tokenReader.tryExtractAccumulatedSequence();
 
     const htmlAttributes: DocHtmlAttribute[] = [];
 
@@ -370,21 +374,32 @@ export class NodeParser {
       return this._backtrackAndCreateErrorForFailure(marker, 'The HTML tag has invalid syntax: ', failure);
     }
     this._tokenReader.readToken();
-    excerptParameters.suffix = this._tokenReader.extractAccumulatedSequence();
+
+    const closingDelimiterExcerptParameters: IExcerptParameters = {
+      prefix: this._tokenReader.extractAccumulatedSequence()
+    };
 
     // NOTE: We don't read excerptParameters.separator here, since if there is any it
     // will be represented as DocPlainText.
 
     return new DocHtmlStartTag({
-      excerpt: new Excerpt(excerptParameters),
+      openingDelimiterExcerpt: new Excerpt(openingDelimiterExcerptParameters),
+
+      elementNameExcerpt: new Excerpt(elementNameExcerptParameters),
       elementName,
       spacingAfterElementName,
+
       htmlAttributes,
-      selfClosingTag
+
+      selfClosingTag,
+
+      closingDelimiterExcerpt: new Excerpt(closingDelimiterExcerptParameters)
     });
   }
 
   private _parseHtmlAttribute(): ResultOrFailure<DocHtmlAttribute> {
+    this._tokenReader.assertAccumulatedSequenceIsEmpty();
+
     // Read the attribute name
     const attributeName: ResultOrFailure<string> = this._parseHtmlName();
     if (isFailure(attributeName)) {

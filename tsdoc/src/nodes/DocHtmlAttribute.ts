@@ -27,8 +27,13 @@ export class DocHtmlAttribute extends DocNode {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.HtmlAttribute;
 
+  // The attribute name
   private readonly _attributeNameParticle: DocParticle;
+
+  // The "=" delimiter
   private readonly _equalsParticle: DocParticle;
+
+  // The attribute value including quotation marks
   private readonly _attributeValueParticle: DocParticle;
 
   /**

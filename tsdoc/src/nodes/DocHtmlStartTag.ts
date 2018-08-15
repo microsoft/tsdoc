@@ -1,14 +1,22 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 import { DocHtmlAttribute } from './DocHtmlAttribute';
+import { DocParticle } from './DocParticle';
+import { Excerpt } from '../parser/Excerpt';
 
 /**
  * Constructor parameters for {@link DocHtmlStartTag}.
  */
 export interface IDocHtmlStartTagParameters extends IDocNodeParameters {
+  openingDelimiterExcerpt?: Excerpt;
+
+  elementNameExcerpt?: Excerpt;
   elementName: string;
   spacingAfterElementName?: string;
+
   htmlAttributes: DocHtmlAttribute[];
   selfClosingTag: boolean;
+
+  closingDelimiterExcerpt?: Excerpt;
 }
 
 /**
@@ -21,22 +29,20 @@ export class DocHtmlStartTag extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.HtmlStartTag;
 
   /**
-   * The HTML element name.
-   */
-  public readonly elementName: string;
-
-  /**
-   * Explicit whitespace that a renderer should insert after the HTML element name.
-   * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
-   */
-  public readonly spacingAfterElementName: string | undefined;
-
-  /**
    * If true, then the HTML tag ends with "/>" instead of ">".
    */
   public readonly selfClosingTag: boolean;
 
+  // The "<" delimiter
+  private readonly _openingDelimiterParticle: DocParticle;
+
+  // The element name
+  private readonly _elementNameParticle: DocParticle;
+
   private _htmlAttributes: DocHtmlAttribute[];
+
+  // The ">" or "/>" delimiter
+  private readonly _closingDelimiterParticle: DocParticle;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -44,11 +50,33 @@ export class DocHtmlStartTag extends DocNode {
    */
   public constructor(parameters: IDocHtmlStartTagParameters) {
     super(parameters);
-    this.elementName = parameters.elementName;
-    DocNode.validateSpacing(parameters.spacingAfterElementName, 'spacingAfterElementName');
-    this.spacingAfterElementName = parameters.spacingAfterElementName;
+
+    this._openingDelimiterParticle = new DocParticle({
+      excerpt: parameters.openingDelimiterExcerpt,
+      content: '<'
+    });
+
+    this._elementNameParticle = new DocParticle({
+      excerpt: parameters.elementNameExcerpt,
+      content: parameters.elementName,
+      spacingAfterContent: parameters.spacingAfterElementName
+    });
+
     this._htmlAttributes = parameters.htmlAttributes;
+
     this.selfClosingTag = parameters.selfClosingTag;
+
+    this._closingDelimiterParticle = new DocParticle({
+      excerpt: parameters.closingDelimiterExcerpt,
+      content: parameters.selfClosingTag ? '/>' : '>'
+    });
+  }
+
+  /**
+   * The HTML element name.
+   */
+  public get elementName(): string {
+    return this._elementNameParticle.content;
   }
 
   /**
@@ -59,10 +87,24 @@ export class DocHtmlStartTag extends DocNode {
   }
 
   /**
+   * Explicit whitespace that a renderer should insert after the HTML element name.
+   * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
+   */
+  public get spacingAfterElementName(): string | undefined {
+    return this._elementNameParticle.spacingAfterContent;
+  }
+
+  /**
    * {@inheritdoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    return this._htmlAttributes;
+    return [
+      this._openingDelimiterParticle,
+      this._elementNameParticle,
+      ...this._htmlAttributes,
+      this._closingDelimiterParticle
+    ];
   }
+
 }

@@ -5,7 +5,7 @@ import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
  */
 export interface IDocParticleParameters extends IDocNodeParameters {
   content: string;
-  spacingAfterContent: string | undefined;
+  spacingAfterContent?: string | undefined;
 }
 
 /**

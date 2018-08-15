@@ -2,11 +2,11 @@
 
 exports[`01 HTML start tags: simple, positive 1`] = `
 Object {
-  "buffer": "/**[n] * [<]tag/[>][n] * [<]tag-a /[>][n] * [<]tag-b /[>][<]tag-c /[>][n] * [<]tag-d[n] * [>][n] * [<]tag-e[n] *      /[>]  [n] */",
+  "buffer": "/**[n] * [<]tag/[>][n] * [<]tag-a /[>][n] * [<]tag-b [>][<]tag-c /[>][n] * [<]tag-d[n] * [>][n] * [<]tag-e[n] *      /[>]  [n] */",
   "lines": Array [
     "[<]tag/[>]",
     "[<]tag-a /[>]",
-    "[<]tag-b /[>][<]tag-c /[>]",
+    "[<]tag-b [>][<]tag-c /[>]",
     "[<]tag-d",
     "[>]",
     "[<]tag-e",
@@ -17,8 +17,20 @@ Object {
     "nodes": Array [
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag",
-        "nodeSuffix": "/[>]",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "/[>]",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -26,8 +38,21 @@ Object {
       },
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag-a ",
-        "nodeSuffix": "/[>]",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-a",
+            "nodeSeparator": " ",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "/[>]",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -35,13 +60,39 @@ Object {
       },
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag-b ",
-        "nodeSuffix": "/[>]",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-b",
+            "nodeSeparator": " ",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[>]",
+          },
+        ],
       },
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag-c ",
-        "nodeSuffix": "/[>]",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-c",
+            "nodeSeparator": " ",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "/[>]",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -49,8 +100,21 @@ Object {
       },
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag-d[n]",
-        "nodeSuffix": "[>]",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-d",
+            "nodeSeparator": "[n]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[>]",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -58,8 +122,21 @@ Object {
       },
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag-e[n]     ",
-        "nodeSuffix": "/[>]",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-e",
+            "nodeSeparator": "[n]     ",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "/[>]",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -182,9 +259,9 @@ Object {
 
 exports[`03 HTML start tags: with attributes, positive 1`] = `
 Object {
-  "buffer": "/**[n] * [<]tag-a attr-one=[q]one[q] /[>][n] * [<]tag-b[n] *   attr-two[n] *   = [q]2[q][n] * /[>][n] */",
+  "buffer": "/**[n] * [<]tag-a attr-one=[q]one[q] [>][n] * [<]tag-b[n] *   attr-two[n] *   = [q]2[q][n] * /[>][n] */",
   "lines": Array [
-    "[<]tag-a attr-one=[q]one[q] /[>]",
+    "[<]tag-a attr-one=[q]one[q] [>]",
     "[<]tag-b",
     "  attr-two",
     "  = [q]2[q]",
@@ -195,9 +272,16 @@ Object {
     "nodes": Array [
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag-a ",
-        "nodeSuffix": "/[>]",
         "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-a",
+            "nodeSeparator": " ",
+          },
           Object {
             "kind": "HtmlAttribute",
             "nodes": Array [
@@ -216,6 +300,10 @@ Object {
               },
             ],
           },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[>]",
+          },
         ],
       },
       Object {
@@ -224,9 +312,16 @@ Object {
       },
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag-b[n]  ",
-        "nodeSuffix": "/[>]",
         "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-b",
+            "nodeSeparator": "[n]  ",
+          },
           Object {
             "kind": "HtmlAttribute",
             "nodes": Array [
@@ -246,6 +341,10 @@ Object {
                 "nodeSeparator": "[n]",
               },
             ],
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "/[>]",
           },
         ],
       },
@@ -275,9 +374,16 @@ Object {
     "nodes": Array [
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag-c ",
-        "nodeSuffix": "/[>]",
         "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-c",
+            "nodeSeparator": " ",
+          },
           Object {
             "kind": "HtmlAttribute",
             "nodes": Array [
@@ -313,6 +419,10 @@ Object {
               },
             ],
           },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "/[>]",
+          },
         ],
       },
       Object {
@@ -321,9 +431,16 @@ Object {
       },
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag-d[n]  ",
-        "nodeSuffix": "/[>]",
         "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-d",
+            "nodeSeparator": "[n]  ",
+          },
           Object {
             "kind": "HtmlAttribute",
             "nodes": Array [
@@ -364,6 +481,10 @@ Object {
               },
             ],
           },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "/[>]",
+          },
         ],
       },
       Object {
@@ -392,9 +513,16 @@ Object {
     "nodes": Array [
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag-e ",
-        "nodeSuffix": "/[>]",
         "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-e",
+            "nodeSeparator": " ",
+          },
           Object {
             "kind": "HtmlAttribute",
             "nodes": Array [
@@ -430,6 +558,10 @@ Object {
               },
             ],
           },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "/[>]",
+          },
         ],
       },
       Object {
@@ -438,9 +570,16 @@ Object {
       },
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag-f[n]  ",
-        "nodeSuffix": "/[>]",
         "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag-f",
+            "nodeSeparator": "[n]  ",
+          },
           Object {
             "kind": "HtmlAttribute",
             "nodes": Array [
@@ -480,6 +619,10 @@ Object {
                 "nodeSeparator": "[n]",
               },
             ],
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "/[>]",
           },
         ],
       },
@@ -721,9 +864,16 @@ Object {
     "nodes": Array [
       Object {
         "kind": "HtmlStartTag",
-        "nodePrefix": "[<]tag ",
-        "nodeSuffix": "/[>]",
         "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[<]",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "tag",
+            "nodeSeparator": " ",
+          },
           Object {
             "kind": "HtmlAttribute",
             "nodes": Array [
@@ -741,6 +891,10 @@ Object {
                 "nodeSeparator": " ",
               },
             ],
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "/[>]",
           },
         ],
       },
