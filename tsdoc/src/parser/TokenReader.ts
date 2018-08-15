@@ -59,6 +59,17 @@ export class TokenReader {
   }
 
   /**
+   * Like extractAccumulatedSequence(), but returns undefined if nothing has been
+   * accumulated yet.
+   */
+  public tryExtractAccumulatedSequence(): TokenSequence | undefined {
+    if (this.isAccumulatedSequenceEmpty()) {
+      return undefined;
+    }
+    return this.extractAccumulatedSequence();
+  }
+
+  /**
    * Asserts that isAccumulatedSequenceEmpty() should return false.  If not, an exception
    * is throw indicating a parser bug.
    */

@@ -200,8 +200,21 @@ Object {
         "nodes": Array [
           Object {
             "kind": "HtmlAttribute",
-            "nodePrefix": "attr-one=[q]one[q]",
-            "nodeSeparator": " ",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "attr-one",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "=",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "[q]one[q]",
+                "nodeSeparator": " ",
+              },
+            ],
           },
         ],
       },
@@ -216,8 +229,23 @@ Object {
         "nodes": Array [
           Object {
             "kind": "HtmlAttribute",
-            "nodePrefix": "attr-two[n]  = [q]2[q]",
-            "nodeSeparator": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "attr-two",
+                "nodeSeparator": "[n]  ",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "=",
+                "nodeSeparator": " ",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "[q]2[q]",
+                "nodeSeparator": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -252,12 +280,38 @@ Object {
         "nodes": Array [
           Object {
             "kind": "HtmlAttribute",
-            "nodePrefix": "attr-three=[q]3[q]",
-            "nodeSeparator": " ",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "attr-three",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "=",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "[q]3[q]",
+                "nodeSeparator": " ",
+              },
+            ],
           },
           Object {
             "kind": "HtmlAttribute",
-            "nodePrefix": "four='4'",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "four",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "=",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "'4'",
+              },
+            ],
           },
         ],
       },
@@ -272,13 +326,43 @@ Object {
         "nodes": Array [
           Object {
             "kind": "HtmlAttribute",
-            "nodePrefix": "attr-five[n]  = [q]5[q]",
-            "nodeSeparator": "[n]  ",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "attr-five",
+                "nodeSeparator": "[n]  ",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "=",
+                "nodeSeparator": " ",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "[q]5[q]",
+                "nodeSeparator": "[n]  ",
+              },
+            ],
           },
           Object {
             "kind": "HtmlAttribute",
-            "nodePrefix": "six[n]  = '6'",
-            "nodeSeparator": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "six",
+                "nodeSeparator": "[n]  ",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "=",
+                "nodeSeparator": " ",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "'6'",
+                "nodeSeparator": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -313,12 +397,38 @@ Object {
         "nodes": Array [
           Object {
             "kind": "HtmlAttribute",
-            "nodePrefix": "attr-one=[q]one[q]",
-            "nodeSeparator": " ",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "attr-one",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "=",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "[q]one[q]",
+                "nodeSeparator": " ",
+              },
+            ],
           },
           Object {
             "kind": "HtmlAttribute",
-            "nodePrefix": "two='two'",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "two",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "=",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "'two'",
+              },
+            ],
           },
         ],
       },
@@ -333,13 +443,43 @@ Object {
         "nodes": Array [
           Object {
             "kind": "HtmlAttribute",
-            "nodePrefix": "attr-one[n]  = [q]one[q]",
-            "nodeSeparator": "[n]  ",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "attr-one",
+                "nodeSeparator": "[n]  ",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "=",
+                "nodeSeparator": " ",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "[q]one[q]",
+                "nodeSeparator": "[n]  ",
+              },
+            ],
           },
           Object {
             "kind": "HtmlAttribute",
-            "nodePrefix": "two[n]  = 'two'",
-            "nodeSeparator": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "two",
+                "nodeSeparator": "[n]  ",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "=",
+                "nodeSeparator": " ",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "'two'",
+                "nodeSeparator": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -586,8 +726,21 @@ Object {
         "nodes": Array [
           Object {
             "kind": "HtmlAttribute",
-            "nodePrefix": "attr-one=[q]@tag[q]",
-            "nodeSeparator": " ",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "attr-one",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "=",
+              },
+              Object {
+                "kind": "Particle",
+                "nodePrefix": "[q]@tag[q]",
+                "nodeSeparator": " ",
+              },
+            ],
           },
         ],
       },

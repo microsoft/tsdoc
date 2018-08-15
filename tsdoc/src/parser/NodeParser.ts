@@ -391,35 +391,49 @@ export class NodeParser {
       return attributeName;
     }
 
-    const spacingAfterAttributeName: string = this._readSpacingAndNewlines();
+    const attributeNameExcerptParameters: IExcerptParameters = {
+      prefix: this._tokenReader.extractAccumulatedSequence()
+    };
 
+    const spacingAfterAttributeName: string = this._readSpacingAndNewlines();
+    attributeNameExcerptParameters.separator = this._tokenReader.tryExtractAccumulatedSequence();
+
+    // Read the equals
     if (this._tokenReader.peekTokenKind() !== TokenKind.Equals) {
       return this._createFailureForToken('Expecting "=" after HTML attribute name');
     }
     this._tokenReader.readToken();
 
-    const spacingBeforeAttributeValue: string = this._readSpacingAndNewlines();
+    const equalsExcerptParameters: IExcerptParameters = {
+      prefix: this._tokenReader.extractAccumulatedSequence()
+    };
 
+    const spacingAfterEquals: string = this._readSpacingAndNewlines();
+    equalsExcerptParameters.separator = this._tokenReader.tryExtractAccumulatedSequence();
+
+    // Read the attribute value
     const attributeValue: ResultOrFailure<string> = this._parseHtmlString();
     if (isFailure(attributeValue)) {
       return attributeValue;
     }
 
-    const excerptParameters: IExcerptParameters = {
+    const attributeValueExcerptParameters: IExcerptParameters = {
       prefix: this._tokenReader.extractAccumulatedSequence()
     };
 
     const spacingAfterAttributeValue: string = this._readSpacingAndNewlines();
-    if (!this._tokenReader.isAccumulatedSequenceEmpty()) {
-      excerptParameters.separator = this._tokenReader.extractAccumulatedSequence();
-    }
+    attributeValueExcerptParameters.separator = this._tokenReader.tryExtractAccumulatedSequence();
 
     return new DocHtmlAttribute({
-      excerpt: new Excerpt(excerptParameters),
+      attributeNameExcerpt: new Excerpt(attributeNameExcerptParameters),
       attributeName,
       spacingAfterAttributeName,
+
+      equalsExcerpt: new Excerpt(equalsExcerptParameters),
+      spacingAfterEquals,
+
+      attributeValueExcerpt: new Excerpt(attributeValueExcerptParameters),
       attributeValue,
-      spacingBeforeAttributeValue,
       spacingAfterAttributeValue
     });
   }
