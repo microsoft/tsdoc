@@ -122,19 +122,26 @@ export class Tokenizer {
     }
 
     // Special symbols
+
+    // !"#$%&\'()*+,\-.\/:;<=>?@[\\]^_`{|}~
     const specialMap: { [character: string]: TokenKind } = {
       '\\' : TokenKind.Backslash,
-      '<' : TokenKind.LessThan,
-      '>' : TokenKind.GreaterThan,
-      '=' : TokenKind.Equals,
+      '<'  : TokenKind.LessThan,
+      '>'  : TokenKind.GreaterThan,
+      '='  : TokenKind.Equals,
       '\'' : TokenKind.SingleQuote,
-      '"' : TokenKind.DoubleQuote,
-      '/' : TokenKind.Slash,
-      '-' : TokenKind.Hyphen,
-      '@' : TokenKind.AtSign,
-      '{' : TokenKind.LeftCurlyBracket,
-      '}' : TokenKind.RightCurlyBracket,
-      '`' : TokenKind.Backtick
+      '"'  : TokenKind.DoubleQuote,
+      '/'  : TokenKind.Slash,
+      '-'  : TokenKind.Hyphen,
+      '@'  : TokenKind.AtSign,
+      '{'  : TokenKind.LeftCurlyBracket,
+      '}'  : TokenKind.RightCurlyBracket,
+      '`'  : TokenKind.Backtick,
+      '.'  : TokenKind.Period,
+      ':'  : TokenKind.Colon,
+      ','  : TokenKind.Comma,
+      '['  : TokenKind.LeftSquareBracket,
+      ']'  : TokenKind.RightSquareBracket
     };
     for (const key of Object.getOwnPropertyNames(specialMap)) {
       Tokenizer._charCodeMap[key.charCodeAt(0)] = specialMap[key];
