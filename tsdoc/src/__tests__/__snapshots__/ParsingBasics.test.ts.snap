@@ -109,7 +109,24 @@ Object {
       },
       Object {
         "kind": "InlineTag",
-        "nodePrefix": "{@link core-libary/Math | Math subsystem}",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "@link",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": " core-libary/Math | Math subsystem",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "}",
+          },
+        ],
       },
       Object {
         "kind": "PlainText",
@@ -276,7 +293,24 @@ Object {
       },
       Object {
         "kind": "InlineTag",
-        "nodePrefix": "{@link core-libary/Math | Math subsystem}",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "@link",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": " core-libary/Math | Math subsystem",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "}",
+          },
+        ],
       },
       Object {
         "kind": "PlainText",

@@ -111,7 +111,23 @@ Object {
     "nodes": Array [
       Object {
         "kind": "InlineTag",
-        "nodePrefix": "{@one}",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "@one",
+          },
+          Object {
+            "kind": "Particle",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "}",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -119,7 +135,24 @@ Object {
       },
       Object {
         "kind": "InlineTag",
-        "nodePrefix": "{@two }",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "@two",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": " ",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "}",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -127,11 +160,43 @@ Object {
       },
       Object {
         "kind": "InlineTag",
-        "nodePrefix": "{@three}",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "@three",
+          },
+          Object {
+            "kind": "Particle",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "}",
+          },
+        ],
       },
       Object {
         "kind": "InlineTag",
-        "nodePrefix": "{@four}",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "@four",
+          },
+          Object {
+            "kind": "Particle",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "}",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -139,7 +204,24 @@ Object {
       },
       Object {
         "kind": "InlineTag",
-        "nodePrefix": "{@five[n]  }",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "@five",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "[n]  ",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "}",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -274,7 +356,24 @@ Object {
     "nodes": Array [
       Object {
         "kind": "InlineTag",
-        "nodePrefix": "{@one some content}",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "@one",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": " some content",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "}",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -282,7 +381,24 @@ Object {
       },
       Object {
         "kind": "InlineTag",
-        "nodePrefix": "{@two multi[n]line}",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "@two",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": " multi[n]line",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "}",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -304,7 +420,24 @@ Object {
     "nodes": Array [
       Object {
         "kind": "InlineTag",
-        "nodePrefix": "{@three @taglike}",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "@three",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": " @taglike",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "}",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",
@@ -326,7 +459,24 @@ Object {
     "nodes": Array [
       Object {
         "kind": "InlineTag",
-        "nodePrefix": "{@one left [b]{ right [b]} backslash [b][b] }",
+        "nodes": Array [
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "{",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "@one",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": " left [b]{ right [b]} backslash [b][b] ",
+          },
+          Object {
+            "kind": "Particle",
+            "nodePrefix": "}",
+          },
+        ],
       },
       Object {
         "kind": "SoftBreak",

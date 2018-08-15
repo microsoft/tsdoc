@@ -226,6 +226,10 @@ export class NodeParser {
     }
     this._tokenReader.readToken();
 
+    const openingDelimiterExcerptParameters: IExcerptParameters = {
+      content: this._tokenReader.extractAccumulatedSequence()
+    };
+
     // For inline tags, if we handle errors by backtracking to the "{"  token, then the main loop
     // will then interpret the "@" as a block tag, which is almost certainly incorrect.  So the
     // DocErrorText needs to include both the "{" and "@" tokens.
@@ -237,7 +241,6 @@ export class NodeParser {
     }
 
     // Include the "@" as part of the tagName
-    const tagNameMarker: number = this._tokenReader.createMarker();
     let tagName: string = this._tokenReader.readToken().toString();
 
     while (this._tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
@@ -247,15 +250,19 @@ export class NodeParser {
     if (tagName === '@') {
       // This is an unusual case
       const failure: IFailure = this._createFailureForTokensSince(
-        'Expecting a TSDoc inline tag name after the "{@" characters', tagNameMarker);
+        'Expecting a TSDoc inline tag name after the "{@" characters', atSignMarker);
       return this._backtrackAndCreateErrorRangeForFailure(marker, atSignMarker, '', failure);
     }
 
     if (StringChecks.explainIfNotTSDocTagName(tagName)) {
       const failure: IFailure = this._createFailureForTokensSince(
-        'A TSDoc tag name must start with a letter and contain only letters and numbers', tagNameMarker);
+        'A TSDoc tag name must start with a letter and contain only letters and numbers', atSignMarker);
       return this._backtrackAndCreateErrorRangeForFailure(marker, atSignMarker, '', failure);
     }
+
+    const tagNameExcerptParameters: IExcerptParameters = {
+      content: this._tokenReader.extractAccumulatedSequence()
+    };
 
     // We include the space in tagContent in case the implementor wants to assign some
     // special meaning to spaces for their tag.
@@ -300,7 +307,6 @@ export class NodeParser {
               return this._backtrackAndCreateErrorRangeForFailure(marker, atSignMarker, '' , failure);
           }
         case TokenKind.RightCurlyBracket:
-          this._tokenReader.readToken();
           done = true;
           break;
         default:
@@ -309,10 +315,29 @@ export class NodeParser {
       }
     }
 
+    let tagContentExcerpt: Excerpt | undefined;
+    if (!this._tokenReader.isAccumulatedSequenceEmpty()) {
+      tagContentExcerpt = new Excerpt({
+        content: this._tokenReader.extractAccumulatedSequence()
+      });
+    }
+
+    // Read the right curly bracket
+    this._tokenReader.readToken();
+    const closingDelimiterExcerptParameters: IExcerptParameters = {
+      content: this._tokenReader.extractAccumulatedSequence()
+    };
+
     return new DocInlineTag({
-      excerpt: new Excerpt({ content: this._tokenReader.extractAccumulatedSequence() }),
+      openingDelimiterExcerpt: new Excerpt(openingDelimiterExcerptParameters),
+
+      tagNameExcerpt: new Excerpt(tagNameExcerptParameters),
       tagName: tagName,
-      tagContent: tagContent
+
+      tagContentExcerpt: tagContentExcerpt,
+      tagContent: tagContent,
+
+      closingDelimiterExcerpt: new Excerpt(closingDelimiterExcerptParameters)
     });
   }
 
