@@ -216,6 +216,7 @@ export class NodeParser {
     while (!done) {
       switch (this._tokenReader.peekTokenKind()) {
         case TokenKind.AsciiWord:
+        case TokenKind.Period:
           parameterName += this._tokenReader.readToken();
           break;
         default:
@@ -227,12 +228,17 @@ export class NodeParser {
     if (parameterName.length === 0) {
       this._tokenReader.backtrackToMarker(startMarker);
 
-      // TODO: REPORT THE ERROR
-
-      return new DocParamBlock({
+      const errorParamBlock: DocParamBlock = new DocParamBlock({
         blockTag: docBlockTag,
         parameterName: ''
       });
+      this._parserContext.log.addMessageForTokenSequence(
+        'The @param block should be followed by a parameter name',
+        docBlockTag.excerpt!.content,
+        docBlockTag
+      );
+      return errorParamBlock;
+
     }
 
     const parameterNameExcerptParameters: IExcerptParameters = {
@@ -246,7 +252,11 @@ export class NodeParser {
     if (this._tokenReader.peekTokenKind() !== TokenKind.Hyphen) {
       this._tokenReader.backtrackToMarker(startMarker);
 
-      // TODO: REPORT THE ERROR
+      this._parserContext.log.addMessageForTokenSequence(
+        'The @param block should be followed by a parameter name and then a hyphen',
+        docBlockTag.excerpt!.content,
+        docBlockTag
+      );
 
       return new DocParamBlock({
         blockTag: docBlockTag,

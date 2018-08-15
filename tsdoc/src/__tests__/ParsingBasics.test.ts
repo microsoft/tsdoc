@@ -86,3 +86,13 @@ test('03 Jumbled order', () => {
   const docComment: DocComment = parserContext.docComment;
   expect(docComment.modifierTagSet.hasModifierTag('@customModifier')).toEqual(true);
 });
+
+test('03 Incomplete @param blocks', () => {
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * @param - The first number to add',
+    ' * @param y The first number to add',
+    ' * @returns The sum of `x` and `y`',
+    ' */'
+  ].join('\n'));
+});

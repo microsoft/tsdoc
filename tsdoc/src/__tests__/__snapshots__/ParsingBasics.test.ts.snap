@@ -286,6 +286,103 @@ Object {
 }
 `;
 
+exports[`03 Incomplete @param blocks 1`] = `
+Object {
+  "_0_lines": Array [
+    "@param - The first number to add",
+    "@param y The first number to add",
+    "@returns The sum of [c]x[c] and [c]y[c]",
+  ],
+  "_1_summarySection": Object {
+    "kind": "Section",
+  },
+  "_2_remarksBlock": undefined,
+  "_3_customBlocks": Array [],
+  "_4_paramBlocks": Array [
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+        },
+        Object {
+          "kind": "Particle",
+        },
+        Object {
+          "kind": "Particle",
+        },
+        Object {
+          "kind": "PlainText",
+          "nodeExcerpt": " - The first number to add",
+        },
+        Object {
+          "kind": "SoftBreak",
+          "nodeExcerpt": "[n]",
+        },
+      ],
+    },
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+        },
+        Object {
+          "kind": "Particle",
+        },
+        Object {
+          "kind": "Particle",
+        },
+        Object {
+          "kind": "PlainText",
+          "nodeExcerpt": " y The first number to add",
+        },
+        Object {
+          "kind": "SoftBreak",
+          "nodeExcerpt": "[n]",
+        },
+      ],
+    },
+  ],
+  "_5_returnsBlock": Object {
+    "kind": "Block",
+    "nodes": Array [
+      Object {
+        "kind": "BlockTag",
+        "nodeExcerpt": "@returns",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodeExcerpt": " The sum of ",
+      },
+      Object {
+        "kind": "CodeSpan",
+        "nodeExcerpt": "[c]x[c]",
+      },
+      Object {
+        "kind": "PlainText",
+        "nodeExcerpt": " and ",
+      },
+      Object {
+        "kind": "CodeSpan",
+        "nodeExcerpt": "[c]y[c]",
+      },
+      Object {
+        "kind": "SoftBreak",
+        "nodeExcerpt": "[n]",
+      },
+    ],
+  },
+  "_6_modifierTags": Array [],
+  "_7_logMessages": Array [
+    "(2,4): The @param block should be followed by a parameter name",
+    "(3,4): The @param block should be followed by a parameter name and then a hyphen",
+  ],
+}
+`;
+
 exports[`03 Jumbled order 1`] = `
 Object {
   "_0_lines": Array [
