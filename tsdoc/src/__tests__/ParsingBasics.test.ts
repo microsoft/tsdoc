@@ -57,3 +57,32 @@ test('02 A basic TSDoc comment with all components', () => {
   const docComment: DocComment = parserContext.docComment;
   expect(docComment.modifierTagSet.hasModifierTag('@customModifier')).toEqual(true);
 });
+
+test('03 Jumbled order', () => {
+  const configuration: TSDocParserConfiguration = new TSDocParserConfiguration();
+  configuration.addTagDefinitions([
+    new TSDocTagDefinition({
+      tagName: '@customBlock',
+      syntaxKind: TSDocTagSyntaxKind.BlockTag
+    }),
+    new TSDocTagDefinition({
+      tagName: '@customModifier',
+      syntaxKind: TSDocTagSyntaxKind.ModifierTag
+    })
+  ]);
+
+  const parserContext: ParserContext = TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * Adds two numbers together. @remarks This method is part of the',
+    ' * {@link core-libary/Math | Math subsystem}.',
+    ' * @beta @customModifier',
+    ' * @returns The sum of `x` and `y`',
+    ' * @param x - The first number to add @param y - The second number to add',
+    ' * @customBlock',
+    ' * This is a custom block containing an @undefinedBlockTag',
+    ' */'
+  ].join('\n'), configuration);
+
+  const docComment: DocComment = parserContext.docComment;
+  expect(docComment.modifierTagSet.hasModifierTag('@customModifier')).toEqual(true);
+});
