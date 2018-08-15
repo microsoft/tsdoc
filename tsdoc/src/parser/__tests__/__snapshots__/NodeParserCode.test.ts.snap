@@ -12,31 +12,31 @@ Object {
     "nodes": Array [
       Object {
         "kind": "PlainText",
-        "nodePrefix": "line ",
+        "nodeExcerpt": "line ",
       },
       Object {
         "kind": "CodeSpan",
-        "nodePrefix": "[c]1[c]",
+        "nodeExcerpt": "[c]1[c]",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "line ",
+        "nodeExcerpt": "line ",
       },
       Object {
         "kind": "CodeSpan",
-        "nodePrefix": "[c] 2[c]",
+        "nodeExcerpt": "[c] 2[c]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": " sdf",
+        "nodeExcerpt": " sdf",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -57,30 +57,30 @@ Object {
         "errorLocation": "[c]",
         "errorMessage": "The code span is missing its closing backtick",
         "kind": "ErrorText",
-        "nodePrefix": "[c]",
+        "nodeExcerpt": "[c]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "multi",
+        "nodeExcerpt": "multi",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "line",
+        "nodeExcerpt": "line",
       },
       Object {
         "errorLocation": "[c]",
         "errorLocationPrecedingToken": "line",
         "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
         "kind": "ErrorText",
-        "nodePrefix": "[c]",
+        "nodeExcerpt": "[c]",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -99,48 +99,48 @@ Object {
     "nodes": Array [
       Object {
         "kind": "PlainText",
-        "nodePrefix": "one",
+        "nodeExcerpt": "one",
       },
       Object {
         "errorLocation": "[c]",
         "errorLocationPrecedingToken": "one",
         "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
         "kind": "ErrorText",
-        "nodePrefix": "[c]",
+        "nodeExcerpt": "[c]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "two",
+        "nodeExcerpt": "two",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
       Object {
         "errorLocation": "[c]",
         "errorLocationPrecedingToken": "three",
         "errorMessage": "Error parsing code span: The closing backtick for a code span must be followed by whitespace",
         "kind": "ErrorText",
-        "nodePrefix": "[c]",
+        "nodeExcerpt": "[c]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "three",
+        "nodeExcerpt": "three",
       },
       Object {
         "errorLocation": "[c]",
         "errorLocationPrecedingToken": "three",
         "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
         "kind": "ErrorText",
-        "nodePrefix": "[c]",
+        "nodeExcerpt": "[c]",
       },
       Object {
         "kind": "PlainText",
-        "nodePrefix": "four",
+        "nodeExcerpt": "four",
       },
       Object {
         "kind": "SoftBreak",
-        "nodePrefix": "[n]",
+        "nodeExcerpt": "[n]",
       },
     ],
   },

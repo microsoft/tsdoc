@@ -23,6 +23,8 @@ export class StringChecks {
 
   /**
    * Throws an exception if the input is not a valid TSDoc tag name.
+   * TSDoc tag names start with an at-sign ("@") followed by ASCII letters using
+   * "camelCase" capitalization.
    */
   public static validateTSDocTagName(tagName: string): void {
     const explanation: string | undefined = StringChecks.explainIfNotTSDocTagName(tagName);

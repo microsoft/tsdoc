@@ -1,7 +1,6 @@
 import { TSDocParser } from '../TSDocParser';
 import { TextRange } from '../TextRange';
 import {
-  DocNodeKind,
   DocErrorText,
   DocNode,
   DocComment
@@ -15,9 +14,8 @@ interface ISnapshotItem {
   errorMessage?: string;
   errorLocation?: string;
   errorLocationPrecedingToken?: string;
-  nodePrefix?: string;
-  nodeSuffix?: string;
-  nodeSeparator?: string;
+  nodeExcerpt?: string;
+  nodeSpacing?: string;
   nodes?: ISnapshotItem[];
 }
 
@@ -125,17 +123,14 @@ export class TestHelpers {
     }
 
     const item: ISnapshotItem = {
-      kind: DocNodeKind[docNode.kind]
+      kind: docNode.kind
     };
 
     if (docNode.excerpt) {
       const excerpt: Excerpt = docNode.excerpt;
-      item.nodePrefix = TestHelpers.getEscaped(excerpt.prefix.toString());
-      if (!excerpt.suffix.isEmpty()) {
-        item.nodeSuffix = TestHelpers.getEscaped(excerpt.suffix.toString());
-      }
-      if (!excerpt.separator.isEmpty()) {
-        item.nodeSeparator = TestHelpers.getEscaped(excerpt.separator.toString());
+      item.nodeExcerpt = TestHelpers.getEscaped(excerpt.content.toString());
+      if (!excerpt.spacingAfterContent.isEmpty()) {
+        item.nodeSpacing = TestHelpers.getEscaped(excerpt.spacingAfterContent.toString());
       }
     }
 

@@ -3,22 +3,23 @@ import { Excerpt } from '../parser/Excerpt';
 /**
  * Indicates the type of {@link DocNode}.
  */
-export enum DocNodeKind {
-  Block = 1000,
-  BlockTag = 1001,
-  CodeSpan = 1002,
-  Comment = 1003,
-  ErrorText = 1004,
-  EscapedText = 1005,
-  HtmlAttribute = 1006,
-  HtmlEndTag = 1007,
-  HtmlStartTag = 1008,
-  InlineTag = 1009,
-  Paragraph = 1010,
-  ParamBlock = 1011,
-  PlainText = 1012,
-  Section = 1013,
-  SoftBreak = 1014
+export const enum DocNodeKind {
+  Block = 'Block',
+  BlockTag = 'BlockTag',
+  CodeSpan = 'CodeSpan',
+  Comment = 'Comment',
+  ErrorText = 'ErrorText',
+  EscapedText = 'EscapedText',
+  HtmlAttribute = 'HtmlAttribute',
+  HtmlEndTag = 'HtmlEndTag',
+  HtmlStartTag = 'HtmlStartTag',
+  InlineTag = 'InlineTag',
+  Particle = 'Particle',
+  Paragraph = 'Paragraph',
+  ParamBlock = 'ParamBlock',
+  PlainText = 'PlainText',
+  Section = 'Section',
+  SoftBreak = 'SoftBreak'
 }
 
 /**

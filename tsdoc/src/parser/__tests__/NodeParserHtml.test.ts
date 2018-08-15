@@ -5,7 +5,7 @@ test('01 HTML start tags: simple, positive', () => {
     '/**',
     ' * <tag/>',
     ' * <tag-a />',
-    ' * <tag-b /><tag-c />',
+    ' * <tag-b ><tag-c />',
     ' * <tag-d',
     ' * >',
     ' * <tag-e',
@@ -29,7 +29,7 @@ test('02 HTML start tags: simple, negative', () => {
 test('03 HTML start tags: with attributes, positive', () => {
   TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
-    ' * <tag-a attr-one="one" />',
+    ' * <tag-a attr-one="one" >',
     ' * <tag-b',
     ' *   attr-two',
     ' *   = "2"',

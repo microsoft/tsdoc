@@ -70,7 +70,7 @@ export class DocSection extends DocNode {
    */
   public appendNode(docNode: DocNode): void {
     if (!this.isAllowedChildNode(docNode)) {
-      throw new Error(`A DocSection cannot contain nodes of type ${DocNodeKind[docNode.kind]}`);
+      throw new Error(`A DocSection cannot contain nodes of type ${docNode.kind}`);
     }
     this._nodes.push(docNode);
   }
