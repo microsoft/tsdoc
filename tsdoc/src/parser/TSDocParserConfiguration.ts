@@ -63,6 +63,7 @@ export class TSDocTagDefinition {
     this.tagName = parameters.tagName;
     this.tagNameWithUpperCase = parameters.tagName.toUpperCase();
     this.syntaxKind = parameters.syntaxKind;
+    this.singleton = !!parameters.singleton;
   }
 }
 

@@ -28,5 +28,6 @@ export class DocParamBlock extends DocSection {
    */
   public constructor(parameters: IDocParamBlockParameters) {
     super(parameters);
+    this.parameterName = parameters.parameterName;
   }
 }

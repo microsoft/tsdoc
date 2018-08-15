@@ -5,8 +5,7 @@ import {
   DocBlockTag,
   DocComment,
   DocNode,
-  DocParamBlock,
-  DocSection
+  DocParamBlock
 } from '../nodes';
 import {
   TSDocTagDefinition,

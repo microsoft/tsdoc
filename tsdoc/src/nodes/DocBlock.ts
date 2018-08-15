@@ -28,6 +28,7 @@ export class DocBlock extends DocSection {
    */
   public constructor(parameters: IDocBlockParameters) {
     super(parameters);
+    this.blockTag = parameters.blockTag;
   }
 
   /**
