@@ -1,7 +1,6 @@
 import { TSDocParser } from '../TSDocParser';
 import { TextRange } from '../TextRange';
 import {
-  DocNodeKind,
   DocErrorText,
   DocNode,
   DocComment
@@ -125,7 +124,7 @@ export class TestHelpers {
     }
 
     const item: ISnapshotItem = {
-      kind: DocNodeKind[docNode.kind]
+      kind: docNode.kind
     };
 
     if (docNode.excerpt) {
