@@ -146,7 +146,6 @@ export enum TokenKind {
   RightSquareBracket = 2023
 }
 
-
 /**
  * Represents a contiguous range of characters extracted from one of the doc comment lines
  * being processed by the Tokenizer.  There is a token representing a newline, but otherwise
