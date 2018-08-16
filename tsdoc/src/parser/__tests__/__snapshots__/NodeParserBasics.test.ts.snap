@@ -7,27 +7,24 @@ Object {
     "line 1",
     "line 2",
   ],
-  "rootNode": Object {
-    "kind": "Section",
-    "nodes": Array [
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": "line 1",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": "line 2",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-    ],
-  },
+  "verbatimNodes": Array [
+    Object {
+      "kind": "PlainText",
+      "nodeExcerpt": "line 1",
+    },
+    Object {
+      "kind": "SoftBreak",
+      "nodeExcerpt": "[n]",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodeExcerpt": "line 2",
+    },
+    Object {
+      "kind": "SoftBreak",
+      "nodeExcerpt": "[n]",
+    },
+  ],
 }
 `;
 
@@ -35,9 +32,7 @@ exports[`01 Tokenizer degenerate cases 1`] = `
 Object {
   "buffer": "/***/",
   "lines": Array [],
-  "rootNode": Object {
-    "kind": "Section",
-  },
+  "verbatimNodes": Array [],
 }
 `;
 
@@ -47,15 +42,12 @@ Object {
   "lines": Array [
     "",
   ],
-  "rootNode": Object {
-    "kind": "Section",
-    "nodes": Array [
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-    ],
-  },
+  "verbatimNodes": Array [
+    Object {
+      "kind": "SoftBreak",
+      "nodeExcerpt": "[n]",
+    },
+  ],
 }
 `;
 
@@ -66,19 +58,16 @@ Object {
     "",
     "",
   ],
-  "rootNode": Object {
-    "kind": "Section",
-    "nodes": Array [
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-    ],
-  },
+  "verbatimNodes": Array [
+    Object {
+      "kind": "SoftBreak",
+      "nodeExcerpt": "[n]",
+    },
+    Object {
+      "kind": "SoftBreak",
+      "nodeExcerpt": "[n]",
+    },
+  ],
 }
 `;
 
@@ -88,27 +77,24 @@ Object {
   "lines": Array [
     "[b]$[b]@param",
   ],
-  "rootNode": Object {
-    "kind": "Section",
-    "nodes": Array [
-      Object {
-        "kind": "EscapedText",
-        "nodeExcerpt": "[b]$",
-      },
-      Object {
-        "kind": "EscapedText",
-        "nodeExcerpt": "[b]@",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": "param",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-    ],
-  },
+  "verbatimNodes": Array [
+    Object {
+      "kind": "EscapedText",
+      "nodeExcerpt": "[b]$",
+    },
+    Object {
+      "kind": "EscapedText",
+      "nodeExcerpt": "[b]@",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodeExcerpt": "param",
+    },
+    Object {
+      "kind": "SoftBreak",
+      "nodeExcerpt": "[n]",
+    },
+  ],
 }
 `;
 
@@ -118,47 +104,44 @@ Object {
   "lines": Array [
     "letter: [b]A space: [b]  end of line: [b]",
   ],
-  "rootNode": Object {
-    "kind": "Section",
-    "nodes": Array [
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": "letter: ",
-      },
-      Object {
-        "errorLocation": "[b]",
-        "errorLocationPrecedingToken": " ",
-        "errorMessage": "A backslash can only be used to escape a punctuation character",
-        "kind": "ErrorText",
-        "nodeExcerpt": "[b]",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": "A space: ",
-      },
-      Object {
-        "errorLocation": "[b]",
-        "errorLocationPrecedingToken": " ",
-        "errorMessage": "A backslash can only be used to escape a punctuation character",
-        "kind": "ErrorText",
-        "nodeExcerpt": "[b]",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": "  end of line: ",
-      },
-      Object {
-        "errorLocation": "[b]",
-        "errorLocationPrecedingToken": " ",
-        "errorMessage": "A backslash can only be used to escape a punctuation character",
-        "kind": "ErrorText",
-        "nodeExcerpt": "[b]",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-    ],
-  },
+  "verbatimNodes": Array [
+    Object {
+      "kind": "PlainText",
+      "nodeExcerpt": "letter: ",
+    },
+    Object {
+      "errorLocation": "[b]",
+      "errorLocationPrecedingToken": " ",
+      "errorMessage": "A backslash can only be used to escape a punctuation character",
+      "kind": "ErrorText",
+      "nodeExcerpt": "[b]",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodeExcerpt": "A space: ",
+    },
+    Object {
+      "errorLocation": "[b]",
+      "errorLocationPrecedingToken": " ",
+      "errorMessage": "A backslash can only be used to escape a punctuation character",
+      "kind": "ErrorText",
+      "nodeExcerpt": "[b]",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodeExcerpt": "  end of line: ",
+    },
+    Object {
+      "errorLocation": "[b]",
+      "errorLocationPrecedingToken": " ",
+      "errorMessage": "A backslash can only be used to escape a punctuation character",
+      "kind": "ErrorText",
+      "nodeExcerpt": "[b]",
+    },
+    Object {
+      "kind": "SoftBreak",
+      "nodeExcerpt": "[n]",
+    },
+  ],
 }
 `;

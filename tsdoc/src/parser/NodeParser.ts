@@ -13,12 +13,24 @@ import {
   DocNode,
   DocPlainText,
   DocSoftBreak,
-  EscapeStyle
+  EscapeStyle,
+  DocComment,
+  DocBlock,
+  DocNodeKind,
+  DocSection,
+  DocParamBlock
 } from '../nodes';
 import { TokenSequence } from './TokenSequence';
 import { Excerpt, IExcerptParameters } from './Excerpt';
 import { TokenReader } from './TokenReader';
 import { StringChecks } from './StringChecks';
+import { ModifierTagSet } from '../details/ModifierTagSet';
+import {
+  TSDocTagDefinition,
+  TSDocParserConfiguration,
+  TSDocTagSyntaxKind
+} from './TSDocParserConfiguration';
+import { CoreTags } from '../details/CoreTags';
 
 interface IFailure {
   // (We use "failureMessage" instead of "errorMessage" here so that DocErrorText doesn't
@@ -34,11 +46,7 @@ function isFailure<T>(resultOrFailure: ResultOrFailure<T>): resultOrFailure is I
 }
 
 /**
- * This class manages the first phase of the parser, which constructs
- * ParserContext.verbatimSection, which is a literal representation of the DocNode
- * objects as they appeared in the input stream.
- *
- * The DocCommentAssembler will then reorganize these nodes into a DocComment object.
+ * The main parser for TSDoc comments.
  */
 export class NodeParser {
   // https://www.w3.org/TR/html5/syntax.html#tag-name
@@ -47,15 +55,18 @@ export class NodeParser {
 
   private readonly _parserContext: ParserContext;
   private readonly _tokenReader: TokenReader;
+  private readonly _verbatimNodes: DocNode[];
+  private _currentSection: DocSection;
 
   public constructor(parserContext: ParserContext) {
     this._parserContext = parserContext;
     this._tokenReader = new TokenReader(parserContext);
+
+    this._verbatimNodes = parserContext.verbatimNodes;
+    this._currentSection = parserContext.docComment.summarySection;
   }
 
   public parse(): void {
-    const childNodes: DocNode[] = [];
-
     let done: boolean = false;
     while (!done) {
       // Extract the next token
@@ -64,46 +75,46 @@ export class NodeParser {
           done = true;
           break;
         case TokenKind.Newline:
-          this._pushAccumulatedPlainText(childNodes);
+          this._pushAccumulatedPlainText();
           this._tokenReader.readToken();
-          childNodes.push(new DocSoftBreak({
+          this._pushDocNode(new DocSoftBreak({
             excerpt: new Excerpt({ content: this._tokenReader.extractAccumulatedSequence() })
           }));
           break;
         case TokenKind.Backslash:
-          this._pushAccumulatedPlainText(childNodes);
-          childNodes.push(this._parseBackslashEscape());
+          this._pushAccumulatedPlainText();
+          this._pushDocNode(this._parseBackslashEscape());
           break;
         case TokenKind.AtSign:
-          this._pushAccumulatedPlainText(childNodes);
-          childNodes.push(this._parseBlockTag());
+          this._pushAccumulatedPlainText();
+          this._parseAndPushBlock();
           break;
         case TokenKind.LeftCurlyBracket:
-          this._pushAccumulatedPlainText(childNodes);
-          childNodes.push(this._parseInlineTag());
+          this._pushAccumulatedPlainText();
+          this._pushDocNode(this._parseInlineTag());
           break;
         case TokenKind.RightCurlyBracket:
-          this._pushAccumulatedPlainText(childNodes);
-          childNodes.push(this._createError(
+          this._pushAccumulatedPlainText();
+          this._pushDocNode(this._createError(
             'The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag'));
           break;
         case TokenKind.LessThan:
-          this._pushAccumulatedPlainText(childNodes);
+          this._pushAccumulatedPlainText();
           // Look ahead two tokens to see if this is "<a>" or "</a>".
           if (this._tokenReader.peekTokenAfterKind() === TokenKind.Slash) {
-            childNodes.push(this._parseHtmlEndTag());
+            this._pushDocNode(this._parseHtmlEndTag());
           } else {
-            childNodes.push(this._parseHtmlStartTag());
+            this._pushDocNode(this._parseHtmlStartTag());
           }
           break;
         case TokenKind.GreaterThan:
-          this._pushAccumulatedPlainText(childNodes);
-          childNodes.push(this._createError(
+          this._pushAccumulatedPlainText();
+          this._pushDocNode(this._createError(
             'The ">" character should be escaped using a backslash to avoid confusion with an HTML tag'));
           break;
         case TokenKind.Backtick:
-          this._pushAccumulatedPlainText(childNodes);
-          childNodes.push(this._parseCodeSpan());
+          this._pushAccumulatedPlainText();
+          this._pushDocNode(this._parseCodeSpan());
           break;
         default:
           // If nobody recognized this token, then accumulate plain text
@@ -111,20 +122,98 @@ export class NodeParser {
           break;
       }
     }
-    this._pushAccumulatedPlainText(childNodes);
-
-    this._parserContext.verbatimSection.appendNodes(childNodes);
+    this._pushAccumulatedPlainText();
   }
 
-  private _pushAccumulatedPlainText(childNodes: DocNode[]): void {
+  private _pushAccumulatedPlainText(): void {
     if (!this._tokenReader.isAccumulatedSequenceEmpty()) {
       const plainTextSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
-      childNodes.push(new DocPlainText({
+      this._pushDocNode(new DocPlainText({
         text: plainTextSequence.toString(),
         excerpt: new Excerpt({ content: plainTextSequence })
       }));
     }
+  }
+
+  private _parseAndPushBlock(): void {
+    const docComment: DocComment = this._parserContext.docComment;
+    const configuration: TSDocParserConfiguration = this._parserContext.configuration;
+    const modifierTagSet: ModifierTagSet = docComment.modifierTagSet;
+
+    const parsedBlockTag: DocNode = this._parseBlockTag();
+    if (parsedBlockTag.kind !== DocNodeKind.BlockTag) {
+      this._pushDocNode(parsedBlockTag);
+      return;
+    }
+
+    const docBlockTag: DocBlockTag = parsedBlockTag as DocBlockTag;
+
+    // Do we have a definition for this tag?
+    const tagDefinition: TSDocTagDefinition | undefined
+      = configuration.tryGetTagDefinitionWithUpperCase(docBlockTag.tagNameWithUpperCase);
+    if (tagDefinition) {
+      switch (tagDefinition.syntaxKind) {
+        case TSDocTagSyntaxKind.BlockTag:
+          if (docBlockTag.tagNameWithUpperCase === CoreTags.param.tagNameWithUpperCase) {
+            this._parseAndPushParamBlock(docBlockTag);
+            return;
+          }
+
+          const newBlock: DocBlock = new DocBlock({
+            blockTag: docBlockTag
+          });
+          this._addBlockToDocComment(newBlock);
+          this._currentSection = newBlock;
+
+          // But for the verbatimNodes, add the DocBlockTag directly without folding it
+          // into a DocBlock
+          this._verbatimNodes.push(docBlockTag);
+          return;
+        case TSDocTagSyntaxKind.ModifierTag:
+          // The block tag was recognized as a modifier, so add it to the modifier tag set
+          // and do NOT call currentSection.appendNode(parsedNode)
+          modifierTagSet.addModifierTag(docBlockTag);
+          this._verbatimNodes.push(docBlockTag);
+          return;
+      }
+    }
+
+    this._pushDocNode(docBlockTag);
+  }
+
+  private _addBlockToDocComment(block: DocBlock): void {
+    const docComment: DocComment = this._parserContext.docComment;
+
+    switch (block.blockTag.tagNameWithUpperCase) {
+      case CoreTags.remarks.tagNameWithUpperCase:
+        docComment.remarksBlock = block;
+        break;
+      case CoreTags.returns.tagNameWithUpperCase:
+        docComment.returnsBlock = block;
+        break;
+      default:
+        docComment.appendCustomBlock(block);
+    }
+  }
+
+  private _parseAndPushParamBlock(docBlockTag: DocBlockTag): void {
+    const docParamBlock: DocParamBlock = new DocParamBlock({
+      blockTag: docBlockTag,
+      parameterName: '???'
+    });
+    this._parserContext.docComment.paramBlocks.push(docParamBlock);
+
+    this._currentSection = docParamBlock;
+
+    // But for the verbatimNodes, add the DocBlockTag directly without folding it
+    // into a DocBlock
+    this._verbatimNodes.push(docBlockTag);
+  }
+
+  private _pushDocNode(docNode: DocNode): void {
+    this._currentSection.appendNode(docNode);
+    this._verbatimNodes.push(docNode);
   }
 
   private _parseBackslashEscape(): DocNode {

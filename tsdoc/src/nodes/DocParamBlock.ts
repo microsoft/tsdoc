@@ -1,10 +1,10 @@
 import { DocNodeKind } from './DocNode';
-import { DocSection, IDocSectionParameters } from './DocSection';
+import { DocBlock, IDocBlockParameters } from './DocBlock';
 
 /**
  * Constructor parameters for {@link DocParamBlock}.
  */
-export interface IDocParamBlockParameters extends IDocSectionParameters {
+export interface IDocParamBlockParameters extends IDocBlockParameters {
   parameterName: string;
 }
 
@@ -12,7 +12,7 @@ export interface IDocParamBlockParameters extends IDocSectionParameters {
  * Represents a parsed `@param` block, which provides a description for a
  * function parameter.
  */
-export class DocParamBlock extends DocSection {
+export class DocParamBlock extends DocBlock {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ParamBlock;
 

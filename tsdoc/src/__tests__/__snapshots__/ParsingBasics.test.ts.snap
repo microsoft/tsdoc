@@ -178,6 +178,10 @@ Object {
       "kind": "ParamBlock",
       "nodes": Array [
         Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+        },
+        Object {
           "kind": "PlainText",
           "nodeExcerpt": " x - The first number to add",
         },
@@ -190,6 +194,10 @@ Object {
     Object {
       "kind": "ParamBlock",
       "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+        },
         Object {
           "kind": "PlainText",
           "nodeExcerpt": " y - The second number to add",
@@ -362,6 +370,10 @@ Object {
       "kind": "ParamBlock",
       "nodes": Array [
         Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+        },
+        Object {
           "kind": "PlainText",
           "nodeExcerpt": " x - The first number to add ",
         },
@@ -370,6 +382,10 @@ Object {
     Object {
       "kind": "ParamBlock",
       "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+        },
         Object {
           "kind": "PlainText",
           "nodeExcerpt": " y - The second number to add",
