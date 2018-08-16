@@ -849,12 +849,14 @@ export class NodeParser {
 
     const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
-    return new DocErrorText({
+    const docErrorText: DocErrorText = new DocErrorText({
       excerpt: new Excerpt({ content: tokenSequence }),
       text: tokenSequence.toString(),
       errorMessage,
       errorLocation: tokenSequence
     });
+    this._parserContext.log.addMessageForDocErrorText(docErrorText);
+    return docErrorText;
   }
 
   /**
@@ -882,12 +884,14 @@ export class NodeParser {
 
     const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
-    return new DocErrorText({
+    const docErrorText: DocErrorText = new DocErrorText({
       excerpt: new Excerpt({ content: tokenSequence }),
       text: tokenSequence.toString(),
       errorMessage: errorMessage,
       errorLocation: tokenSequence
     });
+    this._parserContext.log.addMessageForDocErrorText(docErrorText);
+    return docErrorText;
   }
 
   /**
@@ -902,12 +906,14 @@ export class NodeParser {
 
     const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
-    return new DocErrorText({
+    const docErrorText: DocErrorText = new DocErrorText({
       excerpt: new Excerpt({ content: tokenSequence }),
       text: tokenSequence.toString(),
       errorMessage: errorMessagePrefix + failure.failureMessage,
       errorLocation: failure.failureLocation
     });
+    this._parserContext.log.addMessageForDocErrorText(docErrorText);
+    return docErrorText;
   }
 
   /**
@@ -927,12 +933,14 @@ export class NodeParser {
 
     const tokenSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
-    return new DocErrorText({
+    const docErrorText: DocErrorText = new DocErrorText({
       excerpt: new Excerpt({ content: tokenSequence }),
       text: tokenSequence.toString(),
       errorMessage: errorMessagePrefix + failure.failureMessage,
       errorLocation: failure.failureLocation
     });
+    this._parserContext.log.addMessageForDocErrorText(docErrorText);
+    return docErrorText;
   }
 
   /**

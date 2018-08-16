@@ -2,6 +2,7 @@ import { ParserMessage } from './ParserMessage';
 import { TextRange } from './TextRange';
 import { TokenSequence } from './TokenSequence';
 import { DocNode } from '../nodes/DocNode';
+import { DocErrorText } from '../nodes/DocErrorText';
 
 /**
  * Used to report errors and warnings that occurred during parsing.
@@ -39,9 +40,21 @@ export class ParserMessageLog {
   public addMessageForTokenSequence(messageText: string, tokenSequence: TokenSequence, docNode?: DocNode): void {
     this.addMessage(new ParserMessage({
       messageText,
-      textRange: tokenSequence.parserContext.tokens[tokenSequence.startIndex].range,
+      textRange: tokenSequence.getContainingTextRange(),
       tokenSequence,
       docNode
+    }));
+  }
+
+  /**
+   * Append a message associated with a TokenSequence.
+   */
+  public addMessageForDocErrorText(docErrorText: DocErrorText): void {
+    this.addMessage(new ParserMessage({
+      messageText: docErrorText.errorMessage,
+      textRange: docErrorText.errorLocation.getContainingTextRange(),
+      tokenSequence: docErrorText.errorLocation,
+      docNode: docErrorText
     }));
   }
 }

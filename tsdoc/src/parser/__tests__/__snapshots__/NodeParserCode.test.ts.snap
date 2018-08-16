@@ -7,6 +7,7 @@ Object {
     "line [c]1[c]",
     "line [c] 2[c] sdf",
   ],
+  "logMessages": Array [],
   "verbatimNodes": Array [
     Object {
       "kind": "PlainText",
@@ -46,6 +47,10 @@ Object {
   "lines": Array [
     "[c]multi",
     "line[c]",
+  ],
+  "logMessages": Array [
+    "(2,4): The code span is missing its closing backtick",
+    "(3,8): The opening backtick for a code span must be preceded by whitespace",
   ],
   "verbatimNodes": Array [
     Object {
@@ -87,6 +92,11 @@ Object {
   "lines": Array [
     "one[c]two",
     "[c]three[c]four",
+  ],
+  "logMessages": Array [
+    "(2,7): The opening backtick for a code span must be preceded by whitespace",
+    "(3,10): Error parsing code span: The closing backtick for a code span must be followed by whitespace",
+    "(3,10): The opening backtick for a code span must be preceded by whitespace",
   ],
   "verbatimNodes": Array [
     Object {

@@ -1,5 +1,6 @@
 import { ParserContext } from './ParserContext';
 import { Token } from './Token';
+import { TextRange } from './TextRange';
 
 /**
  * Constructor parameters for {@link TokenSequence}
@@ -53,6 +54,21 @@ export class TokenSequence {
 
   public get tokens(): ReadonlyArray<Token> {
     return this.parserContext.tokens.slice(this._startIndex, this._endIndex);
+  }
+
+  /**
+   * Returns a TextRange that includes all tokens in the sequence (including any additional
+   * characters between doc comment lines).
+   */
+  public getContainingTextRange(): TextRange {
+    if (this.isEmpty()) {
+      return TextRange.empty;
+    }
+
+    return this.parserContext.sourceRange.getNewRange(
+      this.parserContext.tokens[this._startIndex].range.pos,
+      this.parserContext.tokens[this._endIndex - 1].range.end
+    );
   }
 
   public isEmpty(): boolean {
