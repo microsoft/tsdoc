@@ -46,10 +46,10 @@ These are just examples.  Many other tools in today's web developer community wa
 The TSDoc specification aims to meet these requirements:
 
 - **Designed for TypeScript**: ...while aligning as closely as possible with the familiar JSDoc notations we know and love.
-- **Markdown integration**: Doc comments may incorporate [CommonMark](http://commonmark.org) notations for rich text elements such as boldface, code fences, headings, tables, etc.  (This is actually the toughest requirement, since the Markdown grammar is highly sensitive to context.) TSDoc makes special accommodations for entrenched pipelines (e.g. GitHub Pages) that expect to bring their own Markdown renderer to the party. 
+- **Markdown integration**: Doc comments may incorporate [CommonMark](http://commonmark.org) notations for rich text elements such as boldface, code fences, headings, tables, etc.  (This is actually the toughest requirement, since the Markdown grammar is highly sensitive to context.) TSDoc makes special accommodations for entrenched pipelines (e.g. GitHub Pages) that expect to bring their own Markdown renderer to the party.
 - **Common core**: Common  tags such as `@param` and `@returns` will have consistent behavior across all tools.
 - **Extensible**: Each tool can supplement the core tags with custom tags for specialized scenarios.
-- **Interoperable**: The TSDoc standard guarantees that unsupported custom tags won't interfere with parsing of other content. TSDoc also addresses Markdown ambiguities.  (Are backticks allowed inside a `{@link}` tag?  What happens if there is only one backtick?) 
+- **Interoperable**: The TSDoc standard guarantees that unsupported custom tags won't interfere with parsing of other content. TSDoc also addresses Markdown ambiguities.  (Are backticks allowed inside a `{@link}` tag?  What happens if there is only one backtick?)
 - **Multi-package support**:  Many teams ship a collection of NPM packages that work together and are documented as a set.  The cross-referencing syntax (e.g. `{@link}` or `{@inheritdoc}`) needs a portable way to reference API items imported from other packages.  We also define  *package.json* metadata that enables tooling to detect whether a dependency's *.d.ts doc comments should be parsed as TSDoc or not.
 - **Open standard**: TSDoc is an open source, community-driven standard.  You are encouraged to contribute your own ideas and pull requests.
 
@@ -63,14 +63,18 @@ The **@microsoft/tsdoc** library package brings in some additional goals:
 
 ### How do I use it?
 
-Currently TSDoc is in the early design stages.  We are using [GitHub issues](https://github.com/Microsoft/tsdoc/issues) to discuss various implementation strategies.  The **@microsoft/tsdoc** library is under development but has not been published yet.  If you have ideas, please feel free to participate!
+Currently TSDoc is still in the early stages, but we've made a lot of progress.
+- We are using [GitHub issues](https://github.com/Microsoft/tsdoc/issues) to discuss the specification and API design.
+- A small demo project can be found in the [/api-demo](./api-demo/) folder.
+- The source code for the **@microsoft/tsdoc** NPM package can be found in the [/tsdoc](./tsdoc/) folder.
+- See [Contributing.md](./Contributing.md) for instructions for building and debugging the library.
 
 ### Who's involved?
 
 The collaborators currently driving the TSDoc standard are:
 
 - [TypeScript](http://www.typescriptlang.org) compiler group at Microsoft
-- [API Extractor](https://aka.ms/extractor) project owners 
+- [API Extractor](https://aka.ms/extractor) project owners
 - [TypeDoc](http://typedoc.org) maintainers
 - [DocFX ](https://dotnet.github.io/docfx/)pipeline owners
 - [SimplrJS](https://simplrjs.com/) developers, who maintain the [ts-docs-gen](https://github.com/SimplrJS/ts-docs-gen) tool
