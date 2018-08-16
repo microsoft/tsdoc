@@ -180,10 +180,21 @@ Object {
         Object {
           "kind": "BlockTag",
           "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "x",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
         },
         Object {
           "kind": "PlainText",
-          "nodeExcerpt": " x - The first number to add",
+          "nodeExcerpt": "The first number to add",
         },
         Object {
           "kind": "SoftBreak",
@@ -197,10 +208,21 @@ Object {
         Object {
           "kind": "BlockTag",
           "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "y",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
         },
         Object {
           "kind": "PlainText",
-          "nodeExcerpt": " y - The second number to add",
+          "nodeExcerpt": "The second number to add",
         },
         Object {
           "kind": "SoftBreak",
@@ -372,10 +394,21 @@ Object {
         Object {
           "kind": "BlockTag",
           "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "x",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
         },
         Object {
           "kind": "PlainText",
-          "nodeExcerpt": " x - The first number to add ",
+          "nodeExcerpt": "The first number to add ",
         },
       ],
     },
@@ -385,10 +418,21 @@ Object {
         Object {
           "kind": "BlockTag",
           "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "y",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
         },
         Object {
           "kind": "PlainText",
-          "nodeExcerpt": " y - The second number to add",
+          "nodeExcerpt": "The second number to add",
         },
         Object {
           "kind": "SoftBreak",

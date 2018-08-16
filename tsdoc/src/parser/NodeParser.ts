@@ -156,19 +156,26 @@ export class NodeParser {
       switch (tagDefinition.syntaxKind) {
         case TSDocTagSyntaxKind.BlockTag:
           if (docBlockTag.tagNameWithUpperCase === CoreTags.param.tagNameWithUpperCase) {
-            this._parseAndPushParamBlock(docBlockTag);
+            const docParamBlock: DocParamBlock = this._parseParamBlock(docBlockTag);
+
+            this._parserContext.docComment.paramBlocks.push(docParamBlock);
+
+            this._currentSection = docParamBlock;
             return;
+          } else {
+            const newBlock: DocBlock = new DocBlock({
+              blockTag: docBlockTag
+            });
+
+            this._addBlockToDocComment(newBlock);
+
+            this._currentSection = newBlock;
+
+            // But for the verbatimNodes, add the DocBlockTag directly without folding it
+            // into a DocBlock
+            this._verbatimNodes.push(docBlockTag);
           }
 
-          const newBlock: DocBlock = new DocBlock({
-            blockTag: docBlockTag
-          });
-          this._addBlockToDocComment(newBlock);
-          this._currentSection = newBlock;
-
-          // But for the verbatimNodes, add the DocBlockTag directly without folding it
-          // into a DocBlock
-          this._verbatimNodes.push(docBlockTag);
           return;
         case TSDocTagSyntaxKind.ModifierTag:
           // The block tag was recognized as a modifier, so add it to the modifier tag set
@@ -197,18 +204,81 @@ export class NodeParser {
     }
   }
 
-  private _parseAndPushParamBlock(docBlockTag: DocBlockTag): void {
-    const docParamBlock: DocParamBlock = new DocParamBlock({
+  private _parseParamBlock(docBlockTag: DocBlockTag): DocParamBlock {
+    const startMarker: number = this._tokenReader.createMarker();
+
+    this._readSpacingAndNewlines();
+    const leadingWhitespaceSequence: TokenSequence | undefined = this._tokenReader.tryExtractAccumulatedSequence();
+
+    let parameterName: string = '';
+
+    let done: boolean = false;
+    while (!done) {
+      switch (this._tokenReader.peekTokenKind()) {
+        case TokenKind.AsciiWord:
+          parameterName += this._tokenReader.readToken();
+          break;
+        default:
+          done = true;
+          break;
+      }
+    }
+
+    if (parameterName.length === 0) {
+      this._tokenReader.backtrackToMarker(startMarker);
+
+      // TODO: REPORT THE ERROR
+
+      return new DocParamBlock({
+        blockTag: docBlockTag,
+        parameterName: ''
+      });
+    }
+
+    const parameterNameExcerptParameters: IExcerptParameters = {
+      content: this._tokenReader.extractAccumulatedSequence()
+    };
+
+    // TODO: Warn if there is no space before or after the hyphen
+    this._readSpacingAndNewlines();
+    parameterNameExcerptParameters.spacingAfterContent = this._tokenReader.tryExtractAccumulatedSequence();
+
+    if (this._tokenReader.peekTokenKind() !== TokenKind.Hyphen) {
+      this._tokenReader.backtrackToMarker(startMarker);
+
+      // TODO: REPORT THE ERROR
+
+      return new DocParamBlock({
+        blockTag: docBlockTag,
+        parameterName: ''
+      });
+    }
+    this._tokenReader.readToken();
+
+    const hyphenExcerptParameters: IExcerptParameters = {
+      content: this._tokenReader.extractAccumulatedSequence()
+    };
+
+    // TODO: Only read one space
+    this._readSpacingAndNewlines();
+    hyphenExcerptParameters.spacingAfterContent = this._tokenReader.tryExtractAccumulatedSequence();
+
+    if (leadingWhitespaceSequence) {
+      // The leading whitespace that we parsed to the docBlockTag
+      docBlockTag.excerpt = new Excerpt({
+        content: docBlockTag.excerpt!.content,
+        spacingAfterContent: leadingWhitespaceSequence
+      });
+    }
+
+    return new DocParamBlock({
       blockTag: docBlockTag,
-      parameterName: '???'
+
+      parameterNameExcerpt: new Excerpt(parameterNameExcerptParameters),
+      parameterName: parameterName,
+
+      hyphenExcerpt: new Excerpt(hyphenExcerptParameters)
     });
-    this._parserContext.docComment.paramBlocks.push(docParamBlock);
-
-    this._currentSection = docParamBlock;
-
-    // But for the verbatimNodes, add the DocBlockTag directly without folding it
-    // into a DocBlock
-    this._verbatimNodes.push(docBlockTag);
   }
 
   private _pushDocNode(docNode: DocNode): void {
