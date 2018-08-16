@@ -7,6 +7,7 @@ Object {
     "line 1",
     "line 2",
   ],
+  "logMessages": Array [],
   "verbatimNodes": Array [
     Object {
       "kind": "PlainText",
@@ -32,6 +33,7 @@ exports[`01 Tokenizer degenerate cases 1`] = `
 Object {
   "buffer": "/***/",
   "lines": Array [],
+  "logMessages": Array [],
   "verbatimNodes": Array [],
 }
 `;
@@ -42,6 +44,7 @@ Object {
   "lines": Array [
     "",
   ],
+  "logMessages": Array [],
   "verbatimNodes": Array [
     Object {
       "kind": "SoftBreak",
@@ -58,6 +61,7 @@ Object {
     "",
     "",
   ],
+  "logMessages": Array [],
   "verbatimNodes": Array [
     Object {
       "kind": "SoftBreak",
@@ -77,6 +81,7 @@ Object {
   "lines": Array [
     "[b]$[b]@param",
   ],
+  "logMessages": Array [],
   "verbatimNodes": Array [
     Object {
       "kind": "EscapedText",
@@ -103,6 +108,11 @@ Object {
   "buffer": "/**[n] * letter: [b]A space: [b]  end of line: [b][n] */",
   "lines": Array [
     "letter: [b]A space: [b]  end of line: [b]",
+  ],
+  "logMessages": Array [
+    "(2,12): A backslash can only be used to escape a punctuation character",
+    "(2,22): A backslash can only be used to escape a punctuation character",
+    "(2,38): A backslash can only be used to escape a punctuation character",
   ],
   "verbatimNodes": Array [
     Object {

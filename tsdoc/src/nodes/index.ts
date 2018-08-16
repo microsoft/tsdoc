@@ -12,6 +12,7 @@ export * from './DocInlineTag';
 export * from './DocNode';
 export * from './DocParagraph';
 export * from './DocParamBlock';
+export * from './DocParticle';
 export * from './DocPlainText';
 export * from './DocSection';
 export * from './DocSoftBreak';

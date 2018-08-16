@@ -7,6 +7,7 @@ Object {
     "@one",
     "@two",
   ],
+  "logMessages": Array [],
   "verbatimNodes": Array [
     Object {
       "kind": "BlockTag",
@@ -35,6 +36,11 @@ Object {
     "@ one",
     "+@two",
     "@two+",
+  ],
+  "logMessages": Array [
+    "(2,4): Expecting a TSDoc tag name after the \\"@\\" character (or use a backslash to escape this character)",
+    "(3,5): A TSDoc tag must be preceded by whitespace",
+    "(4,4): A TSDoc tag must be followed by whitespace",
   ],
   "verbatimNodes": Array [
     Object {
@@ -100,6 +106,7 @@ Object {
     "{@five",
     "  }",
   ],
+  "logMessages": Array [],
   "verbatimNodes": Array [
     Object {
       "kind": "InlineTag",
@@ -232,6 +239,16 @@ Object {
     "{ @three}",
     "{@four",
   ],
+  "logMessages": Array [
+    "(2,5): Expecting a TSDoc inline tag name after the \\"{@\\" characters",
+    "(2,10): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+    "(3,9): Expecting a space after the TSDoc inline tag name",
+    "(3,10): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+    "(4,4): Expecting a TSDoc tag starting with \\"{@\\"",
+    "(4,6): A TSDoc tag must be followed by whitespace",
+    "(4,12): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+    "(5,4): The TSDoc inline tag name is missing its closing \\"}\\"",
+  ],
   "verbatimNodes": Array [
     Object {
       "errorLocation": "@",
@@ -339,6 +356,7 @@ Object {
     "{@two multi",
     "line}",
   ],
+  "logMessages": Array [],
   "verbatimNodes": Array [
     Object {
       "kind": "InlineTag",
@@ -400,6 +418,7 @@ Object {
   "lines": Array [
     "{@three @taglike}",
   ],
+  "logMessages": Array [],
   "verbatimNodes": Array [
     Object {
       "kind": "InlineTag",
@@ -436,6 +455,7 @@ Object {
   "lines": Array [
     "{@one left [b]{ right [b]} backslash [b][b] }",
   ],
+  "logMessages": Array [],
   "verbatimNodes": Array [
     Object {
       "kind": "InlineTag",
@@ -472,6 +492,9 @@ Object {
   "lines": Array [
     "{@one curly[b]}",
   ],
+  "logMessages": Array [
+    "(2,4): The TSDoc inline tag name is missing its closing \\"}\\"",
+  ],
   "verbatimNodes": Array [
     Object {
       "errorLocation": "{@",
@@ -500,6 +523,12 @@ Object {
   "buffer": "/**[n] * {@two curly{}}[n] */",
   "lines": Array [
     "{@two curly{}}",
+  ],
+  "logMessages": Array [
+    "(2,15): The \\"{\\" character must be escaped with a backslash when used inside a TSDoc inline tag",
+    "(2,15): Expecting a TSDoc tag starting with \\"{@\\"",
+    "(2,16): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+    "(2,17): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
   ],
   "verbatimNodes": Array [
     Object {
@@ -547,6 +576,9 @@ Object {
   "buffer": "/**[n] * three: }[n] */",
   "lines": Array [
     "three: }",
+  ],
+  "logMessages": Array [
+    "(2,11): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
   ],
   "verbatimNodes": Array [
     Object {

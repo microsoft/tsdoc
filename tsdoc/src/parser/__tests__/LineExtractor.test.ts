@@ -7,9 +7,9 @@ function parseAndMatchSnapshot(buffer: string): void {
   const parserContext: ParserContext = tsdocParser.parseString(buffer);
   expect({
     buffer: TestHelpers.getEscaped(buffer),
-    errors: parserContext.parseErrors.map(error => error.message),
     comment: TestHelpers.getEscaped(parserContext.commentRange.toString()),
-    lines: parserContext.lines.map(line => TestHelpers.getEscaped(line.toString()))
+    lines: parserContext.lines.map(line => TestHelpers.getEscaped(line.toString())),
+    logMessages: parserContext.log.messages.map(message => message.text)
   }).toMatchSnapshot();
 }
 

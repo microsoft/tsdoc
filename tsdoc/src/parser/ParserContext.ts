@@ -1,8 +1,8 @@
 import { TextRange } from './TextRange';
 import { Token } from './Token';
-import { ParseError } from './ParseError';
 import { DocComment, DocNode } from '../nodes';
 import { TSDocParserConfiguration } from './TSDocParserConfiguration';
+import { ParserMessageLog } from './ParserMessageLog';
 
 /**
  * An internal data structure that tracks all the state being built up by the various
@@ -53,9 +53,9 @@ export class ParserContext {
   public readonly docComment: DocComment;
 
   /**
-   * If any errors occurred during parsing, they are returned in this list.
+   * A queryable log that reports warnings and error messages that occurred during parsing.
    */
-  public readonly parseErrors: ParseError[] = [];
+  public readonly log: ParserMessageLog;
 
   public constructor(configuration: TSDocParserConfiguration, sourceRange: TextRange) {
     this.configuration = configuration;
@@ -64,18 +64,7 @@ export class ParserContext {
     this.verbatimNodes = [];
 
     this.docComment = new DocComment({ parserContext: this });
-  }
 
-  public addError(range: TextRange, message: string, pos: number, end?: number): void {
-    if (!end) {
-      if (pos + 1 <= range.buffer.length) {
-        end = pos + 1;
-      } else {
-        end = pos;
-      }
-    }
-    this.parseErrors.push(
-      new ParseError(message, range.getNewRange(pos, end))
-    );
+    this.log = new ParserMessageLog();
   }
 }
