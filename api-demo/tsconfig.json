@@ -9,6 +9,7 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "types": [
+      "node"
     ],
     "lib": [
       "es5",
