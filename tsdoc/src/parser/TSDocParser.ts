@@ -4,7 +4,6 @@ import { LineExtractor } from './LineExtractor';
 import { Tokenizer } from './Tokenizer';
 import { NodeParser } from './NodeParser';
 import { TSDocParserConfiguration } from './TSDocParserConfiguration';
-import { DocCommentAssembler } from './DocCommentAssembler';
 
 /**
  * The main API for parsing TSDoc comments.
@@ -40,9 +39,6 @@ export class TSDocParser {
       parserContext.tokens = Tokenizer.readTokens(parserContext.lines);
       const nodeParser: NodeParser = new NodeParser(parserContext);
       nodeParser.parse();
-
-      const docCommentAssembler: DocCommentAssembler = new DocCommentAssembler(parserContext);
-      docCommentAssembler.assemble();
     }
 
     return parserContext;

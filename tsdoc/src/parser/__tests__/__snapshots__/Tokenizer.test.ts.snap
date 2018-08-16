@@ -184,7 +184,7 @@ Object {
       "indexOfLine": 1,
       "line": ">double-backslash: [b][b]<",
       "span": "                > <      ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Colon",
     },
     Object {
       "indexOfLine": 1,
@@ -234,7 +234,7 @@ Object {
       "indexOfLine": 0,
       "line": ">letter: [b]A space: [b]  end of line: [b]<",
       "span": "      > <                                 ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Colon",
     },
     Object {
       "indexOfLine": 0,
@@ -270,7 +270,7 @@ Object {
       "indexOfLine": 0,
       "line": ">letter: [b]A space: [b]  end of line: [b]<",
       "span": "                  > <                     ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Colon",
     },
     Object {
       "indexOfLine": 0,
@@ -324,7 +324,7 @@ Object {
       "indexOfLine": 0,
       "line": ">letter: [b]A space: [b]  end of line: [b]<",
       "span": "                                    > <   ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Colon",
     },
     Object {
       "indexOfLine": 0,
@@ -428,7 +428,7 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "             > <                        ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Comma",
     },
     Object {
       "indexOfLine": 0,
@@ -440,7 +440,7 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "               > <                      ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Period",
     },
     Object {
       "indexOfLine": 0,
@@ -452,7 +452,7 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "                 > <                    ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Colon",
     },
     Object {
       "indexOfLine": 0,
@@ -494,13 +494,13 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "                            > <         ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "LeftSquareBracket",
     },
     Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "                             > <        ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "RightSquareBracket",
     },
     Object {
       "indexOfLine": 0,
@@ -574,7 +574,7 @@ Object {
       "indexOfLine": 0,
       "line": ">space:  tab: [t]  form feed: [f] end<",
       "span": "     > <                             ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Colon",
     },
     Object {
       "indexOfLine": 0,
@@ -592,7 +592,7 @@ Object {
       "indexOfLine": 0,
       "line": ">space:  tab: [t]  form feed: [f] end<",
       "span": "           > <                       ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Colon",
     },
     Object {
       "indexOfLine": 0,
@@ -622,7 +622,7 @@ Object {
       "indexOfLine": 0,
       "line": ">space:  tab: [t]  form feed: [f] end<",
       "span": "                           > <       ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Colon",
     },
     Object {
       "indexOfLine": 0,

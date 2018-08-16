@@ -8,6 +8,7 @@ import {
 import { ParserContext } from '../ParserContext';
 import { Excerpt } from '../Excerpt';
 import { TSDocParserConfiguration } from '../TSDocParserConfiguration';
+import { TokenSequence } from '../TokenSequence';
 
 interface ISnapshotItem {
   kind: string;
@@ -86,8 +87,12 @@ export class TestHelpers {
     expect({
       buffer: TestHelpers.getEscaped(buffer),
       lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
-      rootNode: TestHelpers.getDocNodeSnapshot(parserContext.verbatimSection)
+      verbatimNodes: parserContext.verbatimNodes.map(x => TestHelpers.getDocNodeSnapshot(x))
     }).toMatchSnapshot();
+
+    expect(() => {
+      TestHelpers.validateLinearity(parserContext.verbatimNodes);
+    }).not.toThrow();
   }
 
   /**
@@ -110,6 +115,10 @@ export class TestHelpers {
       _6_modifierTags: docComment.modifierTagSet.nodes.map(x => TestHelpers.getDocNodeSnapshot(x)),
       _7_errors: parserContext.parseErrors.map(x => x.message)
     }).toMatchSnapshot();
+
+    expect(() => {
+      TestHelpers.validateLinearity(parserContext.verbatimNodes);
+    }).not.toThrow();
 
     return parserContext;
   }
@@ -151,4 +160,55 @@ export class TestHelpers {
 
     return item;
   }
+
+  /**
+   * Validate that the docNode excerpts form a contiguous sequence in the original input,
+   * with no gaps or overlap of tokens.
+   */
+  public static validateLinearity(docNodes: ReadonlyArray<DocNode>): void {
+    const state: IValidateLinearityState = { parserContext: undefined, tokenIndex: -1 };
+    for (const docNode of docNodes) {
+      return TestHelpers._validateLinearity(docNode, state);
+    }
+  }
+
+  private static _validateLinearity(docNode: DocNode, state: IValidateLinearityState): void {
+    // Validate the prefix
+    if (docNode.excerpt) {
+      const excerpt: Excerpt = docNode.excerpt;
+      if (!state.parserContext) {
+        state.parserContext = excerpt.content.parserContext;
+        state.tokenIndex = excerpt.content.startIndex;
+      }
+      TestHelpers._validateLinearitySequence(excerpt.content, state);
+    }
+
+    // Validate the child nodes
+    for (const childNode of docNode.getChildNodes()) {
+      TestHelpers._validateLinearity(childNode, state);
+    }
+
+    // Validate the suffix and seperator
+    if (docNode.excerpt) {
+      const excerpt: Excerpt = docNode.excerpt;
+      TestHelpers._validateLinearitySequence(excerpt.spacingAfterContent, state);
+    }
+  }
+
+  private static _validateLinearitySequence(tokenSequence: TokenSequence, state: IValidateLinearityState): void {
+    if (!tokenSequence.isEmpty()) {
+      if (tokenSequence.parserContext !== state.parserContext) {
+        throw new Error('validateLinearlity() failed: Inconsistent parser contexts');
+      }
+      if (tokenSequence.startIndex !== state.tokenIndex) {
+        throw new Error('validateLinearlity() failed: Gap in token range');
+      }
+      state.tokenIndex = tokenSequence.endIndex;
+    }
+  }
+}
+
+interface IValidateLinearityState {
+  parserContext: ParserContext | undefined;
+  tokenIndex: number;
 }

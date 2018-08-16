@@ -178,8 +178,23 @@ Object {
       "kind": "ParamBlock",
       "nodes": Array [
         Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "x",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
           "kind": "PlainText",
-          "nodeExcerpt": " x - The first number to add",
+          "nodeExcerpt": "The first number to add",
         },
         Object {
           "kind": "SoftBreak",
@@ -191,8 +206,23 @@ Object {
       "kind": "ParamBlock",
       "nodes": Array [
         Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "y",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
           "kind": "PlainText",
-          "nodeExcerpt": " y - The second number to add",
+          "nodeExcerpt": "The second number to add",
         },
         Object {
           "kind": "SoftBreak",
@@ -362,8 +392,23 @@ Object {
       "kind": "ParamBlock",
       "nodes": Array [
         Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "x",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
           "kind": "PlainText",
-          "nodeExcerpt": " x - The first number to add ",
+          "nodeExcerpt": "The first number to add ",
         },
       ],
     },
@@ -371,8 +416,23 @@ Object {
       "kind": "ParamBlock",
       "nodes": Array [
         Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "y",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
           "kind": "PlainText",
-          "nodeExcerpt": " y - The second number to add",
+          "nodeExcerpt": "The second number to add",
         },
         Object {
           "kind": "SoftBreak",
