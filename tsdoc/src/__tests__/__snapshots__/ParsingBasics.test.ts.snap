@@ -54,7 +54,7 @@ Object {
       "nodeExcerpt": "@internal",
     },
   ],
-  "_7_errors": Array [],
+  "_7_logMessages": Array [],
 }
 `;
 
@@ -282,7 +282,7 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
-  "_7_errors": Array [],
+  "_7_logMessages": Array [],
 }
 `;
 
@@ -480,6 +480,6 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
-  "_7_errors": Array [],
+  "_7_logMessages": Array [],
 }
 `;

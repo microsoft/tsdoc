@@ -28,7 +28,7 @@ export class LineExtractor {
    * and extracts the content lines.  The lines are stored in IDocCommentParameters.lines
    * and the overall text range is assigned to IDocCommentParameters.range.
    */
-  public static extract(parserContext: ParserContext): void {
+  public static extract(parserContext: ParserContext): boolean {
     const range: TextRange = parserContext.sourceRange;
     const buffer: string = range.buffer;
 
@@ -50,11 +50,11 @@ export class LineExtractor {
         switch (state) {
           case State.BeginComment1:
           case State.BeginComment2:
-            parserContext.addError(range, 'Expecting a "/**" comment', range.pos);
-            return;
+            parserContext.log.addMessageForTextRange('Expecting a "/**" comment', range);
+            return false;
           default:
-            parserContext.addError(range, 'Unexpected end of input', range.pos);
-            return;
+            parserContext.log.addMessageForTextRange('Unexpected end of input', range);
+            return false;
         }
       }
 
@@ -70,8 +70,9 @@ export class LineExtractor {
             ++nextIndex; // skip the star
             state = State.BeginComment2;
           } else if (!LineExtractor._whitespaceRegExp.test(current)) {
-            parserContext.addError(range, 'Expecting a leading "/**"', nextIndex);
-            return;
+            parserContext.log.addMessageForTextRange('Expecting a leading "/**"',
+              range.getNewRange(currentIndex, currentIndex + 1));
+            return false;
           }
           break;
         case State.BeginComment2:
@@ -83,8 +84,9 @@ export class LineExtractor {
             collectingLineEnd = nextIndex;
             state = State.CollectingFirstLine;
           } else {
-            parserContext.addError(range, 'Expecting a leading "/**"', nextIndex);
-            return;
+            parserContext.log.addMessageForTextRange('Expecting a leading "/**"',
+              range.getNewRange(currentIndex, currentIndex + 1));
+            return false;
           }
           break;
         case State.CollectingFirstLine:
@@ -152,6 +154,6 @@ export class LineExtractor {
      */
     parserContext.commentRange = range.getNewRange(commentRangeStart, commentRangeEnd);
     parserContext.lines = lines;
-    return;
+    return true;
   }
 }

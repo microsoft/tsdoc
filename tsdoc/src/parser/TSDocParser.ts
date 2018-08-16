@@ -29,13 +29,7 @@ export class TSDocParser {
   public parseRange(range: TextRange): ParserContext {
     const parserContext: ParserContext = new ParserContext(this.configuration, range);
 
-    LineExtractor.extract(parserContext);
-
-    /**
-     * If we can't extract any lines, then skip the other stages
-     * of analysis.
-     */
-    if (parserContext.parseErrors.length === 0) {
+    if (LineExtractor.extract(parserContext)) {
       parserContext.tokens = Tokenizer.readTokens(parserContext.lines);
       const nodeParser: NodeParser = new NodeParser(parserContext);
       nodeParser.parse();
