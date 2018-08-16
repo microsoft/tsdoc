@@ -12,11 +12,11 @@ $ npm run build
 
 ### Running the unit tests
 
-To run the jest tests interactively (`jest --watch` scenario):
+We use the [Jest](https://jestjs.io/) test runner.  To run the TSDoc tests interactively (`jest --watch` scenario):
 
 ```
 $ cd ./tsdoc
-$ npm run start
+$ npm run watch
 ```
 
 Before submitting your PR:
@@ -25,6 +25,41 @@ Before submitting your PR:
 $ cd ./tsdoc
 $ npm run build
 $ npm run test
+```
+
+### Debugging the unit tests
+
+The [./tsdoc/.vscode/launch.json](./tsdoc/.vscode/launch.json) file includes a
+[Visual Studio Code](https://code.visualstudio.com/) configuration that maker debugging
+easier.  To debug a unit test:
+
+1. Launch VS Code in the tsdoc subfolder (not the repository root):
+
+```
+$ cd ./tsdoc
+$ code .
+```
+
+2. In the editor window, open a test file. For example, **src/__tests__/ParsingBasicTests.test.ts**.
+
+3. Click the **View --> Debug** (CTRL+SHIFT+D)
+
+4. From the DEBUG combo box, choose the "**Jest Current File**" debug configuration, and click the play button.
+This will run only the unit tests in the currently opened file.  (Use "**Jest All**" to run all tests in
+the debugger.)
+
+We use a TypeScript plugin for Jest, so you can set breakpoints in the TypeScript source files,
+and the VS Code debugger will break on them.
+
+## Building and running the api-demo code sample
+
+The [/api-demo](./api-demo/) folder provides a simple demo project illustrating how to
+use the TSDoc API.  To try out the demo:
+
+```
+$ cd ./api-demo
+$ npm run build
+$ npm run start
 ```
 
 ##  Contributor License Agreement (CLA)

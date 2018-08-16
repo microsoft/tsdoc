@@ -1,0 +1,20 @@
+{
+  "name": "api-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A code sample that illustrates usage of the API for @microsoft/tsdoc",
+  "license": "MIT",
+  "dependencies": {
+    "tsdoc": "../tsdoc"
+  },
+  "devDependencies": {
+    "rimraf": "~2.6.2",
+    "tslint": "~5.11.0",
+    "tslint-microsoft-contrib": "~5.2.0",
+    "typescript": "~3.0.1"
+  },
+  "scripts": {
+    "build": "rimraf ./lib/ && echo -- TYPESCRIPT -- && tsc && echo -- TSLINT -- && tslint --config tslint.json --project . --rules-dir node_modules/tslint-microsoft-contrib",
+    "start": "node ./lib/start.js"
+  }
+}
