@@ -32,7 +32,7 @@
   "scripts": {
     "build": "rimraf ./lib/ && echo -- TYPESCRIPT -- && tsc && echo -- TSLINT -- && tslint --config tslint.json --project . --rules-dir node_modules/tslint-microsoft-contrib",
     "test": "jest",
-    "start": "jest --watch"
+    "watch": "jest --watch"
   },
   "jest": {
     "moduleFileExtensions": [

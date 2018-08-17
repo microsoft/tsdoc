@@ -64,7 +64,7 @@ Object {
     "Adds two numbers together.",
     "",
     "@remarks",
-    "This method is part of the {@link core-libary/Math | Math subsystem}.",
+    "This method is part of the {@link core-library/Math | Math subsystem}.",
     "",
     "@customBlock",
     "This is a custom block containing an @undefinedBlockTag",
@@ -120,7 +120,7 @@ Object {
           },
           Object {
             "kind": "Particle",
-            "nodeExcerpt": " core-libary/Math | Math subsystem",
+            "nodeExcerpt": " core-library/Math | Math subsystem",
           },
           Object {
             "kind": "Particle",
@@ -387,7 +387,7 @@ exports[`03 Jumbled order 1`] = `
 Object {
   "_0_lines": Array [
     "Adds two numbers together. @remarks This method is part of the",
-    "{@link core-libary/Math | Math subsystem}.",
+    "{@link core-library/Math | Math subsystem}.",
     "@beta @customModifier",
     "@returns The sum of [c]x[c] and [c]y[c]",
     "@param x - The first number to add @param y - The second number to add",
@@ -431,7 +431,7 @@ Object {
           },
           Object {
             "kind": "Particle",
-            "nodeExcerpt": " core-libary/Math | Math subsystem",
+            "nodeExcerpt": " core-library/Math | Math subsystem",
           },
           Object {
             "kind": "Particle",

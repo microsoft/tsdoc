@@ -9,7 +9,7 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "types": [
-      "jest"
+      "node"
     ],
     "lib": [
       "es5",
