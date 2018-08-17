@@ -1,6 +1,7 @@
 import * as os from 'os';
 import * as colors from 'colors';
 import { TSDocParser, ParserContext, DocComment } from '@microsoft/tsdoc';
+import { Formatter } from './Formatter';
 
 console.log(colors.cyan('*** TSDoc API demo ***'));
 console.log();
@@ -44,3 +45,28 @@ if (parserContext.log.messages.length === 0) {
     console.log(message);
   }
 }
+
+console.log(os.EOL + colors.green('DocComment parts:') + os.EOL);
+
+const docComment: DocComment = parserContext.docComment;
+
+console.log(colors.yellow('Summary: ')
+  + JSON.stringify(Formatter.renderDocNode(docComment.summarySection)));
+
+if (docComment.remarksBlock) {
+  console.log(colors.yellow('Remarks: ')
+  + JSON.stringify(Formatter.renderDocNodes(docComment.remarksBlock.nodes)));
+}
+
+for (const paramBlock of docComment.paramBlocks) {
+  console.log(colors.yellow(`Parameter "${paramBlock.parameterName}": `)
+  + JSON.stringify(Formatter.renderDocNodes(paramBlock.nodes)));
+}
+
+if (docComment.returnsBlock) {
+  console.log(colors.yellow('Returns: ')
+  + JSON.stringify(Formatter.renderDocNodes(docComment.returnsBlock.nodes)));
+}
+
+console.log(colors.yellow('Modifiers: ')
+  + docComment.modifierTagSet.nodes.map(x => x.tagName).join(', '));
