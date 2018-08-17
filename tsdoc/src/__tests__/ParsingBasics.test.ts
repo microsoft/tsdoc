@@ -41,7 +41,7 @@ test('02 A basic TSDoc comment with all components', () => {
     ' * Adds two numbers together.',
     ' *',
     ' * @remarks',
-    ' * This method is part of the {@link core-libary/Math | Math subsystem}.',
+    ' * This method is part of the {@link core-library/Math | Math subsystem}.',
     ' *',
     ' * @customBlock',
     ' * This is a custom block containing an @undefinedBlockTag',
@@ -74,7 +74,7 @@ test('03 Jumbled order', () => {
   const parserContext: ParserContext = TestHelpers.parseAndMatchDocCommentSnapshot([
     '/**',
     ' * Adds two numbers together. @remarks This method is part of the',
-    ' * {@link core-libary/Math | Math subsystem}.',
+    ' * {@link core-library/Math | Math subsystem}.',
     ' * @beta @customModifier',
     ' * @returns The sum of `x` and `y`',
     ' * @param x - The first number to add @param y - The second number to add',

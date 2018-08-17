@@ -11,7 +11,7 @@ This library is the reference implementation of a parser for the TSDoc syntax.  
  * Adds two numbers together.
  *
  * @remarks
- * This method is part of the {@link core-libary/Math | Math subsystem}.
+ * This method is part of the {@link core-library/Math | Math subsystem}.
  *
  * @param x - The first number to add
  * @param y - The second number to add

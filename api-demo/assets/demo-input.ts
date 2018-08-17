@@ -3,7 +3,7 @@
    * Adds two numbers together.
    *
    * @remarks
-   * This method is part of the {@link core-libary/Math | Math subsystem}.
+   * This method is part of the {@link core-library/Math | Math subsystem}.
    * This incomplete HTML tag should be reported as an error: <tag
    *
    * @param x - The first number to add
