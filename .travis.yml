@@ -3,16 +3,35 @@ node_js:
   - '8.9.4'
 script:
   - set -e
+
   - echo 'git fetch' && echo -en 'travis_fold:start:fetch\\r'
   - git fetch origin master:refs/remotes/origin/master -a
   - echo -en 'travis_fold:end:fetch\\r'
-  - echo 'npm install' && echo -en 'travis_fold:start:install\\r'
+
   - cd tsdoc
+
+  - echo '(tsdoc) npm install' && echo -en 'travis_fold:start:tsdoc-install\\r'
   - npm install
-  - echo -en 'travis_fold:end:install\\r'
-  - echo 'npm run build' && echo -en 'travis_fold:start:build\\r'
+  - echo -en 'travis_fold:end:tsdoc-install\\r'
+
+  - echo '(tsdoc) npm run build' && echo -en 'travis_fold:start:tsdoc-build\\r'
   - npm run build
-  - echo -en 'travis_fold:end:test\\r'
-  - echo 'npm run test' && echo -en 'travis_fold:start:test\\r'
+  - echo -en 'travis_fold:end:tsdoc-build\\r'
+
+  - echo '(tsdoc) npm run test' && echo -en 'travis_fold:start:tsdoc-test\\r'
   - npm run test
-  - echo -en 'travis_fold:end:test\\r'
+  - echo -en 'travis_fold:end:tsdoc-test\\r'
+
+  - cd ../api-demo
+
+  - echo '(api-demo) npm install' && echo -en 'travis_fold:start:demo-install\\r'
+  - npm install
+  - echo -en 'travis_fold:end:demo-install\\r'
+
+  - echo '(api-demo) npm run build' && echo -en 'travis_fold:start:demo-build\\r'
+  - npm run build
+  - echo -en 'travis_fold:end:demo-build\\r'
+
+  - echo '(api-demo) npm run start' && echo -en 'travis_fold:start:demo-start\\r'
+  - npm run start
+  - echo -en 'travis_fold:end:demo-start\\r'
