@@ -1,6 +1,8 @@
-import { DocNode  } from '@microsoft/tsdoc';
+import { DocNode } from '@microsoft/tsdoc';
 
-// This is a simplistic solution until we implement proper DocNode rendering APIs.
+/**
+ * This is a simplistic solution until we implement proper DocNode rendering APIs.
+ */
 export class Formatter {
 
   public static renderDocNode(docNode: DocNode): string {

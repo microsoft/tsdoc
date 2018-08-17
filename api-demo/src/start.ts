@@ -4,7 +4,6 @@ import { TSDocParser, ParserContext, DocComment } from '@microsoft/tsdoc';
 import { Formatter } from './Formatter';
 
 console.log(colors.cyan('*** TSDoc API demo ***'));
-console.log();
 
 const tsdocParser: TSDocParser = new TSDocParser();
 

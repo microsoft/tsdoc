@@ -30,7 +30,7 @@ $ npm run test
 ### Debugging the unit tests
 
 The [./tsdoc/.vscode/launch.json](./tsdoc/.vscode/launch.json) file includes a
-[Visual Studio Code](https://code.visualstudio.com/) configuration that maker debugging
+[Visual Studio Code](https://code.visualstudio.com/) configuration that makes debugging
 easier.  To debug a unit test:
 
 1. Launch VS Code in the tsdoc subfolder (not the repository root):
