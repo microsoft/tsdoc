@@ -10,7 +10,7 @@ $ npm install
 $ npm run build
 ```
 
-### Running the unit tests
+### Running the unit tests interactively
 
 We use the [Jest](https://jestjs.io/) test runner.  To run the TSDoc tests interactively (`jest --watch` scenario):
 
@@ -19,13 +19,18 @@ $ cd ./tsdoc
 $ npm run watch
 ```
 
-Running all the unit tests before submitting your PR:
+### Before submitting a pull request
+
+Run all the unit tests once:
 
 ```
 $ cd ./tsdoc
 $ npm run build
 $ npm run test
 ```
+
+Before submitting your PR, you should also build and run the [/api-demo](./api-demo/) project.
+
 
 ### Debugging the unit tests
 
@@ -35,10 +40,10 @@ easier.  To debug a unit test:
 
 1. Launch VS Code in the tsdoc subfolder (not the repository root):
 
-```
-$ cd ./tsdoc
-$ code .
-```
+   ```
+   $ cd ./tsdoc
+   $ code .
+   ```
 
 2. In the editor window, open a test file. For example, **src/__tests__/ParsingBasicTests.test.ts**.
 
@@ -48,13 +53,9 @@ $ code .
 This will run only the unit tests in the currently opened file.  (Use "**Jest All**" to run all tests in
 the debugger.)
 
-We use a TypeScript plugin for Jest, so you can set breakpoints in the TypeScript source files,
-and the VS Code debugger will break on them.
+Jest is configured to run using a plugin that adds TypeScript support.  You can set breakpoints in
+the TypeScript source files, and the VS Code debugger will break on them.
 
-## Building and running the api-demo code sample
-
-Before submitting your PR, you should also build and run the [/api-demo](./api-demo/) project.
-For details, see [/api-demo/README.md](./api-demo/README.md).
 
 ##  Contributor License Agreement (CLA)
 
