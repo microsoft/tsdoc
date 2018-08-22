@@ -1,6 +1,6 @@
 # Contributing to the TSDoc project
 
-### Building the project
+### Building the @microsoft/tsdoc library
 
 To build the project:
 
@@ -19,7 +19,7 @@ $ cd ./tsdoc
 $ npm run watch
 ```
 
-Before submitting your PR:
+Running all the unit tests before submitting your PR:
 
 ```
 $ cd ./tsdoc
@@ -53,14 +53,8 @@ and the VS Code debugger will break on them.
 
 ## Building and running the api-demo code sample
 
-The [/api-demo](./api-demo/) folder provides a simple demo project illustrating how to
-use the TSDoc API.  To try out the demo:
-
-```
-$ cd ./api-demo
-$ npm run build
-$ npm run start
-```
+Before submitting your PR, you should also build and run the [/api-demo](./api-demo/) project.
+For details, see [/api-demo/README.md](./api-demo/README.md).
 
 ##  Contributor License Agreement (CLA)
 
