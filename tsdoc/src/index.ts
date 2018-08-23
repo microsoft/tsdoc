@@ -1,5 +1,5 @@
 
-export { CoreTags } from './details/CoreTags';
+export { StandardTags } from './details/StandardTags';
 export { CoreModifierTagSet } from './details/CoreModifierTagSet';
 export { ModifierTagSet } from './details/ModifierTagSet';
 

@@ -30,7 +30,7 @@ import {
   TSDocParserConfiguration,
   TSDocTagSyntaxKind
 } from './TSDocParserConfiguration';
-import { CoreTags } from '../details/CoreTags';
+import { StandardTags } from '../details/StandardTags';
 
 interface IFailure {
   // (We use "failureMessage" instead of "errorMessage" here so that DocErrorText doesn't
@@ -155,7 +155,7 @@ export class NodeParser {
     if (tagDefinition) {
       switch (tagDefinition.syntaxKind) {
         case TSDocTagSyntaxKind.BlockTag:
-          if (docBlockTag.tagNameWithUpperCase === CoreTags.param.tagNameWithUpperCase) {
+          if (docBlockTag.tagNameWithUpperCase === StandardTags.param.tagNameWithUpperCase) {
             const docParamBlock: DocParamBlock = this._parseParamBlock(docBlockTag);
 
             this._parserContext.docComment.paramBlocks.push(docParamBlock);
@@ -193,10 +193,10 @@ export class NodeParser {
     const docComment: DocComment = this._parserContext.docComment;
 
     switch (block.blockTag.tagNameWithUpperCase) {
-      case CoreTags.remarks.tagNameWithUpperCase:
+      case StandardTags.remarks.tagNameWithUpperCase:
         docComment.remarksBlock = block;
         break;
-      case CoreTags.returns.tagNameWithUpperCase:
+      case StandardTags.returns.tagNameWithUpperCase:
         docComment.returnsBlock = block;
         break;
       default:

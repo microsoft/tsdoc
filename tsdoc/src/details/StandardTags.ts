@@ -1,9 +1,9 @@
 import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../parser/TSDocParserConfiguration';
 
 /**
- * The "core tags" defined by the TSDoc standard.
+ * Tags whose meaning is defined by the TSDoc standard.
  */
-export class CoreTags {
+export class StandardTags {
   public static readonly alpha: TSDocTagDefinition = new TSDocTagDefinition({
     tagName: '@alpha',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag
@@ -50,13 +50,13 @@ export class CoreTags {
    * Returns the full list of all core tags.
    */
   public static allDefinitions: ReadonlyArray<TSDocTagDefinition> = [
-    CoreTags.alpha,
-    CoreTags.beta,
-    CoreTags.experimental,
-    CoreTags.internal,
-    CoreTags.param,
-    CoreTags.readonly,
-    CoreTags.remarks,
-    CoreTags.returns
+    StandardTags.alpha,
+    StandardTags.beta,
+    StandardTags.experimental,
+    StandardTags.internal,
+    StandardTags.param,
+    StandardTags.readonly,
+    StandardTags.remarks,
+    StandardTags.returns
   ];
 }

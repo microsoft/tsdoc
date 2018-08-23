@@ -1,5 +1,5 @@
 import { StringChecks } from './StringChecks';
-import { CoreTags } from '../details/CoreTags';
+import { StandardTags } from '../details/StandardTags';
 
 /**
  * Determines the type of syntax for a TSDocTagDefinition
@@ -78,7 +78,7 @@ export class TSDocParserConfiguration {
     this._tagDefinitions = [];
     this._tagDefinitionsByName = new Map<string, TSDocTagDefinition>();
 
-    this.addTagDefinitions(CoreTags.allDefinitions);
+    this.addTagDefinitions(StandardTags.allDefinitions);
   }
 
   /**
