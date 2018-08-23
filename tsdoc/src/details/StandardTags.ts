@@ -55,7 +55,6 @@ export class StandardTags {
   public static readonly alpha: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@alpha',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Discretionary
   });
 
@@ -75,7 +74,6 @@ export class StandardTags {
   public static readonly beta: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@beta',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Discretionary
   });
 
@@ -90,7 +88,6 @@ export class StandardTags {
   public static readonly deprecated: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@deprecated',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
-    singleton: true,
     standardization: Standardization.Core
   });
 
@@ -106,7 +103,6 @@ export class StandardTags {
   public static readonly eventProperty: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@eventProperty',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Extended
   });
 
@@ -123,7 +119,6 @@ export class StandardTags {
   public static readonly experimental: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@experimental',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Discretionary
   });
 
@@ -141,7 +136,6 @@ export class StandardTags {
   public static readonly inheritDoc: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@inheritDoc',
     syntaxKind: TSDocTagSyntaxKind.InlineTag,
-    singleton: true,
     standardization: Standardization.Extended
   });
 
@@ -158,7 +152,6 @@ export class StandardTags {
   public static readonly internal: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@internal',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Discretionary
   });
 
@@ -174,7 +167,6 @@ export class StandardTags {
   public static readonly internalRemarks: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@internalRemarks',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
-    singleton: true,
     standardization: Standardization.Extended
   });
 
@@ -191,6 +183,7 @@ export class StandardTags {
   public static readonly link: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@link',
     syntaxKind: TSDocTagSyntaxKind.InlineTag,
+    allowMultiple: true,
     standardization: Standardization.Core
   });
 
@@ -208,7 +201,6 @@ export class StandardTags {
   public static readonly override: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@override',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Extended
   });
 
@@ -224,7 +216,6 @@ export class StandardTags {
   public static readonly packageDocumentation: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@packageDocumentation',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Core
   });
 
@@ -238,6 +229,7 @@ export class StandardTags {
   public static readonly param: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@param',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    allowMultiple: true,
     standardization: Standardization.Core
   });
 
@@ -252,7 +244,6 @@ export class StandardTags {
   public static readonly preapproved: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@preapproved',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Discretionary
   });
 
@@ -268,7 +259,6 @@ export class StandardTags {
   public static readonly public: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@public',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Discretionary
   });
 
@@ -286,7 +276,6 @@ export class StandardTags {
   public static readonly readonly: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@readonly',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Extended
   });
 
@@ -303,7 +292,6 @@ export class StandardTags {
   public static readonly remarks: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@remarks',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
-    singleton: true,
     standardization: Standardization.Core
   });
 
@@ -315,7 +303,6 @@ export class StandardTags {
   public static readonly returns: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@returns',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
-    singleton: true,
     standardization: Standardization.Core
   });
 
@@ -333,7 +320,6 @@ export class StandardTags {
   public static readonly sealed: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@sealed',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Extended
   });
 
@@ -350,7 +336,6 @@ export class StandardTags {
   public static readonly virtual: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@virtual',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    singleton: true,
     standardization: Standardization.Extended
   });
 

@@ -29,7 +29,7 @@ export enum TSDocTagSyntaxKind {
 export interface ITSDocTagDefinitionParameters {
   tagName: string;
   syntaxKind: TSDocTagSyntaxKind;
-  singleton?: boolean;
+  allowMultiple?: boolean;
 }
 
 /**
@@ -61,14 +61,16 @@ export class TSDocTagDefinition {
   public readonly syntaxKind: TSDocTagSyntaxKind;
 
   /**
-   * If this is a standard tag
+   * Indicates the level of support expected from documentation tools that implement
+   * the standard.
    */
   public readonly standardization: Standardization;
 
   /**
-   * If true, then at most one instance of this TSDoc tag may appear in a doc comment.
+   * If true, then this TSDoc tag may appear multiple times in a doc comment.
+   * By default, a tag may only appear once.
    */
-  public readonly singleton: boolean;
+  public readonly allowMultiple: boolean;
 
   public constructor(parameters: ITSDocTagDefinitionParameters) {
     StringChecks.validateTSDocTagName(parameters.tagName);
@@ -77,7 +79,7 @@ export class TSDocTagDefinition {
     this.syntaxKind = parameters.syntaxKind;
     this.standardization = (parameters as ITSDocTagDefinitionInternalParameters).standardization
       || Standardization.None;
-    this.singleton = !!parameters.singleton;
+    this.allowMultiple = !!parameters.allowMultiple;
   }
 }
 
