@@ -1,6 +1,6 @@
 
 export { StandardTags, Standardization } from './details/StandardTags';
-export { CoreModifierTagSet } from './details/CoreModifierTagSet';
+export { StandardModifierTagSet } from './details/StandardModifierTagSet';
 export { ModifierTagSet } from './details/ModifierTagSet';
 
 export * from './nodes';

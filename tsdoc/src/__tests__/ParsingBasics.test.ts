@@ -1,5 +1,5 @@
 import {
-  CoreModifierTagSet,
+  StandardModifierTagSet,
   DocComment,
   ParserContext
 } from '../index';
@@ -16,7 +16,7 @@ test('01 Simple @beta and @internal extraction', () => {
   ].join('\n'));
 
   const docComment: DocComment = parserContext.docComment;
-  const modifierTagSet: CoreModifierTagSet = docComment.modifierTagSet;
+  const modifierTagSet: StandardModifierTagSet = docComment.modifierTagSet;
 
   expect(modifierTagSet.isAlpha).toEqual(false);
   expect(modifierTagSet.isBeta).toEqual(true);

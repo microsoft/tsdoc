@@ -5,7 +5,7 @@ import { StandardTags } from './StandardTags';
  * Extends the ModifierTagSet base class with getters for modifiers that
  * are part of the standardized core tags for TSDoc.
  */
-export class CoreModifierTagSet extends ModifierTagSet {
+export class StandardModifierTagSet extends ModifierTagSet {
   /**
    * Returns true if the `@alpha` modifier tag was specified.
    */
