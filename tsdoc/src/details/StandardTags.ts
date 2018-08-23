@@ -107,6 +107,19 @@ export class StandardTags {
   });
 
   /**
+   * (Extended)
+   *
+   * Indicates a documentation section that should be presented as an example
+   * illustrating how to use the API.  It may include a code sample.
+   */
+  public static readonly example: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@example',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    allowMultiple: true,
+    standardization: Standardization.Extended
+  });
+
+  /**
    * (Discretionary)
    *
    * Suggested meaning:  Same semantics as `@beta`, but used by tools that don't support
