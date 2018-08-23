@@ -1,5 +1,5 @@
 import { StringChecks } from './StringChecks';
-import { StandardTags } from '../details/StandardTags';
+import { StandardTags, Standardization } from '../details/StandardTags';
 
 /**
  * Determines the type of syntax for a TSDocTagDefinition
@@ -26,10 +26,17 @@ export enum TSDocTagSyntaxKind {
 /**
  * Constructor parameters for {@link TSDocTagDefinition}
  */
-interface ITSDocTagDefinitionParameters {
+export interface ITSDocTagDefinitionParameters {
   tagName: string;
   syntaxKind: TSDocTagSyntaxKind;
   singleton?: boolean;
+}
+
+/**
+ * @internal
+ */
+export interface ITSDocTagDefinitionInternalParameters extends ITSDocTagDefinitionParameters {
+  standardization: Standardization;
 }
 
 /**
@@ -54,6 +61,11 @@ export class TSDocTagDefinition {
   public readonly syntaxKind: TSDocTagSyntaxKind;
 
   /**
+   * If this is a standard tag
+   */
+  public readonly standardization: Standardization;
+
+  /**
    * If true, then at most one instance of this TSDoc tag may appear in a doc comment.
    */
   public readonly singleton: boolean;
@@ -63,6 +75,8 @@ export class TSDocTagDefinition {
     this.tagName = parameters.tagName;
     this.tagNameWithUpperCase = parameters.tagName.toUpperCase();
     this.syntaxKind = parameters.syntaxKind;
+    this.standardization = (parameters as ITSDocTagDefinitionInternalParameters).standardization
+      || Standardization.None;
     this.singleton = !!parameters.singleton;
   }
 }

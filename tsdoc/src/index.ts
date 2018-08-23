@@ -1,5 +1,5 @@
 
-export { StandardTags } from './details/StandardTags';
+export { StandardTags, Standardization } from './details/StandardTags';
 export { CoreModifierTagSet } from './details/CoreModifierTagSet';
 export { ModifierTagSet } from './details/ModifierTagSet';
 
@@ -14,6 +14,7 @@ export { Token, TokenKind } from './parser/Token';
 export { TokenSequence, ITokenSequenceParameters } from './parser/TokenSequence';
 export { TSDocParser } from './parser/TSDocParser';
 export {
+  ITSDocTagDefinitionParameters,
   TSDocTagSyntaxKind,
   TSDocTagDefinition,
   TSDocParserConfiguration
