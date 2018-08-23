@@ -10,31 +10,31 @@ import {
  */
 export const enum Standardization {
   /**
-   * TSDoc tags belonging to the "Core" set are considered essential.
+   * TSDoc tags in the "Core" standardization group are considered essential.
    * Their meaning is standardized, and every documentation tool is expected
    * to recognize them.
    */
   Core = 'Core',
 
   /**
-   * TSDoc tags belonging to the "Extended" set are optional.  Documentation tools may
-   * or may not support them.  If they do, the syntax and semantics should conform to
+   * TSDoc tags in the "Extended" standardization group are optional.  Documentation tools
+   * may or may not support them.  If they do, the syntax and semantics should conform to
    * the TSDoc standard definitions.
    */
   Extended = 'Extended',
 
   /**
-   * TSDoc tags belonging to the "Discretionary" set are optional, and their semantics
-   * are implementation-defined.  They are included in the standard to ensure that
-   * if two different popular tools use the same tag name, they can at least agree about
-   * the syntax for the tag.  For example, an implementor should avoid treating
-   * `@preapproved` as an inline tag, because the TSDoc standard defines it to be
-   * a modifier tag. (The effect of the tag may differ between implementations.)
+   * TSDoc tags in the "Discretionary" standardization group are optional.  Although the
+   * syntax is specified, the semantics for these tags are implementation-specific
+   * (and sometimes difficult to describe completely without referring to a specific
+   * implementation).  Discretionary tags are included in the TSDoc standard to ensure that
+   * if two different popular tools use the same tag name, developers can expect the syntax
+   * to be the same, and the semantics to be somewhat similar.
    */
   Discretionary = 'Discretionary',
 
   /**
-   * The tag is not part of the TSDoc standard.  All custom tags use this group.
+   * The tag is not part of the TSDoc standard.  All used-defined tags are assigned to this group.
    */
   None = 'None'
 }
@@ -50,11 +50,12 @@ export class StandardTags {
    * It is intended to be used by third-party developers eventually, but has not
    * yet been released.  The tooling may trim the declaration from a public release.
    *
-   * Example implementations:  API Extractor
+   * Example implementations: API Extractor
    */
   public static readonly alpha: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@alpha',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
     standardization: Standardization.Discretionary
   });
 
@@ -67,14 +68,46 @@ export class StandardTags {
    * change without notice.  The tooling may trim the declaration from a public release,
    * but may include it in a developer preview release.
    *
-   * Example implementations:  API Extractor
+   * Example implementations: API Extractor
    *
    * Synonyms: `@experimental`
    */
   public static readonly beta: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@beta',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
     standardization: Standardization.Discretionary
+  });
+
+  /**
+   * (Core)
+   *
+   * This block tag communicates that an API item is no loner supported and may be removed
+   * in a future release.  The `@deprecated` tag is followed by a sentence describing
+   * the recommended alternative.  It recursively applies to members of the container.
+   * For example, if a class is deprecated, then so are all of its members.
+   */
+  public static readonly deprecated: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@deprecated',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    singleton: true,
+    standardization: Standardization.Core
+  });
+
+  /**
+   * (Extended)
+   *
+   * When applied to a class or interface property, this indicates that the property
+   * returns an event object that event handlers can be attached to.  The event-handling
+   * API is implementation-defined, but typically the property return type would be a class
+   * with members such as `addHandler()` and `removeHandler()`.  A documentation tool can
+   * display such properties under an "Events" heading instead of the usual "Properties" heading.
+   */
+  public static readonly eventProperty: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@eventProperty',
+    syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
+    standardization: Standardization.Extended
   });
 
   /**
@@ -83,14 +116,33 @@ export class StandardTags {
    * Suggested meaning:  Same semantics as `@beta`, but used by tools that don't support
    * an `@alpha` release stage.
    *
-   * Example implementations:  Angular API documenter
+   * Example implementations: Angular API documenter
    *
    * Synonyms: `@beta`
    */
   public static readonly experimental: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@experimental',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
     standardization: Standardization.Discretionary
+  });
+
+  /**
+   * (Extended)
+   *
+   * This inline tag is used to automatically generate an API item's documentation by
+   * copying it from another API item.  The inline tag parameter contains a reference
+   * to the other item, which may be an unrelated class, or even an import from a
+   * separate NPM package.
+   *
+   * TODO: The notation for API item references is still being standardized.  See this issue:
+   * https://github.com/Microsoft/tsdoc/issues/9
+   */
+  public static readonly inheritDoc: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@inheritDoc',
+    syntaxKind: TSDocTagSyntaxKind.InlineTag,
+    singleton: true,
+    standardization: Standardization.Extended
   });
 
   /**
@@ -101,12 +153,79 @@ export class StandardTags {
    * In some implementations, certain designated packages may be allowed to consume
    * internal API items, e.g. because the packages are components of the same product.
    *
-   * Example implementations:  API Extractor
+   * Example implementations: API Extractor
    */
   public static readonly internal: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@internal',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
     standardization: Standardization.Discretionary
+  });
+
+  /**
+   * (Extended)
+   *
+   * Suggested meaning:  Starts a section of additional documentation content that
+   * is not intended for a public audience.  A documentation tool should omit this
+   * content from the API reference web site and/or trim it from a generated *.d.ts file.
+   *
+   * Example implementations: API Extractor
+   */
+  public static readonly internalRemarks: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@internalRemarks',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    singleton: true,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Core)
+   *
+   * The `{@link}` inline tag is used to create hyperlinks to other pages in a
+   * documentation system or general internet URLs.  In particular, it supports
+   * expressions for referencing API items.
+   *
+   * TODO: The `{@link}` notation is still being standardized.  See this issue:
+   * https://github.com/Microsoft/tsdoc/issues/9
+   */
+  public static readonly link: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@link',
+    syntaxKind: TSDocTagSyntaxKind.InlineTag,
+    standardization: Standardization.Core
+  });
+
+  /**
+   * (Extended)
+   *
+   * This modifier has similar semantics to the `override` keyword in C# or Java.
+   * For a member function or property, explicitly indicates that this definition
+   * is overriding (i.e. redefining) the definition inherited from the base class.
+   * The base class definition would normally be marked as `virtual`.
+   *
+   * A documentation tool may enforce that the `@virtual`, `@override`, and/or `@sealed`
+   * modifiers are consistently applied, but this is not required by the TSDoc standard.
+   */
+  public static readonly override: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@override',
+    syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Core)
+   *
+   * Used to indicate a doc comment that describes an entire NPM package (as opposed
+   * to an individual API item belonging to that package).  The `@packageDocumentation` comment
+   * is found in the *.d.ts file that acts as the entry point for the package, and it
+   * should be the first `/**` comment encountered in that file.  A comment containing a
+   * `@packageDocumentation` tag should never be used to describe an individual API item.
+   */
+  public static readonly packageDocumentation: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@packageDocumentation',
+    syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
+    standardization: Standardization.Core
   });
 
   /**
@@ -123,6 +242,37 @@ export class StandardTags {
   });
 
   /**
+   * (Discretionary)
+   *
+   * Suggested meaning: Designates that an API item should be exempted from
+   * policies that would normally require an approval for changes to the API signature.
+   *
+   * Example implementations: API Extractor
+   */
+  public static readonly preapproved: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@preapproved',
+    syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
+    standardization: Standardization.Discretionary
+  });
+
+  /**
+   * (Discretionary)
+   *
+   * Suggested meaning: Designates that an API item's release stage is "public".
+   * It has been officially released to third-party developers, and its signature is
+   * guaranteed to be stable (e.g. following Semantic Versioning rules).
+   *
+   * Example implementations: API Extractor
+   */
+  public static readonly public: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@public',
+    syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
+    standardization: Standardization.Discretionary
+  });
+
+  /**
    * (Extended)
    *
    * This modifier tag indicates that an API item should be documented as being read-only,
@@ -131,11 +281,12 @@ export class StandardTags {
    * the property cannot be assigned; in this situation, the `@readonly` modifier can be
    * added so that the property is shown as read-only in the documentation.
    *
-   * Example implementations:  API Extractor
+   * Example implementations: API Extractor
    */
   public static readonly readonly: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@readonly',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
     standardization: Standardization.Extended
   });
 
@@ -166,6 +317,41 @@ export class StandardTags {
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     singleton: true,
     standardization: Standardization.Core
+  });
+
+  /**
+   * (Extended)
+   *
+   * This modifier has similar semantics to the `sealed` keyword in C# or Java.
+   * For a class, indicates that subclasses must not inherit from the class.
+   * For a member function or property, indicates that subclasses must not override
+   * (i.e. redefine) the member.
+   *
+   * A documentation tool may enforce that the `@virtual`, `@override`, and/or `@sealed`
+   * modifiers are consistently applied, but this is not required by the TSDoc standard.
+   */
+  public static readonly sealed: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@sealed',
+    syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Extended)
+   *
+   * This modifier has similar semantics to the `virtual` keyword in C# or Java.
+   * For a member function or property, explicitly indicates that subclasses may override
+   * (i.e. redefine) the member.
+   *
+   * A documentation tool may enforce that the `@virtual`, `@override`, and/or `@sealed`
+   * modifiers are consistently applied, but this is not required by the TSDoc standard.
+   */
+  public static readonly virtual: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@virtual',
+    syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    singleton: true,
+    standardization: Standardization.Extended
   });
 
   /**
