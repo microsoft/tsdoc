@@ -169,21 +169,6 @@ export class StandardTags {
   });
 
   /**
-   * (Extended)
-   *
-   * Suggested meaning:  Starts a section of additional documentation content that
-   * is not intended for a public audience.  A documentation tool should omit this
-   * content from the API reference web site and/or trim it from a generated *.d.ts file.
-   *
-   * Example implementations: API Extractor
-   */
-  public static readonly internalRemarks: TSDocTagDefinition = StandardTags._defineTag({
-    tagName: '@internalRemarks',
-    syntaxKind: TSDocTagSyntaxKind.BlockTag,
-    standardization: Standardization.Extended
-  });
-
-  /**
    * (Core)
    *
    * The `{@link}` inline tag is used to create hyperlinks to other pages in a
@@ -258,6 +243,19 @@ export class StandardTags {
     tagName: '@preapproved',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
     standardization: Standardization.Discretionary
+  });
+
+  /**
+   * (Core)
+   *
+   * Starts a section of additional documentation content that is not intended for a
+   * public audience.  A tool must omit this entire section from the API reference web site,
+   * generated *.d.ts file, and any other outputs incorporating the content.
+   */
+  public static readonly privateRemarks: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@privateRemarks',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Core
   });
 
   /**
