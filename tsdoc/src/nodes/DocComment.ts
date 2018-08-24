@@ -44,6 +44,19 @@ export class DocComment extends DocNode {
   public remarksBlock: DocBlock | undefined;
 
   /**
+   * The `@privateRemarks` tag starts a block of additional commentary that is not meant
+   * for an external audience.  A documentation tool must omit this content from an
+   * API reference web site.  It should also be omitted when generating a normalized
+   * *.d.ts file intended for third-party developers.
+   *
+   * @remarks
+   * A similar effect could be accomplished by enclosing content inside CommonMark
+   * `<!-- -->` comments, or by moving the content into a separate `//` TypeScript comment.
+   * However, the `@privateRemarks` tag is a more formal convention.
+   */
+  public privateRemarks: DocBlock | undefined;
+
+  /**
    * The collection of parsed `@param` blocks for this doc comment.
    */
   public paramBlocks: DocParamBlock[];
@@ -69,6 +82,7 @@ export class DocComment extends DocNode {
 
     this.summarySection = new DocSection(parameters);
     this.remarksBlock = undefined;
+    this.privateRemarks = undefined;
     this.paramBlocks = [];
     this.returnsBlock = undefined;
 
