@@ -1,7 +1,7 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 import { ParserContext } from '../parser/ParserContext';
 import { DocSection } from './DocSection';
-import { CoreModifierTagSet } from '../details/CoreModifierTagSet';
+import { StandardModifierTagSet } from '../details/StandardModifierTagSet';
 import { DocBlock } from './DocBlock';
 import { DocParamBlock } from './DocParamBlock';
 
@@ -56,7 +56,7 @@ export class DocComment extends DocNode {
   /**
    * The modifier tags for this DocComment.
    */
-  public readonly modifierTagSet: CoreModifierTagSet;
+  public readonly modifierTagSet: StandardModifierTagSet;
 
   private _customBlocks: DocBlock[];
 
@@ -72,7 +72,7 @@ export class DocComment extends DocNode {
     this.paramBlocks = [];
     this.returnsBlock = undefined;
 
-    this.modifierTagSet = new CoreModifierTagSet();
+    this.modifierTagSet = new StandardModifierTagSet();
 
     this._customBlocks = [];
   }

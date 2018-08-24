@@ -1,5 +1,5 @@
 import { StringChecks } from './StringChecks';
-import { CoreTags } from '../details/CoreTags';
+import { StandardTags, Standardization } from '../details/StandardTags';
 
 /**
  * Determines the type of syntax for a TSDocTagDefinition
@@ -26,10 +26,17 @@ export enum TSDocTagSyntaxKind {
 /**
  * Constructor parameters for {@link TSDocTagDefinition}
  */
-interface ITSDocTagDefinitionParameters {
+export interface ITSDocTagDefinitionParameters {
   tagName: string;
   syntaxKind: TSDocTagSyntaxKind;
-  singleton?: boolean;
+  allowMultiple?: boolean;
+}
+
+/**
+ * @internal
+ */
+export interface ITSDocTagDefinitionInternalParameters extends ITSDocTagDefinitionParameters {
+  standardization: Standardization;
 }
 
 /**
@@ -54,16 +61,25 @@ export class TSDocTagDefinition {
   public readonly syntaxKind: TSDocTagSyntaxKind;
 
   /**
-   * If true, then at most one instance of this TSDoc tag may appear in a doc comment.
+   * Indicates the level of support expected from documentation tools that implement
+   * the standard.
    */
-  public readonly singleton: boolean;
+  public readonly standardization: Standardization;
+
+  /**
+   * If true, then this TSDoc tag may appear multiple times in a doc comment.
+   * By default, a tag may only appear once.
+   */
+  public readonly allowMultiple: boolean;
 
   public constructor(parameters: ITSDocTagDefinitionParameters) {
     StringChecks.validateTSDocTagName(parameters.tagName);
     this.tagName = parameters.tagName;
     this.tagNameWithUpperCase = parameters.tagName.toUpperCase();
     this.syntaxKind = parameters.syntaxKind;
-    this.singleton = !!parameters.singleton;
+    this.standardization = (parameters as ITSDocTagDefinitionInternalParameters).standardization
+      || Standardization.None;
+    this.allowMultiple = !!parameters.allowMultiple;
   }
 }
 
@@ -78,7 +94,7 @@ export class TSDocParserConfiguration {
     this._tagDefinitions = [];
     this._tagDefinitionsByName = new Map<string, TSDocTagDefinition>();
 
-    this.addTagDefinitions(CoreTags.allDefinitions);
+    this.addTagDefinitions(StandardTags.allDefinitions);
   }
 
   /**
