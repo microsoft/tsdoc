@@ -1,4 +1,4 @@
-import { DocNodeKind } from './DocNode';
+import { DocNodeKind, DocNode } from './DocNode';
 import { DocSection, IDocSectionParameters } from './DocSection';
 
 /**
@@ -22,5 +22,26 @@ export class DocParagraph extends DocSection {
    */
   public constructor(parameters: IDocParagraphParameters) {
     super(parameters);
+  }
+
+  /**
+   * {@inheritdoc}
+   * @override
+   */
+  public isAllowedChildNode(docNode: DocNode): boolean {
+    // NOTE: DocNodeKind.Paragraph cannot be nested
+    switch (docNode.kind) {
+      case DocNodeKind.BlockTag:
+      case DocNodeKind.CodeSpan:
+      case DocNodeKind.ErrorText:
+      case DocNodeKind.EscapedText:
+      case DocNodeKind.HtmlStartTag:
+      case DocNodeKind.HtmlEndTag:
+      case DocNodeKind.InlineTag:
+      case DocNodeKind.PlainText:
+      case DocNodeKind.SoftBreak:
+        return true;
+    }
+    return false;
   }
 }

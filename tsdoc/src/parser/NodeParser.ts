@@ -298,7 +298,7 @@ export class NodeParser {
   }
 
   private _pushDocNode(docNode: DocNode): void {
-    this._currentSection.appendNode(docNode);
+    this._currentSection.appendNodeInParagraph(docNode);
     this._verbatimNodes.push(docNode);
   }
 

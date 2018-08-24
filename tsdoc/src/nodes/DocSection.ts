@@ -1,4 +1,5 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocParagraph } from './DocParagraph';
 
 /**
  * Constructor parameters for {@link DocSection}.
@@ -50,16 +51,7 @@ export class DocSection extends DocNode {
    */
   public isAllowedChildNode(docNode: DocNode): boolean {
     switch (docNode.kind) {
-      case DocNodeKind.BlockTag:
-      case DocNodeKind.CodeSpan:
-      case DocNodeKind.ErrorText:
-      case DocNodeKind.EscapedText:
-      case DocNodeKind.HtmlStartTag:
-      case DocNodeKind.HtmlEndTag:
-      case DocNodeKind.InlineTag:
       case DocNodeKind.Paragraph:
-      case DocNodeKind.PlainText:
-      case DocNodeKind.SoftBreak:
         return true;
     }
     return false;
@@ -79,5 +71,26 @@ export class DocSection extends DocNode {
     for (const docNode of docNodes) {
       this.appendNode(docNode);
     }
+  }
+
+  /**
+   * If the last item in DocSection.nodes is not a DocParagraph, a new paragraph
+   * is started.  Either way, the provided docNode will be appended to the paragraph.
+   */
+  public appendNodeInParagraph(docNode: DocNode): void {
+    let paragraphNode: DocParagraph | undefined = undefined;
+
+    if (this._nodes.length > 0) {
+      const lastNode: DocNode = this._nodes[this._nodes.length - 1];
+      if (lastNode.kind === DocNodeKind.Paragraph) {
+        paragraphNode = lastNode as DocParagraph;
+      }
+    }
+    if (!paragraphNode) {
+      paragraphNode = new DocParagraph({ });
+      this.appendNode(paragraphNode);
+    }
+
+    paragraphNode.appendNode(docNode);
   }
 }
