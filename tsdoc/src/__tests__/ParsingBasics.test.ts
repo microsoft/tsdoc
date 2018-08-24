@@ -18,9 +18,9 @@ test('01 Simple @beta and @internal extraction', () => {
   const docComment: DocComment = parserContext.docComment;
   const modifierTagSet: StandardModifierTagSet = docComment.modifierTagSet;
 
-  expect(modifierTagSet.isAlpha).toEqual(false);
-  expect(modifierTagSet.isBeta).toEqual(true);
-  expect(modifierTagSet.isInternal).toEqual(true);
+  expect(modifierTagSet.isAlpha()).toEqual(false);
+  expect(modifierTagSet.isBeta()).toEqual(true);
+  expect(modifierTagSet.isInternal()).toEqual(true);
 });
 
 test('02 A basic TSDoc comment with all components', () => {
