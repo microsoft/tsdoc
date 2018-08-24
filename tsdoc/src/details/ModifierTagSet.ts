@@ -1,4 +1,5 @@
 import { DocBlockTag } from '../nodes/DocBlockTag';
+import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../parser/TSDocParserConfiguration';
 
 /**
  * Represents a set of modifier tags that were extracted from a doc comment.
@@ -40,6 +41,19 @@ export class ModifierTagSet {
    */
   public hasModifierTagWithUpperCase(alreadyUpperCaseModifierTag: string): boolean {
     return this._names.has(alreadyUpperCaseModifierTag);
+  }
+
+  /**
+   * Returns true if a DocBlockTag with the specified modifier tag was added to this set.
+   * Note that synonyms are not considered.  The comparison is case-insensitive.
+   * The TSDocTagDefinition must be a modifier tag.
+   * @param tagName - The name of the tag, including the `@` prefix  For example, `@internal`
+   */
+  public hasModifier(modifier: TSDocTagDefinition): boolean {
+    if (modifier.syntaxKind !== TSDocTagSyntaxKind.ModifierTag) {
+      throw new Error('The tag definition is not a modifier tag');
+    }
+    return this._names.has(modifier.tagNameWithUpperCase);
   }
 
   /**
