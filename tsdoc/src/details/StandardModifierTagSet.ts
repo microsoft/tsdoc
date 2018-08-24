@@ -56,13 +56,6 @@ export class StandardModifierTagSet extends ModifierTagSet {
   }
 
   /**
-   * Returns true if the `@preapproved` modifier tag was specified.
-   */
-  public isPreapproved(): boolean {
-    return this.hasModifierTagWithUpperCase(StandardTags.preapproved.tagNameWithUpperCase);
-  }
-
-  /**
    * Returns true if the `@public` modifier tag was specified.
    */
   public isPublic(): boolean {

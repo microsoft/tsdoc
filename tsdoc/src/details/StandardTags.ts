@@ -232,20 +232,6 @@ export class StandardTags {
   });
 
   /**
-   * (Discretionary)
-   *
-   * Suggested meaning: Designates that an API item should be exempted from
-   * policies that would normally require an approval for changes to the API signature.
-   *
-   * Example implementations: API Extractor
-   */
-  public static readonly preapproved: TSDocTagDefinition = StandardTags._defineTag({
-    tagName: '@preapproved',
-    syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-    standardization: Standardization.Discretionary
-  });
-
-  /**
    * (Core)
    *
    * Starts a section of additional documentation content that is not intended for a
