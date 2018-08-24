@@ -199,6 +199,9 @@ export class NodeParser {
       case StandardTags.privateRemarks.tagNameWithUpperCase:
         docComment.privateRemarks = block;
         break;
+      case StandardTags.deprecated.tagNameWithUpperCase:
+        docComment.deprecated = block;
+        break;
       case StandardTags.returns.tagNameWithUpperCase:
         docComment.returnsBlock = block;
         break;

@@ -57,6 +57,14 @@ export class DocComment extends DocNode {
   public privateRemarks: DocBlock | undefined;
 
   /**
+   * If present, this block indicates that an API item is no loner supported and may be
+   * removed in a future release.  The `@deprecated` tag must be followed by a sentence
+   * describing the recommended alternative.  Deprecation recursively applies to members
+   * of a container.  For example, if a class is deprecated, then so are all of its members.
+   */
+  public deprecated: DocBlock | undefined;
+
+  /**
    * The collection of parsed `@param` blocks for this doc comment.
    */
   public paramBlocks: DocParamBlock[];
