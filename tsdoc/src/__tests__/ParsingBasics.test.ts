@@ -55,7 +55,7 @@ test('02 A basic TSDoc comment with all components', () => {
   ].join('\n'), configuration);
 
   const docComment: DocComment = parserContext.docComment;
-  expect(docComment.modifierTagSet.hasModifierTag('@customModifier')).toEqual(true);
+  expect(docComment.modifierTagSet.hasTagName('@customModifier')).toEqual(true);
 });
 
 test('03 Jumbled order', () => {
@@ -84,7 +84,7 @@ test('03 Jumbled order', () => {
   ].join('\n'), configuration);
 
   const docComment: DocComment = parserContext.docComment;
-  expect(docComment.modifierTagSet.hasModifierTag('@customModifier')).toEqual(true);
+  expect(docComment.modifierTagSet.hasTagName('@customModifier')).toEqual(true);
 });
 
 test('03 Incomplete @param blocks', () => {

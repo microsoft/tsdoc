@@ -180,7 +180,7 @@ export class NodeParser {
         case TSDocTagSyntaxKind.ModifierTag:
           // The block tag was recognized as a modifier, so add it to the modifier tag set
           // and do NOT call currentSection.appendNode(parsedNode)
-          modifierTagSet.addModifierTag(docBlockTag);
+          modifierTagSet.addTag(docBlockTag);
           this._verbatimNodes.push(docBlockTag);
           return;
       }
