@@ -180,7 +180,7 @@ export class NodeParser {
         case TSDocTagSyntaxKind.ModifierTag:
           // The block tag was recognized as a modifier, so add it to the modifier tag set
           // and do NOT call currentSection.appendNode(parsedNode)
-          modifierTagSet.addModifierTag(docBlockTag);
+          modifierTagSet.addTag(docBlockTag);
           this._verbatimNodes.push(docBlockTag);
           return;
       }
@@ -195,6 +195,12 @@ export class NodeParser {
     switch (block.blockTag.tagNameWithUpperCase) {
       case StandardTags.remarks.tagNameWithUpperCase:
         docComment.remarksBlock = block;
+        break;
+      case StandardTags.privateRemarks.tagNameWithUpperCase:
+        docComment.privateRemarks = block;
+        break;
+      case StandardTags.deprecated.tagNameWithUpperCase:
+        docComment.deprecated = block;
         break;
       case StandardTags.returns.tagNameWithUpperCase:
         docComment.returnsBlock = block;

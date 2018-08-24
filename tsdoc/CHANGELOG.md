@@ -1,5 +1,12 @@
 # Change Log - @microsoft/tsdoc
 
+## 0.3.0
+Fri, 24 Aug 2018
+
+- Add TextRange.isEmpty()
+- Improve the ModifierTagSet API
+- Implement the @privateRemarks and @deprecated tags
+
 ## 0.2.0
 Thu, 23 Aug 2018
 

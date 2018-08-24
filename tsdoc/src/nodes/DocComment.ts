@@ -44,6 +44,27 @@ export class DocComment extends DocNode {
   public remarksBlock: DocBlock | undefined;
 
   /**
+   * The `@privateRemarks` tag starts a block of additional commentary that is not meant
+   * for an external audience.  A documentation tool must omit this content from an
+   * API reference web site.  It should also be omitted when generating a normalized
+   * *.d.ts file intended for third-party developers.
+   *
+   * @remarks
+   * A similar effect could be accomplished by enclosing content inside CommonMark
+   * `<!-- -->` comments, or by moving the content into a separate `//` TypeScript comment.
+   * However, the `@privateRemarks` tag is a more formal convention.
+   */
+  public privateRemarks: DocBlock | undefined;
+
+  /**
+   * If present, this block indicates that an API item is no loner supported and may be
+   * removed in a future release.  The `@deprecated` tag must be followed by a sentence
+   * describing the recommended alternative.  Deprecation recursively applies to members
+   * of a container.  For example, if a class is deprecated, then so are all of its members.
+   */
+  public deprecated: DocBlock | undefined;
+
+  /**
    * The collection of parsed `@param` blocks for this doc comment.
    */
   public paramBlocks: DocParamBlock[];
@@ -69,6 +90,7 @@ export class DocComment extends DocNode {
 
     this.summarySection = new DocSection(parameters);
     this.remarksBlock = undefined;
+    this.privateRemarks = undefined;
     this.paramBlocks = [];
     this.returnsBlock = undefined;
 

@@ -63,6 +63,14 @@ export class TextRange {
   }
 
   /**
+   * Returns true if the length of the range is zero.  Note that the object reference may not
+   * be equal to `TextRange.empty`, and the buffer may be different.
+   */
+  public isEmpty(): boolean {
+    return this.pos === this.end;
+  }
+
+  /**
    * Returns the range from the associated string buffer.
    */
   public toString(): string {
