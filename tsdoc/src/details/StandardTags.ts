@@ -342,12 +342,23 @@ export class StandardTags {
   public static allDefinitions: ReadonlyArray<TSDocTagDefinition> = [
     StandardTags.alpha,
     StandardTags.beta,
+    StandardTags.deprecated,
+    StandardTags.eventProperty,
+    StandardTags.example,
     StandardTags.experimental,
+    StandardTags.inheritDoc,
     StandardTags.internal,
+    StandardTags.link,
+    StandardTags.override,
+    StandardTags.packageDocumentation,
     StandardTags.param,
+    StandardTags.privateRemarks,
+    StandardTags.public,
     StandardTags.readonly,
     StandardTags.remarks,
-    StandardTags.returns
+    StandardTags.returns,
+    StandardTags.sealed,
+    StandardTags.virtual
   ];
 
   private static _defineTag(parameters: ITSDocTagDefinitionInternalParameters): TSDocTagDefinition {
