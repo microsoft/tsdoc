@@ -7,14 +7,20 @@ import {
   DocPlainText
 } from '../nodes';
 
+/**
+ * The ParagraphSplitter is a secondary stage that runs after the NodeParser has constructed
+ * the DocComment.  It splits DocParagraph nodes into multiple paragraphs by looking for
+ * paragraph delimiters.  Following CommonMark conventions, paragraphs are delimited by
+ * one or more blank lines.  (These lines end with SoftBreak nodes.)  The blank lines are
+ * not discarded.  Instead, they are attached to the preceding paragraph.  If the DocParagraph
+ * starts with blank lines, they are preserved to avoid creating a paragraph containing only
+ * whitespace.
+ */
 export class ParagraphSplitter {
   private static readonly _whitespaceRegExp: RegExp = /^\s*$/;
 
   /**
-   * For each DocSection, split the DocParagraph into multiple paragraphs by looking
-   * for one or more blank lines that separate the paragraphs.  (These "lines" are ended
-   * by SoftBreak nodes).  The blank lines are assigned to the preceding paragraph,
-   * and referred to as the "trailer".
+   * Split all paragraphs belonging to the provided DocComment.
    */
   public static splitParagraphs(docComment: DocComment): void {
     for (const node of docComment.getChildNodes()) {
@@ -25,11 +31,7 @@ export class ParagraphSplitter {
   }
 
   /**
-   * Split DocParagraph nodes into multiple paragraphs by looking for one or more blank lines
-   * that separate the paragraphs.  (These "lines" are ended by SoftBreak nodes).
-   * The blank lines are attached to the preceding paragraph, and referred to as the "trailer"
-   * for that paragraph.  If blank lines precede the first paragraph, they are attached to that
-   * paragraph, rather than creating a paragraph consisting entirely of whitespace.
+   * Split all paragraphs belonging to the provided DocSection.
    */
   public static splitParagraphsForSection(docSection: DocSection): void {
     const inputNodes: ReadonlyArray<DocNode> = docSection.nodes;
