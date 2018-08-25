@@ -21,7 +21,7 @@ enum State {
  * The main API for parsing TSDoc comments.
  */
 export class LineExtractor {
-  private static readonly _whitespaceRegExp: RegExp = /^\s$/;
+  private static readonly _whitespaceCharacterRegExp: RegExp = /^\s$/;
 
   /**
    * This step parses an entire code comment from slash-star-star until star-slash,
@@ -69,7 +69,7 @@ export class LineExtractor {
             commentRangeStart = currentIndex;
             ++nextIndex; // skip the star
             state = State.BeginComment2;
-          } else if (!LineExtractor._whitespaceRegExp.test(current)) {
+          } else if (!LineExtractor._whitespaceCharacterRegExp.test(current)) {
             parserContext.log.addMessageForTextRange('Expecting a leading "/**"',
               range.getNewRange(currentIndex, currentIndex + 1));
             return false;
@@ -109,7 +109,7 @@ export class LineExtractor {
             ++nextIndex; // skip the slash
             commentRangeEnd = nextIndex;
             state = State.Done;
-          } else if (!LineExtractor._whitespaceRegExp.test(current)) {
+          } else if (!LineExtractor._whitespaceCharacterRegExp.test(current)) {
             collectingLineEnd = nextIndex;
           }
           break;
@@ -137,7 +137,7 @@ export class LineExtractor {
             // Blank line
             lines.push(range.getNewRange(currentIndex, currentIndex));
             collectingLineStart = nextIndex;
-          } else if (!LineExtractor._whitespaceRegExp.test(current)) {
+          } else if (!LineExtractor._whitespaceCharacterRegExp.test(current)) {
             // If the star is missing, then start the line here
             // Example: "/**\nL1*/"
 

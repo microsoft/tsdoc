@@ -62,7 +62,7 @@ export class DocComment extends DocNode {
    * describing the recommended alternative.  Deprecation recursively applies to members
    * of a container.  For example, if a class is deprecated, then so are all of its members.
    */
-  public deprecated: DocBlock | undefined;
+  public deprecatedBlock: DocBlock | undefined;
 
   /**
    * The collection of parsed `@param` blocks for this doc comment.
@@ -91,6 +91,7 @@ export class DocComment extends DocNode {
     this.summarySection = new DocSection(parameters);
     this.remarksBlock = undefined;
     this.privateRemarks = undefined;
+    this.deprecatedBlock = undefined;
     this.paramBlocks = [];
     this.returnsBlock = undefined;
 
@@ -124,7 +125,13 @@ export class DocComment extends DocNode {
       result.push(this.remarksBlock);
     }
 
-    result.push(...this._customBlocks);
+    if (this.privateRemarks) {
+      result.push(this.privateRemarks);
+    }
+
+    if (this.deprecatedBlock) {
+      result.push(this.deprecatedBlock);
+    }
 
     result.push(...this.paramBlocks);
 
@@ -132,7 +139,10 @@ export class DocComment extends DocNode {
       result.push(this.returnsBlock);
     }
 
+    result.push(...this._customBlocks);
+
     result.push(...this.modifierTagSet.nodes);
+
     return result;
   }
 }

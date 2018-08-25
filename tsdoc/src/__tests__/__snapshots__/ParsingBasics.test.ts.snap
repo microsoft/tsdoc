@@ -11,32 +11,37 @@ Object {
     "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "PlainText",
-        "nodeExcerpt": "START ",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-      Object {
-        "kind": "BlockTag",
-        "nodeExcerpt": "@unknownTag",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": " ",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": " END",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "START ",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "BlockTag",
+            "nodeExcerpt": "@unknownTag",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " ",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " END",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
       },
     ],
   },
@@ -79,16 +84,21 @@ Object {
     "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "PlainText",
-        "nodeExcerpt": "Adds two numbers together.",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "Adds two numbers together.",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
       },
     ],
   },
@@ -100,45 +110,50 @@ Object {
         "nodeExcerpt": "@remarks",
       },
       Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": "This method is part of the ",
-      },
-      Object {
-        "kind": "InlineTag",
+        "kind": "Paragraph",
         "nodes": Array [
           Object {
-            "kind": "Particle",
-            "nodeExcerpt": "{",
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
           },
           Object {
-            "kind": "Particle",
-            "nodeExcerpt": "@link",
+            "kind": "PlainText",
+            "nodeExcerpt": "This method is part of the ",
           },
           Object {
-            "kind": "Particle",
-            "nodeExcerpt": " core-library/Math | Math subsystem",
+            "kind": "InlineTag",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "{",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "@link",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": " core-library/Math | Math subsystem",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "}",
+              },
+            ],
           },
           Object {
-            "kind": "Particle",
-            "nodeExcerpt": "}",
+            "kind": "PlainText",
+            "nodeExcerpt": ".",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
           },
         ],
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": ".",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -151,24 +166,29 @@ Object {
           "nodeExcerpt": "@customBlock",
         },
         Object {
-          "kind": "SoftBreak",
-          "nodeExcerpt": "[n]",
-        },
-        Object {
-          "kind": "PlainText",
-          "nodeExcerpt": "This is a custom block containing an ",
-        },
-        Object {
-          "kind": "BlockTag",
-          "nodeExcerpt": "@undefinedBlockTag",
-        },
-        Object {
-          "kind": "SoftBreak",
-          "nodeExcerpt": "[n]",
-        },
-        Object {
-          "kind": "SoftBreak",
-          "nodeExcerpt": "[n]",
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "This is a custom block containing an ",
+            },
+            Object {
+              "kind": "BlockTag",
+              "nodeExcerpt": "@undefinedBlockTag",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
         },
       ],
     },
@@ -193,12 +213,17 @@ Object {
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "PlainText",
-          "nodeExcerpt": "The first number to add",
-        },
-        Object {
-          "kind": "SoftBreak",
-          "nodeExcerpt": "[n]",
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The first number to add",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
         },
       ],
     },
@@ -221,12 +246,17 @@ Object {
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "PlainText",
-          "nodeExcerpt": "The second number to add",
-        },
-        Object {
-          "kind": "SoftBreak",
-          "nodeExcerpt": "[n]",
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The second number to add",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
         },
       ],
     },
@@ -239,36 +269,41 @@ Object {
         "nodeExcerpt": "@returns",
       },
       Object {
-        "kind": "PlainText",
-        "nodeExcerpt": " The sum of ",
-      },
-      Object {
-        "kind": "CodeSpan",
-        "nodeExcerpt": "[c]x[c]",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": " and ",
-      },
-      Object {
-        "kind": "CodeSpan",
-        "nodeExcerpt": "[c]y[c]",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": " ",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " The sum of ",
+          },
+          Object {
+            "kind": "CodeSpan",
+            "nodeExcerpt": "[c]x[c]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " and ",
+          },
+          Object {
+            "kind": "CodeSpan",
+            "nodeExcerpt": "[c]y[c]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " ",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
       },
     ],
   },
@@ -313,12 +348,17 @@ Object {
           "kind": "Particle",
         },
         Object {
-          "kind": "PlainText",
-          "nodeExcerpt": " - The first number to add",
-        },
-        Object {
-          "kind": "SoftBreak",
-          "nodeExcerpt": "[n]",
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": " - The first number to add",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
         },
       ],
     },
@@ -336,12 +376,17 @@ Object {
           "kind": "Particle",
         },
         Object {
-          "kind": "PlainText",
-          "nodeExcerpt": " y The first number to add",
-        },
-        Object {
-          "kind": "SoftBreak",
-          "nodeExcerpt": "[n]",
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": " y The first number to add",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
         },
       ],
     },
@@ -354,24 +399,29 @@ Object {
         "nodeExcerpt": "@returns",
       },
       Object {
-        "kind": "PlainText",
-        "nodeExcerpt": " The sum of ",
-      },
-      Object {
-        "kind": "CodeSpan",
-        "nodeExcerpt": "[c]x[c]",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": " and ",
-      },
-      Object {
-        "kind": "CodeSpan",
-        "nodeExcerpt": "[c]y[c]",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " The sum of ",
+          },
+          Object {
+            "kind": "CodeSpan",
+            "nodeExcerpt": "[c]x[c]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " and ",
+          },
+          Object {
+            "kind": "CodeSpan",
+            "nodeExcerpt": "[c]y[c]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
       },
     ],
   },
@@ -398,8 +448,13 @@ Object {
     "kind": "Section",
     "nodes": Array [
       Object {
-        "kind": "PlainText",
-        "nodeExcerpt": "Adds two numbers together. ",
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "Adds two numbers together. ",
+          },
+        ],
       },
     ],
   },
@@ -411,49 +466,54 @@ Object {
         "nodeExcerpt": "@remarks",
       },
       Object {
-        "kind": "PlainText",
-        "nodeExcerpt": " This method is part of the",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-      Object {
-        "kind": "InlineTag",
+        "kind": "Paragraph",
         "nodes": Array [
           Object {
-            "kind": "Particle",
-            "nodeExcerpt": "{",
+            "kind": "PlainText",
+            "nodeExcerpt": " This method is part of the",
           },
           Object {
-            "kind": "Particle",
-            "nodeExcerpt": "@link",
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
           },
           Object {
-            "kind": "Particle",
-            "nodeExcerpt": " core-library/Math | Math subsystem",
+            "kind": "InlineTag",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "{",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "@link",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": " core-library/Math | Math subsystem",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "}",
+              },
+            ],
           },
           Object {
-            "kind": "Particle",
-            "nodeExcerpt": "}",
+            "kind": "PlainText",
+            "nodeExcerpt": ".",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " ",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
           },
         ],
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": ".",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": " ",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
       },
     ],
   },
@@ -466,20 +526,25 @@ Object {
           "nodeExcerpt": "@customBlock",
         },
         Object {
-          "kind": "SoftBreak",
-          "nodeExcerpt": "[n]",
-        },
-        Object {
-          "kind": "PlainText",
-          "nodeExcerpt": "This is a custom block containing an ",
-        },
-        Object {
-          "kind": "BlockTag",
-          "nodeExcerpt": "@undefinedBlockTag",
-        },
-        Object {
-          "kind": "SoftBreak",
-          "nodeExcerpt": "[n]",
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "This is a custom block containing an ",
+            },
+            Object {
+              "kind": "BlockTag",
+              "nodeExcerpt": "@undefinedBlockTag",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
         },
       ],
     },
@@ -504,8 +569,13 @@ Object {
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "PlainText",
-          "nodeExcerpt": "The first number to add ",
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The first number to add ",
+            },
+          ],
         },
       ],
     },
@@ -528,12 +598,17 @@ Object {
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "PlainText",
-          "nodeExcerpt": "The second number to add",
-        },
-        Object {
-          "kind": "SoftBreak",
-          "nodeExcerpt": "[n]",
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The second number to add",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
         },
       ],
     },
@@ -546,24 +621,29 @@ Object {
         "nodeExcerpt": "@returns",
       },
       Object {
-        "kind": "PlainText",
-        "nodeExcerpt": " The sum of ",
-      },
-      Object {
-        "kind": "CodeSpan",
-        "nodeExcerpt": "[c]x[c]",
-      },
-      Object {
-        "kind": "PlainText",
-        "nodeExcerpt": " and ",
-      },
-      Object {
-        "kind": "CodeSpan",
-        "nodeExcerpt": "[c]y[c]",
-      },
-      Object {
-        "kind": "SoftBreak",
-        "nodeExcerpt": "[n]",
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " The sum of ",
+          },
+          Object {
+            "kind": "CodeSpan",
+            "nodeExcerpt": "[c]x[c]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " and ",
+          },
+          Object {
+            "kind": "CodeSpan",
+            "nodeExcerpt": "[c]y[c]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
       },
     ],
   },

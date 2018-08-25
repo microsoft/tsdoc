@@ -1,5 +1,10 @@
 # Change Log - @microsoft/tsdoc
 
+## (next release)
+
+- `DocSection` content is now grouped into `DocParagraph` nodes; blank lines are used to indicate paragraph boundaries
+- Rename `DocComment.deprecated` to `deprecatedBlock`
+
 ## 0.3.0
 Fri, 24 Aug 2018
 

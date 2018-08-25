@@ -200,7 +200,7 @@ export class NodeParser {
         docComment.privateRemarks = block;
         break;
       case StandardTags.deprecated.tagNameWithUpperCase:
-        docComment.deprecated = block;
+        docComment.deprecatedBlock = block;
         break;
       case StandardTags.returns.tagNameWithUpperCase:
         docComment.returnsBlock = block;
@@ -298,7 +298,7 @@ export class NodeParser {
   }
 
   private _pushDocNode(docNode: DocNode): void {
-    this._currentSection.appendNode(docNode);
+    this._currentSection.appendNodeInParagraph(docNode);
     this._verbatimNodes.push(docNode);
   }
 
