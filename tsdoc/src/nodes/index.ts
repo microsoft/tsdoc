@@ -10,6 +10,7 @@ export * from './DocHtmlEndTag';
 export * from './DocHtmlStartTag';
 export * from './DocInlineTag';
 export * from './DocNode';
+export * from './DocNodeContainer';
 export * from './DocParagraph';
 export * from './DocParamBlock';
 export * from './DocParticle';

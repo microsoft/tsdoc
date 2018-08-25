@@ -1,10 +1,10 @@
 import { DocNodeKind, DocNode } from './DocNode';
-import { DocSection, IDocSectionParameters } from './DocSection';
+import { DocNodeContainer, IDocNodeContainerParameters } from './DocNodeContainer';
 
 /**
  * Constructor parameters for {@link DocParagraph}.
  */
-export interface IDocParagraphParameters extends IDocSectionParameters {
+export interface IDocParagraphParameters extends IDocNodeContainerParameters {
 }
 
 /**
@@ -12,7 +12,7 @@ export interface IDocParagraphParameters extends IDocSectionParameters {
  * Like CommonMark, the TSDoc syntax uses blank lines to delineate paragraphs
  * instead of explicitly notating them.
  */
-export class DocParagraph extends DocSection {
+export class DocParagraph extends DocNodeContainer {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Paragraph;
 
