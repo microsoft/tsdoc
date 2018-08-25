@@ -19,12 +19,19 @@ export class ParagraphSplitter {
   public static splitParagraphs(docComment: DocComment): void {
     for (const node of docComment.getChildNodes()) {
       if (node instanceof DocSection) {
-        ParagraphSplitter._splitParagraphsForSection(node);
+        ParagraphSplitter.splitParagraphsForSection(node);
       }
     }
   }
 
-  private static _splitParagraphsForSection(docSection: DocSection): void {
+  /**
+   * Split DocParagraph nodes into multiple paragraphs by looking for one or more blank lines
+   * that separate the paragraphs.  (These "lines" are ended by SoftBreak nodes).
+   * The blank lines are attached to the preceding paragraph, and referred to as the "trailer"
+   * for that paragraph.  If blank lines precede the first paragraph, they are attached to that
+   * paragraph, rather than creating a paragraph consisting entirely of whitespace.
+   */
+  public static splitParagraphsForSection(docSection: DocSection): void {
     const inputNodes: ReadonlyArray<DocNode> = docSection.nodes;
     const outputNodes: DocNode[] = [];
 

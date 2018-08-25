@@ -103,3 +103,131 @@ Object {
   "_7_logMessages": Array [],
 }
 `;
+
+exports[`02 Degenerate paragraph 1`] = `
+Object {
+  "_0_lines": Array [
+    "line 1",
+    "line 2",
+    "",
+    "  @public line 3",
+  ],
+  "_1_summarySection": Object {
+    "kind": "Section",
+    "nodes": Array [
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "line 1",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "line 2",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
+      },
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "  ",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " line 3",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
+      },
+    ],
+  },
+  "_2_remarksBlock": undefined,
+  "_3_customBlocks": Array [],
+  "_4_paramBlocks": Array [],
+  "_5_returnsBlock": undefined,
+  "_6_modifierTags": Array [
+    Object {
+      "kind": "BlockTag",
+      "nodeExcerpt": "@public",
+    },
+  ],
+  "_7_logMessages": Array [],
+}
+`;
+
+exports[`03 Degenerate manually constructed nodes 1`] = `
+Object {
+  "kind": "Section",
+  "nodes": Array [
+    Object {
+      "kind": "Paragraph",
+      "nodes": Array [
+        Object {
+          "kind": "PlainText",
+        },
+        Object {
+          "kind": "SoftBreak",
+        },
+        Object {
+          "kind": "PlainText",
+        },
+        Object {
+          "kind": "SoftBreak",
+        },
+      ],
+    },
+    Object {
+      "kind": "Paragraph",
+      "nodes": Array [
+        Object {
+          "kind": "PlainText",
+        },
+        Object {
+          "kind": "PlainText",
+        },
+        Object {
+          "kind": "BlockTag",
+        },
+        Object {
+          "kind": "PlainText",
+        },
+        Object {
+          "kind": "SoftBreak",
+        },
+        Object {
+          "kind": "SoftBreak",
+        },
+      ],
+    },
+    Object {
+      "kind": "Paragraph",
+      "nodes": Array [
+        Object {
+          "kind": "PlainText",
+        },
+      ],
+    },
+    Object {
+      "kind": "Paragraph",
+    },
+  ],
+}
+`;

@@ -1,4 +1,6 @@
 import { TestHelpers } from '../parser/__tests__/TestHelpers';
+import { ParagraphSplitter } from '../parser/ParagraphSplitter';
+import { DocSection, DocPlainText, DocSoftBreak, DocParagraph, DocBlockTag } from '../nodes';
 
 test('01 Basic paragraph splitting', () => {
   TestHelpers.parseAndMatchDocCommentSnapshot([
@@ -16,4 +18,41 @@ test('01 Basic paragraph splitting', () => {
     ' *   ',
     ' */'
   ].join('\n'));
+});
+
+test('02 Degenerate paragraph', () => {
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/** line 1',
+    ' * line 2',
+    '',
+    ' *   @public line 3*/'
+  ].join('\n'));
+});
+
+test('03 Degenerate manually constructed nodes', () => {
+  const docSection: DocSection = new DocSection({ });
+
+  const docParagraph: DocParagraph = new DocParagraph({ } );
+  docParagraph.appendNodes([
+    new DocPlainText({ text: '  para 1 ' }),
+    new DocSoftBreak({ }),
+    new DocPlainText({ text: '   ' }),
+    new DocSoftBreak({ }),
+    new DocPlainText({ text: ' \t  ' }),
+    new DocPlainText({ text: '   ' }),
+    new DocBlockTag({ tagName: '@public' }),
+    new DocPlainText({ text: '  para 2 ' }),
+    new DocSoftBreak({ }),
+    new DocSoftBreak({ }),
+    // Currently newlines are allowed inside DocPlainText but are ignored by the splitter
+    new DocPlainText({ text: '  para 3\n\npara 3  ' })
+  ]);
+
+  docSection.appendNode(docParagraph);
+
+  // Currently we do not discard empty paragraphs
+  docSection.appendNode(new DocParagraph({ }));
+
+  ParagraphSplitter.splitParagraphsForSection(docSection);
+  expect(TestHelpers.getDocNodeSnapshot(docSection)).toMatchSnapshot();
 });
