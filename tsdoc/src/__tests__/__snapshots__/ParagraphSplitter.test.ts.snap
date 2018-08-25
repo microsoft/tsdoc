@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`01 Basic paragraph splitting 1`] = `
+Object {
+  "_0_lines": Array [
+    "",
+    "This is the",
+    "first paragraph.",
+    "",
+    "",
+    "",
+    "This is the second paragraph.",
+    "",
+    "This is the third paragraph.",
+    "",
+    "",
+  ],
+  "_1_summarySection": Object {
+    "kind": "Section",
+    "nodes": Array [
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "This is the",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "first paragraph.",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
+      },
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "This is the second paragraph.",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
+      },
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "This is the third paragraph.",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
+      },
+    ],
+  },
+  "_2_remarksBlock": undefined,
+  "_3_customBlocks": Array [],
+  "_4_paramBlocks": Array [],
+  "_5_returnsBlock": undefined,
+  "_6_modifierTags": Array [],
+  "_7_logMessages": Array [],
+}
+`;

@@ -59,9 +59,19 @@ export abstract class DocNodeContainer extends DocNode {
     this._nodes.push(docNode);
   }
 
+  /**
+   * Append nodes to the collection.
+   */
   public appendNodes(docNodes: ReadonlyArray<DocNode>): void {
     for (const docNode of docNodes) {
       this.appendNode(docNode);
     }
+  }
+
+  /**
+   * Remove all nodes from the collection.
+   */
+  public clearNodes(): void {
+    this._nodes.length = 0;
   }
 }

@@ -42,21 +42,3 @@ test('03 Backslash escapes: negative examples', () => {
     ' */'
   ].join('\n'));
 });
-
-test('04 Paragraphs', () => {
-  TestHelpers.parseAndMatchNodeParserSnapshot([
-    '/**',
-    ' *    ',
-    ' * This is the',
-    ' * first paragraph.',
-    ' *   \t   ',
-    ' *  ',
-    ' *   \t   ',
-    ' * This is the second paragraph.',
-    ' *',
-    ' * This is the third paragraph.',
-    ' *',
-    ' *   ',
-    ' */'
-  ].join('\n'));
-});
