@@ -25,11 +25,11 @@ import { Excerpt, IExcerptParameters } from './Excerpt';
 import { TokenReader } from './TokenReader';
 import { StringChecks } from './StringChecks';
 import { ModifierTagSet } from '../details/ModifierTagSet';
+import { TSDocParserConfiguration } from './TSDocParserConfiguration';
 import {
   TSDocTagDefinition,
-  TSDocParserConfiguration,
   TSDocTagSyntaxKind
-} from './TSDocParserConfiguration';
+} from './TSDocTagDefinition';
 import { StandardTags } from '../details/StandardTags';
 
 interface IFailure {
