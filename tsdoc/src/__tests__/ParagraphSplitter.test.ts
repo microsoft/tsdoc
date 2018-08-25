@@ -44,8 +44,7 @@ test('03 Degenerate manually constructed nodes', () => {
     new DocPlainText({ text: '  para 2 ' }),
     new DocSoftBreak({ }),
     new DocSoftBreak({ }),
-    // Currently newlines are allowed inside DocPlainText but are ignored by the splitter
-    new DocPlainText({ text: '  para 3\n\npara 3  ' })
+    new DocPlainText({ text: '  para 3  ' })
   ]);
 
   docSection.appendNode(docParagraph);
