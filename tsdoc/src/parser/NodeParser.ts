@@ -18,7 +18,8 @@ import {
   DocBlock,
   DocNodeKind,
   DocSection,
-  DocParamBlock
+  DocParamBlock,
+  DocCodeFence
 } from '../nodes';
 import { TokenSequence } from './TokenSequence';
 import { Excerpt, IExcerptParameters } from './Excerpt';
@@ -77,13 +78,13 @@ export class NodeParser {
         case TokenKind.Newline:
           this._pushAccumulatedPlainText();
           this._tokenReader.readToken();
-          this._pushDocNode(new DocSoftBreak({
+          this._pushParagraphNode(new DocSoftBreak({
             excerpt: new Excerpt({ content: this._tokenReader.extractAccumulatedSequence() })
           }));
           break;
         case TokenKind.Backslash:
           this._pushAccumulatedPlainText();
-          this._pushDocNode(this._parseBackslashEscape());
+          this._pushParagraphNode(this._parseBackslashEscape());
           break;
         case TokenKind.AtSign:
           this._pushAccumulatedPlainText();
@@ -91,30 +92,36 @@ export class NodeParser {
           break;
         case TokenKind.LeftCurlyBracket:
           this._pushAccumulatedPlainText();
-          this._pushDocNode(this._parseInlineTag());
+          this._pushParagraphNode(this._parseInlineTag());
           break;
         case TokenKind.RightCurlyBracket:
           this._pushAccumulatedPlainText();
-          this._pushDocNode(this._createError(
+          this._pushParagraphNode(this._createError(
             'The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag'));
           break;
         case TokenKind.LessThan:
           this._pushAccumulatedPlainText();
           // Look ahead two tokens to see if this is "<a>" or "</a>".
           if (this._tokenReader.peekTokenAfterKind() === TokenKind.Slash) {
-            this._pushDocNode(this._parseHtmlEndTag());
+            this._pushParagraphNode(this._parseHtmlEndTag());
           } else {
-            this._pushDocNode(this._parseHtmlStartTag());
+            this._pushParagraphNode(this._parseHtmlStartTag());
           }
           break;
         case TokenKind.GreaterThan:
           this._pushAccumulatedPlainText();
-          this._pushDocNode(this._createError(
+          this._pushParagraphNode(this._createError(
             'The ">" character should be escaped using a backslash to avoid confusion with an HTML tag'));
           break;
         case TokenKind.Backtick:
           this._pushAccumulatedPlainText();
-          this._pushDocNode(this._parseCodeSpan());
+
+          if (this._tokenReader.peekTokenAfterKind() === TokenKind.Backtick
+            && this._tokenReader.peekTokenAfterAfterKind() === TokenKind.Backtick) {
+            this._pushSectionNode(this._parseCodeFence());
+          } else {
+            this._pushParagraphNode(this._parseCodeSpan());
+          }
           break;
         default:
           // If nobody recognized this token, then accumulate plain text
@@ -129,7 +136,7 @@ export class NodeParser {
     if (!this._tokenReader.isAccumulatedSequenceEmpty()) {
       const plainTextSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
-      this._pushDocNode(new DocPlainText({
+      this._pushParagraphNode(new DocPlainText({
         text: plainTextSequence.toString(),
         excerpt: new Excerpt({ content: plainTextSequence })
       }));
@@ -143,7 +150,7 @@ export class NodeParser {
 
     const parsedBlockTag: DocNode = this._parseBlockTag();
     if (parsedBlockTag.kind !== DocNodeKind.BlockTag) {
-      this._pushDocNode(parsedBlockTag);
+      this._pushParagraphNode(parsedBlockTag);
       return;
     }
 
@@ -186,7 +193,7 @@ export class NodeParser {
       }
     }
 
-    this._pushDocNode(docBlockTag);
+    this._pushParagraphNode(docBlockTag);
   }
 
   private _addBlockToDocComment(block: DocBlock): void {
@@ -297,8 +304,13 @@ export class NodeParser {
     });
   }
 
-  private _pushDocNode(docNode: DocNode): void {
+  private _pushParagraphNode(docNode: DocNode): void {
     this._currentSection.appendNodeInParagraph(docNode);
+    this._verbatimNodes.push(docNode);
+  }
+
+  private _pushSectionNode(docNode: DocNode): void {
+    this._currentSection.appendNode(docNode);
     this._verbatimNodes.push(docNode);
   }
 
@@ -779,6 +791,192 @@ export class NodeParser {
     }
 
     return htmlName;
+  }
+
+  private _parseCodeFence(): DocNode {
+    this._tokenReader.assertAccumulatedSequenceIsEmpty();
+
+    const startMarker: number = this._tokenReader.createMarker();
+    const endOfOpeningDelimiterMarker: number = startMarker + 2;
+
+    switch (this._tokenReader.peekPreviousTokenKind()) {
+      case TokenKind.Newline:
+      case TokenKind.None:
+        break;
+      default:
+        return this._backtrackAndCreateErrorRange(
+          startMarker,
+          // include the three backticks so they don't get reinterpreted as a code span
+          endOfOpeningDelimiterMarker,
+          'The opening backtick for a code fence must appear at the start of the line'
+        );
+    }
+
+    // Read the opening ``` delimiter
+    let openingDelimiter: string = '';
+    openingDelimiter += this._tokenReader.readToken();
+    openingDelimiter += this._tokenReader.readToken();
+    openingDelimiter += this._tokenReader.readToken();
+
+    if (openingDelimiter !== '```') {
+      // This would be a parser bug -- the caller of _parseCodeFence() should have verified this while
+      // looking ahead to distinguish code spans/fences
+      throw new Error('Expecting three backticks');
+    }
+
+    const openingDelimiterSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
+
+    // Read any spaces after the delimiter
+    while (this._tokenReader.peekTokenKind() === TokenKind.Spacing) {
+      this._tokenReader.readToken();
+    }
+
+    const openingDelimiterExcerpt: Excerpt = new Excerpt({
+      content: openingDelimiterSequence,
+      spacingAfterContent: this._tokenReader.tryExtractAccumulatedSequence()
+    });
+
+    // Read the language specifier (if present) and newline
+    let done: boolean = false;
+    let startOfPaddingMarker: number | undefined = undefined;
+    while (!done) {
+      switch (this._tokenReader.peekTokenKind()) {
+        case TokenKind.Spacing:
+        case TokenKind.Newline:
+          if (startOfPaddingMarker === undefined) {
+            // Starting a new run of spacing characters
+            startOfPaddingMarker = this._tokenReader.createMarker();
+          }
+          if (this._tokenReader.peekTokenKind() === TokenKind.Newline) {
+            done = true;
+          }
+          this._tokenReader.readToken();
+          break;
+        case TokenKind.Backtick:
+          const failure: IFailure = this._createFailureForToken(
+            'The language specifier cannot contain backtick characters');
+          return this._backtrackAndCreateErrorRangeForFailure(startMarker, endOfOpeningDelimiterMarker,
+            'Error parsing code fence: ', failure);
+        case TokenKind.EndOfInput:
+          const failure2: IFailure = this._createFailureForToken(
+            'Missing closing delimiter');
+          return this._backtrackAndCreateErrorRangeForFailure(startMarker, endOfOpeningDelimiterMarker,
+            'Error parsing code fence: ', failure2);
+        default:
+          // more non-spacing content
+          startOfPaddingMarker = undefined;
+          this._tokenReader.readToken();
+          break;
+      }
+    }
+
+    // At this point, we must have accumulated at least a newline token.
+    // Example: "language    \n"
+    const languageSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
+
+    const languageExcerpt: Excerpt = new Excerpt({
+      content: languageSequence.getNewSequence(languageSequence.startIndex, startOfPaddingMarker!),
+      spacingAfterContent: languageSequence.getNewSequence(startOfPaddingMarker!, languageSequence.endIndex)
+    });
+
+    // Read the code content until we see the closing ``` delimiter
+    let codeEndMarker: number = -1;
+    done = false;
+    let tokenBeforeDelimiter: Token;
+    while (!done) {
+      switch (this._tokenReader.peekTokenKind()) {
+        case TokenKind.EndOfInput:
+          const failure2: IFailure = this._createFailureForToken(
+            'Missing closing delimiter');
+          return this._backtrackAndCreateErrorRangeForFailure(startMarker, endOfOpeningDelimiterMarker,
+            'Error parsing code fence: ', failure2);
+        case TokenKind.Newline:
+          tokenBeforeDelimiter = this._tokenReader.readToken();
+          codeEndMarker = this._tokenReader.createMarker();
+
+          while (this._tokenReader.peekTokenKind() === TokenKind.Spacing) {
+            tokenBeforeDelimiter = this._tokenReader.readToken();
+          }
+
+          if (this._tokenReader.peekTokenKind() !== TokenKind.Backtick) {
+            break;
+          }
+          this._tokenReader.readToken(); // first backtick
+
+          if (this._tokenReader.peekTokenKind() !== TokenKind.Backtick) {
+            break;
+          }
+          this._tokenReader.readToken(); // second backtick
+
+          if (this._tokenReader.peekTokenKind() !== TokenKind.Backtick) {
+            break;
+          }
+          this._tokenReader.readToken(); // third backtick
+
+          done = true;
+          break;
+        default:
+          this._tokenReader.readToken();
+          break;
+      }
+    }
+
+    if (tokenBeforeDelimiter!.kind !== TokenKind.Newline) {
+      this._parserContext.log.addMessageForTextRange(
+        'The closing delimiter for a code fence must not be indented',
+        tokenBeforeDelimiter!.range);
+    }
+
+    // Example: "code 1\ncode 2\n   ```"
+    const codeAndDelimiterSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
+
+    const textExcerpt: Excerpt = new Excerpt({
+      content: codeAndDelimiterSequence.getNewSequence(codeAndDelimiterSequence.startIndex, codeEndMarker)
+    });
+
+    // Read the spacing and newline after the closing delimiter
+    done = false;
+    let alreadyReportedError: boolean = false;
+    while (!done) {
+      switch (this._tokenReader.peekTokenKind()) {
+        case TokenKind.Spacing:
+          this._tokenReader.readToken();
+          break;
+        case TokenKind.Newline:
+          done = true;
+          this._tokenReader.readToken();
+          break;
+        case TokenKind.EndOfInput:
+          done = true;
+          break;
+        default:
+          if (!alreadyReportedError) {
+            this._parserContext.log.addMessageForTextRange(
+              'Unexpected characters after closing delimiter for code fence',
+              this._tokenReader.peekToken().range);
+            alreadyReportedError = true;
+          }
+          done = true;
+          break;
+      }
+    }
+
+    const closingDelimiterExcerpt: Excerpt = new Excerpt({
+      content: codeAndDelimiterSequence.getNewSequence(codeEndMarker, codeAndDelimiterSequence.endIndex),
+      spacingAfterContent: this._tokenReader.tryExtractAccumulatedSequence()
+    });
+
+    return new DocCodeFence({
+      openingDelimiterExcerpt: openingDelimiterExcerpt,
+
+      languageExcerpt: languageExcerpt,
+      language: languageExcerpt.content.toString(),
+
+      textExcerpt: textExcerpt,
+      text: textExcerpt.content.toString(),
+
+      closingDelimiterExcerpt: closingDelimiterExcerpt
+    });
   }
 
   private _parseCodeSpan(): DocNode {

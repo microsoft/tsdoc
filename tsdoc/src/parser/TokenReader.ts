@@ -88,7 +88,7 @@ export class TokenReader {
   }
 
   /**
-   * Show the next token that will be returned by _readToken(), without
+   * Returns the next token that would be returned by _readToken(), without
    * consuming anything.
    */
   public peekToken(): Token {
@@ -96,7 +96,7 @@ export class TokenReader {
   }
 
   /**
-   * Show the TokenKind for the next token that will be returned by _readToken(), without
+   * Returns the TokenKind for the next token that would be returned by _readToken(), without
    * consuming anything.
    */
   public peekTokenKind(): TokenKind {
@@ -104,14 +104,23 @@ export class TokenReader {
   }
 
   /**
-   * Show the TokenKind for the token after the next token that will be returned by _readToken(),
-   * without consuming anything.  In other words, look ahead two tokens.
+   * Like peekTokenKind(), but looks ahead two tokens.
    */
   public peekTokenAfterKind(): TokenKind {
     if (this._currentIndex + 1 >= this.tokens.length) {
       return TokenKind.None;
     }
     return this.tokens[this._currentIndex + 1].kind;
+  }
+
+  /**
+   * Like peekTokenKind(), but looks ahead threee tokens.
+   */
+  public peekTokenAfterAfterKind(): TokenKind {
+    if (this._currentIndex + 2 >= this.tokens.length) {
+      return TokenKind.None;
+    }
+    return this.tokens[this._currentIndex + 2].kind;
   }
 
   /**

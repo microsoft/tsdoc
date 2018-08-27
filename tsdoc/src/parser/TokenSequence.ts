@@ -57,6 +57,18 @@ export class TokenSequence {
   }
 
   /**
+   * Constructs a TokenSequence that corresponds to a different range of tokens,
+   * e.g. a subrange.
+   */
+  public getNewSequence(startIndex: number, endIndex: number): TokenSequence {
+    return new TokenSequence({
+      parserContext: this.parserContext,
+      startIndex: startIndex,
+      endIndex: endIndex
+    });
+  }
+
+  /**
    * Returns a TextRange that includes all tokens in the sequence (including any additional
    * characters between doc comment lines).
    */

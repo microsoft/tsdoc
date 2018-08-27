@@ -9,7 +9,7 @@ export interface IDocCodeFenceParameters extends IDocNodeParameters {
   openingDelimiterExcerpt?: Excerpt;
 
   languageExcerpt?: Excerpt;
-  language?: string | 'ts' | undefined;
+  language?: string | 'ts' | '';
 
   textExcerpt?: Excerpt;
   text: string;
@@ -30,7 +30,7 @@ export class DocCodeFence extends DocNode {
   private readonly _openingDelimiterParticle: DocParticle;
 
   // The "=" delimiter
-  private readonly _languageParticle: DocParticle | undefined;
+  private readonly _languageParticle: DocParticle;
 
   private readonly _textParticle: DocParticle;
 
@@ -49,12 +49,10 @@ export class DocCodeFence extends DocNode {
       content: '```'
     });
 
-    if (parameters.language && parameters.language.length > 0) {
-      this._languageParticle = new DocParticle({
-        excerpt: parameters.languageExcerpt,
-        content: parameters.language
-      });
-    }
+    this._languageParticle = new DocParticle({
+      excerpt: parameters.languageExcerpt,
+      content: parameters.language || ''
+    });
 
     this._textParticle = new DocParticle({
       excerpt: parameters.textExcerpt,
@@ -78,11 +76,8 @@ export class DocCodeFence extends DocNode {
    *
    * CommonMark refers to this field as the "info string".
    */
-  public get language(): string | 'ts' | undefined {
-    if (this._languageParticle) {
-      return this._languageParticle.content;
-    }
-    return undefined;
+  public get language(): string | 'ts' | '' {
+    return this._languageParticle.content;
   }
 
   /**
@@ -97,17 +92,11 @@ export class DocCodeFence extends DocNode {
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    const result: DocNode[] = [ ];
-
-    result.push(this._openingDelimiterParticle);
-
-    if (this._languageParticle) {
-      result.push(this._languageParticle);
-    }
-
-    result.push(this._textParticle);
-    result.push(this._closingDelimiterParticle);
-
-    return result;
+    return [
+      this._openingDelimiterParticle,
+      this._languageParticle,
+      this._textParticle,
+      this._closingDelimiterParticle
+    ];
   }
 }
