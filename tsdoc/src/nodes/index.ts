@@ -1,6 +1,7 @@
 
 export * from './DocBlock';
 export * from './DocBlockTag';
+export * from './DocCodeFence';
 export * from './DocCodeSpan';
 export * from './DocComment';
 export * from './DocErrorText';

@@ -16,7 +16,7 @@ export class DocCodeSpan extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.CodeSpan;
 
   /**
-   * The text that should be rendered as code.
+   * The text that should be rendered as code, excluding the backtick delimiters.
    */
   public readonly text: string;
 
