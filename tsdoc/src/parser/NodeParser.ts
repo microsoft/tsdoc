@@ -930,7 +930,7 @@ export class NodeParser {
     // Example: "code 1\ncode 2\n   ```"
     const codeAndDelimiterSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
-    const textExcerpt: Excerpt = new Excerpt({
+    const codeExcerpt: Excerpt = new Excerpt({
       content: codeAndDelimiterSequence.getNewSequence(codeAndDelimiterSequence.startIndex, codeEndMarker)
     });
 
@@ -972,8 +972,8 @@ export class NodeParser {
       languageExcerpt: languageExcerpt,
       language: languageExcerpt.content.toString(),
 
-      textExcerpt: textExcerpt,
-      text: textExcerpt.content.toString(),
+      codeExcerpt: codeExcerpt,
+      code: codeExcerpt.content.toString(),
 
       closingDelimiterExcerpt: closingDelimiterExcerpt
     });
@@ -999,7 +999,7 @@ export class NodeParser {
 
     this._tokenReader.readToken(); // read the backtick
 
-    let text: string = '';
+    let code: string = '';
     let closingBacktickMarker: number;
 
     // Parse the content backtick
@@ -1015,7 +1015,7 @@ export class NodeParser {
         return this._backtrackAndCreateError(marker,
           'The code span is missing its closing backtick');
       }
-      text += this._tokenReader.readToken().toString();
+      code += this._tokenReader.readToken().toString();
     }
 
     // Make sure there's whitespace after
@@ -1032,7 +1032,7 @@ export class NodeParser {
 
     return new DocCodeSpan({
       excerpt: new Excerpt({ content: this._tokenReader.extractAccumulatedSequence() }),
-      text
+      code
     });
   }
 

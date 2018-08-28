@@ -4,7 +4,7 @@ import { DocNodeKind, IDocNodeParameters, DocNode } from './DocNode';
  * Constructor parameters for {@link DocCodeSpan}.
  */
 export interface IDocCodeSpanParameters extends IDocNodeParameters {
-  text: string;
+  code: string;
 }
 
 /**
@@ -18,7 +18,7 @@ export class DocCodeSpan extends DocNode {
   /**
    * The text that should be rendered as code, excluding the backtick delimiters.
    */
-  public readonly text: string;
+  public readonly code: string;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -26,6 +26,6 @@ export class DocCodeSpan extends DocNode {
    */
   public constructor(parameters: IDocCodeSpanParameters) {
     super(parameters);
-    this.text = parameters.text;
+    this.code = parameters.code;
   }
 }

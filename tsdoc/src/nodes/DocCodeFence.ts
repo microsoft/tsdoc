@@ -11,8 +11,8 @@ export interface IDocCodeFenceParameters extends IDocNodeParameters {
   languageExcerpt?: Excerpt;
   language?: string | 'ts' | '';
 
-  textExcerpt?: Excerpt;
-  text: string;
+  codeExcerpt?: Excerpt;
+  code: string;
 
   closingDelimiterExcerpt?: Excerpt;
 }
@@ -32,7 +32,7 @@ export class DocCodeFence extends DocNode {
   // The "=" delimiter
   private readonly _languageParticle: DocParticle;
 
-  private readonly _textParticle: DocParticle;
+  private readonly _codeParticle: DocParticle;
 
   // The attribute value including quotation marks
   private readonly _closingDelimiterParticle: DocParticle;
@@ -54,9 +54,9 @@ export class DocCodeFence extends DocNode {
       content: parameters.language || ''
     });
 
-    this._textParticle = new DocParticle({
-      excerpt: parameters.textExcerpt,
-      content: parameters.text
+    this._codeParticle = new DocParticle({
+      excerpt: parameters.codeExcerpt,
+      content: parameters.code
     });
 
     this._closingDelimiterParticle = new DocParticle({
@@ -83,8 +83,8 @@ export class DocCodeFence extends DocNode {
   /**
    * The text that should be rendered as code.
    */
-  public get text(): string {
-    return this._textParticle.content;
+  public get code(): string {
+    return this._codeParticle.content;
   }
 
   /**
@@ -95,7 +95,7 @@ export class DocCodeFence extends DocNode {
     return [
       this._openingDelimiterParticle,
       this._languageParticle,
-      this._textParticle,
+      this._codeParticle,
       this._closingDelimiterParticle
     ];
   }
