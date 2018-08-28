@@ -826,7 +826,8 @@ export class NodeParser {
 
     const openingDelimiterSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
-    // Read any spaces after the delimiter
+    // Read any spaces after the delimiter,
+    // but NOT the Newline since that goes with the language particle
     while (this._tokenReader.peekTokenKind() === TokenKind.Spacing) {
       this._tokenReader.readToken();
     }
@@ -871,11 +872,13 @@ export class NodeParser {
     }
 
     // At this point, we must have accumulated at least a newline token.
-    // Example: "language    \n"
+    // Example: "pov-ray sdl    \n"
     const languageSequence: TokenSequence = this._tokenReader.extractAccumulatedSequence();
 
     const languageExcerpt: Excerpt = new Excerpt({
+      // Example: "pov-ray sdl"
       content: languageSequence.getNewSequence(languageSequence.startIndex, startOfPaddingMarker!),
+      // Example: "    \n"
       spacingAfterContent: languageSequence.getNewSequence(startOfPaddingMarker!, languageSequence.endIndex)
     });
 
@@ -936,7 +939,6 @@ export class NodeParser {
 
     // Read the spacing and newline after the closing delimiter
     done = false;
-    let alreadyReportedError: boolean = false;
     while (!done) {
       switch (this._tokenReader.peekTokenKind()) {
         case TokenKind.Spacing:
@@ -950,19 +952,18 @@ export class NodeParser {
           done = true;
           break;
         default:
-          if (!alreadyReportedError) {
-            this._parserContext.log.addMessageForTextRange(
-              'Unexpected characters after closing delimiter for code fence',
-              this._tokenReader.peekToken().range);
-            alreadyReportedError = true;
-          }
+          this._parserContext.log.addMessageForTextRange(
+            'Unexpected characters after closing delimiter for code fence',
+            this._tokenReader.peekToken().range);
           done = true;
           break;
       }
     }
 
     const closingDelimiterExcerpt: Excerpt = new Excerpt({
+      // Example: "```"
       content: codeAndDelimiterSequence.getNewSequence(codeEndMarker, codeAndDelimiterSequence.endIndex),
+      // Example: "   \n"
       spacingAfterContent: this._tokenReader.tryExtractAccumulatedSequence()
     });
 

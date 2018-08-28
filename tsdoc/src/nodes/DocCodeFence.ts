@@ -26,15 +26,16 @@ export class DocCodeFence extends DocNode {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.CodeFence;
 
-  // The attribute name
+  // The opening ``` delimiter and padding
   private readonly _openingDelimiterParticle: DocParticle;
 
-  // The "=" delimiter
+  // The optional language string, and newline
   private readonly _languageParticle: DocParticle;
 
+  // The code content
   private readonly _codeParticle: DocParticle;
 
-  // The attribute value including quotation marks
+  // The closing ``` delimiter, spacing, and newline
   private readonly _closingDelimiterParticle: DocParticle;
 
   /**
@@ -75,6 +76,10 @@ export class DocCodeFence extends DocNode {
    * Other languages names may be supported, but this is implementation dependent.
    *
    * CommonMark refers to this field as the "info string".
+   *
+   * @privateRemarks
+   * Examples of language strings supported by GitHub flavored markdown:
+   * https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml
    */
   public get language(): string | 'ts' | '' {
     return this._languageParticle.content;
