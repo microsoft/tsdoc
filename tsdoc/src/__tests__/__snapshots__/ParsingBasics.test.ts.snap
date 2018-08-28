@@ -277,7 +277,20 @@ Object {
           },
           Object {
             "kind": "CodeSpan",
-            "nodeExcerpt": "[c]x[c]",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "x",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
@@ -285,7 +298,20 @@ Object {
           },
           Object {
             "kind": "CodeSpan",
-            "nodeExcerpt": "[c]y[c]",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "y",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
@@ -407,7 +433,20 @@ Object {
           },
           Object {
             "kind": "CodeSpan",
-            "nodeExcerpt": "[c]x[c]",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "x",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
@@ -415,7 +454,20 @@ Object {
           },
           Object {
             "kind": "CodeSpan",
-            "nodeExcerpt": "[c]y[c]",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "y",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
@@ -629,7 +681,20 @@ Object {
           },
           Object {
             "kind": "CodeSpan",
-            "nodeExcerpt": "[c]x[c]",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "x",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
@@ -637,7 +702,20 @@ Object {
           },
           Object {
             "kind": "CodeSpan",
-            "nodeExcerpt": "[c]y[c]",
+            "nodes": Array [
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "y",
+              },
+              Object {
+                "kind": "Particle",
+                "nodeExcerpt": "[c]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",

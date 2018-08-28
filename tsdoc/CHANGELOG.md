@@ -1,7 +1,10 @@
 # Change Log - @microsoft/tsdoc
 
-## (next release)
+## 0.4.0
+Mon, 27 Aug 2018
 
+- Rename `DocCodeSpan.text` to `DocCodeSpan.code` and model the delimiters using particles
+- Add support for code fences (`DocCodeFence`)
 - `DocSection` content is now grouped into `DocParagraph` nodes; blank lines are used to indicate paragraph boundaries
 - Rename `DocComment.deprecated` to `deprecatedBlock`
 

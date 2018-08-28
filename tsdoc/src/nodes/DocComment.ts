@@ -119,7 +119,9 @@ export class DocComment extends DocNode {
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    const result: DocNode[] = [ this.summarySection ];
+    const result: DocNode[] = [ ];
+
+    result.push(this.summarySection);
 
     if (this.remarksBlock) {
       result.push(this.remarksBlock);

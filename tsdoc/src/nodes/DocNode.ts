@@ -6,6 +6,7 @@ import { Excerpt } from '../parser/Excerpt';
 export const enum DocNodeKind {
   Block = 'Block',
   BlockTag = 'BlockTag',
+  CodeFence = 'CodeFence',
   CodeSpan = 'CodeSpan',
   Comment = 'Comment',
   ErrorText = 'ErrorText',
