@@ -1000,23 +1000,37 @@ export class NodeParser {
 
     this._tokenReader.readToken(); // read the backtick
 
-    let code: string = '';
+    const openingDelimiterExcerpt: Excerpt = new Excerpt({
+      content: this._tokenReader.extractAccumulatedSequence()
+    });
+
     let closingBacktickMarker: number;
+
+    let codeExcerpt: Excerpt;
+    let closingDelimiterExcerpt: Excerpt;
 
     // Parse the content backtick
     while (true) {
       const peekedTokenKind: TokenKind = this._tokenReader.peekTokenKind();
       // Did we find the matching token?
       if (peekedTokenKind === TokenKind.Backtick) {
+        codeExcerpt = new Excerpt({
+          content: this._tokenReader.extractAccumulatedSequence()
+        });
+
         closingBacktickMarker = this._tokenReader.createMarker();
+
         this._tokenReader.readToken();
+        closingDelimiterExcerpt = new Excerpt({
+          content: this._tokenReader.extractAccumulatedSequence()
+        });
         break;
       }
       if (peekedTokenKind === TokenKind.EndOfInput ||  peekedTokenKind === TokenKind.Newline) {
         return this._backtrackAndCreateError(marker,
           'The code span is missing its closing backtick');
       }
-      code += this._tokenReader.readToken().toString();
+      this._tokenReader.readToken();
     }
 
     // Make sure there's whitespace after
@@ -1032,8 +1046,12 @@ export class NodeParser {
     }
 
     return new DocCodeSpan({
-      excerpt: new Excerpt({ content: this._tokenReader.extractAccumulatedSequence() }),
-      code
+      openingDelimiterExcerpt,
+
+      codeExcerpt,
+      code: codeExcerpt.content.toString(),
+
+      closingDelimiterExcerpt
     });
   }
 

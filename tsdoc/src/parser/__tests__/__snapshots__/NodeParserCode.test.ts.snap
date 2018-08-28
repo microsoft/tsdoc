@@ -15,7 +15,20 @@ Object {
     },
     Object {
       "kind": "CodeSpan",
-      "nodeExcerpt": "[c]1[c]",
+      "nodes": Array [
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "[c]",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "1",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "[c]",
+        },
+      ],
     },
     Object {
       "kind": "SoftBreak",
@@ -27,7 +40,20 @@ Object {
     },
     Object {
       "kind": "CodeSpan",
-      "nodeExcerpt": "[c] 2[c]",
+      "nodes": Array [
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "[c]",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": " 2",
+        },
+        Object {
+          "kind": "Particle",
+          "nodeExcerpt": "[c]",
+        },
+      ],
     },
     Object {
       "kind": "PlainText",
