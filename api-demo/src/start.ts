@@ -1,60 +1,30 @@
 import * as colors from 'colors';
-import * as fs from 'fs';
-import * as path from 'path';
 import * as os from 'os';
-import { TSDocParser, ParserContext, DocComment } from '@microsoft/tsdoc';
-import { Formatter } from './Formatter';
+import { simpleDemo } from './simpleDemo';
+import { advancedDemo } from './advancedDemo';
 
-console.log(colors.cyan('*** TSDoc API demo ***') + os.EOL);
+function main(args: string[]): void {
+  console.log(colors.cyan('*** TSDoc API demo ***') + os.EOL);
 
-const inputFilename: string = path.resolve(path.join(__dirname, '..', 'assets', 'demo-input.ts'));
-console.log('Reading assets/demo-input.ts...');
-
-const inputBuffer: string = fs.readFileSync(inputFilename).toString();
-
-// NOTE: Optionally, can provide a TSDocParserConfiguration here
-const tsdocParser: TSDocParser = new TSDocParser();
-const parserContext: ParserContext = tsdocParser.parseString(inputBuffer);
-
-console.log(os.EOL + colors.green('Input Buffer:') + os.EOL);
-console.log(colors.gray('<<<<<<'));
-console.log(inputBuffer);
-console.log(colors.gray('>>>>>>'));
-
-console.log(os.EOL + colors.green('Extracted Lines:') + os.EOL);
-console.log(JSON.stringify(parserContext.lines.map(x => x.toString()), undefined, '  '));
-
-console.log(os.EOL + colors.green('Parser Log Messages:') + os.EOL);
-
-if (parserContext.log.messages.length === 0) {
-  console.log('No errors or warnings.');
-} else {
-  for (const message of parserContext.log.messages.map(x => x.toString())) {
-    console.log(inputFilename + message);
+  if (args.length >= 1) {
+    switch (args[0].toUpperCase()) {
+      case 'SIMPLE':
+        simpleDemo();
+        return;
+      case 'ADVANCED':
+        advancedDemo();
+        return;
+      case '--HELP':
+      case '-H':
+        break;
+      default:
+        console.log(colors.red('Unsupported option: ' + JSON.stringify(args[0])) + os.EOL);
+        break;
+    }
   }
+  console.log('usage: ' + colors.green('npm run start simple'));
+  console.log('       ' + colors.green('npm run start advanced'));
+  console.log(os.EOL + 'Invokes the simple or advanced API demo for TSDoc.');
 }
 
-console.log(os.EOL + colors.green('DocComment parts:') + os.EOL);
-
-const docComment: DocComment = parserContext.docComment;
-
-console.log(colors.yellow('Summary: ')
-  + JSON.stringify(Formatter.renderDocNode(docComment.summarySection)));
-
-if (docComment.remarksBlock) {
-  console.log(colors.yellow('Remarks: ')
-  + JSON.stringify(Formatter.renderDocNodes(docComment.remarksBlock.nodes)));
-}
-
-for (const paramBlock of docComment.paramBlocks) {
-  console.log(colors.yellow(`Parameter "${paramBlock.parameterName}": `)
-  + JSON.stringify(Formatter.renderDocNodes(paramBlock.nodes)));
-}
-
-if (docComment.returnsBlock) {
-  console.log(colors.yellow('Returns: ')
-  + JSON.stringify(Formatter.renderDocNodes(docComment.returnsBlock.nodes)));
-}
-
-console.log(colors.yellow('Modifiers: ')
-  + docComment.modifierTagSet.nodes.map(x => x.tagName).join(', '));
+main(process.argv.slice(2));
