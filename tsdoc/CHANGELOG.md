@@ -1,5 +1,10 @@
 # Change Log - @microsoft/tsdoc
 
+## 0.4.1
+Mon, 30 Aug 2018
+
+- Improve the error location reporting for DocErrorText objects
+
 ## 0.4.0
 Mon, 27 Aug 2018
 
