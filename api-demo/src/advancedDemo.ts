@@ -39,7 +39,6 @@ export function advancedDemo(): void {
     console.log('No compiler errors or warnings.');
   }
 
-  // Find the first code comment
   const sourceFile: ts.SourceFile | undefined = program.getSourceFile(inputFilename);
   if (!sourceFile) {
     throw new Error('Error retrieving source file');
@@ -47,50 +46,52 @@ export function advancedDemo(): void {
 
   console.log(os.EOL + colors.green('Scanning compiler AST for first code comment...') + os.EOL);
 
-  const visitorContext: IVisitorContext = {
-    commentNode: undefined,
-    commentText: undefined
-  };
+  const foundComments: IFoundComment[] = [];
 
-  visitCompilerAst(sourceFile, '', visitorContext);
+  walkCompilerAstAndFindComments(sourceFile, '', foundComments);
 
-  if (!visitorContext.commentText) {
+  if (foundComments.length === 0) {
     console.log(colors.red('Error: No code comments were found in the input file'));
   } else {
-    parseTSDoc(visitorContext.commentText, visitorContext.commentNode!);
+    // For the purposes of this demo, only analyze the first comment that we found
+    parseTSDoc(foundComments[0]);
   }
 }
 
-interface IVisitorContext {
-  commentNode: ts.Node | undefined;
-  commentText: tsdoc.TextRange | undefined;
+interface IFoundComment {
+  compilerNode: ts.Node;
+  textRange: tsdoc.TextRange;
 }
 
-function visitCompilerAst(node: ts.Node, indent: string, visitorContext: IVisitorContext): void {
-  console.log(`${indent}- ${ts.SyntaxKind[node.kind]}`);
+function walkCompilerAstAndFindComments(node: ts.Node, indent: string, foundComments: IFoundComment[]): void {
+  // The TypeScript AST doesn't store comments directly.  Instead you need to look for leading/trailing
+  // comment ranges around the node.
+  const buffer: string = node.getSourceFile().getText();
+  const comments: ts.CommentRange[] = [];
+  comments.push(...ts.getLeadingCommentRanges(buffer, node.getFullStart()) || []);
+  comments.push(...ts.getTrailingCommentRanges(buffer, node.getFullStart()) || []);
 
-  if (!visitorContext.commentNode) {
-    // Obtain the comments for this node
-    const buffer: string = node.getSourceFile().getText();
-    const comments: ts.CommentRange[] = [];
-    comments.push(...ts.getLeadingCommentRanges(buffer, node.getFullStart()) || []);
-    comments.push(...ts.getTrailingCommentRanges(buffer, node.getFullStart()) || []);
+  let foundCommentsSuffix: string = '';
+  if (comments.length > 0) {
+    foundCommentsSuffix = colors.cyan(`  (FOUND COMMENTS)`);
 
-    if (comments.length > 0) {
-      console.log(indent + colors.cyan('  FOUND COMMENT'));
-      const comment: ts.CommentRange = comments[0];
-      visitorContext.commentNode = node;
-      visitorContext.commentText = tsdoc.TextRange.fromStringRange(buffer, comment.pos, comment.end);
+    for (const comment of comments) {
+      foundComments.push({
+        compilerNode: node,
+        textRange: tsdoc.TextRange.fromStringRange(buffer, comment.pos, comment.end)
+      });
     }
   }
 
-  return node.forEachChild(child => visitCompilerAst(child, indent + '  ', visitorContext));
+  console.log(`${indent}- ${ts.SyntaxKind[node.kind]}${foundCommentsSuffix}`);
+
+  return node.forEachChild(child => walkCompilerAstAndFindComments(child, indent + '  ', foundComments));
 }
 
-function parseTSDoc(textRange: tsdoc.TextRange, commentNode: ts.Node): void {
-  console.log(os.EOL + colors.green('Input Buffer:') + os.EOL);
+function parseTSDoc(foundComment: IFoundComment): void {
+  console.log(os.EOL + colors.green('Comment to be parsed:') + os.EOL);
   console.log(colors.gray('<<<<<<'));
-  console.log(textRange.toString());
+  console.log(foundComment.textRange.toString());
   console.log(colors.gray('>>>>>>'));
 
   const customConfiguration: tsdoc.TSDocParserConfiguration = new tsdoc.TSDocParserConfiguration();
@@ -123,7 +124,7 @@ function parseTSDoc(textRange: tsdoc.TextRange, commentNode: ts.Node): void {
 
   console.log(os.EOL + 'Invoking TSDocParser with custom configuration...' + os.EOL);
   const tsdocParser: tsdoc.TSDocParser = new tsdoc.TSDocParser(customConfiguration);
-  const parserContext: tsdoc.ParserContext = tsdocParser.parseRange(textRange);
+  const parserContext: tsdoc.ParserContext = tsdocParser.parseRange(foundComment.textRange);
   const docComment: tsdoc.DocComment = parserContext.docComment;
 
   console.log(os.EOL + colors.green('Parser Log Messages:') + os.EOL);
@@ -131,7 +132,7 @@ function parseTSDoc(textRange: tsdoc.TextRange, commentNode: ts.Node): void {
   if (parserContext.log.messages.length === 0) {
     console.log('No errors or warnings.');
   } else {
-    const sourceFile: ts.SourceFile = commentNode.getSourceFile();
+    const sourceFile: ts.SourceFile = foundComment.compilerNode.getSourceFile();
     for (const message of parserContext.log.messages) {
       // Since we have the compiler's analysis, use it to calculate the line/column information,
       // since this is currently faster than TSDoc's TextRange.getLocation() lookup.

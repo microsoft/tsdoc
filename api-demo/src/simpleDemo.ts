@@ -34,8 +34,8 @@ export function simpleDemo(): void {
   if (parserContext.log.messages.length === 0) {
     console.log('No errors or warnings.');
   } else {
-    for (const message of parserContext.log.messages.map(x => x.toString())) {
-      console.log(inputFilename + message);
+    for (const message of parserContext.log.messages) {
+      console.log(inputFilename + message.toString());
     }
   }
 
