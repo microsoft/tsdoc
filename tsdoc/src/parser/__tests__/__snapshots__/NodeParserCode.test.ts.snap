@@ -121,7 +121,7 @@ Object {
   ],
   "logMessages": Array [
     "(2,7): The opening backtick for a code span must be preceded by whitespace",
-    "(3,10): Error parsing code span: The closing backtick for a code span must be followed by whitespace",
+    "(3,4): Error parsing code span: The closing backtick for a code span must be followed by whitespace",
     "(3,10): The opening backtick for a code span must be preceded by whitespace",
   ],
   "verbatimNodes": Array [
@@ -350,7 +350,7 @@ Object {
     "[c][c][c]",
   ],
   "logMessages": Array [
-    "(3,7): Error parsing code fence: Missing closing delimiter",
+    "(3,4): Error parsing code fence: Missing closing delimiter",
   ],
   "verbatimNodes": Array [
     Object {
@@ -385,7 +385,7 @@ Object {
     "[c][c][c] some stuff",
   ],
   "logMessages": Array [
-    "(3,18): Error parsing code fence: Missing closing delimiter",
+    "(3,4): Error parsing code fence: Missing closing delimiter",
   ],
   "verbatimNodes": Array [
     Object {
@@ -424,7 +424,7 @@ Object {
     "[c][c][c] some stuff [c][c][c]",
   ],
   "logMessages": Array [
-    "(3,19): Error parsing code fence: The language specifier cannot contain backtick characters",
+    "(3,4): Error parsing code fence: The language specifier cannot contain backtick characters",
     "(3,19): The opening backtick for a code fence must appear at the start of the line",
   ],
   "verbatimNodes": Array [

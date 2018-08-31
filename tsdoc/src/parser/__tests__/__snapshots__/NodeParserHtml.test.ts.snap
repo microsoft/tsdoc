@@ -155,14 +155,14 @@ Object {
     "[<]tag-d",
   ],
   "logMessages": Array [
-    "(2,5): Invalid HTML element: A space is not allowed here",
+    "(2,4): Invalid HTML element: A space is not allowed here",
     "(2,10): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(3,9): The HTML tag has invalid syntax: Expecting an attribute or \\">\\" or \\"/>\\"",
+    "(3,4): The HTML tag has invalid syntax: Expecting an attribute or \\">\\" or \\"/>\\"",
     "(3,13): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(4,11): The HTML tag has invalid syntax: Expecting an attribute or \\">\\" or \\"/>\\"",
-    "(4,19): The HTML tag has invalid syntax: Expecting an attribute or \\">\\" or \\"/>\\"",
+    "(4,4): The HTML tag has invalid syntax: Expecting an attribute or \\">\\" or \\"/>\\"",
+    "(4,12): The HTML tag has invalid syntax: Expecting an attribute or \\">\\" or \\"/>\\"",
     "(4,21): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(5,10): The HTML tag has invalid syntax: Expecting an attribute or \\">\\" or \\"/>\\"",
+    "(5,4): The HTML tag has invalid syntax: Expecting an attribute or \\">\\" or \\"/>\\"",
   ],
   "verbatimNodes": Array [
     Object {
@@ -646,19 +646,19 @@ Object {
     "[<]tag-f attr-six=[q]six[q]seven=[q]seven[q] /[>]",
   ],
   "logMessages": Array [
-    "(2,16): The HTML element has an invalid attribute: Expecting \\"=\\" after HTML attribute name",
+    "(2,4): The HTML element has an invalid attribute: Expecting \\"=\\" after HTML attribute name",
     "(2,28): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(3,11): The HTML element has an invalid attribute: An HTML name must be a sequence of letters separated by hyphens",
+    "(3,4): The HTML element has an invalid attribute: An HTML name must be a sequence of letters separated by hyphens",
     "(3,28): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(4,22): The HTML element has an invalid attribute: The HTML string is missing its closing quote",
+    "(4,4): The HTML element has an invalid attribute: The HTML string is missing its closing quote",
     "(4,31): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(5,21): The HTML element has an invalid attribute: Expecting an HTML string starting with a single-quote or double-quote character",
+    "(5,4): The HTML element has an invalid attribute: Expecting an HTML string starting with a single-quote or double-quote character",
     "(5,21): A TSDoc tag must be preceded by whitespace",
     "(5,30): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(6,20): The HTML element has an invalid attribute: Expecting \\"=\\" after HTML attribute name",
+    "(6,4): The HTML element has an invalid attribute: Expecting \\"=\\" after HTML attribute name",
     "(6,20): A TSDoc tag must be preceded by whitespace",
     "(6,30): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(7,25): The HTML element has an invalid attribute: The next character after a closing quote must be spacing or punctuation",
+    "(7,4): The HTML element has an invalid attribute: The next character after a closing quote must be spacing or punctuation",
     "(7,40): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
   ],
   "verbatimNodes": Array [
@@ -828,7 +828,7 @@ Object {
     "line[q] /[>]",
   ],
   "logMessages": Array [
-    "(2,16): The HTML element has an invalid attribute: The HTML string is missing its closing quote",
+    "(2,4): The HTML element has an invalid attribute: The HTML string is missing its closing quote",
     "(3,11): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
   ],
   "verbatimNodes": Array [
@@ -1007,11 +1007,11 @@ Object {
     "[<]/tag-c",
   ],
   "logMessages": Array [
-    "(2,11): Expecting a closing \\">\\" for the HTML tag",
+    "(2,4): Expecting a closing \\">\\" for the HTML tag",
     "(2,12): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(3,6): Expecting an HTML element name: A space is not allowed here",
+    "(3,4): Expecting an HTML element name: A space is not allowed here",
     "(3,12): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(4,11): Expecting a closing \\">\\" for the HTML tag",
+    "(4,4): Expecting a closing \\">\\" for the HTML tag",
   ],
   "verbatimNodes": Array [
     Object {
