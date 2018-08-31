@@ -27,7 +27,7 @@
     "rimraf": "~2.6.2",
     "tslint": "~5.11.0",
     "tslint-microsoft-contrib": "~5.2.0",
-    "typescript": "~3.0.1"
+    "typescript": "~3.0.3"
   },
   "scripts": {
     "build": "rimraf ./lib/ && echo -- TYPESCRIPT -- && tsc && echo -- TSLINT -- && tslint --config tslint.json --project . --rules-dir node_modules/tslint-microsoft-contrib",
