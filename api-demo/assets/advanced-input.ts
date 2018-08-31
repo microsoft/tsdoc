@@ -1,7 +1,7 @@
-
 export class Statistics {
   /**
    * Returns the average of two numbers.
+   * This incomplete HTML tag should be reported as an error: <tag
    *
    * @remarks
    * Here's a {@customInline some data}.

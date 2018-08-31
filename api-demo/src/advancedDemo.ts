@@ -52,7 +52,7 @@ export function advancedDemo(): void {
   if (!visitorContext.commentText) {
     console.log(colors.red('Error: No code comments were found in the input file'));
   } else {
-    parseTSDoc(visitorContext.commentText);
+    parseTSDoc(visitorContext.commentText, visitorContext.commentNode!);
   }
 }
 
@@ -82,7 +82,7 @@ function visitCompilerAst(node: ts.Node, indent: string, visitorContext: IVisito
   return node.forEachChild(child => visitCompilerAst(child, indent + '  ', visitorContext));
 }
 
-function parseTSDoc(textRange: tsdoc.TextRange): void {
+function parseTSDoc(textRange: tsdoc.TextRange, commentNode: ts.Node): void {
   console.log(os.EOL + colors.green('Input Buffer:') + os.EOL);
   console.log(colors.gray('<<<<<<'));
   console.log(textRange.toString());
@@ -95,10 +95,16 @@ function parseTSDoc(textRange: tsdoc.TextRange): void {
     syntaxKind: tsdoc.TSDocTagSyntaxKind.InlineTag,
     allowMultiple: true
   });
+
+  // NOTE: Defining this causes a new DocBlock to be created under docComment.customBlocks.
+  // Otherwise, a simple DocBlockTag would appear inline in the @remarks section.
   const customBlockDefinition: tsdoc.TSDocTagDefinition = new tsdoc.TSDocTagDefinition({
     tagName: '@customBlock',
     syntaxKind: tsdoc.TSDocTagSyntaxKind.BlockTag
   });
+
+  // NOTE: Defining this causes @customModifier to be removed from its section,
+  // and added to the docComment.modifierTagSet
   const customModifierDefinition: tsdoc.TSDocTagDefinition = new tsdoc.TSDocTagDefinition({
     tagName: '@customModifier',
     syntaxKind: tsdoc.TSDocTagSyntaxKind.ModifierTag
@@ -110,18 +116,29 @@ function parseTSDoc(textRange: tsdoc.TextRange): void {
     customModifierDefinition
   ]);
 
-  console.log(os.EOL + 'Invoking TSDocParser...' + os.EOL);
+  console.log(os.EOL + 'Invoking TSDocParser with custom configuration...' + os.EOL);
   const tsdocParser: tsdoc.TSDocParser = new tsdoc.TSDocParser(customConfiguration);
   const parserContext: tsdoc.ParserContext = tsdocParser.parseRange(textRange);
+  const docComment: tsdoc.DocComment = parserContext.docComment;
+
+  console.log(os.EOL + colors.green('Parser Log Messages:') + os.EOL);
+
+  if (parserContext.log.messages.length === 0) {
+    console.log('No errors or warnings.');
+  } else {
+    for (const message of parserContext.log.messages.map(x => x.toString())) {
+      console.log(commentNode.getSourceFile().fileName + message);
+    }
+  }
 
   if (parserContext.docComment.modifierTagSet.hasTag(customModifierDefinition)) {
-    console.log(`The ${customModifierDefinition.tagName} modifier was FOUND.`);
+    console.log(os.EOL + `The ${customModifierDefinition.tagName} modifier was FOUND.`);
   } else {
-    console.log(`The ${customModifierDefinition.tagName} modifier was NOT FOUND.`);
+    console.log(os.EOL + `The ${customModifierDefinition.tagName} modifier was NOT FOUND.`);
   }
 
   console.log(os.EOL + colors.green('Visiting TSDoc\'s DocNode tree') + os.EOL);
-  dumpTSDocTree(parserContext.docComment, '');
+  dumpTSDocTree(docComment, '');
 }
 
 function dumpTSDocTree(docNode: tsdoc.DocNode, indent: string): void {
