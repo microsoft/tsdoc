@@ -32,6 +32,10 @@ script:
   - npm run build
   - echo -en 'travis_fold:end:demo-build\\r'
 
-  - echo '(api-demo) npm run start' && echo -en 'travis_fold:start:demo-start\\r'
-  - npm run start
-  - echo -en 'travis_fold:end:demo-start\\r'
+  - echo '(api-demo) npm run start simple' && echo -en 'travis_fold:start:demo-start-simple\\r'
+  - npm run start simple
+  - echo -en 'travis_fold:end:demo-start-simple\\r'
+
+  - echo '(api-demo) npm run start advanced' && echo -en 'travis_fold:start:demo-start-advanced\\r'
+  - npm run start advanced
+  - echo -en 'travis_fold:end:demo-start-advanced\\r'

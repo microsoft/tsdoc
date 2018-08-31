@@ -50,10 +50,21 @@ export class ParserMessageLog {
    * Append a message associated with a TokenSequence.
    */
   public addMessageForDocErrorText(docErrorText: DocErrorText): void {
+    let tokenSequence: TokenSequence;
+
+    if (docErrorText.excerpt) {
+      // If there is an excerpt directly associated with the DocErrorText, highlight that:
+      tokenSequence = docErrorText.excerpt.content;
+    } else {
+      // Otherwise we can use the errorLocation, but typically that is meant to give additional
+      // details, not to indicate the primary location of the problem.
+      tokenSequence = docErrorText.errorLocation;
+    }
+
     this.addMessage(new ParserMessage({
       messageText: docErrorText.errorMessage,
-      textRange: docErrorText.errorLocation.getContainingTextRange(),
-      tokenSequence: docErrorText.errorLocation,
+      textRange: tokenSequence.getContainingTextRange(),
+      tokenSequence: tokenSequence,
       docNode: docErrorText
     }));
   }

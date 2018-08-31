@@ -240,9 +240,9 @@ Object {
     "{@four",
   ],
   "logMessages": Array [
-    "(2,5): Expecting a TSDoc inline tag name after the \\"{@\\" characters",
+    "(2,4): Expecting a TSDoc inline tag name after the \\"{@\\" characters",
     "(2,10): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-    "(3,9): Expecting a space after the TSDoc inline tag name",
+    "(3,4): Expecting a space after the TSDoc inline tag name",
     "(3,10): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
     "(4,4): Expecting a TSDoc tag starting with \\"{@\\"",
     "(4,6): A TSDoc tag must be followed by whitespace",
@@ -525,7 +525,7 @@ Object {
     "{@two curly{}}",
   ],
   "logMessages": Array [
-    "(2,15): The \\"{\\" character must be escaped with a backslash when used inside a TSDoc inline tag",
+    "(2,4): The \\"{\\" character must be escaped with a backslash when used inside a TSDoc inline tag",
     "(2,15): Expecting a TSDoc tag starting with \\"{@\\"",
     "(2,16): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
     "(2,17): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",

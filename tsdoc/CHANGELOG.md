@@ -1,5 +1,11 @@
 # Change Log - @microsoft/tsdoc
 
+## 0.4.1
+Mon, 30 Aug 2018
+
+- Improve the error location reporting for DocErrorText objects
+- Separate the **api-demo** sample into a "simple" scenario which parses a simple text string, and an "advanced" scenario which uses the TypeScript compiler API to extract comments and parse custom TSDoc tags
+
 ## 0.4.0
 Mon, 27 Aug 2018
 
