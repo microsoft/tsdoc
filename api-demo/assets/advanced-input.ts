@@ -4,7 +4,7 @@ export class Statistics {
    * Returns the average of two numbers.
    *
    * @remarks
-   * Here's a {@customInlineTag some data}.
+   * Here's a {@customInline some data}.
    *
    * @customBlock
    * Here's a custom block tag.

@@ -72,7 +72,7 @@ function visitCompilerAst(node: ts.Node, indent: string, visitorContext: IVisito
     comments.push(...ts.getTrailingCommentRanges(buffer, node.getFullStart()) || []);
 
     if (comments.length > 0) {
-      console.log(indent + '  FOUND COMMENT');
+      console.log(indent + colors.yellow('  FOUND COMMENT'));
       const comment: ts.CommentRange = comments[0];
       visitorContext.commentNode = node;
       visitorContext.commentText = tsdoc.TextRange.fromStringRange(buffer, comment.pos, comment.end);
@@ -83,16 +83,42 @@ function visitCompilerAst(node: ts.Node, indent: string, visitorContext: IVisito
 }
 
 function parseTSDoc(textRange: tsdoc.TextRange): void {
-
-  const customConfiguration: tsdoc.TSDocParserConfiguration = new tsdoc.TSDocParserConfiguration();
-
-  const tsdocParser: tsdoc.TSDocParser = new tsdoc.TSDocParser(customConfiguration);
-  const parserContext: tsdoc.ParserContext = tsdocParser.parseRange(textRange);
-
   console.log(os.EOL + colors.green('Input Buffer:') + os.EOL);
   console.log(colors.gray('<<<<<<'));
   console.log(textRange.toString());
   console.log(colors.gray('>>>>>>'));
+
+  const customConfiguration: tsdoc.TSDocParserConfiguration = new tsdoc.TSDocParserConfiguration();
+
+  const customInlineDefinition: tsdoc.TSDocTagDefinition = new tsdoc.TSDocTagDefinition({
+    tagName: '@customInline',
+    syntaxKind: tsdoc.TSDocTagSyntaxKind.InlineTag,
+    allowMultiple: true
+  });
+  const customBlockDefinition: tsdoc.TSDocTagDefinition = new tsdoc.TSDocTagDefinition({
+    tagName: '@customBlock',
+    syntaxKind: tsdoc.TSDocTagSyntaxKind.BlockTag
+  });
+  const customModifierDefinition: tsdoc.TSDocTagDefinition = new tsdoc.TSDocTagDefinition({
+    tagName: '@customModifier',
+    syntaxKind: tsdoc.TSDocTagSyntaxKind.ModifierTag
+  });
+
+  customConfiguration.addTagDefinitions([
+    customInlineDefinition,
+    customBlockDefinition,
+    customModifierDefinition
+  ]);
+
+  console.log(os.EOL + 'Invoking TSDocParser...' + os.EOL);
+  const tsdocParser: tsdoc.TSDocParser = new tsdoc.TSDocParser(customConfiguration);
+  const parserContext: tsdoc.ParserContext = tsdocParser.parseRange(textRange);
+
+  if (parserContext.docComment.modifierTagSet.hasTag(customModifierDefinition)) {
+    console.log(`The ${customModifierDefinition.tagName} modifier was FOUND.`);
+  } else {
+    console.log(`The ${customModifierDefinition.tagName} modifier was NOT FOUND.`);
+  }
 
   console.log(os.EOL + colors.green('Visiting TSDoc\'s DocNode tree') + os.EOL);
   dumpTSDocTree(parserContext.docComment, '');
