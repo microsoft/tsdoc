@@ -24,14 +24,14 @@ for details about building the library.
 
 4. Run the **api-demo** project:
 
-   The simple demo does not rely on the TypeScript compiler.
-   It uses the default parser configuration.
+   The simple demo does not rely on the TypeScript compiler API; instead, it parses the
+   source file directly.  It uses the default parser configuration.
    ```
    $ npm run start simple
    ```
 
-   The advanced demo uses the TypeScript compiler API to locate the comment text.
-   It also illustrates how to define custom TSDoc tags using TSDocParserConfiguration.
+   The advanced demo invokes the TypeScript compiler and extracts the comment from the AST.
+   It also illustrates how to define custom TSDoc tags using `TSDocParserConfiguration`.
    ```
    $ npm run start advanced
    ```

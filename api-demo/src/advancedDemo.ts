@@ -9,7 +9,7 @@ import * as tsdoc from '@microsoft/tsdoc';
  * It also illustrates how to define custom TSDoc tags using TSDocParserConfiguration.
  */
 export function advancedDemo(): void {
-  console.log(colors.yellow('Demo scenario: advanced') + os.EOL);
+  console.log(colors.yellow('*** TSDoc API demo: Advanced Scenario ***') + os.EOL);
 
   const inputFilename: string = path.resolve(path.join(__dirname, '..', 'assets', 'advanced-input.ts'));
   const compilerOptions: ts.CompilerOptions = {
@@ -17,21 +17,26 @@ export function advancedDemo(): void {
   };
 
   // Compile the input
-  console.log('Reading assets/advanced-input.ts...');
+  console.log('Invoking the TypeScript compiler to analyze assets/advanced-input.ts...');
 
   const program: ts.Program = ts.createProgram([ inputFilename ], compilerOptions);
 
   // Report any compiler errors
-  for (const diagnostic of program.getSemanticDiagnostics()) {
-    const message: string = ts.flattenDiagnosticMessageText(diagnostic.messageText, os.EOL);
-    if (diagnostic.file) {
-      const location: ts.LineAndCharacter = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
-      const formattedMessage: string = `${diagnostic.file.fileName}(${location.line + 1},${location.character + 1}):`
-        + ` [TypeScript] ${message}`;
-      console.log(colors.red(formattedMessage));
-    } else {
-      console.log(colors.red(message));
+  const compilerDiagnostics: ReadonlyArray<ts.Diagnostic> = program.getSemanticDiagnostics();
+  if (compilerDiagnostics.length > 0) {
+    for (const diagnostic of compilerDiagnostics) {
+      const message: string = ts.flattenDiagnosticMessageText(diagnostic.messageText, os.EOL);
+      if (diagnostic.file) {
+        const location: ts.LineAndCharacter = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
+        const formattedMessage: string = `${diagnostic.file.fileName}(${location.line + 1},${location.character + 1}):`
+          + ` [TypeScript] ${message}`;
+        console.log(colors.red(formattedMessage));
+      } else {
+        console.log(colors.red(message));
+      }
     }
+  } else {
+    console.log('No compiler errors or warnings.');
   }
 
   // Find the first code comment
@@ -72,7 +77,7 @@ function visitCompilerAst(node: ts.Node, indent: string, visitorContext: IVisito
     comments.push(...ts.getTrailingCommentRanges(buffer, node.getFullStart()) || []);
 
     if (comments.length > 0) {
-      console.log(indent + colors.yellow('  FOUND COMMENT'));
+      console.log(indent + colors.cyan('  FOUND COMMENT'));
       const comment: ts.CommentRange = comments[0];
       visitorContext.commentNode = node;
       visitorContext.commentText = tsdoc.TextRange.fromStringRange(buffer, comment.pos, comment.end);
@@ -138,9 +143,9 @@ function parseTSDoc(textRange: tsdoc.TextRange, commentNode: ts.Node): void {
   }
 
   if (parserContext.docComment.modifierTagSet.hasTag(customModifierDefinition)) {
-    console.log(os.EOL + `The ${customModifierDefinition.tagName} modifier was FOUND.`);
+    console.log(os.EOL + colors.cyan(`The ${customModifierDefinition.tagName} modifier was FOUND.`));
   } else {
-    console.log(os.EOL + `The ${customModifierDefinition.tagName} modifier was NOT FOUND.`);
+    console.log(os.EOL + colors.cyan(`The ${customModifierDefinition.tagName} modifier was NOT FOUND.`));
   }
 
   console.log(os.EOL + colors.green('Visiting TSDoc\'s DocNode tree') + os.EOL);

@@ -4,8 +4,6 @@ import { simpleDemo } from './simpleDemo';
 import { advancedDemo } from './advancedDemo';
 
 function main(args: string[]): void {
-  console.log(colors.cyan('*** TSDoc API demo ***') + os.EOL);
-
   if (args.length >= 1) {
     switch (args[0].toUpperCase()) {
       case 'SIMPLE':
@@ -22,6 +20,9 @@ function main(args: string[]): void {
         break;
     }
   }
+
+  console.log(colors.yellow('*** TSDoc API demo ***') + os.EOL);
+
   console.log('usage: ' + colors.green('npm run start simple'));
   console.log('       ' + colors.green('npm run start advanced'));
   console.log(os.EOL + 'Invokes the simple or advanced API demo for TSDoc.');

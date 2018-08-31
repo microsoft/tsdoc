@@ -10,7 +10,7 @@ import { Formatter } from './Formatter';
  * It uses the default parser configuration.
  */
 export function simpleDemo(): void {
-  console.log(colors.yellow('Demo scenario: simple') + os.EOL);
+  console.log(colors.yellow('*** TSDoc API demo: Simple Scenario ***') + os.EOL);
 
   const inputFilename: string = path.resolve(path.join(__dirname, '..', 'assets', 'simple-input.ts'));
   console.log('Reading assets/simple-input.ts...');
@@ -43,24 +43,24 @@ export function simpleDemo(): void {
 
   const docComment: DocComment = parserContext.docComment;
 
-  console.log(colors.yellow('Summary: ')
+  console.log(colors.cyan('Summary: ')
     + JSON.stringify(Formatter.renderDocNode(docComment.summarySection)));
 
   if (docComment.remarksBlock) {
-    console.log(colors.yellow('Remarks: ')
+    console.log(colors.cyan('Remarks: ')
     + JSON.stringify(Formatter.renderDocNodes(docComment.remarksBlock.nodes)));
   }
 
   for (const paramBlock of docComment.paramBlocks) {
-    console.log(colors.yellow(`Parameter "${paramBlock.parameterName}": `)
+    console.log(colors.cyan(`Parameter "${paramBlock.parameterName}": `)
     + JSON.stringify(Formatter.renderDocNodes(paramBlock.nodes)));
   }
 
   if (docComment.returnsBlock) {
-    console.log(colors.yellow('Returns: ')
+    console.log(colors.cyan('Returns: ')
     + JSON.stringify(Formatter.renderDocNodes(docComment.returnsBlock.nodes)));
   }
 
-  console.log(colors.yellow('Modifiers: ')
+  console.log(colors.cyan('Modifiers: ')
     + docComment.modifierTagSet.nodes.map(x => x.tagName).join(', '));
 }
