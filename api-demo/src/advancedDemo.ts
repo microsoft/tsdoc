@@ -126,8 +126,14 @@ function parseTSDoc(textRange: tsdoc.TextRange, commentNode: ts.Node): void {
   if (parserContext.log.messages.length === 0) {
     console.log('No errors or warnings.');
   } else {
-    for (const message of parserContext.log.messages.map(x => x.toString())) {
-      console.log(commentNode.getSourceFile().fileName + message);
+    const sourceFile: ts.SourceFile = commentNode.getSourceFile();
+    for (const message of parserContext.log.messages) {
+      // Since we have the compiler's analysis, use it to calculate the line/column information,
+      // since this is currently faster than TSDoc's TextRange.getLocation() lookup.
+      const location: ts.LineAndCharacter = sourceFile.getLineAndCharacterOfPosition(message.textRange.pos);
+      const formattedMessage: string = `${sourceFile.fileName}(${location.line + 1},${location.character + 1}):`
+        + ` [TSDoc] ${message}`;
+      console.log(formattedMessage);
     }
   }
 

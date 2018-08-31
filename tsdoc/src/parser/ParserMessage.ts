@@ -16,10 +16,6 @@ export interface IParserMessageParameters {
  * Represents an error or warning that occurred during parsing.
  */
 export class ParserMessage {
-  /**
-   * The message text.
-   */
-  public readonly text: string;
 
   /**
    * The message text without the default prefix that shows line/column information.
@@ -31,6 +27,8 @@ export class ParserMessage {
   public readonly tokenSequence: TokenSequence | undefined;
 
   public readonly docNode: DocNode | undefined;
+
+  private _text: string | undefined;
 
   /**
    * Generates a line/column prefix.  Example with line=2 and column=5
@@ -45,6 +43,8 @@ export class ParserMessage {
     }
 
     if (range.pos !== 0 || range.end !== 0) {
+      // NOTE: This currently a potentially expensive operation, since TSDoc currently doesn't
+      // have a full newline analysis for the input buffer.
       const location: ITextLocation = range.getLocation(range.pos);
       if (location.line) {
         return `(${location.line},${location.column}): ` + message;
@@ -58,8 +58,19 @@ export class ParserMessage {
     this.textRange = parameters.textRange;
     this.tokenSequence = parameters.tokenSequence;
     this.docNode = parameters.docNode;
+    this._text = undefined;
+  }
 
-    this.text = ParserMessage._formatMessageText(this.unformattedText, this.textRange);
+  /**
+   * The message text.
+   */
+  public get text(): string {
+    if (this._text === undefined) {
+      // NOTE: This currently a potentially expensive operation, since TSDoc currently doesn't
+      // have a full newline analysis for the input buffer.
+      this._text = ParserMessage._formatMessageText(this.unformattedText, this.textRange);
+    }
+    return this._text;
   }
 
   public toString(): string {
