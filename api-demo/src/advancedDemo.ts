@@ -5,7 +5,7 @@ import * as ts from 'typescript';
 import * as tsdoc from '@microsoft/tsdoc';
 
 /**
- * The advanced demo uses the TypeScript compiler API to locate the comment text.
+ * The advanced demo invokes the TypeScript compiler and extracts the comment from the AST.
  * It also illustrates how to define custom TSDoc tags using TSDocParserConfiguration.
  */
 export function advancedDemo(): void {
