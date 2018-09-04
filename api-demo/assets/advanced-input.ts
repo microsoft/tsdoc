@@ -1,3 +1,4 @@
+/** */
 export class Statistics {
   /**
    * Returns the average of two numbers.

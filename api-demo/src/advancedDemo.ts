@@ -3,6 +3,7 @@ import * as os from 'os';
 import * as path from 'path';
 import * as ts from 'typescript';
 import * as tsdoc from '@microsoft/tsdoc';
+import * as tsutils from 'tsutils';
 
 /**
  * The advanced demo invokes the TypeScript compiler and extracts the comment from the AST.
@@ -52,6 +53,12 @@ export function advancedDemo(): void {
 
   if (foundComments.length === 0) {
     console.log(colors.red('Error: No code comments were found in the input file'));
+
+    const foundCommentsText: string[] = [];
+    tsutils.forEachComment(sourceFile, (_text, comment) => {
+      foundCommentsText.push(_text.substr(comment.pos, comment.end - comment.pos));
+    });
+    console.log(colors.green('...but tsutils found:\n'), foundCommentsText);
   } else {
     // For the purposes of this demo, only analyze the first comment that we found
     parseTSDoc(foundComments[0]);
