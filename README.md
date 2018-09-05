@@ -8,19 +8,23 @@
 **TSDoc** is a proposal to standardize the doc comments used in [TypeScript](http://www.typescriptlang.org/) source files.  It allows different tools to extract content from comments without getting confused by each other's syntax.   The **TSDoc** notation looks pretty familiar:
 
 ```typescript
-/**
- * Adds two numbers together.
- *
- * @remarks
- * This method is part of the {@link core-library/Math | Math subsystem}.
- *
- * @param x - The first number to add
- * @param y - The second number to add
- * @returns The sum of `x` and `y`
- *
- * @beta
- */
-function add(x: number, y: number): number;
+export class Statistics {
+  /**
+   * Returns the average of two numbers.
+   *
+   * @remarks
+   * This method is part of the {@link core-library/Statistics | Statistics subsystem}.
+   *
+   * @param x - The first input number
+   * @param y - The second input number
+   * @returns The arithmetic mean of `x` and `y`
+   *
+   * @beta
+   */
+  public static getAverage(x: number, y: number): number {
+    return (x + y) / 2.0;
+  }
+}
 ```
 
 We are developing a library package [@microsoft/tsdoc](https://www.npmjs.com/package/@microsoft/tsdoc) that provides an open source reference implementation of a parser.  Using this library is an easy way to ensure that your tool is 100% compatible with the standard.

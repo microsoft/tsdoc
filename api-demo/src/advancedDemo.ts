@@ -64,12 +64,12 @@ interface IFoundComment {
 }
 
 function walkCompilerAstAndFindComments(node: ts.Node, indent: string, foundComments: IFoundComment[]): void {
-  // The TypeScript AST doesn't store comments directly.  If you want to find *every* comment,
+  // The TypeScript AST doesn't store code comments directly.  If you want to find *every* comment,
   // you would need to rescan the SourceFile tokens similar to how tsutils.forEachComment() works:
   // https://github.com/ajafff/tsutils/blob/v3.0.0/util/util.ts#L453
   //
-  // However, for this demo we are modeling a tool that discovers declarations and then analyzes their TSDoc,
-  // so we only care about comments that would conventionally be associated with an interesting AST node.
+  // However, for this demo we are modeling a tool that discovers declarations and then analyzes their doc comments,
+  // so we only care about TSDoc that would conventionally be associated with an interesting AST node.
 
   let foundCommentsSuffix: string = '';
   const buffer: string = node.getSourceFile().getFullText(); // don't use getText() here!
@@ -78,7 +78,7 @@ function walkCompilerAstAndFindComments(node: ts.Node, indent: string, foundComm
   // the same comment twice (e.g. for a MethodDeclaration and its PublicKeyword).
   if (isDeclarationKind(node.kind)) {
     // Find "/** */" style comments associated with this node.
-    // Note that invokes the compiler's scanner -- the compiler API does not cache it.
+    // Note that this reinvokes the compiler's scanner -- the result is not cached.
     const comments: ts.CommentRange[] = getJSDocCommentRanges(node, buffer);
 
     if (comments.length > 0) {
