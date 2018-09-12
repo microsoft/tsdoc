@@ -20,3 +20,5 @@ export {
   TSDocTagSyntaxKind,
   TSDocTagDefinition
 } from './parser/TSDocTagDefinition';
+
+export { DocNodeTransforms } from './transforms/DocNodeTransforms';
