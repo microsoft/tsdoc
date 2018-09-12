@@ -182,12 +182,14 @@ Object {
       "nodes": Array [
         Object {
           "kind": "PlainText",
+          "nodePlainText": "  para 1 ",
         },
         Object {
           "kind": "SoftBreak",
         },
         Object {
           "kind": "PlainText",
+          "nodePlainText": "   ",
         },
         Object {
           "kind": "SoftBreak",
@@ -199,15 +201,18 @@ Object {
       "nodes": Array [
         Object {
           "kind": "PlainText",
+          "nodePlainText": " [t]  ",
         },
         Object {
           "kind": "PlainText",
+          "nodePlainText": "   ",
         },
         Object {
           "kind": "BlockTag",
         },
         Object {
           "kind": "PlainText",
+          "nodePlainText": "  para 2 ",
         },
         Object {
           "kind": "SoftBreak",
@@ -222,6 +227,7 @@ Object {
       "nodes": Array [
         Object {
           "kind": "PlainText",
+          "nodePlainText": "  para 3  ",
         },
       ],
     },

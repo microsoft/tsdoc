@@ -3,7 +3,8 @@ import { TextRange } from '../TextRange';
 import {
   DocErrorText,
   DocNode,
-  DocComment
+  DocComment,
+  DocPlainText
 } from '../../nodes';
 import { ParserContext } from '../ParserContext';
 import { Excerpt } from '../Excerpt';
@@ -17,6 +18,10 @@ interface ISnapshotItem {
   errorLocationPrecedingToken?: string;
   nodeExcerpt?: string;
   nodeSpacing?: string;
+
+  // If it's a DocPlainText node and the plain text is different from the excerpt,
+  // this shows the DocPlainText.text
+  nodePlainText?: string;
   nodes?: ISnapshotItem[];
 }
 
@@ -141,6 +146,14 @@ export class TestHelpers {
       item.nodeExcerpt = TestHelpers.getEscaped(excerpt.content.toString());
       if (!excerpt.spacingAfterContent.isEmpty()) {
         item.nodeSpacing = TestHelpers.getEscaped(excerpt.spacingAfterContent.toString());
+      }
+    }
+
+    if (docNode instanceof DocPlainText) {
+      const docPlainText: DocPlainText = docNode as DocPlainText;
+      const nodePlainText: string = TestHelpers.getEscaped(docPlainText.text);
+      if (nodePlainText !== item.nodeExcerpt) {
+        item.nodePlainText = nodePlainText;
       }
     }
 
