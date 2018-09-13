@@ -5,7 +5,12 @@ Array [
   Object {
     "kind": "PlainText",
     "nodeExcerpt": "   This [t] is    the",
-    "nodePlainText": "This is the first",
+    "nodePlainText": "This is the",
+  },
+  Object {
+    "kind": "PlainText",
+    "nodeExcerpt": "first   ",
+    "nodePlainText": " first",
   },
   Object {
     "kind": "InlineTag",

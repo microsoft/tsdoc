@@ -5,6 +5,8 @@ import {
   DocPlainText,
   IDocPlainTextParameters
 } from '../nodes';
+import { Excerpt } from '../parser/Excerpt';
+import { TokenSequence } from '../parser/TokenSequence';
 
 /**
  * Implementation of DocNodeTransforms.trimSpacesInParagraphNodes()
@@ -37,10 +39,18 @@ export class TrimSpacesTransform {
           }
 
           if (collapsedText.length > 0) {
+            if (accumulatedPlainTextNode) {
+              // If this node can't be merged, then eject it
+              if (!TrimSpacesTransform._canMergeExcerpts(accumulatedPlainTextNode.excerpt, docPlainText.excerpt)) {
+                transformedNodes.push(new DocPlainText(accumulatedPlainTextNode));
+                accumulatedPlainTextNode = undefined;
+              }
+            }
+
             // If we haven't started an accumulatedPlainTextNode, create it now
             if (!accumulatedPlainTextNode) {
               accumulatedPlainTextNode = {
-                excerpt: docPlainText.excerpt,
+                excerpt: undefined,
                 text: ''
               };
             }
@@ -51,6 +61,9 @@ export class TrimSpacesTransform {
             }
 
             accumulatedPlainTextNode.text += collapsedText;
+            accumulatedPlainTextNode.excerpt = TrimSpacesTransform._mergeExcerpts(
+              accumulatedPlainTextNode.excerpt, docPlainText.excerpt);
+
             finishedSkippingLeadingSpaces = true;
           }
 
@@ -87,8 +100,67 @@ export class TrimSpacesTransform {
     // Push the accumulated text
     if (accumulatedPlainTextNode) {
       transformedNodes.push(new DocPlainText(accumulatedPlainTextNode));
+      accumulatedPlainTextNode = undefined;
     }
 
     return transformedNodes;
+  }
+
+  private static _canMergeExcerpts(currentExcerpt: Excerpt | undefined,
+    followingExcerpt: Excerpt | undefined): boolean {
+
+    if (currentExcerpt === undefined || followingExcerpt === undefined) {
+      return true;
+    }
+
+    if (!currentExcerpt.spacingAfterContent.isEmpty()
+      || !followingExcerpt.spacingAfterContent.isEmpty()) {
+      return false;
+    }
+
+    const currentSequence: TokenSequence = currentExcerpt.content;
+    const followingSequence: TokenSequence = followingExcerpt.content;
+
+    if (currentSequence.parserContext !== followingSequence.parserContext) {
+      return false;
+    }
+
+    return currentSequence.endIndex === followingSequence.startIndex;
+  }
+
+  private static _mergeExcerpts(currentExcerpt: Excerpt | undefined,
+    followingExcerpt: Excerpt | undefined): Excerpt | undefined {
+
+    if (currentExcerpt === undefined) {
+      return followingExcerpt;
+    }
+
+    if (followingExcerpt === undefined) {
+      return currentExcerpt;
+    }
+
+    if (!currentExcerpt.spacingAfterContent.isEmpty()
+      || !followingExcerpt.spacingAfterContent.isEmpty()) {
+      // This would be a program bug
+      throw new Error('mergeExcerpts(): Cannot merge excerpts with spacingAfterContent');
+    }
+
+    const currentSequence: TokenSequence = currentExcerpt.content;
+    const followingSequence: TokenSequence = followingExcerpt.content;
+
+    if (currentSequence.parserContext !== followingSequence.parserContext) {
+      // This would be a program bug
+      throw new Error('mergeExcerpts(): Cannot merge excerpts with incompatible parser contexts');
+    }
+
+    if (currentSequence.endIndex !== followingSequence.startIndex) {
+      // This would be a program bug
+      throw new Error('mergeExcerpts(): Cannot merge excerpts that are not adjacent');
+    }
+
+    return new Excerpt({
+      content: currentSequence.getNewSequence(currentSequence.startIndex,
+        followingSequence.endIndex)
+    });
   }
 }
