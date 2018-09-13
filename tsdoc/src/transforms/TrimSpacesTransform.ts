@@ -78,13 +78,16 @@ export class TrimSpacesTransform {
           break;
         default:
           if (pendingSpace) {
+            // If we haven't started an accumulatedPlainTextNode, create it now
             if (!accumulatedPlainTextNode) {
               accumulatedPlainTextNode = {
                 excerpt: undefined,
-                text: ' '
+                text: ''
               };
-              pendingSpace = false;
             }
+
+            accumulatedPlainTextNode.text += ' ';
+            pendingSpace = false;
           }
 
           // Push the accumulated text
@@ -92,6 +95,7 @@ export class TrimSpacesTransform {
             transformedNodes.push(new DocPlainText(accumulatedPlainTextNode));
             accumulatedPlainTextNode = undefined;
           }
+
           transformedNodes.push(node);
           finishedSkippingLeadingSpaces = true;
       }
