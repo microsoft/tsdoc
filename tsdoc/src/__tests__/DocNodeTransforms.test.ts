@@ -19,8 +19,8 @@ test('01 trimSpacesInParagraphNodes()', () => {
   const firstNode: DocNode = parserContext.docComment.summarySection.nodes[0];
   expect(firstNode.kind).toEqual(DocNodeKind.Paragraph);
   const paragraph: DocParagraph = firstNode as DocParagraph;
-  const transformedNodes: DocNode[] = DocNodeTransforms.trimSpacesInParagraphNodes(paragraph);
+  const transformedParagraph: DocParagraph = DocNodeTransforms.trimSpacesInParagraph(paragraph);
   expect(
-    transformedNodes.map(x => TestHelpers.getDocNodeSnapshot(x))
+    TestHelpers.getDocNodeSnapshot(transformedParagraph)
   ).toMatchSnapshot();
 });

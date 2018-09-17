@@ -12,7 +12,7 @@ import { TokenSequence } from '../parser/TokenSequence';
  * Implementation of DocNodeTransforms.trimSpacesInParagraphNodes()
  */
 export class TrimSpacesTransform {
-  public static transform(docParagraph: DocParagraph): DocNode[] {
+  public static transform(docParagraph: DocParagraph): DocParagraph {
     const transformedNodes: DocNode[] = [];
 
     // Whether the next nonempty node to be added needs a space before it
@@ -107,7 +107,9 @@ export class TrimSpacesTransform {
       accumulatedPlainTextNode = undefined;
     }
 
-    return transformedNodes;
+    const transformedParagraph: DocParagraph = new DocParagraph({ });
+    transformedParagraph.appendNodes(transformedNodes);
+    return transformedParagraph;
   }
 
   private static _canMergeExcerpts(currentExcerpt: Excerpt | undefined,

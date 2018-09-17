@@ -1,5 +1,5 @@
 import { TrimSpacesTransform } from './TrimSpacesTransform';
-import { DocParagraph, DocNode } from '../nodes';
+import { DocParagraph } from '../nodes';
 
 /**
  * Helper functions that transform DocNode trees.
@@ -45,7 +45,7 @@ export class DocNodeTransforms {
    * @param docParagraph - a DocParagraph containing nodes to be transformed
    * @returns The transformed child nodes.
    */
-  public static trimSpacesInParagraphNodes(docParagraph: DocParagraph): DocNode[] {
+  public static trimSpacesInParagraph(docParagraph: DocParagraph): DocParagraph {
     return TrimSpacesTransform.transform(docParagraph);
   }
 }
