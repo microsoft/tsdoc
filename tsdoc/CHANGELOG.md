@@ -1,5 +1,8 @@
 # Change Log - @microsoft/tsdoc
 
+## (next release)
+- Add DocNodeTransforms.trimSpacesInParagraphNodes() for collapsing whitespace inside DocParagraph subtrees
+
 ## 0.4.1
 Mon, 30 Aug 2018
 

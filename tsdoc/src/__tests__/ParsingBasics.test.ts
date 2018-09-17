@@ -1,11 +1,12 @@
 import {
   StandardModifierTagSet,
   DocComment,
-  ParserContext
+  ParserContext,
+  TSDocParserConfiguration,
+  TSDocTagDefinition,
+  TSDocTagSyntaxKind
 } from '../index';
 import { TestHelpers } from '../parser/__tests__/TestHelpers';
-import { TSDocParserConfiguration } from '../parser/TSDocParserConfiguration';
-import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../parser/TSDocTagDefinition';
 
 test('01 Simple @beta and @internal extraction', () => {
   const parserContext: ParserContext = TestHelpers.parseAndMatchDocCommentSnapshot([

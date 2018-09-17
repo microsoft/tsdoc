@@ -1,6 +1,6 @@
 import { TestHelpers } from '../parser/__tests__/TestHelpers';
 import { ParagraphSplitter } from '../parser/ParagraphSplitter';
-import { DocSection, DocPlainText, DocSoftBreak, DocParagraph, DocBlockTag } from '../nodes';
+import { DocSection, DocPlainText, DocSoftBreak, DocParagraph, DocBlockTag } from '../index';
 
 test('01 Basic paragraph splitting', () => {
   TestHelpers.parseAndMatchDocCommentSnapshot([
