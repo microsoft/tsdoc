@@ -10,7 +10,7 @@ Array [
   Object {
     "kind": "PlainText",
     "nodeExcerpt": "first   ",
-    "nodePlainText": " first",
+    "nodePlainText": " first ",
   },
   Object {
     "kind": "InlineTag",
@@ -34,8 +34,17 @@ Array [
   },
   Object {
     "kind": "PlainText",
-    "nodeExcerpt": "paragraph.",
-    "nodePlainText": " paragraph.",
+    "nodeExcerpt": "sentence.",
+  },
+  Object {
+    "kind": "PlainText",
+    "nodeExcerpt": "        This is another",
+    "nodePlainText": " This is another",
+  },
+  Object {
+    "kind": "PlainText",
+    "nodeExcerpt": "sentence.",
+    "nodePlainText": " sentence.",
   },
 ]
 `;

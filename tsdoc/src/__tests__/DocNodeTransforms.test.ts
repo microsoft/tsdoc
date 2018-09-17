@@ -8,10 +8,9 @@ test('01 trimSpacesInParagraphNodes()', () => {
     '/**',
     ' *',
     ' *    This \t is    the',
-    ' * first   {@mylink}paragraph.',
-    ' * ',
-    ' *         This is the second',
-    ' *    paragraph.',
+    ' * first   {@mylink}sentence.',
+    ' *         This is another',
+    ' *sentence.  ',
     ' */'
   ].join('\n');
 

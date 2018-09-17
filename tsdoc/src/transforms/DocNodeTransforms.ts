@@ -6,7 +6,7 @@ import { DocParagraph, DocNode } from '../nodes';
  */
 export class DocNodeTransforms {
   /**
-   * The SpaceTrimmer collapses extra spacing characters from plain text nodes.
+   * trimSpacesInParagraphNodes() collapses extra spacing characters from plain text nodes.
    *
    * @remark
    * This is useful when emitting HTML, where any number of spaces are equivalent
@@ -15,6 +15,7 @@ export class DocNodeTransforms {
    *
    * For example, we might transform this:
    *
+   * ```
    * nodes: [
    *   { kind: PlainText, text: "   Here   are some   " },
    *   { kind: SoftBreak }
@@ -25,14 +26,21 @@ export class DocNodeTransforms {
    *   { kind: PlainText, text: "  " },
    *   { kind: PlainText, text: "  " }
    * ]
+   * ```
    *
    * ...to this:
    *
+   * ```
    * nodes: [
-   *   { kind: PlainText, text: "Here are some words " },
+   *   { kind: PlainText, text: "Here are some " },
+   *   { kind: PlainText, text: "words " },
    *   { kind: InlineTag, text: "{\@inheritDoc}" },
    *   { kind: PlainText, text: "to process." }
    * ]
+   * ```
+   *
+   * Note that in this example, `"words "` is not merged with the preceding node because
+   * its DocPlainText.excerpt cannot span multiple lines.
    *
    * @param docParagraph - a DocParagraph containing nodes to be transformed
    * @returns The transformed child nodes.
