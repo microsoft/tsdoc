@@ -67,25 +67,35 @@
  */
 export class ClassA1 {
   /**
-   * Shortest name:  {@link ClassA1.memberA2[instance]}
+   * Shortest name:  {@link ClassA1.memberA2}
    * Full name:      {@link ClassA1[class].memberA2[instance]}
    */
   public memberA2(): void {
   }
 
   /**
-   * Shortest name:  {@link ClassA1.memberA2[static]}
-   * Full name:      {@link ClassA1[class].memberA2[static]}
+   * Shortest name:  {@link ClassA1.memberA3[instance]}
+   * Full name:      {@link ClassA1[class].memberA3[instance]}
+   *
+   * NOTE: Here we cannot omit "[instance]" because there is a static member
+   * with the same name.
    */
-  public static memberA2(): void {
+  public memberA3(): void {
+  }
+
+  /**
+   * Shortest name:  {@link ClassA1.memberA3[static]}
+   * Full name:      {@link ClassA1[class].memberA3[static]}
+   */
+  public static memberA3(): void {
   }
 
   /**
    * Shortest name:  {@link ClassA1[constructor]}
    * Full name:      {@link ClassA1[constructor]}
    *
-   * NOTE: ClassA1.constructor is NOT correct, because the constructor is NOT
-   * a member of ClassA1.
+   * NOTE: "ClassA1.constructor" is NOT correct.  That would refer to a regular
+   * member whose name is "constructor".
    */
   public constructor() {
     console.log('Constructed ClassA1');
@@ -121,7 +131,11 @@ export namespace B1.B2.B3 {
 }
 
 //---------------------------------------------------------
-// Function overloads
+// Function overloads using indexes (NOT RECOMMENDED)
+//
+// Generally we recommend to define labels, as shown with functionD1() below.
+// Numeric indexes should only be used e.g. if you are consuming a library that
+// doesn't define labels, and you cannot easily fix that library.
 
 /**
  * Shortest name:  {@link functionC1[1]}
