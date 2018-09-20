@@ -15,7 +15,7 @@
 //  * {@link ./lib/controls/Button:Button | referencing a local *.d.ts file}
 //  */
 //
-// The optional components to the left of the ":" simply follow the standard rules of
+// The optional components to the left of the ":" most follow the standard rules of
 // a TypeScript "import" definition, so we don't discuss them further in this file.
 //
 // TSDoc declaration references are always resolved relative to a specific entry point
@@ -38,24 +38,29 @@
 // }
 //
 // Requiring fully scoped names ensures that documentation processors can resolve links
-// efficiently and without access to a compiler analysis.  (For this document, it means
-// all our examples can be simple self-references, since cross-references would look the same.)
+// efficiently and without access to a compiler analysis.  (And for this document, it means
+// we only need to give examples of simple self-references, since cross-references would
+// use identical notation.)
 //
 // The most interesting feature of this syntax is the "[]" selector, which has these properties:
 //
-// - It is used to disambiguate an already traversed node (e.g. choosing a function overload)
+// - It is used in the absence of a TypeScript name, or to choose between things that have
+//   the same name.
 //
-// - It is NEVER used to traverse into a new node (e.g. we write MyClass."member with spaces"
-//   instead of MyClass["member with spaces"]
+// - The value in brackets is never a TypeScript identifier.  In particular we always write
+//   MyClass."member with spaces" instead of MyClass["member with spaces"].
 //
-// - For classes, the supported selectors are "[instance]", "[static]", or "[constructor]"
+// - For members of classes, the system-defined selectors are "[instance]" and "[static]"
 //
-// - For merged declarations, the supported selectors are "[class]", "[enum]", "[function]",
+// - For members of interfaces and enums, there are no system-defined selectors.
+//
+// - For merged declarations, the system-defined selectors are "[class]", "[enum]", "[function]",
 //   "[interface]", "[namespace]", "[type]", or "[variable]"
 //
-// - When selecting a user-defined label (e.g. "[WITH_NUMBERS]") the label must be
-//   all capitals, which ensures that it cannot conflict with a TSDoc reserved name such
-//   as "class".
+// - Class constructors use a special "[constructor]" selector that applies to the class itself.
+//
+// - User-defined selectors are created using the {@label} tag.  The label must be all capitals
+//   (e.g. "[WITH_NUMBERS]") to avoid conflicts with system-defined selectors.
 
 
 //---------------------------------------------------------
@@ -278,11 +283,16 @@ export interface MergedG1 {
   /**
    * Shortest name:  {@link MergedG1[interface].mergedG2}
    * Full name:      {@link MergedG1[interface].mergedG2}
+   *
+   * NOTE: The full name doesn't have an additional selector, because interface
+   * members are unambiguous (except for operators and function overloads, which
+   * use labels).
    */
   mergedG2: string;
 }
 
-// (MUST NOT have TSDoc, because this augments an already documented interface)
+// (MUST NOT have TSDoc, because this is part of an interface that was already
+// documented above.)
 export interface MergedG1 {
   /**
    * Shortest name:  {@link MergedG1[interface].mergedG3}
@@ -303,7 +313,8 @@ export namespace MergedG1 {
   export let mergedG2: string = '';
 }
 
-// (MUST NOT have TSDoc, because this augments an already documented interface)
+// (MUST NOT have TSDoc, because this is part of a namespace that was already
+// documented above.)
 export namespace MergedG1 {
   /**
    * Shortest name:  {@link MergedG1[namespace].mergedG3}
@@ -328,7 +339,8 @@ export const enum EnumH1 {
   memberH2
 }
 
-// (MUST NOT have TSDoc, because this augments an already documented enum)
+// (MUST NOT have TSDoc, because this is part of an enum that was already
+// documented above.)
 export const enum EnumH1 {
   /**
    * Shortest name:  {@link EnumH1.memberH3}
@@ -337,120 +349,161 @@ export const enum EnumH1 {
   memberH3 = 3
 }
 
-
 //---------------------------------------------------------
-// Malformed names
+// Property getters/setters
 
 /**
  * Shortest name:  {@link ClassI1}
  * Full name:      {@link ClassI1[class]}
  */
 export class ClassI1 {
-  /**
-   * Shortest name:  {@link ClassI1."abc. def"}
-   * Full name:      {@link ClassI1[class]."abc. def"[static]}
-   */
-  public static 'abc. def': string = 'static member with malformed characters';
+  private _title: string;
 
   /**
-   * Shortest name:  {@link ClassI1."abc. def"}
-   * Full name:      {@link ClassI1[class]."abc. def"[instance]}
+   * Shortest name:  {@link ClassI1.title}
+   * Full name:      {@link ClassI1[class].title[instance]}
    */
-  public 'abc. def': string = 'instance member with malformed characters';
+  public get title(): string {
+    return this._title;
+  }
+
+  // (MUST NOT have TSDoc, because this is part of a property that was already
+  // documented above.)
+  public set title(value: string) {
+    this._title = value;
+  }
+}
+
+
+//---------------------------------------------------------
+// Malformed names
+//
+// These cases seem exotic, but they often arise when declaring a TypeScript interface
+// that describes a REST response.
+
+/**
+ * Shortest name:  {@link InterfaceJ1}
+ * Full name:      {@link InterfaceJ1[interface]}
+ */
+export interface InterfaceJ1 {
+  /**
+   * Shortest name:  {@link InterfaceJ1."abc. def"}
+   * Full name:      {@link InterfaceJ1[interface]."abc. def"[static]}
+   */
+  'abc. def': string;
 
   /**
-   * Shortest name:  {@link ClassI1.static}
-   * Also valid:     {@link ClassI1."static"}
-   * Full name:      {@link ClassI1[class].static[static]}
+   * Shortest name:  {@link InterfaceJ1."\"'"}
+   * Full name:      {@link InterfaceJ1[interface]."\"'"}
+   *
+   * Here the declaration references use double quotes, whereas the TypeScript uses
+   * single quotes, so the backslash gets swapped.
+   */
+  '"\'': string;
+
+  /**
+   * Shortest name:  {@link InterfaceJ1."&lbrace;\\&rbrace;"}
+   * Full name:      {@link InterfaceJ1[interface]."\"&lbrace;\\&rbrace;"}
+   *
+   * This example has problematic characters that affect two different encoding layers.
+   * The original string is `{\}`.  Declaration reference notation uses double quotes and
+   * backslash escaping, so the quoted string becomes `"{\\}"`.  The declaration reference
+   * itself is thus `InterfaceJ1."{\\}"`.  But then we embed it in a `{@link}` tag,
+   * which uses `}` as a delimiter and HTML character entities for escaping.  This changes
+   * the curly braces to `&lbrace;` and `&rbrace;`.
+   */
+  '{\\}': string;
+
+  /**
+   * Shortest name:  {@link InterfaceJ1."&amp;copy;"}
+   * Full name:      {@link InterfaceJ1[interface]."&amp;copy;"}
+   *
+   * Markdown supports HTML character entities, so TSDoc also supports them.  In this example
+   * we need to escape the ampersand to avoid misinterpreting the string as a copyright symbol.
+   */
+  '&copy;': string;
+
+
+  /**
+   * Shortest name:  {@link InterfaceJ1."1.5"}
+   * Full name:      {@link InterfaceJ1[interface]."1.5"}
+   *
+   * Note that the actual JavaScript object key will become a string, so "1.5" is a correct
+   * way to reference this item.  This is a bad practice that nobody should be using, but
+   * our notation handles it just fine.
+   */
+  1.5: string; //a number as the key
+}
+
+/**
+ * Shortest name:  {@link ClassJ2}
+ * Full name:      {@link ClassJ2[class]}
+ */
+export class ClassJ2 {
+  /**
+   * Shortest name:  {@link ClassJ2.static}
+   * Also valid:     {@link ClassJ2."static"}
+   * Full name:      {@link ClassJ2[class].static}
    */
   public static static: string = 'static member using keyword as name';
 
   /**
-   * Shortest name:  {@link ClassI1."\uD842\uDFB7"}
-   * Full name:      {@link ClassI1[class]."\uD842\uDFB7"[instance]}
+   * Shortest name:  {@link InterfaceJ1."𠮷"}
+   * Full name:      {@link InterfaceJ1[interface]."𠮷"}
    *
-   * NOTE: The string in double quotes is parsed using JSON.parse(), which converts
-   * this surrogate pair expression to the corresponding Unicode character.
+   * NOTE: In TypeScript some characters require quotes, some do not.
+   * TSDoc should follow the same rules as TypeScript in this regard.
    */
-  public '𠮷': string = 'instance member using JSON unicode escapes';
-
-  /**
-   * Shortest name:  {@link ClassI1."\\\""}
-   * Full name:      {@link ClassI1[class]."\\\""[instance]}
-   *
-   * Again, the string `"\\\""` is passed to JSON.parse().
-   */
-  public '\\"': string = 'instance member using JSON escapes';
-
-  /**
-   * Shortest name:  {@link ClassI1.\{\}}
-   * JSON approach:  {@link ClassI1."\u007B\u007D"}
-   * Full name:      {@link ClassI1[class].\{\}[instance]}
-   *
-   * NOTE: The closing curly brace is problematic because it is a TSDoc inline tag delimiter.
-   * The "shortest name" solves this problem using TSDoc backslash escapes.  The "JSON approach"
-   * instead uses JSON unicode escapes.  Both are valid, although the JSON approach is more likely
-   * to be compatible with documentation parsers that are not TSDoc compliant.
-   */
-  public '{}': string = 'instance member using TSDoc delimiters';
-
-  /**
-   * Shortest name:  {@link ClassI1."1.5"}
-   * Full name:      {@link ClassI1[class]."1.5"[instance]}
-   *
-   * Note that the actual JavaScript object key will become a string, so "1.5" is a correct
-   * way to reference this item.
-   */
-  public 1.5: string = "a number as the key";
+  public '𠮷': string = 'instance member using a Unicode surrogate pair';
 }
 
 //---------------------------------------------------------
-// Generic parameters are not part of the notation
+// Generic parameters are ignored by the notation.
 
 /**
- * Shortest name:  {@link TypeJ1}
- * Full name:      {@link TypeJ1[type]}
+ * Shortest name:  {@link TypeK1}
+ * Full name:      {@link TypeK1[type]}
  *
  * Note that "<T>" is never part of the declaration reference notation.
  * In the TypeScript language, signatures cannot be distinguished by generic parameters.
  */
-export type TypeJ1<T> = T | Error;
+export type TypeK1<T> = T | Error;
 
 //---------------------------------------------------------
-// Operators must be selected using explicit labels
+// Operators must always be selected using user-defined labels.
 
 /**
- * Shortest name:  {@link InterfaceK1}
- * Full name:      {@link InterfaceK1[interface]}
+ * Shortest name:  {@link InterfaceL1}
+ * Full name:      {@link InterfaceL1[interface]}
  */
-export interface InterfaceK1 {
+export interface InterfaceL1 {
   /**
-   * Shortest name:  {@link InterfaceK1.operator[STRING_INDEXER]}
-   * Full name:      {@link InterfaceK1[interface].operator[STRING_INDEXER]}
+   * Shortest name:  {@link InterfaceL1.operator[STRING_INDEXER]}
+   * Full name:      {@link InterfaceL1[interface].operator[STRING_INDEXER]}
    *
    * {@label STRING_INDEXER}
    */
   [key: string]: number;
 
   /**
-   * Shortest name:  {@link InterfaceK1.operator[NUMBER_INDEXER]}
-   * Full name:      {@link InterfaceK1[interface].operator[NUMBER_INDEXER]}
+   * Shortest name:  {@link InterfaceL1.operator[NUMBER_INDEXER]}
+   * Full name:      {@link InterfaceL1[interface].operator[NUMBER_INDEXER]}
    *
    * {@label NUMBER_INDEXER}
    */
   [key: number]: number;
 
   /**
-   * Shortest name:  {@link InterfaceK1.operator[FUNCTOR]}
-   * Full name:      {@link InterfaceK1[interface].operator[FUNCTOR]}
+   * Shortest name:  {@link InterfaceL1.operator[FUNCTOR]}
+   * Full name:      {@link InterfaceL1[interface].operator[FUNCTOR]}
    *
    * {@label FUNCTOR}
    */
   (source: string, subString: string): boolean;
 
   /**
-   * Shortest name:  {@link InterfaceK1.operator[CONSTRUCTOR]}
-   * Full name:      {@link InterfaceK1[interface].operator[CONSTRUCTOR]}
+   * Shortest name:  {@link InterfaceL1.operator[CONSTRUCTOR]}
+   * Full name:      {@link InterfaceL1[interface].operator[CONSTRUCTOR]}
    *
    * {@label CONSTRUCTOR}
    */
