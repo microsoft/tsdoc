@@ -455,6 +455,12 @@ export class ClassJ2 {
    * TSDoc should follow the same rules as TypeScript in this regard.
    */
   public '𠮷': string = 'instance member using a Unicode surrogate pair';
+
+  /**
+   * Shortest name:  {@link InterfaceJ1.spaß}
+   * Full name:      {@link InterfaceJ1[interface].spaß}
+   */
+  public spaß: string = 'international characters that do not require quotes';
 }
 
 //---------------------------------------------------------
