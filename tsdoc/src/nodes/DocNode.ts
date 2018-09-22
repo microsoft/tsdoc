@@ -16,6 +16,7 @@ export const enum DocNodeKind {
   HtmlEndTag = 'HtmlEndTag',
   HtmlStartTag = 'HtmlStartTag',
   InlineTag = 'InlineTag',
+  LinkTag = 'LinkTag',
   MemberReference = 'MemberReference',
   Particle = 'Particle',
   Paragraph = 'Paragraph',
@@ -49,6 +50,13 @@ export abstract class DocNode {
    * for highlighting matches during refatoring or highlighting error locations.
    */
   public excerpt: Excerpt | undefined = undefined;
+
+  /**
+   * Returns the array with any undefined elements removed.
+   */
+  protected static trimUndefinedNodes(nodes: ReadonlyArray<DocNode | undefined>): ReadonlyArray<DocNode> {
+    return nodes.filter(x => x) as ReadonlyArray<DocNode>;
+  }
 
   protected static validateSpacing(spacing: string | undefined, parameterName: string): void {
     if (spacing) {
