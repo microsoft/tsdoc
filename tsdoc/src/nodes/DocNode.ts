@@ -13,6 +13,7 @@ export const enum DocNodeKind {
   HtmlEndTag = 'HtmlEndTag',
   HtmlStartTag = 'HtmlStartTag',
   InlineTag = 'InlineTag',
+  LinkTag = 'LinkTag',
   Particle = 'Particle',
   Paragraph = 'Paragraph',
   ParamBlock = 'ParamBlock',
