@@ -8,7 +8,7 @@ import { ParserContext } from './ParserContext';
  * @remarks
  * Use TokenReader.readToken() to read a token and advance the stream pointer.
  * Use TokenReader.peekToken() to preview the next token.
- * Use TokeNreader.createMarker() and backtrackToMarker() to rewind to an earlier point.
+ * Use TokenReader.createMarker() and backtrackToMarker() to rewind to an earlier point.
  * Whenever readToken() is called, the token is added to an accumulated TokenSequence
  * that can be extracted by calling extractAccumulatedSequence().
  */
@@ -114,7 +114,7 @@ export class TokenReader {
   }
 
   /**
-   * Like peekTokenKind(), but looks ahead threee tokens.
+   * Like peekTokenKind(), but looks ahead three tokens.
    */
   public peekTokenAfterAfterKind(): TokenKind {
     if (this._currentIndex + 2 >= this.tokens.length) {

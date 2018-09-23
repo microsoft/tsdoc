@@ -47,7 +47,7 @@ export abstract class DocNode {
   /**
    * If this DocNode was created by parsing an input, the `DocNode.excerpt`
    * property can be used to track the associated input text.  This can be useful
-   * for highlighting matches during refatoring or highlighting error locations.
+   * for highlighting matches during refactoring or highlighting error locations.
    */
   public excerpt: Excerpt | undefined = undefined;
 

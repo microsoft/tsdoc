@@ -689,7 +689,7 @@ export class NodeParser {
       textWithoutQuotes += this._tokenReader.readToken().toString();
     }
 
-    // The next attribute cannot start immedaitely after this one
+    // The next attribute cannot start immediately after this one
     if (this._tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
       return this._createFailureForToken(
         'The next character after a closing quote must be spacing or punctuation');

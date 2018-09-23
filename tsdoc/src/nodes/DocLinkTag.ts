@@ -59,7 +59,7 @@ export class DocLinkTag extends DocInlineTag {
 
     this._pipeParticle = new DocParticle({
       excerpt: parameters.pipeExcerpt,
-      content: ':'
+      content: '|'
     });
 
     if (parameters.linkText !== undefined) {
