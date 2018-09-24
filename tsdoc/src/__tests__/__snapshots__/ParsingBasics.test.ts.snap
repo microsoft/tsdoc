@@ -66,17 +66,17 @@ Object {
 exports[`02 A basic TSDoc comment with all components 1`] = `
 Object {
   "_0_lines": Array [
-    "Adds two numbers together.",
+    "Returns the average of two numbers.",
     "",
     "@remarks",
-    "This method is part of the {@link core-library/Math | Math subsystem}.",
+    "This method is part of the {@link core-library#Statistics | Statistics subsystem}.",
     "",
     "@customBlock",
     "This is a custom block containing an @undefinedBlockTag",
     "",
-    "@param x - The first number to add",
-    "@param y - The second number to add",
-    "@returns The sum of [c]x[c] and [c]y[c]",
+    "@param x - The first input number",
+    "@param y - The second input number",
+    "@returns The arithmetic mean of [c]x[c] and [c]y[c]",
     "",
     "@beta @customModifier",
   ],
@@ -88,7 +88,7 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "Adds two numbers together.",
+            "nodeExcerpt": "Returns the average of two numbers.",
           },
           Object {
             "kind": "SoftBreak",
@@ -133,7 +133,7 @@ Object {
               },
               Object {
                 "kind": "Particle",
-                "nodeExcerpt": " core-library/Math | Math subsystem",
+                "nodeExcerpt": " core-library#Statistics | Statistics subsystem",
               },
               Object {
                 "kind": "Particle",
@@ -217,7 +217,7 @@ Object {
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The first number to add",
+              "nodeExcerpt": "The first input number",
             },
             Object {
               "kind": "SoftBreak",
@@ -250,7 +250,7 @@ Object {
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The second number to add",
+              "nodeExcerpt": "The second input number",
             },
             Object {
               "kind": "SoftBreak",
@@ -273,7 +273,7 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " The sum of ",
+            "nodeExcerpt": " The arithmetic mean of ",
           },
           Object {
             "kind": "CodeSpan",
@@ -350,9 +350,9 @@ Object {
 exports[`03 Incomplete @param blocks 1`] = `
 Object {
   "_0_lines": Array [
-    "@param - The first number to add",
-    "@param y The first number to add",
-    "@returns The sum of [c]x[c] and [c]y[c]",
+    "@param - The first input number",
+    "@param y The second input number",
+    "@returns The arithmetic mean of [c]x[c] and [c]y[c]",
   ],
   "_1_summarySection": Object {
     "kind": "Section",
@@ -378,7 +378,7 @@ Object {
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": " - The first number to add",
+              "nodeExcerpt": " - The first input number",
             },
             Object {
               "kind": "SoftBreak",
@@ -406,7 +406,7 @@ Object {
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": " y The first number to add",
+              "nodeExcerpt": " y The second input number",
             },
             Object {
               "kind": "SoftBreak",
@@ -429,7 +429,7 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " The sum of ",
+            "nodeExcerpt": " The arithmetic mean of ",
           },
           Object {
             "kind": "CodeSpan",
@@ -488,11 +488,11 @@ Object {
 exports[`03 Jumbled order 1`] = `
 Object {
   "_0_lines": Array [
-    "Adds two numbers together. @remarks This method is part of the",
-    "{@link core-library/Math | Math subsystem}.",
+    "Returns the average of two numbers. @remarks This method is part of the",
+    "{@link core-library#Statistics | Statistics subsystem}.",
     "@beta @customModifier",
-    "@returns The sum of [c]x[c] and [c]y[c]",
-    "@param x - The first number to add @param y - The second number to add",
+    "@returns The arithmetic mean of [c]x[c] and [c]y[c]",
+    "@param x - The first input number @param y - The second input number",
     "@customBlock",
     "This is a custom block containing an @undefinedBlockTag",
   ],
@@ -504,7 +504,7 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "Adds two numbers together. ",
+            "nodeExcerpt": "Returns the average of two numbers. ",
           },
         ],
       },
@@ -541,7 +541,7 @@ Object {
               },
               Object {
                 "kind": "Particle",
-                "nodeExcerpt": " core-library/Math | Math subsystem",
+                "nodeExcerpt": " core-library#Statistics | Statistics subsystem",
               },
               Object {
                 "kind": "Particle",
@@ -625,7 +625,7 @@ Object {
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The first number to add ",
+              "nodeExcerpt": "The first input number ",
             },
           ],
         },
@@ -654,7 +654,7 @@ Object {
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The second number to add",
+              "nodeExcerpt": "The second input number",
             },
             Object {
               "kind": "SoftBreak",
@@ -677,7 +677,7 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " The sum of ",
+            "nodeExcerpt": " The arithmetic mean of ",
           },
           Object {
             "kind": "CodeSpan",

@@ -9,14 +9,14 @@
 // For example:
 //
 // /**
-//  * {@link @my-scope/my-package/path1/path2:namespace1.namespace2.MyClass.myMember
+//  * {@link @my-scope/my-package/path1/path2#namespace1.namespace2.MyClass.myMember
 //  * | a complex example}
 //  *
-//  * {@link ./lib/controls/Button:Button | referencing a local *.d.ts file}
+//  * {@link ./lib/controls/Button#Button | referencing a local *.d.ts file}
 //  */
 //
-// The optional components to the left of the ":" most follow the standard rules of
-// a TypeScript "import" definition, so we don't discuss them further in this file.
+// The optional components to the left of the "#" mostly follow the standard rules of
+// a TypeScript "import" definition, so we don't discuss them further in this sample file.
 //
 // TSDoc declaration references are always resolved relative to a specific entry point
 // (NOT relative to the current source file or declaration scope).  Thus, their syntax
