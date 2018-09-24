@@ -3,7 +3,7 @@
    * Returns the average of two numbers.
    *
    * @remarks
-   * This method is part of the {@link core-library/Statistics | Statistics subsystem}.
+   * This method is part of the {@link core-library#Statistics | Statistics subsystem}.
    * This incomplete HTML tag should be reported as an error: <tag
    *
    * @privateRemarks
