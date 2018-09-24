@@ -44,12 +44,7 @@ export abstract class DocNode {
    */
   public abstract readonly kind: DocNodeKind;
 
-  /**
-   * If this DocNode was created by parsing an input, the `DocNode.excerpt`
-   * property can be used to track the associated input text.  This can be useful
-   * for highlighting matches during refactoring or highlighting error locations.
-   */
-  public excerpt: Excerpt | undefined = undefined;
+  private _excerpt: Excerpt | undefined = undefined;
 
   /**
    * Returns the array with any undefined elements removed.
@@ -69,7 +64,22 @@ export abstract class DocNode {
   }
 
   public constructor(parameters: IDocNodeParameters) {
-    this.excerpt = parameters.excerpt;
+    this.validateParameters(parameters);
+    this.updateParameters(parameters);
+  }
+
+  /**
+   * If this DocNode was created by parsing an input, the `DocNode.excerpt`
+   * property can be used to track the associated input text.  This can be useful
+   * for highlighting matches during refactoring or highlighting error locations.
+   */
+  public get excerpt(): Excerpt | undefined {
+    return this._excerpt;
+  }
+
+  /** @virtual */
+  public updateParameters(parameters: IDocNodeParameters): void {
+    this._excerpt = parameters.excerpt;
   }
 
   /**
@@ -80,5 +90,10 @@ export abstract class DocNode {
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [];
+  }
+
+  /** @virtual */
+  protected validateParameters(parameters: IDocNodeParameters): void {
+    // (virtual)
   }
 }

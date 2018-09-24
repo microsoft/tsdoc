@@ -212,10 +212,10 @@ export class TestHelpers {
   private static _validateLinearitySequence(tokenSequence: TokenSequence, state: IValidateLinearityState): void {
     if (!tokenSequence.isEmpty()) {
       if (tokenSequence.parserContext !== state.parserContext) {
-        throw new Error('validateLinearlity() failed: Inconsistent parser contexts');
+        throw new Error('validateLinearity() failed: Inconsistent parser contexts');
       }
       if (tokenSequence.startIndex !== state.tokenIndex) {
-        throw new Error('validateLinearlity() failed: Gap in token range');
+        throw new Error('validateLinearity() failed: Gap in token range');
       }
       state.tokenIndex = tokenSequence.endIndex;
     }
