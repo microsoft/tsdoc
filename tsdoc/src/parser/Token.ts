@@ -143,7 +143,13 @@ export enum TokenKind {
    * The right square bracket character.
    * The Token.range will always be a string of length 1.
    */
-  RightSquareBracket = 2023
+  RightSquareBracket = 2023,
+
+  /**
+   * The pipe character `|`.
+   * The Token.range will always be a string of length 1.
+   */
+  Pipe = 2024
 }
 
 /**

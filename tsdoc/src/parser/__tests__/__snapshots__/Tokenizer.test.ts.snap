@@ -530,7 +530,7 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "                                    > < ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Pipe",
     },
     Object {
       "indexOfLine": 0,
