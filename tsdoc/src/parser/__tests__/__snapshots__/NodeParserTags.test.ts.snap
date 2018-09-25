@@ -179,10 +179,10 @@ Object {
                   Object {
                     "kind": "Particle",
                     "nodeExcerpt": "@two",
+                    "nodeSpacing": " ",
                   },
                   Object {
                     "kind": "Particle",
-                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "Particle",
@@ -248,10 +248,10 @@ Object {
                   Object {
                     "kind": "Particle",
                     "nodeExcerpt": "@five",
+                    "nodeSpacing": "[n]  ",
                   },
                   Object {
                     "kind": "Particle",
-                    "nodeExcerpt": "[n]  ",
                   },
                   Object {
                     "kind": "Particle",
@@ -433,10 +433,11 @@ Object {
                   Object {
                     "kind": "Particle",
                     "nodeExcerpt": "@one",
+                    "nodeSpacing": " ",
                   },
                   Object {
                     "kind": "Particle",
-                    "nodeExcerpt": " some content",
+                    "nodeExcerpt": "some content",
                   },
                   Object {
                     "kind": "Particle",
@@ -458,10 +459,11 @@ Object {
                   Object {
                     "kind": "Particle",
                     "nodeExcerpt": "@two",
+                    "nodeSpacing": " ",
                   },
                   Object {
                     "kind": "Particle",
-                    "nodeExcerpt": " multi[n]line",
+                    "nodeExcerpt": "multi[n]line",
                   },
                   Object {
                     "kind": "Particle",
@@ -509,10 +511,11 @@ Object {
                   Object {
                     "kind": "Particle",
                     "nodeExcerpt": "@three",
+                    "nodeSpacing": " ",
                   },
                   Object {
                     "kind": "Particle",
-                    "nodeExcerpt": " @taglike",
+                    "nodeExcerpt": "@taglike",
                   },
                   Object {
                     "kind": "Particle",
@@ -560,10 +563,11 @@ Object {
                   Object {
                     "kind": "Particle",
                     "nodeExcerpt": "@one",
+                    "nodeSpacing": " ",
                   },
                   Object {
                     "kind": "Particle",
-                    "nodeExcerpt": " left [b]{ right [b]} backslash [b][b] ",
+                    "nodeExcerpt": "left [b]{ right [b]} backslash [b][b] ",
                   },
                   Object {
                     "kind": "Particle",

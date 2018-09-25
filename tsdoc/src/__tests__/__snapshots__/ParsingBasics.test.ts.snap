@@ -134,10 +134,11 @@ Object {
               Object {
                 "kind": "Particle",
                 "nodeExcerpt": "@link",
+                "nodeSpacing": " ",
               },
               Object {
                 "kind": "Particle",
-                "nodeExcerpt": " core-library#Statistics | Statistics subsystem",
+                "nodeExcerpt": "core-library#Statistics | Statistics subsystem",
               },
               Object {
                 "kind": "Particle",
@@ -544,10 +545,11 @@ Object {
               Object {
                 "kind": "Particle",
                 "nodeExcerpt": "@link",
+                "nodeSpacing": " ",
               },
               Object {
                 "kind": "Particle",
-                "nodeExcerpt": " core-library#Statistics | Statistics subsystem",
+                "nodeExcerpt": "core-library#Statistics | Statistics subsystem",
               },
               Object {
                 "kind": "Particle",

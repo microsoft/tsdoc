@@ -447,11 +447,10 @@ export class NodeParser {
     const tagNameExcerptParameters: IExcerptParameters = {
       content: tokenReader.extractAccumulatedSequence()
     };
+    const spacingAfterTagName: string = this._readSpacingAndNewlines(tokenReader);
+    tagNameExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
 
-    // We include the space in tagContent in case the implementor wants to assign some
-    // special meaning to spaces for their tag.
-    let tagContent: string = this._readSpacingAndNewlines(tokenReader);
-    if (tagContent.length === 0) {
+    if (spacingAfterTagName.length === 0) {
       // If there were no spaces at all, that's an error unless it's the degenerate "{@tag}" case
       if (tokenReader.peekTokenKind() !== TokenKind.RightCurlyBracket) {
         const failure: IFailure = this._createFailureForToken(tokenReader,
@@ -460,6 +459,7 @@ export class NodeParser {
       }
     }
 
+    let tagContent: string = '';
     let done: boolean = false;
     while (!done) {
       switch (tokenReader.peekTokenKind()) {
