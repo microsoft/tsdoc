@@ -5,11 +5,6 @@ import { TextRange } from './TextRange';
  */
 export enum TokenKind {
   /**
-   * A null/undefined value.
-   */
-  None = 2000,
-
-  /**
    * A token representing the end of the input.  The Token.range will be an empty range
    * at the end of the provided input.
    */

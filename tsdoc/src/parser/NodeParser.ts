@@ -348,7 +348,7 @@ export class NodeParser {
     // a syntax error.  For two tags it should be "@one @two", or for literal text it
     // should be "\@one\@two".
     switch (tokenReader.peekPreviousTokenKind()) {
-      case TokenKind.None:
+      case TokenKind.EndOfInput:
       case TokenKind.Spacing:
       case TokenKind.Newline:
         break;
@@ -383,10 +383,9 @@ export class NodeParser {
     }
 
     switch (tokenReader.peekTokenKind()) {
-      case TokenKind.None:
+      case TokenKind.EndOfInput:
       case TokenKind.Spacing:
       case TokenKind.Newline:
-      case TokenKind.EndOfInput:
         break;
       default:
         return this._backtrackAndCreateError(tokenReader, marker,
@@ -801,7 +800,7 @@ export class NodeParser {
 
     switch (tokenReader.peekPreviousTokenKind()) {
       case TokenKind.Newline:
-      case TokenKind.None:
+      case TokenKind.EndOfInput:
         break;
       default:
         return this._backtrackAndCreateErrorRange(
@@ -994,7 +993,7 @@ export class NodeParser {
     switch (tokenReader.peekPreviousTokenKind()) {
       case TokenKind.Spacing:
       case TokenKind.Newline:
-      case TokenKind.None:
+      case TokenKind.EndOfInput:
         break;
       default:
         return this._createError(tokenReader,
