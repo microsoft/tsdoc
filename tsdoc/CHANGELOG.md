@@ -1,7 +1,9 @@
 # Change Log - @microsoft/tsdoc
 
-## (next release)
-- Add DocNodeTransforms.trimSpacesInParagraphNodes() for collapsing whitespace inside DocParagraph subtrees
+## 0.5.0
+- Add a new API `DocNode.updateParameters()` that allows a `DocNode` object to be updated after it was created; the tree nodes are no longer immutable
+- Add `DocNodeTransforms.trimSpacesInParagraphNodes()` for collapsing whitespace inside `DocParagraph` subtrees
+- Extract the `DocNode.excerpt` property into a new abstract base class `DocNodeLeaf`
 
 ## 0.4.1
 Mon, 30 Aug 2018
