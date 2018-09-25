@@ -19,16 +19,32 @@ export class DocErrorText extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ErrorText;
 
+  private _text: string | undefined;
+  private _errorMessage: string | undefined;
+  private _errorLocation: TokenSequence | undefined;
+
+  /**
+   * Don't call this directly.  Instead use {@link TSDocParser}
+   * @internal
+   */
+  public constructor(parameters: IDocErrorTextParameters) {
+    super(parameters);
+  }
+
   /**
    * The characters that should be rendered as plain text because they
    * could not be parsed successfully.
    */
-  public readonly text: string;
+  public get text(): string {
+    return this._text!;
+  }
 
   /**
    * A description of why the character could not be parsed.
    */
-  public readonly errorMessage: string;
+  public get errorMessage(): string {
+    return this._errorMessage!;
+  }
 
   /**
    * The range of characters that caused the error.  In general these may be
@@ -39,16 +55,16 @@ export class DocErrorText extends DocNodeLeaf {
    * will correspond to the `<` character that looked like an HTML tag, whereas the
    * error location might be the `@` character that caused the trouble.
    */
-  public readonly errorLocation: TokenSequence;
+  public get errorLocation(): TokenSequence {
+    return this._errorLocation!;
+  }
 
-  /**
-   * Don't call this directly.  Instead use {@link TSDocParser}
-   * @internal
-   */
-  public constructor(parameters: IDocErrorTextParameters) {
-    super(parameters);
-    this.text = parameters.text;
-    this.errorMessage = parameters.errorMessage;
-    this.errorLocation = parameters.errorLocation;
+  /** @override */
+  public updateParameters(parameters: IDocErrorTextParameters): void {
+    super.updateParameters(parameters);
+
+    this._text = parameters.text;
+    this._errorMessage = parameters.errorMessage;
+    this._errorLocation = parameters.errorLocation;
   }
 }

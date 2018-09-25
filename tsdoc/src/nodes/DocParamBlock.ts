@@ -21,8 +21,8 @@ export class DocParamBlock extends DocBlock {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ParamBlock;
 
-  private readonly _parameterNameParticle: DocParticle;
-  private readonly _hyphenParticle: DocParticle;
+  private _parameterNameParticle: DocParticle | undefined;
+  private _hyphenParticle: DocParticle | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -30,6 +30,19 @@ export class DocParamBlock extends DocBlock {
    */
   public constructor(parameters: IDocParamBlockParameters) {
     super(parameters);
+  }
+
+  /**
+   * The name of the parameter that is being documented.
+   * For example "width" in `@param width - the width of the object`.
+   */
+  public get parameterName(): string {
+    return this._parameterNameParticle!.content;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocParamBlockParameters): void {
+    super.updateParameters(parameters);
 
     this._parameterNameParticle = new DocParticle({
       excerpt: parameters.parameterNameExcerpt,
@@ -43,22 +56,14 @@ export class DocParamBlock extends DocBlock {
   }
 
   /**
-   * The name of the parameter that is being documented.
-   * For example "width" in `@param width - the width of the object`.
-   */
-  public get parameterName(): string {
-    return this._parameterNameParticle.content;
-  }
-
-  /**
    * {@inheritdoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
       this.blockTag,
-      this._parameterNameParticle,
-      this._hyphenParticle,
+      this._parameterNameParticle!,
+      this._hyphenParticle!,
 
       ...this.nodes
     ];

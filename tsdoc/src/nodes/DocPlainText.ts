@@ -24,10 +24,7 @@ export class DocPlainText extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.PlainText;
 
-  /**
-   * The text content.
-   */
-  public readonly text: string;
+  private _text: string | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -35,10 +32,24 @@ export class DocPlainText extends DocNodeLeaf {
    */
   public constructor(parameters: IDocPlainTextParameters) {
     super(parameters);
+  }
+
+  /**
+   * The text content.
+   */
+  public get text(): string {
+    return this._text!;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocPlainTextParameters): void {
     if (DocPlainText._newlineCharacterRegExp.test(parameters.text)) {
       // Use DocSoftBreak to represent manual line splitting
       throw new Error('The DocPlainText content must not contain newline characters');
     }
-    this.text = parameters.text;
+
+    super.updateParameters(parameters);
+
+    this._text = parameters.text;
   }
 }

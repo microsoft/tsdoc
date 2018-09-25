@@ -17,10 +17,7 @@ export class DocBlock extends DocSection {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Block;
 
-  /**
-   * The TSDoc tag that introduces this section.
-   */
-  public readonly blockTag: DocBlockTag;
+  private _blockTag: DocBlockTag | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -28,7 +25,19 @@ export class DocBlock extends DocSection {
    */
   public constructor(parameters: IDocBlockParameters) {
     super(parameters);
-    this.blockTag = parameters.blockTag;
+  }
+
+  /**
+   * The TSDoc tag that introduces this section.
+   */
+  public get blockTag(): DocBlockTag {
+    return this._blockTag!;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocBlockParameters): void {
+    super.updateParameters(parameters);
+    this._blockTag = parameters.blockTag;
   }
 
   /**

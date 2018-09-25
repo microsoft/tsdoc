@@ -78,15 +78,22 @@ export class DocLinkTag extends DocInlineTag {
 
   /** @override */
   public updateParameters(parameters: IDocLinkTagParameters): void {
+    if (parameters.tagName.toUpperCase() !== '@LINK') {
+      throw new Error('DocLinkTag requires the tag name to be "{@link}"');
+    }
+
+    if (parameters.codeLink) {
+      if (parameters.documentLink !== undefined) {
+        throw new Error('Either the codeLink or the documentLink may be specified, but not both');
+      }
+    }
+
     super.updateParameters(parameters);
 
     this._codeLinkParticle = undefined;
     this._documentLinkParticle = undefined;
 
     if (parameters.codeLink) {
-      if (parameters.documentLink !== undefined) {
-        throw new Error('Either the codeLink or the documentLink may be specified, but not both');
-      }
       this._codeLinkParticle = parameters.codeLink;
     } else if (parameters.documentLink !== undefined) {
       this._documentLinkParticle = new DocParticle({
@@ -119,12 +126,5 @@ export class DocLinkTag extends DocInlineTag {
       this._pipeParticle,
       this._linkTextParticle
     ]);
-  }
-
-  /** @override */
-  protected validateParameters(parameters: IDocLinkTagParameters): void {
-    if (parameters.tagName.toUpperCase() !== '@LINK') {
-      throw new Error('DocLinkTag requires the tag name to be "{@link}"');
-    }
   }
 }

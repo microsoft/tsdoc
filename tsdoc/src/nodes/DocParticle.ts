@@ -27,16 +27,8 @@ export class DocParticle extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Particle;
 
-  /**
-   * The text representation of this particle, excluding any surrounding whitespace.
-   */
-  public readonly content: string;
-
-  /**
-   * Optional explicit whitespace that appears after the main content.
-   * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
-   */
-  public readonly spacingAfterContent: string | undefined;
+  private _content: string | undefined;
+  private _spacingAfterContent: string | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -44,8 +36,30 @@ export class DocParticle extends DocNodeLeaf {
    */
   public constructor(parameters: IDocParticleParameters) {
     super(parameters);
-    this.content = parameters.content;
-    this.spacingAfterContent = parameters.spacingAfterContent;
+  }
+
+  /**
+   * The text representation of this particle, excluding any surrounding whitespace.
+   */
+  public get content(): string {
+    return this._content!;
+  }
+
+  /**
+   * Optional explicit whitespace that appears after the main content.
+   * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
+   */
+  public get spacingAfterContent(): string | undefined {
+    return this._spacingAfterContent;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocParticleParameters): void {
     DocNode.validateSpacing(parameters.spacingAfterContent, 'spacingAfterContent');
+
+    super.updateParameters(parameters);
+
+    this._content = parameters.content;
+    this._spacingAfterContent = parameters.spacingAfterContent;
   }
 }

@@ -58,6 +58,8 @@ export class DocInlineTag extends DocNode {
 
   /** @override */
   public updateParameters(parameters: IDocInlineTagParameters): void {
+    StringChecks.validateTSDocTagName(parameters.tagName);
+
     super.updateParameters(parameters);
 
     this._openingDelimiterParticle = new DocParticle({
@@ -92,12 +94,5 @@ export class DocInlineTag extends DocNode {
       this._tagContentParticle!,
       this._closingDelimiterParticle!
     ];
-  }
-
-  /** @override */
-  protected validateParameters(parameters: IDocInlineTagParameters): void {
-    super.validateParameters(parameters);
-
-    StringChecks.validateTSDocTagName(parameters.tagName);
   }
 }

@@ -1,5 +1,4 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
-import { ParserContext } from '../parser/ParserContext';
 import { DocSection } from './DocSection';
 import { StandardModifierTagSet } from '../details/StandardModifierTagSet';
 import { DocBlock } from './DocBlock';
@@ -9,7 +8,6 @@ import { DocParamBlock } from './DocParamBlock';
  * Constructor parameters for {@link DocComment}.
  */
 export interface IDocCommentParameters extends IDocNodeParameters {
-  parserContext?: ParserContext;
 }
 
 /**

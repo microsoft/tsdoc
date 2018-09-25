@@ -22,13 +22,13 @@ export class DocHtmlEndTag extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.HtmlEndTag;
 
   // The "</" delimiter
-  private readonly _openingDelimiterParticle: DocParticle;
+  private _openingDelimiterParticle: DocParticle | undefined;
 
   // The element name
-  private readonly _elementNameParticle: DocParticle;
+  private _elementNameParticle: DocParticle | undefined;
 
   // The  ">" delimiter
-  private readonly _closingDelimiterParticle: DocParticle;
+  private _closingDelimiterParticle: DocParticle | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -36,6 +36,18 @@ export class DocHtmlEndTag extends DocNode {
    */
   public constructor(parameters: IDocHtmlEndTagParameters) {
     super(parameters);
+  }
+
+  /**
+   * The HTML element name.
+   */
+  public get elementName(): string {
+    return this._elementNameParticle!.content;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocHtmlEndTagParameters): void {
+    super.updateParameters(parameters);
 
     this._openingDelimiterParticle = new DocParticle({
       excerpt: parameters.openingDelimiterExcerpt,
@@ -54,21 +66,14 @@ export class DocHtmlEndTag extends DocNode {
   }
 
   /**
-   * The HTML element name.
-   */
-  public get elementName(): string {
-    return this._elementNameParticle.content;
-  }
-
-  /**
    * {@inheritdoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
-      this._openingDelimiterParticle,
-      this._elementNameParticle,
-      this._closingDelimiterParticle
+      this._openingDelimiterParticle!,
+      this._elementNameParticle!,
+      this._closingDelimiterParticle!
     ];
   }
 

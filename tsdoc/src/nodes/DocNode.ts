@@ -59,7 +59,6 @@ export abstract class DocNode {
   }
 
   public constructor(parameters: IDocNodeParameters) {
-    this.validateParameters(parameters);
     this.updateParameters(parameters);
   }
 
@@ -76,10 +75,5 @@ export abstract class DocNode {
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [];
-  }
-
-  /** @virtual */
-  protected validateParameters(parameters: IDocNodeParameters): void {
-    // (virtual)
   }
 }

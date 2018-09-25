@@ -29,19 +29,19 @@ export class DocMemberReference extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.MemberReference;
 
   // The "." token if this is not the first member reference in the chain
-  private readonly _dotParticle: DocParticle;
+  private _dotParticle: DocParticle | undefined;
 
   // The identifier
-  private readonly _identifierParticle: DocParticle;
+  private _identifierParticle: DocParticle | undefined;
 
   // The "[" token, if a selector is present
-  private readonly _openingDelimiterParticle: DocParticle;
+  private _openingDelimiterParticle: DocParticle | undefined;
 
   // The optional selector
-  private readonly _selectorParticle: DocParticle;
+  private _selectorParticle: DocParticle | undefined;
 
   // The "]" token, if a selector is present
-  private readonly _closingDelimiterParticle: DocParticle;
+  private _closingDelimiterParticle: DocParticle | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -49,6 +49,41 @@ export class DocMemberReference extends DocNode {
    */
   public constructor(parameters: IDocMemberReferenceParameters) {
     super(parameters);
+  }
+
+  /**
+   * True if this member reference is preceded by a dot (".") token.
+   * It should be false only for the first member in the chain.
+   */
+  public get hasDot(): boolean {
+    return this._dotParticle!.content.length > 0;
+  }
+
+  /**
+   * The member identifier, for example the name of a TypeScript class, interface,
+   * enum, function, etc.
+   */
+  public get identifier(): string {
+    return this._identifierParticle!.content;
+  }
+
+  /**
+   * The optional selector, used in situations where TypeScript identifiers are
+   * insufficient to unambiguously determine the declaration.  Examples include
+   * function overloads, merged declarations, indexer, etc.
+   *
+   * @remarks
+   * System-defined selectors use all lower case names (e.g. "class", "constructor", "static",
+   * "instance").  User-defined selectors use upper case words delimited by underscores,
+   * and are introduced using the `{@label}` inline tag.
+   */
+  public get selector(): string {
+    return this._selectorParticle!.content;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocMemberReferenceParameters): void {
+    super.updateParameters(parameters);
 
     if (parameters.hasDot) {
       this._dotParticle = new DocParticle({
@@ -89,46 +124,16 @@ export class DocMemberReference extends DocNode {
   }
 
   /**
-   * True if this member reference is preceded by a dot (".") token.
-   * It should be false only for the first member in the chain.
-   */
-  public get hasDot(): boolean {
-    return this._dotParticle.content.length > 0;
-  }
-
-  /**
-   * The member identifier, for example the name of a TypeScript class, interface,
-   * enum, function, etc.
-   */
-  public get identifier(): string {
-    return this._identifierParticle.content;
-  }
-
-  /**
-   * The optional selector, used in situations where TypeScript identifiers are
-   * insufficient to unambiguously determine the declaration.  Examples include
-   * function overloads, merged declarations, indexer, etc.
-   *
-   * @remarks
-   * System-defined selectors use all lower case names (e.g. "class", "constructor", "static",
-   * "instance").  User-defined selectors use upper case words delimited by underscores,
-   * and are introduced using the `{@label}` inline tag.
-   */
-  public get selector(): string {
-    return this._selectorParticle.content;
-  }
-
-  /**
    * {@inheritdoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
-      this._dotParticle,
-      this._identifierParticle,
-      this._openingDelimiterParticle,
-      this._selectorParticle,
-      this._closingDelimiterParticle
+      this._dotParticle!,
+      this._identifierParticle!,
+      this._openingDelimiterParticle!,
+      this._selectorParticle!,
+      this._closingDelimiterParticle!
     ];
   }
 }

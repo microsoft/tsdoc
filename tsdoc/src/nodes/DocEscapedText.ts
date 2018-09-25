@@ -30,15 +30,8 @@ export class DocEscapedText extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.EscapedText;
 
-  /**
-   * The style of escaping to be performed.
-   */
-  public readonly escapeStyle: EscapeStyle;
-
-  /**
-   * The text content to be escaped.
-   */
-  public readonly text: string;
+  private _escapeStyle: EscapeStyle | undefined;
+  private _text: string | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -46,7 +39,27 @@ export class DocEscapedText extends DocNodeLeaf {
    */
   public constructor(parameters: IDocEscapedTextParameters) {
     super(parameters);
-    this.escapeStyle = parameters.escapeStyle;
-    this.text = parameters.text;
+  }
+
+  /**
+   * The style of escaping to be performed.
+   */
+  public get escapeStyle(): EscapeStyle {
+    return this._escapeStyle!;
+  }
+
+  /**
+   * The text content to be escaped.
+   */
+  public get text(): string {
+    return this._text!;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocEscapedTextParameters): void {
+    super.updateParameters(parameters);
+
+    this._escapeStyle = parameters.escapeStyle;
+    this._text = parameters.text;
   }
 }
