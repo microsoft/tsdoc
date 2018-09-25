@@ -1,31 +1,23 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNodeKind } from './DocNode';
+import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
 import { StringChecks } from '../parser/StringChecks';
 
 /**
  * Constructor parameters for {@link DocBlockTag}.
  */
-export interface IDocBlockTagParameters extends IDocNodeParameters {
+export interface IDocBlockTagParameters extends IDocNodeLeafParameters {
   tagName: string;
 }
 
 /**
  * Represents a TSDoc block tag such as `@param` or `@public`.
  */
-export class DocBlockTag extends DocNode {
+export class DocBlockTag extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.BlockTag;
 
-  /**
-   * The TSDoc tag name.  TSDoc tag names start with an at-sign ("@") followed
-   * by ASCII letters using "camelCase" capitalization.
-   */
-  public readonly tagName: string;
-
-  /**
-   * The TSDoc tag name in all capitals, which is used for performing
-   * case-insensitive comparisons or lookups.
-   */
-  public readonly tagNameWithUpperCase: string;
+  private _tagName: string | undefined;
+  private _tagNameWithUpperCase: string | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -33,9 +25,31 @@ export class DocBlockTag extends DocNode {
    */
   public constructor(parameters: IDocBlockTagParameters) {
     super(parameters);
+  }
 
+  /**
+   * The TSDoc tag name.  TSDoc tag names start with an at-sign ("@") followed
+   * by ASCII letters using "camelCase" capitalization.
+   */
+  public get tagName(): string {
+    return this._tagName!;
+  }
+
+  /**
+   * The TSDoc tag name in all capitals, which is used for performing
+   * case-insensitive comparisons or lookups.
+   */
+  public get tagNameWithUpperCase(): string {
+    return this._tagNameWithUpperCase!;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocBlockTagParameters): void {
     StringChecks.validateTSDocTagName(parameters.tagName);
-    this.tagName = parameters.tagName;
-    this.tagNameWithUpperCase = this.tagName.toUpperCase();
+
+    super.updateParameters(parameters);
+
+    this._tagName = parameters.tagName;
+    this._tagNameWithUpperCase = this.tagName.toUpperCase();
   }
 }

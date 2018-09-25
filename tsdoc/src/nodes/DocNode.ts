@@ -1,5 +1,3 @@
-import { Excerpt } from '../parser/Excerpt';
-
 /**
  * Indicates the type of {@link DocNode}.
  */
@@ -27,7 +25,6 @@ export const enum DocNodeKind {
  * Constructor parameters for {@link DocNode}.
  */
 export interface IDocNodeParameters {
-  excerpt?: Excerpt;
 }
 
 /**
@@ -42,11 +39,11 @@ export abstract class DocNode {
   public abstract readonly kind: DocNodeKind;
 
   /**
-   * If this DocNode was created by parsing an input, the `DocNode.excerpt`
-   * property can be used to track the associated input text.  This can be useful
-   * for highlighting matches during refatoring or highlighting error locations.
+   * Returns the array with any undefined elements removed.
    */
-  public excerpt: Excerpt | undefined = undefined;
+  protected static trimUndefinedNodes(nodes: ReadonlyArray<DocNode | undefined>): ReadonlyArray<DocNode> {
+    return nodes.filter(x => x) as ReadonlyArray<DocNode>;
+  }
 
   protected static validateSpacing(spacing: string | undefined, parameterName: string): void {
     if (spacing) {
@@ -59,7 +56,12 @@ export abstract class DocNode {
   }
 
   public constructor(parameters: IDocNodeParameters) {
-    this.excerpt = parameters.excerpt;
+    this.updateParameters(parameters);
+  }
+
+  /** @virtual */
+  public updateParameters(parameters: IDocNodeParameters): void {
+    // (virtual)
   }
 
   /**

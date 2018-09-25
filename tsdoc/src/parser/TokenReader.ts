@@ -8,7 +8,7 @@ import { ParserContext } from './ParserContext';
  * @remarks
  * Use TokenReader.readToken() to read a token and advance the stream pointer.
  * Use TokenReader.peekToken() to preview the next token.
- * Use TokeNreader.createMarker() and backtrackToMarker() to rewind to an earlier point.
+ * Use TokenReader.createMarker() and backtrackToMarker() to rewind to an earlier point.
  * Whenever readToken() is called, the token is added to an accumulated TokenSequence
  * that can be extracted by calling extractAccumulatedSequence().
  */
@@ -16,14 +16,35 @@ export class TokenReader {
   public readonly tokens: ReadonlyArray<Token>;
 
   private readonly _parserContext: ParserContext;
-  private _rangeStartIndex: number;
+
+  // The subrange of tokens to be processed by the TokenReader.  By default this is
+  // start=0 and end=tokens.length, unless an embeddedTokenSequence is specified.
+  private _readerStartIndex: number;
+  private _readerEndIndex: number;
+
+  // The index of the next token to be read
   private _currentIndex: number;
 
-  public constructor(parserContext: ParserContext) {
+  // The start of the range to be returned by extractAccumulatedSequence()
+  private _accumulatedStartIndex: number;
+
+  public constructor(parserContext: ParserContext, embeddedTokenSequence?: TokenSequence) {
     this._parserContext = parserContext;
     this.tokens = parserContext.tokens;
-    this._rangeStartIndex = 0;
-    this._currentIndex = 0;
+
+    if (embeddedTokenSequence) {
+      if (embeddedTokenSequence.parserContext !== this._parserContext) {
+        throw new Error('The embeddedTokenSequence must use the same parser context');
+      }
+      this._readerStartIndex = embeddedTokenSequence.startIndex;
+      this._readerEndIndex = embeddedTokenSequence.endIndex;
+    } else {
+      this._readerStartIndex = 0;
+      this._readerEndIndex = this.tokens.length;
+    }
+
+    this._currentIndex = this._readerStartIndex;
+    this._accumulatedStartIndex = this._readerStartIndex;
   }
 
   /**
@@ -31,7 +52,7 @@ export class TokenReader {
    * The next call to readToken() will start a new accumulated sequence.
    */
   public extractAccumulatedSequence(): TokenSequence {
-    if (this._rangeStartIndex === this._currentIndex) {
+    if (this._accumulatedStartIndex === this._currentIndex) {
       // If this happens, it indicates a parser bug:
       throw new Error('Parser assertion failed: The queue should not be empty when'
         + ' extractAccumulatedSequence() is called');
@@ -39,11 +60,11 @@ export class TokenReader {
 
     const sequence: TokenSequence = new TokenSequence({
       parserContext: this._parserContext,
-      startIndex: this._rangeStartIndex,
+      startIndex: this._accumulatedStartIndex,
       endIndex: this._currentIndex
     });
 
-    this._rangeStartIndex = this._currentIndex;
+    this._accumulatedStartIndex = this._currentIndex;
 
     return sequence;
   }
@@ -55,7 +76,7 @@ export class TokenReader {
    * is called.
    */
   public isAccumulatedSequenceEmpty(): boolean {
-    return this._rangeStartIndex === this._currentIndex;
+    return this._accumulatedStartIndex === this._currentIndex;
   }
 
   /**
@@ -78,7 +99,7 @@ export class TokenReader {
       // If this happens, it indicates a parser bug:
       const sequence: TokenSequence = new TokenSequence({
         parserContext: this._parserContext,
-        startIndex: this._rangeStartIndex,
+        startIndex: this._accumulatedStartIndex,
         endIndex: this._currentIndex
       });
       const tokenStrings: string[] = sequence.tokens.map(x => x.toString());
@@ -107,17 +128,17 @@ export class TokenReader {
    * Like peekTokenKind(), but looks ahead two tokens.
    */
   public peekTokenAfterKind(): TokenKind {
-    if (this._currentIndex + 1 >= this.tokens.length) {
+    if (this._currentIndex + 1 >= this._readerEndIndex) {
       return TokenKind.None;
     }
     return this.tokens[this._currentIndex + 1].kind;
   }
 
   /**
-   * Like peekTokenKind(), but looks ahead threee tokens.
+   * Like peekTokenKind(), but looks ahead three tokens.
    */
   public peekTokenAfterAfterKind(): TokenKind {
-    if (this._currentIndex + 2 >= this.tokens.length) {
+    if (this._currentIndex + 2 >= this._readerEndIndex) {
       return TokenKind.None;
     }
     return this.tokens[this._currentIndex + 2].kind;
@@ -129,7 +150,7 @@ export class TokenReader {
    * later be accessed via extractAccumulatedSequence().
    */
   public readToken(): Token {
-    if (this._currentIndex >= this.tokens.length) {
+    if (this._currentIndex >= this._readerEndIndex) {
       // If this happens, it's a parser bug
       throw new Error('Cannot read past end of stream');
     }
@@ -172,8 +193,8 @@ export class TokenReader {
     }
 
     this._currentIndex = marker;
-    if (marker < this._rangeStartIndex) {
-      this._rangeStartIndex = marker;
+    if (marker < this._accumulatedStartIndex) {
+      this._accumulatedStartIndex = marker;
     }
   }
 }

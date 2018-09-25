@@ -4,7 +4,8 @@ import {
   DocErrorText,
   DocNode,
   DocComment,
-  DocPlainText
+  DocPlainText,
+  DocNodeLeaf
 } from '../../nodes';
 import { ParserContext } from '../ParserContext';
 import { Excerpt } from '../Excerpt';
@@ -141,7 +142,7 @@ export class TestHelpers {
       kind: docNode.kind
     };
 
-    if (docNode.excerpt) {
+    if (docNode instanceof DocNodeLeaf && docNode.excerpt) {
       const excerpt: Excerpt = docNode.excerpt;
       item.nodeExcerpt = TestHelpers.getEscaped(excerpt.content.toString());
       if (!excerpt.spacingAfterContent.isEmpty()) {
@@ -188,7 +189,7 @@ export class TestHelpers {
 
   private static _validateLinearity(docNode: DocNode, state: IValidateLinearityState): void {
     // Validate the prefix
-    if (docNode.excerpt) {
+    if (docNode instanceof DocNodeLeaf && docNode.excerpt) {
       const excerpt: Excerpt = docNode.excerpt;
       if (!state.parserContext) {
         state.parserContext = excerpt.content.parserContext;
@@ -203,7 +204,7 @@ export class TestHelpers {
     }
 
     // Validate the suffix and seperator
-    if (docNode.excerpt) {
+    if (docNode instanceof DocNodeLeaf && docNode.excerpt) {
       const excerpt: Excerpt = docNode.excerpt;
       TestHelpers._validateLinearitySequence(excerpt.spacingAfterContent, state);
     }
@@ -212,10 +213,10 @@ export class TestHelpers {
   private static _validateLinearitySequence(tokenSequence: TokenSequence, state: IValidateLinearityState): void {
     if (!tokenSequence.isEmpty()) {
       if (tokenSequence.parserContext !== state.parserContext) {
-        throw new Error('validateLinearlity() failed: Inconsistent parser contexts');
+        throw new Error('validateLinearity() failed: Inconsistent parser contexts');
       }
       if (tokenSequence.startIndex !== state.tokenIndex) {
-        throw new Error('validateLinearlity() failed: Gap in token range');
+        throw new Error('validateLinearity() failed: Gap in token range');
       }
       state.tokenIndex = tokenSequence.endIndex;
     }

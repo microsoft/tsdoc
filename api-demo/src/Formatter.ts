@@ -1,4 +1,4 @@
-import { DocNode } from '@microsoft/tsdoc';
+import { DocNode, DocNodeLeaf } from '@microsoft/tsdoc';
 
 /**
  * This is a simplistic solution until we implement proper DocNode rendering APIs.
@@ -8,7 +8,7 @@ export class Formatter {
   public static renderDocNode(docNode: DocNode): string {
     let result: string = '';
     if (docNode) {
-      if (docNode.excerpt) {
+      if (docNode instanceof DocNodeLeaf && docNode.excerpt) {
         result += docNode.excerpt.content.toString();
         result += docNode.excerpt.spacingAfterContent.toString();
       }

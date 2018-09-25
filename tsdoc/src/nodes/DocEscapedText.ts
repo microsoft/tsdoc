@@ -1,9 +1,10 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNodeKind } from './DocNode';
+import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
 
 /**
  * Constructor parameters for {@link DocEscapedText}.
  */
-export interface IDocEscapedTextParameters extends IDocNodeParameters {
+export interface IDocEscapedTextParameters extends IDocNodeLeafParameters {
   escapeStyle: EscapeStyle;
   text: string;
 }
@@ -25,19 +26,12 @@ export enum EscapeStyle {
  * DocPlainText in a format such as HTML or TSDoc.  The DocEscapedText node
  * forces a specific escaping that may not be the default.
  */
-export class DocEscapedText extends DocNode {
+export class DocEscapedText extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.EscapedText;
 
-  /**
-   * The style of escaping to be performed.
-   */
-  public readonly escapeStyle: EscapeStyle;
-
-  /**
-   * The text content to be escaped.
-   */
-  public readonly text: string;
+  private _escapeStyle: EscapeStyle | undefined;
+  private _text: string | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -45,7 +39,27 @@ export class DocEscapedText extends DocNode {
    */
   public constructor(parameters: IDocEscapedTextParameters) {
     super(parameters);
-    this.escapeStyle = parameters.escapeStyle;
-    this.text = parameters.text;
+  }
+
+  /**
+   * The style of escaping to be performed.
+   */
+  public get escapeStyle(): EscapeStyle {
+    return this._escapeStyle!;
+  }
+
+  /**
+   * The text content to be escaped.
+   */
+  public get text(): string {
+    return this._text!;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocEscapedTextParameters): void {
+    super.updateParameters(parameters);
+
+    this._escapeStyle = parameters.escapeStyle;
+    this._text = parameters.text;
   }
 }

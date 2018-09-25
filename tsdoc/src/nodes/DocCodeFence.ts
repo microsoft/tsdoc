@@ -27,16 +27,16 @@ export class DocCodeFence extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.CodeFence;
 
   // The opening ``` delimiter and padding
-  private readonly _openingDelimiterParticle: DocParticle;
+  private _openingDelimiterParticle: DocParticle | undefined;
 
   // The optional language string, and newline
-  private readonly _languageParticle: DocParticle;
+  private _languageParticle: DocParticle | undefined;
 
   // The code content
-  private readonly _codeParticle: DocParticle;
+  private _codeParticle: DocParticle | undefined;
 
   // The closing ``` delimiter, spacing, and newline
-  private readonly _closingDelimiterParticle: DocParticle;
+  private _closingDelimiterParticle: DocParticle | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -44,6 +44,37 @@ export class DocCodeFence extends DocNode {
    */
   public constructor(parameters: IDocCodeFenceParameters) {
     super(parameters);
+  }
+
+  /**
+   * A name that can optionally be included after the opening code fence delimiter,
+   * on the same line as the three backticks.  This name indicates the programming language
+   * for the code, which a syntax highlighter may use to style the code block.
+   *
+   * @remarks
+   * The TSDoc standard requires that the language "ts" should be interpreted to mean TypeScript.
+   * Other languages names may be supported, but this is implementation dependent.
+   *
+   * CommonMark refers to this field as the "info string".
+   *
+   * @privateRemarks
+   * Examples of language strings supported by GitHub flavored markdown:
+   * https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml
+   */
+  public get language(): string | 'ts' | '' {
+    return this._languageParticle!.content;
+  }
+
+  /**
+   * The text that should be rendered as code.
+   */
+  public get code(): string {
+    return this._codeParticle!.content;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocCodeFenceParameters): void {
+    super.updateParameters(parameters);
 
     this._openingDelimiterParticle = new DocParticle({
       excerpt: parameters.openingDelimiterExcerpt,
@@ -67,41 +98,15 @@ export class DocCodeFence extends DocNode {
   }
 
   /**
-   * A name that can optionally be included after the opening code fence delimiter,
-   * on the same line as the three backticks.  This name indicates the programming language
-   * for the code, which a syntax highlighter may use to style the code block.
-   *
-   * @remarks
-   * The TSDoc standard requires that the language "ts" should be interpreted to mean TypeScript.
-   * Other languages names may be supported, but this is implementation dependent.
-   *
-   * CommonMark refers to this field as the "info string".
-   *
-   * @privateRemarks
-   * Examples of language strings supported by GitHub flavored markdown:
-   * https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml
-   */
-  public get language(): string | 'ts' | '' {
-    return this._languageParticle.content;
-  }
-
-  /**
-   * The text that should be rendered as code.
-   */
-  public get code(): string {
-    return this._codeParticle.content;
-  }
-
-  /**
    * {@inheritdoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
-      this._openingDelimiterParticle,
-      this._languageParticle,
-      this._codeParticle,
-      this._closingDelimiterParticle
+      this._openingDelimiterParticle!,
+      this._languageParticle!,
+      this._codeParticle!,
+      this._closingDelimiterParticle!
     ];
   }
 }

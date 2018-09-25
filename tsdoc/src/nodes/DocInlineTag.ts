@@ -25,10 +25,10 @@ export class DocInlineTag extends DocNode {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.InlineTag;
 
-  private readonly _openingDelimiterParticle: DocParticle;
-  private readonly _tagNameParticle: DocParticle;
-  private readonly _tagContentParticle: DocParticle;
-  private readonly _closingDelimiterParticle: DocParticle;
+  private _openingDelimiterParticle: DocParticle | undefined;
+  private _tagNameParticle: DocParticle | undefined;
+  private _tagContentParticle: DocParticle | undefined;
+  private _closingDelimiterParticle: DocParticle | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -36,13 +36,37 @@ export class DocInlineTag extends DocNode {
    */
   public constructor(parameters: IDocInlineTagParameters) {
     super(parameters);
+  }
+
+  /**
+   * The TSDoc tag name.
+   * For example, if the inline tag is `{@link Guid.toString | the toString() method}`
+   * then the tag name would be `@link`.
+   */
+  public get tagName(): string {
+    return this._tagNameParticle!.content;
+  }
+
+  /**
+   * The tag content.
+   * For example, if the inline tag is `{@link Guid.toString | the toString() method}`
+   * then the tag content would be `Guid.toString | the toString() method`.
+   */
+  public get tagContent(): string {
+    return this._tagContentParticle!.content;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocInlineTagParameters): void {
+    StringChecks.validateTSDocTagName(parameters.tagName);
+
+    super.updateParameters(parameters);
 
     this._openingDelimiterParticle = new DocParticle({
       excerpt: parameters.openingDelimiterExcerpt,
       content: '{'
     });
 
-    StringChecks.validateTSDocTagName(parameters.tagName);
     this._tagNameParticle = new DocParticle({
       excerpt: parameters.tagNameExcerpt,
       content: parameters.tagName
@@ -60,33 +84,15 @@ export class DocInlineTag extends DocNode {
   }
 
   /**
-   * The TSDoc tag name.
-   * For example, if the inline tag is `{@link Guid.toString | the toString() method}`
-   * then the tag name would be `@link`.
-   */
-  public get tagName(): string {
-    return this._tagNameParticle.content;
-  }
-
-  /**
-   * The tag content.
-   * For example, if the inline tag is `{@link Guid.toString | the toString() method}`
-   * then the tag content would be `Guid.toString | the toString() method`.
-   */
-  public get tagContent(): string {
-    return this._tagContentParticle.content;
-  }
-
-  /**
    * {@inheritdoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
-      this._openingDelimiterParticle,
-      this._tagNameParticle,
-      this._tagContentParticle,
-      this._closingDelimiterParticle
+      this._openingDelimiterParticle!,
+      this._tagNameParticle!,
+      this._tagContentParticle!,
+      this._closingDelimiterParticle!
     ];
   }
 }
