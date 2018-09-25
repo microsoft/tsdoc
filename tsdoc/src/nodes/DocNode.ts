@@ -1,5 +1,3 @@
-import { Excerpt } from '../parser/Excerpt';
-
 /**
  * Indicates the type of {@link DocNode}.
  */
@@ -30,7 +28,6 @@ export const enum DocNodeKind {
  * Constructor parameters for {@link DocNode}.
  */
 export interface IDocNodeParameters {
-  excerpt?: Excerpt;
 }
 
 /**
@@ -43,8 +40,6 @@ export abstract class DocNode {
    * Indicates the kind of DocNode.
    */
   public abstract readonly kind: DocNodeKind;
-
-  private _excerpt: Excerpt | undefined = undefined;
 
   /**
    * Returns the array with any undefined elements removed.
@@ -68,18 +63,9 @@ export abstract class DocNode {
     this.updateParameters(parameters);
   }
 
-  /**
-   * If this DocNode was created by parsing an input, the `DocNode.excerpt`
-   * property can be used to track the associated input text.  This can be useful
-   * for highlighting matches during refactoring or highlighting error locations.
-   */
-  public get excerpt(): Excerpt | undefined {
-    return this._excerpt;
-  }
-
   /** @virtual */
   public updateParameters(parameters: IDocNodeParameters): void {
-    this._excerpt = parameters.excerpt;
+    // (virtual)
   }
 
   /**

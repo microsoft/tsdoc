@@ -1,10 +1,11 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNodeKind } from './DocNode';
+import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
 import { TokenSequence } from '../parser/TokenSequence';
 
 /**
  * Constructor parameters for {@link DocErrorText}.
  */
-export interface IDocErrorTextParameters extends IDocNodeParameters {
+export interface IDocErrorTextParameters extends IDocNodeLeafParameters {
   text: string;
   errorMessage: string;
   errorLocation: TokenSequence;
@@ -14,7 +15,7 @@ export interface IDocErrorTextParameters extends IDocNodeParameters {
  * Represents a span of text that contained invalid markup.
  * The characters should be rendered as plain text.
  */
-export class DocErrorText extends DocNode {
+export class DocErrorText extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ErrorText;
 

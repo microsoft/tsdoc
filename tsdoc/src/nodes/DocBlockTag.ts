@@ -1,17 +1,18 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNodeKind } from './DocNode';
+import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
 import { StringChecks } from '../parser/StringChecks';
 
 /**
  * Constructor parameters for {@link DocBlockTag}.
  */
-export interface IDocBlockTagParameters extends IDocNodeParameters {
+export interface IDocBlockTagParameters extends IDocNodeLeafParameters {
   tagName: string;
 }
 
 /**
  * Represents a TSDoc block tag such as `@param` or `@public`.
  */
-export class DocBlockTag extends DocNode {
+export class DocBlockTag extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.BlockTag;
 

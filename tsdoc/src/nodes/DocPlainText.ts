@@ -1,9 +1,10 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNodeKind } from './DocNode';
+import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
 
 /**
  * Constructor parameters for {@link DocPlainText}.
  */
-export interface IDocPlainTextParameters extends IDocNodeParameters {
+export interface IDocPlainTextParameters extends IDocNodeLeafParameters {
   text: string;
 }
 
@@ -15,7 +16,7 @@ export interface IDocPlainTextParameters extends IDocNodeParameters {
  * The text content must not contain newline characters.
  * Use DocSoftBreak to represent manual line splitting.
  */
-export class DocPlainText extends DocNode {
+export class DocPlainText extends DocNodeLeaf {
   // TODO: We should also prohibit "\r", but this requires updating LineExtractor
   // to interpret a lone "\r" as a newline
   private static readonly _newlineCharacterRegExp: RegExp = /[\n]/;

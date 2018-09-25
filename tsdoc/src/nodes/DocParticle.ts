@@ -1,9 +1,10 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNode, DocNodeKind } from './DocNode';
+import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
 
 /**
  * Constructor parameters for {@link DocParticle}.
  */
-export interface IDocParticleParameters extends IDocNodeParameters {
+export interface IDocParticleParameters extends IDocNodeLeafParameters {
   content: string;
   spacingAfterContent?: string | undefined;
 }
@@ -22,7 +23,7 @@ export interface IDocParticleParameters extends IDocNodeParameters {
  * types (e.g. DocHtmlAttributeEqualsDelimiter or DocHtmlAttributeStringValue),
  * they are represented as generic "DocParticle" nodes.
  */
-export class DocParticle extends DocNode {
+export class DocParticle extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Particle;
 

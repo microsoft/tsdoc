@@ -288,10 +288,10 @@ export class NodeParser {
 
     if (leadingWhitespaceSequence) {
       // The leading whitespace that we parsed to the docBlockTag
-      docBlockTag.excerpt = new Excerpt({
+      docBlockTag.updateExcerpt(new Excerpt({
         content: docBlockTag.excerpt!.content,
         spacingAfterContent: leadingWhitespaceSequence
-      });
+      }));
     }
 
     return new DocParamBlock({
