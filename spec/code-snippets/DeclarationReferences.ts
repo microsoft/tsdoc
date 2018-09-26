@@ -42,25 +42,22 @@
 // we only need to give examples of simple self-references, since cross-references would
 // use identical notation.)
 //
-// The most interesting feature of this syntax is the "[]" selector, which has these properties:
+// The "(:)" operator uses a "selector" after the colon.  It has these properties:
 //
 // - It is used in the absence of a TypeScript name, or to choose between things that have
 //   the same name.
 //
-// - The value in brackets is never a TypeScript identifier.  In particular we always write
-//   MyClass."member with spaces" instead of MyClass["member with spaces"].
-//
-// - For members of classes, the system-defined selectors are "[instance]" and "[static]"
+// - For members of classes, the system-defined selectors are "instance" and "static"
 //
 // - For members of interfaces and enums, there are no system-defined selectors.
 //
-// - For merged declarations, the system-defined selectors are "[class]", "[enum]", "[function]",
-//   "[interface]", "[namespace]", "[type]", or "[variable]"
+// - For merged declarations, the system-defined selectors are "class", "enum", "function",
+//   "interface", "namespace", "type", or "variable"
 //
-// - Class constructors use a special "[constructor]" selector that applies to the class itself.
+// - Class constructors use a special "constructor" selector that applies to the class itself.
 //
 // - User-defined selectors are created using the {@label} tag.  The label must be all capitals
-//   (e.g. "[WITH_NUMBERS]") to avoid conflicts with system-defined selectors.
+//   (e.g. "WITH_NUMBERS") to avoid conflicts with system-defined selectors.
 
 
 //---------------------------------------------------------
@@ -68,36 +65,36 @@
 
 /**
  * Shortest name:  {@link ClassA1}
- * Full name:      {@link ClassA1[class]}
+ * Full name:      {@link (ClassA1:class)}
  */
 export class ClassA1 {
   /**
    * Shortest name:  {@link ClassA1.memberA2}
-   * Full name:      {@link ClassA1[class].memberA2[instance]}
+   * Full name:      {@link (ClassA1:class).(memberA2:instance)}
    */
   public memberA2(): void {
   }
 
   /**
-   * Shortest name:  {@link ClassA1.memberA3[instance]}
-   * Full name:      {@link ClassA1[class].memberA3[instance]}
+   * Shortest name:  {@link ClassA1.(memberA3:instance)}
+   * Full name:      {@link (ClassA1:class).(memberA3:instance)}
    *
-   * NOTE: Here we cannot omit "[instance]" because there is a static member
+   * NOTE: The shortest name cannot omit "instance" because there is a static member
    * with the same name.
    */
   public memberA3(): void {
   }
 
   /**
-   * Shortest name:  {@link ClassA1.memberA3[static]}
-   * Full name:      {@link ClassA1[class].memberA3[static]}
+   * Shortest name:  {@link ClassA1.(memberA3:static)}
+   * Full name:      {@link (ClassA1:class).(memberA3:static)}
    */
   public static memberA3(): void {
   }
 
   /**
-   * Shortest name:  {@link ClassA1[constructor]}
-   * Full name:      {@link ClassA1[constructor]}
+   * Shortest name:  {@link (ClassA1:constructor)}
+   * Full name:      {@link (ClassA1:constructor)}
    *
    * NOTE: "ClassA1.constructor" is NOT correct.  That would refer to a regular
    * member whose name is "constructor".
@@ -107,9 +104,9 @@ export class ClassA1 {
   }
 
   /**
-   * Shortest name:  {@link ClassA1[class].constructor}
-   * Also valid:     {@link ClassA1[class]."constructor"}
-   * Full name:      {@link ClassA1[class].constructor[instance]}
+   * Shortest name:  {@link (ClassA1:class).constructor}
+   * Also valid:     {@link (ClassA1:class)."constructor"}
+   * Full name:      {@link (ClassA1:class).(constructor:instance)}
    *
    * NOTE: This is NOT the class constructor, but rather a property
    * whose name confusingly uses a keyword.
@@ -124,12 +121,12 @@ export class ClassA1 {
 
 /**
  * Shortest name:  {@link B1.B2.B3}
- * Full name:      {@link B1[namespace].B2[namespace].B3[namespace]}
+ * Full name:      {@link (B1:namespace).(B2:namespace).(B3:namespace)S}
  */
 export namespace B1.B2.B3 {
   /**
    * Shortest name:  {@link B1.B2.B3.functionB4}
-   * Full name:      {@link B1[namespace].B2[namespace].B3[namespace].functionB4[function]}
+   * Full name:      {@link (B1:namespace).(B2:namespace).(B3:namespace).(functionB4:function)}
    */
   export function functionB4(): void {
   }
@@ -143,14 +140,14 @@ export namespace B1.B2.B3 {
 // doesn't define labels, and you cannot easily fix that library.
 
 /**
- * Shortest name:  {@link functionC1[1]}
- * Full name:      {@link functionC1[1]}
+ * Shortest name:  {@link (functionC1:1)}
+ * Full name:      {@link (functionC1:1)}
  */
 export function functionC1(y: number): number;
 
 /**
- * Shortest name:  {@link functionC1[2]}
- * Full name:      {@link functionC1[2]}
+ * Shortest name:  {@link (functionC1:2)}
+ * Full name:      {@link (functionC1:2)}
  */
 export function functionC1(x: string): string;
 
@@ -163,24 +160,24 @@ export function functionC1(xy: string | number): string | number {
 // Function overloads using labels
 
 /**
- * Shortest name:  {@link functionD1[WITH_NUMBERS]}
- * Full name:      {@link functionD1[WITH_NUMBERS]}
+ * Shortest name:  {@link (functionD1:WITH_NUMBERS)}
+ * Full name:      {@link (functionD1:WITH_NUMBERS)}
  *
  * {@label WITH_NUMBERS}
  */
 export function functionD1(y: number): number;
 
 /**
- * Shortest name:  {@link functionD1[WITH_LETTERS]}
- * Full name:      {@link functionD1[WITH_LETTERS]}
+ * Shortest name:  {@link (functionD1:WITH_LETTERS)}
+ * Full name:      {@link (functionD1:WITH_LETTERS)}
  *
  * {@label WITH_LETTERS}
  */
 export function functionD1(x: string): string;
 
 /**
- * Shortest name:  {@link functionD1[3]}
- * Full name:      {@link functionD1[3]}
+ * Shortest name:  {@link (functionD1:3)}
+ * Full name:      {@link (functionD1:3)}
  *
  * NOTE: If one label is omitted, the numeric indexers can still be used.
  */
@@ -195,17 +192,17 @@ export function functionD1(xy?: string | number): string | number {
 // Merged declarations
 
 /**
- * Shortest name:  {@link MergedE1[class]}
- * Full name:      {@link MergedE1[class]}
+ * Shortest name:  {@link (MergedE1:class)}
+ * Full name:      {@link (MergedE1:class)}
  */
 export class MergedE1 {
 
   /**
-   * Shortest name:  {@link MergedE1[constructor]}
-   * Full name:      {@link MergedE1[constructor]}
+   * Shortest name:  {@link (MergedE1:constructor)}
+   * Full name:      {@link (MergedE1:constructor)}
    *
-   * NOTE: MergedE1 is also a namespace, so it seems like we need
-   * `MergedE1[class,constructor]` or `MergedE1[class][constructor]`.
+   * NOTE: MergedE1 is also a namespace, so it seems like we need a syntax like
+   * `(MergedE1:class,constructor)` or `(MergedE1:class:constructor)`.
    * But only one selector is necessary because namespaces conveniently cannot
    * have constructors.
    */
@@ -214,15 +211,15 @@ export class MergedE1 {
   }
 
   /**
-   * Shortest name:  {@link MergedE1[class].memberE2}
-   * Full name:      {@link MergedE1[class].memberE2[instance]}
+   * Shortest name:  {@link (MergedE1:class).memberE2}
+   * Full name:      {@link (MergedE1:class).(memberE2:instance)}
    *
    * NOTES:
    *
-   * - The "[instance]" selector is optional because "MergedE1[class]" already
+   * - The "instance" selector is optional because "(MergedE1:class)" already
    *   eliminates any ambiguity.
    *
-   * - Although "MergedE1.memberE2[instance]" is theoretically also an unambiguous notation,
+   * - Although "MergedE1.(memberE2:instance)" is theoretically also an unambiguous notation,
    *   the TSDoc standard discourages that, because resolving it might require
    *   unbounded backtracking.
    */
@@ -231,13 +228,13 @@ export class MergedE1 {
 }
 
 /**
- * Shortest name:  {@link MergedE1[namespace]}
- * Full name:      {@link MergedE1[namespace]}
+ * Shortest name:  {@link (MergedE1:namespace)}
+ * Full name:      {@link (MergedE1:namespace)}
  */
 export namespace MergedE1 {
   /**
-   * Shortest name:  {@link MergedE1[namespace].memberE2}
-   * Full name:      {@link MergedE1[namespace].memberE2[function]}
+   * Shortest name:  {@link (MergedE1:namespace).memberE2}
+   * Full name:      {@link (MergedE1:namespace).(memberE2:function)}
    */
   export function memberE2(): void {
   }
@@ -247,16 +244,16 @@ export namespace MergedE1 {
 // Merged declarations with function overloads
 
 /**
- * Shortest name:  {@link MergedF1[WITH_NUMBERS]}
- * Full name:      {@link MergedF1[WITH_NUMBERS]}
+ * Shortest name:  {@link (MergedF1:WITH_NUMBERS)}
+ * Full name:      {@link (MergedF1:WITH_NUMBERS)}
  *
  * {@label WITH_NUMBERS}
  */
 export function MergedF1(y: number): number;
 
 /**
- * Shortest name:  {@link MergedF1[2]}
- * Full name:      {@link MergedF1[2]}
+ * Shortest name:  {@link (MergedF1:2)}
+ * Full name:      {@link (MergedF1:2)}
  */
 export function MergedF1(x: string): string;
 
@@ -266,8 +263,8 @@ export function MergedF1(xy: string | number): string | number {
 }
 
 /**
- * Shortest name:  {@link MergedF1[namespace]}
- * Full name:      {@link MergedF1[namespace]}
+ * Shortest name:  {@link (MergedF1:namespace)}
+ * Full name:      {@link (MergedF1:namespace)}
  */
 export namespace MergedF1 {
 }
@@ -276,13 +273,13 @@ export namespace MergedF1 {
 // Merged declarations with extension of the same thing
 
 /**
- * Shortest name:  {@link MergedG1[interface]}
- * Full name:      {@link MergedG1[interface]}
+ * Shortest name:  {@link (MergedG1:interface)}
+ * Full name:      {@link (MergedG1:interface)}
  */
 export interface MergedG1 {
   /**
-   * Shortest name:  {@link MergedG1[interface].mergedG2}
-   * Full name:      {@link MergedG1[interface].mergedG2}
+   * Shortest name:  {@link (MergedG1:interface).mergedG2}
+   * Full name:      {@link (MergedG1:interface).mergedG2}
    *
    * NOTE: The full name doesn't have an additional selector, because interface
    * members are unambiguous (except for operators and function overloads, which
@@ -295,20 +292,20 @@ export interface MergedG1 {
 // documented above.)
 export interface MergedG1 {
   /**
-   * Shortest name:  {@link MergedG1[interface].mergedG3}
-   * Full name:      {@link MergedG1[interface].mergedG3}
+   * Shortest name:  {@link (MergedG1:interface).mergedG3}
+   * Full name:      {@link (MergedG1:interface).mergedG3}
    */
   mergedG3: string;
 }
 
 /**
- * Shortest name:  {@link MergedG1[namespace]}
- * Full name:      {@link MergedG1[namespace]}
+ * Shortest name:  {@link (MergedG1:namespace)}
+ * Full name:      {@link (MergedG1:namespace)}
  */
 export namespace MergedG1 {
   /**
-   * Shortest name:  {@link MergedG1[namespace].mergedG2}
-   * Full name:      {@link MergedG1[namespace].mergedG2}
+   * Shortest name:  {@link (MergedG1:namespace).mergedG2}
+   * Full name:      {@link (MergedG1:namespace).mergedG2}
    */
   export let mergedG2: string = '';
 }
@@ -317,8 +314,8 @@ export namespace MergedG1 {
 // documented above.)
 export namespace MergedG1 {
   /**
-   * Shortest name:  {@link MergedG1[namespace].mergedG3}
-   * Full name:      {@link MergedG1[namespace].mergedG3}
+   * Shortest name:  {@link (MergedG1:namespace).mergedG3}
+   * Full name:      {@link (MergedG1:namespace).mergedG3}
    */
   export let mergedG3: string = '';
 }
@@ -329,12 +326,12 @@ export namespace MergedG1 {
 
 /**
  * Shortest name:  {@link EnumH1}
- * Full name:      {@link EnumH1[enum]}
+ * Full name:      {@link (EnumH1:enum)}
  */
 export const enum EnumH1 {
   /**
    * Shortest name:  {@link EnumH1.memberH2}
-   * Full name:      {@link EnumH1[enum].memberH2}
+   * Full name:      {@link (EnumH1:enum).memberH2}
    */
   memberH2
 }
@@ -344,7 +341,7 @@ export const enum EnumH1 {
 export const enum EnumH1 {
   /**
    * Shortest name:  {@link EnumH1.memberH3}
-   * Full name:      {@link EnumH1[enum].memberH3}
+   * Full name:      {@link (EnumH1:enum).memberH3}
    */
   memberH3 = 3
 }
@@ -354,14 +351,14 @@ export const enum EnumH1 {
 
 /**
  * Shortest name:  {@link ClassI1}
- * Full name:      {@link ClassI1[class]}
+ * Full name:      {@link (ClassI1:class)}
  */
 export class ClassI1 {
   private _title: string;
 
   /**
    * Shortest name:  {@link ClassI1.title}
-   * Full name:      {@link ClassI1[class].title[instance]}
+   * Full name:      {@link (ClassI1:class).(title:instance)}
    */
   public get title(): string {
     return this._title;
@@ -383,18 +380,18 @@ export class ClassI1 {
 
 /**
  * Shortest name:  {@link InterfaceJ1}
- * Full name:      {@link InterfaceJ1[interface]}
+ * Full name:      {@link (InterfaceJ1:interface)}
  */
 export interface InterfaceJ1 {
   /**
    * Shortest name:  {@link InterfaceJ1."abc. def"}
-   * Full name:      {@link InterfaceJ1[interface]."abc. def"[static]}
+   * Full name:      {@link (InterfaceJ1:interface).("abc. def":static)}
    */
   'abc. def': string;
 
   /**
    * Shortest name:  {@link InterfaceJ1."\"'"}
-   * Full name:      {@link InterfaceJ1[interface]."\"'"}
+   * Full name:      {@link (InterfaceJ1:interface)."\"'"}
    *
    * Here the declaration references use double quotes, whereas the TypeScript uses
    * single quotes, so the backslash gets swapped.
@@ -403,7 +400,7 @@ export interface InterfaceJ1 {
 
   /**
    * Shortest name:  {@link InterfaceJ1."&lbrace;\\&rbrace;"}
-   * Full name:      {@link InterfaceJ1[interface]."\"&lbrace;\\&rbrace;"}
+   * Full name:      {@link (InterfaceJ1:interface)."\"&lbrace;\\&rbrace;"}
    *
    * This example has problematic characters that affect two different encoding layers.
    * The original string is `{\}`.  Declaration reference notation uses double quotes and
@@ -416,7 +413,7 @@ export interface InterfaceJ1 {
 
   /**
    * Shortest name:  {@link InterfaceJ1."&amp;copy;"}
-   * Full name:      {@link InterfaceJ1[interface]."&amp;copy;"}
+   * Full name:      {@link (InterfaceJ1:interface)."&amp;copy;"}
    *
    * Markdown supports HTML character entities, so TSDoc also supports them.  In this example
    * we need to escape the ampersand to avoid misinterpreting the string as a copyright symbol.
@@ -426,7 +423,7 @@ export interface InterfaceJ1 {
 
   /**
    * Shortest name:  {@link InterfaceJ1."1.5"}
-   * Full name:      {@link InterfaceJ1[interface]."1.5"}
+   * Full name:      {@link (InterfaceJ1:interface)."1.5"}
    *
    * Note that the actual JavaScript object key will become a string, so "1.5" is a correct
    * way to reference this item.  This is a bad practice that nobody should be using, but
@@ -437,19 +434,19 @@ export interface InterfaceJ1 {
 
 /**
  * Shortest name:  {@link ClassJ2}
- * Full name:      {@link ClassJ2[class]}
+ * Full name:      {@link (ClassJ2:class)}
  */
 export class ClassJ2 {
   /**
    * Shortest name:  {@link ClassJ2.static}
    * Also valid:     {@link ClassJ2."static"}
-   * Full name:      {@link ClassJ2[class].static}
+   * Full name:      {@link (ClassJ2:class).(static:static)}
    */
   public static static: string = 'static member using keyword as name';
 
   /**
-   * Shortest name:  {@link InterfaceJ1."𠮷"}
-   * Full name:      {@link InterfaceJ1[interface]."𠮷"}
+   * Shortest name:  {@link ClassJ2."𠮷"}
+   * Full name:      {@link (ClassJ2:class).("𠮷":instance)}
    *
    * NOTE: In TypeScript some characters require quotes, some do not.
    * TSDoc should follow the same rules as TypeScript in this regard.
@@ -457,8 +454,8 @@ export class ClassJ2 {
   public '𠮷': string = 'instance member using a Unicode surrogate pair';
 
   /**
-   * Shortest name:  {@link InterfaceJ1.spaß}
-   * Full name:      {@link InterfaceJ1[interface].spaß}
+   * Shortest name:  {@link ClassJ2.spaß}
+   * Full name:      {@link (ClassJ2:class).(spaß:instance)}
    */
   public spaß: string = 'international characters that do not require quotes';
 }
@@ -468,9 +465,9 @@ export class ClassJ2 {
 
 /**
  * Shortest name:  {@link TypeK1}
- * Full name:      {@link TypeK1[type]}
+ * Full name:      {@link (TypeK1:type)}
  *
- * Note that "<T>" is never part of the declaration reference notation.
+ * Note that `<T>` is never part of the declaration reference notation.
  * In the TypeScript language, signatures cannot be distinguished by generic parameters.
  */
 export type TypeK1<T> = T | Error;
@@ -480,36 +477,36 @@ export type TypeK1<T> = T | Error;
 
 /**
  * Shortest name:  {@link InterfaceL1}
- * Full name:      {@link InterfaceL1[interface]}
+ * Full name:      {@link (InterfaceL1:interface)}
  */
 export interface InterfaceL1 {
   /**
-   * Shortest name:  {@link InterfaceL1.operator[STRING_INDEXER]}
-   * Full name:      {@link InterfaceL1[interface].operator[STRING_INDEXER]}
+   * Shortest name:  {@link InterfaceL1.(:STRING_INDEXER)}
+   * Full name:      {@link (InterfaceL1:interface).(:STRING_INDEXER)}
    *
    * {@label STRING_INDEXER}
    */
   [key: string]: number;
 
   /**
-   * Shortest name:  {@link InterfaceL1.operator[NUMBER_INDEXER]}
-   * Full name:      {@link InterfaceL1[interface].operator[NUMBER_INDEXER]}
+   * Shortest name:  {@link InterfaceL1.(:NUMBER_INDEXER)}
+   * Full name:      {@link (InterfaceL1:interface).(:NUMBER_INDEXER)}
    *
    * {@label NUMBER_INDEXER}
    */
   [key: number]: number;
 
   /**
-   * Shortest name:  {@link InterfaceL1.operator[FUNCTOR]}
-   * Full name:      {@link InterfaceL1[interface].operator[FUNCTOR]}
+   * Shortest name:  {@link InterfaceL1.(:FUNCTOR)}
+   * Full name:      {@link (InterfaceL1:interface).(:FUNCTOR)}
    *
    * {@label FUNCTOR}
    */
   (source: string, subString: string): boolean;
 
   /**
-   * Shortest name:  {@link InterfaceL1.operator[CONSTRUCTOR]}
-   * Full name:      {@link InterfaceL1[interface].operator[CONSTRUCTOR]}
+   * Shortest name:  {@link InterfaceL1.(:CONSTRUCTOR)}
+   * Full name:      {@link (InterfaceL1:interface).(:CONSTRUCTOR)}
    *
    * {@label CONSTRUCTOR}
    */
