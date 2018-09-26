@@ -512,3 +512,58 @@ export interface InterfaceL1 {
    */
   new (hour: number, minute: number);
 }
+
+//---------------------------------------------------------
+// ECMAScript 6 introduces symbols, which are runtime objects that get mapped into
+// the compile-time type system only when they follow stereotypical patterns that
+// can be detected by the compiler.  A declaration reference uses the "[]" operator
+// to reference a symbol.  It surrounds an inner declaration reference that must refer
+// to variable declaration that is a unique symbol.
+
+/**
+ * Shortest name:  {@link WellknownSymbolsM1}
+ * Full name:      {@link (WellknownSymbolsM1:namespace)}
+ */
+export namespace WellknownSymbolsM1 {
+  /**
+   * Shortest name:  {@link WellknownSymbolsM1.toStringPrimitive}
+   * Full name:      {@link (WellknownSymbolsM1:namespace).(toStringPrimitive:variable)}
+   */
+  export const toStringPrimitive: unique symbol = Symbol();
+
+  /**
+   * Shortest name:  {@link WellknownSymbolsM1.toNumberPrimitive}
+   * Full name:      {@link (WellknownSymbolsM1:namespace).(toNumberPrimitive:variable)}
+   */
+  export const toNumberPrimitive: unique symbol = Symbol();
+}
+
+/**
+ * Shortest name:  {@link ClassM2}
+ * Full name:      {@link (ClassM2:class)}
+ */
+export class ClassM2 {
+  /**
+   * Shortest name:  {@link ClassM2.[WellknownSymbolsM1.toStringPrimitive]}
+   * Full name:      {@link (ClassM2:class).([(WellknownSymbolsM1:namespace).(toStringPrimitive:variable)]:instance)}
+   */
+  public [WellknownSymbolsM1.toStringPrimitive](hint: string): string {
+    return '';
+  }
+
+  /**
+   * Shortest name:  {@link ClassM2.([WellknownSymbolsM1.toNumberPrimitive]:instance)}
+   * Full name:      {@link (ClassM2:class).([(WellknownSymbolsM1:namespace).(toNumberPrimitive:variable)]:instance)}
+   */
+  public [WellknownSymbolsM1.toNumberPrimitive](hint: string): string {
+    return '';
+  }
+
+  /**
+   * Shortest name:  {@link ClassM2.([WellknownSymbolsM1.toNumberPrimitive]:static)}
+   * Full name:      {@link (ClassM2:class).([(WellknownSymbolsM1:namespace).(toNumberPrimitive:variable)]:static)}
+   */
+  public static [WellknownSymbolsM1.toNumberPrimitive](hint: string): string {
+    return '';
+  }
+}
