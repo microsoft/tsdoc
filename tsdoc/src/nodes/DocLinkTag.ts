@@ -7,8 +7,8 @@ import { Excerpt } from '../parser/Excerpt';
  * Constructor parameters for {@link DocLinkTag}.
  */
 export interface IDocLinkTagParameters extends IDocInlineTagParameters {
-  documentLinkExcerpt?: Excerpt;
-  documentLink?: string;
+  urlDestinationExcerpt?: Excerpt;
+  urlDestination?: string;
 
   pipeExcerpt?: Excerpt;
 
@@ -24,7 +24,7 @@ export class DocLinkTag extends DocInlineTag {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.LinkTag;
 
-  private _documentLinkParticle: DocParticle | undefined;
+  private _urlDestinationParticle: DocParticle | undefined;
 
   private _pipeParticle: DocParticle | undefined;
 
@@ -42,10 +42,10 @@ export class DocLinkTag extends DocInlineTag {
    * If the link tag was an ordinary URI, this returns the URL string;
    * otherwise this property is undefined.
    * @remarks
-   * Either the `codeLink` or the `documentLink` property will be defined, but never both.
+   * Either the `codeDestination` or the `urlDestination` property will be defined, but never both.
    */
-  public get documentLink(): string | undefined {
-    return this._documentLinkParticle ? this._documentLinkParticle.content : undefined;
+  public get urlDestination(): string | undefined {
+    return this._urlDestinationParticle ? this._urlDestinationParticle.content : undefined;
   }
 
   /**
@@ -67,21 +67,32 @@ export class DocLinkTag extends DocInlineTag {
       throw new Error('DocLinkTag requires the tag name to be "{@link}"');
     }
 
+    if (parameters.tagContentExcerpt !== undefined) {
+      if (parameters.urlDestinationExcerpt || parameters.linkTextExcerpt) {
+        // This would violate the TokenCoverageChecker properties
+        throw new Error('The input cannot be associated with tagContentExcerpt and also the detail excerpts');
+      }
+    }
+
     super.updateParameters(parameters);
 
-    this._documentLinkParticle = undefined;
+    this._urlDestinationParticle = undefined;
+    this._pipeParticle = undefined;
+    this._linkTextParticle = undefined;
 
-    if (parameters.documentLink !== undefined) {
-      this._documentLinkParticle = new DocParticle({
-        excerpt: parameters.documentLinkExcerpt,
-        content: parameters.documentLink
+    if (parameters.urlDestination !== undefined) {
+      this._urlDestinationParticle = new DocParticle({
+        excerpt: parameters.urlDestinationExcerpt,
+        content: parameters.urlDestination
       });
     }
 
-    this._pipeParticle = new DocParticle({
-      excerpt: parameters.pipeExcerpt,
-      content: '|'
-    });
+    if (parameters.linkTextExcerpt || parameters.linkText) {
+      this._pipeParticle = new DocParticle({
+        excerpt: parameters.pipeExcerpt,
+        content: '|'
+      });
+    }
 
     if (parameters.linkText !== undefined) {
       this._linkTextParticle = new DocParticle({
@@ -96,10 +107,23 @@ export class DocLinkTag extends DocInlineTag {
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    return DocNode.trimUndefinedNodes([
-      this._documentLinkParticle,
-      this._pipeParticle,
-      this._linkTextParticle
-    ]);
+    if (this.tagContentParticle.excerpt) {
+      // If the parser associated the inline tag input with the tagContentExcerpt (e.g. because
+      // second stage parsing encountered an error), then fall back to the base class's representation
+      return super.getChildNodes();
+    } else {
+      // Otherwise return the detailed structure
+      return DocNode.trimUndefinedNodes([
+        this.openingDelimiterParticle,  // from base class
+        this.tagNameParticle,           // from base class
+
+        this._urlDestinationParticle,
+        this._pipeParticle,
+        this._linkTextParticle,
+
+        this.closingDelimiterParticle   // from base class
+      ]);
+    }
+
   }
 }

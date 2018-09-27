@@ -95,4 +95,20 @@ export class DocInlineTag extends DocNode {
       this._closingDelimiterParticle!
     ];
   }
+
+  protected get openingDelimiterParticle(): DocParticle {
+    return this._openingDelimiterParticle!;
+  }
+
+  protected get tagNameParticle(): DocParticle {
+    return this._tagNameParticle!;
+  }
+
+  protected get tagContentParticle(): DocParticle {
+    return this._tagContentParticle!;
+  }
+
+  protected get closingDelimiterParticle(): DocParticle {
+    return this._closingDelimiterParticle!;
+  }
 }

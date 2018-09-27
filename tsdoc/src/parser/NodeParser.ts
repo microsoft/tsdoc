@@ -19,7 +19,10 @@ import {
   DocNodeKind,
   DocSection,
   DocParamBlock,
-  DocCodeFence
+  DocCodeFence,
+  IDocInlineTagParameters,
+  DocLinkTag,
+  IDocLinkTagParameters
 } from '../nodes';
 import { TokenSequence } from './TokenSequence';
 import { Excerpt, IExcerptParameters } from './Excerpt';
@@ -376,16 +379,16 @@ export class NodeParser {
         'Expecting an inline TSDoc tag name immediately after "{@"');
     }
 
-    if (StringChecks.explainIfNotTSDocTagName(tagName)) {
+    if (StringChecks.explainIfInvalidTSDocTagName(tagName)) {
       const failure: IFailure = this._createFailureForTokensSince(tokenReader,
         'A TSDoc tag name must start with a letter and contain only letters and numbers', tagNameMarker);
       return this._backtrackAndCreateErrorForFailure(tokenReader, marker, '', failure);
     }
 
     switch (tokenReader.peekTokenKind()) {
-      case TokenKind.EndOfInput:
       case TokenKind.Spacing:
       case TokenKind.Newline:
+      case TokenKind.EndOfInput:
         break;
       default:
         return this._backtrackAndCreateError(tokenReader, marker,
@@ -437,7 +440,7 @@ export class NodeParser {
       return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker, '', failure);
     }
 
-    if (StringChecks.explainIfNotTSDocTagName(tagName)) {
+    if (StringChecks.explainIfInvalidTSDocTagName(tagName)) {
       const failure: IFailure = this._createFailureForTokensSince(tokenReader,
         'A TSDoc tag name must start with a letter and contain only letters and numbers', atSignMarker);
       return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker, '', failure);
@@ -511,7 +514,7 @@ export class NodeParser {
       content: tokenReader.extractAccumulatedSequence()
     };
 
-    return new DocInlineTag({
+    const docInlineTagParameters: IDocInlineTagParameters = {
       openingDelimiterExcerpt: new Excerpt(openingDelimiterExcerptParameters),
 
       tagNameExcerpt: new Excerpt(tagNameExcerptParameters),
@@ -521,7 +524,121 @@ export class NodeParser {
       tagContent: tagContent,
 
       closingDelimiterExcerpt: new Excerpt(closingDelimiterExcerptParameters)
-    });
+    };
+
+    switch (tagName.toUpperCase()) {
+      case StandardTags.link.tagNameWithUpperCase:
+        return this._parseLinkTag(docInlineTagParameters);
+      default:
+        return new DocInlineTag(docInlineTagParameters);
+    }
+  }
+
+  private _parseLinkTag(docInlineTagParameters: IDocInlineTagParameters): DocNode {
+    const docLinkTag: DocLinkTag = new DocLinkTag(docInlineTagParameters);
+
+    const parameters: IDocLinkTagParameters = { ...docInlineTagParameters};
+
+    if (!parameters.tagContentExcerpt) {
+      this._parserContext.log.addMessageForTokenSequence(
+        'The @link tag content is missing',
+        parameters.tagNameExcerpt!.content, docLinkTag);
+
+      return docLinkTag;
+    }
+
+    // Create a new TokenReader that will reparse the tokens corresponding to the tagContent.
+    const embeddedTokenReader: TokenReader = new TokenReader(this._parserContext,
+      parameters.tagContentExcerpt.content);
+
+    // Is the hyperlink a URL or a declaration reference?
+    if (embeddedTokenReader.peekTokenKind() === TokenKind.AsciiWord
+      && embeddedTokenReader.peekTokenAfterKind() === TokenKind.Colon) {
+      // It starts with something like "http:", so assume it's a URL
+      this._parseLinkTagUrl(embeddedTokenReader, parameters, docLinkTag);
+    } else {
+      // Otherwise, assume it's a declaration reference
+
+      // (TODO)
+      return new DocInlineTag(docInlineTagParameters);
+    }
+
+    if (embeddedTokenReader.peekTokenKind() === TokenKind.Pipe) {
+      // Read the link text
+      embeddedTokenReader.readToken();
+      parameters.pipeExcerpt = new Excerpt({
+        content: embeddedTokenReader.extractAccumulatedSequence()
+      });
+
+      // Read everything until the end
+      while (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
+        embeddedTokenReader.readToken();
+      }
+
+      if (!embeddedTokenReader.isAccumulatedSequenceEmpty()) {
+        const linkTextExcerpt: Excerpt = new Excerpt({
+          content: embeddedTokenReader.extractAccumulatedSequence()
+        });
+        parameters.linkText = linkTextExcerpt.content.toString();
+        parameters.linkTextExcerpt = linkTextExcerpt;
+      }
+    } else if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
+      embeddedTokenReader.readToken();
+
+      this._parserContext.log.addMessageForTokenSequence('Unexpected characters after link target',
+        embeddedTokenReader.extractAccumulatedSequence(), docLinkTag);
+    }
+
+    // We don't need the tagContentExcerpt since those tokens are now associated with the link particles
+    parameters.tagContentExcerpt = undefined;
+
+    docLinkTag.updateParameters(parameters);
+    return docLinkTag;
+  }
+
+  private _parseLinkTagUrl(embeddedTokenReader: TokenReader, parameters: IDocLinkTagParameters,
+    docLinkTag: DocLinkTag): void {
+
+    // Simply accumulate everything up to the next space. We won't try to implement a proper
+    // URI parser here.
+    let url: string = '';
+
+    let done: boolean = false;
+    while (!done) {
+      switch (embeddedTokenReader.peekTokenKind()) {
+        case TokenKind.Spacing:
+        case TokenKind.Newline:
+        case TokenKind.EndOfInput:
+        case TokenKind.Pipe:
+        case TokenKind.RightCurlyBracket:
+          done = true;
+          break;
+        default:
+          url += embeddedTokenReader.readToken();
+          break;
+      }
+    }
+
+    if (url.length === 0) {
+      // This should be impossible since the caller ensures that peekTokenKind() === TokenKind.AsciiWord
+      throw new Error('Missing URL in _parseLinkTagUrl()');
+    }
+
+    const excerptParameters: IExcerptParameters = {
+      content: embeddedTokenReader.extractAccumulatedSequence()
+    };
+
+    const invalidUrlExplanation: string | undefined = StringChecks.explainIfInvalidUrl(url);
+    if (invalidUrlExplanation) {
+      this._parserContext.log.addMessageForTokenSequence(invalidUrlExplanation,
+        excerptParameters.content, docLinkTag);
+    }
+
+    this._readSpacingAndNewlines(embeddedTokenReader);
+    excerptParameters.spacingAfterContent = embeddedTokenReader.tryExtractAccumulatedSequence();
+
+    parameters.urlDestination = url;
+    parameters.urlDestinationExcerpt = new Excerpt(excerptParameters);
   }
 
   private _parseHtmlStartTag(tokenReader: TokenReader): DocNode {

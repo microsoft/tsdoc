@@ -38,6 +38,7 @@ export class DocParagraph extends DocNodeContainer {
       case DocNodeKind.HtmlStartTag:
       case DocNodeKind.HtmlEndTag:
       case DocNodeKind.InlineTag:
+      case DocNodeKind.LinkTag:
       case DocNodeKind.PlainText:
       case DocNodeKind.SoftBreak:
         return true;
