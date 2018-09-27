@@ -87,7 +87,7 @@ export class DocLinkTag extends DocInlineTag {
       });
     }
 
-    if (parameters.linkTextExcerpt || parameters.linkText) {
+    if (parameters.linkTextExcerpt || parameters.linkText || parameters.pipeExcerpt) {
       this._pipeParticle = new DocParticle({
         excerpt: parameters.pipeExcerpt,
         content: '|'
