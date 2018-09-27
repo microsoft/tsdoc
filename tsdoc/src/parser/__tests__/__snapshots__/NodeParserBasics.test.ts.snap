@@ -8,24 +8,37 @@ Object {
     "line 2",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "line 1",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "line 2",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "line 1",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "line 2",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
@@ -34,7 +47,14 @@ Object {
   "buffer": "/***/",
   "lines": Array [],
   "logMessages": Array [],
-  "verbatimNodes": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+      },
+    ],
+  },
 }
 `;
 
@@ -45,12 +65,25 @@ Object {
     "",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
@@ -62,16 +95,29 @@ Object {
     "",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
@@ -82,24 +128,37 @@ Object {
     "[b]$[b]@param",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "EscapedText",
-      "nodeExcerpt": "[b]$",
-    },
-    Object {
-      "kind": "EscapedText",
-      "nodeExcerpt": "[b]@",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "param",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "EscapedText",
+                "nodeExcerpt": "[b]$",
+              },
+              Object {
+                "kind": "EscapedText",
+                "nodeExcerpt": "[b]@",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "param",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
@@ -114,44 +173,57 @@ Object {
     "(2,22): A backslash can only be used to escape a punctuation character",
     "(2,38): A backslash can only be used to escape a punctuation character",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "letter: ",
-    },
-    Object {
-      "errorLocation": "[b]",
-      "errorLocationPrecedingToken": " ",
-      "errorMessage": "A backslash can only be used to escape a punctuation character",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[b]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "A space: ",
-    },
-    Object {
-      "errorLocation": "[b]",
-      "errorLocationPrecedingToken": " ",
-      "errorMessage": "A backslash can only be used to escape a punctuation character",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[b]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "  end of line: ",
-    },
-    Object {
-      "errorLocation": "[b]",
-      "errorLocationPrecedingToken": " ",
-      "errorMessage": "A backslash can only be used to escape a punctuation character",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[b]",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "letter: ",
+              },
+              Object {
+                "errorLocation": "[b]",
+                "errorLocationPrecedingToken": " ",
+                "errorMessage": "A backslash can only be used to escape a punctuation character",
+                "kind": "ErrorText",
+                "nodeExcerpt": "[b]",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "A space: ",
+              },
+              Object {
+                "errorLocation": "[b]",
+                "errorLocationPrecedingToken": " ",
+                "errorMessage": "A backslash can only be used to escape a punctuation character",
+                "kind": "ErrorText",
+                "nodeExcerpt": "[b]",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "  end of line: ",
+              },
+              Object {
+                "errorLocation": "[b]",
+                "errorLocationPrecedingToken": " ",
+                "errorMessage": "A backslash can only be used to escape a punctuation character",
+                "kind": "ErrorText",
+                "nodeExcerpt": "[b]",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;

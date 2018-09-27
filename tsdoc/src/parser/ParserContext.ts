@@ -1,6 +1,6 @@
 import { TextRange } from './TextRange';
 import { Token } from './Token';
-import { DocComment, DocNode } from '../nodes';
+import { DocComment } from '../nodes';
 import { TSDocParserConfiguration } from './TSDocParserConfiguration';
 import { ParserMessageLog } from './ParserMessageLog';
 
@@ -36,18 +36,6 @@ export class ParserContext {
   public tokens: Token[] = [];
 
   /**
-   * A diagnostic list of all DocNode objects that were encountered during the first pass
-   * of the parser, in the order that they originally appeared in the input, with no gaps
-   * or overlap of token sequences.
-   *
-   * This linearity may be lost when the nodes are assembled into a DocComment, due to:
-   * - reordering/grouping of sections
-   * - deleting block tags that were moved to the ModifierTagSet
-   * - pruning of whitespace
-   */
-  public verbatimNodes: DocNode[];
-
-  /**
    * The parsed doc comment object.  This is the primary output of the parser.
    */
   public readonly docComment: DocComment;
@@ -60,8 +48,6 @@ export class ParserContext {
   public constructor(configuration: TSDocParserConfiguration, sourceRange: TextRange) {
     this.configuration = configuration;
     this.sourceRange = sourceRange;
-
-    this.verbatimNodes = [];
 
     this.docComment = new DocComment({ parserContext: this });
 

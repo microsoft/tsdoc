@@ -94,12 +94,8 @@ export class TestHelpers {
       buffer: TestHelpers.getEscaped(buffer),
       lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
       logMessages: parserContext.log.messages.map(message => message.text),
-      verbatimNodes: parserContext.verbatimNodes.map(x => TestHelpers.getDocNodeSnapshot(x))
+      nodes: TestHelpers.getDocNodeSnapshot(parserContext.docComment)
     }).toMatchSnapshot();
-
-    expect(() => {
-      TestHelpers.validateLinearity(parserContext.verbatimNodes);
-    }).not.toThrow();
   }
 
   /**
@@ -122,10 +118,6 @@ export class TestHelpers {
       _6_modifierTags: docComment.modifierTagSet.nodes.map(x => TestHelpers.getDocNodeSnapshot(x)),
       _7_logMessages: parserContext.log.messages.map(message => message.text)
     }).toMatchSnapshot();
-
-    expect(() => {
-      TestHelpers.validateLinearity(parserContext.verbatimNodes);
-    }).not.toThrow();
 
     return parserContext;
   }
