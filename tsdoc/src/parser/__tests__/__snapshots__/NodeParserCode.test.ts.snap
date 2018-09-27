@@ -26,15 +26,15 @@ Object {
                 "kind": "CodeSpan",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[c]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: code",
                     "nodeExcerpt": "1",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "[c]",
                   },
                 ],
@@ -51,15 +51,15 @@ Object {
                 "kind": "CodeSpan",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[c]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: code",
                     "nodeExcerpt": " 2",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "[c]",
                   },
                 ],
@@ -250,20 +250,20 @@ Object {
             "kind": "CodeFence",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c][c][c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: language",
                 "nodeExcerpt": "a language!",
                 "nodeSpacing": "[n]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "  some [c]code[c] here[n]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "[c][c][c]",
                 "nodeSpacing": "[n]",
               },
@@ -310,20 +310,20 @@ Object {
             "kind": "CodeFence",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c][c][c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: language",
                 "nodeExcerpt": "",
                 "nodeSpacing": "[n]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "  some [c]code[c] here[n]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "[c][c][c]",
                 "nodeSpacing": "[n]",
               },
@@ -668,20 +668,20 @@ Object {
             "kind": "CodeFence",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c][c][c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: language",
                 "nodeExcerpt": "",
                 "nodeSpacing": "[n]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "code[n]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "     [c][c][c]",
                 "nodeSpacing": "[n]",
               },
@@ -730,20 +730,20 @@ Object {
             "kind": "CodeFence",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c][c][c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: language",
                 "nodeExcerpt": "",
                 "nodeSpacing": "[n]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "code[n]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "[c][c][c]",
                 "nodeSpacing": "  ",
               },

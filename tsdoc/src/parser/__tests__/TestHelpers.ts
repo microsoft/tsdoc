@@ -5,7 +5,8 @@ import {
   DocNode,
   DocComment,
   DocPlainText,
-  DocNodeLeaf
+  DocNodeLeaf,
+  DocParticle
 } from '../../nodes';
 import { ParserContext } from '../ParserContext';
 import { Excerpt } from '../Excerpt';
@@ -137,6 +138,10 @@ export class TestHelpers {
     const item: ISnapshotItem = {
       kind: docNode.kind
     };
+
+    if (docNode instanceof DocParticle) {
+      item.kind += ': ' + docNode.particleId;
+    }
 
     if (docNode instanceof DocNodeLeaf && docNode.excerpt) {
       const excerpt: Excerpt = docNode.excerpt;

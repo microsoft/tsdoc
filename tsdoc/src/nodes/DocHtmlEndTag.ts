@@ -50,16 +50,19 @@ export class DocHtmlEndTag extends DocNode {
     super.updateParameters(parameters);
 
     this._openingDelimiterParticle = new DocParticle({
+      particleId: 'openingDelimiter',
       excerpt: parameters.openingDelimiterExcerpt,
       content: '</'
     });
 
     this._elementNameParticle = new DocParticle({
+      particleId: 'elementName',
       excerpt: parameters.elementNameExcerpt,
       content: parameters.elementName
     });
 
     this._closingDelimiterParticle = new DocParticle({
+      particleId: 'closingDelimiter',
       excerpt: parameters.closingDelimiterExcerpt,
       content: '>'
     });

@@ -63,21 +63,25 @@ export class DocInlineTag extends DocNode {
     super.updateParameters(parameters);
 
     this._openingDelimiterParticle = new DocParticle({
+      particleId: 'openingDelimiter',
       excerpt: parameters.openingDelimiterExcerpt,
       content: '{'
     });
 
     this._tagNameParticle = new DocParticle({
+      particleId: 'tagName',
       excerpt: parameters.tagNameExcerpt,
       content: parameters.tagName
     });
 
     this._tagContentParticle = new DocParticle({
+      particleId: 'tagContent',
       excerpt: parameters.tagContentExcerpt,
       content: parameters.tagContent
     });
 
     this._closingDelimiterParticle = new DocParticle({
+      particleId: 'closingDelimiter',
       excerpt: parameters.closingDelimiterExcerpt,
       content: '}'
     });

@@ -87,18 +87,21 @@ export class DocHtmlAttribute extends DocNode {
     super.updateParameters(parameters);
 
     this._attributeNameParticle = new DocParticle({
+      particleId: 'attributeName',
       excerpt: parameters.attributeNameExcerpt,
       content: parameters.attributeName,
       spacingAfterContent: parameters.spacingAfterAttributeName
     });
 
     this._equalsParticle = new DocParticle({
+      particleId: 'equals',
       excerpt: parameters.equalsExcerpt,
       content: '=',
       spacingAfterContent: parameters.spacingAfterEquals
     });
 
     this._attributeValueParticle = new DocParticle({
+      particleId: 'attributeValue',
       excerpt: parameters.attributeValueExcerpt,
       content: parameters.attributeValue,
       spacingAfterContent: parameters.spacingAfterAttributeValue

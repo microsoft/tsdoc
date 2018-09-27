@@ -26,20 +26,20 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@link",
                     "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: urlDestination",
                     "nodeExcerpt": "http://example1.com",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -52,20 +52,20 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@link",
                     "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: urlDestination",
                     "nodeExcerpt": "mail:bob@example2.com",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -78,28 +78,28 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@link",
                     "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: urlDestination",
                     "nodeExcerpt": "http://example3.com",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: pipe",
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: linkText",
                     "nodeExcerpt": "link text",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -112,24 +112,24 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@link",
                     "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: urlDestination",
                     "nodeExcerpt": "http://example4.com",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: pipe",
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -142,28 +142,28 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@link",
                     "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: urlDestination",
                     "nodeExcerpt": "http://example5.com",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: pipe",
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: linkText",
                     "nodeExcerpt": "[n]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -207,29 +207,29 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@link",
                     "nodeSpacing": "    ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: urlDestination",
                     "nodeExcerpt": "mail:bob@example6.com",
                     "nodeSpacing": "   ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: pipe",
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: linkText",
                     "nodeExcerpt": "  link text ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -242,29 +242,29 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@link",
                     "nodeSpacing": "[n]  ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: urlDestination",
                     "nodeExcerpt": "http://example7.com",
                     "nodeSpacing": "[n]  ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: pipe",
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: linkText",
                     "nodeExcerpt": "[n]  link text[n]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],

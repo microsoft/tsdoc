@@ -82,6 +82,7 @@ export class DocLinkTag extends DocInlineTag {
 
     if (parameters.urlDestination !== undefined) {
       this._urlDestinationParticle = new DocParticle({
+        particleId: 'urlDestination',
         excerpt: parameters.urlDestinationExcerpt,
         content: parameters.urlDestination
       });
@@ -89,6 +90,7 @@ export class DocLinkTag extends DocInlineTag {
 
     if (parameters.linkTextExcerpt || parameters.linkText || parameters.pipeExcerpt) {
       this._pipeParticle = new DocParticle({
+        particleId: 'pipe',
         excerpt: parameters.pipeExcerpt,
         content: '|'
       });
@@ -96,6 +98,7 @@ export class DocLinkTag extends DocInlineTag {
 
     if (parameters.linkText !== undefined) {
       this._linkTextParticle = new DocParticle({
+        particleId: 'linkText',
         excerpt: parameters.linkTextExcerpt,
         content: parameters.linkText
       });
