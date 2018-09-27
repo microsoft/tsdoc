@@ -7,7 +7,10 @@ Object {
     "@unknownTag",
     "@internal @internal END",
   ],
-  "_1_summarySection": Object {
+  "_1_gaps": Array [
+    "@internal",
+  ],
+  "_2_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -45,11 +48,11 @@ Object {
       },
     ],
   },
-  "_2_remarksBlock": undefined,
-  "_3_customBlocks": Array [],
-  "_4_paramBlocks": Array [],
-  "_5_returnsBlock": undefined,
-  "_6_modifierTags": Array [
+  "_3_remarksBlock": undefined,
+  "_4_customBlocks": Array [],
+  "_5_paramBlocks": Array [],
+  "_6_returnsBlock": undefined,
+  "_7_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodeExcerpt": "@beta",
@@ -59,7 +62,7 @@ Object {
       "nodeExcerpt": "@internal",
     },
   ],
-  "_7_logMessages": Array [],
+  "_8_logMessages": Array [],
 }
 `;
 
@@ -80,7 +83,8 @@ Object {
     "",
     "@beta @customModifier",
   ],
-  "_1_summarySection": Object {
+  "_1_gaps": Array [],
+  "_2_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -102,7 +106,7 @@ Object {
       },
     ],
   },
-  "_2_remarksBlock": Object {
+  "_3_remarksBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -157,7 +161,7 @@ Object {
       },
     ],
   },
-  "_3_customBlocks": Array [
+  "_4_customBlocks": Array [
     Object {
       "kind": "Block",
       "nodes": Array [
@@ -193,7 +197,7 @@ Object {
       ],
     },
   ],
-  "_4_paramBlocks": Array [
+  "_5_paramBlocks": Array [
     Object {
       "kind": "ParamBlock",
       "nodes": Array [
@@ -261,7 +265,7 @@ Object {
       ],
     },
   ],
-  "_5_returnsBlock": Object {
+  "_6_returnsBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -333,7 +337,7 @@ Object {
       },
     ],
   },
-  "_6_modifierTags": Array [
+  "_7_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodeExcerpt": "@beta",
@@ -343,7 +347,7 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
-  "_7_logMessages": Array [],
+  "_8_logMessages": Array [],
 }
 `;
 
@@ -354,12 +358,13 @@ Object {
     "@param y The second input number",
     "@returns The arithmetic mean of [c]x[c] and [c]y[c]",
   ],
-  "_1_summarySection": Object {
+  "_1_gaps": Array [],
+  "_2_summarySection": Object {
     "kind": "Section",
   },
-  "_2_remarksBlock": undefined,
-  "_3_customBlocks": Array [],
-  "_4_paramBlocks": Array [
+  "_3_remarksBlock": undefined,
+  "_4_customBlocks": Array [],
+  "_5_paramBlocks": Array [
     Object {
       "kind": "ParamBlock",
       "nodes": Array [
@@ -417,7 +422,7 @@ Object {
       ],
     },
   ],
-  "_5_returnsBlock": Object {
+  "_6_returnsBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -477,8 +482,8 @@ Object {
       },
     ],
   },
-  "_6_modifierTags": Array [],
-  "_7_logMessages": Array [
+  "_7_modifierTags": Array [],
+  "_8_logMessages": Array [
     "(2,4): The @param block should be followed by a parameter name",
     "(3,4): The @param block should be followed by a parameter name and then a hyphen",
   ],
@@ -496,7 +501,8 @@ Object {
     "@customBlock",
     "This is a custom block containing an @undefinedBlockTag",
   ],
-  "_1_summarySection": Object {
+  "_1_gaps": Array [],
+  "_2_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -510,7 +516,7 @@ Object {
       },
     ],
   },
-  "_2_remarksBlock": Object {
+  "_3_remarksBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -569,7 +575,7 @@ Object {
       },
     ],
   },
-  "_3_customBlocks": Array [
+  "_4_customBlocks": Array [
     Object {
       "kind": "Block",
       "nodes": Array [
@@ -601,7 +607,7 @@ Object {
       ],
     },
   ],
-  "_4_paramBlocks": Array [
+  "_5_paramBlocks": Array [
     Object {
       "kind": "ParamBlock",
       "nodes": Array [
@@ -665,7 +671,7 @@ Object {
       ],
     },
   ],
-  "_5_returnsBlock": Object {
+  "_6_returnsBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -725,7 +731,7 @@ Object {
       },
     ],
   },
-  "_6_modifierTags": Array [
+  "_7_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodeExcerpt": "@beta",
@@ -735,6 +741,6 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
-  "_7_logMessages": Array [],
+  "_8_logMessages": Array [],
 }
 `;

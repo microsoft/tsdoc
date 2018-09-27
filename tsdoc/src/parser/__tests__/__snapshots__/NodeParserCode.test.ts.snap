@@ -3,6 +3,7 @@
 exports[`00 Code span basic, positive 1`] = `
 Object {
   "buffer": "/**[n] * line [c]1[c][n] * line [c] 2[c] sdf[n] */",
+  "gaps": Array [],
   "lines": Array [
     "line [c]1[c]",
     "line [c] 2[c] sdf",
@@ -83,6 +84,7 @@ Object {
 exports[`01 Code span basic, negative 1`] = `
 Object {
   "buffer": "/**[n] * [c]multi[n] * line[c][n] */",
+  "gaps": Array [],
   "lines": Array [
     "[c]multi",
     "line[c]",
@@ -141,6 +143,7 @@ Object {
 exports[`01 Code span basic, negative 2`] = `
 Object {
   "buffer": "/**[n] * one[c]two[n] * [c]three[c]four[n] */",
+  "gaps": Array [],
   "lines": Array [
     "one[c]two",
     "[c]three[c]four",
@@ -216,6 +219,7 @@ Object {
 exports[`03 Code fence, positive 1`] = `
 Object {
   "buffer": "/**[n] * This is a code fence with all parts:[n] * [c][c][c]a language!   [n] *   some [c]code[c] here[n] * [c][c][c]   [n] */",
+  "gaps": Array [],
   "lines": Array [
     "This is a code fence with all parts:",
     "[c][c][c]a language!",
@@ -275,6 +279,7 @@ Object {
 exports[`03 Code fence, positive 2`] = `
 Object {
   "buffer": "/**[n] * This is a code fence with no language or trailing whitespace:[n] * [c][c][c][n] *   some [c]code[c] here[n] * [c][c][c]*/",
+  "gaps": Array [],
   "lines": Array [
     "This is a code fence with no language or trailing whitespace:",
     "[c][c][c]",
@@ -334,6 +339,7 @@ Object {
 exports[`04 Code fence, negative 1`] = `
 Object {
   "buffer": "/**[n] * Code fence incorrectly indented:[n] *    [c][c][c][n] */",
+  "gaps": Array [],
   "lines": Array [
     "Code fence incorrectly indented:",
     "   [c][c][c]",
@@ -390,6 +396,7 @@ Object {
 exports[`04 Code fence, negative 2`] = `
 Object {
   "buffer": "/**[n] * Code fence not starting the line:[n] *a[c][c][c][n] */",
+  "gaps": Array [],
   "lines": Array [
     "Code fence not starting the line:",
     "a[c][c][c]",
@@ -446,6 +453,7 @@ Object {
 exports[`04 Code fence, negative 3`] = `
 Object {
   "buffer": "/**[n] * Code fence not being terminated 1:[n] * [c][c][c]*/",
+  "gaps": Array [],
   "lines": Array [
     "Code fence not being terminated 1:",
     "[c][c][c]",
@@ -499,6 +507,7 @@ Object {
 exports[`04 Code fence, negative 4`] = `
 Object {
   "buffer": "/**[n] * Code fence not being terminated 2:[n] * [c][c][c] some stuff[n] */",
+  "gaps": Array [],
   "lines": Array [
     "Code fence not being terminated 2:",
     "[c][c][c] some stuff",
@@ -556,6 +565,7 @@ Object {
 exports[`04 Code fence, negative 5`] = `
 Object {
   "buffer": "/**[n] * Language having backticks:[n] * [c][c][c] some stuff [c][c][c][n] */",
+  "gaps": Array [],
   "lines": Array [
     "Language having backticks:",
     "[c][c][c] some stuff [c][c][c]",
@@ -625,6 +635,7 @@ Object {
 exports[`04 Code fence, negative 6`] = `
 Object {
   "buffer": "/**[n] * Closing delimiter being indented:[n] * [c][c][c][n] * code[n] *      [c][c][c][n] */",
+  "gaps": Array [],
   "lines": Array [
     "Closing delimiter being indented:",
     "[c][c][c]",
@@ -686,6 +697,7 @@ Object {
 exports[`04 Code fence, negative 7`] = `
 Object {
   "buffer": "/**[n] * Closing delimiter not being on a line by itself:[n] * [c][c][c][n] * code[n] * [c][c][c]  a[n] */",
+  "gaps": Array [],
   "lines": Array [
     "Closing delimiter not being on a line by itself:",
     "[c][c][c]",

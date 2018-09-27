@@ -3,6 +3,7 @@
 exports[`00 Tokenizer simple case 1`] = `
 Object {
   "buffer": "/**[n] * line 1 [n] * line 2[n] */",
+  "gaps": Array [],
   "lines": Array [
     "line 1",
     "line 2",
@@ -45,6 +46,7 @@ Object {
 exports[`01 Tokenizer degenerate cases 1`] = `
 Object {
   "buffer": "/***/",
+  "gaps": Array [],
   "lines": Array [],
   "logMessages": Array [],
   "nodes": Object {
@@ -61,6 +63,7 @@ Object {
 exports[`01 Tokenizer degenerate cases 2`] = `
 Object {
   "buffer": "/**[n] *[n] */",
+  "gaps": Array [],
   "lines": Array [
     "",
   ],
@@ -90,6 +93,7 @@ Object {
 exports[`01 Tokenizer degenerate cases 3`] = `
 Object {
   "buffer": "/**[n] [n] [n] */",
+  "gaps": Array [],
   "lines": Array [
     "",
     "",
@@ -124,6 +128,7 @@ Object {
 exports[`02 Backslash escapes: positive examples 1`] = `
 Object {
   "buffer": "/**[n] * [b]$[b]@param[n] */",
+  "gaps": Array [],
   "lines": Array [
     "[b]$[b]@param",
   ],
@@ -165,6 +170,7 @@ Object {
 exports[`03 Backslash escapes: negative examples 1`] = `
 Object {
   "buffer": "/**[n] * letter: [b]A space: [b]  end of line: [b][n] */",
+  "gaps": Array [],
   "lines": Array [
     "letter: [b]A space: [b]  end of line: [b]",
   ],

@@ -3,6 +3,7 @@
 exports[`01 HTML start tags: simple, positive 1`] = `
 Object {
   "buffer": "/**[n] * [<]tag/[>][n] * [<]tag-a /[>][n] * [<]tag-b [>][<]tag-c /[>][n] * [<]tag-d[n] * [>][n] * [<]tag-e[n] *      /[>]  [n] */",
+  "gaps": Array [],
   "lines": Array [
     "[<]tag/[>]",
     "[<]tag-a /[>]",
@@ -161,6 +162,7 @@ Object {
 exports[`02 HTML start tags: simple, negative 1`] = `
 Object {
   "buffer": "/**[n] * [<] tag/[>][n] * [<]tag -a /[>][n] * [<]tag-b /[<]tag-c / [>][n] * [<]tag-d[n] */",
+  "gaps": Array [],
   "lines": Array [
     "[<] tag/[>]",
     "[<]tag -a /[>]",
@@ -291,6 +293,7 @@ Object {
 exports[`03 HTML start tags: with attributes, positive 1`] = `
 Object {
   "buffer": "/**[n] * [<]tag-a attr-one=[q]one[q] [>][n] * [<]tag-b[n] *   attr-two[n] *   = [q]2[q][n] * /[>][n] */",
+  "gaps": Array [],
   "lines": Array [
     "[<]tag-a attr-one=[q]one[q] [>]",
     "[<]tag-b",
@@ -402,6 +405,7 @@ Object {
 exports[`03 HTML start tags: with attributes, positive 2`] = `
 Object {
   "buffer": "/**[n] * [<]tag-c attr-three=[q]3[q] four='4'/[>][n] * [<]tag-d[n] *   attr-five[n] *   = [q]5[q][n] *   six[n] *   = '6'[n] * /[>][n] */",
+  "gaps": Array [],
   "lines": Array [
     "[<]tag-c attr-three=[q]3[q] four='4'/[>]",
     "[<]tag-d",
@@ -552,6 +556,7 @@ Object {
 exports[`03 HTML start tags: with attributes, positive 3`] = `
 Object {
   "buffer": "/**[n] * [<]tag-e attr-one=[q]one[q] two='two'/[>][n] * [<]tag-f[n] *   attr-one[n] *   = [q]one[q][n] *   two[n] *   = 'two'[n] * /[>][n] */",
+  "gaps": Array [],
   "lines": Array [
     "[<]tag-e attr-one=[q]one[q] two='two'/[>]",
     "[<]tag-f",
@@ -702,6 +707,7 @@ Object {
 exports[`04 HTML start tags: with attributes, negative 1`] = `
 Object {
   "buffer": "/**[n] * [<]tag-a attr -one=[q]one[q] /[>][n] * [<]tag-b attr- two=[q]two[q] /[>][n] * [<]tag-c attr-three='three[q] /[>][n] * [<]tag-d attr-four=@[q]four[q] /[>][n] * [<]tag-e attr-five@=[q]five[q] /[>][n] * [<]tag-f attr-six=[q]six[q]seven=[q]seven[q] /[>][n] */",
+  "gaps": Array [],
   "lines": Array [
     "[<]tag-a attr -one=[q]one[q] /[>]",
     "[<]tag-b attr- two=[q]two[q] /[>]",
@@ -901,6 +907,7 @@ Object {
 exports[`04 HTML start tags: with attributes, negative 2`] = `
 Object {
   "buffer": "/**[n] * [<]tag-g attr=[q]multi[n] * line[q] /[>][n] */",
+  "gaps": Array [],
   "lines": Array [
     "[<]tag-g attr=[q]multi",
     "line[q] /[>]",
@@ -960,6 +967,7 @@ Object {
 exports[`05 Eclipsed TSDoc 1`] = `
 Object {
   "buffer": "/**[n] * [<]tag attr-one=[q]@tag[q] /[>][n] */",
+  "gaps": Array [],
   "lines": Array [
     "[<]tag attr-one=[q]@tag[q] /[>]",
   ],
@@ -1025,6 +1033,7 @@ Object {
 exports[`06 Closing tags, positive 1`] = `
 Object {
   "buffer": "/**[n] * [<]/tag-a[>][n] * [<]/tag-b  [>][n] * [<]/tag-c[n] *   [>][n] */",
+  "gaps": Array [],
   "lines": Array [
     "[<]/tag-a[>]",
     "[<]/tag-b  [>]",
@@ -1118,6 +1127,7 @@ Object {
 exports[`07 Closing tags, negative 1`] = `
 Object {
   "buffer": "/**[n] * [<]/tag-a/[>][n] * [<]/ tag-b[>][n] * [<]/tag-c[n] */",
+  "gaps": Array [],
   "lines": Array [
     "[<]/tag-a/[>]",
     "[<]/ tag-b[>]",

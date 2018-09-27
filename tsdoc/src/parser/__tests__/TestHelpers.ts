@@ -10,7 +10,7 @@ import {
 import { ParserContext } from '../ParserContext';
 import { Excerpt } from '../Excerpt';
 import { TSDocParserConfiguration } from '../TSDocParserConfiguration';
-import { TokenSequence } from '../TokenSequence';
+import { TokenCoverageChecker } from './TokenCoverageChecker';
 
 interface ISnapshotItem {
   kind: string;
@@ -94,8 +94,11 @@ export class TestHelpers {
       buffer: TestHelpers.getEscaped(buffer),
       lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
       logMessages: parserContext.log.messages.map(message => message.text),
-      nodes: TestHelpers.getDocNodeSnapshot(parserContext.docComment)
+      nodes: TestHelpers.getDocNodeSnapshot(parserContext.docComment),
+      gaps: this._getTokenCoverageGapsSnapshot(parserContext)
     }).toMatchSnapshot();
+
+    TestHelpers._getTokenCoverageGapsSnapshot(parserContext);
   }
 
   /**
@@ -110,13 +113,14 @@ export class TestHelpers {
 
     expect({
       _0_lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
-      _1_summarySection: TestHelpers.getDocNodeSnapshot(docComment.summarySection),
-      _2_remarksBlock: TestHelpers.getDocNodeSnapshot(docComment.remarksBlock),
-      _3_customBlocks: docComment.customBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
-      _4_paramBlocks: docComment.paramBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
-      _5_returnsBlock: TestHelpers.getDocNodeSnapshot(docComment.returnsBlock),
-      _6_modifierTags: docComment.modifierTagSet.nodes.map(x => TestHelpers.getDocNodeSnapshot(x)),
-      _7_logMessages: parserContext.log.messages.map(message => message.text)
+      _1_gaps: this._getTokenCoverageGapsSnapshot(parserContext),
+      _2_summarySection: TestHelpers.getDocNodeSnapshot(docComment.summarySection),
+      _3_remarksBlock: TestHelpers.getDocNodeSnapshot(docComment.remarksBlock),
+      _4_customBlocks: docComment.customBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _5_paramBlocks: docComment.paramBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _6_returnsBlock: TestHelpers.getDocNodeSnapshot(docComment.returnsBlock),
+      _7_modifierTags: docComment.modifierTagSet.nodes.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _8_logMessages: parserContext.log.messages.map(message => message.text)
     }).toMatchSnapshot();
 
     return parserContext;
@@ -168,54 +172,8 @@ export class TestHelpers {
     return item;
   }
 
-  /**
-   * Validate that the docNode excerpts form a contiguous sequence in the original input,
-   * with no gaps or overlap of tokens.
-   */
-  public static validateLinearity(docNodes: ReadonlyArray<DocNode>): void {
-    const state: IValidateLinearityState = { parserContext: undefined, tokenIndex: -1 };
-    for (const docNode of docNodes) {
-      return TestHelpers._validateLinearity(docNode, state);
-    }
+  private static _getTokenCoverageGapsSnapshot(parserContext: ParserContext): string[] {
+    const tokenCoverageChecker: TokenCoverageChecker = new TokenCoverageChecker(parserContext);
+    return tokenCoverageChecker.getGaps(parserContext.docComment).map(x => x.toString());
   }
-
-  private static _validateLinearity(docNode: DocNode, state: IValidateLinearityState): void {
-    // Validate the prefix
-    if (docNode instanceof DocNodeLeaf && docNode.excerpt) {
-      const excerpt: Excerpt = docNode.excerpt;
-      if (!state.parserContext) {
-        state.parserContext = excerpt.content.parserContext;
-        state.tokenIndex = excerpt.content.startIndex;
-      }
-      TestHelpers._validateLinearitySequence(excerpt.content, state);
-    }
-
-    // Validate the child nodes
-    for (const childNode of docNode.getChildNodes()) {
-      TestHelpers._validateLinearity(childNode, state);
-    }
-
-    // Validate the suffix and seperator
-    if (docNode instanceof DocNodeLeaf && docNode.excerpt) {
-      const excerpt: Excerpt = docNode.excerpt;
-      TestHelpers._validateLinearitySequence(excerpt.spacingAfterContent, state);
-    }
-  }
-
-  private static _validateLinearitySequence(tokenSequence: TokenSequence, state: IValidateLinearityState): void {
-    if (!tokenSequence.isEmpty()) {
-      if (tokenSequence.parserContext !== state.parserContext) {
-        throw new Error('validateLinearity() failed: Inconsistent parser contexts');
-      }
-      if (tokenSequence.startIndex !== state.tokenIndex) {
-        throw new Error('validateLinearity() failed: Gap in token range');
-      }
-      state.tokenIndex = tokenSequence.endIndex;
-    }
-  }
-}
-
-interface IValidateLinearityState {
-  parserContext: ParserContext | undefined;
-  tokenIndex: number;
 }

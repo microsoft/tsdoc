@@ -3,6 +3,7 @@
 exports[`00 Block tags: positive examples 1`] = `
 Object {
   "buffer": "/**[n] * @one [n] * @two[n] */",
+  "gaps": Array [],
   "lines": Array [
     "@one",
     "@two",
@@ -45,6 +46,7 @@ Object {
 exports[`01 Block tags: negative examples 1`] = `
 Object {
   "buffer": "/**[n] * @ one [n] * +@two [n] * @two+ [n] */",
+  "gaps": Array [],
   "lines": Array [
     "@ one",
     "+@two",
@@ -125,6 +127,7 @@ Object {
 exports[`02 Inline tags: simple, positive 1`] = `
 Object {
   "buffer": "/**[n] * {@one} [n] * {@two } [n] * {@three}{@four} [n] * {@five [n] *   } [n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@one}",
     "{@two }",
@@ -272,6 +275,7 @@ Object {
 exports[`03 Inline tags: simple, negative 1`] = `
 Object {
   "buffer": "/**[n] * {@ one} [n] * {@two~} [n] * { @three} [n] * {@four[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@ one}",
     "{@two~}",
@@ -403,6 +407,7 @@ Object {
 exports[`04 Inline tags: complex, positive 1`] = `
 Object {
   "buffer": "/**[n] * {@one some content}[n] * {@two multi[n] * line}[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@one some content}",
     "{@two multi",
@@ -480,6 +485,7 @@ Object {
 exports[`04 Inline tags: complex, positive 2`] = `
 Object {
   "buffer": "/**[n] * {@three @taglike}[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@three @taglike}",
   ],
@@ -530,6 +536,7 @@ Object {
 exports[`05 Inline tags: escaping, positive 1`] = `
 Object {
   "buffer": "/**[n] * {@one left [b]{ right [b]} backslash [b][b] }[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@one left [b]{ right [b]} backslash [b][b] }",
   ],
@@ -580,6 +587,7 @@ Object {
 exports[`06 Inline tags: escaping, negative 1`] = `
 Object {
   "buffer": "/**[n] * {@one curly[b]}[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@one curly[b]}",
   ],
@@ -625,6 +633,7 @@ Object {
 exports[`06 Inline tags: escaping, negative 2`] = `
 Object {
   "buffer": "/**[n] * {@two curly{}}[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@two curly{}}",
   ],
@@ -691,6 +700,7 @@ Object {
 exports[`06 Inline tags: escaping, negative 3`] = `
 Object {
   "buffer": "/**[n] * three: }[n] */",
+  "gaps": Array [],
   "lines": Array [
     "three: }",
   ],
