@@ -3,35 +3,50 @@
 exports[`00 Block tags: positive examples 1`] = `
 Object {
   "buffer": "/**[n] * @one [n] * @two[n] */",
+  "gaps": Array [],
   "lines": Array [
     "@one",
     "@two",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "BlockTag",
-      "nodeExcerpt": "@one",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "BlockTag",
-      "nodeExcerpt": "@two",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "BlockTag",
+                "nodeExcerpt": "@one",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "BlockTag",
+                "nodeExcerpt": "@two",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`01 Block tags: negative examples 1`] = `
 Object {
   "buffer": "/**[n] * @ one [n] * +@two [n] * @two+ [n] */",
+  "gaps": Array [],
   "lines": Array [
     "@ one",
     "+@two",
@@ -42,63 +57,77 @@ Object {
     "(3,5): A TSDoc tag must be preceded by whitespace",
     "(4,4): A TSDoc tag must be followed by whitespace",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "errorLocation": "@",
-      "errorMessage": "Expecting a TSDoc tag name after the [q]@[q] character (or use a backslash to escape this character)",
-      "kind": "ErrorText",
-      "nodeExcerpt": "@",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": " one",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "+",
-    },
-    Object {
-      "errorLocation": "@",
-      "errorLocationPrecedingToken": "+",
-      "errorMessage": "A TSDoc tag must be preceded by whitespace",
-      "kind": "ErrorText",
-      "nodeExcerpt": "@",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "two",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "errorLocation": "@",
-      "errorLocationPrecedingToken": "
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "@",
+                "errorMessage": "Expecting a TSDoc tag name after the [q]@[q] character (or use a backslash to escape this character)",
+                "kind": "ErrorText",
+                "nodeExcerpt": "@",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": " one",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "+",
+              },
+              Object {
+                "errorLocation": "@",
+                "errorLocationPrecedingToken": "+",
+                "errorMessage": "A TSDoc tag must be preceded by whitespace",
+                "kind": "ErrorText",
+                "nodeExcerpt": "@",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "two",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "errorLocation": "@",
+                "errorLocationPrecedingToken": "
 ",
-      "errorMessage": "A TSDoc tag must be followed by whitespace",
-      "kind": "ErrorText",
-      "nodeExcerpt": "@",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "two+",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+                "errorMessage": "A TSDoc tag must be followed by whitespace",
+                "kind": "ErrorText",
+                "nodeExcerpt": "@",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "two+",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`02 Inline tags: simple, positive 1`] = `
 Object {
   "buffer": "/**[n] * {@one} [n] * {@two } [n] * {@three}{@four} [n] * {@five [n] *   } [n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@one}",
     "{@two }",
@@ -107,132 +136,146 @@ Object {
     "  }",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "InlineTag",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "{",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "@one",
-        },
-        Object {
-          "kind": "Particle",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "}",
-        },
-      ],
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "InlineTag",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "{",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "@two",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": " ",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "}",
-        },
-      ],
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "InlineTag",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "{",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "@three",
-        },
-        Object {
-          "kind": "Particle",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "}",
-        },
-      ],
-    },
-    Object {
-      "kind": "InlineTag",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "{",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "@four",
-        },
-        Object {
-          "kind": "Particle",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "}",
-        },
-      ],
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "InlineTag",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "{",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "@five",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[n]  ",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "}",
-        },
-      ],
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "@one",
+                  },
+                  Object {
+                    "kind": "Particle",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "@two",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "@three",
+                  },
+                  Object {
+                    "kind": "Particle",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "@four",
+                  },
+                  Object {
+                    "kind": "Particle",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "@five",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "[n]  ",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`03 Inline tags: simple, negative 1`] = `
 Object {
   "buffer": "/**[n] * {@ one} [n] * {@two~} [n] * { @three} [n] * {@four[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@ one}",
     "{@two~}",
@@ -249,278 +292,348 @@ Object {
     "(4,12): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
     "(5,4): The TSDoc inline tag name is missing its closing \\"}\\"",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "errorLocation": "@",
-      "errorLocationPrecedingToken": "{",
-      "errorMessage": "Expecting a TSDoc inline tag name after the [q]{@[q] characters",
-      "kind": "ErrorText",
-      "nodeExcerpt": "{@",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": " one",
-    },
-    Object {
-      "errorLocation": "}",
-      "errorLocationPrecedingToken": "one",
-      "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-      "kind": "ErrorText",
-      "nodeExcerpt": "}",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "errorLocation": "~",
-      "errorLocationPrecedingToken": "two",
-      "errorMessage": "Expecting a space after the TSDoc inline tag name",
-      "kind": "ErrorText",
-      "nodeExcerpt": "{@",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "two~",
-    },
-    Object {
-      "errorLocation": "}",
-      "errorLocationPrecedingToken": "~",
-      "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-      "kind": "ErrorText",
-      "nodeExcerpt": "}",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "errorLocation": "{",
-      "errorLocationPrecedingToken": "
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "@",
+                "errorLocationPrecedingToken": "{",
+                "errorMessage": "Expecting a TSDoc inline tag name after the [q]{@[q] characters",
+                "kind": "ErrorText",
+                "nodeExcerpt": "{@",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": " one",
+              },
+              Object {
+                "errorLocation": "}",
+                "errorLocationPrecedingToken": "one",
+                "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+                "kind": "ErrorText",
+                "nodeExcerpt": "}",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "errorLocation": "~",
+                "errorLocationPrecedingToken": "two",
+                "errorMessage": "Expecting a space after the TSDoc inline tag name",
+                "kind": "ErrorText",
+                "nodeExcerpt": "{@",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "two~",
+              },
+              Object {
+                "errorLocation": "}",
+                "errorLocationPrecedingToken": "~",
+                "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+                "kind": "ErrorText",
+                "nodeExcerpt": "}",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "errorLocation": "{",
+                "errorLocationPrecedingToken": "
 ",
-      "errorMessage": "Expecting a TSDoc tag starting with [q]{@[q]",
-      "kind": "ErrorText",
-      "nodeExcerpt": "{",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": " ",
-    },
-    Object {
-      "errorLocation": "@",
-      "errorLocationPrecedingToken": " ",
-      "errorMessage": "A TSDoc tag must be followed by whitespace",
-      "kind": "ErrorText",
-      "nodeExcerpt": "@",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "three",
-    },
-    Object {
-      "errorLocation": "}",
-      "errorLocationPrecedingToken": "three",
-      "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-      "kind": "ErrorText",
-      "nodeExcerpt": "}",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "errorLocation": "{@",
-      "errorLocationPrecedingToken": "
+                "errorMessage": "Expecting a TSDoc tag starting with [q]{@[q]",
+                "kind": "ErrorText",
+                "nodeExcerpt": "{",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": " ",
+              },
+              Object {
+                "errorLocation": "@",
+                "errorLocationPrecedingToken": " ",
+                "errorMessage": "A TSDoc tag must be followed by whitespace",
+                "kind": "ErrorText",
+                "nodeExcerpt": "@",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "three",
+              },
+              Object {
+                "errorLocation": "}",
+                "errorLocationPrecedingToken": "three",
+                "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+                "kind": "ErrorText",
+                "nodeExcerpt": "}",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "errorLocation": "{@",
+                "errorLocationPrecedingToken": "
 ",
-      "errorMessage": "The TSDoc inline tag name is missing its closing [q]}[q]",
-      "kind": "ErrorText",
-      "nodeExcerpt": "{@",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "four",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+                "errorMessage": "The TSDoc inline tag name is missing its closing [q]}[q]",
+                "kind": "ErrorText",
+                "nodeExcerpt": "{@",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "four",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`04 Inline tags: complex, positive 1`] = `
 Object {
   "buffer": "/**[n] * {@one some content}[n] * {@two multi[n] * line}[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@one some content}",
     "{@two multi",
     "line}",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "InlineTag",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "{",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "@one",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": " some content",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "}",
-        },
-      ],
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "InlineTag",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "{",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "@two",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": " multi[n]line",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "}",
-        },
-      ],
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "@one",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": " some content",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "@two",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": " multi[n]line",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`04 Inline tags: complex, positive 2`] = `
 Object {
   "buffer": "/**[n] * {@three @taglike}[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@three @taglike}",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "InlineTag",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "{",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "@three",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": " @taglike",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "}",
-        },
-      ],
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "@three",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": " @taglike",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`05 Inline tags: escaping, positive 1`] = `
 Object {
   "buffer": "/**[n] * {@one left [b]{ right [b]} backslash [b][b] }[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@one left [b]{ right [b]} backslash [b][b] }",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "InlineTag",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "{",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "@one",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": " left [b]{ right [b]} backslash [b][b] ",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "}",
-        },
-      ],
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "@one",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": " left [b]{ right [b]} backslash [b][b] ",
+                  },
+                  Object {
+                    "kind": "Particle",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`06 Inline tags: escaping, negative 1`] = `
 Object {
   "buffer": "/**[n] * {@one curly[b]}[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@one curly[b]}",
   ],
   "logMessages": Array [
     "(2,4): The TSDoc inline tag name is missing its closing \\"}\\"",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "errorLocation": "{@",
-      "errorMessage": "The TSDoc inline tag name is missing its closing [q]}[q]",
-      "kind": "ErrorText",
-      "nodeExcerpt": "{@",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "one curly",
-    },
-    Object {
-      "kind": "EscapedText",
-      "nodeExcerpt": "[b]}",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "{@",
+                "errorMessage": "The TSDoc inline tag name is missing its closing [q]}[q]",
+                "kind": "ErrorText",
+                "nodeExcerpt": "{@",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "one curly",
+              },
+              Object {
+                "kind": "EscapedText",
+                "nodeExcerpt": "[b]}",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`06 Inline tags: escaping, negative 2`] = `
 Object {
   "buffer": "/**[n] * {@two curly{}}[n] */",
+  "gaps": Array [],
   "lines": Array [
     "{@two curly{}}",
   ],
@@ -530,72 +643,99 @@ Object {
     "(2,16): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
     "(2,17): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "errorLocation": "{",
-      "errorLocationPrecedingToken": "curly",
-      "errorMessage": "The [q]{[q] character must be escaped with a backslash when used inside a TSDoc inline tag",
-      "kind": "ErrorText",
-      "nodeExcerpt": "{@",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "two curly",
-    },
-    Object {
-      "errorLocation": "{",
-      "errorLocationPrecedingToken": "curly",
-      "errorMessage": "Expecting a TSDoc tag starting with [q]{@[q]",
-      "kind": "ErrorText",
-      "nodeExcerpt": "{",
-    },
-    Object {
-      "errorLocation": "}",
-      "errorLocationPrecedingToken": "{",
-      "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-      "kind": "ErrorText",
-      "nodeExcerpt": "}",
-    },
-    Object {
-      "errorLocation": "}",
-      "errorLocationPrecedingToken": "}",
-      "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-      "kind": "ErrorText",
-      "nodeExcerpt": "}",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "{",
+                "errorLocationPrecedingToken": "curly",
+                "errorMessage": "The [q]{[q] character must be escaped with a backslash when used inside a TSDoc inline tag",
+                "kind": "ErrorText",
+                "nodeExcerpt": "{@",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "two curly",
+              },
+              Object {
+                "errorLocation": "{",
+                "errorLocationPrecedingToken": "curly",
+                "errorMessage": "Expecting a TSDoc tag starting with [q]{@[q]",
+                "kind": "ErrorText",
+                "nodeExcerpt": "{",
+              },
+              Object {
+                "errorLocation": "}",
+                "errorLocationPrecedingToken": "{",
+                "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+                "kind": "ErrorText",
+                "nodeExcerpt": "}",
+              },
+              Object {
+                "errorLocation": "}",
+                "errorLocationPrecedingToken": "}",
+                "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+                "kind": "ErrorText",
+                "nodeExcerpt": "}",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`06 Inline tags: escaping, negative 3`] = `
 Object {
   "buffer": "/**[n] * three: }[n] */",
+  "gaps": Array [],
   "lines": Array [
     "three: }",
   ],
   "logMessages": Array [
     "(2,11): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "three: ",
-    },
-    Object {
-      "errorLocation": "}",
-      "errorLocationPrecedingToken": " ",
-      "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-      "kind": "ErrorText",
-      "nodeExcerpt": "}",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "three: ",
+              },
+              Object {
+                "errorLocation": "}",
+                "errorLocationPrecedingToken": " ",
+                "errorMessage": "The [q]}[q] character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
+                "kind": "ErrorText",
+                "nodeExcerpt": "}",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;

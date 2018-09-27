@@ -15,7 +15,8 @@ Object {
     "",
     "",
   ],
-  "_1_summarySection": Object {
+  "_1_gaps": Array [],
+  "_2_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -95,12 +96,12 @@ Object {
       },
     ],
   },
-  "_2_remarksBlock": undefined,
-  "_3_customBlocks": Array [],
-  "_4_paramBlocks": Array [],
-  "_5_returnsBlock": undefined,
-  "_6_modifierTags": Array [],
-  "_7_logMessages": Array [],
+  "_3_remarksBlock": undefined,
+  "_4_customBlocks": Array [],
+  "_5_paramBlocks": Array [],
+  "_6_returnsBlock": undefined,
+  "_7_modifierTags": Array [],
+  "_8_logMessages": Array [],
 }
 `;
 
@@ -112,7 +113,8 @@ Object {
     "",
     "  @public line 3",
   ],
-  "_1_summarySection": Object {
+  "_1_gaps": Array [],
+  "_2_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -159,17 +161,17 @@ Object {
       },
     ],
   },
-  "_2_remarksBlock": undefined,
-  "_3_customBlocks": Array [],
-  "_4_paramBlocks": Array [],
-  "_5_returnsBlock": undefined,
-  "_6_modifierTags": Array [
+  "_3_remarksBlock": undefined,
+  "_4_customBlocks": Array [],
+  "_5_paramBlocks": Array [],
+  "_6_returnsBlock": undefined,
+  "_7_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodeExcerpt": "@public",
     },
   ],
-  "_7_logMessages": Array [],
+  "_8_logMessages": Array [],
 }
 `;
 

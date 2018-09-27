@@ -55,13 +55,11 @@ export class NodeParser {
   private static readonly htmlNameRegExp: RegExp = /^[a-z]+(\-[a-z]+)*$/i;
 
   private readonly _parserContext: ParserContext;
-  private readonly _verbatimNodes: DocNode[];
   private _currentSection: DocSection;
 
   public constructor(parserContext: ParserContext) {
     this._parserContext = parserContext;
 
-    this._verbatimNodes = parserContext.verbatimNodes;
     this._currentSection = parserContext.docComment.summarySection;
   }
 
@@ -177,10 +175,6 @@ export class NodeParser {
             this._addBlockToDocComment(newBlock);
 
             this._currentSection = newBlock;
-
-            // But for the verbatimNodes, add the DocBlockTag directly without folding it
-            // into a DocBlock
-            this._verbatimNodes.push(docBlockTag);
           }
 
           return;
@@ -188,7 +182,6 @@ export class NodeParser {
           // The block tag was recognized as a modifier, so add it to the modifier tag set
           // and do NOT call currentSection.appendNode(parsedNode)
           modifierTagSet.addTag(docBlockTag);
-          this._verbatimNodes.push(docBlockTag);
           return;
       }
     }
@@ -306,12 +299,10 @@ export class NodeParser {
 
   private _pushParagraphNode(docNode: DocNode): void {
     this._currentSection.appendNodeInParagraph(docNode);
-    this._verbatimNodes.push(docNode);
   }
 
   private _pushSectionNode(docNode: DocNode): void {
     this._currentSection.appendNode(docNode);
-    this._verbatimNodes.push(docNode);
   }
 
   private _parseBackslashEscape(tokenReader: TokenReader): DocNode {
