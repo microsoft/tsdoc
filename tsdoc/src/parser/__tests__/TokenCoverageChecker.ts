@@ -8,6 +8,18 @@ interface ITokenAssociation {
   tokenSequence: TokenSequence;
 }
 
+/**
+ * The TokenCoverageChecker performs two diagnostics to detect parser bugs:
+ * 1. It checks for two DocNode objects whose excerpt contains overlapping tokens.
+ *    By design, a single character from the input stream should be associated with
+ *    at most one TokenSequence.
+ * 2. It checks for gaps, i.e. input tokens that were not associated with any DocNode
+ *    (that is reachable from the final DocCommon node tree).  In some cases this is
+ *    okay.  For example, if `@public` appears twice inside a comment, the second
+ *    redundant instance is ignored.  But in general we want to track the gaps in the
+ *    unit test snapshots to ensure in general that every input character is associated
+ *    with an excerpt for a DocNode.
+ */
 export class TokenCoverageChecker {
   private readonly _parserContext: ParserContext;
   private readonly _tokenAssocations: (ITokenAssociation | undefined)[];
