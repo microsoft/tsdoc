@@ -137,6 +137,21 @@ export class StandardTags {
   /**
    * (Core)
    *
+   * The `{@label}` inline tag is used to label a declaration, so that it can be referenced
+   * using a selector in the TSDoc declaration reference notation.
+   *
+   * TODO: The `{@label}` notation is still being standardized.  See this issue:
+   * https://github.com/Microsoft/tsdoc/issues/9
+   */
+  public static readonly label: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@label',
+    syntaxKind: TSDocTagSyntaxKind.InlineTag,
+    standardization: Standardization.Core
+  });
+
+  /**
+   * (Core)
+   *
    * The `{@link}` inline tag is used to create hyperlinks to other pages in a
    * documentation system or general internet URLs.  In particular, it supports
    * expressions for referencing API items.
@@ -314,6 +329,7 @@ export class StandardTags {
     StandardTags.experimental,
     StandardTags.inheritDoc,
     StandardTags.internal,
+    StandardTags.label,
     StandardTags.link,
     StandardTags.override,
     StandardTags.packageDocumentation,
