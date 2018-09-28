@@ -5,6 +5,7 @@ import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
  * Constructor parameters for {@link DocParticle}.
  */
 export interface IDocParticleParameters extends IDocNodeLeafParameters {
+  particleId: string;
   content: string;
   spacingAfterContent?: string | undefined;
 }
@@ -27,6 +28,7 @@ export class DocParticle extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Particle;
 
+  private _particleId: string | undefined;
   private _content: string | undefined;
   private _spacingAfterContent: string | undefined;
 
@@ -36,6 +38,15 @@ export class DocParticle extends DocNodeLeaf {
    */
   public constructor(parameters: IDocParticleParameters) {
     super(parameters);
+  }
+
+  /**
+   * A string identifier that uniquely identifies a particle among its siblings.
+   * This can be used by DocNode.getChildren() visitors to determine what the particle
+   * represents.
+   */
+  public get particleId(): string {
+    return this._particleId!;
   }
 
   /**
@@ -57,8 +68,13 @@ export class DocParticle extends DocNodeLeaf {
   public updateParameters(parameters: IDocParticleParameters): void {
     DocNode.validateSpacing(parameters.spacingAfterContent, 'spacingAfterContent');
 
+    if (this._particleId && parameters.particleId !== this._particleId) {
+      throw new Error('The particleId cannot be changed using updateParameters()');
+    }
+
     super.updateParameters(parameters);
 
+    this._particleId = parameters.particleId;
     this._content = parameters.content;
     this._spacingAfterContent = parameters.spacingAfterContent;
   }

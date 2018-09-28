@@ -27,15 +27,15 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
@@ -48,16 +48,16 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-a",
                     "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
@@ -70,16 +70,16 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-b",
                     "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
@@ -88,16 +88,16 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-c",
                     "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
@@ -110,16 +110,16 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-d",
                     "nodeSpacing": "[n]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
@@ -132,16 +132,16 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-e",
                     "nodeSpacing": "[n]     ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
@@ -315,11 +315,11 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-a",
                     "nodeSpacing": " ",
                   },
@@ -327,22 +327,22 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeName",
                         "nodeExcerpt": "attr-one",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeValue",
                         "nodeExcerpt": "[q]one[q]",
                         "nodeSpacing": " ",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
@@ -355,11 +355,11 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-b",
                     "nodeSpacing": "[n]  ",
                   },
@@ -367,24 +367,24 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeName",
                         "nodeExcerpt": "attr-two",
                         "nodeSpacing": "[n]  ",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: equals",
                         "nodeExcerpt": "=",
                         "nodeSpacing": " ",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeValue",
                         "nodeExcerpt": "[q]2[q]",
                         "nodeSpacing": "[n]",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
@@ -429,11 +429,11 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-c",
                     "nodeSpacing": " ",
                   },
@@ -441,15 +441,15 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeName",
                         "nodeExcerpt": "attr-three",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeValue",
                         "nodeExcerpt": "[q]3[q]",
                         "nodeSpacing": " ",
                       },
@@ -459,21 +459,21 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeName",
                         "nodeExcerpt": "four",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeValue",
                         "nodeExcerpt": "'4'",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
@@ -486,11 +486,11 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-d",
                     "nodeSpacing": "[n]  ",
                   },
@@ -498,17 +498,17 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeName",
                         "nodeExcerpt": "attr-five",
                         "nodeSpacing": "[n]  ",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: equals",
                         "nodeExcerpt": "=",
                         "nodeSpacing": " ",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeValue",
                         "nodeExcerpt": "[q]5[q]",
                         "nodeSpacing": "[n]  ",
                       },
@@ -518,24 +518,24 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeName",
                         "nodeExcerpt": "six",
                         "nodeSpacing": "[n]  ",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: equals",
                         "nodeExcerpt": "=",
                         "nodeSpacing": " ",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeValue",
                         "nodeExcerpt": "'6'",
                         "nodeSpacing": "[n]",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
@@ -580,11 +580,11 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-e",
                     "nodeSpacing": " ",
                   },
@@ -592,15 +592,15 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeName",
                         "nodeExcerpt": "attr-one",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeValue",
                         "nodeExcerpt": "[q]one[q]",
                         "nodeSpacing": " ",
                       },
@@ -610,21 +610,21 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeName",
                         "nodeExcerpt": "two",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeValue",
                         "nodeExcerpt": "'two'",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
@@ -637,11 +637,11 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-f",
                     "nodeSpacing": "[n]  ",
                   },
@@ -649,17 +649,17 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeName",
                         "nodeExcerpt": "attr-one",
                         "nodeSpacing": "[n]  ",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: equals",
                         "nodeExcerpt": "=",
                         "nodeSpacing": " ",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeValue",
                         "nodeExcerpt": "[q]one[q]",
                         "nodeSpacing": "[n]  ",
                       },
@@ -669,24 +669,24 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeName",
                         "nodeExcerpt": "two",
                         "nodeSpacing": "[n]  ",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: equals",
                         "nodeExcerpt": "=",
                         "nodeSpacing": " ",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeValue",
                         "nodeExcerpt": "'two'",
                         "nodeSpacing": "[n]",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
@@ -985,11 +985,11 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag",
                     "nodeSpacing": " ",
                   },
@@ -997,22 +997,22 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeName",
                         "nodeExcerpt": "attr-one",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle",
+                        "kind": "Particle: attributeValue",
                         "nodeExcerpt": "[q]@tag[q]",
                         "nodeSpacing": " ",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
@@ -1054,15 +1054,15 @@ Object {
                 "kind": "HtmlEndTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]/",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-a",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
@@ -1075,16 +1075,16 @@ Object {
                 "kind": "HtmlEndTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]/",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-b",
                     "nodeSpacing": "  ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
@@ -1097,16 +1097,16 @@ Object {
                 "kind": "HtmlEndTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "[<]/",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: elementName",
                     "nodeExcerpt": "tag-c",
                     "nodeSpacing": "[n]  ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],

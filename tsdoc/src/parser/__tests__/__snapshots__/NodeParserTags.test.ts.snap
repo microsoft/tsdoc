@@ -149,18 +149,18 @@ Object {
                 "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@one",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagContent",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -173,19 +173,19 @@ Object {
                 "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@two",
+                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
-                    "nodeExcerpt": " ",
+                    "kind": "Particle: tagContent",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -198,18 +198,18 @@ Object {
                 "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@three",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagContent",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -218,18 +218,18 @@ Object {
                 "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@four",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagContent",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -242,19 +242,19 @@ Object {
                 "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@five",
+                    "nodeSpacing": "[n]  ",
                   },
                   Object {
-                    "kind": "Particle",
-                    "nodeExcerpt": "[n]  ",
+                    "kind": "Particle: tagContent",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -427,19 +427,20 @@ Object {
                 "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@one",
+                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
-                    "nodeExcerpt": " some content",
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "some content",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -452,19 +453,20 @@ Object {
                 "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@two",
+                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
-                    "nodeExcerpt": " multi[n]line",
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "multi[n]line",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -503,19 +505,20 @@ Object {
                 "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@three",
+                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
-                    "nodeExcerpt": " @taglike",
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "@taglike",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
@@ -554,19 +557,20 @@ Object {
                 "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: openingDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: tagName",
                     "nodeExcerpt": "@one",
+                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle",
-                    "nodeExcerpt": " left [b]{ right [b]} backslash [b][b] ",
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "left [b]{ right [b]} backslash [b][b] ",
                   },
                   Object {
-                    "kind": "Particle",
+                    "kind": "Particle: closingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],

@@ -45,11 +45,13 @@ export class DocParamBlock extends DocBlock {
     super.updateParameters(parameters);
 
     this._parameterNameParticle = new DocParticle({
+      particleId: 'parameterName',
       excerpt: parameters.parameterNameExcerpt,
       content: parameters.parameterName
     });
 
     this._hyphenParticle = new DocParticle({
+      particleId: 'hyphen',
       excerpt: parameters.hyphenExcerpt,
       content: '-'
     });

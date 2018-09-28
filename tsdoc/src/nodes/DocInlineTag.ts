@@ -63,21 +63,25 @@ export class DocInlineTag extends DocNode {
     super.updateParameters(parameters);
 
     this._openingDelimiterParticle = new DocParticle({
+      particleId: 'openingDelimiter',
       excerpt: parameters.openingDelimiterExcerpt,
       content: '{'
     });
 
     this._tagNameParticle = new DocParticle({
+      particleId: 'tagName',
       excerpt: parameters.tagNameExcerpt,
       content: parameters.tagName
     });
 
     this._tagContentParticle = new DocParticle({
+      particleId: 'tagContent',
       excerpt: parameters.tagContentExcerpt,
       content: parameters.tagContent
     });
 
     this._closingDelimiterParticle = new DocParticle({
+      particleId: 'closingDelimiter',
       excerpt: parameters.closingDelimiterExcerpt,
       content: '}'
     });
@@ -85,14 +89,29 @@ export class DocInlineTag extends DocNode {
 
   /**
    * {@inheritdoc}
-   * @override
+   * @override @sealed
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
       this._openingDelimiterParticle!,
       this._tagNameParticle!,
-      this._tagContentParticle!,
+      ...this.getChildNodesForContent(),
       this._closingDelimiterParticle!
     ];
+  }
+
+  /**
+   * Allows child classes to replace the tagContentParticle with a more detailed
+   * set of nodes.
+   * @virtual
+   */
+  protected getChildNodesForContent(): ReadonlyArray<DocNode> {
+    return [
+      this._tagContentParticle!
+    ];
+  }
+
+  protected get tagContentParticle(): DocParticle {
+    return this._tagContentParticle!;
   }
 }

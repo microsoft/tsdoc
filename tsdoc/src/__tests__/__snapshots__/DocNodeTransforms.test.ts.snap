@@ -18,18 +18,18 @@ Object {
       "kind": "InlineTag",
       "nodes": Array [
         Object {
-          "kind": "Particle",
+          "kind": "Particle: openingDelimiter",
           "nodeExcerpt": "{",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: tagName",
           "nodeExcerpt": "@mylink",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: tagContent",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: closingDelimiter",
           "nodeExcerpt": "}",
         },
       ],

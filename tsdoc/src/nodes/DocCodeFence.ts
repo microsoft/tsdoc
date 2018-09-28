@@ -77,21 +77,25 @@ export class DocCodeFence extends DocNode {
     super.updateParameters(parameters);
 
     this._openingDelimiterParticle = new DocParticle({
+      particleId: 'openingDelimiter',
       excerpt: parameters.openingDelimiterExcerpt,
       content: '```'
     });
 
     this._languageParticle = new DocParticle({
+      particleId: 'language',
       excerpt: parameters.languageExcerpt,
       content: parameters.language || ''
     });
 
     this._codeParticle = new DocParticle({
+      particleId: 'code',
       excerpt: parameters.codeExcerpt,
       content: parameters.code
     });
 
     this._closingDelimiterParticle = new DocParticle({
+      particleId: 'closingDelimiter',
       excerpt: parameters.closingDelimiterExcerpt,
       content: '```'
     });

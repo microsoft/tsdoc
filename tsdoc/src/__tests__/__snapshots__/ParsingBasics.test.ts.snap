@@ -128,19 +128,20 @@ Object {
             "kind": "InlineTag",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "{",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: tagName",
                 "nodeExcerpt": "@link",
+                "nodeSpacing": " ",
               },
               Object {
-                "kind": "Particle",
-                "nodeExcerpt": " core-library#Statistics | Statistics subsystem",
+                "kind": "Particle: tagContent",
+                "nodeExcerpt": "core-library#Statistics | Statistics subsystem",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "}",
               },
             ],
@@ -207,12 +208,12 @@ Object {
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: parameterName",
           "nodeExcerpt": "x",
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: hyphen",
           "nodeExcerpt": "-",
           "nodeSpacing": " ",
         },
@@ -240,12 +241,12 @@ Object {
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: parameterName",
           "nodeExcerpt": "y",
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: hyphen",
           "nodeExcerpt": "-",
           "nodeSpacing": " ",
         },
@@ -283,15 +284,15 @@ Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "x",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
@@ -304,15 +305,15 @@ Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "y",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
@@ -373,10 +374,10 @@ Object {
           "nodeExcerpt": "@param",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: parameterName",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: hyphen",
         },
         Object {
           "kind": "Paragraph",
@@ -401,10 +402,10 @@ Object {
           "nodeExcerpt": "@param",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: parameterName",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: hyphen",
         },
         Object {
           "kind": "Paragraph",
@@ -440,15 +441,15 @@ Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "x",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
@@ -461,15 +462,15 @@ Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "y",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
@@ -538,19 +539,20 @@ Object {
             "kind": "InlineTag",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "{",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: tagName",
                 "nodeExcerpt": "@link",
+                "nodeSpacing": " ",
               },
               Object {
-                "kind": "Particle",
-                "nodeExcerpt": " core-library#Statistics | Statistics subsystem",
+                "kind": "Particle: tagContent",
+                "nodeExcerpt": "core-library#Statistics | Statistics subsystem",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "}",
               },
             ],
@@ -617,12 +619,12 @@ Object {
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: parameterName",
           "nodeExcerpt": "x",
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: hyphen",
           "nodeExcerpt": "-",
           "nodeSpacing": " ",
         },
@@ -646,12 +648,12 @@ Object {
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: parameterName",
           "nodeExcerpt": "y",
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: hyphen",
           "nodeExcerpt": "-",
           "nodeSpacing": " ",
         },
@@ -689,15 +691,15 @@ Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "x",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
@@ -710,15 +712,15 @@ Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "y",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],

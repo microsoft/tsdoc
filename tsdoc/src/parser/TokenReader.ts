@@ -121,6 +121,9 @@ export class TokenReader {
    * consuming anything.
    */
   public peekTokenKind(): TokenKind {
+    if (this._currentIndex >= this._readerEndIndex) {
+      return TokenKind.EndOfInput;
+    }
     return this.tokens[this._currentIndex].kind;
   }
 
@@ -129,7 +132,7 @@ export class TokenReader {
    */
   public peekTokenAfterKind(): TokenKind {
     if (this._currentIndex + 1 >= this._readerEndIndex) {
-      return TokenKind.None;
+      return TokenKind.EndOfInput;
     }
     return this.tokens[this._currentIndex + 1].kind;
   }
@@ -139,7 +142,7 @@ export class TokenReader {
    */
   public peekTokenAfterAfterKind(): TokenKind {
     if (this._currentIndex + 2 >= this._readerEndIndex) {
-      return TokenKind.None;
+      return TokenKind.EndOfInput;
     }
     return this.tokens[this._currentIndex + 2].kind;
   }
@@ -171,7 +174,7 @@ export class TokenReader {
    */
   public peekPreviousTokenKind(): TokenKind {
     if (this._currentIndex === 0) {
-      return TokenKind.None;
+      return TokenKind.EndOfInput;
     }
     return this.tokens[this._currentIndex - 1].kind;
   }

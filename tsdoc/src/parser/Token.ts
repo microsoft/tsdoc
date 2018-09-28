@@ -5,11 +5,6 @@ import { TextRange } from './TextRange';
  */
 export enum TokenKind {
   /**
-   * A null/undefined value.
-   */
-  None = 2000,
-
-  /**
    * A token representing the end of the input.  The Token.range will be an empty range
    * at the end of the provided input.
    */
@@ -143,7 +138,13 @@ export enum TokenKind {
    * The right square bracket character.
    * The Token.range will always be a string of length 1.
    */
-  RightSquareBracket = 2023
+  RightSquareBracket = 2023,
+
+  /**
+   * The pipe character `|`.
+   * The Token.range will always be a string of length 1.
+   */
+  Pipe = 2024
 }
 
 /**
