@@ -142,7 +142,9 @@ export class Tokenizer {
       ','  : TokenKind.Comma,
       '['  : TokenKind.LeftSquareBracket,
       ']'  : TokenKind.RightSquareBracket,
-      '|'  : TokenKind.Pipe
+      '|'  : TokenKind.Pipe,
+      '('  : TokenKind.LeftParenthesis,
+      ')'  : TokenKind.RightParenthesis
     };
     for (const key of Object.getOwnPropertyNames(specialMap)) {
       Tokenizer._charCodeMap[key.charCodeAt(0)] = specialMap[key];

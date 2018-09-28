@@ -144,7 +144,19 @@ export enum TokenKind {
    * The pipe character `|`.
    * The Token.range will always be a string of length 1.
    */
-  Pipe = 2024
+  Pipe = 2024,
+
+  /**
+   * The left parenthesis character.
+   * The Token.range will always be a string of length 1.
+   */
+  LeftParenthesis = 2025,
+
+  /**
+   * The right parenthesis character.
+   * The Token.range will always be a string of length 1.
+   */
+  RightParenthesis = 2026
 }
 
 /**
