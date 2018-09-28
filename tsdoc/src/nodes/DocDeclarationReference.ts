@@ -10,16 +10,20 @@ export interface IDocDeclarationReferenceParameters extends IDocNodeParameters {
   packageNameExcerpt?: Excerpt;
   packageName?: string;
 
+  importHashExcerpt?: Excerpt;
+
   importPathExcerpt?: Excerpt;
   importPath?: string;
-
-  colonExcerpt?: Excerpt;
 
   memberReferences?: DocMemberReference[];
 }
 
 /**
+ * Represents a declaration reference.
  *
+ * @remarks
+ * Declaration references are TSDoc expressions used by tags such as `{@link}`
+ * or `{@inheritDoc}` that need to refer to another declaration.
  */
 export class DocDeclarationReference extends DocNode {
   /** {@inheritdoc} */
@@ -27,7 +31,7 @@ export class DocDeclarationReference extends DocNode {
 
   private _packageNameParticle: DocParticle | undefined;
   private _importPathParticle: DocParticle | undefined;
-  private _colonParticle: DocParticle | undefined;
+  private _importHashParticle: DocParticle | undefined;
   private _memberReferences: DocMemberReference[] | undefined;
 
   /**
@@ -81,28 +85,31 @@ export class DocDeclarationReference extends DocNode {
   public updateParameters(parameters: IDocDeclarationReferenceParameters): void {
     super.updateParameters(parameters);
 
-    this._packageNameParticle = new DocParticle({
-      particleId: 'packageName',
-      content: parameters.packageName || '',
-      excerpt: parameters.packageNameExcerpt
-    });
+    this._packageNameParticle = undefined;
+    this._importPathParticle = undefined;
+    this._importHashParticle = undefined;
 
-    this._importPathParticle = new DocParticle({
-      particleId: 'importPath',
-      content: parameters.importPath || '',
-      excerpt: parameters.importPathExcerpt
-    });
-
-    if (this._importPathParticle.content.length > 0 || this._packageNameParticle.content.length > 0) {
-      this._colonParticle = new DocParticle({
-        particleId: 'colon',
-        content: '.',
-        excerpt: parameters.colonExcerpt
+    if (parameters.packageName) {
+      this._packageNameParticle = new DocParticle({
+        particleId: 'packageName',
+        content: parameters.packageName,
+        excerpt: parameters.packageNameExcerpt
       });
-    } else {
-      this._colonParticle = new DocParticle({
-        particleId: 'colon',
-        content: ''
+    }
+
+    if ((parameters.packageName && this._importPathParticle) || parameters.importHashExcerpt) {
+      this._importHashParticle = new DocParticle({
+        particleId: 'importHash',
+        content: '#',
+        excerpt: parameters.importHashExcerpt
+      });
+    }
+
+    if (parameters.importPath) {
+      this._importPathParticle = new DocParticle({
+        particleId: 'importPath',
+        content: parameters.importPath || '',
+        excerpt: parameters.importPathExcerpt
       });
     }
 
@@ -116,8 +123,8 @@ export class DocDeclarationReference extends DocNode {
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
       this._packageNameParticle!,
+      this._importHashParticle!,
       this._importPathParticle!,
-      this._colonParticle!,
       ...this._memberReferences!
     ];
   }

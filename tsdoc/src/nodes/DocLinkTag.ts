@@ -1,5 +1,6 @@
 import { DocNodeKind, DocNode } from './DocNode';
 import { DocInlineTag, IDocInlineTagParameters } from './DocInlineTag';
+import { DocDeclarationReference } from './DocDeclarationReference';
 import { DocParticle } from './DocParticle';
 import { Excerpt } from '../parser/Excerpt';
 
@@ -7,6 +8,8 @@ import { Excerpt } from '../parser/Excerpt';
  * Constructor parameters for {@link DocLinkTag}.
  */
 export interface IDocLinkTagParameters extends IDocInlineTagParameters {
+  codeDestination?: DocDeclarationReference;
+
   urlDestinationExcerpt?: Excerpt;
   urlDestination?: string;
 
@@ -24,6 +27,8 @@ export class DocLinkTag extends DocInlineTag {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.LinkTag;
 
+  private _codeDestination: DocDeclarationReference | undefined;
+
   private _urlDestinationParticle: DocParticle | undefined;
 
   private _pipeParticle: DocParticle | undefined;
@@ -36,6 +41,16 @@ export class DocLinkTag extends DocInlineTag {
    */
   public constructor(parameters: IDocLinkTagParameters) {
     super(parameters);
+  }
+
+  /**
+   * If the link tag refers to a declaration, this returns the declaration reference object;
+   * otherwise this property is undefined.
+   * @remarks
+   * Either the `codeDestination` or the `urlDestination` property will be defined, but never both.
+   */
+  public get codeDestination(): DocDeclarationReference | undefined {
+    return this._codeDestination;
   }
 
   /**
@@ -67,8 +82,14 @@ export class DocLinkTag extends DocInlineTag {
       throw new Error('DocLinkTag requires the tag name to be "{@link}"');
     }
 
+    if (parameters.codeDestination !== undefined) {
+      if (parameters.urlDestination !== undefined) {
+        throw new Error('Either the codeLink or the documentLink may be specified, but not both');
+      }
+    }
+
     if (parameters.tagContentExcerpt !== undefined) {
-      if (parameters.urlDestinationExcerpt || parameters.linkTextExcerpt) {
+      if (parameters.codeDestination || parameters.urlDestinationExcerpt || parameters.linkTextExcerpt) {
         // This would violate the TokenCoverageChecker properties
         throw new Error('The input cannot be associated with tagContentExcerpt and also the detail excerpts');
       }
@@ -76,11 +97,14 @@ export class DocLinkTag extends DocInlineTag {
 
     super.updateParameters(parameters);
 
+    this._codeDestination = undefined;
     this._urlDestinationParticle = undefined;
     this._pipeParticle = undefined;
     this._linkTextParticle = undefined;
 
-    if (parameters.urlDestination !== undefined) {
+    if (parameters.codeDestination) {
+      this._codeDestination = parameters.codeDestination;
+    } else if (parameters.urlDestination !== undefined) {
       this._urlDestinationParticle = new DocParticle({
         particleId: 'urlDestination',
         excerpt: parameters.urlDestinationExcerpt,

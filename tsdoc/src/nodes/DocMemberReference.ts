@@ -1,47 +1,56 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 import { DocParticle } from './DocParticle';
 import { Excerpt } from '../parser/Excerpt';
+import { DocMemberIdentifier } from './DocMemberIdentifier';
+import { DocMemberSymbol } from './DocMemberSymbol';
+import { DocMemberSelector } from './DocMemberSelector';
 
 /**
  * Constructor parameters for {@link DocMemberReference}.
  */
 export interface IDocMemberReferenceParameters extends IDocNodeParameters {
   hasDot: boolean;
-  dotParticleExcerpt?: Excerpt;
-  identifierExcerpt?: Excerpt;
-  identifier: string;
+  dotExcerpt?: Excerpt;
+  leftParenthesisExcerpt?: Excerpt;
 
-  openingDelimiterExcerpt?: Excerpt;
-  selectorExcerpt?: Excerpt;
-  selector?: string;
-  closingDelimiterExcerpt?: Excerpt;
+  memberIdentifier?: DocMemberIdentifier;
+  memberSymbol?: DocMemberSymbol;
+
+  colonExcerpt?: Excerpt;
+
+  selector?: DocMemberSelector | undefined;
+
+  rightParenthesisExcerpt?: Excerpt;
 }
 
 /**
- * A declaration reference includes a chain of member references.
+ * A {@link DocDeclarationReference | declaration reference} includes a chain of
+ * member references represented using `DocMemberReference` nodes.
+ *
  * @remarks
- * For example, `example-library:ui.controls.Button[constructor]` is a
+ * For example, `example-library#ui.controls.Button.(render:static)` is a
  * declaration reference that contains three member references:
- * `ui`, `.controls`, and `.Button[constructor]`.
+ * `ui`, `.controls`, and `.Button`, and `.(render:static)`.
  */
 export class DocMemberReference extends DocNode {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberReference;
 
-  // The "." token if this is not the first member reference in the chain
+  // The "." token if unless this was the member reference in the chain
   private _dotParticle: DocParticle | undefined;
 
-  // The identifier
-  private _identifierParticle: DocParticle | undefined;
+  private _leftParenthesisParticle: DocParticle | undefined;
 
-  // The "[" token, if a selector is present
-  private _openingDelimiterParticle: DocParticle | undefined;
+  private _memberIdentifier: DocMemberIdentifier | undefined;
 
-  // The optional selector
-  private _selectorParticle: DocParticle | undefined;
+  private _memberSymbol: DocMemberSymbol | undefined;
 
-  // The "]" token, if a selector is present
-  private _closingDelimiterParticle: DocParticle | undefined;
+  // The ":" token that separates the identifier and selector parts
+  private _colonParticle: DocParticle | undefined;
+
+  private _selector: DocMemberSelector | undefined;
+
+  private _rightParenthesisParticle: DocParticle | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -56,84 +65,82 @@ export class DocMemberReference extends DocNode {
    * It should be false only for the first member in the chain.
    */
   public get hasDot(): boolean {
-    return this._dotParticle!.content.length > 0;
+    return !!this._dotParticle;
   }
 
   /**
-   * The member identifier, for example the name of a TypeScript class, interface,
-   * enum, function, etc.
-   */
-  public get identifier(): string {
-    return this._identifierParticle!.content;
-  }
-
-  /**
-   * The optional selector, used in situations where TypeScript identifiers are
-   * insufficient to unambiguously determine the declaration.  Examples include
-   * function overloads, merged declarations, indexer, etc.
-   *
+   * The identifier for the referenced member.
    * @remarks
-   * System-defined selectors use all lower case names (e.g. "class", "constructor", "static",
-   * "instance").  User-defined selectors use upper case words delimited by underscores,
-   * and are introduced using the `{@label}` inline tag.
+   * Either `memberIdentifier` or `memberSymbol` may be specified, but not both.
    */
-  public get selector(): string {
-    return this._selectorParticle!.content;
+  public get memberIdentifier(): DocMemberIdentifier | undefined {
+    return this._memberIdentifier;
+  }
+
+  /**
+   * The ECMAScript 6 symbol expression, which may be used instead of an identifier
+   * to indicate the referenced member.
+   * @remarks
+   * Either `memberIdentifier` or `memberSymbol` may be specified, but not both.
+   */
+  public get memberSymbol(): DocMemberSymbol | undefined {
+    return this._memberSymbol;
+  }
+
+  /**
+   * A TSDoc selector, which may be optionally when the identifier or symbol is insufficient
+   * to unambiguously determine the referenced declaration.
+   */
+  public get selector(): DocMemberSelector | undefined {
+    return this._selector;
   }
 
   /** @override */
   public updateParameters(parameters: IDocMemberReferenceParameters): void {
+    if (parameters.memberIdentifier && parameters.memberSymbol) {
+      throw new Error('"memberIdentifier" or "memberSymbol" may be specified, but not both');
+    }
+
     super.updateParameters(parameters);
 
-    if (parameters.hasDot) {
+    this._dotParticle = undefined;
+    this._leftParenthesisParticle = undefined;
+    this._colonParticle = undefined;
+    this._selector = undefined;
+    this._rightParenthesisParticle = undefined;
+
+    if (parameters.hasDot || parameters.dotExcerpt) {
       this._dotParticle = new DocParticle({
         particleId: 'dot',
-        excerpt: parameters.dotParticleExcerpt,
+        excerpt: parameters.dotExcerpt,
         content: '.'
-      });
-    } else {
-      this._dotParticle = new DocParticle({
-        particleId: 'dot',
-        content: ''
       });
     }
 
-    this._identifierParticle = new DocParticle({
-      particleId: 'identifier',
-      excerpt: parameters.identifierExcerpt,
-      content: parameters.identifier
-    });
+    if (parameters.leftParenthesisExcerpt || parameters.selector) {
+      this._leftParenthesisParticle = new DocParticle({
+        particleId: 'leftParenthesis',
+        excerpt: parameters.leftParenthesisExcerpt,
+        content: '('
+      });
+    }
 
-    if (parameters.selector !== undefined && parameters.selector.length > 0) {
-      this._openingDelimiterParticle = new DocParticle({
-        particleId: 'openingDelimiter',
-        excerpt: parameters.openingDelimiterExcerpt,
-        content: '['
-      });
+    this._memberIdentifier = parameters.memberIdentifier;
+    this._memberSymbol = parameters.memberSymbol;
 
-      this._selectorParticle = new DocParticle({
-        particleId: 'selector',
-        excerpt: parameters.selectorExcerpt,
-        content: parameters.selector
+    if (parameters.colonExcerpt || parameters.selector) {
+      this._dotParticle = new DocParticle({
+        particleId: 'colon',
+        excerpt: parameters.colonExcerpt,
+        content: ':'
       });
+    }
 
-      this._closingDelimiterParticle = new DocParticle({
-        particleId: 'closingDelimiter',
-        excerpt: parameters.closingDelimiterExcerpt,
-        content: ']'
-      });
-    } else {
-      this._openingDelimiterParticle = new DocParticle({
-        particleId: 'openingDelimiter',
-        content: ''
-      });
-      this._selectorParticle = new DocParticle({
-        particleId: 'selector',
-        content: ''
-      });
-      this._closingDelimiterParticle = new DocParticle({
-        particleId: 'closingDelimiter',
-        content: ''
+    if (this._leftParenthesisParticle) {
+      this._rightParenthesisParticle = new DocParticle({
+        particleId: 'rightParenthesis',
+        excerpt: parameters.rightParenthesisExcerpt,
+        content: ')'
       });
     }
   }
@@ -143,12 +150,14 @@ export class DocMemberReference extends DocNode {
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    return [
+    return DocNode.trimUndefinedNodes([
       this._dotParticle!,
-      this._identifierParticle!,
-      this._openingDelimiterParticle!,
-      this._selectorParticle!,
-      this._closingDelimiterParticle!
-    ];
+      this._leftParenthesisParticle,
+      this._memberIdentifier,
+      this._memberSymbol,
+      this._colonParticle,
+      this._selector,
+      this._rightParenthesisParticle
+    ]);
   }
 }
