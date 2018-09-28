@@ -571,6 +571,8 @@ export class NodeParser {
       });
 
       // Read everything until the end
+      // NOTE: Because we're using an embedded TokenReader, the TokenKind.EndOfInput occurs
+      // when we reach the "}", not the end of the original input
       while (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
         embeddedTokenReader.readToken();
       }

@@ -89,30 +89,29 @@ export class DocInlineTag extends DocNode {
 
   /**
    * {@inheritdoc}
-   * @override
+   * @override @sealed
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
       this._openingDelimiterParticle!,
       this._tagNameParticle!,
-      this._tagContentParticle!,
+      ...this.getChildNodesForContent(),
       this._closingDelimiterParticle!
     ];
   }
 
-  protected get openingDelimiterParticle(): DocParticle {
-    return this._openingDelimiterParticle!;
-  }
-
-  protected get tagNameParticle(): DocParticle {
-    return this._tagNameParticle!;
+  /**
+   * Allows child classes to replace the tagContentParticle with a more detailed
+   * set of nodes.
+   * @virtual
+   */
+  protected getChildNodesForContent(): ReadonlyArray<DocNode> {
+    return [
+      this._tagContentParticle!
+    ];
   }
 
   protected get tagContentParticle(): DocParticle {
     return this._tagContentParticle!;
-  }
-
-  protected get closingDelimiterParticle(): DocParticle {
-    return this._closingDelimiterParticle!;
   }
 }

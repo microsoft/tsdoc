@@ -109,7 +109,7 @@ export class DocLinkTag extends DocInlineTag {
    * {@inheritdoc}
    * @override
    */
-  public getChildNodes(): ReadonlyArray<DocNode> {
+  protected getChildNodesForContent(): ReadonlyArray<DocNode> {
     if (this.tagContentParticle.excerpt) {
       // If the parser associated the inline tag input with the tagContentExcerpt (e.g. because
       // second stage parsing encountered an error), then fall back to the base class's representation
@@ -117,14 +117,9 @@ export class DocLinkTag extends DocInlineTag {
     } else {
       // Otherwise return the detailed structure
       return DocNode.trimUndefinedNodes([
-        this.openingDelimiterParticle,  // from base class
-        this.tagNameParticle,           // from base class
-
         this._urlDestinationParticle,
         this._pipeParticle,
-        this._linkTextParticle,
-
-        this.closingDelimiterParticle   // from base class
+        this._linkTextParticle
       ]);
     }
 
