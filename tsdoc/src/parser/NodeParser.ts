@@ -22,7 +22,13 @@ import {
   DocCodeFence,
   IDocInlineTagParameters,
   DocLinkTag,
-  IDocLinkTagParameters
+  IDocLinkTagParameters,
+  DocMemberReference,
+  DocDeclarationReference,
+  DocMemberSymbol,
+  DocMemberIdentifier,
+  DocMemberSelector,
+  SelectorKind
 } from '../nodes';
 import { TokenSequence } from './TokenSequence';
 import { Excerpt, IExcerptParameters } from './Excerpt';
@@ -555,12 +561,12 @@ export class NodeParser {
     if (embeddedTokenReader.peekTokenKind() === TokenKind.AsciiWord
       && embeddedTokenReader.peekTokenAfterKind() === TokenKind.Colon) {
       // It starts with something like "http:", so assume it's a URL
-      this._parseLinkTagUrl(embeddedTokenReader, parameters, docLinkTag);
+      this._parseLinkTagUrlDestination(embeddedTokenReader, parameters,
+        docInlineTagParameters.tagNameExcerpt!.content, docLinkTag);
     } else {
       // Otherwise, assume it's a declaration reference
-
-      // (TODO)
-      return new DocInlineTag(docInlineTagParameters);
+      this._parseLinkTagCodeDestination(embeddedTokenReader, parameters,
+        docInlineTagParameters.tagNameExcerpt!.content, docLinkTag);
     }
 
     if (embeddedTokenReader.peekTokenKind() === TokenKind.Pipe) {
@@ -598,8 +604,8 @@ export class NodeParser {
     return docLinkTag;
   }
 
-  private _parseLinkTagUrl(embeddedTokenReader: TokenReader, parameters: IDocLinkTagParameters,
-    docLinkTag: DocLinkTag): void {
+  private _parseLinkTagUrlDestination(embeddedTokenReader: TokenReader, parameters: IDocLinkTagParameters,
+    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): void {
 
     // Simply accumulate everything up to the next space. We won't try to implement a proper
     // URI parser here.
@@ -633,7 +639,7 @@ export class NodeParser {
     const invalidUrlExplanation: string | undefined = StringChecks.explainIfInvalidUrl(url);
     if (invalidUrlExplanation) {
       this._parserContext.log.addMessageForTokenSequence(invalidUrlExplanation,
-        excerptParameters.content, docLinkTag);
+        excerptParameters.content, nodeForErrorContext);
     }
 
     this._readSpacingAndNewlines(embeddedTokenReader);
@@ -641,6 +647,396 @@ export class NodeParser {
 
     parameters.urlDestination = url;
     parameters.urlDestinationExcerpt = new Excerpt(excerptParameters);
+  }
+
+  private _parseLinkTagCodeDestination(embeddedTokenReader: TokenReader, parameters: IDocLinkTagParameters,
+    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): void {
+
+    this._parseDeclarationReference(embeddedTokenReader, tokenSequenceForErrorContext, nodeForErrorContext);
+  }
+
+  private _parseDeclarationReference(tokenReader: TokenReader,
+    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): DocDeclarationReference | undefined {
+
+    tokenReader.assertAccumulatedSequenceIsEmpty();
+
+    // First read the package name
+    const scopedPackageName: boolean = tokenReader.peekTokenKind() === TokenKind.AtSign;
+    let finishedScope: boolean = false;
+
+    let done: boolean = false;
+    while (!done) {
+      switch (tokenReader.peekTokenKind()) {
+        case TokenKind.Spacing:
+        case TokenKind.EndOfInput:
+        case TokenKind.Newline:
+        case TokenKind.PoundSymbol:
+        case TokenKind.Pipe:
+          done = true;
+          break;
+        case TokenKind.Slash:
+          // Stop at the first slash, unless this is a scoped package, in which case we stop at the second slash
+          if (scopedPackageName && !finishedScope) {
+            finishedScope = true;
+          } else {
+            done = true;
+          }
+      }
+    }
+
+    let packageNameExcerpt: Excerpt | undefined;
+    if (!tokenReader.isAccumulatedSequenceEmpty()) {
+      const packageNameExcerptParameters: IExcerptParameters = {
+        content: tokenReader.extractAccumulatedSequence()
+      };
+      this._readSpacingAndNewlines(tokenReader);
+      packageNameExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+      packageNameExcerpt = new Excerpt(packageNameExcerptParameters);
+    }
+
+    // Read the import path:
+    done = false;
+    while (!done) {
+      switch (tokenReader.peekTokenKind()) {
+        case TokenKind.Spacing:
+        case TokenKind.EndOfInput:
+        case TokenKind.Newline:
+        case TokenKind.PoundSymbol:
+        case TokenKind.Pipe:
+          done = true;
+          break;
+      }
+    }
+
+    let importPathExcerpt: Excerpt | undefined;
+    if (!tokenReader.isAccumulatedSequenceEmpty()) {
+      const importPathExcerptParameters: IExcerptParameters = {
+        content: tokenReader.extractAccumulatedSequence()
+      };
+      this._readSpacingAndNewlines(tokenReader);
+      importPathExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+      importPathExcerpt = new Excerpt(importPathExcerptParameters);
+    }
+
+    // Read the import hash
+    let importHashExcerpt: Excerpt | undefined;
+    if (tokenReader.peekTokenKind() === TokenKind.PoundSymbol) {
+      tokenReader.readToken();
+      const importHashExcerptParameters: IExcerptParameters = {
+        content: tokenReader.extractAccumulatedSequence()
+      };
+      this._readSpacingAndNewlines(tokenReader);
+      importHashExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+      importHashExcerpt = new Excerpt(importHashExcerptParameters);
+    }
+
+    const memberReferences: DocMemberReference[] = [];
+
+    done = false;
+    while (!done) {
+      switch (tokenReader.peekTokenKind()) {
+        case TokenKind.Pipe:
+        case TokenKind.EndOfInput:
+          done = true;
+          break;
+        default:
+          const expectingDot: boolean = memberReferences.length > 0;
+          const memberReference: DocMemberReference | undefined
+            = this._parseMemberReference(tokenReader, expectingDot, tokenSequenceForErrorContext, nodeForErrorContext);
+
+          if (!memberReference) {
+            return undefined;
+          }
+
+          memberReferences.push(memberReference);
+          break;
+      }
+    }
+
+    return new DocDeclarationReference({
+      packageNameExcerpt: packageNameExcerpt,
+      packageName: packageNameExcerpt !== undefined ? packageNameExcerpt.content.toString() : undefined,
+
+      importPathExcerpt: importPathExcerpt,
+      importPath: importPathExcerpt !== undefined ? importPathExcerpt.content.toString() : undefined,
+
+      importHashExcerpt: importHashExcerpt,
+
+      memberReferences: memberReferences
+    });
+  }
+
+  private _parseMemberReference(tokenReader: TokenReader, expectingDot: boolean,
+    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): DocMemberReference | undefined {
+
+    let dotExcerpt: Excerpt | undefined;
+
+    // Read the dot operator
+    if (expectingDot) {
+      if (tokenReader.peekTokenKind() !== TokenKind.Period) {
+        this._parserContext.log.addMessageForTokenSequence('Expecting a period before the next component'
+          + ' of a declaration reference', tokenSequenceForErrorContext, nodeForErrorContext);
+        return undefined;
+      }
+      tokenReader.readToken();
+      const dotExcerptParameters: IExcerptParameters  = {
+        content: tokenReader.extractAccumulatedSequence()
+      };
+      this._readSpacingAndNewlines(tokenReader);
+      dotExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+
+      dotExcerpt = new Excerpt(dotExcerptParameters);
+    }
+
+    // Read the left parenthesis if there is one
+    let leftParenthesisExcerpt: Excerpt | undefined;
+    if (tokenReader.peekTokenKind() === TokenKind.LeftParenthesis) {
+      tokenReader.readToken();
+      const leftParenthesisExcerptParameters: IExcerptParameters = {
+        content: tokenReader.extractAccumulatedSequence()
+      };
+      this._readSpacingAndNewlines(tokenReader);
+      leftParenthesisExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+      leftParenthesisExcerpt = new Excerpt(leftParenthesisExcerptParameters);
+    }
+
+    let memberIdentifier: DocMemberIdentifier | undefined = undefined;
+    let memberSymbol: DocMemberSymbol | undefined = undefined;
+
+    // Read the member identifier or symbol
+    if (tokenReader.peekTokenKind() === TokenKind.LeftSquareBracket) {
+      memberSymbol = this._parseMemberSymbol(tokenReader, nodeForErrorContext);
+      if (!memberSymbol) {
+        return undefined;
+      }
+    } else {
+      memberIdentifier = this._parseMemberIdentifier(tokenReader, tokenSequenceForErrorContext, nodeForErrorContext);
+      if (!memberIdentifier) {
+        return undefined;
+      }
+    }
+
+    // Read the colon
+    let colonExcerpt: Excerpt | undefined;
+
+    let selector: DocMemberSelector | undefined = undefined;
+
+    if (tokenReader.peekTokenKind() === TokenKind.Colon) {
+      tokenReader.readToken();
+
+      const colonExcerptParameters: IExcerptParameters = {
+        content: tokenReader.extractAccumulatedSequence()
+      };
+      this._readSpacingAndNewlines(tokenReader);
+      colonExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+      colonExcerpt = new Excerpt(colonExcerptParameters);
+
+      // If there is a colon, then read the selector
+      selector = this._parseMemberSelector(tokenReader, colonExcerptParameters.content, nodeForErrorContext);
+      if (!selector) {
+        return undefined;
+      }
+    } else {
+      if (leftParenthesisExcerpt) {
+        this._parserContext.log.addMessageForTokenSequence('Expecting a colon after the identifier because'
+          + ' the expression is in parentheses', leftParenthesisExcerpt.content, nodeForErrorContext);
+        return undefined;
+      }
+    }
+
+    // Read the right parenthesis
+    let rightParenthesisExcerpt: Excerpt | undefined;
+    if (leftParenthesisExcerpt) {
+      if (tokenReader.peekTokenKind() !== TokenKind.RightParenthesis) {
+        this._parserContext.log.addMessageForTokenSequence('Expecting a matching right parenthesis',
+          leftParenthesisExcerpt.content, nodeForErrorContext);
+        return undefined;
+      }
+
+      tokenReader.readToken();
+
+      const rightParenthesisExcerptParameters: IExcerptParameters = {
+        content: tokenReader.extractAccumulatedSequence()
+      };
+      this._readSpacingAndNewlines(tokenReader);
+      rightParenthesisExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+      rightParenthesisExcerpt = new Excerpt(rightParenthesisExcerptParameters);
+    }
+
+    return new DocMemberReference({
+      hasDot: dotExcerpt !== undefined,
+      dotExcerpt: dotExcerpt,
+      leftParenthesisExcerpt: leftParenthesisExcerpt,
+
+      memberIdentifier: memberIdentifier,
+      memberSymbol: memberSymbol,
+
+      colonExcerpt: colonExcerpt,
+
+      selector: selector,
+
+      rightParenthesisExcerpt: rightParenthesisExcerpt
+    });
+  }
+
+  private _parseMemberSymbol(tokenReader: TokenReader,
+    nodeForErrorContext: DocNode): DocMemberSymbol | undefined {
+
+    // Read the "["
+    if (tokenReader.peekTokenKind() !== TokenKind.LeftSquareBracket) {
+      // This should be impossible since the caller ensures that peekTokenKind() === TokenKind.LeftSquareBracket
+      throw new Error('Expecting "["');
+    }
+
+    tokenReader.readToken();
+    const leftBracketExcerptParameters: IExcerptParameters = {
+      content: tokenReader.extractAccumulatedSequence()
+    };
+    this._readSpacingAndNewlines(tokenReader);
+    leftBracketExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+
+    // Read the declaration reference
+    const declarationReference: DocDeclarationReference | undefined
+      = this._parseDeclarationReference(tokenReader, leftBracketExcerptParameters.content, nodeForErrorContext);
+
+    if (!declarationReference) {
+      this._parserContext.log.addMessageForTokenSequence('Missing declaration reference in symbol reference',
+        leftBracketExcerptParameters.content, nodeForErrorContext);
+
+      return undefined;
+    }
+
+    // Read the "]"
+    if (tokenReader.peekTokenKind() !== TokenKind.RightSquareBracket) {
+      this._parserContext.log.addMessageForTokenSequence('Missing closing square bracket for symbol reference',
+        leftBracketExcerptParameters.content, nodeForErrorContext);
+
+      return undefined;
+    }
+
+    tokenReader.readToken();
+    const rightBracketExcerptParameters: IExcerptParameters | undefined = {
+      content: tokenReader.extractAccumulatedSequence()
+    };
+    this._readSpacingAndNewlines(tokenReader);
+    rightBracketExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+
+    return new DocMemberSymbol({
+      leftBracketExcerpt: new Excerpt(leftBracketExcerptParameters),
+      symbolReference: declarationReference,
+      rightBracketExcerpt: new Excerpt(rightBracketExcerptParameters)
+    });
+  }
+
+  private _parseMemberIdentifier(tokenReader: TokenReader,
+    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): DocMemberIdentifier | undefined {
+
+      // Is this a quoted identifier?
+    if (tokenReader.peekTokenKind() === TokenKind.DoubleQuote) {
+
+      // Read the opening '"'
+      tokenReader.readToken();
+      const leftQuoteExcerptParameters: IExcerptParameters = {
+        content: tokenReader.extractAccumulatedSequence()
+      };
+
+      // Read the text inside the quotes
+      while (tokenReader.peekTokenKind() !== TokenKind.DoubleQuote) {
+        if (tokenReader.peekTokenKind() === TokenKind.EndOfInput) {
+          this._parserContext.log.addMessageForTokenSequence('Unexpected end of input inside quoted member identifier',
+            leftQuoteExcerptParameters.content, nodeForErrorContext);
+          return undefined;
+        }
+
+        tokenReader.readToken();
+      }
+
+      const identifierExcerptParameters: IExcerptParameters = {
+        content: tokenReader.extractAccumulatedSequence()
+      };
+
+      // Read the closing '""
+      tokenReader.readToken();  // read the quote
+      const rightQuoteExcerptParameters: IExcerptParameters = {
+        content: tokenReader.extractAccumulatedSequence()
+      };
+
+      return new DocMemberIdentifier({
+        leftQuoteExcerpt: new Excerpt(leftQuoteExcerptParameters),
+        identifierExcerpt: new Excerpt(identifierExcerptParameters),
+        identifier: identifierExcerptParameters.content.toString(),
+        rightQuoteExcerpt: new Excerpt(rightQuoteExcerptParameters)
+      });
+    } else {
+      // Otherwise assume it's a valid TypeScript identifier
+      if (tokenReader.peekTokenKind() !== TokenKind.AsciiWord) {
+        this._parserContext.log.addMessageForTokenSequence('Expecting a member identifier',
+          tokenSequenceForErrorContext, nodeForErrorContext);
+        return undefined;
+      }
+
+      const identifier: string = tokenReader.readToken().toString();
+
+      const identifierExcerptParameters: IExcerptParameters = {
+        content: tokenReader.extractAccumulatedSequence()
+      };
+      this._readSpacingAndNewlines(tokenReader);
+      identifierExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+
+      const explanation: string | undefined = StringChecks.explainIfInvalidEcmaScriptIdentifier(identifier);
+      if (explanation) {
+        this._parserContext.log.addMessageForTokenSequence(explanation,
+          identifierExcerptParameters.content, nodeForErrorContext);
+        return undefined;
+      }
+
+      return new DocMemberIdentifier({
+        identifierExcerpt: new Excerpt(identifierExcerptParameters),
+        identifier: identifier
+      });
+    }
+  }
+
+  private _parseMemberSelector(tokenReader: TokenReader,
+    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): DocMemberSelector | undefined {
+
+    if (tokenReader.peekTokenKind() !== TokenKind.AsciiWord) {
+      this._parserContext.log.addMessageForTokenSequence('Expecting a selector label after the colon',
+        tokenSequenceForErrorContext, nodeForErrorContext);
+    }
+
+    const label: string = tokenReader.readToken().toString();
+    const labelExcerptParameters: IExcerptParameters = {
+      content: tokenReader.extractAccumulatedSequence()
+    };
+    this._readSpacingAndNewlines(tokenReader);
+    labelExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+
+    const docMemberSelector: DocMemberSelector = new DocMemberSelector({
+      labelExcerpt: new Excerpt(labelExcerptParameters),
+      label: label
+    });
+
+    if (docMemberSelector.selectorKind === SelectorKind.Error) {
+      let explanation: string | undefined = undefined;
+
+      if (/^[0-9]/.test(label)) {
+        explanation = 'The selector label must be a positive integer';
+      } else if (/^[A-Z]/u.test(label)) {
+        explanation = StringChecks.explainIfInvalidCustomSelectorLabel(label);
+      } else {
+        explanation = StringChecks.explainIfInvalidSystemSelectorLabel(label);
+      }
+      if (!explanation) {
+        explanation = 'The selector label has invalid syntax';
+      }
+
+      this._parserContext.log.addMessageForTokenSequence('The selector label ',
+        labelExcerptParameters.content, nodeForErrorContext);
+      return undefined;
+    }
+
+    return docMemberSelector;
   }
 
   private _parseHtmlStartTag(tokenReader: TokenReader): DocNode {

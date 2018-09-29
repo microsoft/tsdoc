@@ -156,7 +156,13 @@ export enum TokenKind {
    * The right parenthesis character.
    * The Token.range will always be a string of length 1.
    */
-  RightParenthesis = 2026
+  RightParenthesis = 2026,
+
+  /**
+   * The pound character ("#").
+   * The Token.range will always be a string of length 1.
+   */
+  PoundSymbol = 2026
 }
 
 /**

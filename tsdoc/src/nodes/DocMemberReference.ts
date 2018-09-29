@@ -18,7 +18,7 @@ export interface IDocMemberReferenceParameters extends IDocNodeParameters {
 
   colonExcerpt?: Excerpt;
 
-  selector?: DocMemberSelector | undefined;
+  selector?: DocMemberSelector;
 
   rightParenthesisExcerpt?: Excerpt;
 }

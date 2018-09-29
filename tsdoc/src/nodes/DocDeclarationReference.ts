@@ -10,10 +10,10 @@ export interface IDocDeclarationReferenceParameters extends IDocNodeParameters {
   packageNameExcerpt?: Excerpt;
   packageName?: string;
 
-  importHashExcerpt?: Excerpt;
-
   importPathExcerpt?: Excerpt;
   importPath?: string;
+
+  importHashExcerpt?: Excerpt;
 
   memberReferences?: DocMemberReference[];
 }
@@ -97,19 +97,19 @@ export class DocDeclarationReference extends DocNode {
       });
     }
 
-    if ((parameters.packageName && this._importPathParticle) || parameters.importHashExcerpt) {
-      this._importHashParticle = new DocParticle({
-        particleId: 'importHash',
-        content: '#',
-        excerpt: parameters.importHashExcerpt
-      });
-    }
-
     if (parameters.importPath) {
       this._importPathParticle = new DocParticle({
         particleId: 'importPath',
         content: parameters.importPath || '',
         excerpt: parameters.importPathExcerpt
+      });
+    }
+
+    if ((parameters.packageName && this._importPathParticle) || parameters.importHashExcerpt) {
+      this._importHashParticle = new DocParticle({
+        particleId: 'importHash',
+        content: '#',
+        excerpt: parameters.importHashExcerpt
       });
     }
 
@@ -123,8 +123,8 @@ export class DocDeclarationReference extends DocNode {
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
       this._packageNameParticle!,
-      this._importHashParticle!,
       this._importPathParticle!,
+      this._importHashParticle!,
       ...this._memberReferences!
     ];
   }
