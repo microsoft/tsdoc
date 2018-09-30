@@ -549,7 +549,7 @@ export class NodeParser {
         'The @link tag content is missing',
         parameters.tagNameExcerpt!.content, docLinkTag);
 
-      return docLinkTag;
+      return docLinkTag; // error
     }
 
     // Create a new TokenReader that will reparse the tokens corresponding to the tagContent.
@@ -560,12 +560,16 @@ export class NodeParser {
     if (embeddedTokenReader.peekTokenKind() === TokenKind.AsciiWord
       && embeddedTokenReader.peekTokenAfterKind() === TokenKind.Colon) {
       // It starts with something like "http:", so assume it's a URL
-      this._parseLinkTagUrlDestination(embeddedTokenReader, parameters,
-        docInlineTagParameters.tagNameExcerpt!.content, docLinkTag);
+      if (!this._parseLinkTagUrlDestination(embeddedTokenReader, parameters,
+        docInlineTagParameters.tagNameExcerpt!.content, docLinkTag)) {
+        return docLinkTag; // error
+      }
     } else {
       // Otherwise, assume it's a declaration reference
-      this._parseLinkTagCodeDestination(embeddedTokenReader, parameters,
-        docInlineTagParameters.tagNameExcerpt!.content, docLinkTag);
+      if (!this._parseLinkTagCodeDestination(embeddedTokenReader, parameters,
+        docInlineTagParameters.tagNameExcerpt!.content, docLinkTag)) {
+        return docLinkTag; // error
+      }
     }
 
     if (embeddedTokenReader.peekTokenKind() === TokenKind.Pipe) {
@@ -604,7 +608,7 @@ export class NodeParser {
   }
 
   private _parseLinkTagUrlDestination(embeddedTokenReader: TokenReader, parameters: IDocLinkTagParameters,
-    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): void {
+    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): boolean {
 
     // Simply accumulate everything up to the next space. We won't try to implement a proper
     // URI parser here.
@@ -646,12 +650,17 @@ export class NodeParser {
 
     parameters.urlDestination = url;
     parameters.urlDestinationExcerpt = new Excerpt(excerptParameters);
+
+    return true;
   }
 
   private _parseLinkTagCodeDestination(embeddedTokenReader: TokenReader, parameters: IDocLinkTagParameters,
-    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): void {
+    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): boolean {
 
-    this._parseDeclarationReference(embeddedTokenReader, tokenSequenceForErrorContext, nodeForErrorContext);
+    parameters.codeDestination = this._parseDeclarationReference(embeddedTokenReader,
+      tokenSequenceForErrorContext, nodeForErrorContext);
+
+    return !!parameters.codeDestination;
   }
 
   private _parseDeclarationReference(tokenReader: TokenReader,
@@ -659,67 +668,114 @@ export class NodeParser {
 
     tokenReader.assertAccumulatedSequenceIsEmpty();
 
-    // First read the package name
-    const scopedPackageName: boolean = tokenReader.peekTokenKind() === TokenKind.AtSign;
-    let finishedScope: boolean = false;
+    // The package name can contain characters that look like a member reference.  This means we need to scan forwards
+    // to see if there is a "#".  However, we need to be careful not to match a "#" that is part of a quoted expression.
+
+    const marker: number = tokenReader.createMarker();
+    let hasHash: boolean = false;
 
     let done: boolean = false;
     while (!done) {
       switch (tokenReader.peekTokenKind()) {
-        case TokenKind.Spacing:
+        case TokenKind.DoubleQuote:
         case TokenKind.EndOfInput:
+        case TokenKind.LeftCurlyBracket:
+        case TokenKind.LeftParenthesis:
+        case TokenKind.LeftSquareBracket:
         case TokenKind.Newline:
-        case TokenKind.PoundSymbol:
         case TokenKind.Pipe:
+        case TokenKind.RightCurlyBracket:
+        case TokenKind.RightParenthesis:
+        case TokenKind.RightSquareBracket:
+        case TokenKind.SingleQuote:
+        case TokenKind.Spacing:
           done = true;
           break;
-        case TokenKind.Slash:
-          // Stop at the first slash, unless this is a scoped package, in which case we stop at the second slash
-          if (scopedPackageName && !finishedScope) {
-            finishedScope = true;
-          } else {
-            done = true;
-          }
+        case TokenKind.PoundSymbol:
+          hasHash = true;
+          done = true;
+          break;
+        default:
+          tokenReader.readToken();
       }
     }
+
+    tokenReader.backtrackToMarker(marker);
 
     let packageNameExcerpt: Excerpt | undefined;
-    if (!tokenReader.isAccumulatedSequenceEmpty()) {
-      const packageNameExcerptParameters: IExcerptParameters = {
-        content: tokenReader.extractAccumulatedSequence()
-      };
-      this._readSpacingAndNewlines(tokenReader);
-      packageNameExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
-      packageNameExcerpt = new Excerpt(packageNameExcerptParameters);
-    }
-
-    // Read the import path:
-    done = false;
-    while (!done) {
-      switch (tokenReader.peekTokenKind()) {
-        case TokenKind.Spacing:
-        case TokenKind.EndOfInput:
-        case TokenKind.Newline:
-        case TokenKind.PoundSymbol:
-        case TokenKind.Pipe:
-          done = true;
-          break;
-      }
-    }
-
     let importPathExcerpt: Excerpt | undefined;
-    if (!tokenReader.isAccumulatedSequenceEmpty()) {
-      const importPathExcerptParameters: IExcerptParameters = {
-        content: tokenReader.extractAccumulatedSequence()
-      };
-      this._readSpacingAndNewlines(tokenReader);
-      importPathExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
-      importPathExcerpt = new Excerpt(importPathExcerptParameters);
-    }
-
-    // Read the import hash
     let importHashExcerpt: Excerpt | undefined;
-    if (tokenReader.peekTokenKind() === TokenKind.PoundSymbol) {
+
+    if (hasHash) {
+
+      // If it starts with a "." then it's a relative path, not a package name
+      if (tokenReader.peekTokenKind() !== TokenKind.Period) {
+
+        // Read the package name:
+        const scopedPackageName: boolean = tokenReader.peekTokenKind() === TokenKind.AtSign;
+        let finishedScope: boolean = false;
+
+        done = false;
+        while (!done) {
+          switch (tokenReader.peekTokenKind()) {
+            case TokenKind.EndOfInput:
+              // If hasHash=true, then we are expecting to stop when we reach the hash
+              throw new Error('Expecting pound symbol');
+            case TokenKind.Slash:
+              // Stop at the first slash, unless this is a scoped package, in which case we stop at the second slash
+              if (scopedPackageName && !finishedScope) {
+                finishedScope = true;
+              } else {
+                done = true;
+              }
+              break;
+            case TokenKind.PoundSymbol:
+              done = true;
+              break;
+            default:
+              tokenReader.readToken();
+          }
+        }
+
+        if (!tokenReader.isAccumulatedSequenceEmpty()) {
+          const packageNameExcerptParameters: IExcerptParameters = {
+            content: tokenReader.extractAccumulatedSequence()
+          };
+          this._readSpacingAndNewlines(tokenReader);
+          packageNameExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+          packageNameExcerpt = new Excerpt(packageNameExcerptParameters);
+        }
+      }
+
+      // Read the import path:
+      done = false;
+      while (!done) {
+        switch (tokenReader.peekTokenKind()) {
+          case TokenKind.EndOfInput:
+            // If hasHash=true, then we are expecting to stop when we reach the hash
+            throw new Error('Expecting pound symbol');
+          case TokenKind.PoundSymbol:
+            done = true;
+            break;
+          default:
+            tokenReader.readToken();
+        }
+      }
+
+      if (!tokenReader.isAccumulatedSequenceEmpty()) {
+        const importPathExcerptParameters: IExcerptParameters = {
+          content: tokenReader.extractAccumulatedSequence()
+        };
+        this._readSpacingAndNewlines(tokenReader);
+        importPathExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+        importPathExcerpt = new Excerpt(importPathExcerptParameters);
+      }
+
+      // Read the import hash
+      if (tokenReader.peekTokenKind() !== TokenKind.PoundSymbol) {
+        // The above logic should have left us at the PoundSymbol
+        throw new Error('Expecting pound symbol');
+      }
       tokenReader.readToken();
       const importHashExcerptParameters: IExcerptParameters = {
         content: tokenReader.extractAccumulatedSequence()
@@ -729,16 +785,17 @@ export class NodeParser {
       importHashExcerpt = new Excerpt(importHashExcerptParameters);
     }
 
+    // Read the member references:
     const memberReferences: DocMemberReference[] = [];
 
     done = false;
     while (!done) {
       switch (tokenReader.peekTokenKind()) {
-        case TokenKind.Pipe:
-        case TokenKind.EndOfInput:
-          done = true;
-          break;
-        default:
+        case TokenKind.Period:
+        case TokenKind.LeftParenthesis:
+        case TokenKind.AsciiWord:
+        case TokenKind.Colon:
+        case TokenKind.LeftSquareBracket:
           const expectingDot: boolean = memberReferences.length > 0;
           const memberReference: DocMemberReference | undefined
             = this._parseMemberReference(tokenReader, expectingDot, tokenSequenceForErrorContext, nodeForErrorContext);
@@ -749,6 +806,8 @@ export class NodeParser {
 
           memberReferences.push(memberReference);
           break;
+        default:
+          done = true;
       }
     }
 

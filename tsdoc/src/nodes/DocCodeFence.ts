@@ -30,7 +30,7 @@ export class DocCodeFence extends DocNode {
   private _openingDelimiterParticle: DocParticle | undefined; // never undefined after updateParameters()
 
   // The optional language string, and newline
-  private _languageParticle: DocParticle | undefined;
+  private _languageParticle: DocParticle | undefined;         // never undefined after updateParameters()
 
   // The code content
   private _codeParticle: DocParticle | undefined;             // never undefined after updateParameters()
@@ -62,11 +62,7 @@ export class DocCodeFence extends DocNode {
    * https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml
    */
   public get language(): string | 'ts' | '' {
-    if (this._languageParticle) {
-      return this._languageParticle.content;
-    } else {
-      return '';
-    }
+    return this._languageParticle!.content;
   }
 
   /**
@@ -86,13 +82,11 @@ export class DocCodeFence extends DocNode {
       content: '```'
     });
 
-    if (parameters.language) {
-      this._languageParticle = new DocParticle({
-        particleId: 'language',
-        excerpt: parameters.languageExcerpt,
-        content: parameters.language
-      });
-    }
+    this._languageParticle = new DocParticle({
+      particleId: 'language',
+      excerpt: parameters.languageExcerpt,
+      content: parameters.language || ''
+    });
 
     this._codeParticle = new DocParticle({
       particleId: 'code',
@@ -112,11 +106,11 @@ export class DocCodeFence extends DocNode {
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    return DocNode.trimUndefinedNodes([
-      this._openingDelimiterParticle,
-      this._languageParticle,
-      this._codeParticle,
-      this._closingDelimiterParticle
-    ]);
+    return [
+      this._openingDelimiterParticle!,
+      this._languageParticle!,
+      this._codeParticle!,
+      this._closingDelimiterParticle!
+    ];
   }
 }

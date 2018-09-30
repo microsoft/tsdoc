@@ -142,6 +142,7 @@ export class DocLinkTag extends DocInlineTag {
       // Otherwise return the detailed structure
       return DocNode.trimUndefinedNodes([
         this._urlDestinationParticle,
+        this._codeDestination,
         this._pipeParticle,
         this._linkTextParticle
       ]);

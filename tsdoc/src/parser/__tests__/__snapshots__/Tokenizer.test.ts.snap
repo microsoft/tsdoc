@@ -374,7 +374,7 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "    > <                                 ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "PoundSymbol",
     },
     Object {
       "indexOfLine": 0,
