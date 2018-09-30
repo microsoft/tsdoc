@@ -1013,7 +1013,7 @@ export class NodeParser {
     labelExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
 
     const docMemberSelector: DocMemberSelector = new DocMemberSelector({
-      labelExcerpt: new Excerpt(labelExcerptParameters),
+      excerpt: new Excerpt(labelExcerptParameters),
       label: label
     });
 

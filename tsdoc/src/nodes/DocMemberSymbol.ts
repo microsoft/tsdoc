@@ -1,5 +1,4 @@
-import { DocNodeKind, DocNode } from './DocNode';
-import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
+import { DocNodeKind, DocNode, IDocNodeParameters } from './DocNode';
 import { DocDeclarationReference } from './DocDeclarationReference';
 import { DocParticle } from './DocParticle';
 import { Excerpt } from '../parser/Excerpt';
@@ -7,7 +6,7 @@ import { Excerpt } from '../parser/Excerpt';
 /**
  * Constructor parameters for {@link DocMemberSymbol}.
  */
-export interface IDocMemberSymbolParameters extends IDocNodeLeafParameters {
+export interface IDocMemberSymbolParameters extends IDocNodeParameters {
   leftBracketExcerpt?: Excerpt;
 
   symbolReference: DocDeclarationReference | undefined;
@@ -25,7 +24,7 @@ export interface IDocMemberSymbolParameters extends IDocNodeLeafParameters {
  * the member symbol `[MySymbols.example]` might be used to reference a property
  * of the class.
  */
-export class DocMemberSymbol extends DocNodeLeaf {
+export class DocMemberSymbol extends DocNode {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberSymbol;
 

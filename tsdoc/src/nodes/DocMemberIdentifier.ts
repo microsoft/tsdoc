@@ -1,5 +1,4 @@
-import { DocNodeKind, DocNode } from './DocNode';
-import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
+import { DocNodeKind, DocNode, IDocNodeParameters } from './DocNode';
 import { Excerpt } from '../parser/Excerpt';
 import { DocParticle } from './DocParticle';
 import { StringChecks } from '../parser/StringChecks';
@@ -7,7 +6,7 @@ import { StringChecks } from '../parser/StringChecks';
 /**
  * Constructor parameters for {@link DocMemberIdentifier}.
  */
-export interface IDocMemberIdentifierParameters extends IDocNodeLeafParameters {
+export interface IDocMemberIdentifierParameters extends IDocNodeParameters {
   leftQuoteExcerpt?: Excerpt | undefined;
 
   identifierExcerpt?: Excerpt | undefined;
@@ -19,7 +18,7 @@ export interface IDocMemberIdentifierParameters extends IDocNodeLeafParameters {
 /**
  * A member identifier is part of a {@link DocMemberReference}.
  */
-export class DocMemberIdentifier extends DocNodeLeaf {
+export class DocMemberIdentifier extends DocNode {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberIdentifier;
 

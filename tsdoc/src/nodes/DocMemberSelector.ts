@@ -1,14 +1,11 @@
-import { DocNodeKind, DocNode } from './DocNode';
+import { DocNodeKind } from './DocNode';
 import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
-import { Excerpt } from '../parser/Excerpt';
-import { DocParticle } from './DocParticle';
 import { StringChecks } from '../parser/StringChecks';
 
 /**
  * Constructor parameters for {@link DocMemberSelector}.
  */
 export interface IDocMemberSelectorParameters extends IDocNodeLeafParameters {
-  labelExcerpt?: Excerpt;
   label: string;
 }
 
@@ -53,7 +50,7 @@ export class DocMemberSelector extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberSelector;
 
-  private _labelParticle: DocParticle | undefined;  // never undefined after updateParameters()
+  private _label: string | undefined;  // never undefined after updateParameters()
 
   private _selectorKind: SelectorKind | undefined;  // never undefined after updateParameters()
 
@@ -63,6 +60,13 @@ export class DocMemberSelector extends DocNodeLeaf {
    */
   public constructor(parameters: IDocMemberSelectorParameters) {
     super(parameters);
+  }
+
+  /**
+   * The selector name.
+   */
+  public get label(): string {
+    return this._label!;
   }
 
   /**
@@ -76,11 +80,7 @@ export class DocMemberSelector extends DocNodeLeaf {
   public updateParameters(parameters: IDocMemberSelectorParameters): void {
     super.updateParameters(parameters);
 
-    this._labelParticle = new DocParticle({
-      particleId: 'label',
-      excerpt: parameters.labelExcerpt,
-      content: parameters.label
-    });
+    this._label = parameters.label;
 
     this._selectorKind = SelectorKind.Error;
 
@@ -91,15 +91,5 @@ export class DocMemberSelector extends DocNodeLeaf {
     } else if (StringChecks.isPositiveInteger(parameters.label)) {
       this._selectorKind = SelectorKind.Index;
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
-    return [
-      this._labelParticle!
-    ];
   }
 }
