@@ -27,8 +27,7 @@ import {
   DocDeclarationReference,
   DocMemberSymbol,
   DocMemberIdentifier,
-  DocMemberSelector,
-  SelectorKind
+  DocMemberSelector
 } from '../nodes';
 import { TokenSequence } from './TokenSequence';
 import { Excerpt, IExcerptParameters } from './Excerpt';
@@ -1005,34 +1004,21 @@ export class NodeParser {
         tokenSequenceForErrorContext, nodeForErrorContext);
     }
 
-    const label: string = tokenReader.readToken().toString();
-    const labelExcerptParameters: IExcerptParameters = {
+    const selector: string = tokenReader.readToken().toString();
+    const selectorExcerptParameters: IExcerptParameters = {
       content: tokenReader.extractAccumulatedSequence()
     };
     this._readSpacingAndNewlines(tokenReader);
-    labelExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+    selectorExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
 
     const docMemberSelector: DocMemberSelector = new DocMemberSelector({
-      excerpt: new Excerpt(labelExcerptParameters),
-      label: label
+      excerpt: new Excerpt(selectorExcerptParameters),
+      selector: selector
     });
 
-    if (docMemberSelector.selectorKind === SelectorKind.Error) {
-      let explanation: string | undefined = undefined;
-
-      if (/^[0-9]/.test(label)) {
-        explanation = 'The selector label must be a positive integer';
-      } else if (/^[A-Z]/u.test(label)) {
-        explanation = StringChecks.explainIfInvalidCustomSelectorLabel(label);
-      } else {
-        explanation = StringChecks.explainIfInvalidSystemSelectorLabel(label);
-      }
-      if (!explanation) {
-        explanation = 'The selector label has invalid syntax';
-      }
-
-      this._parserContext.log.addMessageForTokenSequence('The selector label ',
-        labelExcerptParameters.content, nodeForErrorContext);
+    if (docMemberSelector.errorMessage) {
+      this._parserContext.log.addMessageForTokenSequence(docMemberSelector.errorMessage,
+        selectorExcerptParameters.content, nodeForErrorContext);
       return undefined;
     }
 

@@ -56,8 +56,8 @@
 //
 // - Class constructors use a special "constructor" selector that applies to the class itself.
 //
-// - User-defined selectors are created using the {@label} tag.  The label must be all capitals
-//   (e.g. "WITH_NUMBERS") to avoid conflicts with system-defined selectors.
+// - Label selectors refer to declarations indicated using the {@label LABEL} tag.  The label
+//   must be all capitals (e.g. "WITH_NUMBERS") to avoid conflicts with system selectors.
 
 
 //---------------------------------------------------------

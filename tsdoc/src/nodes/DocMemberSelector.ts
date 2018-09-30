@@ -1,12 +1,11 @@
 import { DocNodeKind } from './DocNode';
 import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
-import { StringChecks } from '../parser/StringChecks';
 
 /**
  * Constructor parameters for {@link DocMemberSelector}.
  */
 export interface IDocMemberSelectorParameters extends IDocNodeLeafParameters {
-  label: string;
+  selector: string;
 }
 
 /**
@@ -37,22 +36,42 @@ export const enum SelectorKind {
   Index = 'index',
 
   /**
-   * Custom selectors refer to labels created using the `{@label}` TSDoc tag.
+   * Label selectors refer to labels created using the `{@label}` TSDoc tag.
    * The labels are always comprised of upper-case letters or numbers separated by underscores,
    * and the first character cannot be a number.
    */
-  Custom = 'custom'
+  Label = 'label'
 }
 
 /**
  */
 export class DocMemberSelector extends DocNodeLeaf {
+  private static readonly _likeIndexSelectorRegExp: RegExp = /^[0-9]/;
+
+  private static readonly _indexSelectorRegExp: RegExp = /^[1-9][0-9]*$/;
+
+  private static readonly _likeLabelSelectorRegExp: RegExp = /^[A-Z_]/u;
+
+  private static readonly _labelSelectorRegExp: RegExp = /^[A-Z_][A-Z0-9_]+$/;
+
+  private static readonly _likeSystemSelectorRegExp: RegExp = /^[a-z]+$/u;
+
+  private static readonly _systemSelectors: Set<string> = new Set<string>([
+    // For classes:
+    'instance', 'static', 'constructor',
+
+    // For merged declarations:
+    'class', 'enum', 'function', 'interface', 'namespace', 'type', 'variable'
+  ]);
+
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberSelector;
 
-  private _label: string | undefined;  // never undefined after updateParameters()
+  private _selector: string | undefined;  // never undefined after updateParameters()
 
   private _selectorKind: SelectorKind | undefined;  // never undefined after updateParameters()
+
+  private _errorMessage: string | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -63,10 +82,15 @@ export class DocMemberSelector extends DocNodeLeaf {
   }
 
   /**
-   * The selector name.
+   * The text representation of the selector.
+   *
+   * @remarks
+   * For system selectors, it will be a predefined lower case name.
+   * For label selectors, it will be an upper case name defined using the `{@label}` tag.
+   * For index selectors, it will be a positive integer.
    */
-  public get label(): string {
-    return this._label!;
+  public get selector(): string {
+    return this._selector!;
   }
 
   /**
@@ -76,20 +100,54 @@ export class DocMemberSelector extends DocNodeLeaf {
     return this._selectorKind!;
   }
 
+  /**
+   * If the `selectorKind` is `SelectorKind.Error`, this string will be defined and provide
+   * more detail about why the string was not valid.
+   */
+  public get errorMessage(): string | undefined {
+    return this._errorMessage;
+  }
+
   /** @override */
   public updateParameters(parameters: IDocMemberSelectorParameters): void {
     super.updateParameters(parameters);
 
-    this._label = parameters.label;
+    this._selector = parameters.selector;
 
     this._selectorKind = SelectorKind.Error;
+    this._errorMessage = undefined;
 
-    if (StringChecks.explainIfInvalidSystemSelectorLabel(parameters.label)) {
-      this._selectorKind = SelectorKind.System;
-    } else if (StringChecks.explainIfInvalidCustomSelectorLabel(parameters.label)) {
-      this._selectorKind = SelectorKind.Custom;
-    } else if (StringChecks.isPositiveInteger(parameters.label)) {
-      this._selectorKind = SelectorKind.Index;
+    // The logic below will always either (1) assign selectorKind or (2) else assign an errorMessage
+
+    if (this._selector.length === 0) {
+      this._errorMessage = 'The selector cannot be an empty string';
+    } else if (DocMemberSelector._likeIndexSelectorRegExp.test(this._selector)) {
+      // It looks like an index selector
+
+      if (DocMemberSelector._indexSelectorRegExp.test(this._selector)) {
+        this._selectorKind = SelectorKind.Index;
+      } else {
+        this._errorMessage = 'If the selector begins with a number, it must be a positive integer value';
+      }
+    } else if (DocMemberSelector._likeLabelSelectorRegExp.test(this._selector)) {
+      // It looks like a label selector
+
+      if (DocMemberSelector._labelSelectorRegExp.test(this._selector)) {
+        this._selectorKind = SelectorKind.Label;
+      } else {
+        this._errorMessage = 'A label selector must be comprised of upper case letters, numbers,'
+          + ' and underscores and must not start with a number';
+      }
+    } else {
+      if (DocMemberSelector._systemSelectors.has(this._selector)) {
+        this._selectorKind = SelectorKind.System;
+      } else if (DocMemberSelector._likeSystemSelectorRegExp.test(this._selector)) {
+        // It looks like a system selector, but is not
+        this._errorMessage = 'The selector is not a recognized TSDoc system selector name';
+      } else {
+        // It doesn't look like anything we recognize
+        this._errorMessage = 'Invalid syntax for selector';
+      }
     }
   }
 }

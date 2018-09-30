@@ -18,18 +18,6 @@ export class StringChecks {
     'transient', 'true', 'try', 'typeof', 'var', 'void', 'volatile', 'while', 'with', 'yield'
   ]);
 
-  private static readonly _systemSelectors: Set<string> = new Set<string>([
-    // For classes:
-    'instance', 'static', 'constructor',
-
-    // For merged declarations:
-    'class', 'enum', 'function', 'interface', 'namespace', 'type', 'variable'
-  ]);
-
-  private static readonly _customSelectorRegExp: RegExp = /^[A-Z_][A-Z0-9_]+$/;
-
-  private static readonly _positiveIntegerRegExp: RegExp = /^[1-9][0-9]*$/;
-
   /**
    * Tests whether the input string is a valid TSDoc tag name; if not, returns an error message.
    * TSDoc tag names start with an at-sign ("@") followed by ASCII letters using
@@ -97,45 +85,5 @@ export class StringChecks {
     }
 
     return undefined;
-  }
-
-  /**
-   * Tests whether the input string is a valid TSDoc system selector label for usage
-   * in a declaration reference expression.
-   */
-  public static explainIfInvalidSystemSelectorLabel(selector: string): string | undefined {
-    if (selector.length === 0) {
-      return 'The selector label cannot be an empty string';
-    }
-
-    if (!StringChecks._systemSelectors.has(selector)) {
-      return 'The label is not one of the standard TSDoc system selector names';
-    }
-
-    return undefined;
-  }
-
-  /**
-   * Tests whether the input string is a valid TSDoc user-defined selector label
-   * for usage in a declaration reference expression.
-   */
-  public static explainIfInvalidCustomSelectorLabel(selector: string): string | undefined {
-    if (selector.length === 0) {
-      return 'The selector label cannot be an empty string';
-    }
-
-    if (!StringChecks._customSelectorRegExp.test(selector)) {
-      return 'A custom selector label must be comprised of upper case letters, numbers,'
-        + ' and underscores and must not start with a number';
-    }
-
-    return undefined;
-  }
-
-  /**
-   * Returns true if the provided string is a positive integer without any spaces.
-   */
-  public static isPositiveInteger(input: string): boolean {
-    return StringChecks._positiveIntegerRegExp.test(input);
   }
 }
