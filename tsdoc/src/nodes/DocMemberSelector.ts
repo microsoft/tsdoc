@@ -53,9 +53,9 @@ export class DocMemberSelector extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberSelector;
 
-  private _labelParticle: DocParticle | undefined;
+  private _labelParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
-  private _selectorKind: SelectorKind | undefined;
+  private _selectorKind: SelectorKind | undefined;  // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

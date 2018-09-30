@@ -24,7 +24,7 @@ export class DocPlainText extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.PlainText;
 
-  private _text: string | undefined;
+  private _text: string | undefined;  // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

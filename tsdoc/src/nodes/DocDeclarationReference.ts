@@ -32,7 +32,7 @@ export class DocDeclarationReference extends DocNode {
   private _packageNameParticle: DocParticle | undefined;
   private _importPathParticle: DocParticle | undefined;
   private _importHashParticle: DocParticle | undefined;
-  private _memberReferences: DocMemberReference[] | undefined;
+  private _memberReferences: DocMemberReference[] | undefined; // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -48,8 +48,8 @@ export class DocDeclarationReference extends DocNode {
    * Example: `"@scope/my-package"`
    */
   public get packageName(): string | undefined {
-    if (this._packageNameParticle!.content.length > 0) {
-      return this._packageNameParticle!.content;
+    if (this._packageNameParticle) {
+      return this._packageNameParticle.content;
     } else {
       return undefined;
     }
@@ -65,8 +65,8 @@ export class DocDeclarationReference extends DocNode {
    * Example: `"../path2/path2"`
    */
   public get importPath(): string | undefined {
-    if (this._importPathParticle!.content.length > 0) {
-      return this._importPathParticle!.content;
+    if (this._importPathParticle) {
+      return this._importPathParticle.content;
     } else {
       return undefined;
     }
@@ -121,11 +121,11 @@ export class DocDeclarationReference extends DocNode {
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    return [
-      this._packageNameParticle!,
-      this._importPathParticle!,
-      this._importHashParticle!,
+    return DocNode.trimUndefinedNodes([
+      this._packageNameParticle,
+      this._importPathParticle,
+      this._importHashParticle,
       ...this._memberReferences!
-    ];
+    ]);
   }
 }

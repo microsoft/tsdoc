@@ -25,7 +25,7 @@ export class DocMemberIdentifier extends DocNodeLeaf {
 
   private _leftQuoteParticle: DocParticle | undefined;
 
-  private _identifierParticle: DocParticle | undefined;
+  private _identifierParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   private _rightQuoteParticle: DocParticle | undefined;
 

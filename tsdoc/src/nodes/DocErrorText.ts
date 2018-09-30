@@ -19,9 +19,9 @@ export class DocErrorText extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ErrorText;
 
-  private _text: string | undefined;
-  private _errorMessage: string | undefined;
-  private _errorLocation: TokenSequence | undefined;
+  private _text: string | undefined;                  // never undefined after updateParameters()
+  private _errorMessage: string | undefined;          // never undefined after updateParameters()
+  private _errorLocation: TokenSequence | undefined;  // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

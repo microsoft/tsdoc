@@ -27,16 +27,16 @@ export class DocCodeFence extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.CodeFence;
 
   // The opening ``` delimiter and padding
-  private _openingDelimiterParticle: DocParticle | undefined;
+  private _openingDelimiterParticle: DocParticle | undefined; // never undefined after updateParameters()
 
   // The optional language string, and newline
   private _languageParticle: DocParticle | undefined;
 
   // The code content
-  private _codeParticle: DocParticle | undefined;
+  private _codeParticle: DocParticle | undefined;             // never undefined after updateParameters()
 
   // The closing ``` delimiter, spacing, and newline
-  private _closingDelimiterParticle: DocParticle | undefined;
+  private _closingDelimiterParticle: DocParticle | undefined; // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -62,7 +62,11 @@ export class DocCodeFence extends DocNode {
    * https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml
    */
   public get language(): string | 'ts' | '' {
-    return this._languageParticle!.content;
+    if (this._languageParticle) {
+      return this._languageParticle.content;
+    } else {
+      return '';
+    }
   }
 
   /**
@@ -82,11 +86,13 @@ export class DocCodeFence extends DocNode {
       content: '```'
     });
 
-    this._languageParticle = new DocParticle({
-      particleId: 'language',
-      excerpt: parameters.languageExcerpt,
-      content: parameters.language || ''
-    });
+    if (parameters.language) {
+      this._languageParticle = new DocParticle({
+        particleId: 'language',
+        excerpt: parameters.languageExcerpt,
+        content: parameters.language
+      });
+    }
 
     this._codeParticle = new DocParticle({
       particleId: 'code',
@@ -106,11 +112,11 @@ export class DocCodeFence extends DocNode {
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    return [
-      this._openingDelimiterParticle!,
-      this._languageParticle!,
-      this._codeParticle!,
-      this._closingDelimiterParticle!
-    ];
+    return DocNode.trimUndefinedNodes([
+      this._openingDelimiterParticle,
+      this._languageParticle,
+      this._codeParticle,
+      this._closingDelimiterParticle
+    ]);
   }
 }

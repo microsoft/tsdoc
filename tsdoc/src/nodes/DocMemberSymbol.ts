@@ -29,11 +29,11 @@ export class DocMemberSymbol extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberSymbol;
 
-  private _leftBracketParticle: DocParticle | undefined;
+  private _leftBracketParticle: DocParticle | undefined;          // never undefined after updateParameters()
 
-  private _symbolReference: DocDeclarationReference | undefined;
+  private _symbolReference: DocDeclarationReference | undefined;  // never undefined after updateParameters()
 
-  private _rightBracketParticle: DocParticle | undefined;
+  private _rightBracketParticle: DocParticle | undefined;         // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -75,10 +75,10 @@ export class DocMemberSymbol extends DocNodeLeaf {
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    return DocNode.trimUndefinedNodes([
-      this._leftBracketParticle,
-      this._symbolReference,
-      this._rightBracketParticle
-    ]);
+    return [
+      this._leftBracketParticle!,
+      this._symbolReference!,
+      this._rightBracketParticle!
+    ];
   }
 }

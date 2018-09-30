@@ -29,14 +29,14 @@ export class DocHtmlStartTag extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.HtmlStartTag;
 
   // The "<" delimiter
-  private _openingDelimiterParticle: DocParticle | undefined;
+  private _openingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   // The element name
-  private _elementNameParticle: DocParticle | undefined;
+  private _elementNameParticle: DocParticle | undefined;       // never undefined after updateParameters()
 
-  private _htmlAttributes: DocHtmlAttribute[] | undefined;
+  private _htmlAttributes: DocHtmlAttribute[] | undefined;     // never undefined after updateParameters()
 
-  private _selfClosingTag: boolean | undefined;
+  private _selfClosingTag: boolean | undefined;                // never undefined after updateParameters()
 
   // The ">" or "/>" delimiter
   private _closingDelimiterParticle: DocParticle | undefined;

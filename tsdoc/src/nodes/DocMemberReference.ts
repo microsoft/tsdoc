@@ -151,7 +151,7 @@ export class DocMemberReference extends DocNode {
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return DocNode.trimUndefinedNodes([
-      this._dotParticle!,
+      this._dotParticle,
       this._leftParenthesisParticle,
       this._memberIdentifier,
       this._memberSymbol,

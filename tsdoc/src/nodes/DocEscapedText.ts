@@ -30,8 +30,8 @@ export class DocEscapedText extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.EscapedText;
 
-  private _escapeStyle: EscapeStyle | undefined;
-  private _text: string | undefined;
+  private _escapeStyle: EscapeStyle | undefined;  // never undefined after updateParameters()
+  private _text: string | undefined;              // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

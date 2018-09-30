@@ -28,13 +28,13 @@ export class DocHtmlAttribute extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.HtmlAttribute;
 
   // The attribute name
-  private _attributeNameParticle: DocParticle | undefined;
+  private _attributeNameParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   // The "=" delimiter
-  private _equalsParticle: DocParticle | undefined;
+  private _equalsParticle: DocParticle | undefined;         // never undefined after updateParameters()
 
   // The attribute value including quotation marks
-  private _attributeValueParticle: DocParticle | undefined;
+  private _attributeValueParticle: DocParticle | undefined; // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
