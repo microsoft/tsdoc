@@ -162,7 +162,13 @@ export enum TokenKind {
    * The pound character ("#").
    * The Token.range will always be a string of length 1.
    */
-  PoundSymbol = 2027
+  PoundSymbol = 2027,
+
+  /**
+   * The plus character ("+").
+   * The Token.range will always be a string of length 1.
+   */
+  Plus = 2028
 }
 
 /**

@@ -4,7 +4,8 @@
 export class StringChecks {
   private static readonly _tsdocTagNameRegExp: RegExp = /^@[a-z][a-z0-9]*$/i;
 
-  private static readonly _urlSchemeRegExp: RegExp = /^[a-z][a-z0-9+\-.]*\:/i;
+  private static readonly _urlSchemeRegExp: RegExp = /^[a-z][a-z0-9]*\:\/\//i;
+  private static readonly _urlSchemeAfterRegExp: RegExp = /^[a-z][a-z0-9]*\:\/\/./i;
 
   private static readonly _identifierNotWordCharRegExp: RegExp = /\W/u;
   private static readonly _identifierNumberStartRegExp: RegExp = /^[0-9]/u;
@@ -17,6 +18,8 @@ export class StringChecks {
     'public', 'return', 'short', 'static', 'super', 'switch', 'synchronized', 'this', 'throw', 'throws',
     'transient', 'true', 'try', 'typeof', 'var', 'void', 'volatile', 'while', 'with', 'yield'
   ]);
+
+  private static readonly _validPackageNameRegExp: RegExp = /^(?:@[a-z0-9\-_\.]+\/)?[a-z0-9\-_\.]+$/i;
 
   /**
    * Tests whether the input string is a valid TSDoc tag name; if not, returns an error message.
@@ -48,15 +51,56 @@ export class StringChecks {
   }
 
   /**
-   * Tests whether the input string is a URL; if not, returns an error message.
-   * This check is fairly basic and accepts anything starting with a URI scheme.
+   * Tests whether the input string is a URL form supported inside an "@link" tag; if not,
+   * returns an error message.
    */
-  public static explainIfInvalidUrl(url: string): string | undefined {
+  public static explainIfInvalidLinkUrl(url: string): string | undefined {
     if (url.length === 0) {
       return 'The URL cannot be empty';
     }
     if (!StringChecks._urlSchemeRegExp.test(url)) {
-      return 'The URL must begin with a scheme followed by a colon character';
+      return 'An @link URL must begin with a scheme comprised only of letters and numbers followed by "://".'
+        + ' (For general URLs, use an HTML "<a>" tag instead.)';
+    }
+    if (!StringChecks._urlSchemeAfterRegExp.test(url)) {
+      return 'An @link URL must have at least one character after "://"';
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Tests whether the input string is a valid NPM package name.
+   */
+  public static explainIfInvalidPackageName(packageName: string): string | undefined {
+    if (packageName.length === 0) {
+      return 'The package name cannot be an empty string';
+    }
+
+    if (!StringChecks._validPackageNameRegExp.test(packageName)) {
+      return `The package name ${JSON.stringify(packageName)} is not a valid package name`;
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Tests whether the input string is a valid declaration reference import path.
+   */
+  public static explainIfInvalidImportPath(importPath: string, prefixedByPackageName: boolean): string | undefined {
+    if (importPath.length > 0) {
+      if (importPath.indexOf('//') >= 0) {
+        return 'An import path must not contain "//"';
+      }
+      if (importPath[importPath.length - 1] === '/') {
+        return 'An import path must not end with "/"';
+      }
+
+      if (!prefixedByPackageName) {
+        if (importPath[0] === '/') {
+          return 'An import path must not start with "/" unless prefixed by a package name';
+        }
+      }
     }
 
     return undefined;

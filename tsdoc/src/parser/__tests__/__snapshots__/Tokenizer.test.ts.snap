@@ -422,7 +422,7 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "            > <                         ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Plus",
     },
     Object {
       "indexOfLine": 0,

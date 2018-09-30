@@ -145,7 +145,8 @@ export class Tokenizer {
       '|'  : TokenKind.Pipe,
       '('  : TokenKind.LeftParenthesis,
       ')'  : TokenKind.RightParenthesis,
-      '#'  : TokenKind.PoundSymbol
+      '#'  : TokenKind.PoundSymbol,
+      '+'  : TokenKind.Plus
     };
     for (const key of Object.getOwnPropertyNames(specialMap)) {
       Tokenizer._charCodeMap[key.charCodeAt(0)] = specialMap[key];

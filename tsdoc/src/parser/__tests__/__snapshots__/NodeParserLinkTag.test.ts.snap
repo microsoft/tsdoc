@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`00 Link tags with URL: positive examples 1`] = `
+exports[`00 Link text: positive examples 1`] = `
 Object {
-  "buffer": "/**[n] * {@link http://example1.com}[n] * {@link mail:bob@example2.com}[n] * {@link http://example3.com|link text}[n] * {@link http://example4.com|}[n] * {@link http://example5.com|[n] *}[n] */",
+  "buffer": "/**[n] * {@link http://example1.com}[n] * {@link http://example2.com|}[n] * {@link http://example3.com| }[n] * {@link http://example4.com| link text}[n] * {@link http://example5.com| link[n] * text}[n] */",
   "gaps": Array [],
   "lines": Array [
     "{@link http://example1.com}",
-    "{@link mail:bob@example2.com}",
-    "{@link http://example3.com|link text}",
-    "{@link http://example4.com|}",
-    "{@link http://example5.com|",
-    "}",
+    "{@link http://example2.com|}",
+    "{@link http://example3.com| }",
+    "{@link http://example4.com| link text}",
+    "{@link http://example5.com| link",
+    "text}",
   ],
   "logMessages": Array [],
   "nodes": Object {
@@ -62,7 +62,11 @@ Object {
                   },
                   Object {
                     "kind": "Particle: urlDestination",
-                    "nodeExcerpt": "mail:bob@example2.com",
+                    "nodeExcerpt": "http://example2.com",
+                  },
+                  Object {
+                    "kind": "Particle: pipe",
+                    "nodeExcerpt": "|",
                   },
                   Object {
                     "kind": "Particle: closingDelimiter",
@@ -96,7 +100,7 @@ Object {
                   },
                   Object {
                     "kind": "Particle: linkText",
-                    "nodeExcerpt": "link text",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "Particle: closingDelimiter",
@@ -127,6 +131,10 @@ Object {
                   Object {
                     "kind": "Particle: pipe",
                     "nodeExcerpt": "|",
+                  },
+                  Object {
+                    "kind": "Particle: linkText",
+                    "nodeExcerpt": " link text",
                   },
                   Object {
                     "kind": "Particle: closingDelimiter",
@@ -160,7 +168,7 @@ Object {
                   },
                   Object {
                     "kind": "Particle: linkText",
-                    "nodeExcerpt": "[n]",
+                    "nodeExcerpt": " link[n]text",
                   },
                   Object {
                     "kind": "Particle: closingDelimiter",
@@ -181,17 +189,91 @@ Object {
 }
 `;
 
-exports[`00 Link tags with URL: positive examples 2`] = `
+exports[`01 Link text: negative examples 1`] = `
 Object {
-  "buffer": "/**[n] * {@link    mail:bob@example6.com   |  link text }[n] * {@link  [n] *   http://example7.com  [n] *   | [n] *   link text [n] * }[n] */",
+  "buffer": "/**[n] * {@link}[n] * {@link http://example1.com| link | text}[n] */",
   "gaps": Array [],
   "lines": Array [
-    "{@link    mail:bob@example6.com   |  link text }",
-    "{@link",
-    "  http://example7.com",
-    "  |",
-    "  link text",
-    "}",
+    "{@link}",
+    "{@link http://example1.com| link | text}",
+  ],
+  "logMessages": Array [
+    "(2,5): The @link tag content is missing",
+    "(3,31): The \\"|\\" character may not be used in the link text without escaping it",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "http://example1.com| link | text",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`02 URL destination: positive examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@link http://example1.com}[n] * {@link https://example2.com#hash|link text}[n] * {@link customscheme://data}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link http://example1.com}",
+    "{@link https://example2.com#hash|link text}",
+    "{@link customscheme://data}",
   ],
   "logMessages": Array [],
   "nodes": Object {
@@ -213,20 +295,11 @@ Object {
                   Object {
                     "kind": "Particle: tagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": "    ",
+                    "nodeSpacing": " ",
                   },
                   Object {
                     "kind": "Particle: urlDestination",
-                    "nodeExcerpt": "mail:bob@example6.com",
-                    "nodeSpacing": "   ",
-                  },
-                  Object {
-                    "kind": "Particle: pipe",
-                    "nodeExcerpt": "|",
-                  },
-                  Object {
-                    "kind": "Particle: linkText",
-                    "nodeExcerpt": "  link text ",
+                    "nodeExcerpt": "http://example1.com",
                   },
                   Object {
                     "kind": "Particle: closingDelimiter",
@@ -248,12 +321,11 @@ Object {
                   Object {
                     "kind": "Particle: tagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": "[n]  ",
+                    "nodeSpacing": " ",
                   },
                   Object {
                     "kind": "Particle: urlDestination",
-                    "nodeExcerpt": "http://example7.com",
-                    "nodeSpacing": "[n]  ",
+                    "nodeExcerpt": "https://example2.com#hash",
                   },
                   Object {
                     "kind": "Particle: pipe",
@@ -261,7 +333,881 @@ Object {
                   },
                   Object {
                     "kind": "Particle: linkText",
-                    "nodeExcerpt": "[n]  link text[n]",
+                    "nodeExcerpt": "link text",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: urlDestination",
+                    "nodeExcerpt": "customscheme://data",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`03 URL destination: negative examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@link http://example1.com spaces}[n] * {@link http://example2.com spaces|link text}[n] * {@link ftp+ssh://example3.com}[n] * {@link mailto:bob@example4.com}[n] * {@link //example5.com}[n] * {@link http://}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link http://example1.com spaces}",
+    "{@link http://example2.com spaces|link text}",
+    "{@link ftp+ssh://example3.com}",
+    "{@link mailto:bob@example4.com}",
+    "{@link //example5.com}",
+    "{@link http://}",
+  ],
+  "logMessages": Array [
+    "(2,31): Unexpected character after link destination",
+    "(3,31): Unexpected character after link destination",
+    "(4,11): An @link URL must begin with a scheme comprised only of letters and numbers followed by \\"://\\". (For general URLs, use an HTML \\"<a>\\" tag instead.)",
+    "(5,18): The selector is not a recognized TSDoc system selector name",
+    "(6,11): An @link URL must begin with a scheme comprised only of letters and numbers followed by \\"://\\". (For general URLs, use an HTML \\"<a>\\" tag instead.)",
+    "(7,11): An @link URL must have at least one character after \\"://\\"",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "http://example1.com spaces",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "http://example2.com spaces|link text",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "ftp+ssh://example3.com",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "mailto:bob@example4.com",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "//example5.com",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "http://",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`04 Declaration reference with package name: positive examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@link my-example1#}[n] * {@link my-example2/path3#}[n] * {@link my-example4/path5/path6#}[n] * {@link @scope/my-example7/path8/path9#}[n] * {@link @scope/my-example7#}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link my-example1#}",
+    "{@link my-example2/path3#}",
+    "{@link my-example4/path5/path6#}",
+    "{@link @scope/my-example7/path8/path9#}",
+    "{@link @scope/my-example7#}",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Particle: packageName",
+                        "nodeExcerpt": "my-example1",
+                      },
+                      Object {
+                        "kind": "Particle: importHash",
+                        "nodeExcerpt": "#",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Particle: packageName",
+                        "nodeExcerpt": "my-example2",
+                      },
+                      Object {
+                        "kind": "Particle: importPath",
+                        "nodeExcerpt": "/path3",
+                      },
+                      Object {
+                        "kind": "Particle: importHash",
+                        "nodeExcerpt": "#",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Particle: packageName",
+                        "nodeExcerpt": "my-example4",
+                      },
+                      Object {
+                        "kind": "Particle: importPath",
+                        "nodeExcerpt": "/path5/path6",
+                      },
+                      Object {
+                        "kind": "Particle: importHash",
+                        "nodeExcerpt": "#",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Particle: packageName",
+                        "nodeExcerpt": "@scope/my-example7",
+                      },
+                      Object {
+                        "kind": "Particle: importPath",
+                        "nodeExcerpt": "/path8/path9",
+                      },
+                      Object {
+                        "kind": "Particle: importHash",
+                        "nodeExcerpt": "#",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Particle: packageName",
+                        "nodeExcerpt": "@scope/my-example7",
+                      },
+                      Object {
+                        "kind": "Particle: importHash",
+                        "nodeExcerpt": "#",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`05 Declaration reference with package name: negative examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@link example1/#}[n] * {@link example2/a//b#}[n] * {@link @scope/ex@mple3#}[n] * {@link @/example4#}[n] * {@link @scope//my-example5#}[n] * {@link @scope#}[n] * {@link @#}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link example1/#}",
+    "{@link example2/a//b#}",
+    "{@link @scope/ex@mple3#}",
+    "{@link @/example4#}",
+    "{@link @scope//my-example5#}",
+    "{@link @scope#}",
+    "{@link @#}",
+  ],
+  "logMessages": Array [
+    "(2,19): An import path must not end with \\"/\\"",
+    "(3,19): An import path must not contain \\"//\\"",
+    "(4,11): The package name \\"@scope/ex@mple3\\" is not a valid package name",
+    "(5,11): The package name \\"@/example4\\" is not a valid package name",
+    "(6,11): The package name \\"@scope/\\" is not a valid package name",
+    "(7,11): The package name \\"@scope\\" is not a valid package name",
+    "(8,11): The package name \\"@\\" is not a valid package name",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "example1/#",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "example2/a//b#",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "@scope/ex@mple3#",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "@/example4#",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "@scope//my-example5#",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "@scope#",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "@#",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`06 Declaration reference with import path only: positive examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@link ../path1#}[n] * {@link ./path2#}[n] * {@link ./path3/../path4#}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link ../path1#}",
+    "{@link ./path2#}",
+    "{@link ./path3/../path4#}",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Particle: importPath",
+                        "nodeExcerpt": "../path1",
+                      },
+                      Object {
+                        "kind": "Particle: importHash",
+                        "nodeExcerpt": "#",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Particle: importPath",
+                        "nodeExcerpt": "./path2",
+                      },
+                      Object {
+                        "kind": "Particle: importHash",
+                        "nodeExcerpt": "#",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Particle: importPath",
+                        "nodeExcerpt": "./path3/../path4",
+                      },
+                      Object {
+                        "kind": "Particle: importHash",
+                        "nodeExcerpt": "#",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`07 Declaration reference with import path only: negative examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@link /path1#}[n] * {@link /path1 path2#}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link /path1#}",
+    "{@link /path1 path2#}",
+  ],
+  "logMessages": Array [
+    "(2,11): An import path must not start with \\"/\\" unless prefixed by a package name",
+    "(3,11): Unexpected character after link destination",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "/path1#",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "/path1 path2#",
                   },
                   Object {
                     "kind": "Particle: closingDelimiter",

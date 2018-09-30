@@ -137,7 +137,7 @@ export class DocLinkTag extends DocInlineTag {
     if (this.tagContentParticle.excerpt) {
       // If the parser associated the inline tag input with the tagContentExcerpt (e.g. because
       // second stage parsing encountered an error), then fall back to the base class's representation
-      return super.getChildNodes();
+      return super.getChildNodesForContent();
     } else {
       // Otherwise return the detailed structure
       return DocNode.trimUndefinedNodes([

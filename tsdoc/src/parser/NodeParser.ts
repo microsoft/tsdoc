@@ -556,10 +556,50 @@ export class NodeParser {
     const embeddedTokenReader: TokenReader = new TokenReader(this._parserContext,
       parameters.tagContentExcerpt.content);
 
+    // Is the link destination a URL or a declaration reference?
+    //
+    // The JSDoc "@link" tag allows URLs, however supporting full URLs would be highly
+    // ambiguous, for example "microsoft.windows.camera:" is an actual valid URI scheme,
+    // and even the common "mailto:example.com" looks suspiciously like a declaration reference.
+    // In practice JSDoc URLs are nearly always HTTP or HTTPS, so it seems fairly reasonable to
+    // require the URL to have "://" and a scheme without any punctuation in it.  If a more exotic
+    // URL is needed, the HTML "<a>" tag can always be used.
+
+    // We start with a fairly broad classifier heuristic, and then the parsers will refine this:
+    // 1. Does it start with "//"?
+    // 2. Does it contain "://"?
+
+    let looksLikeUrl: boolean = embeddedTokenReader.peekTokenKind() === TokenKind.Slash
+      && embeddedTokenReader.peekTokenAfterKind() === TokenKind.Slash;
+    const marker: number = embeddedTokenReader.createMarker();
+
+    let done: boolean = looksLikeUrl;
+    while (!done) {
+      switch (embeddedTokenReader.peekTokenKind()) {
+        // An URI scheme can contain letters, numbers, minus, plus, and periods
+        case TokenKind.AsciiWord:
+        case TokenKind.Period:
+        case TokenKind.Hyphen:
+        case TokenKind.Plus:
+          embeddedTokenReader.readToken();
+          break;
+        case TokenKind.Colon:
+          embeddedTokenReader.readToken();
+          // Once we a reach a colon, then it's a URL only if we see "://"
+          looksLikeUrl = embeddedTokenReader.peekTokenKind() === TokenKind.Slash
+            && embeddedTokenReader.peekTokenAfterKind() === TokenKind.Slash;
+          done = true;
+          break;
+        default:
+          done = true;
+      }
+    }
+
+    embeddedTokenReader.backtrackToMarker(marker);
+
     // Is the hyperlink a URL or a declaration reference?
-    if (embeddedTokenReader.peekTokenKind() === TokenKind.AsciiWord
-      && embeddedTokenReader.peekTokenAfterKind() === TokenKind.Colon) {
-      // It starts with something like "http:", so assume it's a URL
+    if (looksLikeUrl) {
+      // It starts with something like "http://", so parse it as a URL
       if (!this._parseLinkTagUrlDestination(embeddedTokenReader, parameters,
         docInlineTagParameters.tagNameExcerpt!.content, docLinkTag)) {
         return docLinkTag; // error
@@ -582,8 +622,22 @@ export class NodeParser {
       // Read everything until the end
       // NOTE: Because we're using an embedded TokenReader, the TokenKind.EndOfInput occurs
       // when we reach the "}", not the end of the original input
-      while (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
-        embeddedTokenReader.readToken();
+      done = false;
+      while (!done) {
+        switch (embeddedTokenReader.peekTokenKind()) {
+          case TokenKind.EndOfInput:
+            done = true;
+            break;
+          case TokenKind.Pipe:
+          case TokenKind.LeftCurlyBracket:
+            const badCharacter: string = embeddedTokenReader.readToken().toString();
+            this._parserContext.log.addMessageForTokenSequence(
+              `The "${badCharacter}" character may not be used in the link text without escaping it`,
+              embeddedTokenReader.extractAccumulatedSequence(), docLinkTag);
+            return docLinkTag; // error
+          default:
+            embeddedTokenReader.readToken();
+        }
       }
 
       if (!embeddedTokenReader.isAccumulatedSequenceEmpty()) {
@@ -596,8 +650,9 @@ export class NodeParser {
     } else if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
       embeddedTokenReader.readToken();
 
-      this._parserContext.log.addMessageForTokenSequence('Unexpected characters after link target',
+      this._parserContext.log.addMessageForTokenSequence('Unexpected character after link destination',
         embeddedTokenReader.extractAccumulatedSequence(), docLinkTag);
+      return docLinkTag; // error
     }
 
     // We don't need the tagContentExcerpt since those tokens are now associated with the link particles
@@ -639,10 +694,11 @@ export class NodeParser {
       content: embeddedTokenReader.extractAccumulatedSequence()
     };
 
-    const invalidUrlExplanation: string | undefined = StringChecks.explainIfInvalidUrl(url);
+    const invalidUrlExplanation: string | undefined = StringChecks.explainIfInvalidLinkUrl(url);
     if (invalidUrlExplanation) {
       this._parserContext.log.addMessageForTokenSequence(invalidUrlExplanation,
         excerptParameters.content, nodeForErrorContext);
+      return false;
     }
 
     this._readSpacingAndNewlines(embeddedTokenReader);
@@ -724,6 +780,7 @@ export class NodeParser {
             case TokenKind.Slash:
               // Stop at the first slash, unless this is a scoped package, in which case we stop at the second slash
               if (scopedPackageName && !finishedScope) {
+                tokenReader.readToken();
                 finishedScope = true;
               } else {
                 done = true;
@@ -744,6 +801,15 @@ export class NodeParser {
           this._readSpacingAndNewlines(tokenReader);
           packageNameExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
           packageNameExcerpt = new Excerpt(packageNameExcerptParameters);
+
+          // Check that the packageName is syntactically valid
+          const explanation: string | undefined = StringChecks.explainIfInvalidPackageName(
+            packageNameExcerpt.content.toString());
+          if (explanation) {
+            this._parserContext.log.addMessageForTokenSequence(explanation,
+              packageNameExcerpt.content, nodeForErrorContext);
+            return undefined;
+          }
         }
       }
 
@@ -769,6 +835,15 @@ export class NodeParser {
         this._readSpacingAndNewlines(tokenReader);
         importPathExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
         importPathExcerpt = new Excerpt(importPathExcerptParameters);
+
+        // Check that the importPath is syntactically valid
+        const explanation: string | undefined = StringChecks.explainIfInvalidImportPath(
+          importPathExcerpt.content.toString(), !!packageNameExcerpt);
+        if (explanation) {
+          this._parserContext.log.addMessageForTokenSequence(explanation,
+            importPathExcerpt.content, nodeForErrorContext);
+          return undefined;
+        }
       }
 
       // Read the import hash
