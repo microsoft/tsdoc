@@ -25,7 +25,7 @@ export interface IDocMemberSymbolParameters extends IDocNodeParameters {
  * of the class.
  */
 export class DocMemberSymbol extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberSymbol;
 
   private _leftBracketParticle: DocParticle | undefined;          // never undefined after updateParameters()
@@ -70,7 +70,7 @@ export class DocMemberSymbol extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

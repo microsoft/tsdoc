@@ -57,7 +57,7 @@ export class DocMemberSelector extends DocNodeLeaf {
 
   private static readonly _likeSystemSelectorRegExp: RegExp = /^[a-z]+$/u;
 
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberSelector;
 
   private _selector: string | undefined;  // never undefined after updateParameters()

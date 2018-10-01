@@ -19,7 +19,7 @@ export interface IDocMemberIdentifierParameters extends IDocNodeParameters {
  * A member identifier is part of a {@link DocMemberReference}.
  */
 export class DocMemberIdentifier extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberIdentifier;
 
   private _leftQuoteParticle: DocParticle | undefined;
@@ -97,7 +97,7 @@ export class DocMemberIdentifier extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

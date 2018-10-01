@@ -16,7 +16,7 @@ export interface IDocCommentParameters extends IDocNodeParameters {
  * This is the root of the DocNode tree.
  */
 export class DocComment extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Comment;
 
   /**
@@ -120,7 +120,7 @@ export class DocComment extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

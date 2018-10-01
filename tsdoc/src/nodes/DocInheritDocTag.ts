@@ -14,7 +14,7 @@ export interface IDocInheritDocTagParameters extends IDocInlineTagParameters {
  */
 export class DocInheritDocTag extends DocInlineTag {
 
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.InheritDocTag;
 
   private _declarationReference: DocDeclarationReference | undefined;
@@ -47,7 +47,7 @@ export class DocInheritDocTag extends DocInlineTag {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   protected getChildNodesForContent(): ReadonlyArray<DocNode> {

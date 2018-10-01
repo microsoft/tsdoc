@@ -21,7 +21,7 @@ export interface IDocSoftBreakParameters extends IDocNodeLeafParameters {
  * two empty lines (because that could start a new CommonMark paragraph).
  */
 export class DocSoftBreak extends DocNodeLeaf {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.SoftBreak;
 
   /**

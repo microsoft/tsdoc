@@ -16,7 +16,7 @@ export interface IDocErrorTextParameters extends IDocNodeLeafParameters {
  * The characters should be rendered as plain text.
  */
 export class DocErrorText extends DocNodeLeaf {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ErrorText;
 
   private _text: string | undefined;                  // never undefined after updateParameters()

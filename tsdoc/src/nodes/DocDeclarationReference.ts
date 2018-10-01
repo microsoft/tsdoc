@@ -26,7 +26,7 @@ export interface IDocDeclarationReferenceParameters extends IDocNodeParameters {
  * or `{@inheritDoc}` that need to refer to another declaration.
  */
 export class DocDeclarationReference extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.DeclarationReference;
 
   private _packageNameParticle: DocParticle | undefined;
@@ -117,7 +117,7 @@ export class DocDeclarationReference extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

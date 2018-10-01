@@ -18,7 +18,7 @@ export interface IDocParamBlockParameters extends IDocBlockParameters {
  * function parameter.
  */
 export class DocParamBlock extends DocBlock {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ParamBlock;
 
   private _parameterNameParticle: DocParticle | undefined;  // never undefined after updateParameters()
@@ -58,7 +58,7 @@ export class DocParamBlock extends DocBlock {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

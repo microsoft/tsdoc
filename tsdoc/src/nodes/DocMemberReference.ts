@@ -33,7 +33,7 @@ export interface IDocMemberReferenceParameters extends IDocNodeParameters {
  * `ui`, `.controls`, and `.Button`, and `.(render:static)`.
  */
 export class DocMemberReference extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberReference;
 
   // The "." token if unless this was the member reference in the chain
@@ -148,7 +148,7 @@ export class DocMemberReference extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

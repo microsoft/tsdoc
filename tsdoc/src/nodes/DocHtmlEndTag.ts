@@ -18,7 +18,7 @@ export interface IDocHtmlEndTagParameters extends IDocNodeParameters {
  * Represents an HTML end tag.  Example: `</a>`
  */
 export class DocHtmlEndTag extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.HtmlEndTag;
 
   // The "</" delimiter
@@ -69,7 +69,7 @@ export class DocHtmlEndTag extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

@@ -21,7 +21,7 @@ export class DocPlainText extends DocNodeLeaf {
   // to interpret a lone "\r" as a newline
   private static readonly _newlineCharacterRegExp: RegExp = /[\n]/;
 
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.PlainText;
 
   private _text: string | undefined;  // never undefined after updateParameters()

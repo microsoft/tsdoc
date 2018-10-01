@@ -19,10 +19,10 @@ export interface IDocInlineTagParameters extends IDocNodeParameters {
 }
 
 /**
- * Represents a TSDoc inline tag such as `{@inheritdoc}` or `{@link}`.
+ * Represents a TSDoc inline tag such as `{@inheritDoc}` or `{@link}`.
  */
 export class DocInlineTag extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.InlineTag;
 
   private _openingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
@@ -88,7 +88,7 @@ export class DocInlineTag extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override @sealed
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

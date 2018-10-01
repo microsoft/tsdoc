@@ -24,7 +24,7 @@ export interface IDocHtmlAttributeParameters extends IDocNodeParameters {
  * Example: `href="#"` inside `<a href="#" />`
  */
 export class DocHtmlAttribute extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.HtmlAttribute;
 
   // The attribute name
@@ -109,7 +109,7 @@ export class DocHtmlAttribute extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
