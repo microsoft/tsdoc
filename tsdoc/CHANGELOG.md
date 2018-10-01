@@ -1,5 +1,12 @@
 # Change Log - @microsoft/tsdoc
 
+## 0.6.0
+- Add support for `@link` tags using the new declaration reference syntax
+- Add support for `@inheritDoc` tags
+- Add new APIs: `DocDeclarationReference`, `DocInheritDocTag`, `DocLinkTag`, `DocMemberIdentifier`, `DocMemberReference`, `DocMemberSelector`, `DocMemberSymbol`
+- Remove `ParserContext.verbatimNodes`
+- Add `DocParticle.particleId` property
+
 ## 0.5.0
 - Add a new API `DocNode.updateParameters()` that allows a `DocNode` object to be updated after it was created; the tree nodes are no longer immutable
 - Add `DocNodeTransforms.trimSpacesInParagraphNodes()` for collapsing whitespace inside `DocParagraph` subtrees
