@@ -863,6 +863,13 @@ export class NodeParser {
       this._readSpacingAndNewlines(tokenReader);
       importHashExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
       importHashExcerpt = new Excerpt(importHashExcerptParameters);
+
+      if (packageNameExcerpt === undefined && importPathExcerpt === undefined) {
+        this._parserContext.log.addMessageForTokenSequence(
+          'The hash character must be preceded by a package name or import path',
+          importHashExcerpt.content, nodeForErrorContext);
+        return undefined;
+      }
     }
 
     // Read the member references:

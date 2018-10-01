@@ -793,7 +793,7 @@ Object {
 
 exports[`05 Declaration reference with package name: negative examples 1`] = `
 Object {
-  "buffer": "/**[n] * {@link example1/#}[n] * {@link example2/a//b#}[n] * {@link @scope/ex@mple3#}[n] * {@link @/example4#}[n] * {@link @scope//my-example5#}[n] * {@link @scope#}[n] * {@link @#}[n] */",
+  "buffer": "/**[n] * {@link example1/#}[n] * {@link example2/a//b#}[n] * {@link @scope/ex@mple3#}[n] * {@link @/example4#}[n] * {@link @scope//my-example5#}[n] * {@link @scope#}[n] */",
   "gaps": Array [],
   "lines": Array [
     "{@link example1/#}",
@@ -802,7 +802,6 @@ Object {
     "{@link @/example4#}",
     "{@link @scope//my-example5#}",
     "{@link @scope#}",
-    "{@link @#}",
   ],
   "logMessages": Array [
     "(2,19): An import path must not end with \\"/\\"",
@@ -811,7 +810,6 @@ Object {
     "(5,11): The package name \\"@/example4\\" is not a valid package name",
     "(6,11): The package name \\"@scope/\\" is not a valid package name",
     "(7,11): The package name \\"@scope\\" is not a valid package name",
-    "(8,11): The package name \\"@\\" is not a valid package name",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -978,6 +976,38 @@ Object {
                 "kind": "SoftBreak",
                 "nodeExcerpt": "[n]",
               },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`05 Declaration reference with package name: negative examples 2`] = `
+Object {
+  "buffer": "/**[n] * {@link @#}[n] * {@link #}[n] * {@link #Button}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link @#}",
+    "{@link #}",
+    "{@link #Button}",
+  ],
+  "logMessages": Array [
+    "(2,11): The package name \\"@\\" is not a valid package name",
+    "(3,11): The hash character must be preceded by a package name or import path",
+    "(4,11): The hash character must be preceded by a package name or import path",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
@@ -993,6 +1023,58 @@ Object {
                   Object {
                     "kind": "Particle: tagContent",
                     "nodeExcerpt": "@#",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "#",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "#Button",
                   },
                   Object {
                     "kind": "Particle: closingDelimiter",

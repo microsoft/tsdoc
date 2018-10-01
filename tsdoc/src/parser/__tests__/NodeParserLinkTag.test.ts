@@ -66,7 +66,13 @@ test('05 Declaration reference with package name: negative examples', () => {
     ' * {@link @/example4#}',
     ' * {@link @scope//my-example5#}',
     ' * {@link @scope#}',
+    ' */'
+  ].join('\n'));
+  TestHelpers.parseAndMatchNodeParserSnapshot([
+    '/**',
     ' * {@link @#}',
+    ' * {@link #}',
+    ' * {@link #Button}',
     ' */'
   ].join('\n'));
 });
