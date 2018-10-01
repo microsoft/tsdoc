@@ -98,10 +98,29 @@ export class NodeParser {
           this._pushAccumulatedPlainText(tokenReader);
           this._parseAndPushBlock(tokenReader);
           break;
-        case TokenKind.LeftCurlyBracket:
+        case TokenKind.LeftCurlyBracket: {
           this._pushAccumulatedPlainText(tokenReader);
-          this._pushParagraphNode(this._parseInlineTag(tokenReader));
+
+          const marker: number = tokenReader.createMarker();
+          const docNode: DocNode = this._parseInlineTag(tokenReader);
+          const docComment: DocComment = this._parserContext.docComment;
+
+          if (docNode instanceof DocInheritDocTag) {
+            // The @inheritDoc tag is irregular because it looks like an inline tag, but
+            // it actually represents the entire comment body
+            const tagEndMarker: number = tokenReader.createMarker() - 1;
+            if (docComment.inheritDocTag === undefined) {
+              this._parserContext.docComment.inheritDocTag = docNode;
+            } else {
+              this._pushParagraphNode(this._backtrackAndCreateErrorRange(tokenReader, marker, tagEndMarker,
+                'A doc comment cannot have more than one @inheritDoc tag')
+              );
+            }
+          } else {
+            this._pushParagraphNode(docNode);
+          }
           break;
+        }
         case TokenKind.RightCurlyBracket:
           this._pushAccumulatedPlainText(tokenReader);
           this._pushParagraphNode(this._createError(tokenReader,
@@ -560,6 +579,14 @@ export class NodeParser {
       if (!parameters.declarationReference) {
         return docInheritDocTag; // error
       }
+    }
+
+    if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
+      embeddedTokenReader.readToken();
+
+      this._parserContext.log.addMessageForTokenSequence('Unexpected character after declaration reference',
+        embeddedTokenReader.extractAccumulatedSequence(), docInheritDocTag);
+      return docInheritDocTag; // error
     }
 
     // We don't need the tagContentExcerpt since those tokens are now associated with the link particles

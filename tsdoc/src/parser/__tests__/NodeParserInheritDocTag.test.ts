@@ -4,7 +4,15 @@ test('00 InheritDoc tag: positive examples', () => {
   TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * {@inheritDoc}',
+    ' */'
+  ].join('\n'));
+  TestHelpers.parseAndMatchNodeParserSnapshot([
+    '/**',
     ' * {@inheritDoc Class.member}',
+    ' */'
+  ].join('\n'));
+  TestHelpers.parseAndMatchNodeParserSnapshot([
+    '/**',
     ' * {@inheritDoc package# Class . member}',
     ' */'
   ].join('\n'));
@@ -14,6 +22,12 @@ test('01 InheritDoc tag: negative examples', () => {
   TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * {@inheritDoc | link text}',
+    ' */'
+  ].join('\n'));
+  TestHelpers.parseAndMatchNodeParserSnapshot([
+    '/**',
+    ' * {@inheritDoc}',
+    ' * {@inheritDoc}',
     ' */'
   ].join('\n'));
 });

@@ -51,6 +51,15 @@ export class DocInheritDocTag extends DocInlineTag {
    * @override
    */
   protected getChildNodesForContent(): ReadonlyArray<DocNode> {
-    return DocNode.trimUndefinedNodes([ this._declarationReference ]);
+    if (this.tagContentParticle.excerpt) {
+      // If the parser associated the inline tag input with the tagContentExcerpt (e.g. because
+      // second stage parsing encountered an error), then fall back to the base class's representation
+      return super.getChildNodesForContent();
+    } else {
+      // Otherwise return the detailed structure
+      return DocNode.trimUndefinedNodes([
+        this._declarationReference
+      ]);
+    }
   }
 }
