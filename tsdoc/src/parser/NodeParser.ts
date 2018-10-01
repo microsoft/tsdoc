@@ -612,6 +612,11 @@ export class NodeParser {
       }
     }
 
+    if (embeddedTokenReader.peekTokenKind() === TokenKind.Spacing) {
+      // The above parser rules should have consumed any spacing before the pipe
+      throw new Error('Unconsumed spacing encountered after construct');
+    }
+
     if (embeddedTokenReader.peekTokenKind() === TokenKind.Pipe) {
       // Read the link text
       embeddedTokenReader.readToken();
@@ -871,6 +876,7 @@ export class NodeParser {
         case TokenKind.AsciiWord:
         case TokenKind.Colon:
         case TokenKind.LeftSquareBracket:
+        case TokenKind.DoubleQuote:
           const expectingDot: boolean = memberReferences.length > 0;
           const memberReference: DocMemberReference | undefined
             = this._parseMemberReference(tokenReader, expectingDot, tokenSequenceForErrorContext, nodeForErrorContext);
@@ -1084,6 +1090,12 @@ export class NodeParser {
         tokenReader.readToken();
       }
 
+      if (tokenReader.isAccumulatedSequenceEmpty()) {
+        this._parserContext.log.addMessageForTokenSequence('The quoted identifier cannot be empty',
+          leftQuoteExcerptParameters.content, nodeForErrorContext);
+        return undefined;
+      }
+
       const identifierExcerptParameters: IExcerptParameters = {
         content: tokenReader.extractAccumulatedSequence()
       };
@@ -1093,6 +1105,8 @@ export class NodeParser {
       const rightQuoteExcerptParameters: IExcerptParameters = {
         content: tokenReader.extractAccumulatedSequence()
       };
+      this._readSpacingAndNewlines(tokenReader);
+      rightQuoteExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
 
       return new DocMemberIdentifier({
         leftQuoteExcerpt: new Excerpt(leftQuoteExcerptParameters),
@@ -1103,7 +1117,8 @@ export class NodeParser {
     } else {
       // Otherwise assume it's a valid TypeScript identifier
       if (tokenReader.peekTokenKind() !== TokenKind.AsciiWord) {
-        this._parserContext.log.addMessageForTokenSequence('Expecting a member identifier',
+        this._parserContext.log.addMessageForTokenSequence(
+          'Syntax error in declaration reference: expecting a member identifier',
           tokenSequenceForErrorContext, nodeForErrorContext);
         return undefined;
       }

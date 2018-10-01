@@ -3,9 +3,9 @@ import { Token, TokenKind } from './Token';
 
 export class Tokenizer {
   private static readonly _commonMarkPunctuationCharacters: string
-    = '!"#$%&\'()*+,\-.\/:;<=>?@[\\]^_`{|}~';
+    = '!"#$%&\'()*+,\-.\/:;<=>?@[\\]^`{|}~';
   private static readonly _wordCharacters: string
-    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
 
   private static _charCodeMap: { [charCode: number]: TokenKind | undefined };
   private static _punctuationTokens: { [tokenKind: number]: boolean };

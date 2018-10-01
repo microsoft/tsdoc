@@ -125,7 +125,7 @@ export class StringChecks {
     }
 
     if (StringChecks._reservedWords.has(identifier)) {
-      return 'The identifier must not be a reserved word';
+      return `The identifier "${identifier}" must be quoted because it is a reserved word`;
     }
 
     return undefined;

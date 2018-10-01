@@ -23,7 +23,7 @@ export enum TokenKind {
   Spacing = 2003,
 
   /**
-   * A token representing one or more ASCII letters and numbers.
+   * A token representing one or more ASCII letters, numbers, and underscores.
    */
   AsciiWord = 2004,
 

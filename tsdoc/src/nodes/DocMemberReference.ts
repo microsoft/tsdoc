@@ -129,12 +129,14 @@ export class DocMemberReference extends DocNode {
     this._memberSymbol = parameters.memberSymbol;
 
     if (parameters.colonExcerpt || parameters.selector) {
-      this._dotParticle = new DocParticle({
+      this._colonParticle = new DocParticle({
         particleId: 'colon',
         excerpt: parameters.colonExcerpt,
         content: ':'
       });
     }
+
+    this._selector = parameters.selector;
 
     if (this._leftParenthesisParticle) {
       this._rightParenthesisParticle = new DocParticle({

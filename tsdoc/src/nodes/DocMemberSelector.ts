@@ -143,7 +143,8 @@ export class DocMemberSelector extends DocNodeLeaf {
         this._selectorKind = SelectorKind.System;
       } else if (DocMemberSelector._likeSystemSelectorRegExp.test(this._selector)) {
         // It looks like a system selector, but is not
-        this._errorMessage = 'The selector is not a recognized TSDoc system selector name';
+        this._errorMessage = `The selector ${JSON.stringify(this._selector)}`
+          + ` is not a recognized TSDoc system selector name`;
       } else {
         // It doesn't look like anything we recognize
         this._errorMessage = 'Invalid syntax for selector';
