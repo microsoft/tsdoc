@@ -678,7 +678,7 @@ Object {
 
 exports[`03 System selectors: negative examples 1`] = `
 Object {
-  "buffer": "/**[n] * {@link (Class1:class}[n] * {@link (Class2:class))}[n] * {@link (Class3::class)}[n] * {@link (Class4 class)}[n] * {@link (member5:badname)}[n] * {@link (Class6:class)(member:static)}[n] */",
+  "buffer": "/**[n] * {@link (Class1:class}[n] * {@link (Class2:class))}[n] * {@link (Class3::class)}[n] * {@link (Class4 class)}[n] * {@link (member5:badname)}[n] * {@link (Class6:class)(member:static)}[n] * {@link Class7:class}[n] */",
   "gaps": Array [],
   "lines": Array [
     "{@link (Class1:class}",
@@ -687,6 +687,7 @@ Object {
     "{@link (Class4 class)}",
     "{@link (member5:badname)}",
     "{@link (Class6:class)(member:static)}",
+    "{@link Class7:class}",
   ],
   "logMessages": Array [
     "(2,11): Expecting a matching right parenthesis",
@@ -696,6 +697,7 @@ Object {
     "(5,11): Expecting a colon after the identifier because the expression is in parentheses",
     "(6,20): The selector \\"badname\\" is not a recognized TSDoc system selector name",
     "(7,5): Expecting a period before the next component of a declaration reference",
+    "(8,17): Syntax error in declaration reference: the member selector must be enclosed in parentheses",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -851,6 +853,32 @@ Object {
                   Object {
                     "kind": "Particle: tagContent",
                     "nodeExcerpt": "(Class6:class)(member:static)",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "Class7:class",
                   },
                   Object {
                     "kind": "Particle: closingDelimiter",

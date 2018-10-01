@@ -976,6 +976,16 @@ export class NodeParser {
       colonExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
       colonExcerpt = new Excerpt(colonExcerptParameters);
 
+      if (!leftParenthesisExcerpt) {
+        // In the current TSDoc draft standard, a member reference with a selector requires the parentheses.
+        // It would be reasonable to make the parentheses optional, and we are contemplating simplifying the
+        // notation in the future.  But for now the parentheses are required.
+        this._parserContext.log.addMessageForTokenSequence(
+          'Syntax error in declaration reference: the member selector must be enclosed in parentheses',
+          colonExcerpt.content, nodeForErrorContext);
+        return undefined;
+      }
+
       // If there is a colon, then read the selector
       selector = this._parseMemberSelector(tokenReader, colonExcerptParameters.content, nodeForErrorContext);
       if (!selector) {

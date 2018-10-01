@@ -41,6 +41,7 @@ test('03 System selectors: negative examples', () => {
     ' * {@link (Class4 class)}',
     ' * {@link (member5:badname)}',
     ' * {@link (Class6:class)(member:static)}',
+    ' * {@link Class7:class}',
     ' */'
   ].join('\n'));
 });
