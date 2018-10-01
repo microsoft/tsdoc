@@ -1,5 +1,6 @@
 import { DocNodeKind } from './DocNode';
 import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
+import { StringChecks } from '../parser/StringChecks';
 
 /**
  * Constructor parameters for {@link DocMemberSelector}.
@@ -55,14 +56,6 @@ export class DocMemberSelector extends DocNodeLeaf {
   private static readonly _labelSelectorRegExp: RegExp = /^[A-Z_][A-Z0-9_]+$/;
 
   private static readonly _likeSystemSelectorRegExp: RegExp = /^[a-z]+$/u;
-
-  private static readonly _systemSelectors: Set<string> = new Set<string>([
-    // For classes:
-    'instance', 'static', 'constructor',
-
-    // For merged declarations:
-    'class', 'enum', 'function', 'interface', 'namespace', 'type', 'variable'
-  ]);
 
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberSelector;
@@ -139,7 +132,7 @@ export class DocMemberSelector extends DocNodeLeaf {
           + ' and underscores and must not start with a number';
       }
     } else {
-      if (DocMemberSelector._systemSelectors.has(this._selector)) {
+      if (StringChecks.isSystemSelector(this._selector)) {
         this._selectorKind = SelectorKind.System;
       } else if (DocMemberSelector._likeSystemSelectorRegExp.test(this._selector)) {
         // It looks like a system selector, but is not

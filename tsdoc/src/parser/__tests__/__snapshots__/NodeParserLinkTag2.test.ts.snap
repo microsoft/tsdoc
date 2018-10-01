@@ -1463,17 +1463,19 @@ Object {
 
 exports[`09 Quoted identifiers: negative examples 1`] = `
 Object {
-  "buffer": "/**[n] * {@link [q]static}[n] * {@link Class1.[q][q]}[n] * {@link Class2.public}[n] */",
+  "buffer": "/**[n] * {@link [q]static}[n] * {@link Class1.[q][q]}[n] * {@link Class2.interface}[n] * {@link Class3.1}[n] */",
   "gaps": Array [],
   "lines": Array [
     "{@link [q]static}",
     "{@link Class1.[q][q]}",
-    "{@link Class2.public}",
+    "{@link Class2.interface}",
+    "{@link Class3.1}",
   ],
   "logMessages": Array [
     "(2,11): Unexpected end of input inside quoted member identifier",
     "(3,18): The quoted identifier cannot be empty",
-    "(4,18): The identifier \\"public\\" must be quoted because it is a reserved word",
+    "(4,18): The identifier \\"interface\\" must be quoted because it is a TSDoc system selector name",
+    "(5,18): The identifier must not start with a number",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -1550,7 +1552,33 @@ Object {
                   },
                   Object {
                     "kind": "Particle: tagContent",
-                    "nodeExcerpt": "Class2.public",
+                    "nodeExcerpt": "Class2.interface",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "Class3.1",
                   },
                   Object {
                     "kind": "Particle: closingDelimiter",

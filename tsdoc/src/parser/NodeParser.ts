@@ -1137,7 +1137,7 @@ export class NodeParser {
       this._readSpacingAndNewlines(tokenReader);
       identifierExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
 
-      const explanation: string | undefined = StringChecks.explainIfInvalidEcmaScriptIdentifier(identifier);
+      const explanation: string | undefined = StringChecks.explainIfInvalidUnquotedIdentifier(identifier);
       if (explanation) {
         this._parserContext.log.addMessageForTokenSequence(explanation,
           identifierExcerptParameters.content, nodeForErrorContext);

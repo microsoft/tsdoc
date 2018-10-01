@@ -10,16 +10,15 @@ export class StringChecks {
   private static readonly _identifierNotWordCharRegExp: RegExp = /\W/u;
   private static readonly _identifierNumberStartRegExp: RegExp = /^[0-9]/u;
 
-  private static readonly _reservedWords: Set<string> = new Set<string>([
-    'abstract', 'arguments', 'await', 'boolean', 'break', 'byte', 'case', 'catch', 'char', 'class', 'const',
-    'continue', 'debugger', 'default', 'delete', 'do', 'double', 'else', 'enum', 'eval', 'export', 'extends',
-    'false', 'final', 'finally', 'float', 'for', 'function', 'goto', 'if', 'implements', 'import', 'in',
-    'instanceof', 'int', 'interface', 'let', 'long', 'native', 'new', 'null', 'package', 'private', 'protected',
-    'public', 'return', 'short', 'static', 'super', 'switch', 'synchronized', 'this', 'throw', 'throws',
-    'transient', 'true', 'try', 'typeof', 'var', 'void', 'volatile', 'while', 'with', 'yield'
-  ]);
-
   private static readonly _validPackageNameRegExp: RegExp = /^(?:@[a-z0-9\-_\.]+\/)?[a-z0-9\-_\.]+$/i;
+
+  private static readonly _systemSelectors: Set<string> = new Set<string>([
+    // For classes:
+    'instance', 'static', 'constructor',
+
+    // For merged declarations:
+    'class', 'enum', 'function', 'interface', 'namespace', 'type', 'variable'
+  ]);
 
   /**
    * Tests whether the input string is a valid TSDoc tag name; if not, returns an error message.
@@ -107,11 +106,18 @@ export class StringChecks {
   }
 
   /**
+   * Returns true if the input string is a TSDoc system selector.
+   */
+  public static isSystemSelector(selector: string): boolean {
+    return StringChecks._systemSelectors.has(selector);
+  }
+
+  /**
    * Tests whether the input string is a valid ECMAScript identifier.
    * A precise check is extremely complicated and highly dependent on the standard version
    * and how faithfully the interpreter implements it, so here we use a conservative heuristic.
    */
-  public static explainIfInvalidEcmaScriptIdentifier(identifier: string): string | undefined {
+  public static explainIfInvalidUnquotedIdentifier(identifier: string): string | undefined {
     if (identifier.length === 0) {
       return 'The identifier cannot be an empty string';
     }
@@ -124,8 +130,11 @@ export class StringChecks {
       return 'The identifier must not start with a number';
     }
 
-    if (StringChecks._reservedWords.has(identifier)) {
-      return `The identifier "${identifier}" must be quoted because it is a reserved word`;
+    if (StringChecks.isSystemSelector(identifier)) {
+      // We do this to avoid confusion about the declaration reference syntax rules.
+      // For example if someone were to see "MyClass.(static:instance)" it would be unclear which
+      // side the colon is the selector.
+      return `The identifier "${identifier}" must be quoted because it is a TSDoc system selector name`;
     }
 
     return undefined;

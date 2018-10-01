@@ -94,7 +94,8 @@ test('09 Quoted identifiers: negative examples', () => {
     '/**',
     ' * {@link "static}',
     ' * {@link Class1.""}',
-    ' * {@link Class2.public}',
+    ' * {@link Class2.interface}',
+    ' * {@link Class3.1}',
     ' */'
   ].join('\n'));
 });

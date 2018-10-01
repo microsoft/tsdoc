@@ -34,7 +34,7 @@ export class DocMemberIdentifier extends DocNode {
    * required.
    */
   public static isValidIdentifier(identifier: string): boolean {
-    return !StringChecks.explainIfInvalidEcmaScriptIdentifier(identifier);
+    return !StringChecks.explainIfInvalidUnquotedIdentifier(identifier);
   }
 
   /**
