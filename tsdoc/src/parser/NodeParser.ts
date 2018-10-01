@@ -892,6 +892,12 @@ export class NodeParser {
       }
     }
 
+    if (packageNameExcerpt === undefined && importPathExcerpt === undefined && memberReferences.length === 0) {
+      // We didn't find any parts of a declaration reference
+      this._parserContext.log.addMessageForTokenSequence('Expecting a declaration reference',
+        tokenSequenceForErrorContext, nodeForErrorContext);
+    }
+
     return new DocDeclarationReference({
       packageNameExcerpt: packageNameExcerpt,
       packageName: packageNameExcerpt !== undefined ? packageNameExcerpt.content.toString() : undefined,

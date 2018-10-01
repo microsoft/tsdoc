@@ -64,7 +64,7 @@ export class DocMemberSymbol extends DocNode {
 
     this._rightBracketParticle = new DocParticle({
       particleId: 'rightBracket',
-      excerpt: parameters.leftBracketExcerpt,
+      excerpt: parameters.rightBracketExcerpt,
       content: ']'
     });
   }
