@@ -25,7 +25,7 @@ export interface IDocHtmlStartTagParameters extends IDocNodeParameters {
  * Example: `<a href="#" />`
  */
 export class DocHtmlStartTag extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.HtmlStartTag;
 
   // The "<" delimiter
@@ -107,7 +107,7 @@ export class DocHtmlStartTag extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

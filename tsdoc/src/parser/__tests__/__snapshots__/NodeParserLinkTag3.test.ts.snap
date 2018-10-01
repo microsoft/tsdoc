@@ -272,6 +272,7 @@ Object {
   "logMessages": Array [
     "(2,18): Missing closing square bracket for symbol reference",
     "(3,18): Expecting a declaration reference",
+    "(3,18): Missing declaration reference in symbol reference",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -321,48 +322,8 @@ Object {
                     "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "DeclarationReference",
-                    "nodes": Array [
-                      Object {
-                        "kind": "MemberReference",
-                        "nodes": Array [
-                          Object {
-                            "kind": "MemberIdentifier",
-                            "nodes": Array [
-                              Object {
-                                "kind": "Particle: identifier",
-                                "nodeExcerpt": "Class1",
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                      Object {
-                        "kind": "MemberReference",
-                        "nodes": Array [
-                          Object {
-                            "kind": "Particle: dot",
-                            "nodeExcerpt": ".",
-                          },
-                          Object {
-                            "kind": "MemberSymbol",
-                            "nodes": Array [
-                              Object {
-                                "kind": "Particle: leftBracket",
-                                "nodeExcerpt": "[",
-                              },
-                              Object {
-                                "kind": "DeclarationReference",
-                              },
-                              Object {
-                                "kind": "Particle: rightBracket",
-                                "nodeExcerpt": "]",
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    ],
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "Class1.[]",
                   },
                   Object {
                     "kind": "Particle: closingDelimiter",

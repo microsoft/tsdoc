@@ -19,7 +19,7 @@ export interface IDocCodeSpanParameters extends IDocNodeParameters {
  * backtick characters.
  */
 export class DocCodeSpan extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.CodeSpan;
 
   // The opening ` delimiter
@@ -70,7 +70,7 @@ export class DocCodeSpan extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

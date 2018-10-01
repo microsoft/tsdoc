@@ -27,7 +27,9 @@ import {
   DocDeclarationReference,
   DocMemberSymbol,
   DocMemberIdentifier,
-  DocMemberSelector
+  DocMemberSelector,
+  DocInheritDocTag,
+  IDocInheritDocTagParameters
 } from '../nodes';
 import { TokenSequence } from './TokenSequence';
 import { Excerpt, IExcerptParameters } from './Excerpt';
@@ -96,10 +98,29 @@ export class NodeParser {
           this._pushAccumulatedPlainText(tokenReader);
           this._parseAndPushBlock(tokenReader);
           break;
-        case TokenKind.LeftCurlyBracket:
+        case TokenKind.LeftCurlyBracket: {
           this._pushAccumulatedPlainText(tokenReader);
-          this._pushParagraphNode(this._parseInlineTag(tokenReader));
+
+          const marker: number = tokenReader.createMarker();
+          const docNode: DocNode = this._parseInlineTag(tokenReader);
+          const docComment: DocComment = this._parserContext.docComment;
+
+          if (docNode instanceof DocInheritDocTag) {
+            // The @inheritDoc tag is irregular because it looks like an inline tag, but
+            // it actually represents the entire comment body
+            const tagEndMarker: number = tokenReader.createMarker() - 1;
+            if (docComment.inheritDocTag === undefined) {
+              this._parserContext.docComment.inheritDocTag = docNode;
+            } else {
+              this._pushParagraphNode(this._backtrackAndCreateErrorRange(tokenReader, marker, tagEndMarker,
+                'A doc comment cannot have more than one @inheritDoc tag')
+              );
+            }
+          } else {
+            this._pushParagraphNode(docNode);
+          }
           break;
+        }
         case TokenKind.RightCurlyBracket:
           this._pushAccumulatedPlainText(tokenReader);
           this._pushParagraphNode(this._createError(tokenReader,
@@ -531,15 +552,52 @@ export class NodeParser {
       closingDelimiterExcerpt: new Excerpt(closingDelimiterExcerptParameters)
     };
 
+    // Create a new TokenReader that will reparse the tokens corresponding to the tagContent.
+    const embeddedTokenReader: TokenReader = new TokenReader(this._parserContext,
+      tagContentExcerpt ? tagContentExcerpt.content : TokenSequence.createEmpty(this._parserContext));
+
     switch (tagName.toUpperCase()) {
+      case StandardTags.inheritDoc.tagNameWithUpperCase:
+        return this._parseInheritDocTag(docInlineTagParameters, embeddedTokenReader);
       case StandardTags.link.tagNameWithUpperCase:
-        return this._parseLinkTag(docInlineTagParameters);
+        return this._parseLinkTag(docInlineTagParameters, embeddedTokenReader);
       default:
         return new DocInlineTag(docInlineTagParameters);
     }
   }
 
-  private _parseLinkTag(docInlineTagParameters: IDocInlineTagParameters): DocNode {
+  private _parseInheritDocTag(docInlineTagParameters: IDocInlineTagParameters,
+    embeddedTokenReader: TokenReader): DocNode {
+
+    const docInheritDocTag: DocInheritDocTag = new DocInheritDocTag(docInlineTagParameters);
+
+    const parameters: IDocInheritDocTagParameters = { ...docInlineTagParameters};
+
+    if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
+
+      parameters.declarationReference = this._parseDeclarationReference(embeddedTokenReader,
+        docInlineTagParameters.tagNameExcerpt!.content, docInheritDocTag);
+      if (!parameters.declarationReference) {
+        return docInheritDocTag; // error
+      }
+
+      if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
+        embeddedTokenReader.readToken();
+
+        this._parserContext.log.addMessageForTokenSequence('Unexpected character after declaration reference',
+          embeddedTokenReader.extractAccumulatedSequence(), docInheritDocTag);
+        return docInheritDocTag; // error
+      }
+    }
+
+    // We don't need the tagContentExcerpt since those tokens are now associated with the link particles
+    parameters.tagContentExcerpt = undefined;
+
+    docInheritDocTag.updateParameters(parameters);
+    return docInheritDocTag;
+  }
+
+  private _parseLinkTag(docInlineTagParameters: IDocInlineTagParameters, embeddedTokenReader: TokenReader): DocNode {
     const docLinkTag: DocLinkTag = new DocLinkTag(docInlineTagParameters);
 
     const parameters: IDocLinkTagParameters = { ...docInlineTagParameters};
@@ -551,10 +609,6 @@ export class NodeParser {
 
       return docLinkTag; // error
     }
-
-    // Create a new TokenReader that will reparse the tokens corresponding to the tagContent.
-    const embeddedTokenReader: TokenReader = new TokenReader(this._parserContext,
-      parameters.tagContentExcerpt.content);
 
     // Is the link destination a URL or a declaration reference?
     //
@@ -903,6 +957,7 @@ export class NodeParser {
       // We didn't find any parts of a declaration reference
       this._parserContext.log.addMessageForTokenSequence('Expecting a declaration reference',
         tokenSequenceForErrorContext, nodeForErrorContext);
+      return undefined;
     }
 
     return new DocDeclarationReference({

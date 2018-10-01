@@ -14,7 +14,7 @@ export interface IDocBlockParameters extends IDocSectionParameters {
  * For example, an `@example` block.
  */
 export class DocBlock extends DocSection {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Block;
 
   private _blockTag: DocBlockTag | undefined; // never undefined after updateParameters()
@@ -41,7 +41,7 @@ export class DocBlock extends DocSection {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

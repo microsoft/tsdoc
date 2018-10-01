@@ -27,7 +27,7 @@ export enum EscapeStyle {
  * forces a specific escaping that may not be the default.
  */
 export class DocEscapedText extends DocNodeLeaf {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.EscapedText;
 
   private _escapeStyle: EscapeStyle | undefined;  // never undefined after updateParameters()

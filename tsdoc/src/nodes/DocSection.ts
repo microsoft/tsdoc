@@ -14,7 +14,7 @@ export interface IDocSectionParameters extends IDocNodeContainerParameters {
  * act as a simple container for other child nodes.
  */
 export class DocSection extends DocNodeContainer {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Section;
 
   /**
@@ -26,7 +26,7 @@ export class DocSection extends DocNodeContainer {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public isAllowedChildNode(docNode: DocNode): boolean {

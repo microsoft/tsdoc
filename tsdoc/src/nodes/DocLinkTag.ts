@@ -24,7 +24,7 @@ export interface IDocLinkTagParameters extends IDocInlineTagParameters {
  */
 export class DocLinkTag extends DocInlineTag {
 
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.LinkTag;
 
   private _codeDestination: DocDeclarationReference | undefined;
@@ -130,7 +130,7 @@ export class DocLinkTag extends DocInlineTag {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   protected getChildNodesForContent(): ReadonlyArray<DocNode> {

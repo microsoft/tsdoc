@@ -13,7 +13,7 @@ export interface IDocBlockTagParameters extends IDocNodeLeafParameters {
  * Represents a TSDoc block tag such as `@param` or `@public`.
  */
 export class DocBlockTag extends DocNodeLeaf {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.BlockTag;
 
   private _tagName: string | undefined;              // never undefined after updateParameters()

@@ -3,6 +3,7 @@ import { DocSection } from './DocSection';
 import { StandardModifierTagSet } from '../details/StandardModifierTagSet';
 import { DocBlock } from './DocBlock';
 import { DocParamBlock } from './DocParamBlock';
+import { DocInheritDocTag } from './DocInheritDocTag';
 
 /**
  * Constructor parameters for {@link DocComment}.
@@ -15,7 +16,7 @@ export interface IDocCommentParameters extends IDocNodeParameters {
  * This is the root of the DocNode tree.
  */
 export class DocComment extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Comment;
 
   /**
@@ -73,6 +74,12 @@ export class DocComment extends DocNode {
   public returnsBlock: DocBlock | undefined;
 
   /**
+   * If this doc comment contains an `@inheritDoc` tag, it will be extracted and associated
+   * with the DocComment.
+   */
+  public inheritDocTag: DocInheritDocTag | undefined;
+
+  /**
    * The modifier tags for this DocComment.
    */
   public readonly modifierTagSet: StandardModifierTagSet;
@@ -113,36 +120,20 @@ export class DocComment extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    const result: DocNode[] = [ ];
-
-    result.push(this.summarySection);
-
-    if (this.remarksBlock) {
-      result.push(this.remarksBlock);
-    }
-
-    if (this.privateRemarks) {
-      result.push(this.privateRemarks);
-    }
-
-    if (this.deprecatedBlock) {
-      result.push(this.deprecatedBlock);
-    }
-
-    result.push(...this.paramBlocks);
-
-    if (this.returnsBlock) {
-      result.push(this.returnsBlock);
-    }
-
-    result.push(...this._customBlocks);
-
-    result.push(...this.modifierTagSet.nodes);
-
-    return result;
+    return DocNode.trimUndefinedNodes([
+      this.summarySection,
+      this.remarksBlock,
+      this.privateRemarks,
+      this.deprecatedBlock,
+      ...this.paramBlocks,
+      this.returnsBlock,
+      ...this._customBlocks,
+      this.inheritDocTag,
+      ...this.modifierTagSet.nodes
+    ]);
   }
 }

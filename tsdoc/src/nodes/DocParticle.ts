@@ -25,7 +25,7 @@ export interface IDocParticleParameters extends IDocNodeLeafParameters {
  * they are represented as generic "DocParticle" nodes.
  */
 export class DocParticle extends DocNodeLeaf {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Particle;
 
   private _particleId: string | undefined;          // never undefined after updateParameters()

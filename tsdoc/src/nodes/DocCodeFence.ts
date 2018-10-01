@@ -23,7 +23,7 @@ export interface IDocCodeFenceParameters extends IDocNodeParameters {
  * can also specify a language for a syntax highlighter.
  */
 export class DocCodeFence extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.CodeFence;
 
   // The opening ``` delimiter and padding
@@ -102,7 +102,7 @@ export class DocCodeFence extends DocNode {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
