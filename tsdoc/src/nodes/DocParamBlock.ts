@@ -21,8 +21,8 @@ export class DocParamBlock extends DocBlock {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ParamBlock;
 
-  private _parameterNameParticle: DocParticle | undefined;
-  private _hyphenParticle: DocParticle | undefined;
+  private _parameterNameParticle: DocParticle | undefined;  // never undefined after updateParameters()
+  private _hyphenParticle: DocParticle | undefined;         // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

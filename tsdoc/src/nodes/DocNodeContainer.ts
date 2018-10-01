@@ -12,7 +12,7 @@ export interface IDocNodeContainerParameters extends IDocNodeParameters {
  * for other child nodes.  The child classes are {@link DocParagraph} and {@link DocSection}.
  */
 export abstract class DocNodeContainer extends DocNode {
-  private _nodes: DocNode[] | undefined;
+  private _nodes: DocNode[] | undefined;  // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -34,7 +34,9 @@ export abstract class DocNodeContainer extends DocNode {
   public updateParameters(parameters: IDocNodeContainerParameters): void {
     super.updateParameters(parameters);
 
-    this._nodes = [];
+    if (this._nodes === undefined) {
+      this._nodes = [];
+    }
   }
 
   /**

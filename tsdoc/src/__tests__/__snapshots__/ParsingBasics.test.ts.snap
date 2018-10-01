@@ -125,7 +125,7 @@ Object {
             "nodeExcerpt": "This method is part of the ",
           },
           Object {
-            "kind": "InlineTag",
+            "kind": "LinkTag",
             "nodes": Array [
               Object {
                 "kind": "Particle: openingDelimiter",
@@ -137,8 +137,40 @@ Object {
                 "nodeSpacing": " ",
               },
               Object {
-                "kind": "Particle: tagContent",
-                "nodeExcerpt": "core-library#Statistics | Statistics subsystem",
+                "kind": "DeclarationReference",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: packageName",
+                    "nodeExcerpt": "core-library",
+                  },
+                  Object {
+                    "kind": "Particle: importHash",
+                    "nodeExcerpt": "#",
+                  },
+                  Object {
+                    "kind": "MemberReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "MemberIdentifier",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Particle: identifier",
+                            "nodeExcerpt": "Statistics",
+                            "nodeSpacing": " ",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              Object {
+                "kind": "Particle: pipe",
+                "nodeExcerpt": "|",
+              },
+              Object {
+                "kind": "Particle: linkText",
+                "nodeExcerpt": " Statistics subsystem",
               },
               Object {
                 "kind": "Particle: closingDelimiter",
@@ -536,7 +568,7 @@ Object {
             "nodeExcerpt": "[n]",
           },
           Object {
-            "kind": "InlineTag",
+            "kind": "LinkTag",
             "nodes": Array [
               Object {
                 "kind": "Particle: openingDelimiter",
@@ -548,8 +580,40 @@ Object {
                 "nodeSpacing": " ",
               },
               Object {
-                "kind": "Particle: tagContent",
-                "nodeExcerpt": "core-library#Statistics | Statistics subsystem",
+                "kind": "DeclarationReference",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: packageName",
+                    "nodeExcerpt": "core-library",
+                  },
+                  Object {
+                    "kind": "Particle: importHash",
+                    "nodeExcerpt": "#",
+                  },
+                  Object {
+                    "kind": "MemberReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "MemberIdentifier",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Particle: identifier",
+                            "nodeExcerpt": "Statistics",
+                            "nodeSpacing": " ",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              Object {
+                "kind": "Particle: pipe",
+                "nodeExcerpt": "|",
+              },
+              Object {
+                "kind": "Particle: linkText",
+                "nodeExcerpt": " Statistics subsystem",
               },
               Object {
                 "kind": "Particle: closingDelimiter",

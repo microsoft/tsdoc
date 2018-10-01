@@ -28,8 +28,8 @@ export class DocParticle extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Particle;
 
-  private _particleId: string | undefined;
-  private _content: string | undefined;
+  private _particleId: string | undefined;          // never undefined after updateParameters()
+  private _content: string | undefined;             // never undefined after updateParameters()
   private _spacingAfterContent: string | undefined;
 
   /**

@@ -23,7 +23,7 @@ export enum TokenKind {
   Spacing = 2003,
 
   /**
-   * A token representing one or more ASCII letters and numbers.
+   * A token representing one or more ASCII letters, numbers, and underscores.
    */
   AsciiWord = 2004,
 
@@ -144,7 +144,31 @@ export enum TokenKind {
    * The pipe character `|`.
    * The Token.range will always be a string of length 1.
    */
-  Pipe = 2024
+  Pipe = 2024,
+
+  /**
+   * The left parenthesis character.
+   * The Token.range will always be a string of length 1.
+   */
+  LeftParenthesis = 2025,
+
+  /**
+   * The right parenthesis character.
+   * The Token.range will always be a string of length 1.
+   */
+  RightParenthesis = 2026,
+
+  /**
+   * The pound character ("#").
+   * The Token.range will always be a string of length 1.
+   */
+  PoundSymbol = 2027,
+
+  /**
+   * The plus character ("+").
+   * The Token.range will always be a string of length 1.
+   */
+  Plus = 2028
 }
 
 /**

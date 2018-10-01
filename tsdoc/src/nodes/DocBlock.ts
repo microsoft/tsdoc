@@ -17,7 +17,7 @@ export class DocBlock extends DocSection {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Block;
 
-  private _blockTag: DocBlockTag | undefined;
+  private _blockTag: DocBlockTag | undefined; // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

@@ -374,7 +374,7 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "    > <                                 ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "PoundSymbol",
     },
     Object {
       "indexOfLine": 0,
@@ -404,13 +404,13 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "         > <                            ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "LeftParenthesis",
     },
     Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "          > <                           ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "RightParenthesis",
     },
     Object {
       "indexOfLine": 0,
@@ -422,7 +422,7 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "            > <                         ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "Plus",
     },
     Object {
       "indexOfLine": 0,
@@ -512,7 +512,7 @@ Object {
       "indexOfLine": 0,
       "line": ">![q]#$%&'()*+,-./:;[<]=[>]?@[]^_[c]{|}~<",
       "span": "                               > <      ",
-      "tokenKind": "OtherPunctuation",
+      "tokenKind": "AsciiWord",
     },
     Object {
       "indexOfLine": 0,

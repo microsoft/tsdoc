@@ -1,0 +1,550 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`00 Symbol references: positive examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@link Class1.[WellknownSymbols.toStringPrimitive]}[n] * {@link Class1 . ( [ WellknownSymbols . toStringPrimitive ] : static) | link text}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link Class1.[WellknownSymbols.toStringPrimitive]}",
+    "{@link Class1 . ( [ WellknownSymbols . toStringPrimitive ] : static) | link text}",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: identifier",
+                                "nodeExcerpt": "Class1",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Particle: dot",
+                            "nodeExcerpt": ".",
+                          },
+                          Object {
+                            "kind": "MemberSymbol",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: leftBracket",
+                                "nodeExcerpt": "[",
+                              },
+                              Object {
+                                "kind": "DeclarationReference",
+                                "nodes": Array [
+                                  Object {
+                                    "kind": "MemberReference",
+                                    "nodes": Array [
+                                      Object {
+                                        "kind": "MemberIdentifier",
+                                        "nodes": Array [
+                                          Object {
+                                            "kind": "Particle: identifier",
+                                            "nodeExcerpt": "WellknownSymbols",
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                  Object {
+                                    "kind": "MemberReference",
+                                    "nodes": Array [
+                                      Object {
+                                        "kind": "Particle: dot",
+                                        "nodeExcerpt": ".",
+                                      },
+                                      Object {
+                                        "kind": "MemberIdentifier",
+                                        "nodes": Array [
+                                          Object {
+                                            "kind": "Particle: identifier",
+                                            "nodeExcerpt": "toStringPrimitive",
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                              Object {
+                                "kind": "Particle: rightBracket",
+                                "nodeExcerpt": "]",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: identifier",
+                                "nodeExcerpt": "Class1",
+                                "nodeSpacing": " ",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Particle: dot",
+                            "nodeExcerpt": ".",
+                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Particle: leftParenthesis",
+                            "nodeExcerpt": "(",
+                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "MemberSymbol",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: leftBracket",
+                                "nodeExcerpt": "[",
+                                "nodeSpacing": " ",
+                              },
+                              Object {
+                                "kind": "DeclarationReference",
+                                "nodes": Array [
+                                  Object {
+                                    "kind": "MemberReference",
+                                    "nodes": Array [
+                                      Object {
+                                        "kind": "MemberIdentifier",
+                                        "nodes": Array [
+                                          Object {
+                                            "kind": "Particle: identifier",
+                                            "nodeExcerpt": "WellknownSymbols",
+                                            "nodeSpacing": " ",
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                  Object {
+                                    "kind": "MemberReference",
+                                    "nodes": Array [
+                                      Object {
+                                        "kind": "Particle: dot",
+                                        "nodeExcerpt": ".",
+                                        "nodeSpacing": " ",
+                                      },
+                                      Object {
+                                        "kind": "MemberIdentifier",
+                                        "nodes": Array [
+                                          Object {
+                                            "kind": "Particle: identifier",
+                                            "nodeExcerpt": "toStringPrimitive",
+                                            "nodeSpacing": " ",
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                              Object {
+                                "kind": "Particle: rightBracket",
+                                "nodeExcerpt": "]",
+                                "nodeSpacing": " ",
+                              },
+                            ],
+                          },
+                          Object {
+                            "kind": "Particle: colon",
+                            "nodeExcerpt": ":",
+                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "MemberSelector",
+                            "nodeExcerpt": "static",
+                          },
+                          Object {
+                            "kind": "Particle: rightParenthesis",
+                            "nodeExcerpt": ")",
+                            "nodeSpacing": " ",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: pipe",
+                    "nodeExcerpt": "|",
+                  },
+                  Object {
+                    "kind": "Particle: linkText",
+                    "nodeExcerpt": " link text",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`01 Symbol references: negative examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@link Class1.[WellknownSymbols.toStringPrimitive}[n] * {@link Class1.[]}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link Class1.[WellknownSymbols.toStringPrimitive}",
+    "{@link Class1.[]}",
+  ],
+  "logMessages": Array [
+    "(2,18): Missing closing square bracket for symbol reference",
+    "(3,18): Expecting a declaration reference",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Particle: tagContent",
+                    "nodeExcerpt": "Class1.[WellknownSymbols.toStringPrimitive",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: identifier",
+                                "nodeExcerpt": "Class1",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Particle: dot",
+                            "nodeExcerpt": ".",
+                          },
+                          Object {
+                            "kind": "MemberSymbol",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: leftBracket",
+                                "nodeExcerpt": "[",
+                              },
+                              Object {
+                                "kind": "DeclarationReference",
+                              },
+                              Object {
+                                "kind": "Particle: rightBracket",
+                                "nodeExcerpt": "]",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`02 Complicated examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@link ./lib/controls/Button#Button.([(WellknownSymbols:namespace).toStringPrimitive]:instance)}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link ./lib/controls/Button#Button.([(WellknownSymbols:namespace).toStringPrimitive]:instance)}",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@link",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Particle: importPath",
+                        "nodeExcerpt": "./lib/controls/Button",
+                      },
+                      Object {
+                        "kind": "Particle: importHash",
+                        "nodeExcerpt": "#",
+                      },
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: identifier",
+                                "nodeExcerpt": "Button",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Particle: dot",
+                            "nodeExcerpt": ".",
+                          },
+                          Object {
+                            "kind": "Particle: leftParenthesis",
+                            "nodeExcerpt": "(",
+                          },
+                          Object {
+                            "kind": "MemberSymbol",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: leftBracket",
+                                "nodeExcerpt": "[",
+                              },
+                              Object {
+                                "kind": "DeclarationReference",
+                                "nodes": Array [
+                                  Object {
+                                    "kind": "MemberReference",
+                                    "nodes": Array [
+                                      Object {
+                                        "kind": "Particle: leftParenthesis",
+                                        "nodeExcerpt": "(",
+                                      },
+                                      Object {
+                                        "kind": "MemberIdentifier",
+                                        "nodes": Array [
+                                          Object {
+                                            "kind": "Particle: identifier",
+                                            "nodeExcerpt": "WellknownSymbols",
+                                          },
+                                        ],
+                                      },
+                                      Object {
+                                        "kind": "Particle: colon",
+                                        "nodeExcerpt": ":",
+                                      },
+                                      Object {
+                                        "kind": "MemberSelector",
+                                        "nodeExcerpt": "namespace",
+                                      },
+                                      Object {
+                                        "kind": "Particle: rightParenthesis",
+                                        "nodeExcerpt": ")",
+                                      },
+                                    ],
+                                  },
+                                  Object {
+                                    "kind": "MemberReference",
+                                    "nodes": Array [
+                                      Object {
+                                        "kind": "Particle: dot",
+                                        "nodeExcerpt": ".",
+                                      },
+                                      Object {
+                                        "kind": "MemberIdentifier",
+                                        "nodes": Array [
+                                          Object {
+                                            "kind": "Particle: identifier",
+                                            "nodeExcerpt": "toStringPrimitive",
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                              Object {
+                                "kind": "Particle: rightBracket",
+                                "nodeExcerpt": "]",
+                              },
+                            ],
+                          },
+                          Object {
+                            "kind": "Particle: colon",
+                            "nodeExcerpt": ":",
+                          },
+                          Object {
+                            "kind": "MemberSelector",
+                            "nodeExcerpt": "instance",
+                          },
+                          Object {
+                            "kind": "Particle: rightParenthesis",
+                            "nodeExcerpt": ")",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;

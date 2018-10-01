@@ -22,13 +22,13 @@ export class DocHtmlEndTag extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.HtmlEndTag;
 
   // The "</" delimiter
-  private _openingDelimiterParticle: DocParticle | undefined;
+  private _openingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   // The element name
-  private _elementNameParticle: DocParticle | undefined;
+  private _elementNameParticle: DocParticle | undefined;       // never undefined after updateParameters()
 
   // The  ">" delimiter
-  private _closingDelimiterParticle: DocParticle | undefined;
+  private _closingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

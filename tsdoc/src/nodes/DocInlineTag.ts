@@ -25,10 +25,10 @@ export class DocInlineTag extends DocNode {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.InlineTag;
 
-  private _openingDelimiterParticle: DocParticle | undefined;
-  private _tagNameParticle: DocParticle | undefined;
-  private _tagContentParticle: DocParticle | undefined;
-  private _closingDelimiterParticle: DocParticle | undefined;
+  private _openingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
+  private _tagNameParticle: DocParticle | undefined;           // never undefined after updateParameters()
+  private _tagContentParticle: DocParticle | undefined;        // never undefined after updateParameters()
+  private _closingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

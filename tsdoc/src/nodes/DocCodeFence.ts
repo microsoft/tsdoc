@@ -27,16 +27,16 @@ export class DocCodeFence extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.CodeFence;
 
   // The opening ``` delimiter and padding
-  private _openingDelimiterParticle: DocParticle | undefined;
+  private _openingDelimiterParticle: DocParticle | undefined; // never undefined after updateParameters()
 
   // The optional language string, and newline
-  private _languageParticle: DocParticle | undefined;
+  private _languageParticle: DocParticle | undefined;         // never undefined after updateParameters()
 
   // The code content
-  private _codeParticle: DocParticle | undefined;
+  private _codeParticle: DocParticle | undefined;             // never undefined after updateParameters()
 
   // The closing ``` delimiter, spacing, and newline
-  private _closingDelimiterParticle: DocParticle | undefined;
+  private _closingDelimiterParticle: DocParticle | undefined; // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

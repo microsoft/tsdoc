@@ -3,9 +3,9 @@ import { Token, TokenKind } from './Token';
 
 export class Tokenizer {
   private static readonly _commonMarkPunctuationCharacters: string
-    = '!"#$%&\'()*+,\-.\/:;<=>?@[\\]^_`{|}~';
+    = '!"#$%&\'()*+,\-.\/:;<=>?@[\\]^`{|}~';
   private static readonly _wordCharacters: string
-    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
 
   private static _charCodeMap: { [charCode: number]: TokenKind | undefined };
   private static _punctuationTokens: { [tokenKind: number]: boolean };
@@ -142,7 +142,11 @@ export class Tokenizer {
       ','  : TokenKind.Comma,
       '['  : TokenKind.LeftSquareBracket,
       ']'  : TokenKind.RightSquareBracket,
-      '|'  : TokenKind.Pipe
+      '|'  : TokenKind.Pipe,
+      '('  : TokenKind.LeftParenthesis,
+      ')'  : TokenKind.RightParenthesis,
+      '#'  : TokenKind.PoundSymbol,
+      '+'  : TokenKind.Plus
     };
     for (const key of Object.getOwnPropertyNames(specialMap)) {
       Tokenizer._charCodeMap[key.charCodeAt(0)] = specialMap[key];

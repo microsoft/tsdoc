@@ -16,8 +16,8 @@ export class DocBlockTag extends DocNodeLeaf {
   /** {@inheritdoc} */
   public readonly kind: DocNodeKind = DocNodeKind.BlockTag;
 
-  private _tagName: string | undefined;
-  private _tagNameWithUpperCase: string | undefined;
+  private _tagName: string | undefined;              // never undefined after updateParameters()
+  private _tagNameWithUpperCase: string | undefined; // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}

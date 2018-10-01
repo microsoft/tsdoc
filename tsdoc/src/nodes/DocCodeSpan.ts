@@ -23,13 +23,13 @@ export class DocCodeSpan extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.CodeSpan;
 
   // The opening ` delimiter
-  private _openingDelimiterParticle: DocParticle | undefined;
+  private _openingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   // The code content
-  private _codeParticle: DocParticle | undefined;
+  private _codeParticle: DocParticle | undefined;              // never undefined after updateParameters()
 
   // The closing ` delimiter
-  private _closingDelimiterParticle: DocParticle | undefined;
+  private _closingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
