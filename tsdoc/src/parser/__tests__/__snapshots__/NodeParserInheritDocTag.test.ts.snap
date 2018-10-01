@@ -237,7 +237,6 @@ Object {
   ],
   "logMessages": Array [
     "(2,5): Expecting a declaration reference",
-    "(2,17): Unexpected character after declaration reference",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -284,6 +283,60 @@ Object {
 `;
 
 exports[`01 InheritDoc tag: negative examples 2`] = `
+Object {
+  "buffer": "/**[n] * {@inheritDoc Class % junk}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@inheritDoc Class % junk}",
+  ],
+  "logMessages": Array [
+    "(2,23): Unexpected character after declaration reference",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+      Object {
+        "kind": "InheritDocTag",
+        "nodes": Array [
+          Object {
+            "kind": "Particle: openingDelimiter",
+            "nodeExcerpt": "{",
+          },
+          Object {
+            "kind": "Particle: tagName",
+            "nodeExcerpt": "@inheritDoc",
+            "nodeSpacing": " ",
+          },
+          Object {
+            "kind": "Particle: tagContent",
+            "nodeExcerpt": "Class % junk",
+          },
+          Object {
+            "kind": "Particle: closingDelimiter",
+            "nodeExcerpt": "}",
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`01 InheritDoc tag: negative examples 3`] = `
 Object {
   "buffer": "/**[n] * {@inheritDoc}[n] * {@inheritDoc}[n] */",
   "gaps": Array [],

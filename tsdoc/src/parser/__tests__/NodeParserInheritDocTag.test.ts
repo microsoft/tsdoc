@@ -26,6 +26,11 @@ test('01 InheritDoc tag: negative examples', () => {
   ].join('\n'));
   TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
+    ' * {@inheritDoc Class % junk}',
+    ' */'
+  ].join('\n'));
+  TestHelpers.parseAndMatchNodeParserSnapshot([
+    '/**',
     ' * {@inheritDoc}',
     ' * {@inheritDoc}',
     ' */'

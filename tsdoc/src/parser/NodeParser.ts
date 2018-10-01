@@ -574,19 +574,20 @@ export class NodeParser {
     const parameters: IDocInheritDocTagParameters = { ...docInlineTagParameters};
 
     if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
+
       parameters.declarationReference = this._parseDeclarationReference(embeddedTokenReader,
         docInlineTagParameters.tagNameExcerpt!.content, docInheritDocTag);
       if (!parameters.declarationReference) {
         return docInheritDocTag; // error
       }
-    }
 
-    if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
-      embeddedTokenReader.readToken();
+      if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
+        embeddedTokenReader.readToken();
 
-      this._parserContext.log.addMessageForTokenSequence('Unexpected character after declaration reference',
-        embeddedTokenReader.extractAccumulatedSequence(), docInheritDocTag);
-      return docInheritDocTag; // error
+        this._parserContext.log.addMessageForTokenSequence('Unexpected character after declaration reference',
+          embeddedTokenReader.extractAccumulatedSequence(), docInheritDocTag);
+        return docInheritDocTag; // error
+      }
     }
 
     // We don't need the tagContentExcerpt since those tokens are now associated with the link particles
@@ -956,6 +957,7 @@ export class NodeParser {
       // We didn't find any parts of a declaration reference
       this._parserContext.log.addMessageForTokenSequence('Expecting a declaration reference',
         tokenSequenceForErrorContext, nodeForErrorContext);
+      return undefined;
     }
 
     return new DocDeclarationReference({
