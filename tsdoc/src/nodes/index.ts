@@ -11,6 +11,7 @@ export * from './DocHtmlAttribute';
 export * from './DocHtmlEndTag';
 export * from './DocHtmlStartTag';
 export * from './DocInlineTag';
+export * from './DocInheritDocTag';
 export * from './DocLinkTag';
 export * from './DocMemberIdentifier';
 export * from './DocMemberReference';

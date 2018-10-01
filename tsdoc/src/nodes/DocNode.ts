@@ -13,6 +13,7 @@ export const enum DocNodeKind {
   HtmlAttribute = 'HtmlAttribute',
   HtmlEndTag = 'HtmlEndTag',
   HtmlStartTag = 'HtmlStartTag',
+  InheritDocTag = 'InheritDocTag',
   InlineTag = 'InlineTag',
   LinkTag = 'LinkTag',
   MemberIdentifier = 'MemberIdentifier',

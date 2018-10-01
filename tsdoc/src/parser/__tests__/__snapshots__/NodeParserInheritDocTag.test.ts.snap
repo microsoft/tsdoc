@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`00 InheritDoc tag: positive examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@inheritDoc}[n] * {@inheritDoc Class.member}[n] * {@inheritDoc package# Class . member}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@inheritDoc}",
+    "{@inheritDoc Class.member}",
+    "{@inheritDoc package# Class . member}",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "InheritDocTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@inheritDoc",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "InheritDocTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@inheritDoc",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: identifier",
+                                "nodeExcerpt": "Class",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Particle: dot",
+                            "nodeExcerpt": ".",
+                          },
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: identifier",
+                                "nodeExcerpt": "member",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "InheritDocTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@inheritDoc",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Particle: packageName",
+                        "nodeExcerpt": "package",
+                      },
+                      Object {
+                        "kind": "Particle: importHash",
+                        "nodeExcerpt": "#",
+                        "nodeSpacing": " ",
+                      },
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: identifier",
+                                "nodeExcerpt": "Class",
+                                "nodeSpacing": " ",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Particle: dot",
+                            "nodeExcerpt": ".",
+                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Particle: identifier",
+                                "nodeExcerpt": "member",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`01 InheritDoc tag: negative examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@inheritDoc | link text}[n] */",
+  "gaps": Array [
+    "| link text",
+  ],
+  "lines": Array [
+    "{@inheritDoc | link text}",
+  ],
+  "logMessages": Array [
+    "(2,5): Expecting a declaration reference",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "InheritDocTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Particle: tagName",
+                    "nodeExcerpt": "@inheritDoc",
+                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
