@@ -58,6 +58,21 @@ export class StandardTags {
   });
 
   /**
+   * (Core)
+   *
+   * This block tag is used to document the default value for a field or property,
+   * if a value is not assigned explicitly.
+   *
+   * @remarks
+   * This tag should only be used with fields or properties that are members of a class or interface.
+   */
+  public static readonly defaultValue: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@defaultValue',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Core
+  });
+
+  /**
    * (Extended)
    *
    * When applied to a class or interface property, this indicates that the property
