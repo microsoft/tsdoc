@@ -1,5 +1,9 @@
 # Change Log - @microsoft/tsdoc
 
+## 0.7.0
+- Add support for `@defaultValue` tag
+- Add support for `@typeParam` tag
+
 ## 0.6.0
 - Add support for `@link` tags using the new declaration reference syntax
 - Add support for `@inheritDoc` tags
