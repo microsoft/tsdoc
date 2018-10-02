@@ -66,7 +66,7 @@ Object {
 }
 `;
 
-exports[`02 A basic TSDoc comment with all components 1`] = `
+exports[`02 A basic TSDoc comment with common components 1`] = `
 Object {
   "_0_lines": Array [
     "Returns the average of two numbers.",
@@ -807,6 +807,103 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
+  "_8_logMessages": Array [],
+}
+`;
+
+exports[`04 typeParam blocks 1`] = `
+Object {
+  "_0_lines": Array [
+    "Constructs a map from a JavaScript object",
+    "",
+    "@typeParam K - The generic type parameter indicating the key type",
+    "@param jsonObject - The input object",
+    "@typeParam V - The generic type parameter indicating the value type",
+    "@returns The map",
+  ],
+  "_1_gaps": Array [],
+  "_2_summarySection": Object {
+    "kind": "Section",
+    "nodes": Array [
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "Constructs a map from a JavaScript object",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
+      },
+    ],
+  },
+  "_3_remarksBlock": undefined,
+  "_4_customBlocks": Array [],
+  "_5_paramBlocks": Array [
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: parameterName",
+          "nodeExcerpt": "jsonObject",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: hyphen",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The input object",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "_6_returnsBlock": Object {
+    "kind": "Block",
+    "nodes": Array [
+      Object {
+        "kind": "BlockTag",
+        "nodeExcerpt": "@returns",
+      },
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " The map",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
+      },
+    ],
+  },
+  "_7_modifierTags": Array [],
   "_8_logMessages": Array [],
 }
 `;

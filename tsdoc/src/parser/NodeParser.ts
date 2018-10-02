@@ -196,6 +196,13 @@ export class NodeParser {
 
             this._currentSection = docParamBlock;
             return;
+          } else if (docBlockTag.tagNameWithUpperCase === StandardTags.typeParam.tagNameWithUpperCase) {
+            const docParamBlock: DocParamBlock = this._parseParamBlock(tokenReader, docBlockTag);
+
+            this._parserContext.docComment.typeParamBlocks.push(docParamBlock);
+
+            this._currentSection = docParamBlock;
+            return;
           } else {
             const newBlock: DocBlock = new DocBlock({
               blockTag: docBlockTag

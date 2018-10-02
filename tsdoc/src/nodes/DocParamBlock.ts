@@ -14,7 +14,7 @@ export interface IDocParamBlockParameters extends IDocBlockParameters {
 }
 
 /**
- * Represents a parsed `@param` block, which provides a description for a
+ * Represents a parsed `@param` or `@typeParam` block, which provides a description for a
  * function parameter.
  */
 export class DocParamBlock extends DocBlock {

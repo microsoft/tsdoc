@@ -69,7 +69,7 @@ export class StandardTags {
   public static readonly defaultValue: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@defaultValue',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
-    standardization: Standardization.Core
+    standardization: Standardization.Extended
   });
 
   /**
@@ -317,6 +317,20 @@ export class StandardTags {
   });
 
   /**
+   * (Core)
+   *
+   * Used to document a generic parameter.  The `@typeParam` tag is followed by a parameter
+   * name, followed by a hyphen, followed by a description.  The TSDoc parser recognizes
+   * this syntax and will extract it into a DocParamBlock node.
+   */
+  public static readonly typeParam: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@typeParam',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    allowMultiple: true,
+    standardization: Standardization.Core
+  });
+
+  /**
    * (Extended)
    *
    * This modifier has similar semantics to the `virtual` keyword in C# or Java.
@@ -339,6 +353,7 @@ export class StandardTags {
     StandardTags.alpha,
     StandardTags.beta,
     StandardTags.deprecated,
+    StandardTags.defaultValue,
     StandardTags.eventProperty,
     StandardTags.example,
     StandardTags.experimental,
@@ -355,6 +370,7 @@ export class StandardTags {
     StandardTags.remarks,
     StandardTags.returns,
     StandardTags.sealed,
+    StandardTags.typeParam,
     StandardTags.virtual
   ];
 

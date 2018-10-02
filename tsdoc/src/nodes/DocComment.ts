@@ -21,7 +21,7 @@ export class DocComment extends DocNode {
 
   /**
    * The main documentation for an API item is separated into a brief "summary" section,
-   * optionally followed by more detailed "remarks" section.
+   * optionally followed by an `@remarks` block containing additional details.
    *
    * @remarks
    * The summary section should be brief. On a documentation web site, it will be shown
@@ -32,7 +32,7 @@ export class DocComment extends DocNode {
 
   /**
    * The main documentation for an API item is separated into a brief "summary" section
-   * followed by more detailed "remarks" section.
+   * optionally followed by an `@remarks` block containing additional details.
    *
    * @remarks
    * Unlike the summary, the remarks block may contain lengthy documentation content.
@@ -69,6 +69,11 @@ export class DocComment extends DocNode {
   public paramBlocks: DocParamBlock[];
 
   /**
+   * The collection of parsed `@typeParam` blocks for this doc comment.
+   */
+  public typeParamBlocks: DocParamBlock[];
+
+  /**
    * The `@returns` block for this doc comment, or undefined if there is not one.
    */
   public returnsBlock: DocBlock | undefined;
@@ -98,6 +103,7 @@ export class DocComment extends DocNode {
     this.privateRemarks = undefined;
     this.deprecatedBlock = undefined;
     this.paramBlocks = [];
+    this.typeParamBlocks = [];
     this.returnsBlock = undefined;
 
     this.modifierTagSet = new StandardModifierTagSet();
@@ -130,6 +136,7 @@ export class DocComment extends DocNode {
       this.privateRemarks,
       this.deprecatedBlock,
       ...this.paramBlocks,
+      ...this.typeParamBlocks,
       this.returnsBlock,
       ...this._customBlocks,
       this.inheritDocTag,
