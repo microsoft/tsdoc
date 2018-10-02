@@ -42,6 +42,7 @@ import {
   TSDocTagSyntaxKind
 } from './TSDocTagDefinition';
 import { StandardTags } from '../details/StandardTags';
+import { PlainTextRenderer } from '../renderers/PlainTextRenderer';
 
 interface IFailure {
   // (We use "failureMessage" instead of "errorMessage" here so that DocErrorText doesn't
@@ -157,6 +158,21 @@ export class NodeParser {
       }
     }
     this._pushAccumulatedPlainText(tokenReader);
+    this._performValidationChecks();
+  }
+
+  private _performValidationChecks(): void {
+    const docComment: DocComment = this._parserContext.docComment;
+    if (docComment.deprecatedBlock) {
+      if (!PlainTextRenderer.hasAnyTextContent(docComment.deprecatedBlock)) {
+        this._parserContext.log.addMessageForTokenSequence(
+          `The ${docComment.deprecatedBlock.blockTag.tagName} block must include a deprecation message,`
+            + ` e.g. describing the recommended alternative`,
+          docComment.deprecatedBlock.blockTag.excerpt!.content,
+          docComment.deprecatedBlock
+        );
+      }
+    }
   }
 
   private _pushAccumulatedPlainText(tokenReader: TokenReader): void {

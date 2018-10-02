@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`00 Deprecated block: positive test 1`] = `
+Object {
+  "buffer": "/**[n] * @deprecated[n] * Use the other thing[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "@deprecated",
+    "Use the other thing",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+      },
+      Object {
+        "kind": "Block",
+        "nodes": Array [
+          Object {
+            "kind": "BlockTag",
+            "nodeExcerpt": "@deprecated",
+          },
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "Use the other thing",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`01 Deprecated block: negative test 1`] = `
+Object {
+  "buffer": "/**[n] * @deprecated[n] * [n] * @public[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "@deprecated",
+    "",
+    "@public",
+  ],
+  "logMessages": Array [
+    "(2,4): The @deprecated block must include a deprecation message, e.g. describing the recommended alternative",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+      },
+      Object {
+        "kind": "Block",
+        "nodes": Array [
+          Object {
+            "kind": "BlockTag",
+            "nodeExcerpt": "@deprecated",
+          },
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+      Object {
+        "kind": "BlockTag",
+        "nodeExcerpt": "@public",
+      },
+    ],
+  },
+}
+`;
