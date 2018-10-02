@@ -113,15 +113,19 @@ export class TestHelpers {
     const docComment: DocComment = parserContext.docComment;
 
     expect({
-      _0_lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
-      _1_gaps: this._getTokenCoverageGapsSnapshot(parserContext),
-      _2_summarySection: TestHelpers.getDocNodeSnapshot(docComment.summarySection),
-      _3_remarksBlock: TestHelpers.getDocNodeSnapshot(docComment.remarksBlock),
-      _4_customBlocks: docComment.customBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
-      _5_paramBlocks: docComment.paramBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
-      _6_returnsBlock: TestHelpers.getDocNodeSnapshot(docComment.returnsBlock),
-      _7_modifierTags: docComment.modifierTagSet.nodes.map(x => TestHelpers.getDocNodeSnapshot(x)),
-      _8_logMessages: parserContext.log.messages.map(message => message.text)
+      _00_lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
+      _01_gaps: this._getTokenCoverageGapsSnapshot(parserContext),
+      _02_summarySection: TestHelpers.getDocNodeSnapshot(docComment.summarySection),
+      _03_remarksBlock: TestHelpers.getDocNodeSnapshot(docComment.remarksBlock),
+      _04_privateRemarksBlock: TestHelpers.getDocNodeSnapshot(docComment.privateRemarks),
+      _05_deprecatedBlock: TestHelpers.getDocNodeSnapshot(docComment.deprecatedBlock),
+      _06_paramBlocks: docComment.paramBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _07_typeParamBlocks: docComment.typeParamBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _08_returnsBlock: TestHelpers.getDocNodeSnapshot(docComment.returnsBlock),
+      _09_customBlocks: docComment.customBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _10_inheritDocTag: TestHelpers.getDocNodeSnapshot(docComment.inheritDocTag),
+      _11_modifierTags: docComment.modifierTagSet.nodes.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _12_logMessages: parserContext.log.messages.map(message => message.text)
     }).toMatchSnapshot();
 
     return parserContext;

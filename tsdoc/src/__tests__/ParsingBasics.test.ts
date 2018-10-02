@@ -25,7 +25,7 @@ test('01 Simple @beta and @internal extraction', () => {
   expect(modifierTagSet.isInternal()).toEqual(true);
 });
 
-test('02 A basic TSDoc comment with all components', () => {
+test('02 A basic TSDoc comment with common components', () => {
   const configuration: TSDocParserConfiguration = new TSDocParserConfiguration();
   configuration.addTagDefinitions([
     new TSDocTagDefinition({
@@ -95,6 +95,19 @@ test('03 Incomplete @param blocks', () => {
     ' * @param - The first input number',
     ' * @param y The second input number',
     ' * @returns The arithmetic mean of `x` and `y`',
+    ' */'
+  ].join('\n'));
+});
+
+test('04 typeParam blocks', () => {
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * Constructs a map from a JavaScript object',
+    ' *',
+    ' * @typeParam K - The generic type parameter indicating the key type',
+    ' * @param jsonObject - The input object',
+    ' * @typeParam V - The generic type parameter indicating the value type',
+    ' * @returns The map',
     ' */'
   ].join('\n'));
 });
