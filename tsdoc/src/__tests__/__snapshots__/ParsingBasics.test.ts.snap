@@ -2,15 +2,15 @@
 
 exports[`01 Simple @beta and @internal extraction 1`] = `
 Object {
-  "_0_lines": Array [
+  "_00_lines": Array [
     "START @beta",
     "@unknownTag",
     "@internal @internal END",
   ],
-  "_1_gaps": Array [
+  "_01_gaps": Array [
     "@internal",
   ],
-  "_2_summarySection": Object {
+  "_02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -48,11 +48,15 @@ Object {
       },
     ],
   },
-  "_3_remarksBlock": undefined,
-  "_4_customBlocks": Array [],
-  "_5_paramBlocks": Array [],
-  "_6_returnsBlock": undefined,
-  "_7_modifierTags": Array [
+  "_03_remarksBlock": undefined,
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [],
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": undefined,
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodeExcerpt": "@beta",
@@ -62,13 +66,13 @@ Object {
       "nodeExcerpt": "@internal",
     },
   ],
-  "_8_logMessages": Array [],
+  "_12_logMessages": Array [],
 }
 `;
 
 exports[`02 A basic TSDoc comment with common components 1`] = `
 Object {
-  "_0_lines": Array [
+  "_00_lines": Array [
     "Returns the average of two numbers.",
     "",
     "@remarks",
@@ -83,8 +87,8 @@ Object {
     "",
     "@beta @customModifier",
   ],
-  "_1_gaps": Array [],
-  "_2_summarySection": Object {
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -106,7 +110,7 @@ Object {
       },
     ],
   },
-  "_3_remarksBlock": Object {
+  "_03_remarksBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -194,43 +198,9 @@ Object {
       },
     ],
   },
-  "_4_customBlocks": Array [
-    Object {
-      "kind": "Block",
-      "nodes": Array [
-        Object {
-          "kind": "BlockTag",
-          "nodeExcerpt": "@customBlock",
-        },
-        Object {
-          "kind": "Paragraph",
-          "nodes": Array [
-            Object {
-              "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
-            },
-            Object {
-              "kind": "PlainText",
-              "nodeExcerpt": "This is a custom block containing an ",
-            },
-            Object {
-              "kind": "BlockTag",
-              "nodeExcerpt": "@undefinedBlockTag",
-            },
-            Object {
-              "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
-            },
-            Object {
-              "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-  "_5_paramBlocks": Array [
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [
     Object {
       "kind": "ParamBlock",
       "nodes": Array [
@@ -298,7 +268,8 @@ Object {
       ],
     },
   ],
-  "_6_returnsBlock": Object {
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -370,7 +341,44 @@ Object {
       },
     ],
   },
-  "_7_modifierTags": Array [
+  "_09_customBlocks": Array [
+    Object {
+      "kind": "Block",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@customBlock",
+        },
+        Object {
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "This is a custom block containing an ",
+            },
+            Object {
+              "kind": "BlockTag",
+              "nodeExcerpt": "@undefinedBlockTag",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodeExcerpt": "@beta",
@@ -380,24 +388,25 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
-  "_8_logMessages": Array [],
+  "_12_logMessages": Array [],
 }
 `;
 
 exports[`03 Incomplete @param blocks 1`] = `
 Object {
-  "_0_lines": Array [
+  "_00_lines": Array [
     "@param - The first input number",
     "@param y The second input number",
     "@returns The arithmetic mean of [c]x[c] and [c]y[c]",
   ],
-  "_1_gaps": Array [],
-  "_2_summarySection": Object {
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
     "kind": "Section",
   },
-  "_3_remarksBlock": undefined,
-  "_4_customBlocks": Array [],
-  "_5_paramBlocks": Array [
+  "_03_remarksBlock": undefined,
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [
     Object {
       "kind": "ParamBlock",
       "nodes": Array [
@@ -455,7 +464,8 @@ Object {
       ],
     },
   ],
-  "_6_returnsBlock": Object {
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -515,8 +525,10 @@ Object {
       },
     ],
   },
-  "_7_modifierTags": Array [],
-  "_8_logMessages": Array [
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [],
+  "_12_logMessages": Array [
     "(2,4): The @param block should be followed by a parameter name",
     "(3,4): The @param block should be followed by a parameter name and then a hyphen",
   ],
@@ -525,7 +537,7 @@ Object {
 
 exports[`03 Jumbled order 1`] = `
 Object {
-  "_0_lines": Array [
+  "_00_lines": Array [
     "Returns the average of two numbers. @remarks This method is part of the",
     "{@link core-library#Statistics | Statistics subsystem}.",
     "@beta @customModifier",
@@ -534,8 +546,8 @@ Object {
     "@customBlock",
     "This is a custom block containing an @undefinedBlockTag",
   ],
-  "_1_gaps": Array [],
-  "_2_summarySection": Object {
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -549,7 +561,7 @@ Object {
       },
     ],
   },
-  "_3_remarksBlock": Object {
+  "_03_remarksBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -641,39 +653,9 @@ Object {
       },
     ],
   },
-  "_4_customBlocks": Array [
-    Object {
-      "kind": "Block",
-      "nodes": Array [
-        Object {
-          "kind": "BlockTag",
-          "nodeExcerpt": "@customBlock",
-        },
-        Object {
-          "kind": "Paragraph",
-          "nodes": Array [
-            Object {
-              "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
-            },
-            Object {
-              "kind": "PlainText",
-              "nodeExcerpt": "This is a custom block containing an ",
-            },
-            Object {
-              "kind": "BlockTag",
-              "nodeExcerpt": "@undefinedBlockTag",
-            },
-            Object {
-              "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-  "_5_paramBlocks": Array [
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [
     Object {
       "kind": "ParamBlock",
       "nodes": Array [
@@ -737,7 +719,8 @@ Object {
       ],
     },
   ],
-  "_6_returnsBlock": Object {
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -797,7 +780,40 @@ Object {
       },
     ],
   },
-  "_7_modifierTags": Array [
+  "_09_customBlocks": Array [
+    Object {
+      "kind": "Block",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@customBlock",
+        },
+        Object {
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "This is a custom block containing an ",
+            },
+            Object {
+              "kind": "BlockTag",
+              "nodeExcerpt": "@undefinedBlockTag",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodeExcerpt": "@beta",
@@ -807,13 +823,13 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
-  "_8_logMessages": Array [],
+  "_12_logMessages": Array [],
 }
 `;
 
 exports[`04 typeParam blocks 1`] = `
 Object {
-  "_0_lines": Array [
+  "_00_lines": Array [
     "Constructs a map from a JavaScript object",
     "",
     "@typeParam K - The generic type parameter indicating the key type",
@@ -821,8 +837,8 @@ Object {
     "@typeParam V - The generic type parameter indicating the value type",
     "@returns The map",
   ],
-  "_1_gaps": Array [],
-  "_2_summarySection": Object {
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -844,9 +860,10 @@ Object {
       },
     ],
   },
-  "_3_remarksBlock": undefined,
-  "_4_customBlocks": Array [],
-  "_5_paramBlocks": Array [
+  "_03_remarksBlock": undefined,
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [
     Object {
       "kind": "ParamBlock",
       "nodes": Array [
@@ -881,7 +898,75 @@ Object {
       ],
     },
   ],
-  "_6_returnsBlock": Object {
+  "_07_typeParamBlocks": Array [
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@typeParam",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: parameterName",
+          "nodeExcerpt": "K",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: hyphen",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The generic type parameter indicating the key type",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
+        },
+      ],
+    },
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@typeParam",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: parameterName",
+          "nodeExcerpt": "V",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: hyphen",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The generic type parameter indicating the value type",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "_08_returnsBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -903,7 +988,9 @@ Object {
       },
     ],
   },
-  "_7_modifierTags": Array [],
-  "_8_logMessages": Array [],
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [],
+  "_12_logMessages": Array [],
 }
 `;
