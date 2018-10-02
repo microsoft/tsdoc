@@ -1725,23 +1725,11 @@ export class NodeParser {
         'Expecting a code span starting with a backtick character "`"');
     }
 
-    switch (tokenReader.peekPreviousTokenKind()) {
-      case TokenKind.Spacing:
-      case TokenKind.Newline:
-      case TokenKind.EndOfInput:
-        break;
-      default:
-        return this._createError(tokenReader,
-          'The opening backtick for a code span must be preceded by whitespace');
-    }
-
     tokenReader.readToken(); // read the backtick
 
     const openingDelimiterExcerpt: Excerpt = new Excerpt({
       content: tokenReader.extractAccumulatedSequence()
     });
-
-    let closingBacktickMarker: number;
 
     let codeExcerpt: Excerpt;
     let closingDelimiterExcerpt: Excerpt;
@@ -1751,11 +1739,14 @@ export class NodeParser {
       const peekedTokenKind: TokenKind = tokenReader.peekTokenKind();
       // Did we find the matching token?
       if (peekedTokenKind === TokenKind.Backtick) {
+        if (tokenReader.isAccumulatedSequenceEmpty()) {
+          return this._backtrackAndCreateErrorRange(tokenReader, marker, marker + 1,
+            'A code span must contain at least one character between the backticks');
+        }
+
         codeExcerpt = new Excerpt({
           content: tokenReader.extractAccumulatedSequence()
         });
-
-        closingBacktickMarker = tokenReader.createMarker();
 
         tokenReader.readToken();
         closingDelimiterExcerpt = new Excerpt({
@@ -1768,18 +1759,6 @@ export class NodeParser {
           'The code span is missing its closing backtick');
       }
       tokenReader.readToken();
-    }
-
-    // Make sure there's whitespace after
-    switch (tokenReader.peekTokenKind()) {
-      case TokenKind.Spacing:
-      case TokenKind.EndOfInput:
-      case TokenKind.Newline:
-        break;
-      default:
-        const failure: IFailure = this._createFailureForToken(tokenReader,
-          'The closing backtick for a code span must be followed by whitespace', closingBacktickMarker);
-        return this._backtrackAndCreateErrorForFailure(tokenReader, marker, 'Error parsing code span: ', failure);
     }
 
     return new DocCodeSpan({

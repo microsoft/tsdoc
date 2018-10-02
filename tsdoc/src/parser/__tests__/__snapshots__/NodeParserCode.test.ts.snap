@@ -81,6 +81,61 @@ Object {
 }
 `;
 
+exports[`00 Code span basic, positive 2`] = `
+Object {
+  "buffer": "/**[n] * M[c]&[c]M[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "M[c]&[c]M",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "M",
+              },
+              Object {
+                "kind": "CodeSpan",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "[c]",
+                  },
+                  Object {
+                    "kind": "Particle: code",
+                    "nodeExcerpt": "&",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "[c]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "M",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
 exports[`01 Code span basic, negative 1`] = `
 Object {
   "buffer": "/**[n] * [c]multi[n] * line[c][n] */",
@@ -91,7 +146,7 @@ Object {
   ],
   "logMessages": Array [
     "(2,4): The code span is missing its closing backtick",
-    "(3,8): The opening backtick for a code span must be preceded by whitespace",
+    "(3,8): The code span is missing its closing backtick",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -123,7 +178,7 @@ Object {
               Object {
                 "errorLocation": "[c]",
                 "errorLocationPrecedingToken": "line",
-                "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
+                "errorMessage": "The code span is missing its closing backtick",
                 "kind": "ErrorText",
                 "nodeExcerpt": "[c]",
               },
@@ -142,16 +197,13 @@ Object {
 
 exports[`01 Code span basic, negative 2`] = `
 Object {
-  "buffer": "/**[n] * one[c]two[n] * [c]three[c]four[n] */",
+  "buffer": "/**[n] * [c][c][n] */",
   "gaps": Array [],
   "lines": Array [
-    "one[c]two",
-    "[c]three[c]four",
+    "[c][c]",
   ],
   "logMessages": Array [
-    "(2,7): The opening backtick for a code span must be preceded by whitespace",
-    "(3,4): Error parsing code span: The closing backtick for a code span must be followed by whitespace",
-    "(3,10): The opening backtick for a code span must be preceded by whitespace",
+    "(2,4): A code span must contain at least one character between the backticks",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -163,45 +215,10 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "PlainText",
-                "nodeExcerpt": "one",
-              },
-              Object {
-                "errorLocation": "[c]",
-                "errorLocationPrecedingToken": "one",
-                "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
+                "errorLocation": "[c][c]",
+                "errorMessage": "A code span must contain at least one character between the backticks",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[c]",
-              },
-              Object {
-                "kind": "PlainText",
-                "nodeExcerpt": "two",
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "errorLocation": "[c]",
-                "errorLocationPrecedingToken": "three",
-                "errorMessage": "Error parsing code span: The closing backtick for a code span must be followed by whitespace",
-                "kind": "ErrorText",
-                "nodeExcerpt": "[c]",
-              },
-              Object {
-                "kind": "PlainText",
-                "nodeExcerpt": "three",
-              },
-              Object {
-                "errorLocation": "[c]",
-                "errorLocationPrecedingToken": "three",
-                "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
-                "kind": "ErrorText",
-                "nodeExcerpt": "[c]",
-              },
-              Object {
-                "kind": "PlainText",
-                "nodeExcerpt": "four",
+                "nodeExcerpt": "[c][c]",
               },
               Object {
                 "kind": "SoftBreak",
