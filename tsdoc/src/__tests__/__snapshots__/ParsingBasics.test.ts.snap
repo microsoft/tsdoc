@@ -66,7 +66,12 @@ Object {
       "nodeExcerpt": "@internal",
     },
   ],
-  "_12_logMessages": Array [],
+  "_12_logMessages": Array [
+    "(2,10): The TSDoc tag \\"@beta\\" is not supported by this tool",
+    "(3,4): The TSDoc tag \\"@unknownTag\\" is not defined in this configuration",
+    "(4,4): The TSDoc tag \\"@internal\\" is not supported by this tool",
+    "(4,14): The TSDoc tag \\"@internal\\" is not supported by this tool",
+  ],
 }
 `;
 
@@ -388,7 +393,12 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
-  "_12_logMessages": Array [],
+  "_12_logMessages": Array [
+    "(7,4): The TSDoc tag \\"@customBlock\\" is not supported by this tool",
+    "(8,41): The TSDoc tag \\"@undefinedBlockTag\\" is not defined in this configuration",
+    "(14,4): The TSDoc tag \\"@beta\\" is not supported by this tool",
+    "(14,10): The TSDoc tag \\"@customModifier\\" is not supported by this tool",
+  ],
 }
 `;
 
@@ -823,7 +833,12 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
-  "_12_logMessages": Array [],
+  "_12_logMessages": Array [
+    "(4,4): The TSDoc tag \\"@beta\\" is not supported by this tool",
+    "(4,10): The TSDoc tag \\"@customModifier\\" is not supported by this tool",
+    "(7,4): The TSDoc tag \\"@customBlock\\" is not supported by this tool",
+    "(8,41): The TSDoc tag \\"@undefinedBlockTag\\" is not defined in this configuration",
+  ],
 }
 `;
 
