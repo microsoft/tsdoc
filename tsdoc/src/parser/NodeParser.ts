@@ -173,12 +173,26 @@ export class NodeParser {
         );
       }
     }
+
+    if (docComment.inheritDocTag) {
+      if (docComment.remarksBlock) {
+        this._parserContext.log.addMessageForTokenSequence(
+          `A "${docComment.remarksBlock.blockTag.tagName}" block must not be used, because that`
+          + ` content is provided by the @inheritDoc tag`,
+          docComment.remarksBlock.blockTag.excerpt!.content, docComment.remarksBlock.blockTag);
+      }
+      if (PlainTextRenderer.hasAnyTextContent(docComment.summarySection)) {
+        this._parserContext.log.addMessageForTextRange(
+          'The summary section must not have any content, because that'
+          + ' content is provided by the @inheritDoc tag',
+          this._parserContext.commentRange);
+      }
+    }
   }
 
   private _validateTagDefinition(tagDefinition: TSDocTagDefinition | undefined,
     tagName: string, expectingInlineTag: boolean,
     tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): void {
-
 
     if (tagDefinition) {
       const isInlineTag: boolean = tagDefinition.syntaxKind === TSDocTagSyntaxKind.InlineTag;
