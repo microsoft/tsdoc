@@ -175,6 +175,45 @@ export class NodeParser {
     }
   }
 
+  private _validateTagDefinition(tagDefinition: TSDocTagDefinition | undefined,
+    tagName: string, expectingInlineTag: boolean,
+    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): void {
+
+
+    if (tagDefinition) {
+      const isInlineTag: boolean = tagDefinition.syntaxKind === TSDocTagSyntaxKind.InlineTag;
+
+      if (isInlineTag !== expectingInlineTag) {
+        // The tag is defined, but it is used incorrectly
+        if (expectingInlineTag) {
+          this._parserContext.log.addMessageForTokenSequence(
+            `The TSDoc tag "${tagName}" is an inline tag; it must be enclosed in "{ }" braces`,
+            tokenSequenceForErrorContext, nodeForErrorContext);
+        } else {
+          this._parserContext.log.addMessageForTokenSequence(
+            `The TSDoc tag "${tagName}" is not an inline tag; it must not be enclosed in "{ }" braces`,
+            tokenSequenceForErrorContext, nodeForErrorContext);
+        }
+      } else {
+        if (!this._parserContext.configuration.validation.ignoreUnsupportedTags) {
+          if (!this._parserContext.configuration.isTagSupported(tagDefinition)) {
+            // The tag is defined, but not supported
+            this._parserContext.log.addMessageForTokenSequence(
+              `The TSDoc tag "${tagName}" is not supported by this tool`,
+              tokenSequenceForErrorContext, nodeForErrorContext);
+          }
+        }
+      }
+    } else {
+      // The tag is not defined
+      if (!this._parserContext.configuration.validation.ignoreUndefinedTags) {
+        this._parserContext.log.addMessageForTokenSequence(
+          `The TSDoc tag "${tagName}" is not defined in this configuration`,
+          tokenSequenceForErrorContext, nodeForErrorContext);
+      }
+    }
+  }
+
   private _pushAccumulatedPlainText(tokenReader: TokenReader): void {
     if (!tokenReader.isAccumulatedSequenceEmpty()) {
       const plainTextSequence: TokenSequence = tokenReader.extractAccumulatedSequence();
@@ -202,23 +241,10 @@ export class NodeParser {
     // Do we have a definition for this tag?
     const tagDefinition: TSDocTagDefinition | undefined
       = configuration.tryGetTagDefinitionWithUpperCase(docBlockTag.tagNameWithUpperCase);
-    if (tagDefinition) {
-      if (tagDefinition.syntaxKind === TSDocTagSyntaxKind.InlineTag) {
-        // The tag is defined, but not as a block tag
-        this._parserContext.log.addMessageForTokenSequence(
-          `The TSDoc tag "${docBlockTag.tagName}" is defined as an inline tag; it should be enclosed in "{ }" braces`,
-          docBlockTag.excerpt!.content, docBlockTag);
-      } else {
-        if (!this._parserContext.configuration.validation.ignoreUnsupportedTags) {
-          if (!this._parserContext.configuration.isTagSupported(tagDefinition)) {
-            // The tag is defined, but not supported
-            this._parserContext.log.addMessageForTokenSequence(
-              `The TSDoc tag "${docBlockTag.tagName}" is not supported by this tool`,
-              docBlockTag.excerpt!.content, docBlockTag);
-          }
-        }
-      }
+    this._validateTagDefinition(tagDefinition, docBlockTag.tagName, /* expectingInlineTag */ false,
+      docBlockTag.excerpt!.content, docBlockTag);
 
+    if (tagDefinition) {
       switch (tagDefinition.syntaxKind) {
         case TSDocTagSyntaxKind.BlockTag:
           if (docBlockTag.tagNameWithUpperCase === StandardTags.param.tagNameWithUpperCase) {
@@ -251,13 +277,6 @@ export class NodeParser {
           // and do NOT call currentSection.appendNode(parsedNode)
           modifierTagSet.addTag(docBlockTag);
           return;
-      }
-    } else {
-      // The tag is not defined
-      if (!this._parserContext.configuration.validation.ignoreUndefinedTags) {
-        this._parserContext.log.addMessageForTokenSequence(
-          `The TSDoc tag "${docBlockTag.tagName}" is not defined in this configuration`,
-          docBlockTag.excerpt!.content, docBlockTag);
       }
     }
 
@@ -620,30 +639,8 @@ export class NodeParser {
     const tagDefinition: TSDocTagDefinition | undefined
       = this._parserContext.configuration.tryGetTagDefinitionWithUpperCase(tagNameWithUpperCase);
 
-    if (tagDefinition) {
-      if (tagDefinition.syntaxKind !== TSDocTagSyntaxKind.InlineTag) {
-        // The tag is defined, but not as an inline tag
-        this._parserContext.log.addMessageForTokenSequence(
-          `The TSDoc tag "${tagName}" is not defined as an inline tag; it should not be enclosed in "{ }" braces`,
-          tagNameExcerptParameters.content, docNode);
-      } else {
-        if (!this._parserContext.configuration.validation.ignoreUnsupportedTags) {
-          if (!this._parserContext.configuration.isTagSupported(tagDefinition)) {
-            // The tag is defined, but not supported
-            this._parserContext.log.addMessageForTokenSequence(
-              `The TSDoc tag "${tagName}" is not supported by this tool`,
-              tagNameExcerptParameters.content, docNode);
-          }
-        }
-      }
-    } else {
-      // The tag is not defined
-      if (!this._parserContext.configuration.validation.ignoreUndefinedTags) {
-        this._parserContext.log.addMessageForTokenSequence(
-          `The TSDoc tag "${tagName}" is not defined in this configuration`,
-          tagNameExcerptParameters.content, docNode);
-      }
-    }
+    this._validateTagDefinition(tagDefinition, tagName, /* expectingInlineTag */ true,
+      tagNameExcerptParameters.content, docNode);
 
     return docNode;
   }
