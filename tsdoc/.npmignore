@@ -9,8 +9,8 @@
 
 # Ignore certain files in the above folder
 /dist/*.stats.*
-/lib/*/test/*
-/lib/*/__tests__/*
+/lib/**/test/*
+/lib/**/__tests__/*
 
 # NOTE: These don't need to be specified, because NPM includes them automatically.
 #

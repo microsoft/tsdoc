@@ -7,6 +7,11 @@ test('00 Code span basic, positive', () => {
     ' * line ` 2` sdf',
     ' */'
   ].join('\n'));
+  TestHelpers.parseAndMatchNodeParserSnapshot([
+    '/**',
+    ' * M`&`M',
+    ' */'
+  ].join('\n'));
 });
 
 test('01 Code span basic, negative', () => {
@@ -18,8 +23,7 @@ test('01 Code span basic, negative', () => {
   ].join('\n'));
   TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
-    ' * one`two',
-    ' * `three`four',
+    ' * ``',
     ' */'
   ].join('\n'));
 });

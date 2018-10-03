@@ -58,7 +58,7 @@ export class StandardTags {
   });
 
   /**
-   * (Core)
+   * (Extended)
    *
    * This block tag is used to document the default value for a field or property,
    * if a value is not assigned explicitly.

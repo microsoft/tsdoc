@@ -397,3 +397,81 @@ Object {
   },
 }
 `;
+
+exports[`01 InheritDoc tag: negative examples 4`] = `
+Object {
+  "buffer": "/**[n] * summary text[n] * @remarks[n] * {@inheritDoc}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "summary text",
+    "@remarks",
+    "{@inheritDoc}",
+  ],
+  "logMessages": Array [
+    "(3,4): A \\"@remarks\\" block must not be used, because that content is provided by the @inheritDoc tag",
+    "(1,1): The summary section must not have any content, because that content is provided by the @inheritDoc tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "summary text",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+      Object {
+        "kind": "Block",
+        "nodes": Array [
+          Object {
+            "kind": "BlockTag",
+            "nodeExcerpt": "@remarks",
+          },
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+      Object {
+        "kind": "InheritDocTag",
+        "nodes": Array [
+          Object {
+            "kind": "Particle: openingDelimiter",
+            "nodeExcerpt": "{",
+          },
+          Object {
+            "kind": "Particle: tagName",
+            "nodeExcerpt": "@inheritDoc",
+          },
+          Object {
+            "kind": "Particle: closingDelimiter",
+            "nodeExcerpt": "}",
+          },
+        ],
+      },
+    ],
+  },
+}
+`;

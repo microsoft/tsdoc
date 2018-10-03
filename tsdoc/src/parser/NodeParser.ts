@@ -42,6 +42,7 @@ import {
   TSDocTagSyntaxKind
 } from './TSDocTagDefinition';
 import { StandardTags } from '../details/StandardTags';
+import { PlainTextRenderer } from '../renderers/PlainTextRenderer';
 
 interface IFailure {
   // (We use "failureMessage" instead of "errorMessage" here so that DocErrorText doesn't
@@ -157,6 +158,74 @@ export class NodeParser {
       }
     }
     this._pushAccumulatedPlainText(tokenReader);
+    this._performValidationChecks();
+  }
+
+  private _performValidationChecks(): void {
+    const docComment: DocComment = this._parserContext.docComment;
+    if (docComment.deprecatedBlock) {
+      if (!PlainTextRenderer.hasAnyTextContent(docComment.deprecatedBlock)) {
+        this._parserContext.log.addMessageForTokenSequence(
+          `The ${docComment.deprecatedBlock.blockTag.tagName} block must include a deprecation message,`
+            + ` e.g. describing the recommended alternative`,
+          docComment.deprecatedBlock.blockTag.excerpt!.content,
+          docComment.deprecatedBlock
+        );
+      }
+    }
+
+    if (docComment.inheritDocTag) {
+      if (docComment.remarksBlock) {
+        this._parserContext.log.addMessageForTokenSequence(
+          `A "${docComment.remarksBlock.blockTag.tagName}" block must not be used, because that`
+          + ` content is provided by the @inheritDoc tag`,
+          docComment.remarksBlock.blockTag.excerpt!.content, docComment.remarksBlock.blockTag);
+      }
+      if (PlainTextRenderer.hasAnyTextContent(docComment.summarySection)) {
+        this._parserContext.log.addMessageForTextRange(
+          'The summary section must not have any content, because that'
+          + ' content is provided by the @inheritDoc tag',
+          this._parserContext.commentRange);
+      }
+    }
+  }
+
+  private _validateTagDefinition(tagDefinition: TSDocTagDefinition | undefined,
+    tagName: string, expectingInlineTag: boolean,
+    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): void {
+
+    if (tagDefinition) {
+      const isInlineTag: boolean = tagDefinition.syntaxKind === TSDocTagSyntaxKind.InlineTag;
+
+      if (isInlineTag !== expectingInlineTag) {
+        // The tag is defined, but it is used incorrectly
+        if (expectingInlineTag) {
+          this._parserContext.log.addMessageForTokenSequence(
+            `The TSDoc tag "${tagName}" is an inline tag; it must be enclosed in "{ }" braces`,
+            tokenSequenceForErrorContext, nodeForErrorContext);
+        } else {
+          this._parserContext.log.addMessageForTokenSequence(
+            `The TSDoc tag "${tagName}" is not an inline tag; it must not be enclosed in "{ }" braces`,
+            tokenSequenceForErrorContext, nodeForErrorContext);
+        }
+      } else {
+        if (this._parserContext.configuration.validation.reportUnsupportedTags) {
+          if (!this._parserContext.configuration.isTagSupported(tagDefinition)) {
+            // The tag is defined, but not supported
+            this._parserContext.log.addMessageForTokenSequence(
+              `The TSDoc tag "${tagName}" is not supported by this tool`,
+              tokenSequenceForErrorContext, nodeForErrorContext);
+          }
+        }
+      }
+    } else {
+      // The tag is not defined
+      if (!this._parserContext.configuration.validation.ignoreUndefinedTags) {
+        this._parserContext.log.addMessageForTokenSequence(
+          `The TSDoc tag "${tagName}" is not defined in this configuration`,
+          tokenSequenceForErrorContext, nodeForErrorContext);
+      }
+    }
   }
 
   private _pushAccumulatedPlainText(tokenReader: TokenReader): void {
@@ -186,6 +255,9 @@ export class NodeParser {
     // Do we have a definition for this tag?
     const tagDefinition: TSDocTagDefinition | undefined
       = configuration.tryGetTagDefinitionWithUpperCase(docBlockTag.tagNameWithUpperCase);
+    this._validateTagDefinition(tagDefinition, docBlockTag.tagName, /* expectingInlineTag */ false,
+      docBlockTag.excerpt!.content, docBlockTag);
+
     if (tagDefinition) {
       switch (tagDefinition.syntaxKind) {
         case TSDocTagSyntaxKind.BlockTag:
@@ -559,22 +631,36 @@ export class NodeParser {
       closingDelimiterExcerpt: new Excerpt(closingDelimiterExcerptParameters)
     };
 
+    const tagNameWithUpperCase: string = tagName.toUpperCase();
+
     // Create a new TokenReader that will reparse the tokens corresponding to the tagContent.
     const embeddedTokenReader: TokenReader = new TokenReader(this._parserContext,
       tagContentExcerpt ? tagContentExcerpt.content : TokenSequence.createEmpty(this._parserContext));
 
-    switch (tagName.toUpperCase()) {
+    let docNode: DocNode;
+    switch (tagNameWithUpperCase) {
       case StandardTags.inheritDoc.tagNameWithUpperCase:
-        return this._parseInheritDocTag(docInlineTagParameters, embeddedTokenReader);
+        docNode = this._parseInheritDocTag(docInlineTagParameters, embeddedTokenReader);
+        break;
       case StandardTags.link.tagNameWithUpperCase:
-        return this._parseLinkTag(docInlineTagParameters, embeddedTokenReader);
+        docNode = this._parseLinkTag(docInlineTagParameters, embeddedTokenReader);
+        break;
       default:
-        return new DocInlineTag(docInlineTagParameters);
+        docNode = new DocInlineTag(docInlineTagParameters);
     }
+
+    // Validate the tag
+    const tagDefinition: TSDocTagDefinition | undefined
+      = this._parserContext.configuration.tryGetTagDefinitionWithUpperCase(tagNameWithUpperCase);
+
+    this._validateTagDefinition(tagDefinition, tagName, /* expectingInlineTag */ true,
+      tagNameExcerptParameters.content, docNode);
+
+    return docNode;
   }
 
   private _parseInheritDocTag(docInlineTagParameters: IDocInlineTagParameters,
-    embeddedTokenReader: TokenReader): DocNode {
+    embeddedTokenReader: TokenReader): DocInlineTag {
 
     const docInheritDocTag: DocInheritDocTag = new DocInheritDocTag(docInlineTagParameters);
 
@@ -1725,23 +1811,11 @@ export class NodeParser {
         'Expecting a code span starting with a backtick character "`"');
     }
 
-    switch (tokenReader.peekPreviousTokenKind()) {
-      case TokenKind.Spacing:
-      case TokenKind.Newline:
-      case TokenKind.EndOfInput:
-        break;
-      default:
-        return this._createError(tokenReader,
-          'The opening backtick for a code span must be preceded by whitespace');
-    }
-
     tokenReader.readToken(); // read the backtick
 
     const openingDelimiterExcerpt: Excerpt = new Excerpt({
       content: tokenReader.extractAccumulatedSequence()
     });
-
-    let closingBacktickMarker: number;
 
     let codeExcerpt: Excerpt;
     let closingDelimiterExcerpt: Excerpt;
@@ -1751,11 +1825,14 @@ export class NodeParser {
       const peekedTokenKind: TokenKind = tokenReader.peekTokenKind();
       // Did we find the matching token?
       if (peekedTokenKind === TokenKind.Backtick) {
+        if (tokenReader.isAccumulatedSequenceEmpty()) {
+          return this._backtrackAndCreateErrorRange(tokenReader, marker, marker + 1,
+            'A code span must contain at least one character between the backticks');
+        }
+
         codeExcerpt = new Excerpt({
           content: tokenReader.extractAccumulatedSequence()
         });
-
-        closingBacktickMarker = tokenReader.createMarker();
 
         tokenReader.readToken();
         closingDelimiterExcerpt = new Excerpt({
@@ -1768,18 +1845,6 @@ export class NodeParser {
           'The code span is missing its closing backtick');
       }
       tokenReader.readToken();
-    }
-
-    // Make sure there's whitespace after
-    switch (tokenReader.peekTokenKind()) {
-      case TokenKind.Spacing:
-      case TokenKind.EndOfInput:
-      case TokenKind.Newline:
-        break;
-      default:
-        const failure: IFailure = this._createFailureForToken(tokenReader,
-          'The closing backtick for a code span must be followed by whitespace', closingBacktickMarker);
-        return this._backtrackAndCreateErrorForFailure(tokenReader, marker, 'Error parsing code span: ', failure);
     }
 
     return new DocCodeSpan({

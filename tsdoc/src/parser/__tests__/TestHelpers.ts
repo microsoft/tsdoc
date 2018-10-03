@@ -88,7 +88,12 @@ export class TestHelpers {
    * Main harness for tests under `./parser/*`.
    */
   public static parseAndMatchNodeParserSnapshot(buffer: string): void {
-    const tsdocParser: TSDocParser = new TSDocParser();
+    const configuration: TSDocParserConfiguration = new TSDocParserConfiguration();
+
+    // For the parser tests, we use lots of custom tags without bothering to define them
+    configuration.validation.ignoreUndefinedTags = true;
+
+    const tsdocParser: TSDocParser = new TSDocParser(configuration);
     const parserContext: ParserContext = tsdocParser.parseString(buffer);
 
     expect({

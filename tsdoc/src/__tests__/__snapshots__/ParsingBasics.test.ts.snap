@@ -66,7 +66,9 @@ Object {
       "nodeExcerpt": "@internal",
     },
   ],
-  "_12_logMessages": Array [],
+  "_12_logMessages": Array [
+    "(3,4): The TSDoc tag \\"@unknownTag\\" is not defined in this configuration",
+  ],
 }
 `;
 
@@ -388,7 +390,9 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
-  "_12_logMessages": Array [],
+  "_12_logMessages": Array [
+    "(8,41): The TSDoc tag \\"@undefinedBlockTag\\" is not defined in this configuration",
+  ],
 }
 `;
 
@@ -823,7 +827,9 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
-  "_12_logMessages": Array [],
+  "_12_logMessages": Array [
+    "(8,41): The TSDoc tag \\"@undefinedBlockTag\\" is not defined in this configuration",
+  ],
 }
 `;
 
