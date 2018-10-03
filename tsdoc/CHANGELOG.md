@@ -5,7 +5,7 @@
 - The parser optionally reports usage of undefined tags
 - The parser optionally reports usage of unsupported tags
 - The parser reports usage of inline/block syntax that is inconsistent with the tag definition
-- Code spans are no allowed to be adjacent to other text, but must contain at least one character
+- Code spans are now allowed to be adjacent to other text, but must contain at least one character
 - An `@deprecated` block must contain a deprecation message
 - If `@inheritDoc` is used, then the summary section must be empty, and there must not be an `@remarks` block
 
