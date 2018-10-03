@@ -179,9 +179,7 @@ Object {
       "nodeExcerpt": "@public",
     },
   ],
-  "_12_logMessages": Array [
-    "(4,6): The TSDoc tag \\"@public\\" is not supported by this tool",
-  ],
+  "_12_logMessages": Array [],
 }
 `;
 

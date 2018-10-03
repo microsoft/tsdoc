@@ -209,7 +209,7 @@ export class NodeParser {
             tokenSequenceForErrorContext, nodeForErrorContext);
         }
       } else {
-        if (!this._parserContext.configuration.validation.ignoreUnsupportedTags) {
+        if (this._parserContext.configuration.validation.reportUnsupportedTags) {
           if (!this._parserContext.configuration.isTagSupported(tagDefinition)) {
             // The tag is defined, but not supported
             this._parserContext.log.addMessageForTokenSequence(

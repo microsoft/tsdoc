@@ -92,7 +92,6 @@ export class TestHelpers {
 
     // For the parser tests, we use lots of custom tags without bothering to define them
     configuration.validation.ignoreUndefinedTags = true;
-    configuration.validation.ignoreUnsupportedTags = true;
 
     const tsdocParser: TSDocParser = new TSDocParser(configuration);
     const parserContext: ParserContext = tsdocParser.parseString(buffer);

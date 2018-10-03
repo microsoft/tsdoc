@@ -7,7 +7,7 @@
    * This incomplete HTML tag should be reported as an error: <tag
    *
    * @privateRemarks
-   * This content should @not show up on the web site.
+   * This content should not show up on the web site.
    *
    * @param x - The first input number
    * @param y - The second input number
