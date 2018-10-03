@@ -113,9 +113,22 @@ export class TSDocParserConfiguration {
     this._tagDefinitionsByName.set(tagDefinition.tagNameWithUpperCase, tagDefinition);
   }
 
-  public addTagDefinitions(tagDefinitions: ReadonlyArray<TSDocTagDefinition>): void {
+  /**
+   * Calls {@link TSDocParserConfiguration.addTagDefinition} for a list of definitions,
+   * and optionally marks them as supported.
+   * @param tagDefinitions - the definitions to be added
+   * @param supported - if specified, calls the {@link TSDocParserConfiguration.setSupportForTag}
+   *    method to mark the definitions as supported or unsupported
+   */
+  public addTagDefinitions(tagDefinitions: ReadonlyArray<TSDocTagDefinition>,
+    supported?: boolean | undefined): void {
+
     for (const tagDefinition of tagDefinitions) {
       this.addTagDefinition(tagDefinition);
+
+      if (supported !== undefined) {
+        this.setSupportForTag(tagDefinition, supported);
+      }
     }
   }
 
