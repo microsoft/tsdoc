@@ -264,7 +264,7 @@ Object {
             ],
           },
           Object {
-            "kind": "CodeFence",
+            "kind": "FencedCode",
             "nodes": Array [
               Object {
                 "kind": "Particle: openingDelimiter",
@@ -324,7 +324,7 @@ Object {
             ],
           },
           Object {
-            "kind": "CodeFence",
+            "kind": "FencedCode",
             "nodes": Array [
               Object {
                 "kind": "Particle: openingDelimiter",
@@ -682,7 +682,7 @@ Object {
             ],
           },
           Object {
-            "kind": "CodeFence",
+            "kind": "FencedCode",
             "nodes": Array [
               Object {
                 "kind": "Particle: openingDelimiter",
@@ -744,7 +744,7 @@ Object {
             ],
           },
           Object {
-            "kind": "CodeFence",
+            "kind": "FencedCode",
             "nodes": Array [
               Object {
                 "kind": "Particle: openingDelimiter",

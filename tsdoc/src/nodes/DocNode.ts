@@ -4,7 +4,7 @@
 export const enum DocNodeKind {
   Block = 'Block',
   BlockTag = 'BlockTag',
-  CodeFence = 'CodeFence',
+  FencedCode = 'FencedCode',
   CodeSpan = 'CodeSpan',
   Comment = 'Comment',
   DeclarationReference = 'DeclarationReference',

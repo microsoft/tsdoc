@@ -19,7 +19,7 @@ import {
   DocNodeKind,
   DocSection,
   DocParamBlock,
-  DocCodeFence,
+  DocFencedCode,
   IDocInlineTagParameters,
   DocLinkTag,
   IDocLinkTagParameters,
@@ -146,7 +146,7 @@ export class NodeParser {
 
           if (tokenReader.peekTokenAfterKind() === TokenKind.Backtick
             && tokenReader.peekTokenAfterAfterKind() === TokenKind.Backtick) {
-            this._pushSectionNode(this._parseCodeFence(tokenReader));
+            this._pushSectionNode(this._parseFencedCode(tokenReader));
           } else {
             this._pushParagraphNode(this._parseCodeSpan(tokenReader));
           }
@@ -1613,7 +1613,7 @@ export class NodeParser {
     return htmlName;
   }
 
-  private _parseCodeFence(tokenReader: TokenReader): DocNode {
+  private _parseFencedCode(tokenReader: TokenReader): DocNode {
     tokenReader.assertAccumulatedSequenceIsEmpty();
 
     const startMarker: number = tokenReader.createMarker();
@@ -1640,7 +1640,7 @@ export class NodeParser {
     openingDelimiter += tokenReader.readToken();
 
     if (openingDelimiter !== '```') {
-      // This would be a parser bug -- the caller of _parseCodeFence() should have verified this while
+      // This would be a parser bug -- the caller of _parseFencedCode() should have verified this while
       // looking ahead to distinguish code spans/fences
       throw new Error('Expecting three backticks');
     }
@@ -1788,7 +1788,7 @@ export class NodeParser {
       spacingAfterContent: tokenReader.tryExtractAccumulatedSequence()
     });
 
-    return new DocCodeFence({
+    return new DocFencedCode({
       openingDelimiterExcerpt: openingDelimiterExcerpt,
 
       languageExcerpt: languageExcerpt,
