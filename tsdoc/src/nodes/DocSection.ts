@@ -31,7 +31,7 @@ export class DocSection extends DocNodeContainer {
    */
   public isAllowedChildNode(docNode: DocNode): boolean {
     switch (docNode.kind) {
-      case DocNodeKind.CodeFence:
+      case DocNodeKind.FencedCode:
       case DocNodeKind.ErrorText:
       case DocNodeKind.Paragraph:
         return true;

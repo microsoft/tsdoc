@@ -1,5 +1,8 @@
 # Change Log - @microsoft/tsdoc
 
+## (next release)
+- Rename `DocCodeFence` to `DocFencedCode`
+
 ## 0.8.0
 - Introduce a distinction between "defined" tags (i.e. recognized) versus "supported" tags (i.e. implemented by the tool)
 - The parser optionally reports usage of undefined tags

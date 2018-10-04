@@ -17,7 +17,7 @@ export class PlainTextRenderer {
 
     for (const node of nodeOrNodes) {
       switch (node.kind) {
-        case DocNodeKind.CodeFence:
+        case DocNodeKind.FencedCode:
         case DocNodeKind.CodeSpan:
         case DocNodeKind.EscapedText:
         case DocNodeKind.LinkTag:

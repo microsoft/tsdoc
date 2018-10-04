@@ -3,9 +3,9 @@ import { Excerpt } from '../parser/Excerpt';
 import { DocParticle } from './DocParticle';
 
 /**
- * Constructor parameters for {@link DocCodeFence}.
+ * Constructor parameters for {@link DocFencedCode}.
  */
-export interface IDocCodeFenceParameters extends IDocNodeParameters {
+export interface IDocFencedCodeParameters extends IDocNodeParameters {
   openingDelimiterExcerpt?: Excerpt;
 
   languageExcerpt?: Excerpt;
@@ -22,9 +22,9 @@ export interface IDocCodeFenceParameters extends IDocNodeParameters {
  * starts and ends with a line comprised of three backticks.  The opening delimiter
  * can also specify a language for a syntax highlighter.
  */
-export class DocCodeFence extends DocNode {
+export class DocFencedCode extends DocNode {
   /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.CodeFence;
+  public readonly kind: DocNodeKind = DocNodeKind.FencedCode;
 
   // The opening ``` delimiter and padding
   private _openingDelimiterParticle: DocParticle | undefined; // never undefined after updateParameters()
@@ -42,7 +42,7 @@ export class DocCodeFence extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocCodeFenceParameters) {
+  public constructor(parameters: IDocFencedCodeParameters) {
     super(parameters);
   }
 
@@ -73,7 +73,7 @@ export class DocCodeFence extends DocNode {
   }
 
   /** @override */
-  public updateParameters(parameters: IDocCodeFenceParameters): void {
+  public updateParameters(parameters: IDocFencedCodeParameters): void {
     super.updateParameters(parameters);
 
     this._openingDelimiterParticle = new DocParticle({
