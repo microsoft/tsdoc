@@ -1,6 +1,7 @@
 # Change Log - @microsoft/tsdoc
 
-## (next release)
+## 0.8.1
+- Improve error reporting for declaration references that are probably missing a `"#"` delimiter
 - Rename `DocCodeFence` to `DocFencedCode`
 
 ## 0.8.0

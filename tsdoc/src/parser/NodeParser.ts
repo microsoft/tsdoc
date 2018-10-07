@@ -882,6 +882,12 @@ export class NodeParser {
     const marker: number = tokenReader.createMarker();
     let hasHash: boolean = false;
 
+    // A common mistake is to forget the "#" for package name or import path.  The telltale sign
+    // of this is mistake is that we see path-only characters such as "@" or "/" in the beginning
+    // where this would be a syntax error for a member reference.
+    let lookingForImportCharacters: boolean = true;
+    let sawImportCharacters: boolean = false;
+
     let done: boolean = false;
     while (!done) {
       switch (tokenReader.peekTokenKind()) {
@@ -903,9 +909,37 @@ export class NodeParser {
           hasHash = true;
           done = true;
           break;
+        case TokenKind.Slash:
+        case TokenKind.AtSign:
+          if (lookingForImportCharacters) {
+            sawImportCharacters = true;
+          }
+          tokenReader.readToken();
+          break;
+        case TokenKind.AsciiWord:
+        case TokenKind.Period:
+        case TokenKind.Hyphen:
+          // It's a character that looks like part of a package name or import path,
+          // so don't set lookingForImportCharacters = false
+          tokenReader.readToken();
+          break;
         default:
+          // Once we reach something other than AsciiWord and Period, then the meaning of
+          // slashes and at-signs is no longer obvious.
+          lookingForImportCharacters = false;
+
           tokenReader.readToken();
       }
+    }
+
+    if (!hasHash && sawImportCharacters) {
+      // We saw characters that will be a syntax error if interpreted as a member reference,
+      // but would make sense as a package name or import path, but we did not find a "#"
+      this._parserContext.log.addMessageForTokenSequence(
+        'The declaration reference appears to contain a package name or import path,'
+          + ' but it is missing the "#" delimiter',
+        tokenReader.extractAccumulatedSequence(), nodeForErrorContext);
+      return undefined;
     }
 
     tokenReader.backtrackToMarker(marker);

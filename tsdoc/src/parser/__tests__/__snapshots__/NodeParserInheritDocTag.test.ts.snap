@@ -475,3 +475,57 @@ Object {
   },
 }
 `;
+
+exports[`01 InheritDoc tag: negative examples 5`] = `
+Object {
+  "buffer": "/**[n] * {@inheritdoc @scope/library:IDisposable.isDisposed}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@inheritdoc @scope/library:IDisposable.isDisposed}",
+  ],
+  "logMessages": Array [
+    "(2,17): The declaration reference appears to contain a package name or import path, but it is missing the \\"#\\" delimiter",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+      Object {
+        "kind": "InheritDocTag",
+        "nodes": Array [
+          Object {
+            "kind": "Particle: openingDelimiter",
+            "nodeExcerpt": "{",
+          },
+          Object {
+            "kind": "Particle: tagName",
+            "nodeExcerpt": "@inheritdoc",
+            "nodeSpacing": " ",
+          },
+          Object {
+            "kind": "Particle: tagContent",
+            "nodeExcerpt": "@scope/library:IDisposable.isDisposed",
+          },
+          Object {
+            "kind": "Particle: closingDelimiter",
+            "nodeExcerpt": "}",
+          },
+        ],
+      },
+    ],
+  },
+}
+`;

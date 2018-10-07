@@ -1238,7 +1238,7 @@ Object {
   ],
   "logMessages": Array [
     "(2,11): An import path must not start with \\"/\\" unless prefixed by a package name",
-    "(3,5): Expecting a declaration reference",
+    "(3,11): The declaration reference appears to contain a package name or import path, but it is missing the \\"#\\" delimiter",
   ],
   "nodes": Object {
     "kind": "Comment",

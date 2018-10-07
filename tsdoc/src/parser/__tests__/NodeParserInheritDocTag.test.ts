@@ -42,4 +42,11 @@ test('01 InheritDoc tag: negative examples', () => {
     ' * {@inheritDoc}',
     ' */'
   ].join('\n'));
+
+  // Old API Extractor syntax
+  TestHelpers.parseAndMatchNodeParserSnapshot([
+    '/**',
+    ' * {@inheritdoc @scope/library:IDisposable.isDisposed}',
+    ' */'
+  ].join('\n'));
 });
