@@ -140,6 +140,7 @@ function _generateBaseWebpackConfiguration(isProduction) {
       }),
       new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.DefinePlugin({
+        COMMIT_ID: `'${process.env['BUILD_SOURCEVERSION'] || 'COMMIT_SHA'}'`,
         DEBUG: !isProduction,
         'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'dev'),
       }),
