@@ -1,7 +1,9 @@
 {
-  "name": "playground",
+  "name": "tsdoc-playground",
   "version": "0.1.0",
+  "description": "An interactive web application for experimenting with TSDoc syntax",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "build": "node build.js",
     "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.dev.config.js"
