@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDomServer from 'react-dom/server';
 import * as tsdoc from '@microsoft/tsdoc';
 
 import { TabPane } from './TabPane';
@@ -66,6 +67,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
             buttonRowStyle={ { height: '40px' } }
             tabs={ [
               { title: 'HTML', render: this._renderHtml.bind(this) },
+              { title: 'DOM', render: this._renderDom.bind(this) },
               { title: 'Lines', render: this._renderLines.bind(this) },
               { title: 'AST', render: this._renderAst.bind(this) }
             ] }
@@ -103,6 +105,11 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     } else {
       return <span />;
     }
+  }
+
+  private _renderDom(): React.ReactNode {
+    const code: string = ReactDomServer.renderToStaticMarkup(<div />) || 'error';
+    return <code>{code}</code>;
   }
 
   private _renderLines(): React.ReactNode {
