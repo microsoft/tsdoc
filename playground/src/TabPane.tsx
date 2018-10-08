@@ -81,11 +81,11 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
     };
 
     return (
-      <FlexColDiv style={ this.props.style }>
-        <FlexRowDiv style={ this.props.buttonRowStyle }>
+      <FlexColDiv className='playground-tab-pane' style={ this.props.style }>
+        <FlexRowDiv className='playground-tab-pane-buttons' style={ this.props.buttonRowStyle }>
           { buttons }
         </FlexRowDiv>
-        <div style={ contentDivStyle }>
+        <div className='playground-tab-pane-content' style={ contentDivStyle }>
           { selectedTabDefinition !== undefined ? selectedTabDefinition.render() : '' }
         </div>
       </FlexColDiv>

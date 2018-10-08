@@ -45,16 +45,17 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     };
 
     return (
-      <FlexColDiv>
-        <FlexRowDiv style={ textAreasRowStyle }>
+      <FlexColDiv className='playground-frame'>
+        <FlexRowDiv className='playground-main-row' style={ textAreasRowStyle }>
           { this._renderInputBox() }
 
           <TabPane
             style={ { flex: 1, marginLeft: '4px' } }
             buttonRowStyle={ { height: '40px' } }
             tabs={ [
-              { title: 'AST', render: this._renderAst.bind(this) },
-              { title: 'HTML', render: this._renderHtml.bind(this) }
+              { title: 'HTML', render: this._renderHtml.bind(this) },
+              { title: 'Lines', render: this._renderLines.bind(this) },
+              { title: 'AST', render: this._renderAst.bind(this) }
             ] }
           />
         </FlexRowDiv>
@@ -66,11 +67,11 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
   private _renderInputBox(): React.ReactNode {
     return (
-      <FlexColDiv style={ { flex: 1 } }>
+      <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
         <div style={ { height: '40px' } } />
         <textarea
-          id='input-textarea'
-          style={ { width: '100%', height: '100%', boxSizing: 'border-box' } }
+          className='playground-input-textarea'
+          style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
           value={ this.state.inputText }
           onChange={ this._inputTextArea_onChange.bind(this) }
           />
@@ -78,41 +79,52 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     );
   }
 
-  private _renderAst(): React.ReactNode {
+  private _renderHtml(): React.ReactNode {
+    return (
+      <span> <b>HTML</b> goes here </span>
+    );
+  }
+
+  private _renderLines(): React.ReactNode {
     return (
       <textarea
-        id='output-textarea'
-        style={ { width: '100%', height: '100%', boxSizing: 'border-box' } }
+        className='playground-lines-textarea'
+        style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
         readOnly={ true }
         value={ this.state.outputText }
         />
     );
   }
 
-  private _renderHtml(): React.ReactNode {
+  private _renderAst(): React.ReactNode {
     return (
-      <span> <b>HTML</b> goes here </span>
+      <textarea
+        className='playground-ast-textarea'
+        style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
+        readOnly={ true }
+        value={ this.state.outputText }
+        />
     );
-
   }
 
   private _renderErrorList(): React.ReactNode {
-    const errorsTextAreaStyle: React.CSSProperties = {
-      width: '1200px',
-      height: '200px'
+    const errorsPaneStyle: React.CSSProperties = {
+      width: '100%',
+      height: '200px',
+      marginTop: '12px'
     };
 
     return (
-      <div >
-      Errors:
-      <br />
-      <textarea
-        id='errors-textarea'
-        readOnly={ true }
-        value={ this.state.errorsText }
-        style={ errorsTextAreaStyle }
-        />
-    </div>
+      <FlexColDiv className='playground-errors-pane' style={ errorsPaneStyle }>
+        Errors:
+        <br />
+        <textarea
+          className='playground-errors-textarea'
+          readOnly={ true }
+          value={ this.state.errorsText }
+          style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
+          />
+      </FlexColDiv>
     );
   }
 
