@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
 
 export interface IDocHtmlViewProps {
+  style?: React.CSSProperties;
   docComment: tsdoc.DocComment;
 }
 
@@ -40,7 +41,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       this._renderContainer(outputElements, docComment.returnsBlock);
     }
 
-    return <div>{outputElements}</div>;
+    return <div style={ this.props.style }>{outputElements}</div>;
   }
 
   private _renderContainer(outputElements: React.ReactNode[], section: tsdoc.DocNodeContainer): void {

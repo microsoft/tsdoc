@@ -14,6 +14,15 @@ export interface IPlaygroundViewState {
 }
 
 export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlaygroundViewState>  {
+  private readonly _textAreaStyle: React.CSSProperties = {
+    width: '100%',
+    height: '100%',
+    boxSizing: 'border-box',
+    resize: 'none',
+    paddingLeft: '8px',
+    paddingRight: '8px'
+  };
+
   private _reparseTimerHandle: number | undefined = undefined;
   private _reparseNeeded: boolean = true;
 
@@ -53,7 +62,6 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           <TabPane
             style={ { flex: 1, marginLeft: '4px' } }
             buttonRowStyle={ { height: '40px' } }
-            contentDivStyle={ { overflow: 'scroll' } }
             tabs={ [
               { title: 'HTML', render: this._renderHtml.bind(this) },
               { title: 'Lines', render: this._renderLines.bind(this) },
@@ -73,7 +81,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         <div style={ { height: '40px' } } />
         <textarea
           className='playground-input-textarea'
-          style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
+          style={ this._textAreaStyle }
           value={ this.state.inputText }
           onChange={ this._inputTextArea_onChange.bind(this) }
           />
@@ -85,7 +93,9 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
     if (parserContext && parserContext.docComment) {
       return (
-        <DocHtmlView docComment={ parserContext.docComment } />
+        <div style={ { overflow: 'auto', paddingLeft: '8px', paddingRight: '8px' } }>
+          <DocHtmlView docComment={ parserContext.docComment } />
+        </div>
       );
     } else {
       return <span />;
@@ -102,7 +112,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     return (
       <textarea
         className='playground-lines-textarea'
-        style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
+        style={ { ...this._textAreaStyle, border: 'none' } }
         readOnly={ true }
         value={ outputText }
         />
@@ -120,7 +130,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     return (
       <textarea
         className='playground-ast-textarea'
-        style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
+        style={ { ...this._textAreaStyle, border: 'none' } }
         readOnly={ true }
         value={ outputLines.join('\n') }
         />
@@ -149,7 +159,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           className='playground-errors-textarea'
           readOnly={ true }
           value={ errorsText }
-          style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
+          style={ this._textAreaStyle }
           />
       </FlexColDiv>
     );
