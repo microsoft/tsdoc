@@ -16,6 +16,10 @@ const REACT_DOM_URL = {
   dev: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.development.js',
   production: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.production.min.js'
 };
+const MONACO_URL = {
+  dev: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/vs/loader.js',
+  production: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/vs/loader.js'
+};
 
 module.exports.generateBuildWebpackConfiguration = function(env) {
   return  _generateBaseWebpackConfiguration((env || {}).production);
@@ -120,7 +124,8 @@ function _generateBaseWebpackConfiguration(isProduction) {
         templateParameters: {
           scriptsToInclude: [
             { url: isProduction ? REACT_URL.production : REACT_URL.dev },
-            { url: isProduction ? REACT_DOM_URL.production : REACT_DOM_URL.dev }
+            { url: isProduction ? REACT_DOM_URL.production : REACT_DOM_URL.dev },
+            { url: isProduction ? MONACO_URL.production : MONACO_URL.dev }
           ]
         }
       }),

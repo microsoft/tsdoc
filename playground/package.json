@@ -12,7 +12,8 @@
     "@microsoft/tsdoc": "0.8.1",
     "@types/react": "16.4.16",
     "@types/react-dom": "16.0.8",
-    "promise": "8.0.1"
+    "promise": "8.0.1",
+    "monaco-editor": "0.14.3"
   },
   "devDependencies": {
     "@microsoft/set-webpack-public-path-plugin": "~2.1.16",
