@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
 import { TabPane } from './TabPane';
+import { FlexRowDiv, FlexColDiv } from './FlexDivs';
 
 interface IPlaygroundViewProps {
 }
@@ -39,15 +40,13 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   public render(): React.ReactNode {
 
     const textAreasRowStyle: React.CSSProperties = {
-      display: 'flex',
-      flexDirection: 'row',
       alignItems: 'stretch',
       height: '400px'
     };
 
     return (
-      <div style={ { display: 'flex', flexDirection: 'column' } }>
-        <div style={ textAreasRowStyle }>
+      <FlexColDiv>
+        <FlexRowDiv style={ textAreasRowStyle }>
           { this._renderInputBox() }
 
           <TabPane
@@ -58,16 +57,16 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
               { title: 'HTML', render: this._renderHtml.bind(this) }
             ] }
           />
-        </div>
+        </FlexRowDiv>
 
         { this._renderErrorList() }
-      </div>
+      </FlexColDiv>
     );
   }
 
   private _renderInputBox(): React.ReactNode {
     return (
-      <div style={ { display: 'flex', flexDirection: 'column', flex: 1 } }>
+      <FlexColDiv style={ { flex: 1 } }>
         <div style={ { height: '40px' } } />
         <textarea
           id='input-textarea'
@@ -75,7 +74,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           value={ this.state.inputText }
           onChange={ this._inputTextArea_onChange.bind(this) }
           />
-      </div>
+      </FlexColDiv>
     );
   }
 

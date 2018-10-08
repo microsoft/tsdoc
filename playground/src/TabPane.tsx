@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FlexRowDiv, FlexColDiv } from './FlexDivs';
 
 export interface ITabDefinition {
   title: string;
@@ -73,7 +74,6 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
     }
 
     const contentDivStyle: React.CSSProperties = {
-      display: 'flex',
       ...this.props.contentDivStyle,
       borderStyle: 'solid',
       borderColor: '#c0c0c0',
@@ -81,14 +81,14 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
     };
 
     return (
-      <div style={ { ...this.props.style, display: 'flex', flexDirection: 'column' } }>
-        <div style={ { ...this.props.buttonRowStyle, display: 'flex', flexDirection: 'row' } }>
+      <FlexColDiv style={ this.props.style }>
+        <FlexRowDiv style={ this.props.buttonRowStyle }>
           { buttons }
-        </div>
+        </FlexRowDiv>
         <div style={ contentDivStyle }>
           { selectedTabDefinition !== undefined ? selectedTabDefinition.render() : '' }
         </div>
-      </div>
+      </FlexColDiv>
     );
   }
 
