@@ -17,8 +17,8 @@ const REACT_DOM_URL = {
   production: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.production.min.js'
 };
 const MONACO_URL = {
-  dev: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/vs/loader.js',
-  production: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/vs/loader.js'
+  dev: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/',
+  production: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/'
 };
 
 module.exports.generateBuildWebpackConfiguration = function(env) {
@@ -45,6 +45,7 @@ function _generateBaseWebpackConfiguration(isProduction) {
     production: (process.env || {}).production
   };
   const distDirectory = path.join(__dirname, 'dist');
+  const monacoUrl = isProduction ? MONACO_URL.production : MONACO_URL.dev;
 
   const configuration = {
     mode: isProduction ? 'production' : 'development',
@@ -125,7 +126,7 @@ function _generateBaseWebpackConfiguration(isProduction) {
           scriptsToInclude: [
             { url: isProduction ? REACT_URL.production : REACT_URL.dev },
             { url: isProduction ? REACT_DOM_URL.production : REACT_DOM_URL.dev },
-            { url: isProduction ? MONACO_URL.production : MONACO_URL.dev }
+            { url: `${monacoUrl}vs/loader.js` }
           ]
         }
       }),
@@ -148,6 +149,7 @@ function _generateBaseWebpackConfiguration(isProduction) {
         COMMIT_ID: `'${process.env['BUILD_SOURCEVERSION'] || 'COMMIT_SHA'}'`,
         DEBUG: !isProduction,
         'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'dev'),
+        MONACO_URL: JSON.stringify(monacoUrl)
       }),
       new ForkTsCheckerWebpackPlugin({
         async: false,

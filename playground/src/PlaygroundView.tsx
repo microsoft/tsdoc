@@ -80,7 +80,6 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           onChange={ this._inputTextArea_onChange.bind(this) }
           language='typescript'
          />
-        {/*  */}
       </FlexColDiv>
     );
   }

@@ -14,7 +14,7 @@ export interface IMonacoWrapperProps {
 
 export interface IMonacoWrapperState {
   monaco?: typeof monacoEditor;
-  failedToLoad?: boolean;
+  monacoErrorMessage?: string;
 }
 
 interface IMonacoWindow extends Window {
@@ -27,11 +27,13 @@ interface IMonacoWindow extends Window {
   };
 }
 
-const MONACO_BASE_URL: string = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/';
+declare const MONACO_URL: string;
+const MONACO_BASE_URL: string = MONACO_URL;
 
 export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoWrapperState> {
   private static _initializePromise: Promise<typeof monacoEditor>;
 
+  private _isMounted: boolean;
   private _editor: monacoEditor.editor.IStandaloneCodeEditor | undefined;
   private get _value(): string | undefined {
     if (this._editor) {
@@ -77,21 +79,25 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
     super(props);
 
     this.state = {};
+    this._updateLayout = this._updateLayout.bind(this);
   }
 
   public componentDidMount(): void {
+    this._isMounted = true;
     MonacoWrapper._initializeMonaco().then((monaco) => {
       this.setState({ monaco });
-      window.addEventListener('resize', this._updateLayout.bind(this));
+      if (this._isMounted) {
+        window.addEventListener('resize', this._updateLayout);
+      }
     }).catch((error) => {
-      console.error(`Error loading Monaco editor: ${error}`);
-      this.setState({ failedToLoad: true });
+      this.setState({ monacoErrorMessage: `Error loading Monaco editor: ${error}` });
     });
   }
 
   public componentWillUnmount(): void {
+    this._isMounted = false;
     this._editor = undefined;
-    window.removeEventListener('resize', this._updateLayout.bind(this));
+    window.removeEventListener('resize', this._updateLayout);
   }
 
   public componentDidUpdate(prevProps: IMonacoWrapperProps): void {
@@ -101,14 +107,14 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
   }
 
   public render(): React.ReactNode {
-    if (this.state.failedToLoad) {
+    if (this.state.monacoErrorMessage) {
       return ( // Fall back to a textbox
-        <textarea
+        <div
           className={ this.props.className }
-          style={ this.props.style }
-          value={ this.props.value  }
-          onChange={ (event) => this._safeOnChange(event.target.value) }
-          />
+          style={ this.props.style || { height: '100%' } }
+        >
+          { this.state.monacoErrorMessage }
+        </div>
         );
     } else {
       return (
@@ -126,7 +132,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
       try {
         this.props.onChange(newValue);
       } catch (e) {
-        // Ignore
+        console.error(`Error in onChange callback: ${e}`);
       }
     }
   }
