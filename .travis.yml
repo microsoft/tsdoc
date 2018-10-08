@@ -39,3 +39,13 @@ script:
   - echo '(api-demo) npm run start advanced' && echo -en 'travis_fold:start:demo-start-advanced\\r'
   - npm run start advanced
   - echo -en 'travis_fold:end:demo-start-advanced\\r'
+
+  - cd ../playground
+
+  - echo '(playground) npm install' && echo -en 'travis_fold:start:playground-install\\r'
+  - npm install
+  - echo -en 'travis_fold:end:playground-install\\r'
+
+  - echo '(playground) npm run build' && echo -en 'travis_fold:start:playground-build\\r'
+  - npm run build
+  - echo -en 'travis_fold:end:playground-build\\r'
