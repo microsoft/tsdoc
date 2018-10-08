@@ -17,7 +17,6 @@
     "promise": "8.0.1"
   },
   "devDependencies": {
-    "@microsoft/node-core-library": "3.2.0",
     "@types/webpack-env": "~1.13.6",
     "handlebars-loader": "1.7.0",
     "handlebars": "4.0.12",
