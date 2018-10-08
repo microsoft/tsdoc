@@ -1,13 +1,16 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
+import { TabPane } from './TabPane';
+import { FlexRowDiv, FlexColDiv } from './FlexDivs';
+import { DocHtmlView } from './DocHtmlView';
 
-interface IPlaygroundViewProps {
+export interface IPlaygroundViewProps {
 }
 
-interface IPlaygroundViewState {
+export interface IPlaygroundViewState {
   inputText: string;
-  outputText: string;
-  errorsText: string;
+  parserContext: tsdoc.ParserContext | undefined;
+  parserFailureText: string | undefined;
 }
 
 export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlaygroundViewState>  {
@@ -19,8 +22,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     this.state = {
       inputText: require('raw-loader!./initialCode.ts'),
-      outputText: '',
-      errorsText: ''
+      parserContext: undefined,
+      parserFailureText: undefined
     };
   }
 
@@ -36,39 +39,119 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   public render(): React.ReactNode {
-    const textAreaStyle: React.CSSProperties = {
-      width: '600px',
+
+    const textAreasRowStyle: React.CSSProperties = {
+      alignItems: 'stretch',
       height: '400px'
-    };
-    const errorsTextAreaStyle: React.CSSProperties = {
-      width: '1200px',
-      height: '200px'
     };
 
     return (
-      <div>
+      <FlexColDiv className='playground-frame'>
+        <FlexRowDiv className='playground-main-row' style={ textAreasRowStyle }>
+          { this._renderInputBox() }
+
+          <TabPane
+            style={ { flex: 1, marginLeft: '4px' } }
+            buttonRowStyle={ { height: '40px' } }
+            contentDivStyle={ { overflow: 'scroll' } }
+            tabs={ [
+              { title: 'HTML', render: this._renderHtml.bind(this) },
+              { title: 'Lines', render: this._renderLines.bind(this) },
+              { title: 'AST', render: this._renderAst.bind(this) }
+            ] }
+          />
+        </FlexRowDiv>
+
+        { this._renderErrorList() }
+      </FlexColDiv>
+    );
+  }
+
+  private _renderInputBox(): React.ReactNode {
+    return (
+      <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
+        <div style={ { height: '40px' } } />
         <textarea
-          id='input-textarea'
-          style={ textAreaStyle }
+          className='playground-input-textarea'
+          style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
           value={ this.state.inputText }
           onChange={ this._inputTextArea_onChange.bind(this) }
           />
-        <textarea
-          id='output-textarea'
-          readOnly={ true }
-          value={ this.state.outputText }
-          style={ textAreaStyle }
-          />
-        <br />
+      </FlexColDiv>
+    );
+  }
+
+  private _renderHtml(): React.ReactNode {
+    const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
+    if (parserContext && parserContext.docComment) {
+      return (
+        <DocHtmlView docComment={ parserContext.docComment } />
+      );
+    } else {
+      return <span />;
+    }
+  }
+
+  private _renderLines(): React.ReactNode {
+    let outputText: string = '';
+    const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
+    if (parserContext && parserContext.lines) {
+      outputText = parserContext.lines.join('\n');
+    }
+
+    return (
+      <textarea
+        className='playground-lines-textarea'
+        style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
+        readOnly={ true }
+        value={ outputText }
+        />
+    );
+  }
+
+  private _renderAst(): React.ReactNode {
+    const outputLines: string[] = [];
+    const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
+
+    if (parserContext && parserContext.docComment) {
+      this._dumpTSDocTree(outputLines, parserContext.docComment);
+    }
+
+    return (
+      <textarea
+        className='playground-ast-textarea'
+        style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
+        readOnly={ true }
+        value={ outputLines.join('\n') }
+        />
+    );
+  }
+
+  private _renderErrorList(): React.ReactNode {
+    const errorsPaneStyle: React.CSSProperties = {
+      width: '100%',
+      height: '200px',
+      marginTop: '12px'
+    };
+
+    let errorsText: string = '';
+    if (this.state.parserFailureText) {
+      errorsText = this.state.parserFailureText;
+    } else if (this.state.parserContext) {
+      errorsText = this.state.parserContext.log.messages.map(x => x.toString()).join('\n');
+    }
+
+    return (
+      <FlexColDiv className='playground-errors-pane' style={ errorsPaneStyle }>
         Errors:
         <br />
         <textarea
-          id='errors-textarea'
+          className='playground-errors-textarea'
           readOnly={ true }
-          value={ this.state.errorsText }
-          style={ errorsTextAreaStyle }
+          value={ errorsText }
+          style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
           />
-      </div>
+      </FlexColDiv>
     );
   }
 
@@ -89,21 +172,14 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       const tsdocParser: tsdoc.TSDocParser = new tsdoc.TSDocParser();
       const parserContext: tsdoc.ParserContext = tsdocParser.parseString(inputText);
 
-      const errorsText: string = parserContext.log.messages.map(x => x.toString()).join('\n');
-
-      const outputLines: string[] = [];
-      if (parserContext.docComment) {
-        this._dumpTSDocTree(outputLines, parserContext.docComment);
-      }
-
       this.setState({
-        outputText: outputLines.join('\n'),
-        errorsText
+        parserContext: parserContext,
+        parserFailureText: undefined
       });
     } catch (error) {
       this.setState({
-        outputText: '',
-        errorsText: 'Unhandled exception: ' + error.message
+        parserContext: undefined,
+        parserFailureText: 'Unhandled exception: ' + error.message
       });
     }
   }
