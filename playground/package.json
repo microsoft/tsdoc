@@ -1,0 +1,40 @@
+{
+  "name": "playground",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "node build.js",
+    "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.dev.config.js"
+  },
+  "dependencies": {
+    "@microsoft/tsdoc": "0.8.1",
+    "@types/react": "16.4.16",
+    "react": "16.4.2",
+    "@types/react-dom": "16.0.8",
+    "react-dom": "16.4.2",
+    "promise": "8.0.1"
+  },
+  "devDependencies": {
+    "@types/webpack-env": "~1.13.6",
+    "handlebars-loader": "1.7.0",
+    "handlebars": "4.0.12",
+    "webpack-dev-server": "~3.1.4",
+    "webpack-cli": "~3.0.3",
+    "@microsoft/set-webpack-public-path-plugin": "~2.1.16",
+    "clean-webpack-plugin": "~0.1.19",
+    "css-loader": "~0.28.11",
+    "file-loader": "~1.1.11",
+    "node-sass": "~4.9.3",
+    "sass-loader": "~7.1.0",
+    "style-loader": "~0.22.1",
+    "tslint": "~5.11.0",
+    "tslint-loader": "~3.6.0",
+    "tslint-microsoft-contrib": "~5.2.1",
+    "typescript": "~3.0.3",
+    "webpack": "~4.20.2",
+    "webpack-bundle-analyzer": "~2.13.1",
+    "html-webpack-plugin": "~3.2.0",
+    "ts-loader": "5.2.1",
+    "fork-ts-checker-webpack-plugin": "0.4.10"
+  }
+}
