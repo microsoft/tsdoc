@@ -1,8 +1,10 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
+
 import { TabPane } from './TabPane';
 import { FlexRowDiv, FlexColDiv } from './FlexDivs';
 import { DocHtmlView } from './DocHtmlView';
+import { MonacoWrapper } from './MonacoWrapper';
 
 export interface IPlaygroundViewProps {
 }
@@ -71,12 +73,13 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     return (
       <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
         <div style={ { height: '40px' } } />
-        <textarea
+        <MonacoWrapper
           className='playground-input-textarea'
           style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
           value={ this.state.inputText }
           onChange={ this._inputTextArea_onChange.bind(this) }
-          />
+          language='typescript'
+         />
       </FlexColDiv>
     );
   }
@@ -118,12 +121,15 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     }
 
     return (
-      <textarea
+      <MonacoWrapper
         className='playground-ast-textarea'
         style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
         readOnly={ true }
         value={ outputLines.join('\n') }
-        />
+        editorOptions={ {
+          lineNumbers: 'off'
+        } }
+      />
     );
   }
 
@@ -155,9 +161,9 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     );
   }
 
-  private _inputTextArea_onChange(event: React.ChangeEvent<HTMLTextAreaElement>): void {
+  private _inputTextArea_onChange(value: string): void {
     this.setState({
-      inputText: event.target.value
+      inputText: value
     });
     this._reparseNeeded = true;
   }
