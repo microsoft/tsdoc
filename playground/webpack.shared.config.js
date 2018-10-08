@@ -7,8 +7,6 @@ const { SetPublicPathPlugin } = require('@microsoft/set-webpack-public-path-plug
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const { JsonFile } = require('@microsoft/node-core-library');
-
 
 const REACT_URL = {
   dev: 'https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.development.js',
@@ -18,10 +16,6 @@ const REACT_DOM_URL = {
   dev: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.development.js',
   production: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.production.min.js'
 };
-
-const tsdocPath = path.resolve(__dirname, '..', 'tsdoc');
-const tsdocPackageJson = JsonFile.load(path.join(tsdocPath, 'package.json'));
-const tsdocMainPagth = path.resolve(tsdocPath, tsdocPackageJson.main);
 
 module.exports.generateBuildWebpackConfiguration = function(env) {
   return  _generateBaseWebpackConfiguration((env || {}).production);
@@ -87,8 +81,7 @@ function _generateBaseWebpackConfiguration(isProduction) {
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
-        'tslib': 'tslib/tslib.es6',
-        '@microsoft/tsdoc': tsdocMainPagth
+        'tslib': 'tslib/tslib.es6'
       }
     },
     devtool: (isProduction) ? undefined : 'source-map',
@@ -147,6 +140,7 @@ function _generateBaseWebpackConfiguration(isProduction) {
       }),
       new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.DefinePlugin({
+        COMMIT_ID: `'${process.env['BUILD_SOURCEVERSION'] || 'COMMIT_SHA'}'`,
         DEBUG: !isProduction,
         'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'dev'),
       }),
