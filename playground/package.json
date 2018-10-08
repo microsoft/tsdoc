@@ -11,9 +11,7 @@
   "dependencies": {
     "@microsoft/tsdoc": "0.8.1",
     "@types/react": "16.4.16",
-    "react": "16.4.2",
     "@types/react-dom": "16.0.8",
-    "react-dom": "16.4.2",
     "promise": "8.0.1"
   },
   "devDependencies": {
