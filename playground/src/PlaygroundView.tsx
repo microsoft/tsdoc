@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
+import { TabPane } from './TabPane';
 
 interface IPlaygroundViewProps {
 }
@@ -36,39 +37,83 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   public render(): React.ReactNode {
-    const textAreaStyle: React.CSSProperties = {
-      width: '600px',
+
+    const textAreasRowStyle: React.CSSProperties = {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'stretch',
       height: '400px'
     };
+
+    return (
+      <div style={ { display: 'flex', flexDirection: 'column' } }>
+        <div style={ textAreasRowStyle }>
+          { this._renderInputBox() }
+
+          <TabPane
+            style={ { flex: 1, marginLeft: '4px' } }
+            buttonRowStyle={ { height: '40px' } }
+            tabs={ [
+              { title: 'AST', render: this._renderAst.bind(this) },
+              { title: 'HTML', render: this._renderHtml.bind(this) }
+            ] }
+          />
+        </div>
+
+        { this._renderErrorList() }
+      </div>
+    );
+  }
+
+  private _renderInputBox(): React.ReactNode {
+    return (
+      <div style={ { display: 'flex', flexDirection: 'column', flex: 1 } }>
+        <div style={ { height: '40px' } } />
+        <textarea
+          id='input-textarea'
+          style={ { width: '100%', height: '100%', boxSizing: 'border-box' } }
+          value={ this.state.inputText }
+          onChange={ this._inputTextArea_onChange.bind(this) }
+          />
+      </div>
+    );
+  }
+
+  private _renderAst(): React.ReactNode {
+    return (
+      <textarea
+        id='output-textarea'
+        style={ { width: '100%', height: '100%', boxSizing: 'border-box' } }
+        readOnly={ true }
+        value={ this.state.outputText }
+        />
+    );
+  }
+
+  private _renderHtml(): React.ReactNode {
+    return (
+      <span> <b>HTML</b> goes here </span>
+    );
+
+  }
+
+  private _renderErrorList(): React.ReactNode {
     const errorsTextAreaStyle: React.CSSProperties = {
       width: '1200px',
       height: '200px'
     };
 
     return (
-      <div>
-        <textarea
-          id='input-textarea'
-          style={ textAreaStyle }
-          value={ this.state.inputText }
-          onChange={ this._inputTextArea_onChange.bind(this) }
-          />
-        <textarea
-          id='output-textarea'
-          readOnly={ true }
-          value={ this.state.outputText }
-          style={ textAreaStyle }
-          />
-        <br />
-        Errors:
-        <br />
-        <textarea
-          id='errors-textarea'
-          readOnly={ true }
-          value={ this.state.errorsText }
-          style={ errorsTextAreaStyle }
-          />
-      </div>
+      <div >
+      Errors:
+      <br />
+      <textarea
+        id='errors-textarea'
+        readOnly={ true }
+        value={ this.state.errorsText }
+        style={ errorsTextAreaStyle }
+        />
+    </div>
     );
   }
 
