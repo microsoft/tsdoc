@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
 import { TabPane } from './TabPane';
 import { FlexRowDiv, FlexColDiv } from './FlexDivs';
+import { DocHtmlView } from './DocHtmlView';
 
 export interface IPlaygroundViewProps {
 }
@@ -52,6 +53,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           <TabPane
             style={ { flex: 1, marginLeft: '4px' } }
             buttonRowStyle={ { height: '40px' } }
+            contentDivStyle={ { overflow: 'scroll' } }
             tabs={ [
               { title: 'HTML', render: this._renderHtml.bind(this) },
               { title: 'Lines', render: this._renderLines.bind(this) },
@@ -80,9 +82,14 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   private _renderHtml(): React.ReactNode {
-    return (
-      <span> <b>HTML</b> goes here </span>
-    );
+    const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
+    if (parserContext && parserContext.docComment) {
+      return (
+        <DocHtmlView docComment={ parserContext.docComment } />
+      );
+    } else {
+      return <span />;
+    }
   }
 
   private _renderLines(): React.ReactNode {
