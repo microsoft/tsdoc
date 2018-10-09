@@ -108,14 +108,22 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   private _renderDom(): React.ReactNode {
-    // tslint:disable-next-line:no-any
-    const code: string = ReactDomServer.renderToStaticMarkup(this._renderHtml() as React.ReactElement<any>) || 'error';
+    const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
+    let code: string = '';
+
+    if (parserContext && parserContext.docComment) {
+      const unindentedCode: string = ReactDomServer.renderToStaticMarkup(
+        <DocHtmlView docComment={ parserContext.docComment } />
+      );
+      code = this._indentHtml(unindentedCode);
+    }
+
     return (
       <MonacoWrapper
         className='playground-dom-textarea'
         style={ { ...this._textAreaStyle, border: 'none' } }
         readOnly={ true }
-        value={ this._indentHtml(code) }
+        value={ code }
         language='html'
         editorOptions={ {
           lineNumbers: 'off'
@@ -236,12 +244,16 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       const matchIndex: number = match.index;
 
       const textBeforeMatch: string = html.substring(lastIndex, matchIndex);
-      output.push(textBeforeMatch);
+      if (textBeforeMatch.length > 0) {
+        output.push(textBeforeMatch);
+      }
 
       switch (match[0]) {
         case '<':
           // Matched opening tag
-          output.push('\n');
+          if (output.length > 0) {
+            output.push('\n');
+          }
           for (let i: number = 0; i < indentLevel; ++i) {
             output.push(indentCharacters);
           }
@@ -271,7 +283,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     }
 
     const endingText: string = html.substring(lastIndex);
-    output.push(endingText);
+    output.push(endingText + '\n');
 
     return output.join('');
   }
