@@ -6,8 +6,6 @@ class App extends React.Component {
 
     return (
       <>
-        <h1>TSDoc Playground</h1>
-
         <PlaygroundView />
       </>
     );

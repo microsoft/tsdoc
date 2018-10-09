@@ -7,7 +7,11 @@ import './index.css';
 declare const COMMIT_ID: string;
 console.info(COMMIT_ID);
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root') as HTMLElement
-);
+const rootDiv: HTMLElement = document.getElementById('root') as HTMLElement;
+
+rootDiv.style.margin = '0';
+rootDiv.style.height = '100%';
+rootDiv.style.display = 'flex';
+rootDiv.style.flexDirection = 'column';
+
+ReactDOM.render(<App />, rootDiv);
