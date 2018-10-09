@@ -1,5 +1,6 @@
 import * as tsdoc from '@microsoft/tsdoc';
 import { ISyntaxDecoration } from './MonacoWrapper';
+import { syntaxColors } from './syntaxColors';
 
 export function assembleDecorations(decorations: ISyntaxDecoration[], docNode: tsdoc.DocNode): void {
   switch (docNode.kind) {
@@ -11,25 +12,25 @@ export function assembleDecorations(decorations: ISyntaxDecoration[], docNode: t
             case '@public':
             case '@internal':
               {
-                _addTokensToDecorations(decorations, docNode.excerpt.content.tokens, 'tsdoc-modifierTagSyntax');
+                _addTokensToDecorations(decorations, docNode.excerpt.content.tokens, syntaxColors.modifierTag);
                 break;
               }
 
             case '@remarks':
             {
-              _addTokensToDecorations(decorations, docNode.excerpt.content.tokens, 'tsdoc-remarksTagSyntax');
+              _addTokensToDecorations(decorations, docNode.excerpt.content.tokens, syntaxColors.remarksTag);
               break;
             }
 
             case '@returns':
             {
-              _addTokensToDecorations(decorations, docNode.excerpt.content.tokens, 'tsdoc-returnsTagSyntax');
+              _addTokensToDecorations(decorations, docNode.excerpt.content.tokens, syntaxColors.returnsTag);
               break;
             }
 
             default:
             {
-              _addTokensToDecorations(decorations, docNode.excerpt.content.tokens, 'tsdoc-blockTagSyntax');
+              _addTokensToDecorations(decorations, docNode.excerpt.content.tokens, syntaxColors.blockTag);
               break;
             }
           }
@@ -65,18 +66,18 @@ function _addDecorationsForParamTag(
         switch (child.particleId) {
           case 'hyphen':
             {
-              _addTokensToDecorations(decorations, child.excerpt.content.tokens, 'tsdoc-inlineDelimeterSyntax');
+              _addTokensToDecorations(decorations, child.excerpt.content.tokens, syntaxColors.inlineDelimeter);
               break;
             }
 
           case 'parameterName': {
-            _addTokensToDecorations(decorations, child.excerpt.content.tokens, 'tsdoc-paramNameSyntax');
+            _addTokensToDecorations(decorations, child.excerpt.content.tokens, syntaxColors.paramName);
             break;
           }
         }
       }
     } else if (child instanceof tsdoc.DocBlockTag && child.excerpt) {
-      _addTokensToDecorations(decorations, child.excerpt.content.tokens, 'tsdoc-paramTagNameSyntax');
+      _addTokensToDecorations(decorations, child.excerpt.content.tokens, syntaxColors.paramTagName);
     }
   }
 }
@@ -93,17 +94,17 @@ function _addDecorationsForInlineTag(
           case 'closingDelimiter':
           case 'pipe':
             {
-              _addTokensToDecorations(decorations, child.excerpt.content.tokens, 'tsdoc-inlineDelimeterSyntax');
+              _addTokensToDecorations(decorations, child.excerpt.content.tokens, syntaxColors.inlineDelimeter);
               break;
             }
 
           case 'tagName': {
-            _addTokensToDecorations(decorations, child.excerpt.content.tokens, 'tsdoc-inlineTagNameSyntax');
+            _addTokensToDecorations(decorations, child.excerpt.content.tokens, syntaxColors.inlineTagName);
             break;
           }
 
           case 'linkText': {
-            _addTokensToDecorations(decorations, child.excerpt.content.tokens, 'tsdoc-linkTextSyntax');
+            _addTokensToDecorations(decorations, child.excerpt.content.tokens, syntaxColors.linkText);
             break;
           }
         }
@@ -124,12 +125,12 @@ function _addDecorationsForDeclarationReference(
         switch (child.particleId) {
           case 'packageName':
             {
-              _addTokensToDecorations(decorations, child.excerpt.content.tokens, 'tsdoc-packageNameSyntax');
+              _addTokensToDecorations(decorations, child.excerpt.content.tokens, syntaxColors.packageName);
               break;
             }
 
           case 'importHash': {
-            _addTokensToDecorations(decorations, child.excerpt.content.tokens, 'tsdoc-inlineDelimeterSyntax');
+            _addTokensToDecorations(decorations, child.excerpt.content.tokens, syntaxColors.inlineDelimeter);
             break;
           }
         }
