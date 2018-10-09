@@ -40,7 +40,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       this._renderContainer(outputElements, docComment.returnsBlock);
     }
 
-    return <div>{outputElements}</div>;
+    return <>{outputElements}</>;
   }
 
   private _renderContainer(outputElements: React.ReactNode[], section: tsdoc.DocNodeContainer): void {
