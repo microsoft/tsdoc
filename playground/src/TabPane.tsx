@@ -33,7 +33,7 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
 
     for (let i: number = 0; i < this.props.tabs.length; ++i) {
       const tabDefinition: ITabDefinition  = this.props.tabs[i];
-
+      const { title } = tabDefinition;
       const style: React.CSSProperties = {
         padding: '8px',
         marginLeft: '1px',
@@ -54,7 +54,7 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
 
         buttons.push(
           <div key={`tab_${i}`} style={ selectedStyle }>
-            {tabDefinition.title}
+            {title}
           </div>
         );
 
@@ -62,10 +62,10 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
 
         buttons.push(
           <div key={`tab_${i}`} style={ style }>
-            <a href='#'
+            <a href={`#${title.toLowerCase()}`}
                style={ { textDecorationLine: 'none' } }
                onClick={this._onClickTab.bind(this, i)}>
-              {tabDefinition.title}
+              {title}
             </a>
           </div>
         );
