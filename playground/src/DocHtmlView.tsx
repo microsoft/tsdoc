@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
 
 export interface IDocHtmlViewProps {
+  style?: React.CSSProperties;
   docComment: tsdoc.DocComment;
 }
 
@@ -40,7 +41,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       this._renderContainer(outputElements, docComment.returnsBlock);
     }
 
-    return <div>{outputElements}</div>;
+    return <div style={ this.props.style }>{outputElements}</div>;
   }
 
   private _renderContainer(outputElements: React.ReactNode[], section: tsdoc.DocNodeContainer): void {
@@ -55,6 +56,22 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
     switch (node.kind) {
       case 'CodeSpan':
         outputElements.push(<code key={key}>{(node as tsdoc.DocCodeSpan).code}</code>);
+        break;
+      case 'ErrorText':
+        outputElements.push(<span key={key}>{(node as tsdoc.DocErrorText).text}</span>);
+        break;
+      case 'EscapedText':
+        outputElements.push(<span key={key}>{(node as tsdoc.DocEscapedText).text}</span>);
+        break;
+      case 'FencedCode':
+        const docFencedCode: tsdoc.DocFencedCode = node as tsdoc.DocFencedCode;
+        outputElements.push(
+          <pre key={key}>
+            <code key={key}>
+              { docFencedCode.code }
+            </code>
+          </pre>
+        );
         break;
       case 'LinkTag':
         outputElements.push(<a key={key} href='#'>{(node as tsdoc.DocLinkTag).linkText}</a>);

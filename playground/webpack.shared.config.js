@@ -16,6 +16,10 @@ const REACT_DOM_URL = {
   dev: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.development.js',
   production: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.production.min.js'
 };
+const REACT_DOM_SERVER_URL = {
+  dev: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.5.1/umd/react-dom-server.browser.development.js',
+  production: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.5.1/umd/react-dom-server.browser.production.min.js'
+};
 const MONACO_URL = {
   dev: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/',
   production: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/'
@@ -95,7 +99,8 @@ function _generateBaseWebpackConfiguration(isProduction) {
     },
     externals: {
       'react': 'React',
-      'react-dom': 'ReactDOM'
+      'react-dom': 'ReactDOM',
+      'react-dom/server': 'ReactDOMServer'
     },
     output: {
       libraryTarget: 'this',
@@ -126,6 +131,7 @@ function _generateBaseWebpackConfiguration(isProduction) {
           scriptsToInclude: [
             { url: isProduction ? REACT_URL.production : REACT_URL.dev },
             { url: isProduction ? REACT_DOM_URL.production : REACT_DOM_URL.dev },
+            { url: isProduction ? REACT_DOM_SERVER_URL.production : REACT_DOM_SERVER_URL.dev },
             { url: `${monacoUrl}vs/loader.js` }
           ]
         }

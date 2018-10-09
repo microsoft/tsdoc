@@ -4,6 +4,8 @@ import * as tsdoc from '@microsoft/tsdoc';
 import { TabPane } from './TabPane';
 import { FlexRowDiv, FlexColDiv } from './FlexDivs';
 import { DocHtmlView } from './DocHtmlView';
+import { DocDomView } from './DocDomView';
+import { DocAstView } from './DocAstView';
 import {
   MonacoWrapper,
   ISyntaxMarker,
@@ -21,6 +23,15 @@ export interface IPlaygroundViewState {
 }
 
 export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlaygroundViewState>  {
+  private readonly _textAreaStyle: React.CSSProperties = {
+    width: '100%',
+    height: '100%',
+    boxSizing: 'border-box',
+    resize: 'none',
+    paddingLeft: '8px',
+    paddingRight: '8px'
+  };
+
   private _reparseTimerHandle: number | undefined = undefined;
   private _reparseNeeded: boolean = true;
 
@@ -59,10 +70,10 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
           <TabPane
             style={ { flex: 1, marginLeft: '4px' } }
-            buttonRowStyle={ { height: '40px' } }
-            contentDivStyle={ { overflow: 'scroll' } }
+            buttonRowStyle={ { height: '40px', boxSizing: 'border-box'  } }
             tabs={ [
               { title: 'HTML', render: this._renderHtml.bind(this) },
+              { title: 'DOM', render: this._renderDom.bind(this) },
               { title: 'Lines', render: this._renderLines.bind(this) },
               { title: 'AST', render: this._renderAst.bind(this) }
             ] }
@@ -82,11 +93,13 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         const text: string = message.unformattedText;
         if (message.tokenSequence) {
           for (const token of message.tokenSequence.tokens) {
-            markers.push({
-              pos: token.range.pos,
-              end: token.range.end,
-              message: text
-            });
+            if (!token.range.isEmpty()) {
+              markers.push({
+                pos: token.range.pos,
+                end: token.range.end,
+                message: text
+              });
+            }
           }
         } else {
           markers.push({
@@ -100,12 +113,18 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       assembleDecorations(decorations, this.state.parserContext.docComment);
     }
 
+    const editorStyle: React.CSSProperties = {
+      borderStyle: 'solid',
+      borderWidth: '2px',
+      borderColor: '#c0c0c0'
+    };
+
     return (
       <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
-        <div style={ { height: '40px' } } />
+        <div className='playground-button-bar' style={ { height: '40px', boxSizing: 'border-box' } } />
         <MonacoWrapper
-          className='playground-input-textarea'
-          style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
+          className='playground-input-text-editor'
+          style={ editorStyle }
           value={ this.state.inputText }
           onChange={ this._inputTextArea_onChange.bind(this) }
           language='typescript'
@@ -120,11 +139,17 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
     if (parserContext && parserContext.docComment) {
       return (
-        <DocHtmlView docComment={ parserContext.docComment } />
+        <div style={ { overflow: 'auto', paddingLeft: '8px', paddingRight: '8px' } }>
+          <DocHtmlView docComment={ parserContext.docComment } />
+        </div>
       );
     } else {
       return <span />;
     }
+  }
+
+  private _renderDom(): React.ReactNode {
+    return <DocDomView parserContext={this.state.parserContext} />;
   }
 
   private _renderLines(): React.ReactNode {
@@ -136,8 +161,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     return (
       <textarea
-        className='playground-lines-textarea'
-        style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
+        className='playground-lines-text-editor'
+        style={ { ...this._textAreaStyle, border: 'none' } }
         readOnly={ true }
         value={ outputText }
         />
@@ -145,24 +170,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   private _renderAst(): React.ReactNode {
-    const outputLines: string[] = [];
-    const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
-
-    if (parserContext && parserContext.docComment) {
-      this._dumpTSDocTree(outputLines, parserContext.docComment);
-    }
-
-    return (
-      <MonacoWrapper
-        className='playground-ast-textarea'
-        style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
-        readOnly={ true }
-        value={ outputLines.join('\n') }
-        editorOptions={ {
-          lineNumbers: 'off'
-        } }
-      />
-    );
+    return <DocAstView parserContext={this.state.parserContext} />;
   }
 
   private _renderErrorList(): React.ReactNode {
@@ -187,7 +195,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           className='playground-errors-textarea'
           readOnly={ true }
           value={ errorsText }
-          style={ { width: '100%', height: '100%', boxSizing: 'border-box', resize: 'none' } }
+          style={ this._textAreaStyle }
           />
       </FlexColDiv>
     );
@@ -219,21 +227,6 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         parserContext: undefined,
         parserFailureText: 'Unhandled exception: ' + error.message
       });
-    }
-  }
-
-  private _dumpTSDocTree(outputLines: string[], docNode: tsdoc.DocNode, indent: string = ''): void {
-    let dumpText: string = `${indent}- ${docNode.kind}`;
-    if (docNode instanceof tsdoc.DocNodeLeaf && docNode.excerpt) {
-      const content: string = docNode.excerpt.content.toString();
-      if (content.length > 0) {
-        dumpText += ': ' + JSON.stringify(content);
-      }
-    }
-    outputLines.push(dumpText);
-
-    for (const child of docNode.getChildNodes()) {
-      this._dumpTSDocTree(outputLines, child, indent + '  ');
     }
   }
 }

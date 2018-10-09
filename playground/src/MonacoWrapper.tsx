@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as monacoEditor from 'monaco-editor';
+import { FlexColDiv } from './FlexDivs';
 
 export interface ISyntaxMarker {
   message: string;
@@ -74,6 +75,10 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
   private _editorId: string;
   private _isMounted: boolean;
   private _editor: monacoEditor.editor.IStandaloneCodeEditor | undefined;
+
+  private _placeholderDivRef: HTMLDivElement | undefined;
+  private  _hostDivref: HTMLDivElement | undefined;
+
   private get _value(): string | undefined {
     if (this._editor) {
       return this._editor.getValue();
@@ -119,7 +124,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
 
     this._editorId = `tsdoc-monaco-${MonacoWrapper._editorIdCounter++}`;
     this.state = {};
-    this._updateLayout = this._updateLayout.bind(this);
+    this._onWindowResize = this._onWindowResize.bind(this);
   }
 
   public componentDidMount(): void {
@@ -127,7 +132,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
     MonacoWrapper._initializeMonaco().then((monaco) => {
       this.setState({ monaco });
       if (this._isMounted) {
-        window.addEventListener('resize', this._updateLayout);
+        window.addEventListener('resize', this._onWindowResize);
       }
     }).catch((error) => {
       this.setState({ monacoErrorMessage: `Error loading Monaco editor: ${error}` });
@@ -137,7 +142,11 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
   public componentWillUnmount(): void {
     this._isMounted = false;
     this._editor = undefined;
-    window.removeEventListener('resize', this._updateLayout);
+
+    this._placeholderDivRef = undefined;
+    this._hostDivref = undefined;
+
+    window.removeEventListener('resize', this._onWindowResize);
   }
 
   public componentDidUpdate(prevProps: IMonacoWrapperProps): void {
@@ -158,7 +167,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
               startColumn: startPos.column,
               endLineNumber: endPos.lineNumber,
               endColumn: endPos.column,
-              severity: MonacoWrapper._monaco.MarkerSeverity.Warning,
+              severity: MonacoWrapper._monaco.MarkerSeverity.Error,
               message: marker.message
             };
           })
@@ -172,20 +181,27 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
   public render(): React.ReactNode {
     if (this.state.monacoErrorMessage) {
       return ( // Fall back to a textbox
-        <div
+        <FlexColDiv
           className={ this.props.className }
-          style={ this.props.style || { height: '100%' } }
-        >
+          style={ this.props.style } >
           { this.state.monacoErrorMessage }
-        </div>
+        </FlexColDiv>
         );
     } else {
+      // The Monaco application is very complex and its div does not resize reliably.
+      // To work around this, we render a blank placeholder div (that is well-behaved),
+      // and then the Monaco host div floats above that using absolute positioning
+      // and manual resizing.
       return (
-        <div
-          ref={this._createEditor.bind(this)}
-          className={ this.props.className }
-          style={ this.props.style || { height: '100%' } }
-        />
+        <div className='playground-monaco-placeholder'
+          ref={ (element: HTMLDivElement) => { this._placeholderDivRef = element; } }
+          style={ { display: 'flex', flexDirection: 'column', flex: 1, ...this.props.style } }>
+
+          <div className='playground-monaco-host'
+          ref={ (element: HTMLDivElement) => { this._hostDivref = element; this._createEditor(); } }
+          style={ { display: 'block', position: 'absolute', backgroundColor: '#00FF00' } } />
+
+        </div>
       );
     }
   }
@@ -261,11 +277,11 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
     }
   }
 
-  private _createEditor(element: HTMLDivElement): void {
+  private _createEditor(): void {
     MonacoWrapper._initializeMonaco().then((monaco) => {
-      if (!this._editor && element) { // Make sure we only initialize once
+      if (!this._editor && this._hostDivref) {
         this._editor = monaco.editor.create(
-          element,
+          this._hostDivref,
           {
             value: this.props.value || '',
             language: this.props.language,
@@ -282,13 +298,21 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
             this._safeOnChange(this._editor.getValue());
           }
         });
+
+        this._onWindowResize();
       }
     });
   }
 
-  private _updateLayout(): void {
-    if (this._editor) {
-      this._editor.layout();
+  private _onWindowResize(): void {
+    if (this._placeholderDivRef && this._hostDivref) {
+      // Resize the host div to match whatever the browser did for the placeholder div
+      this._hostDivref.style.width = this._placeholderDivRef.clientWidth + 'px';
+      this._hostDivref.style.height = this._placeholderDivRef.clientHeight + 'px';
+
+      if (this._editor) {
+        this._editor.layout();
+      }
     }
   }
 }
