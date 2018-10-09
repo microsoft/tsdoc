@@ -6,8 +6,10 @@ import { FlexRowDiv, FlexColDiv } from './FlexDivs';
 import { DocHtmlView } from './DocHtmlView';
 import {
   MonacoWrapper,
-  ICommentSyntaxMarker
+  ISyntaxMarker,
+  ISyntaxDecoration
 } from './MonacoWrapper';
+import { assembleDecorations } from './assembleDecorations';
 
 export interface IPlaygroundViewProps {
 }
@@ -73,7 +75,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   private _renderInputBox(): React.ReactNode {
-    const markers: ICommentSyntaxMarker[] = [];
+    const markers: ISyntaxMarker[] = [];
+    const decorations: ISyntaxDecoration[] = [];
     if (this.state.parserContext) {
       for (const message of this.state.parserContext.log.messages) {
         const text: string = message.unformattedText;
@@ -93,6 +96,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           });
         }
       }
+
+      assembleDecorations(decorations, this.state.parserContext.docComment);
     }
 
     return (
@@ -105,6 +110,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           onChange={ this._inputTextArea_onChange.bind(this) }
           language='typescript'
           markers={ markers }
+          decorations={ decorations }
          />
       </FlexColDiv>
     );

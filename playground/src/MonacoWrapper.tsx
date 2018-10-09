@@ -1,8 +1,27 @@
 import * as React from 'react';
 import * as monacoEditor from 'monaco-editor';
 
-export interface ICommentSyntaxMarker {
+export interface ISyntaxMarker {
   message: string;
+
+  /**
+   * Beginning
+   */
+  pos: number;
+
+  /**
+   * End
+   */
+  end: number;
+}
+
+const hashSymbol: unique symbol = Symbol('identifier');
+interface ITrackedSyntaxDecoration extends ISyntaxDecoration {
+  [hashSymbol]: string;
+}
+
+export interface ISyntaxDecoration {
+  className: string;
 
   /**
    * Beginning
@@ -24,7 +43,8 @@ export interface IMonacoWrapperProps {
   onChange?: (value: string) => void;
 
   editorOptions?: monacoEditor.editor.IEditorConstructionOptions;
-  markers?: ICommentSyntaxMarker[];
+  markers?: ISyntaxMarker[];
+  decorations?: ISyntaxDecoration[];
 }
 
 export interface IMonacoWrapperState {
@@ -50,6 +70,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
   private static _editorIdCounter: number = 0;
   private static _monaco: typeof monacoEditor;
 
+  private _existingDecorations: { [hash: string]: string } = {};
   private _editorId: string;
   private _isMounted: boolean;
   private _editor: monacoEditor.editor.IStandaloneCodeEditor | undefined;
@@ -143,6 +164,8 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
           })
         );
       }
+
+      this._updateDecorations(this.props.decorations || []);
     }
   }
 
@@ -165,6 +188,67 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
         />
       );
     }
+  }
+
+  private _updateDecorations(newDecorations: ISyntaxDecoration[]): void {
+    if (this._editor) {
+      // Find decorations to remove
+      const newExistingDecorations: { [hash: string]: string } = {};
+      const decorationsToAdd: ITrackedSyntaxDecoration[] = [];
+      const decorationsToRemove: string[] = [];
+      for (const decoration of newDecorations) {
+        const hash: string = this._getDecorationIdentifier(decoration);
+
+        if (this._existingDecorations[hash] !== undefined) {
+          newExistingDecorations[hash] = this._existingDecorations[hash];
+          delete this._existingDecorations[hash];
+        } else {
+          newExistingDecorations[hash] = ''; // Put an empty identifier here so we don't add duplicates
+          decorationsToAdd.push({
+            [hashSymbol]: hash,
+            ...decoration
+          });
+        }
+      }
+
+      for (const identifier in this._existingDecorations) {
+        if (this._existingDecorations.hasOwnProperty(identifier)) {
+          const decorationId: string = this._existingDecorations[identifier];
+          decorationsToRemove.push(decorationId);
+        }
+      }
+
+      this._editor.getModel().deltaDecorations(decorationsToRemove, []);
+      const decorationIds: string[] = this._editor.getModel().deltaDecorations([], decorationsToAdd.map(
+        (decoration) => {
+          const startPos: monacoEditor.Position = this._editor!.getModel().getPositionAt(decoration.pos);
+          const endPos: monacoEditor.Position = this._editor!.getModel().getPositionAt(decoration.end);
+
+          return {
+            range: new MonacoWrapper._monaco.Range(
+              startPos.lineNumber,
+              startPos.column,
+              endPos.lineNumber,
+              endPos.column
+            ),
+            options: {
+              isWholeLine: false,
+              inlineClassName: decoration.className
+            }
+          };
+        }
+      ));
+
+      for (let i: number = 0; i < decorationsToAdd.length; i++) {
+        newExistingDecorations[decorationsToAdd[i][hashSymbol]] = decorationIds[i];
+      }
+
+      this._existingDecorations = newExistingDecorations;
+    }
+  }
+
+  private _getDecorationIdentifier(decoration: ISyntaxDecoration): string {
+    return JSON.stringify(decoration);
   }
 
   private _safeOnChange(newValue: string): void {
