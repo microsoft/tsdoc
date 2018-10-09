@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
-import { MonacoWrapper } from './MonacoWrapper';
+import { CodeEditor } from './CodeEditor';
 
 export interface IDocAstViewProps {
   style?: React.CSSProperties;
@@ -17,7 +17,7 @@ export class DocAstView extends React.Component<IDocAstViewProps> {
     }
 
     return (
-      <MonacoWrapper
+      <CodeEditor
         className='playground-ast-text-editor'
         readOnly={ true }
         value={ outputLines.join('\n') }

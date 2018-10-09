@@ -1,6 +1,6 @@
 import * as tsdoc from '@microsoft/tsdoc';
 
-import { ISyntaxStyle } from './MonacoWrapper';
+import { ISyntaxStyle } from './CodeEditor';
 
 import './syntaxStyles.css';
 

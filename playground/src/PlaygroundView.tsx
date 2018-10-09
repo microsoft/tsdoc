@@ -7,10 +7,10 @@ import { DocHtmlView } from './DocHtmlView';
 import { DocDomView } from './DocDomView';
 import { DocAstView } from './DocAstView';
 import {
-  MonacoWrapper,
+  CodeEditor,
   ISyntaxMarker,
   ISyntaxStyle
-} from './MonacoWrapper';
+} from './CodeEditor';
 import { DocNodeSyntaxStyler } from './DocNodeSyntaxStyler';
 
 export interface IPlaygroundViewProps {
@@ -167,7 +167,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     return (
       <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
         <div className='playground-button-bar' style={ { height: '40px', boxSizing: 'border-box' } } />
-        <MonacoWrapper
+        <CodeEditor
           className='playground-input-text-editor'
           style={ editorStyle }
           value={ this.state.inputText }

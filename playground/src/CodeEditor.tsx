@@ -27,7 +27,7 @@ export interface ISyntaxStyle extends ISyntaxLocation {
   className: string;
 }
 
-export interface IMonacoWrapperProps {
+export interface ICodeEditorProps {
   className?: string;
   style?: React.CSSProperties;
   value?: string;
@@ -40,7 +40,7 @@ export interface IMonacoWrapperProps {
   syntaxStyles?: ISyntaxStyle[];
 }
 
-export interface IMonacoWrapperState {
+export interface ICodeEditorState {
   monaco?: typeof monacoEditor;
   monacoErrorMessage?: string;
 }
@@ -58,7 +58,7 @@ interface IMonacoWindow extends Window {
 declare const MONACO_URL: string;
 const MONACO_BASE_URL: string = MONACO_URL;
 
-export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoWrapperState> {
+export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorState> {
   private static _initializePromise: Promise<typeof monacoEditor>;
   private static _editorIdCounter: number = 0;
   private static _monaco: typeof monacoEditor;
@@ -80,8 +80,8 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
   }
 
   private static _initializeMonaco(): Promise<typeof monacoEditor> {
-    if (!MonacoWrapper._initializePromise) {
-      MonacoWrapper._initializePromise = new Promise(
+    if (!CodeEditor._initializePromise) {
+      CodeEditor._initializePromise = new Promise(
         (resolve: (monaco: typeof monacoEditor) => void, reject: (error: Error) => void ) => {
           const monacoWindow: IMonacoWindow = window as IMonacoWindow;
           monacoWindow.require.config({ paths: { 'vs': `${MONACO_BASE_URL}vs/` }});
@@ -105,23 +105,23 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
             }
           });
         }
-      ).then((monaco) => MonacoWrapper._monaco = monaco);
+      ).then((monaco) => CodeEditor._monaco = monaco);
     }
 
-    return MonacoWrapper._initializePromise;
+    return CodeEditor._initializePromise;
   }
 
-  constructor(props: IMonacoWrapperProps) {
+  constructor(props: ICodeEditorProps) {
     super(props);
 
-    this._editorId = `tsdoc-monaco-${MonacoWrapper._editorIdCounter++}`;
+    this._editorId = `tsdoc-monaco-${CodeEditor._editorIdCounter++}`;
     this.state = {};
     this._onWindowResize = this._onWindowResize.bind(this);
   }
 
   public componentDidMount(): void {
     this._isMounted = true;
-    MonacoWrapper._initializeMonaco().then((monaco) => {
+    CodeEditor._initializeMonaco().then((monaco) => {
       this.setState({ monaco });
       if (this._isMounted) {
         window.addEventListener('resize', this._onWindowResize);
@@ -141,14 +141,14 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
     window.removeEventListener('resize', this._onWindowResize);
   }
 
-  public componentDidUpdate(prevProps: IMonacoWrapperProps): void {
+  public componentDidUpdate(prevProps: ICodeEditorProps): void {
     if (this._editor) {
       if (this._value !== this.props.value) {
         this._editor.setValue(this.props.value || '');
       }
 
-      if (MonacoWrapper._monaco) {
-        MonacoWrapper._monaco.editor.setModelMarkers(
+      if (CodeEditor._monaco) {
+        CodeEditor._monaco.editor.setModelMarkers(
           this._editor.getModel(),
           this._editorId,
           (this.props.markers || []).map((marker) => {
@@ -159,7 +159,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
               startColumn: startPos.column,
               endLineNumber: endPos.lineNumber,
               endColumn: endPos.column,
-              severity: MonacoWrapper._monaco.MarkerSeverity.Error,
+              severity: CodeEditor._monaco.MarkerSeverity.Error,
               message: marker.message
             };
           })
@@ -233,14 +233,14 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
           const endPos: monacoEditor.Position = this._editor!.getModel().getPositionAt(decoration.end);
 
           return {
-            range: new MonacoWrapper._monaco.Range(
+            range: new CodeEditor._monaco.Range(
               startPos.lineNumber,
               startPos.column,
               endPos.lineNumber,
               endPos.column
             ),
             options: {
-              stickiness: MonacoWrapper._monaco.editor.TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges,
+              stickiness: CodeEditor._monaco.editor.TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges,
               isWholeLine: false,
               inlineClassName: decoration.className
             }
@@ -267,7 +267,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
   }
 
   private _createEditor(): void {
-    MonacoWrapper._initializeMonaco().then((monaco) => {
+    CodeEditor._initializeMonaco().then((monaco) => {
       if (!this._editor && this._hostDivref) {
         this._editor = monaco.editor.create(
           this._hostDivref,
