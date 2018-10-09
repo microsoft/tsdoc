@@ -2,37 +2,29 @@ import * as React from 'react';
 import * as monacoEditor from 'monaco-editor';
 import { FlexColDiv } from './FlexDivs';
 
-export interface ISyntaxMarker {
-  message: string;
-
+export interface ISyntaxLocation {
   /**
-   * Beginning
+   * Beginning position as a character index of the text in the editor
    */
   pos: number;
 
   /**
-   * End
+   * End position as a character index of the text in the editor
    */
   end: number;
+}
+
+export interface ISyntaxMarker extends ISyntaxLocation {
+  message: string;
 }
 
 const hashSymbol: unique symbol = Symbol('identifier');
-interface ITrackedSyntaxDecoration extends ISyntaxDecoration {
+interface ITrackedSyntaxStyle extends ISyntaxStyle {
   [hashSymbol]: string;
 }
 
-export interface ISyntaxDecoration {
+export interface ISyntaxStyle extends ISyntaxLocation {
   className: string;
-
-  /**
-   * Beginning
-   */
-  pos: number;
-
-  /**
-   * End
-   */
-  end: number;
 }
 
 export interface IMonacoWrapperProps {
@@ -45,7 +37,7 @@ export interface IMonacoWrapperProps {
 
   editorOptions?: monacoEditor.editor.IEditorConstructionOptions;
   markers?: ISyntaxMarker[];
-  decorations?: ISyntaxDecoration[];
+  syntaxStyles?: ISyntaxStyle[];
 }
 
 export interface IMonacoWrapperState {
@@ -71,7 +63,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
   private static _editorIdCounter: number = 0;
   private static _monaco: typeof monacoEditor;
 
-  private _existingDecorations: { [hash: string]: string } = {};
+  private _existingSyntaxStyles: { [hash: string]: string } = {};
   private _editorId: string;
   private _isMounted: boolean;
   private _editor: monacoEditor.editor.IStandaloneCodeEditor | undefined;
@@ -174,7 +166,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
         );
       }
 
-      this._updateDecorations(this.props.decorations || []);
+      this._applySyntaxStyling(this.props.syntaxStyles || []);
     }
   }
 
@@ -206,30 +198,30 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
     }
   }
 
-  private _updateDecorations(newDecorations: ISyntaxDecoration[]): void {
+  private _applySyntaxStyling(newSyntaxStyles: ISyntaxStyle[]): void {
     if (this._editor) {
       // Find decorations to remove
-      const newExistingDecorations: { [hash: string]: string } = {};
-      const decorationsToAdd: ITrackedSyntaxDecoration[] = [];
+      const newExistingSyntaxStyles: { [hash: string]: string } = {};
+      const decorationsToAdd: ITrackedSyntaxStyle[] = [];
       const decorationsToRemove: string[] = [];
-      for (const decoration of newDecorations) {
-        const hash: string = this._getDecorationIdentifier(decoration);
+      for (const syntaxStyle of newSyntaxStyles) {
+        const hash: string = JSON.stringify(syntaxStyle);
 
-        if (this._existingDecorations[hash] !== undefined) {
-          newExistingDecorations[hash] = this._existingDecorations[hash];
-          delete this._existingDecorations[hash];
+        if (this._existingSyntaxStyles[hash] !== undefined) {
+          newExistingSyntaxStyles[hash] = this._existingSyntaxStyles[hash];
+          delete this._existingSyntaxStyles[hash];
         } else {
-          newExistingDecorations[hash] = ''; // Put an empty identifier here so we don't add duplicates
+          newExistingSyntaxStyles[hash] = ''; // Put an empty identifier here so we don't add duplicates
           decorationsToAdd.push({
             [hashSymbol]: hash,
-            ...decoration
+            ...syntaxStyle
           });
         }
       }
 
-      for (const identifier in this._existingDecorations) {
-        if (this._existingDecorations.hasOwnProperty(identifier)) {
-          const decorationId: string = this._existingDecorations[identifier];
+      for (const hash in this._existingSyntaxStyles) {
+        if (this._existingSyntaxStyles.hasOwnProperty(hash)) {
+          const decorationId: string = this._existingSyntaxStyles[hash];
           decorationsToRemove.push(decorationId);
         }
       }
@@ -248,6 +240,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
               endPos.column
             ),
             options: {
+              stickiness: MonacoWrapper._monaco.editor.TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges,
               isWholeLine: false,
               inlineClassName: decoration.className
             }
@@ -256,15 +249,11 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
       ));
 
       for (let i: number = 0; i < decorationsToAdd.length; i++) {
-        newExistingDecorations[decorationsToAdd[i][hashSymbol]] = decorationIds[i];
+        newExistingSyntaxStyles[decorationsToAdd[i][hashSymbol]] = decorationIds[i];
       }
 
-      this._existingDecorations = newExistingDecorations;
+      this._existingSyntaxStyles = newExistingSyntaxStyles;
     }
-  }
-
-  private _getDecorationIdentifier(decoration: ISyntaxDecoration): string {
-    return JSON.stringify(decoration);
   }
 
   private _safeOnChange(newValue: string): void {

@@ -9,9 +9,9 @@ import { DocAstView } from './DocAstView';
 import {
   MonacoWrapper,
   ISyntaxMarker,
-  ISyntaxDecoration
+  ISyntaxStyle
 } from './MonacoWrapper';
-import { assembleDecorations } from './assembleDecorations';
+import { DocNodeSyntaxStyler } from './DocNodeSyntaxStyler';
 
 export interface IPlaygroundViewProps {
 }
@@ -87,7 +87,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
   private _renderInputBox(): React.ReactNode {
     const markers: ISyntaxMarker[] = [];
-    const decorations: ISyntaxDecoration[] = [];
+    const syntaxStyles: ISyntaxStyle[] = [];
     if (this.state.parserContext) {
       for (const message of this.state.parserContext.log.messages) {
         const text: string = message.unformattedText;
@@ -110,7 +110,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         }
       }
 
-      assembleDecorations(decorations, this.state.parserContext.docComment);
+      DocNodeSyntaxStyler.getStylesForDocComment(syntaxStyles, this.state.parserContext.docComment);
     }
 
     const editorStyle: React.CSSProperties = {
@@ -129,7 +129,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           onChange={ this._inputTextArea_onChange.bind(this) }
           language='typescript'
           markers={ markers }
-          decorations={ decorations }
+          syntaxStyles={ syntaxStyles }
          />
       </FlexColDiv>
     );

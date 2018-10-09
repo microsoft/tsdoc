@@ -1,0 +1,51 @@
+.tsdoc-modifierTagSyntax {
+  color: #2047a8 !important;
+}
+
+.tsdoc-remarksTagSyntax {
+  color: #a85e21 !important;
+}
+
+.tsdoc-returnsTagSyntax {
+  color: #c9c500 !important;
+}
+
+.tsdoc-inlineDelimiterSyntax {
+  color: #555 !important;
+}
+
+.tsdoc-inlineTagNameSyntax {
+  color: #447cd6 !important;
+}
+
+.tsdoc-paramTagNameSyntax {
+  color: #346263 !important;
+}
+
+.tsdoc-paramNameSyntax {
+  color: #03b3b7 !important;
+}
+
+.tsdoc-linkTextSyntax {
+  color: #9200f4 !important;
+}
+
+.tsdoc-packageNameSyntax {
+  color: #7c0000 !important;
+}
+
+.tsdoc-blockTagSyntax {
+  color: #00c98c !important;
+}
+
+.tsdoc-inlineTagSyntax {
+  color: orangered !important;
+}
+
+.tsdoc-linkTagSyntax {
+  color: darkgoldenrod !important;
+}
+
+.tsdoc-blackSyntax {
+  color: black !important;
+}
