@@ -1,4 +1,6 @@
 {
+  "$schema": "http://json.schemastore.org/tsconfig",
+
   "compilerOptions": {
     "module": "esnext",
     "target": "es5",
@@ -24,8 +26,8 @@
       "es2015.collection"
     ]
   },
-  "exclude": [
-    "node_modules",
-    "dist"
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
   ]
 }
