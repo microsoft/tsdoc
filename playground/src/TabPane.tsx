@@ -47,8 +47,8 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
           ...style,
           borderStyle: 'solid',
           borderWidth: '2px',
-          borderBottomStyle: 'none',
           borderColor: '#c0c0c0',
+          borderBottomStyle: 'none',
           borderTopLeftRadius: '4px',
           borderTopRightRadius: '4px'
         };
@@ -79,7 +79,7 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
       borderStyle: 'solid',
       borderWidth: '2px',
       borderColor: '#c0c0c0',
-      flexBasis: '100%'
+      flex: 1
     };
 
     return (

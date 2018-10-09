@@ -67,7 +67,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
           <TabPane
             style={ { flex: 1, marginLeft: '4px' } }
-            buttonRowStyle={ { height: '40px' } }
+            buttonRowStyle={ { height: '40px', boxSizing: 'border-box'  } }
             tabs={ [
               { title: 'HTML', render: this._renderHtml.bind(this) },
               { title: 'DOM', render: this._renderDom.bind(this) },
@@ -107,11 +107,18 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       }
     }
 
+    const editorStyle: React.CSSProperties = {
+      borderStyle: 'solid',
+      borderWidth: '2px',
+      borderColor: '#c0c0c0'
+    };
+
     return (
-      <FlexColDiv className='playground-input-box' style={ { flex: 1, paddingTop: 40 } }>
+      <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
+        <div className='playground-button-bar' style={ { height: '40px', boxSizing: 'border-box' } } />
         <MonacoWrapper
-          className='playground-input-textarea'
-          style={ this._textAreaStyle }
+          className='playground-input-text-editor'
+          style={ editorStyle }
           value={ this.state.inputText }
           onChange={ this._inputTextArea_onChange.bind(this) }
           language='typescript'
@@ -147,8 +154,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     return (
       <MonacoWrapper
-        className='playground-dom-textarea'
-        style={ { ...this._textAreaStyle, border: 'none' } }
+        className='playground-dom-text-editor'
         readOnly={ true }
         value={ code }
         language='html'
@@ -168,7 +174,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     return (
       <textarea
-        className='playground-lines-textarea'
+        className='playground-lines-text-editor'
         style={ { ...this._textAreaStyle, border: 'none' } }
         readOnly={ true }
         value={ outputText }
@@ -186,8 +192,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     return (
       <MonacoWrapper
-        className='playground-ast-textarea'
-        style={ { ...this._textAreaStyle, border: 'none' } }
+        className='playground-ast-text-editor'
         readOnly={ true }
         value={ outputLines.join('\n') }
         editorOptions={ {
