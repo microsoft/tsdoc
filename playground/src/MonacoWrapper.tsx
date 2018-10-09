@@ -1,6 +1,20 @@
 import * as React from 'react';
 import * as monacoEditor from 'monaco-editor';
 
+export interface ICommentSyntaxMarker {
+  message: string;
+
+  /**
+   * Beginning
+   */
+  pos: number;
+
+  /**
+   * End
+   */
+  end: number;
+}
+
 export interface IMonacoWrapperProps {
   className?: string;
   style?: React.CSSProperties;
@@ -10,6 +24,7 @@ export interface IMonacoWrapperProps {
   onChange?: (value: string) => void;
 
   editorOptions?: monacoEditor.editor.IEditorConstructionOptions;
+  markers?: ICommentSyntaxMarker[];
 }
 
 export interface IMonacoWrapperState {
@@ -32,7 +47,10 @@ const MONACO_BASE_URL: string = MONACO_URL;
 
 export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoWrapperState> {
   private static _initializePromise: Promise<typeof monacoEditor>;
+  private static _editorIdCounter: number = 0;
+  private static _monaco: typeof monacoEditor;
 
+  private _editorId: string;
   private _isMounted: boolean;
   private _editor: monacoEditor.editor.IStandaloneCodeEditor | undefined;
   private get _value(): string | undefined {
@@ -69,7 +87,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
             }
           });
         }
-      );
+      ).then((monaco) => MonacoWrapper._monaco = monaco);
     }
 
     return MonacoWrapper._initializePromise;
@@ -78,6 +96,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
   constructor(props: IMonacoWrapperProps) {
     super(props);
 
+    this._editorId = `tsdoc-monaco-${MonacoWrapper._editorIdCounter++}`;
     this.state = {};
     this._updateLayout = this._updateLayout.bind(this);
   }
@@ -101,8 +120,29 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
   }
 
   public componentDidUpdate(prevProps: IMonacoWrapperProps): void {
-    if (this._value !== this.props.value && this._editor) {
-      this._editor.setValue(this.props.value || '');
+    if (this._editor) {
+      if (this._value !== this.props.value) {
+        this._editor.setValue(this.props.value || '');
+      }
+
+      if (MonacoWrapper._monaco) {
+        MonacoWrapper._monaco.editor.setModelMarkers(
+          this._editor.getModel(),
+          this._editorId,
+          (this.props.markers || []).map((marker) => {
+            const startPos: monacoEditor.Position = this._editor!.getModel().getPositionAt(marker.pos);
+            const endPos: monacoEditor.Position = this._editor!.getModel().getPositionAt(marker.end);
+            return {
+              startLineNumber: startPos.lineNumber,
+              startColumn: startPos.column,
+              endLineNumber: endPos.lineNumber,
+              endColumn: endPos.column,
+              severity: MonacoWrapper._monaco.MarkerSeverity.Warning,
+              message: marker.message
+            };
+          })
+        );
+      }
     }
   }
 
@@ -152,6 +192,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
             ...this.props.editorOptions
           }
         );
+
         this._editor.getModel().onDidChangeContent((e) => {
           if (this._editor) {
             this._safeOnChange(this._editor.getValue());
