@@ -96,7 +96,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         <FlexRowDiv className='playground-header' style={ headerStyle }>
           <FlexColDiv style={{ fontWeight: 400, fontSize: '26px' }}>TSDoc Playground</FlexColDiv>
           <FlexColDiv style={{ fontWeight: 400, fontSize: '20px' }}>
-            <a style={navAnchorStyle} href='https://github.com/Microsoft/tsdoc'>What is TSDoc?</a>
+            <a style={navAnchorStyle} href='https://github.com/Microsoft/tsdoc' target='_blank'>
+              What is TSDoc?</a>
           </FlexColDiv>
         </FlexRowDiv>
 
