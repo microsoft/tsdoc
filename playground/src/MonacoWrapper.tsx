@@ -137,7 +137,7 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
               startColumn: startPos.column,
               endLineNumber: endPos.lineNumber,
               endColumn: endPos.column,
-              severity: MonacoWrapper._monaco.MarkerSeverity.Warning,
+              severity: MonacoWrapper._monaco.MarkerSeverity.Error,
               message: marker.message
             };
           })

@@ -89,11 +89,13 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         const text: string = message.unformattedText;
         if (message.tokenSequence) {
           for (const token of message.tokenSequence.tokens) {
-            markers.push({
-              pos: token.range.pos,
-              end: token.range.end,
-              message: text
-            });
+            if (!token.range.isEmpty()) {
+              markers.push({
+                pos: token.range.pos,
+                end: token.range.end,
+                message: text
+              });
+            }
           }
         } else {
           markers.push({
