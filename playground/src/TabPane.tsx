@@ -64,7 +64,7 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
         buttons.push(
           <div key={`tab_${i}`} className='playground-tab-pane-inactive-tab' style={ style }>
             <a href='#'
-               style={ { textDecorationLine: 'none' } }
+               style={ { textDecorationLine: 'none', color: '#000000' } }
                onClick={this._onClickTab.bind(this, i)}>
               {tabDefinition.title}
             </a>

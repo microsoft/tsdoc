@@ -25,6 +25,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     width: '100%',
     height: '100%',
     boxSizing: 'border-box',
+    border: 'none',
     resize: 'none',
     paddingLeft: '8px',
     paddingRight: '8px'
@@ -55,30 +56,74 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   public render(): React.ReactNode {
+    const headerStyle: React.CSSProperties = {
+      height: '70px',
+      backgroundColor: '#1e9449',
+      paddingLeft: '20px',
+      paddingRight: '20px',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: '20px',
+      color: '#ffffff'
+    };
 
-    const textAreasRowStyle: React.CSSProperties = {
+    const mainRowStyle: React.CSSProperties = {
       alignItems: 'stretch',
-      height: '400px'
+      flex: 1
+    };
+
+    const errorsPaneStyle: React.CSSProperties = {
+      height: '130px',
+      marginTop: '20px'
+    };
+
+    const footerStyle: React.CSSProperties = {
+      height: '80px',
+      textAlign: 'center',
+      color: '#a0a0a0',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: 'smaller'
+    };
+
+    const navAnchorStyle: React.CSSProperties = {
+      color: '#ffffff',
+      textDecorationLine: 'none'
     };
 
     return (
-      <FlexColDiv className='playground-frame'>
-        <FlexRowDiv className='playground-main-row' style={ textAreasRowStyle }>
-          { this._renderInputBox() }
-
-          <TabPane
-            style={ { flex: 1, marginLeft: '4px' } }
-            buttonRowStyle={ { height: '40px', boxSizing: 'border-box'  } }
-            tabs={ [
-              { title: 'HTML', render: this._renderHtml.bind(this) },
-              { title: 'DOM', render: this._renderDom.bind(this) },
-              { title: 'Lines', render: this._renderLines.bind(this) },
-              { title: 'AST', render: this._renderAst.bind(this) }
-            ] }
-          />
+      <FlexColDiv className='playground-frame' style={ { flex: 1 } }>
+        <FlexRowDiv className='playground-header' style={ headerStyle }>
+          <FlexColDiv style={{ fontWeight: 400, fontSize: '26px' }}>TSDoc Playground</FlexColDiv>
+          <FlexColDiv style={{ fontWeight: 400, fontSize: '20px' }}>
+            <a style={navAnchorStyle} href='https://github.com/Microsoft/tsdoc' target='_blank'>
+              What is TSDoc?</a>
+          </FlexColDiv>
         </FlexRowDiv>
 
-        { this._renderErrorList() }
+        <FlexColDiv className='playground-content-area' style={ { margin: '4px', flex: 1 } }>
+          <FlexRowDiv className='playground-main-row' style={ mainRowStyle }>
+            { this._renderInputBox() }
+
+            <TabPane
+              style={ { flex: 1, marginLeft: '4px' } }
+              buttonRowStyle={ { height: '40px', boxSizing: 'border-box'  } }
+              tabs={ [
+                { title: 'HTML', render: this._renderHtml.bind(this) },
+                { title: 'DOM', render: this._renderDom.bind(this) },
+                { title: 'Lines', render: this._renderLines.bind(this) },
+                { title: 'AST', render: this._renderAst.bind(this) }
+              ] }
+            />
+          </FlexRowDiv>
+          <FlexColDiv className='playground-errors-pane' style={ errorsPaneStyle }>
+            { this._renderErrorList() }
+          </FlexColDiv>
+        </FlexColDiv>
+
+        <FlexRowDiv className='playground-footer' style={ footerStyle }>
+          &copy; 2018 Microsoft
+        </FlexRowDiv>
       </FlexColDiv>
     );
   }
@@ -168,12 +213,6 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   private _renderErrorList(): React.ReactNode {
-    const errorsPaneStyle: React.CSSProperties = {
-      width: '100%',
-      height: '200px',
-      marginTop: '12px'
-    };
-
     let errorsText: string = '';
     if (this.state.parserFailureText) {
       errorsText = this.state.parserFailureText;
@@ -181,17 +220,26 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       errorsText = this.state.parserContext.log.messages.map(x => x.toString()).join('\n');
     }
 
+    const boxStyle: React.CSSProperties = {
+      borderStyle: 'solid',
+      borderWidth: '2px',
+      borderColor: '#c0c0c0',
+      flex: 1
+    };
+
     return (
-      <FlexColDiv className='playground-errors-pane' style={ errorsPaneStyle }>
+      <>
         Errors:
         <br />
-        <textarea
-          className='playground-errors-textarea'
-          readOnly={ true }
-          value={ errorsText }
-          style={ this._textAreaStyle }
-          />
-      </FlexColDiv>
+        <FlexColDiv style={boxStyle}>
+          <textarea
+            className='playground-errors-textarea'
+            readOnly={ true }
+            value={ errorsText }
+            style={ this._textAreaStyle }
+            />
+        </FlexColDiv>
+      </>
     );
   }
 
