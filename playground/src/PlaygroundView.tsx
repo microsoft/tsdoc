@@ -229,10 +229,10 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     return (
       <>
-        Errors:
-        <br />
+        <label htmlFor="errors">Errors:</label>
         <FlexColDiv style={boxStyle}>
           <textarea
+            id="errors"
             className='playground-errors-textarea'
             readOnly={ true }
             value={ errorsText }
