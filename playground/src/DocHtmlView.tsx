@@ -57,6 +57,22 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       case 'CodeSpan':
         outputElements.push(<code key={key}>{(node as tsdoc.DocCodeSpan).code}</code>);
         break;
+      case 'ErrorText':
+        outputElements.push(<span key={key}>{(node as tsdoc.DocErrorText).text}</span>);
+        break;
+      case 'EscapedText':
+        outputElements.push(<span key={key}>{(node as tsdoc.DocEscapedText).text}</span>);
+        break;
+      case 'FencedCode':
+        const docFencedCode: tsdoc.DocFencedCode = node as tsdoc.DocFencedCode;
+        outputElements.push(
+          <pre key={key}>
+            <code key={key}>
+              { docFencedCode.code }
+            </code>
+          </pre>
+        );
+        break;
       case 'LinkTag':
         outputElements.push(<a key={key} href='#'>{(node as tsdoc.DocLinkTag).linkText}</a>);
         break;
