@@ -5,7 +5,10 @@ import * as tsdoc from '@microsoft/tsdoc';
 import { TabPane } from './TabPane';
 import { FlexRowDiv, FlexColDiv } from './FlexDivs';
 import { DocHtmlView } from './DocHtmlView';
-import { MonacoWrapper } from './MonacoWrapper';
+import {
+  MonacoWrapper,
+  ICommentSyntaxMarker
+} from './MonacoWrapper';
 
 export interface IPlaygroundViewProps {
 }
@@ -80,6 +83,28 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   private _renderInputBox(): React.ReactNode {
+    const markers: ICommentSyntaxMarker[] = [];
+    if (this.state.parserContext) {
+      for (const message of this.state.parserContext.log.messages) {
+        const text: string = message.unformattedText;
+        if (message.tokenSequence) {
+          for (const token of message.tokenSequence.tokens) {
+            markers.push({
+              pos: token.range.pos,
+              end: token.range.end,
+              message: text
+            });
+          }
+        } else {
+          markers.push({
+            pos: message.textRange.pos,
+            end: message.textRange.end,
+            message: text
+          });
+        }
+      }
+    }
+
     return (
       <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
         <div style={ { height: '40px' } } />
@@ -89,6 +114,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           value={ this.state.inputText }
           onChange={ this._inputTextArea_onChange.bind(this) }
           language='typescript'
+          markers={ markers }
          />
       </FlexColDiv>
     );
