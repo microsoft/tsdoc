@@ -193,21 +193,6 @@ export class MonacoWrapper extends React.Component<IMonacoWrapperProps, IMonacoW
           }
         );
 
-        // monaco.editor.setModelMarkers(
-        //   this._editor.getModel(),
-        //   'foobar',
-        //   [{
-        //     startLineNumber: 4,
-        //     startColumn: 4,
-        //     endLineNumber: 4,
-        //     endColumn: 10,
-        //     severity: monaco.MarkerSeverity.Warning,
-        //     message: 'asdfasdf **ERROR** akjsldfkajsdlfkj'
-        //   }]
-        // );
-
-        // this._editor.getModel().getPositionAt()
-
         this._editor.getModel().onDidChangeContent((e) => {
           if (this._editor) {
             this._safeOnChange(this._editor.getValue());
