@@ -108,8 +108,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     }
 
     return (
-      <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
-        <div style={ { height: '40px' } } />
+      <FlexColDiv className='playground-input-box' style={ { flex: 1, paddingTop: 40 } }>
         <MonacoWrapper
           className='playground-input-textarea'
           style={ this._textAreaStyle }
