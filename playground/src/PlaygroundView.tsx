@@ -108,8 +108,20 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   private _renderDom(): React.ReactNode {
-    const code: string = ReactDomServer.renderToStaticMarkup(<div />) || 'error';
-    return <code>{code}</code>;
+    // tslint:disable-next-line:no-any
+    const code: string = ReactDomServer.renderToStaticMarkup(this._renderHtml() as React.ReactElement<any>) || 'error';
+    return (
+      <MonacoWrapper
+        className='playground-dom-textarea'
+        style={ { ...this._textAreaStyle, border: 'none' } }
+        readOnly={ true }
+        value={ this._indentHtml(code) }
+        language='html'
+        editorOptions={ {
+          lineNumbers: 'off'
+        } }
+      />
+    );
   }
 
   private _renderLines(): React.ReactNode {
@@ -205,6 +217,63 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         parserFailureText: 'Unhandled exception: ' + error.message
       });
     }
+  }
+
+  // Given a string containing perfectly encoded XHTML (like what React generates),
+  // this adds appropriate indentation
+  private _indentHtml(html: string): string {
+    const tagRegExp: RegExp = /\<\/|\<|\>/g;
+    const output: string[] = [];
+
+    const indentCharacters: string = '  ';
+
+    let match: RegExpExecArray | null;
+    let lastIndex: number = 0;
+    let indentLevel: number = 0;
+    let lastTag: string = '';
+
+    while (match = tagRegExp.exec(html)) {
+      const matchIndex: number = match.index;
+
+      const textBeforeMatch: string = html.substring(lastIndex, matchIndex);
+      output.push(textBeforeMatch);
+
+      switch (match[0]) {
+        case '<':
+          // Matched opening tag
+          output.push('\n');
+          for (let i: number = 0; i < indentLevel; ++i) {
+            output.push(indentCharacters);
+          }
+
+          ++indentLevel;
+
+          lastTag = '<';
+          break;
+        case '</':
+          // Matched closing tag
+          --indentLevel;
+
+          if (lastTag !== '<') {
+            output.push('\n');
+            for (let i: number = 0; i < indentLevel; ++i) {
+              output.push(indentCharacters);
+            }
+          }
+
+          lastTag = '</';
+          break;
+        case '>':
+          break;
+      }
+
+      lastIndex = matchIndex;
+    }
+
+    const endingText: string = html.substring(lastIndex);
+    output.push(endingText);
+
+    return output.join('');
   }
 
   private _dumpTSDocTree(outputLines: string[], docNode: tsdoc.DocNode, indent: string = ''): void {
