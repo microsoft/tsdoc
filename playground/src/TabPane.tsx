@@ -18,11 +18,13 @@ export interface ITabPaneState {
 }
 
 export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
+  private DEFAULT_TAB_INDEX: number = 0;
+
   constructor(props: ITabPaneProps, context?: any) { // tslint:disable-line:no-any
     super(props, context);
 
     this.state = {
-      selectedTabIndex: 0
+      selectedTabIndex: document.location.hash ? this.getTabIndexFromUrl() : this.DEFAULT_TAB_INDEX
     };
   }
 
@@ -96,4 +98,18 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
     this.setState({ selectedTabIndex: tabIndex });
   }
 
+  private getTabIndexFromUrl(): number {
+    const { tabs } = this.props;
+
+    let index: number = this.DEFAULT_TAB_INDEX;
+
+    tabs.forEach((tab: ITabDefinition, idx: number, _tabs: ITabDefinition[]) => {
+      const urlHashTitle: string = document.location.hash.substring(1, document.location.hash.length);
+      if (tab.title.toLowerCase() === urlHashTitle.toLowerCase()) {
+        index = idx;
+      }
+    });
+
+    return index;
+  }
 }
