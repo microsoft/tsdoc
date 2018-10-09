@@ -18,11 +18,13 @@ export interface ITabPaneState {
 }
 
 export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
+  private DEFAULT_TAB_INDEX: number = 0;
+
   constructor(props: ITabPaneProps, context?: any) { // tslint:disable-line:no-any
     super(props, context);
 
     this.state = {
-      selectedTabIndex: 0
+      selectedTabIndex: document.location.hash ? this.getTabIndexFromUrl() : this.DEFAULT_TAB_INDEX
     };
   }
 
@@ -33,7 +35,7 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
 
     for (let i: number = 0; i < this.props.tabs.length; ++i) {
       const tabDefinition: ITabDefinition  = this.props.tabs[i];
-
+      const { title } = tabDefinition;
       const style: React.CSSProperties = {
         padding: '8px',
         marginLeft: '1px',
@@ -54,7 +56,7 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
 
         buttons.push(
           <div key={`tab_${i}`} style={ selectedStyle }>
-            {tabDefinition.title}
+            {title}
           </div>
         );
 
@@ -62,10 +64,10 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
 
         buttons.push(
           <div key={`tab_${i}`} style={ style }>
-            <a href='#'
+            <a href={`#${title.toLowerCase()}`}
                style={ { textDecorationLine: 'none' } }
                onClick={this._onClickTab.bind(this, i)}>
-              {tabDefinition.title}
+              {title}
             </a>
           </div>
         );
@@ -96,4 +98,18 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
     this.setState({ selectedTabIndex: tabIndex });
   }
 
+  private getTabIndexFromUrl(): number {
+    const { tabs } = this.props;
+
+    let index: number = this.DEFAULT_TAB_INDEX;
+
+    tabs.forEach((tab: ITabDefinition, idx: number, _tabs: ITabDefinition[]) => {
+      const urlHashTitle: string = document.location.hash.substring(1, document.location.hash.length);
+      if (tab.title.toLowerCase() === urlHashTitle.toLowerCase()) {
+        index = idx;
+      }
+    });
+
+    return index;
+  }
 }
