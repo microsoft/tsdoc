@@ -110,6 +110,24 @@ export class DocNodeSyntaxStyler {
           break;
         }
 
+        case 'packageName': {
+          DocNodeSyntaxStyler._addTokenStyles(
+            styles,
+            docNode.excerpt,
+            { theme, styleTokens: [...styleTokens, 'packageName'] }
+          );
+          break;
+        }
+
+        case 'importPath': {
+          DocNodeSyntaxStyler._addTokenStyles(
+            styles,
+            docNode.excerpt,
+            { theme, styleTokens: [...styleTokens, 'importPath'] }
+          );
+          break;
+        }
+
         case 'urlDestination': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
