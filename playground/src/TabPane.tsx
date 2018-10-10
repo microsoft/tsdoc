@@ -82,8 +82,13 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
       flex: 1
     };
 
+    const tabPaneStyle: React.CSSProperties = {
+      ...this.props.style,
+      minWidth: 0
+    };
+
     return (
-      <FlexColDiv className='playground-tab-pane' style={ this.props.style }>
+      <FlexColDiv className='playground-tab-pane' style={ tabPaneStyle }>
         <FlexRowDiv className='playground-tab-pane-buttons' style={ this.props.buttonRowStyle }>
           { buttons }
         </FlexRowDiv>
