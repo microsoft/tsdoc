@@ -20,6 +20,7 @@ export interface IPlaygroundViewState {
   inputText: string;
   parserContext: tsdoc.ParserContext | undefined;
   parserFailureText: string | undefined;
+  selectSampleValue: string | undefined;
 }
 
 export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlaygroundViewState>  {
@@ -42,7 +43,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     this.state = {
       inputText: require('raw-loader!./initialCode.ts'),
       parserContext: undefined,
-      parserFailureText: undefined
+      parserFailureText: undefined,
+      selectSampleValue: undefined
     };
   }
 
@@ -169,7 +171,9 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     return (
       <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
-        <div className='playground-button-bar' style={ { height: '40px', boxSizing: 'border-box' } } />
+        <div className='playground-button-bar' style={ { height: '40px', boxSizing: 'border-box' } }>
+          { this._renderSelectSample() }
+        </div>
         <CodeEditor
           className='playground-input-text-editor'
           style={ editorStyle }
@@ -181,6 +185,27 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
          />
       </FlexColDiv>
     );
+  }
+
+  private _renderSelectSample(): React.ReactNode {
+    return (
+      <select
+        className='playground-select-sample'
+        value={this.state.selectSampleValue}
+        onChange={this._selectSample_onChange.bind(this)}>
+
+        <option value='none'>Choose a sample...</option>
+        <option value='basic'>Basic Example</option>
+        <option value='advanced'>Advanced</option>
+      </select>
+    );
+  }
+
+  private _selectSample_onChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+    this.setState({
+      selectSampleValue: event.target.value,
+      inputText: '...'
+    });
   }
 
   private _renderHtml(): React.ReactNode {
