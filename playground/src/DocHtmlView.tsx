@@ -124,7 +124,26 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
         );
         break;
       case 'LinkTag':
-        return <a key={key} href='#'>{(node as tsdoc.DocLinkTag).linkText}</a>;
+        const linkTag: tsdoc.DocLinkTag = node as tsdoc.DocLinkTag;
+        if (linkTag.urlDestination) {
+          const linkText: string = linkTag.linkText || linkTag.urlDestination;
+          return <a key={key} href='#'>{linkText}</a>;
+        } else {
+          let identifier: string = '';
+          if (linkTag.codeDestination) {
+            // TODO: The library should provide a default rendering for this
+            const memberReferences: ReadonlyArray<tsdoc.DocMemberReference> = linkTag.codeDestination.memberReferences;
+            if (memberReferences.length > 0) {
+              const memberIdentifier: tsdoc.DocMemberIdentifier | undefined
+                = memberReferences[memberReferences.length - 1].memberIdentifier;
+              if (memberIdentifier) {
+                identifier = memberIdentifier.identifier;
+              }
+            }
+          }
+          const linkText: string = linkTag.linkText || identifier || '???';
+          return <a key={key} href='#'>{linkText}</a>;
+        }
       case 'Paragraph':
         return (
           <p key={key}>
