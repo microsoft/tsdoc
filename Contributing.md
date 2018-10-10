@@ -1,36 +1,47 @@
 # Contributing to the TSDoc project
 
-### Building the @microsoft/tsdoc library
+## Building the @microsoft/tsdoc library
 
-To build the project:
+To build the project (**standalone with NPM**, if you are experimenting):
 
-```
+```shell
 $ cd ./tsdoc
-$ npm install
+# Note: Be sure to specify "--no-package-lock" to avoid conflicts with Rush
+$ npm install --no-package-lock
 $ npm run build
 ```
+
+**-- OR --**
+
+To build the project (**using Rush and Yarn**, if you are contributing):
+
+```shell
+$ cd ./tsdoc
+$ rush install
+$ rush build
+```
+
+> For details about Rush, see **"Submitting a PR"** later on this page.
+
 
 ### Running the unit tests interactively
 
 We use the [Jest](https://jestjs.io/) test runner.  To run the TSDoc tests interactively (`jest --watch` scenario):
 
-```
+```shell
 $ cd ./tsdoc
 $ npm run watch
 ```
 
-### Before submitting a pull request
+### To run all the unit tests from the command-line
 
 Run all the unit tests once:
 
-```
+```shell
 $ cd ./tsdoc
 $ npm run build
 $ npm run test
 ```
-
-Before submitting your PR, you should also build and run the [/api-demo](./api-demo/) project.
-
 
 ### Debugging the unit tests
 
@@ -40,7 +51,7 @@ easier.  To debug a unit test:
 
 1. Launch VS Code in the tsdoc subfolder (not the repository root):
 
-   ```
+   ```shell
    $ cd ./tsdoc
    $ code .
    ```
@@ -55,6 +66,67 @@ the debugger.)
 
 Jest is configured to run using a plugin that adds TypeScript support.  You can set breakpoints in
 the TypeScript source files, and the VS Code debugger will break on them.
+
+
+## Submitting a PR
+
+Before submitting your PR, you will need to install the Rush tool and build the monorepo.
+
+> **What's this Rush thing?**  Rush is Microsoft's build orchestrator that handles policy validation,
+> change log management, installing (using [Yarn](https://yarnpkg.com/en/)), linking, building,
+> and publishing:  When it's time to publish the TSDoc NPM package and deploy the playground to the website,
+> our automation system gets its configuration from the [rush.json](./rush.json) file in this repo.
+> To learn more about how to use Rush, please visit: https://rushjs.io/
+
+1. Install the [Rush](https://rushjs.io/pages/developer/new_developer/) software:
+
+  ```shell
+  $ npm install -g @microsoft/rush
+  ```
+
+  *NOTE: If this command fails because your user account does not have permissions to
+  access NPM's global folder, you may need to
+  [fix your NPM configuration](https://docs.npmjs.com/getting-started/fixing-npm-permissions).*
+
+2. Install dependencies for all projects in the monorepo:
+
+  ```shell
+  # Run this command in the folder where you cloned the TSDoc repo from GitHub
+  $ rush install
+  ```
+
+  *IMPORTANT: After you run `rush install`, your repo will be in a "Rush-linked" state,
+  with special symlinks in the node_modules folders.  DO NOT run `npm install` in this state.
+  If you want to go back to working in standalone mode, first run `rush unlink && rush purge`.*
+
+3. Build and test all the projects in the monorepo:
+
+  ```shell
+  $ rush build
+  ```
+
+  You can also build just the **@microsoft/tsdoc** library like this:
+
+  ```shell
+  $ cd ./tsdoc
+  $ npm run build
+  ```
+
+4. Manual testing:  Before submitting your PR, you should also try running the
+   [/api-demo](./api-demo/) and [/playground](./playground) to make sure they work
+   as expected.
+
+5. Change logs:  If your PR modifies the published NPM package, you will need to write a
+   change entry for the [CHANGELOG.md](./tsdoc/CHANGELOG.md) change log.  Please read the
+   "[recommended practices](https://rushjs.io/pages/best_practices/change_logs/)" for
+   authoring change logs.
+
+   ```shell
+   $ rush change
+   ```
+
+   This will create a file under the **common/changes** folder that you should add to Git
+   and include in your PR.
 
 
 ##  Contributor License Agreement (CLA)

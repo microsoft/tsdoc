@@ -72,7 +72,7 @@ The **@microsoft/tsdoc** library is intended to be incorporated into other build
 - The library [@microsoft/tsdoc](https://www.npmjs.com/package/@microsoft/tsdoc) provides a TSDoc parser that you can use in your own projects.  The source code for this library can be found in the [/tsdoc](./tsdoc/) folder.
 - The [/api-demo](./api-demo/) folder has a small demo project illustrating how to invoke the **@microsoft/tsdoc** library.
 - See [Contributing.md](./Contributing.md) for instructions for building, debugging, and contributing to TSDoc.
-- We're using [GitHub issues](https://github.com/Microsoft/tsdoc/issues) to discuss the TSDoc specification, library design, and project roadmap.
+- We're using [GitHub issues](https://github.com/Microsoft/tsdoc/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) to discuss the TSDoc specification, library design, and project roadmap.
 
 
 ### Who's involved?
