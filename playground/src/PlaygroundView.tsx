@@ -12,6 +12,7 @@ import {
   IStyledRange
 } from './CodeEditor';
 import { DocNodeSyntaxStyler } from './SyntaxStyler/DocNodeSyntaxStyler';
+import { SampleInputs } from './samples/SampleInputs';
 
 export interface IPlaygroundViewProps {
 }
@@ -20,6 +21,7 @@ export interface IPlaygroundViewState {
   inputText: string;
   parserContext: tsdoc.ParserContext | undefined;
   parserFailureText: string | undefined;
+  selectSampleValue: string | undefined;
 }
 
 export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlaygroundViewState>  {
@@ -40,9 +42,10 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     super(props, context);
 
     this.state = {
-      inputText: require('raw-loader!./initialCode.ts'),
+      inputText: SampleInputs.basic,
       parserContext: undefined,
-      parserFailureText: undefined
+      parserFailureText: undefined,
+      selectSampleValue: undefined
     };
   }
 
@@ -169,7 +172,9 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     return (
       <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
-        <div className='playground-button-bar' style={ { height: '40px', boxSizing: 'border-box' } } />
+        <div className='playground-button-bar' style={ { height: '40px', boxSizing: 'border-box' } }>
+          { this._renderSelectSample() }
+        </div>
         <CodeEditor
           className='playground-input-text-editor'
           style={ editorStyle }
@@ -183,11 +188,44 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     );
   }
 
+  private _renderSelectSample(): React.ReactNode {
+    return (
+      <select
+        className='playground-select-sample'
+        value={this.state.selectSampleValue}
+        onChange={this._selectSample_onChange.bind(this)}>
+
+        <option value='none'>Choose a sample...</option>
+        <option value='basic'>A basic example</option>
+        <option value='advanced'>Some advanced features</option>
+        <option value='hyperlink'>Creating hyperlinks</option>
+      </select>
+    );
+  }
+
+  private _selectSample_onChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+    this.setState({
+      selectSampleValue: event.target.value
+    });
+
+    switch (event.target.value) {
+      case 'basic':
+        this.setState({ inputText: SampleInputs.basic });
+        break;
+      case 'advanced':
+        this.setState({ inputText: SampleInputs.advanced });
+        break;
+      case 'hyperlink':
+        this.setState({ inputText: SampleInputs.hyperlink });
+        break;
+    }
+  }
+
   private _renderHtml(): React.ReactNode {
     const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
     if (parserContext && parserContext.docComment) {
       return (
-        <div style={ { overflow: 'auto', paddingLeft: '8px', paddingRight: '8px' } }>
+        <div style={ { overflow: 'auto', paddingLeft: '8px', paddingRight: '8px', flex: 1 } }>
           <DocHtmlView docComment={ parserContext.docComment } />
         </div>
       );
@@ -266,7 +304,12 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     this._reparseNeeded = false;
     try {
       const inputText: string = this.state.inputText;
-      const tsdocParser: tsdoc.TSDocParser = new tsdoc.TSDocParser();
+      const configuration: tsdoc.TSDocParserConfiguration = new tsdoc.TSDocParserConfiguration();
+      configuration.addTagDefinition(new tsdoc.TSDocTagDefinition({
+        tagName: '@sampleCustomBlockTag',
+        syntaxKind: tsdoc.TSDocTagSyntaxKind.BlockTag
+      }));
+      const tsdocParser: tsdoc.TSDocParser = new tsdoc.TSDocParser(configuration);
       const parserContext: tsdoc.ParserContext = tsdocParser.parseString(inputText);
 
       this.setState({
