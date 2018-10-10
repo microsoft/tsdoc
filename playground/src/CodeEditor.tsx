@@ -36,7 +36,8 @@ export interface ICodeEditorProps {
   language?: string;
   onChange?: (value: string) => void;
 
-  editorOptions?: monacoEditor.editor.IEditorConstructionOptions;
+  disableLineNumbers?: boolean;
+  theme?: string;
   markers?: ISyntaxMarker[];
   syntaxStyles?: IStyledRange[];
 }
@@ -165,6 +166,16 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
             };
           })
         );
+
+        if (this.props.theme !== prevProps.theme) {
+          CodeEditor._monaco.editor.setTheme(this.props.theme || 'vs');
+        }
+      }
+
+      if (this.props.disableLineNumbers !== prevProps.disableLineNumbers) {
+        this._editor.updateOptions({
+          lineNumbers: this.props.disableLineNumbers ? 'off' : 'on'
+        });
       }
 
       this._applySyntaxStyling(this.props.syntaxStyles || []);
@@ -173,7 +184,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
 
   public render(): React.ReactNode {
     if (this.state.monacoErrorMessage) {
-      return ( // Fall back to a textbox
+      return (
         <FlexColDiv
           className={ this.props.className }
           style={ this.props.style } >
@@ -204,7 +215,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
       // Find decorations to remove
       const newExistingSyntaxStyles: { [hash: string]: string } = {};
       const decorationsToAdd: IStyledRange[] = [];
-      const hashesOfFecorationsToAdd: string[] = [];
+      const hashesOfDecorationsToAdd: string[] = [];
       const decorationsToRemove: string[] = [];
       for (const syntaxStyle of newSyntaxStyles) {
         const hash: string = JSON.stringify(syntaxStyle);
@@ -214,7 +225,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
           delete this._existingSyntaxStyles[hash];
         } else {
           newExistingSyntaxStyles[hash] = ''; // Put an empty identifier here so we don't add duplicates
-          hashesOfFecorationsToAdd.push(hash);
+          hashesOfDecorationsToAdd.push(hash);
           decorationsToAdd.push(syntaxStyle);
         }
       }
@@ -249,7 +260,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
       ));
 
       for (let i: number = 0; i < decorationsToAdd.length; i++) {
-        newExistingSyntaxStyles[hashesOfFecorationsToAdd[i]] = decorationIds[i];
+        newExistingSyntaxStyles[hashesOfDecorationsToAdd[i]] = decorationIds[i];
       }
 
       this._existingSyntaxStyles = newExistingSyntaxStyles;
@@ -278,7 +289,8 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
             minimap: {
               enabled: false
             },
-            ...this.props.editorOptions
+            lineNumbers: this.props.disableLineNumbers ? 'off' : 'on',
+            theme: this.props.theme
           }
         );
 

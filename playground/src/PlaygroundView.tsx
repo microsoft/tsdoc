@@ -14,6 +14,11 @@ import {
 import { DocNodeSyntaxStyler } from './SyntaxStyler/DocNodeSyntaxStyler';
 import { SampleInputs } from './samples/SampleInputs';
 
+export const enum Theme {
+  vs = 'vs'
+
+}
+
 export interface IPlaygroundViewProps {
 }
 
@@ -22,6 +27,7 @@ export interface IPlaygroundViewState {
   parserContext: tsdoc.ParserContext | undefined;
   parserFailureText: string | undefined;
   selectSampleValue: string | undefined;
+  selectedTheme: string;
 }
 
 export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlaygroundViewState>  {
@@ -45,7 +51,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       inputText: SampleInputs.basic,
       parserContext: undefined,
       parserFailureText: undefined,
-      selectSampleValue: undefined
+      selectSampleValue: undefined,
+      selectedTheme: 'vs'
     };
   }
 
@@ -160,7 +167,11 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
       DocNodeSyntaxStyler.getStylesForDocComment(
         syntaxStyles,
-        { docNode: this.state.parserContext.docComment, parserContext: this.state.parserContext }
+        {
+          docNode: this.state.parserContext.docComment,
+          parserContext: this.state.parserContext,
+          themeName: this.state.selectedTheme
+        }
       );
     }
 
@@ -174,6 +185,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
         <div className='playground-button-bar' style={ { height: '40px', boxSizing: 'border-box' } }>
           { this._renderSelectSample() }
+          { this._renderThemeSelector() }
         </div>
         <CodeEditor
           className='playground-input-text-editor'
@@ -183,6 +195,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           language='typescript'
           markers={ markers }
           syntaxStyles={ syntaxStyles }
+          theme={ this.state.selectedTheme }
          />
       </FlexColDiv>
     );
@@ -199,6 +212,19 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         <option value='basic'>A basic example</option>
         <option value='advanced'>Some advanced features</option>
         <option value='hyperlink'>Creating hyperlinks</option>
+      </select>
+    );
+  }
+
+  private _renderThemeSelector(): React.ReactNode {
+    return (
+      <select
+        className='playground-select-theme'
+        value={this.state.selectedTheme}
+        onChange={this._selectTheme_onChange.bind(this)}>
+
+        <option value='vs'>Light Theme</option>
+        <option value='vs-dark'>Dark Theme</option>
       </select>
     );
   }
@@ -221,6 +247,12 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     }
   }
 
+  private _selectTheme_onChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+    this._reparseNeeded = true;
+    this.setState({ selectedTheme: event.target.value });
+    this._reparseTimer_onTick(); // Force reparse
+  }
+
   private _renderHtml(): React.ReactNode {
     const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
     if (parserContext && parserContext.docComment) {
@@ -235,7 +267,12 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   private _renderDom(): React.ReactNode {
-    return <DocDomView parserContext={this.state.parserContext} />;
+    return (
+      <DocDomView
+        parserContext={ this.state.parserContext }
+        theme={ this.state.selectedTheme }
+      />
+    );
   }
 
   private _renderLines(): React.ReactNode {
@@ -256,7 +293,12 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   private _renderAst(): React.ReactNode {
-    return <DocAstView parserContext={this.state.parserContext} />;
+    return (
+      <DocAstView
+        parserContext={this.state.parserContext}
+        theme={ this.state.selectedTheme }
+      />
+    );
   }
 
   private _renderErrorList(): React.ReactNode {
@@ -284,7 +326,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
             readOnly={ true }
             value={ errorsText }
             style={ this._textAreaStyle }
-            />
+          />
         </FlexColDiv>
       </>
     );

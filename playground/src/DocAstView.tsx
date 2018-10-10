@@ -5,6 +5,7 @@ import { CodeEditor } from './CodeEditor';
 export interface IDocAstViewProps {
   style?: React.CSSProperties;
   parserContext: tsdoc.ParserContext | undefined;
+  theme?: string;
 }
 
 export class DocAstView extends React.Component<IDocAstViewProps> {
@@ -21,9 +22,8 @@ export class DocAstView extends React.Component<IDocAstViewProps> {
         className='playground-ast-text-editor'
         readOnly={ true }
         value={ outputLines.join('\n') }
-        editorOptions={ {
-          lineNumbers: 'off'
-        } }
+        disableLineNumbers={ true }
+        theme={ this.props.theme }
       />
     );
   }
