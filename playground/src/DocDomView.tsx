@@ -1,8 +1,14 @@
 import * as React from 'react';
-import * as ReactDomServer from 'react-dom/server';
 import * as tsdoc from '@microsoft/tsdoc';
 import { MonacoWrapper } from './MonacoWrapper';
 import { DocHtmlView } from './DocHtmlView';
+
+// NOTE: We cannot import "react-dom/server" directly because that would bring in
+// the ambient typings for NodeJS, which is incompatible with our DOM typings.
+//
+// import * as ReactDomServer from 'react-dom/server';
+// tslint:disable-next-line
+const ReactDomServer: any = require('react-dom/server');
 
 export interface IDocDomViewProps {
   style?: React.CSSProperties;
