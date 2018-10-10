@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
-import { MonacoWrapper } from './MonacoWrapper';
+import { CodeEditor } from './CodeEditor';
 
 export interface IDocAstViewProps {
   style?: React.CSSProperties;
@@ -17,7 +17,7 @@ export class DocAstView extends React.Component<IDocAstViewProps> {
     }
 
     return (
-      <MonacoWrapper
+      <CodeEditor
         className='playground-ast-text-editor'
         readOnly={ true }
         value={ outputLines.join('\n') }
@@ -30,6 +30,10 @@ export class DocAstView extends React.Component<IDocAstViewProps> {
 
   private _dumpTSDocTree(outputLines: string[], docNode: tsdoc.DocNode, indent: string = ''): void {
     let dumpText: string = `${indent}- ${docNode.kind}`;
+    if (docNode instanceof tsdoc.DocParticle) {
+      dumpText += ` (${docNode.particleId})`;
+    }
+
     if (docNode instanceof tsdoc.DocNodeLeaf && docNode.excerpt) {
       const content: string = docNode.excerpt.content.toString();
       if (content.length > 0) {

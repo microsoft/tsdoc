@@ -7,9 +7,11 @@ import { DocHtmlView } from './DocHtmlView';
 import { DocDomView } from './DocDomView';
 import { DocAstView } from './DocAstView';
 import {
-  MonacoWrapper,
-  ICommentSyntaxMarker
-} from './MonacoWrapper';
+  CodeEditor,
+  ISyntaxMarker,
+  IStyledRange
+} from './CodeEditor';
+import { DocNodeSyntaxStyler } from './SyntaxStyler/DocNodeSyntaxStyler';
 
 export interface IPlaygroundViewProps {
 }
@@ -45,7 +47,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   public componentDidMount(): void {
-    this._reparseTimerHandle = setInterval(this._reparseTimer_onTick.bind(this), 700);
+    this._reparseTimerHandle = setInterval(this._reparseTimer_onTick.bind(this), 300);
   }
 
   public componentWillUnmount(): void {
@@ -129,7 +131,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   private _renderInputBox(): React.ReactNode {
-    const markers: ICommentSyntaxMarker[] = [];
+    const markers: ISyntaxMarker[] = [];
+    const syntaxStyles: IStyledRange[] = [];
     if (this.state.parserContext) {
       for (const message of this.state.parserContext.log.messages) {
         const text: string = message.unformattedText;
@@ -151,6 +154,11 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           });
         }
       }
+
+      DocNodeSyntaxStyler.getStylesForDocComment(
+        syntaxStyles,
+        { docNode: this.state.parserContext.docComment, parserContext: this.state.parserContext }
+      );
     }
 
     const editorStyle: React.CSSProperties = {
@@ -162,13 +170,14 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     return (
       <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
         <div className='playground-button-bar' style={ { height: '40px', boxSizing: 'border-box' } } />
-        <MonacoWrapper
+        <CodeEditor
           className='playground-input-text-editor'
           style={ editorStyle }
           value={ this.state.inputText }
           onChange={ this._inputTextArea_onChange.bind(this) }
           language='typescript'
           markers={ markers }
+          syntaxStyles={ syntaxStyles }
          />
       </FlexColDiv>
     );

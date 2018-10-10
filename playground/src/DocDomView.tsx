@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
-import { MonacoWrapper } from './MonacoWrapper';
+import { CodeEditor } from './CodeEditor';
 import { DocHtmlView } from './DocHtmlView';
 
 // NOTE: We cannot import "react-dom/server" directly because that would bring in
@@ -28,7 +28,7 @@ export class DocDomView extends React.Component<IDocDomViewProps> {
     }
 
     return (
-      <MonacoWrapper
+      <CodeEditor
         className='playground-dom-text-editor'
         readOnly={ true }
         value={ code }
