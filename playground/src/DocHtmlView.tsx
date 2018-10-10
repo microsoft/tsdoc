@@ -39,11 +39,13 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
         <React.Fragment key='parameters'>
           <h2 className='doc-heading'>Parameters</h2>
           <table className='doc-table'>
-            <tbody>
+            <thead>
               <tr>
                 <th>Name</th>
                 <th>Description</th>
               </tr>
+            </thead>
+            <tbody>
               {rows}
             </tbody>
           </table>
