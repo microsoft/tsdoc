@@ -8,44 +8,18 @@ script:
   - git fetch origin master:refs/remotes/origin/master -a
   - echo -en 'travis_fold:end:fetch\\r'
 
-  - cd tsdoc
+  - echo 'Checking for missing change logs...' && echo -en 'travis_fold:start:change\\r'
+  - node common/scripts/install-run-rush.js change -v
+  - echo -en 'travis_fold:end:change\\r'
 
-  - echo '(tsdoc) npm install' && echo -en 'travis_fold:start:tsdoc-install\\r'
-  - npm install
-  - echo -en 'travis_fold:end:tsdoc-install\\r'
+  - echo 'Checking for inconsistent dependency versions' && echo -en 'travis_fold:start:check\\r'
+  - node common/scripts/install-run-rush.js check
+  - echo -en 'travis_fold:end:check\\r'
 
-  - echo '(tsdoc) npm run build' && echo -en 'travis_fold:start:tsdoc-build\\r'
-  - npm run build
-  - echo -en 'travis_fold:end:tsdoc-build\\r'
+  - echo 'Installing...' && echo -en 'travis_fold:start:install\\r'
+  - node common/scripts/install-run-rush.js install
+  - echo -en 'travis_fold:end:install\\r'
 
-  - echo '(tsdoc) npm run test' && echo -en 'travis_fold:start:tsdoc-test\\r'
-  - npm run test
-  - echo -en 'travis_fold:end:tsdoc-test\\r'
-
-  - cd ../api-demo
-
-  - echo '(api-demo) npm install' && echo -en 'travis_fold:start:demo-install\\r'
-  - npm install
-  - echo -en 'travis_fold:end:demo-install\\r'
-
-  - echo '(api-demo) npm run build' && echo -en 'travis_fold:start:demo-build\\r'
-  - npm run build
-  - echo -en 'travis_fold:end:demo-build\\r'
-
-  - echo '(api-demo) npm run start simple' && echo -en 'travis_fold:start:demo-start-simple\\r'
-  - npm run start simple
-  - echo -en 'travis_fold:end:demo-start-simple\\r'
-
-  - echo '(api-demo) npm run start advanced' && echo -en 'travis_fold:start:demo-start-advanced\\r'
-  - npm run start advanced
-  - echo -en 'travis_fold:end:demo-start-advanced\\r'
-
-  - cd ../playground
-
-  - echo '(playground) npm install' && echo -en 'travis_fold:start:playground-install\\r'
-  - npm install
-  - echo -en 'travis_fold:end:playground-install\\r'
-
-  - echo '(playground) npm run build' && echo -en 'travis_fold:start:playground-build\\r'
-  - npm run build
-  - echo -en 'travis_fold:end:playground-build\\r'
+  - echo 'Building...' && echo -en 'travis_fold:start:build\\r'
+  - node common/scripts/install-run-rush.js rebuild --verbose --production
+  - echo -en 'travis_fold:end:build\\r'
