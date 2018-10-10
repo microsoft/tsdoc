@@ -65,3 +65,6 @@ bin/
 
 # Build artifacts
 **/*.scss.ts
+
+# Ignore Log files
+*.log
