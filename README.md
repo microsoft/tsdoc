@@ -36,7 +36,7 @@ This scenario originally arose from projects at Microsoft that are processed by 
 
 - [Visual Studio Code](https://code.visualstudio.com): an editor that supports syntax highlighting and interactive refactoring for TypeScript doc comments
 - [TypeDoc](https://github.com/TypeStrong/typedoc): an API reference website generator that extracts its content from doc comments
-- [DocFX](https://dotnet.github.io/docfx/):  a integrated pipeline that ingests API reference content for many different programming languages, but then applies its own Markdown renderer and custom tag parsing
+- [DocFX](https://dotnet.github.io/docfx/):  an integrated pipeline that ingests API reference content for many different programming languages, but then applies its own Markdown renderer and custom tag parsing
 - [API Extractor](https://aka.ms/extractor): a build tool that tracks TypeScript API review workflows and generates *.d.ts rollups for third-party SDKs
 
 These are just examples.  Many other tools in today's web developer community want to interact with TypeScript doc comments.  Each of these tools accepts a syntax that is loosely based on [JSDoc](http://usejsdoc.org), but encounters frustrating incompatibilities when attempting to coexist with other parsers.
@@ -72,7 +72,7 @@ Currently TSDoc is still in the early stages, but we've made a lot of progress.
 - The [/api-demo](./api-demo/) folder has a small demo project illustrating how to invoke the **@microsoft/tsdoc** library.
 - We're using [GitHub issues](https://github.com/Microsoft/tsdoc/issues) to discuss the TSDoc specification, library design, and project roadmap.
 
-NOTE: The **@microsoft/tsdoc** library is intended to be incorporated into other build tools that analyze TypeScript source code, such as the ones linked below.  By itself, the library cannot is not a documentation tool.
+NOTE: The **@microsoft/tsdoc** library is intended to be incorporated into other build tools that analyze TypeScript source code, such as the ones linked below.  By itself, the library is not a documentation tool.
 
 
 ### Who's involved?
