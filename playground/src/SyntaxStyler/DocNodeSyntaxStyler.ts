@@ -68,6 +68,7 @@ export class DocNodeSyntaxStyler {
         case 'rightParenthesis':
         case 'leftBracket':
         case 'rightBracket':
+        case 'importHash':
         case 'dot': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
@@ -291,6 +292,10 @@ export class DocNodeSyntaxStyler {
 
           if (themeStyle.background) {
             cssRules.push(`background-color: #${themeStyle.background} !important;`);
+          }
+
+          if (themeStyle.fontWeight) {
+            cssRules.push(`font-weight: ${themeStyle.fontWeight} !important;`);
           }
 
           let classNameToUse: string = themeStyle.className ? `${themeStyle.className} ` : '';

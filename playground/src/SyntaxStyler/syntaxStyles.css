@@ -4,9 +4,17 @@
 
 .tsdoc-blocktag {
   border-color: #003399 !important;
-  border-width: 1px !important;
-  border-top-style: solid !important;
-  border-left-style: solid !important;
-  border-right-style: none !important;
-  border-bottom-style: none !important;
+  border-width: 1px;
+  border-top-style: solid;
+  border-left-style: solid;
+  border-right-style: none;
+  border-bottom-style: none;
+  border-top-left-radius: 5px;
+  padding-left: 1px;
+  margin-left: -1px;
+}
+
+.tsdoc-blocktag+.tsdoc-blocktag {
+  border-left-style: none;
+  border-top-left-radius: 0px;
 }

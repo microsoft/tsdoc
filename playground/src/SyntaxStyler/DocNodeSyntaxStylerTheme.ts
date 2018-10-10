@@ -1,6 +1,7 @@
 export interface IThemeRule {
   foreground?: string;
   background?: string;
+  fontWeight?: string;
   className?: string;
 }
 
@@ -10,9 +11,9 @@ export interface IDocNodeSyntaxStylerTheme {
 
 export const vs: IDocNodeSyntaxStylerTheme = {
   'tsdoc.delimiter': { foreground: 'a6a6a6' },
-  'tsdoc.tag.block': { foreground: '003399', className: 'tsdoc-blocktag' },
-  'tsdoc.tag.inline': { foreground: '003399' },
-  'tsdoc.tag.modifier': { foreground: 'c55a11' },
+  'tsdoc.tag.block': { foreground: '003399', fontWeight: 'bold', className: 'tsdoc-blocktag' },
+  'tsdoc.tag.inline': { foreground: '003399', fontWeight: 'bold' },
+  'tsdoc.tag.modifier': { foreground: 'c55a11', fontWeight: 'bold' },
   'tsdoc.tag.undefined': { foreground: 'a6a6a6' },
   'tsdoc.member.selector': { foreground: 'c55a11' },
   'tsdoc.member.identifier': { foreground: '5b9bd5' },
