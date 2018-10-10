@@ -18,13 +18,13 @@ export interface ISyntaxMarker extends ISyntaxLocation {
   message: string;
 }
 
+export interface ISyntaxStyle extends ISyntaxLocation {
+  className: string;
+}
+
 const hashSymbol: unique symbol = Symbol('identifier');
 interface ITrackedSyntaxStyle extends ISyntaxStyle {
   [hashSymbol]: string;
-}
-
-export interface ISyntaxStyle extends ISyntaxLocation {
-  className: string;
 }
 
 export interface ICodeEditorProps {

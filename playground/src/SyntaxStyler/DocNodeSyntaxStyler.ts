@@ -14,13 +14,13 @@ export interface IGetStylesForDocCommentOptions {
   parserContext: tsdoc.ParserContext;
 }
 
-interface IGetStylesForDocCommentInternalOptions extends IGetStylesForDocCommentOptions, IAddTokenStylesOptions {
-  parentNode?: tsdoc.DocNode;
-}
-
 interface IAddTokenStylesOptions {
   styleTokens: string[];
   theme: IDocNodeSyntaxStylerTheme;
+}
+
+interface IGetStylesForDocCommentInternalOptions extends IGetStylesForDocCommentOptions, IAddTokenStylesOptions {
+  parentNode?: tsdoc.DocNode;
 }
 
 interface IThemeClassNameMapping {
