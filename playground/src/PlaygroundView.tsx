@@ -11,7 +11,7 @@ import {
   ISyntaxMarker,
   ISyntaxStyle
 } from './CodeEditor';
-import { DocNodeSyntaxStyler } from './DocNodeSyntaxStyler';
+import { DocNodeSyntaxStyler } from './SyntaxStyler/DocNodeSyntaxStyler';
 
 export interface IPlaygroundViewProps {
 }
@@ -155,7 +155,10 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         }
       }
 
-      DocNodeSyntaxStyler.getStylesForDocComment(syntaxStyles, this.state.parserContext.docComment);
+      DocNodeSyntaxStyler.getStylesForDocComment(
+        syntaxStyles,
+        { docNode: this.state.parserContext.docComment, parserContext: this.state.parserContext }
+      );
     }
 
     const editorStyle: React.CSSProperties = {

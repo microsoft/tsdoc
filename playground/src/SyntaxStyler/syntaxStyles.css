@@ -1,0 +1,12 @@
+.tsdoc-underline {
+  text-decoration: underline !important;
+}
+
+.tsdoc-blocktag {
+  border-color: #003399 !important;
+  border-width: 1px !important;
+  border-top-style: solid !important;
+  border-left-style: solid !important;
+  border-right-style: none !important;
+  border-bottom-style: none !important;
+}
