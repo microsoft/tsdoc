@@ -159,7 +159,7 @@ function _generateBaseWebpackConfiguration(isProduction) {
       }),
       new ForkTsCheckerWebpackPlugin({
         async: false,
-        tslint: require.resolve('tslint'),
+        tslint: true,
         watch: isProduction ? path.join(__dirname, 'src') : undefined
       })
     ]
