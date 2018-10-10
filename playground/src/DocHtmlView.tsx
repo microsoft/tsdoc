@@ -12,61 +12,111 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
 
     const outputElements: React.ReactNode[] = [];
 
+    // Summary
     if (docComment.summarySection) {
-      const key: string = `key_${outputElements.length}`;
-      outputElements.push(<h2 key={key}>Summary</h2>);
-      this._renderContainer(outputElements, docComment.summarySection);
+      outputElements.push(
+        <React.Fragment key='summary'>
+          <h2 className='doc-heading'>Summary</h2>
+          { this._renderContainer(docComment.summarySection) }
+        </React.Fragment>
+      );
+    }
+
+    // Parameters
+    if (docComment.paramBlocks.length > 0) {
+      const rows: React.ReactNode[] = [];
+
+      for (const paramBlock of docComment.paramBlocks) {
+        rows.push(
+          <tr key={`param_${rows.length}`}>
+            <td> { paramBlock.parameterName } </td>
+            <td> { this._renderContainer(paramBlock) } </td>
+          </tr>
+        );
+      }
+
+      outputElements.push(
+        <React.Fragment key='parameters'>
+          <h2 className='doc-heading'>Parameters</h2>
+          <table className='doc-table'>
+            <tbody>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+              {rows}
+            </tbody>
+          </table>
+        </React.Fragment>
+      );
+    }
+
+    // Returns
+    if (docComment.returnsBlock) {
+      outputElements.push(
+        <React.Fragment key='returns'>
+          <h2 className='doc-heading'>Return Value</h2>
+          { this._renderContainer(docComment.returnsBlock) }
+        </React.Fragment>
+      );
     }
 
     if (docComment.remarksBlock) {
-      const key: string = `key_${outputElements.length}`;
-      outputElements.push(<h2 key={key}>Remarks</h2>);
-
-      this._renderContainer(outputElements, docComment.remarksBlock);
+      outputElements.push(
+        <React.Fragment key='remarks'>
+          <h2 className='doc-heading'>Remarks</h2>
+          { this._renderContainer(docComment.remarksBlock) }
+        </React.Fragment>
+      );
     }
 
-    if (docComment.paramBlocks.length > 0) {
-      const key: string = `key_${outputElements.length}`;
-      outputElements.push(<h2 key={key}>Parameters</h2>);
+    const modifierTags: ReadonlyArray<tsdoc.DocBlockTag> = docComment.modifierTagSet.nodes;
 
-      for (const paramBlock of docComment.paramBlocks) {
-        this._renderContainer(outputElements, paramBlock);
+    if (modifierTags.length > 0) {
+      const modifierElements: React.ReactNode[] = [];
+
+      for (const modifierTag of modifierTags) {
+        const key: string = `modifier_${modifierElements.length}`;
+        modifierElements.push(
+          <React.Fragment key={key}>
+            { ' ' }
+            <code className='doc-code-span'>{ modifierTag.tagName }</code>
+          </React.Fragment>
+        );
       }
+
+      outputElements.push(
+        <React.Fragment key='modifiers'>
+          <h2 className='doc-heading'>Modifiers</h2>
+          { modifierElements }
+        </React.Fragment>
+      );
     }
 
-    if (docComment.returnsBlock) {
-      const key: string = `key_${outputElements.length}`;
-      outputElements.push(<h2 key={key}>Returns</h2>);
-
-      this._renderContainer(outputElements, docComment.returnsBlock);
-    }
-
-    return <div style={ this.props.style }>{outputElements}</div>;
+    return <div style={ this.props.style }> {outputElements} </div>;
   }
 
-  private _renderContainer(outputElements: React.ReactNode[], section: tsdoc.DocNodeContainer): void {
+  private _renderContainer(section: tsdoc.DocNodeContainer): React.ReactNode {
+    const elements: React.ReactNode[] = [];
     for (const node of section.nodes) {
-      this._renderDocNode(outputElements, node);
+      const key: string = `key_${elements.length}`;
+      elements.push(this._renderDocNode(node, key));
     }
+    return (<React.Fragment> {elements} </React.Fragment> );
   }
 
-  private _renderDocNode(outputElements: React.ReactNode[], node: tsdoc.DocNode): void {
-    const key: string = `key_${outputElements.length}`;
-
+  private _renderDocNode(node: tsdoc.DocNode, key: string): React.ReactNode | undefined {
     switch (node.kind) {
       case 'CodeSpan':
-        outputElements.push(<code key={key}>{(node as tsdoc.DocCodeSpan).code}</code>);
-        break;
+        return <code key={key} className='doc-code-span'>{(node as tsdoc.DocCodeSpan).code}</code>;
       case 'ErrorText':
-        outputElements.push(<span key={key}>{(node as tsdoc.DocErrorText).text}</span>);
-        break;
+        return <span key={key}>{(node as tsdoc.DocErrorText).text}</span>;
       case 'EscapedText':
-        outputElements.push(<span key={key}>{(node as tsdoc.DocEscapedText).text}</span>);
-        break;
+        return <span key={key}>{(node as tsdoc.DocEscapedText).text}</span>;
       case 'FencedCode':
         const docFencedCode: tsdoc.DocFencedCode = node as tsdoc.DocFencedCode;
-        outputElements.push(
-          <pre key={key}>
+        return (
+          <pre key={key} className='doc-fenced-code'>
             <code key={key}>
               { docFencedCode.code }
             </code>
@@ -74,16 +124,18 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
         );
         break;
       case 'LinkTag':
-        outputElements.push(<a key={key} href='#'>{(node as tsdoc.DocLinkTag).linkText}</a>);
-        break;
+        return <a key={key} href='#'>{(node as tsdoc.DocLinkTag).linkText}</a>;
       case 'Paragraph':
-        const paragraphElements: React.ReactNode[] = [];
-        this._renderContainer(paragraphElements, node as tsdoc.DocParagraph);
-        outputElements.push(<p key={key}>{ paragraphElements }</p>);
-        break;
+        return (
+          <p key={key}>
+            { this._renderContainer(node as tsdoc.DocParagraph) }
+          </p>
+        );
       case 'PlainText':
-        outputElements.push(<span key={key}>{(node as tsdoc.DocPlainText).text}</span>);
-        break;
+        return <span key={key}>{(node as tsdoc.DocPlainText).text}</span>;
+      case 'SoftBreak':
+        return <React.Fragment key={key}>{' '}</React.Fragment>;
     }
+    return undefined;
   }
 }
