@@ -12,6 +12,7 @@ import {
   IStyledRange
 } from './CodeEditor';
 import { DocNodeSyntaxStyler } from './SyntaxStyler/DocNodeSyntaxStyler';
+import { SampleInputs } from './samples/SampleInputs';
 
 export interface IPlaygroundViewProps {
 }
@@ -41,7 +42,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     super(props, context);
 
     this.state = {
-      inputText: require('raw-loader!./initialCode.ts'),
+      inputText: SampleInputs.basic,
       parserContext: undefined,
       parserFailureText: undefined,
       selectSampleValue: undefined
@@ -195,17 +196,29 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         onChange={this._selectSample_onChange.bind(this)}>
 
         <option value='none'>Choose a sample...</option>
-        <option value='basic'>Basic Example</option>
-        <option value='advanced'>Advanced</option>
+        <option value='basic'>A basic example</option>
+        <option value='advanced'>Some advanced features</option>
+        <option value='hyperlink'>Creating hyperlinks</option>
       </select>
     );
   }
 
   private _selectSample_onChange(event: React.ChangeEvent<HTMLSelectElement>): void {
     this.setState({
-      selectSampleValue: event.target.value,
-      inputText: '...'
+      selectSampleValue: event.target.value
     });
+
+    switch (event.target.value) {
+      case 'basic':
+        this.setState({ inputText: SampleInputs.basic });
+        break;
+      case 'advanced':
+        this.setState({ inputText: SampleInputs.advanced });
+        break;
+      case 'hyperlink':
+        this.setState({ inputText: SampleInputs.hyperlink });
+        break;
+    }
   }
 
   private _renderHtml(): React.ReactNode {
@@ -291,7 +304,12 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     this._reparseNeeded = false;
     try {
       const inputText: string = this.state.inputText;
-      const tsdocParser: tsdoc.TSDocParser = new tsdoc.TSDocParser();
+      const configuration: tsdoc.TSDocParserConfiguration = new tsdoc.TSDocParserConfiguration();
+      configuration.addTagDefinition(new tsdoc.TSDocTagDefinition({
+        tagName: '@sampleCustomBlockTag',
+        syntaxKind: tsdoc.TSDocTagSyntaxKind.BlockTag
+      }));
+      const tsdocParser: tsdoc.TSDocParser = new tsdoc.TSDocParser(configuration);
       const parserContext: tsdoc.ParserContext = tsdocParser.parseString(inputText);
 
       this.setState({
