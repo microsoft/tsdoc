@@ -1,11 +1,11 @@
 import * as tsdoc from '@microsoft/tsdoc';
 
 import {
-  vs,
+  MonacoTSDocTheme,
   IDocNodeSyntaxStylerTheme,
   IThemeRule
 } from './DocNodeSyntaxStylerTheme';
-import { ISyntaxStyle } from './../CodeEditor';
+import { IStyledRange } from './../CodeEditor';
 
 import './syntaxStyles.css';
 
@@ -31,11 +31,11 @@ export class DocNodeSyntaxStyler {
   private static _classNameId: number = 0;
   private static _themeCache: { [hash: string]: IThemeClassNameMapping } = {};
 
-  public static getStylesForDocComment(styles: ISyntaxStyle[], options: IGetStylesForDocCommentOptions): void {
+  public static getStylesForDocComment(styles: IStyledRange[], options: IGetStylesForDocCommentOptions): void {
     DocNodeSyntaxStyler._getStylesForDocCommentInternal(
       styles,
       {
-        theme: vs,
+        theme: MonacoTSDocTheme.vs, // Default to the "vs" theme
         ...options,
         styleTokens: ['tsdoc']
       }
@@ -43,7 +43,7 @@ export class DocNodeSyntaxStyler {
   }
 
   public static _getStylesForDocCommentInternal(
-    styles: ISyntaxStyle[],
+    styles: IStyledRange[],
     options: IGetStylesForDocCommentInternalOptions
   ): void {
     const {
@@ -207,7 +207,7 @@ export class DocNodeSyntaxStyler {
   }
 
   private static _addStylesForTag(
-    styles: ISyntaxStyle[],
+    styles: IStyledRange[],
     excerpt: tsdoc.Excerpt | undefined,
     tagDefinition: tsdoc.TSDocTagDefinition | undefined,
     options: IAddTokenStylesOptions
@@ -256,7 +256,7 @@ export class DocNodeSyntaxStyler {
   }
 
   private static _addTokenStyles(
-    styles: ISyntaxStyle[],
+    styles: IStyledRange[],
     excerpt: tsdoc.Excerpt | undefined,
     options: IAddTokenStylesOptions
   ): void {

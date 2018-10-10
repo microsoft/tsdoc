@@ -9,7 +9,7 @@ import { DocAstView } from './DocAstView';
 import {
   CodeEditor,
   ISyntaxMarker,
-  ISyntaxStyle
+  IStyledRange
 } from './CodeEditor';
 import { DocNodeSyntaxStyler } from './SyntaxStyler/DocNodeSyntaxStyler';
 
@@ -47,7 +47,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   public componentDidMount(): void {
-    this._reparseTimerHandle = setInterval(this._reparseTimer_onTick.bind(this), 700);
+    this._reparseTimerHandle = setInterval(this._reparseTimer_onTick.bind(this), 300);
   }
 
   public componentWillUnmount(): void {
@@ -132,7 +132,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
   private _renderInputBox(): React.ReactNode {
     const markers: ISyntaxMarker[] = [];
-    const syntaxStyles: ISyntaxStyle[] = [];
+    const syntaxStyles: IStyledRange[] = [];
     if (this.state.parserContext) {
       for (const message of this.state.parserContext.log.messages) {
         const text: string = message.unformattedText;

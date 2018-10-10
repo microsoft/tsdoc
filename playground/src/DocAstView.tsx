@@ -35,8 +35,7 @@ export class DocAstView extends React.Component<IDocAstViewProps> {
     }
 
     if (docNode instanceof tsdoc.DocNodeLeaf && docNode.excerpt) {
-      const content: string = docNode.excerpt!.content.toString();
-      // docNode.excerpt.content.toString();
+      const content: string = docNode.excerpt.content.toString();
       if (content.length > 0) {
         dumpText += ': ' + JSON.stringify(content);
       }

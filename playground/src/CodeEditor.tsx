@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as monacoEditor from 'monaco-editor';
 import { FlexColDiv } from './FlexDivs';
 
-export interface ISyntaxLocation {
+export interface ITextRange {
   /**
    * Beginning position as a character index of the text in the editor
    */
@@ -14,17 +14,18 @@ export interface ISyntaxLocation {
   end: number;
 }
 
-export interface ISyntaxMarker extends ISyntaxLocation {
+/**
+ * Describes a marker. Markers refer to annotations (i.e. - squiggly lines) in code.
+ */
+export interface ISyntaxMarker extends ITextRange {
   message: string;
 }
 
-export interface ISyntaxStyle extends ISyntaxLocation {
+/**
+ * Describes a styled range. This allows CSS styling to be applied to ranges of code.
+ */
+export interface IStyledRange extends ITextRange {
   className: string;
-}
-
-const hashSymbol: unique symbol = Symbol('identifier');
-interface ITrackedSyntaxStyle extends ISyntaxStyle {
-  [hashSymbol]: string;
 }
 
 export interface ICodeEditorProps {
@@ -37,7 +38,7 @@ export interface ICodeEditorProps {
 
   editorOptions?: monacoEditor.editor.IEditorConstructionOptions;
   markers?: ISyntaxMarker[];
-  syntaxStyles?: ISyntaxStyle[];
+  syntaxStyles?: IStyledRange[];
 }
 
 export interface ICodeEditorState {
@@ -198,11 +199,12 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
     }
   }
 
-  private _applySyntaxStyling(newSyntaxStyles: ISyntaxStyle[]): void {
+  private _applySyntaxStyling(newSyntaxStyles: IStyledRange[]): void {
     if (this._editor) {
       // Find decorations to remove
       const newExistingSyntaxStyles: { [hash: string]: string } = {};
-      const decorationsToAdd: ITrackedSyntaxStyle[] = [];
+      const decorationsToAdd: IStyledRange[] = [];
+      const hashesOfFecorationsToAdd: string[] = [];
       const decorationsToRemove: string[] = [];
       for (const syntaxStyle of newSyntaxStyles) {
         const hash: string = JSON.stringify(syntaxStyle);
@@ -212,10 +214,8 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
           delete this._existingSyntaxStyles[hash];
         } else {
           newExistingSyntaxStyles[hash] = ''; // Put an empty identifier here so we don't add duplicates
-          decorationsToAdd.push({
-            [hashSymbol]: hash,
-            ...syntaxStyle
-          });
+          hashesOfFecorationsToAdd.push(hash);
+          decorationsToAdd.push(syntaxStyle);
         }
       }
 
@@ -249,7 +249,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
       ));
 
       for (let i: number = 0; i < decorationsToAdd.length; i++) {
-        newExistingSyntaxStyles[decorationsToAdd[i][hashSymbol]] = decorationIds[i];
+        newExistingSyntaxStyles[hashesOfFecorationsToAdd[i]] = decorationIds[i];
       }
 
       this._existingSyntaxStyles = newExistingSyntaxStyles;
