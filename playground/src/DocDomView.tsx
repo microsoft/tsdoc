@@ -13,6 +13,7 @@ const ReactDomServer: any = require('react-dom/server');
 export interface IDocDomViewProps {
   style?: React.CSSProperties;
   parserContext: tsdoc.ParserContext | undefined;
+  theme?: string;
 }
 
 export class DocDomView extends React.Component<IDocDomViewProps> {
@@ -33,9 +34,8 @@ export class DocDomView extends React.Component<IDocDomViewProps> {
         readOnly={ true }
         value={ code }
         language='html'
-        editorOptions={ {
-          lineNumbers: 'off'
-        } }
+        disableLineNumbers={ true }
+        theme={ this.props.theme }
       />
     );
   }

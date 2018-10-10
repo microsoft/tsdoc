@@ -12,6 +12,7 @@ import './syntaxStyles.css';
 export interface IGetStylesForDocCommentOptions {
   docNode: tsdoc.DocNode;
   parserContext: tsdoc.ParserContext;
+  themeName: string;
 }
 
 interface IAddTokenStylesOptions {
@@ -32,11 +33,25 @@ export class DocNodeSyntaxStyler {
   private static _themeCache: { [hash: string]: IThemeClassNameMapping } = {};
 
   public static getStylesForDocComment(styles: IStyledRange[], options: IGetStylesForDocCommentOptions): void {
+    let theme: IDocNodeSyntaxStylerTheme;
+    switch (options.themeName) {
+      default:
+      case 'vs': {
+        theme = MonacoTSDocTheme.vs;
+        break;
+      }
+
+      case 'vs-dark': {
+        theme = MonacoTSDocTheme.vsDark;
+        break;
+      }
+    }
+
     DocNodeSyntaxStyler._getStylesForDocCommentInternal(
       styles,
       {
-        theme: MonacoTSDocTheme.vs, // Default to the "vs" theme
         ...options,
+        theme,
         styleTokens: ['tsdoc']
       }
     );
@@ -106,7 +121,7 @@ export class DocNodeSyntaxStyler {
             styles,
             docNode.excerpt,
             { theme, styleTokens: [...styleTokens, 'member', 'identifier'] }
-          );
+        );
           break;
         }
 
