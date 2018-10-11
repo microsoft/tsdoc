@@ -18,7 +18,7 @@ try {
 
   console.log('-- TSLINT --\n');
   child_process.execSync(path.join(baseDir, 'node_modules/.bin/tslint')
-    + ' --config tslint.json --project . --rules-dir node_modules/tslint-microsoft-contrib',
+    + ' --config tslint.json --project .',
     { stdio: 'inherit' });
 } catch (e) {
   console.log('ERROR: ' + e.message);
