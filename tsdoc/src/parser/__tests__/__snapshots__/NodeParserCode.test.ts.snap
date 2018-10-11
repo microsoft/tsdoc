@@ -3,180 +3,240 @@
 exports[`00 Code span basic, positive 1`] = `
 Object {
   "buffer": "/**[n] * line [c]1[c][n] * line [c] 2[c] sdf[n] */",
+  "gaps": Array [],
   "lines": Array [
     "line [c]1[c]",
     "line [c] 2[c] sdf",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "line ",
-    },
-    Object {
-      "kind": "CodeSpan",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[c]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "1",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[c]",
-        },
-      ],
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "line ",
-    },
-    Object {
-      "kind": "CodeSpan",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[c]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": " 2",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[c]",
-        },
-      ],
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": " sdf",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "line ",
+              },
+              Object {
+                "kind": "CodeSpan",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "[c]",
+                  },
+                  Object {
+                    "kind": "Particle: code",
+                    "nodeExcerpt": "1",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "[c]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "line ",
+              },
+              Object {
+                "kind": "CodeSpan",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "[c]",
+                  },
+                  Object {
+                    "kind": "Particle: code",
+                    "nodeExcerpt": " 2",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "[c]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": " sdf",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`00 Code span basic, positive 2`] = `
+Object {
+  "buffer": "/**[n] * M[c]&[c]M[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "M[c]&[c]M",
   ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "M",
+              },
+              Object {
+                "kind": "CodeSpan",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: openingDelimiter",
+                    "nodeExcerpt": "[c]",
+                  },
+                  Object {
+                    "kind": "Particle: code",
+                    "nodeExcerpt": "&",
+                  },
+                  Object {
+                    "kind": "Particle: closingDelimiter",
+                    "nodeExcerpt": "[c]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "M",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`01 Code span basic, negative 1`] = `
 Object {
   "buffer": "/**[n] * [c]multi[n] * line[c][n] */",
+  "gaps": Array [],
   "lines": Array [
     "[c]multi",
     "line[c]",
   ],
   "logMessages": Array [
     "(2,4): The code span is missing its closing backtick",
-    "(3,8): The opening backtick for a code span must be preceded by whitespace",
+    "(3,8): The code span is missing its closing backtick",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "errorLocation": "[c]",
-      "errorMessage": "The code span is missing its closing backtick",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[c]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "multi",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "line",
-    },
-    Object {
-      "errorLocation": "[c]",
-      "errorLocationPrecedingToken": "line",
-      "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[c]",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[c]",
+                "errorMessage": "The code span is missing its closing backtick",
+                "kind": "ErrorText",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "multi",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "line",
+              },
+              Object {
+                "errorLocation": "[c]",
+                "errorLocationPrecedingToken": "line",
+                "errorMessage": "The code span is missing its closing backtick",
+                "kind": "ErrorText",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`01 Code span basic, negative 2`] = `
 Object {
-  "buffer": "/**[n] * one[c]two[n] * [c]three[c]four[n] */",
+  "buffer": "/**[n] * [c][c][n] */",
+  "gaps": Array [],
   "lines": Array [
-    "one[c]two",
-    "[c]three[c]four",
+    "[c][c]",
   ],
   "logMessages": Array [
-    "(2,7): The opening backtick for a code span must be preceded by whitespace",
-    "(3,4): Error parsing code span: The closing backtick for a code span must be followed by whitespace",
-    "(3,10): The opening backtick for a code span must be preceded by whitespace",
+    "(2,4): A code span must contain at least one character between the backticks",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "one",
-    },
-    Object {
-      "errorLocation": "[c]",
-      "errorLocationPrecedingToken": "one",
-      "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[c]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "two",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "errorLocation": "[c]",
-      "errorLocationPrecedingToken": "three",
-      "errorMessage": "Error parsing code span: The closing backtick for a code span must be followed by whitespace",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[c]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "three",
-    },
-    Object {
-      "errorLocation": "[c]",
-      "errorLocationPrecedingToken": "three",
-      "errorMessage": "The opening backtick for a code span must be preceded by whitespace",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[c]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "four",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[c][c]",
+                "errorMessage": "A code span must contain at least one character between the backticks",
+                "kind": "ErrorText",
+                "nodeExcerpt": "[c][c]",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`03 Code fence, positive 1`] = `
 Object {
   "buffer": "/**[n] * This is a code fence with all parts:[n] * [c][c][c]a language!   [n] *   some [c]code[c] here[n] * [c][c][c]   [n] */",
+  "gaps": Array [],
   "lines": Array [
     "This is a code fence with all parts:",
     "[c][c][c]a language!",
@@ -184,45 +244,59 @@ Object {
     "[c][c][c]",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "This is a code fence with all parts:",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "CodeFence",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[c][c][c]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "a language!",
-          "nodeSpacing": "[n]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "  some [c]code[c] here[n]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[c][c][c]",
-          "nodeSpacing": "[n]",
-        },
-      ],
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "This is a code fence with all parts:",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+          Object {
+            "kind": "FencedCode",
+            "nodes": Array [
+              Object {
+                "kind": "Particle: openingDelimiter",
+                "nodeExcerpt": "[c][c][c]",
+              },
+              Object {
+                "kind": "Particle: language",
+                "nodeExcerpt": "a language!",
+                "nodeSpacing": "[n]",
+              },
+              Object {
+                "kind": "Particle: code",
+                "nodeExcerpt": "  some [c]code[c] here[n]",
+              },
+              Object {
+                "kind": "Particle: closingDelimiter",
+                "nodeExcerpt": "[c][c][c]",
+                "nodeSpacing": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`03 Code fence, positive 2`] = `
 Object {
   "buffer": "/**[n] * This is a code fence with no language or trailing whitespace:[n] * [c][c][c][n] *   some [c]code[c] here[n] * [c][c][c]*/",
+  "gaps": Array [],
   "lines": Array [
     "This is a code fence with no language or trailing whitespace:",
     "[c][c][c]",
@@ -230,45 +304,59 @@ Object {
     "[c][c][c]",
   ],
   "logMessages": Array [],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "This is a code fence with no language or trailing whitespace:",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "CodeFence",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[c][c][c]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "",
-          "nodeSpacing": "[n]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "  some [c]code[c] here[n]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[c][c][c]",
-          "nodeSpacing": "[n]",
-        },
-      ],
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "This is a code fence with no language or trailing whitespace:",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+          Object {
+            "kind": "FencedCode",
+            "nodes": Array [
+              Object {
+                "kind": "Particle: openingDelimiter",
+                "nodeExcerpt": "[c][c][c]",
+              },
+              Object {
+                "kind": "Particle: language",
+                "nodeExcerpt": "",
+                "nodeSpacing": "[n]",
+              },
+              Object {
+                "kind": "Particle: code",
+                "nodeExcerpt": "  some [c]code[c] here[n]",
+              },
+              Object {
+                "kind": "Particle: closingDelimiter",
+                "nodeExcerpt": "[c][c][c]",
+                "nodeSpacing": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`04 Code fence, negative 1`] = `
 Object {
   "buffer": "/**[n] * Code fence incorrectly indented:[n] *    [c][c][c][n] */",
+  "gaps": Array [],
   "lines": Array [
     "Code fence incorrectly indented:",
     "   [c][c][c]",
@@ -276,37 +364,56 @@ Object {
   "logMessages": Array [
     "(3,7): The opening backtick for a code fence must appear at the start of the line",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "Code fence incorrectly indented:",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "   ",
-    },
-    Object {
-      "errorLocation": "[c][c][c]",
-      "errorLocationPrecedingToken": "   ",
-      "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[c][c][c]",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "Code fence incorrectly indented:",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "   ",
+              },
+            ],
+          },
+          Object {
+            "errorLocation": "[c][c][c]",
+            "errorLocationPrecedingToken": "   ",
+            "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
+            "kind": "ErrorText",
+            "nodeExcerpt": "[c][c][c]",
+          },
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`04 Code fence, negative 2`] = `
 Object {
   "buffer": "/**[n] * Code fence not starting the line:[n] *a[c][c][c][n] */",
+  "gaps": Array [],
   "lines": Array [
     "Code fence not starting the line:",
     "a[c][c][c]",
@@ -314,37 +421,56 @@ Object {
   "logMessages": Array [
     "(3,4): The opening backtick for a code fence must appear at the start of the line",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "Code fence not starting the line:",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "a",
-    },
-    Object {
-      "errorLocation": "[c][c][c]",
-      "errorLocationPrecedingToken": "a",
-      "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[c][c][c]",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "Code fence not starting the line:",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "a",
+              },
+            ],
+          },
+          Object {
+            "errorLocation": "[c][c][c]",
+            "errorLocationPrecedingToken": "a",
+            "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
+            "kind": "ErrorText",
+            "nodeExcerpt": "[c][c][c]",
+          },
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`04 Code fence, negative 3`] = `
 Object {
   "buffer": "/**[n] * Code fence not being terminated 1:[n] * [c][c][c]*/",
+  "gaps": Array [],
   "lines": Array [
     "Code fence not being terminated 1:",
     "[c][c][c]",
@@ -352,34 +478,53 @@ Object {
   "logMessages": Array [
     "(3,4): Error parsing code fence: Missing closing delimiter",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "Code fence not being terminated 1:",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "errorLocation": "",
-      "errorLocationPrecedingToken": "
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "Code fence not being terminated 1:",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+          Object {
+            "errorLocation": "",
+            "errorLocationPrecedingToken": "
 ",
-      "errorMessage": "Error parsing code fence: Missing closing delimiter",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[c][c][c]",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+            "errorMessage": "Error parsing code fence: Missing closing delimiter",
+            "kind": "ErrorText",
+            "nodeExcerpt": "[c][c][c]",
+          },
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`04 Code fence, negative 4`] = `
 Object {
   "buffer": "/**[n] * Code fence not being terminated 2:[n] * [c][c][c] some stuff[n] */",
+  "gaps": Array [],
   "lines": Array [
     "Code fence not being terminated 2:",
     "[c][c][c] some stuff",
@@ -387,38 +532,57 @@ Object {
   "logMessages": Array [
     "(3,4): Error parsing code fence: Missing closing delimiter",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "Code fence not being terminated 2:",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "errorLocation": "",
-      "errorLocationPrecedingToken": "
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "Code fence not being terminated 2:",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+          Object {
+            "errorLocation": "",
+            "errorLocationPrecedingToken": "
 ",
-      "errorMessage": "Error parsing code fence: Missing closing delimiter",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[c][c][c]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": " some stuff",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+            "errorMessage": "Error parsing code fence: Missing closing delimiter",
+            "kind": "ErrorText",
+            "nodeExcerpt": "[c][c][c]",
+          },
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": " some stuff",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`04 Code fence, negative 5`] = `
 Object {
   "buffer": "/**[n] * Language having backticks:[n] * [c][c][c] some stuff [c][c][c][n] */",
+  "gaps": Array [],
   "lines": Array [
     "Language having backticks:",
     "[c][c][c] some stuff [c][c][c]",
@@ -427,44 +591,68 @@ Object {
     "(3,4): Error parsing code fence: The language specifier cannot contain backtick characters",
     "(3,19): The opening backtick for a code fence must appear at the start of the line",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "Language having backticks:",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "errorLocation": "[c]",
-      "errorLocationPrecedingToken": " ",
-      "errorMessage": "Error parsing code fence: The language specifier cannot contain backtick characters",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[c][c][c]",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": " some stuff ",
-    },
-    Object {
-      "errorLocation": "[c][c][c]",
-      "errorLocationPrecedingToken": " ",
-      "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
-      "kind": "ErrorText",
-      "nodeExcerpt": "[c][c][c]",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "Language having backticks:",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+          Object {
+            "errorLocation": "[c]",
+            "errorLocationPrecedingToken": " ",
+            "errorMessage": "Error parsing code fence: The language specifier cannot contain backtick characters",
+            "kind": "ErrorText",
+            "nodeExcerpt": "[c][c][c]",
+          },
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": " some stuff ",
+              },
+            ],
+          },
+          Object {
+            "errorLocation": "[c][c][c]",
+            "errorLocationPrecedingToken": " ",
+            "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
+            "kind": "ErrorText",
+            "nodeExcerpt": "[c][c][c]",
+          },
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`04 Code fence, negative 6`] = `
 Object {
   "buffer": "/**[n] * Closing delimiter being indented:[n] * [c][c][c][n] * code[n] *      [c][c][c][n] */",
+  "gaps": Array [],
   "lines": Array [
     "Closing delimiter being indented:",
     "[c][c][c]",
@@ -474,45 +662,59 @@ Object {
   "logMessages": Array [
     "(5,4): The closing delimiter for a code fence must not be indented",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "Closing delimiter being indented:",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "CodeFence",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[c][c][c]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "",
-          "nodeSpacing": "[n]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "code[n]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "     [c][c][c]",
-          "nodeSpacing": "[n]",
-        },
-      ],
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "Closing delimiter being indented:",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+          Object {
+            "kind": "FencedCode",
+            "nodes": Array [
+              Object {
+                "kind": "Particle: openingDelimiter",
+                "nodeExcerpt": "[c][c][c]",
+              },
+              Object {
+                "kind": "Particle: language",
+                "nodeExcerpt": "",
+                "nodeSpacing": "[n]",
+              },
+              Object {
+                "kind": "Particle: code",
+                "nodeExcerpt": "code[n]",
+              },
+              Object {
+                "kind": "Particle: closingDelimiter",
+                "nodeExcerpt": "     [c][c][c]",
+                "nodeSpacing": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`04 Code fence, negative 7`] = `
 Object {
   "buffer": "/**[n] * Closing delimiter not being on a line by itself:[n] * [c][c][c][n] * code[n] * [c][c][c]  a[n] */",
+  "gaps": Array [],
   "lines": Array [
     "Closing delimiter not being on a line by itself:",
     "[c][c][c]",
@@ -522,46 +724,64 @@ Object {
   "logMessages": Array [
     "(5,9): Unexpected characters after closing delimiter for code fence",
   ],
-  "verbatimNodes": Array [
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "Closing delimiter not being on a line by itself:",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-    Object {
-      "kind": "CodeFence",
-      "nodes": Array [
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[c][c][c]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "",
-          "nodeSpacing": "[n]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "code[n]",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "[c][c][c]",
-          "nodeSpacing": "  ",
-        },
-      ],
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "a",
-    },
-    Object {
-      "kind": "SoftBreak",
-      "nodeExcerpt": "[n]",
-    },
-  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "Closing delimiter not being on a line by itself:",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+          Object {
+            "kind": "FencedCode",
+            "nodes": Array [
+              Object {
+                "kind": "Particle: openingDelimiter",
+                "nodeExcerpt": "[c][c][c]",
+              },
+              Object {
+                "kind": "Particle: language",
+                "nodeExcerpt": "",
+                "nodeSpacing": "[n]",
+              },
+              Object {
+                "kind": "Particle: code",
+                "nodeExcerpt": "code[n]",
+              },
+              Object {
+                "kind": "Particle: closingDelimiter",
+                "nodeExcerpt": "[c][c][c]",
+                "nodeSpacing": "  ",
+              },
+            ],
+          },
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodeExcerpt": "a",
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 }
 `;

@@ -12,7 +12,7 @@ export class Statistics {
    * Returns the average of two numbers.
    *
    * @remarks
-   * This method is part of the {@link core-library/Statistics | Statistics subsystem}.
+   * This method is part of the {@link core-library#Statistics | Statistics subsystem}.
    *
    * @param x - The first input number
    * @param y - The second input number
@@ -26,8 +26,12 @@ export class Statistics {
 }
 ```
 
+## Give it a try!
+
+Check out the [TSDoc Playground](https://microsoft.github.io/tsdoc/) for a cool live demo of our parser!
+
 ## Get involved
 
-The **TSDoc** project is under active development and evolving.  For up to date documentation and other background, please visit the project site:
+The **TSDoc** project is actively evolving.  Please visit our GitHub project for the latest documentation, instructions for building/debugging the projects, and other resources:
 
 https://github.com/Microsoft/tsdoc

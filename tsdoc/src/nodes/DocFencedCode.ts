@@ -3,9 +3,9 @@ import { Excerpt } from '../parser/Excerpt';
 import { DocParticle } from './DocParticle';
 
 /**
- * Constructor parameters for {@link DocCodeFence}.
+ * Constructor parameters for {@link DocFencedCode}.
  */
-export interface IDocCodeFenceParameters extends IDocNodeParameters {
+export interface IDocFencedCodeParameters extends IDocNodeParameters {
   openingDelimiterExcerpt?: Excerpt;
 
   languageExcerpt?: Excerpt;
@@ -22,48 +22,28 @@ export interface IDocCodeFenceParameters extends IDocNodeParameters {
  * starts and ends with a line comprised of three backticks.  The opening delimiter
  * can also specify a language for a syntax highlighter.
  */
-export class DocCodeFence extends DocNode {
-  /** {@inheritdoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.CodeFence;
+export class DocFencedCode extends DocNode {
+  /** {@inheritDoc} */
+  public readonly kind: DocNodeKind = DocNodeKind.FencedCode;
 
   // The opening ``` delimiter and padding
-  private readonly _openingDelimiterParticle: DocParticle;
+  private _openingDelimiterParticle: DocParticle | undefined; // never undefined after updateParameters()
 
   // The optional language string, and newline
-  private readonly _languageParticle: DocParticle;
+  private _languageParticle: DocParticle | undefined;         // never undefined after updateParameters()
 
   // The code content
-  private readonly _codeParticle: DocParticle;
+  private _codeParticle: DocParticle | undefined;             // never undefined after updateParameters()
 
   // The closing ``` delimiter, spacing, and newline
-  private readonly _closingDelimiterParticle: DocParticle;
+  private _closingDelimiterParticle: DocParticle | undefined; // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocCodeFenceParameters) {
+  public constructor(parameters: IDocFencedCodeParameters) {
     super(parameters);
-
-    this._openingDelimiterParticle = new DocParticle({
-      excerpt: parameters.openingDelimiterExcerpt,
-      content: '```'
-    });
-
-    this._languageParticle = new DocParticle({
-      excerpt: parameters.languageExcerpt,
-      content: parameters.language || ''
-    });
-
-    this._codeParticle = new DocParticle({
-      excerpt: parameters.codeExcerpt,
-      content: parameters.code
-    });
-
-    this._closingDelimiterParticle = new DocParticle({
-      excerpt: parameters.closingDelimiterExcerpt,
-      content: '```'
-    });
   }
 
   /**
@@ -82,26 +62,55 @@ export class DocCodeFence extends DocNode {
    * https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml
    */
   public get language(): string | 'ts' | '' {
-    return this._languageParticle.content;
+    return this._languageParticle!.content;
   }
 
   /**
    * The text that should be rendered as code.
    */
   public get code(): string {
-    return this._codeParticle.content;
+    return this._codeParticle!.content;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocFencedCodeParameters): void {
+    super.updateParameters(parameters);
+
+    this._openingDelimiterParticle = new DocParticle({
+      particleId: 'openingDelimiter',
+      excerpt: parameters.openingDelimiterExcerpt,
+      content: '```'
+    });
+
+    this._languageParticle = new DocParticle({
+      particleId: 'language',
+      excerpt: parameters.languageExcerpt,
+      content: parameters.language || ''
+    });
+
+    this._codeParticle = new DocParticle({
+      particleId: 'code',
+      excerpt: parameters.codeExcerpt,
+      content: parameters.code
+    });
+
+    this._closingDelimiterParticle = new DocParticle({
+      particleId: 'closingDelimiter',
+      excerpt: parameters.closingDelimiterExcerpt,
+      content: '```'
+    });
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
-      this._openingDelimiterParticle,
-      this._languageParticle,
-      this._codeParticle,
-      this._closingDelimiterParticle
+      this._openingDelimiterParticle!,
+      this._languageParticle!,
+      this._codeParticle!,
+      this._closingDelimiterParticle!
     ];
   }
 }

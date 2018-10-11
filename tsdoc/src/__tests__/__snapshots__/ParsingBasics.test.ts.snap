@@ -2,12 +2,15 @@
 
 exports[`01 Simple @beta and @internal extraction 1`] = `
 Object {
-  "_0_lines": Array [
+  "_00_lines": Array [
     "START @beta",
     "@unknownTag",
     "@internal @internal END",
   ],
-  "_1_summarySection": Object {
+  "_01_gaps": Array [
+    "@internal",
+  ],
+  "_02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -45,11 +48,15 @@ Object {
       },
     ],
   },
-  "_2_remarksBlock": undefined,
-  "_3_customBlocks": Array [],
-  "_4_paramBlocks": Array [],
-  "_5_returnsBlock": undefined,
-  "_6_modifierTags": Array [
+  "_03_remarksBlock": undefined,
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [],
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": undefined,
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodeExcerpt": "@beta",
@@ -59,28 +66,31 @@ Object {
       "nodeExcerpt": "@internal",
     },
   ],
-  "_7_logMessages": Array [],
+  "_12_logMessages": Array [
+    "(3,4): The TSDoc tag \\"@unknownTag\\" is not defined in this configuration",
+  ],
 }
 `;
 
-exports[`02 A basic TSDoc comment with all components 1`] = `
+exports[`02 A basic TSDoc comment with common components 1`] = `
 Object {
-  "_0_lines": Array [
-    "Adds two numbers together.",
+  "_00_lines": Array [
+    "Returns the average of two numbers.",
     "",
     "@remarks",
-    "This method is part of the {@link core-library/Math | Math subsystem}.",
+    "This method is part of the {@link core-library#Statistics | Statistics subsystem}.",
     "",
     "@customBlock",
     "This is a custom block containing an @undefinedBlockTag",
     "",
-    "@param x - The first number to add",
-    "@param y - The second number to add",
-    "@returns The sum of [c]x[c] and [c]y[c]",
+    "@param x - The first input number",
+    "@param y - The second input number",
+    "@returns The arithmetic mean of [c]x[c] and [c]y[c]",
     "",
     "@beta @customModifier",
   ],
-  "_1_summarySection": Object {
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -88,7 +98,7 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "Adds two numbers together.",
+            "nodeExcerpt": "Returns the average of two numbers.",
           },
           Object {
             "kind": "SoftBreak",
@@ -102,7 +112,7 @@ Object {
       },
     ],
   },
-  "_2_remarksBlock": Object {
+  "_03_remarksBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -121,22 +131,55 @@ Object {
             "nodeExcerpt": "This method is part of the ",
           },
           Object {
-            "kind": "InlineTag",
+            "kind": "LinkTag",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "{",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: tagName",
                 "nodeExcerpt": "@link",
+                "nodeSpacing": " ",
               },
               Object {
-                "kind": "Particle",
-                "nodeExcerpt": " core-library/Math | Math subsystem",
+                "kind": "DeclarationReference",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: packageName",
+                    "nodeExcerpt": "core-library",
+                  },
+                  Object {
+                    "kind": "Particle: importHash",
+                    "nodeExcerpt": "#",
+                  },
+                  Object {
+                    "kind": "MemberReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "MemberIdentifier",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Particle: identifier",
+                            "nodeExcerpt": "Statistics",
+                            "nodeSpacing": " ",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: pipe",
+                "nodeExcerpt": "|",
+              },
+              Object {
+                "kind": "Particle: linkText",
+                "nodeExcerpt": " Statistics subsystem",
+              },
+              Object {
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "}",
               },
             ],
@@ -157,7 +200,150 @@ Object {
       },
     ],
   },
-  "_3_customBlocks": Array [
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: parameterName",
+          "nodeExcerpt": "x",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: hyphen",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The first input number",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
+        },
+      ],
+    },
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: parameterName",
+          "nodeExcerpt": "y",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: hyphen",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The second input number",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": Object {
+    "kind": "Block",
+    "nodes": Array [
+      Object {
+        "kind": "BlockTag",
+        "nodeExcerpt": "@returns",
+      },
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " The arithmetic mean of ",
+          },
+          Object {
+            "kind": "CodeSpan",
+            "nodes": Array [
+              Object {
+                "kind": "Particle: openingDelimiter",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "Particle: code",
+                "nodeExcerpt": "x",
+              },
+              Object {
+                "kind": "Particle: closingDelimiter",
+                "nodeExcerpt": "[c]",
+              },
+            ],
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " and ",
+          },
+          Object {
+            "kind": "CodeSpan",
+            "nodes": Array [
+              Object {
+                "kind": "Particle: openingDelimiter",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "Particle: code",
+                "nodeExcerpt": "y",
+              },
+              Object {
+                "kind": "Particle: closingDelimiter",
+                "nodeExcerpt": "[c]",
+              },
+            ],
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " ",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
+      },
+    ],
+  },
+  "_09_customBlocks": Array [
     Object {
       "kind": "Block",
       "nodes": Array [
@@ -193,147 +379,8 @@ Object {
       ],
     },
   ],
-  "_4_paramBlocks": Array [
-    Object {
-      "kind": "ParamBlock",
-      "nodes": Array [
-        Object {
-          "kind": "BlockTag",
-          "nodeExcerpt": "@param",
-          "nodeSpacing": " ",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "x",
-          "nodeSpacing": " ",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "-",
-          "nodeSpacing": " ",
-        },
-        Object {
-          "kind": "Paragraph",
-          "nodes": Array [
-            Object {
-              "kind": "PlainText",
-              "nodeExcerpt": "The first number to add",
-            },
-            Object {
-              "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
-            },
-          ],
-        },
-      ],
-    },
-    Object {
-      "kind": "ParamBlock",
-      "nodes": Array [
-        Object {
-          "kind": "BlockTag",
-          "nodeExcerpt": "@param",
-          "nodeSpacing": " ",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "y",
-          "nodeSpacing": " ",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "-",
-          "nodeSpacing": " ",
-        },
-        Object {
-          "kind": "Paragraph",
-          "nodes": Array [
-            Object {
-              "kind": "PlainText",
-              "nodeExcerpt": "The second number to add",
-            },
-            Object {
-              "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-  "_5_returnsBlock": Object {
-    "kind": "Block",
-    "nodes": Array [
-      Object {
-        "kind": "BlockTag",
-        "nodeExcerpt": "@returns",
-      },
-      Object {
-        "kind": "Paragraph",
-        "nodes": Array [
-          Object {
-            "kind": "PlainText",
-            "nodeExcerpt": " The sum of ",
-          },
-          Object {
-            "kind": "CodeSpan",
-            "nodes": Array [
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "[c]",
-              },
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "x",
-              },
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "[c]",
-              },
-            ],
-          },
-          Object {
-            "kind": "PlainText",
-            "nodeExcerpt": " and ",
-          },
-          Object {
-            "kind": "CodeSpan",
-            "nodes": Array [
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "[c]",
-              },
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "y",
-              },
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "[c]",
-              },
-            ],
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
-          },
-          Object {
-            "kind": "PlainText",
-            "nodeExcerpt": " ",
-          },
-          Object {
-            "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
-          },
-        ],
-      },
-    ],
-  },
-  "_6_modifierTags": Array [
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodeExcerpt": "@beta",
@@ -343,23 +390,27 @@ Object {
       "nodeExcerpt": "@customModifier",
     },
   ],
-  "_7_logMessages": Array [],
+  "_12_logMessages": Array [
+    "(8,41): The TSDoc tag \\"@undefinedBlockTag\\" is not defined in this configuration",
+  ],
 }
 `;
 
 exports[`03 Incomplete @param blocks 1`] = `
 Object {
-  "_0_lines": Array [
-    "@param - The first number to add",
-    "@param y The first number to add",
-    "@returns The sum of [c]x[c] and [c]y[c]",
+  "_00_lines": Array [
+    "@param - The first input number",
+    "@param y The second input number",
+    "@returns The arithmetic mean of [c]x[c] and [c]y[c]",
   ],
-  "_1_summarySection": Object {
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
     "kind": "Section",
   },
-  "_2_remarksBlock": undefined,
-  "_3_customBlocks": Array [],
-  "_4_paramBlocks": Array [
+  "_03_remarksBlock": undefined,
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [
     Object {
       "kind": "ParamBlock",
       "nodes": Array [
@@ -368,17 +419,17 @@ Object {
           "nodeExcerpt": "@param",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: parameterName",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: hyphen",
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": " - The first number to add",
+              "nodeExcerpt": " - The first input number",
             },
             Object {
               "kind": "SoftBreak",
@@ -396,17 +447,17 @@ Object {
           "nodeExcerpt": "@param",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: parameterName",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: hyphen",
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": " y The first number to add",
+              "nodeExcerpt": " y The second input number",
             },
             Object {
               "kind": "SoftBreak",
@@ -417,7 +468,8 @@ Object {
       ],
     },
   ],
-  "_5_returnsBlock": Object {
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -429,21 +481,21 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " The sum of ",
+            "nodeExcerpt": " The arithmetic mean of ",
           },
           Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "x",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
@@ -456,15 +508,15 @@ Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: code",
                 "nodeExcerpt": "y",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
@@ -477,8 +529,10 @@ Object {
       },
     ],
   },
-  "_6_modifierTags": Array [],
-  "_7_logMessages": Array [
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [],
+  "_12_logMessages": Array [
     "(2,4): The @param block should be followed by a parameter name",
     "(3,4): The @param block should be followed by a parameter name and then a hyphen",
   ],
@@ -487,16 +541,17 @@ Object {
 
 exports[`03 Jumbled order 1`] = `
 Object {
-  "_0_lines": Array [
-    "Adds two numbers together. @remarks This method is part of the",
-    "{@link core-library/Math | Math subsystem}.",
+  "_00_lines": Array [
+    "Returns the average of two numbers. @remarks This method is part of the",
+    "{@link core-library#Statistics | Statistics subsystem}.",
     "@beta @customModifier",
-    "@returns The sum of [c]x[c] and [c]y[c]",
-    "@param x - The first number to add @param y - The second number to add",
+    "@returns The arithmetic mean of [c]x[c] and [c]y[c]",
+    "@param x - The first input number @param y - The second input number",
     "@customBlock",
     "This is a custom block containing an @undefinedBlockTag",
   ],
-  "_1_summarySection": Object {
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -504,13 +559,13 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "Adds two numbers together. ",
+            "nodeExcerpt": "Returns the average of two numbers. ",
           },
         ],
       },
     ],
   },
-  "_2_remarksBlock": Object {
+  "_03_remarksBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -529,22 +584,55 @@ Object {
             "nodeExcerpt": "[n]",
           },
           Object {
-            "kind": "InlineTag",
+            "kind": "LinkTag",
             "nodes": Array [
               Object {
-                "kind": "Particle",
+                "kind": "Particle: openingDelimiter",
                 "nodeExcerpt": "{",
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: tagName",
                 "nodeExcerpt": "@link",
+                "nodeSpacing": " ",
               },
               Object {
-                "kind": "Particle",
-                "nodeExcerpt": " core-library/Math | Math subsystem",
+                "kind": "DeclarationReference",
+                "nodes": Array [
+                  Object {
+                    "kind": "Particle: packageName",
+                    "nodeExcerpt": "core-library",
+                  },
+                  Object {
+                    "kind": "Particle: importHash",
+                    "nodeExcerpt": "#",
+                  },
+                  Object {
+                    "kind": "MemberReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "MemberIdentifier",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Particle: identifier",
+                            "nodeExcerpt": "Statistics",
+                            "nodeSpacing": " ",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
               Object {
-                "kind": "Particle",
+                "kind": "Particle: pipe",
+                "nodeExcerpt": "|",
+              },
+              Object {
+                "kind": "Particle: linkText",
+                "nodeExcerpt": " Statistics subsystem",
+              },
+              Object {
+                "kind": "Particle: closingDelimiter",
                 "nodeExcerpt": "}",
               },
             ],
@@ -569,7 +657,134 @@ Object {
       },
     ],
   },
-  "_3_customBlocks": Array [
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: parameterName",
+          "nodeExcerpt": "x",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: hyphen",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The first input number ",
+            },
+          ],
+        },
+      ],
+    },
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@param",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: parameterName",
+          "nodeExcerpt": "y",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: hyphen",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The second input number",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": Object {
+    "kind": "Block",
+    "nodes": Array [
+      Object {
+        "kind": "BlockTag",
+        "nodeExcerpt": "@returns",
+      },
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " The arithmetic mean of ",
+          },
+          Object {
+            "kind": "CodeSpan",
+            "nodes": Array [
+              Object {
+                "kind": "Particle: openingDelimiter",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "Particle: code",
+                "nodeExcerpt": "x",
+              },
+              Object {
+                "kind": "Particle: closingDelimiter",
+                "nodeExcerpt": "[c]",
+              },
+            ],
+          },
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": " and ",
+          },
+          Object {
+            "kind": "CodeSpan",
+            "nodes": Array [
+              Object {
+                "kind": "Particle: openingDelimiter",
+                "nodeExcerpt": "[c]",
+              },
+              Object {
+                "kind": "Particle: code",
+                "nodeExcerpt": "y",
+              },
+              Object {
+                "kind": "Particle: closingDelimiter",
+                "nodeExcerpt": "[c]",
+              },
+            ],
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
+      },
+    ],
+  },
+  "_09_customBlocks": Array [
     Object {
       "kind": "Block",
       "nodes": Array [
@@ -601,37 +816,61 @@ Object {
       ],
     },
   ],
-  "_4_paramBlocks": Array [
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [
     Object {
-      "kind": "ParamBlock",
-      "nodes": Array [
-        Object {
-          "kind": "BlockTag",
-          "nodeExcerpt": "@param",
-          "nodeSpacing": " ",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "x",
-          "nodeSpacing": " ",
-        },
-        Object {
-          "kind": "Particle",
-          "nodeExcerpt": "-",
-          "nodeSpacing": " ",
-        },
-        Object {
-          "kind": "Paragraph",
-          "nodes": Array [
-            Object {
-              "kind": "PlainText",
-              "nodeExcerpt": "The first number to add ",
-            },
-          ],
-        },
-      ],
+      "kind": "BlockTag",
+      "nodeExcerpt": "@beta",
     },
     Object {
+      "kind": "BlockTag",
+      "nodeExcerpt": "@customModifier",
+    },
+  ],
+  "_12_logMessages": Array [
+    "(8,41): The TSDoc tag \\"@undefinedBlockTag\\" is not defined in this configuration",
+  ],
+}
+`;
+
+exports[`04 typeParam blocks 1`] = `
+Object {
+  "_00_lines": Array [
+    "Constructs a map from a JavaScript object",
+    "",
+    "@typeParam K - The generic type parameter indicating the key type",
+    "@param jsonObject - The input object",
+    "@typeParam V - The generic type parameter indicating the value type",
+    "@returns The map",
+  ],
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
+    "kind": "Section",
+    "nodes": Array [
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodeExcerpt": "Constructs a map from a JavaScript object",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodeExcerpt": "[n]",
+          },
+        ],
+      },
+    ],
+  },
+  "_03_remarksBlock": undefined,
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [
+    Object {
       "kind": "ParamBlock",
       "nodes": Array [
         Object {
@@ -640,12 +879,12 @@ Object {
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle",
-          "nodeExcerpt": "y",
+          "kind": "Particle: parameterName",
+          "nodeExcerpt": "jsonObject",
           "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle",
+          "kind": "Particle: hyphen",
           "nodeExcerpt": "-",
           "nodeSpacing": " ",
         },
@@ -654,7 +893,7 @@ Object {
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The second number to add",
+              "nodeExcerpt": "The input object",
             },
             Object {
               "kind": "SoftBreak",
@@ -665,7 +904,75 @@ Object {
       ],
     },
   ],
-  "_5_returnsBlock": Object {
+  "_07_typeParamBlocks": Array [
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@typeParam",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: parameterName",
+          "nodeExcerpt": "K",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: hyphen",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The generic type parameter indicating the key type",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
+        },
+      ],
+    },
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodeExcerpt": "@typeParam",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: parameterName",
+          "nodeExcerpt": "V",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Particle: hyphen",
+          "nodeExcerpt": "-",
+          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Paragraph",
+          "nodes": Array [
+            Object {
+              "kind": "PlainText",
+              "nodeExcerpt": "The generic type parameter indicating the value type",
+            },
+            Object {
+              "kind": "SoftBreak",
+              "nodeExcerpt": "[n]",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "_08_returnsBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -677,45 +984,7 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " The sum of ",
-          },
-          Object {
-            "kind": "CodeSpan",
-            "nodes": Array [
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "[c]",
-              },
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "x",
-              },
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "[c]",
-              },
-            ],
-          },
-          Object {
-            "kind": "PlainText",
-            "nodeExcerpt": " and ",
-          },
-          Object {
-            "kind": "CodeSpan",
-            "nodes": Array [
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "[c]",
-              },
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "y",
-              },
-              Object {
-                "kind": "Particle",
-                "nodeExcerpt": "[c]",
-              },
-            ],
+            "nodeExcerpt": " The map",
           },
           Object {
             "kind": "SoftBreak",
@@ -725,16 +994,9 @@ Object {
       },
     ],
   },
-  "_6_modifierTags": Array [
-    Object {
-      "kind": "BlockTag",
-      "nodeExcerpt": "@beta",
-    },
-    Object {
-      "kind": "BlockTag",
-      "nodeExcerpt": "@customModifier",
-    },
-  ],
-  "_7_logMessages": Array [],
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [],
+  "_12_logMessages": Array [],
 }
 `;

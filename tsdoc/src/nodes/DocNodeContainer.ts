@@ -12,7 +12,7 @@ export interface IDocNodeContainerParameters extends IDocNodeParameters {
  * for other child nodes.  The child classes are {@link DocParagraph} and {@link DocSection}.
  */
 export abstract class DocNodeContainer extends DocNode {
-  private readonly _nodes: DocNode[] = [];
+  private _nodes: DocNode[] | undefined;  // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -27,15 +27,24 @@ export abstract class DocNodeContainer extends DocNode {
    * additional nodes that are not part of this collection.
    */
   public get nodes(): ReadonlyArray<DocNode> {
-    return this._nodes;
+    return this._nodes!;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocNodeContainerParameters): void {
+    super.updateParameters(parameters);
+
+    if (this._nodes === undefined) {
+      this._nodes = [];
+    }
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    return this._nodes;
+    return this._nodes!;
   }
 
   /**
@@ -56,7 +65,7 @@ export abstract class DocNodeContainer extends DocNode {
     if (!this.isAllowedChildNode(docNode)) {
       throw new Error(`A ${this.kind} cannot contain nodes of type ${docNode.kind}`);
     }
-    this._nodes.push(docNode);
+    this._nodes!.push(docNode);
   }
 
   /**
@@ -72,6 +81,6 @@ export abstract class DocNodeContainer extends DocNode {
    * Remove all nodes from the collection.
    */
   public clearNodes(): void {
-    this._nodes.length = 0;
+    this._nodes!.length = 0;
   }
 }

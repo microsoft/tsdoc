@@ -1,9 +1,10 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNodeKind } from './DocNode';
+import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
 
 /**
  * Constructor parameters for {@link DocSoftBreak}.
  */
-export interface IDocSoftBreakParameters extends IDocNodeParameters {
+export interface IDocSoftBreakParameters extends IDocNodeLeafParameters {
 }
 
 /**
@@ -19,8 +20,8 @@ export interface IDocSoftBreakParameters extends IDocNodeParameters {
  * TSDoc follows the same conventions, except the renderer avoids emitting
  * two empty lines (because that could start a new CommonMark paragraph).
  */
-export class DocSoftBreak extends DocNode {
-  /** {@inheritdoc} */
+export class DocSoftBreak extends DocNodeLeaf {
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.SoftBreak;
 
   /**

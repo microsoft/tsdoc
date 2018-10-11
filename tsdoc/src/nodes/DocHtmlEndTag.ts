@@ -18,17 +18,17 @@ export interface IDocHtmlEndTagParameters extends IDocNodeParameters {
  * Represents an HTML end tag.  Example: `</a>`
  */
 export class DocHtmlEndTag extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.HtmlEndTag;
 
   // The "</" delimiter
-  private readonly _openingDelimiterParticle: DocParticle;
+  private _openingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   // The element name
-  private readonly _elementNameParticle: DocParticle;
+  private _elementNameParticle: DocParticle | undefined;       // never undefined after updateParameters()
 
   // The  ">" delimiter
-  private readonly _closingDelimiterParticle: DocParticle;
+  private _closingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -36,39 +36,47 @@ export class DocHtmlEndTag extends DocNode {
    */
   public constructor(parameters: IDocHtmlEndTagParameters) {
     super(parameters);
-
-    this._openingDelimiterParticle = new DocParticle({
-      excerpt: parameters.openingDelimiterExcerpt,
-      content: '</'
-    });
-
-    this._elementNameParticle = new DocParticle({
-      excerpt: parameters.elementNameExcerpt,
-      content: parameters.elementName
-    });
-
-    this._closingDelimiterParticle = new DocParticle({
-      excerpt: parameters.closingDelimiterExcerpt,
-      content: '>'
-    });
   }
 
   /**
    * The HTML element name.
    */
   public get elementName(): string {
-    return this._elementNameParticle.content;
+    return this._elementNameParticle!.content;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocHtmlEndTagParameters): void {
+    super.updateParameters(parameters);
+
+    this._openingDelimiterParticle = new DocParticle({
+      particleId: 'openingDelimiter',
+      excerpt: parameters.openingDelimiterExcerpt,
+      content: '</'
+    });
+
+    this._elementNameParticle = new DocParticle({
+      particleId: 'elementName',
+      excerpt: parameters.elementNameExcerpt,
+      content: parameters.elementName
+    });
+
+    this._closingDelimiterParticle = new DocParticle({
+      particleId: 'closingDelimiter',
+      excerpt: parameters.closingDelimiterExcerpt,
+      content: '>'
+    });
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
-      this._openingDelimiterParticle,
-      this._elementNameParticle,
-      this._closingDelimiterParticle
+      this._openingDelimiterParticle!,
+      this._elementNameParticle!,
+      this._closingDelimiterParticle!
     ];
   }
 

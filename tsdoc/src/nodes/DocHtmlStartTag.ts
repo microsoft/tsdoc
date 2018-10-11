@@ -25,24 +25,21 @@ export interface IDocHtmlStartTagParameters extends IDocNodeParameters {
  * Example: `<a href="#" />`
  */
 export class DocHtmlStartTag extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.HtmlStartTag;
 
-  /**
-   * If true, then the HTML tag ends with "/>" instead of ">".
-   */
-  public readonly selfClosingTag: boolean;
-
   // The "<" delimiter
-  private readonly _openingDelimiterParticle: DocParticle;
+  private _openingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   // The element name
-  private readonly _elementNameParticle: DocParticle;
+  private _elementNameParticle: DocParticle | undefined;       // never undefined after updateParameters()
 
-  private _htmlAttributes: DocHtmlAttribute[];
+  private _htmlAttributes: DocHtmlAttribute[] | undefined;     // never undefined after updateParameters()
+
+  private _selfClosingTag: boolean | undefined;                // never undefined after updateParameters()
 
   // The ">" or "/>" delimiter
-  private readonly _closingDelimiterParticle: DocParticle;
+  private _closingDelimiterParticle: DocParticle | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -50,40 +47,27 @@ export class DocHtmlStartTag extends DocNode {
    */
   public constructor(parameters: IDocHtmlStartTagParameters) {
     super(parameters);
-
-    this._openingDelimiterParticle = new DocParticle({
-      excerpt: parameters.openingDelimiterExcerpt,
-      content: '<'
-    });
-
-    this._elementNameParticle = new DocParticle({
-      excerpt: parameters.elementNameExcerpt,
-      content: parameters.elementName,
-      spacingAfterContent: parameters.spacingAfterElementName
-    });
-
-    this._htmlAttributes = parameters.htmlAttributes;
-
-    this.selfClosingTag = parameters.selfClosingTag;
-
-    this._closingDelimiterParticle = new DocParticle({
-      excerpt: parameters.closingDelimiterExcerpt,
-      content: parameters.selfClosingTag ? '/>' : '>'
-    });
   }
 
   /**
    * The HTML element name.
    */
   public get elementName(): string {
-    return this._elementNameParticle.content;
+    return this._elementNameParticle!.content;
   }
 
   /**
    * The HTML attributes belonging to this HTML element.
    */
   public get htmlAttributes(): ReadonlyArray<DocHtmlAttribute> {
-    return this._htmlAttributes;
+    return this._htmlAttributes!;
+  }
+
+  /**
+   * If true, then the HTML tag ends with "/>" instead of ">".
+   */
+  public get selfClosingTag(): boolean {
+    return this._selfClosingTag!;
   }
 
   /**
@@ -91,19 +75,47 @@ export class DocHtmlStartTag extends DocNode {
    * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
    */
   public get spacingAfterElementName(): string | undefined {
-    return this._elementNameParticle.spacingAfterContent;
+    return this._elementNameParticle!.spacingAfterContent;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocHtmlStartTagParameters): void {
+    super.updateParameters(parameters);
+
+    this._openingDelimiterParticle = new DocParticle({
+      particleId: 'openingDelimiter',
+      excerpt: parameters.openingDelimiterExcerpt,
+      content: '<'
+    });
+
+    this._elementNameParticle = new DocParticle({
+      particleId: 'elementName',
+      excerpt: parameters.elementNameExcerpt,
+      content: parameters.elementName,
+      spacingAfterContent: parameters.spacingAfterElementName
+    });
+
+    this._htmlAttributes = parameters.htmlAttributes;
+
+    this._selfClosingTag = parameters.selfClosingTag;
+
+    this._closingDelimiterParticle = new DocParticle({
+      particleId: 'closingDelimiter',
+      excerpt: parameters.closingDelimiterExcerpt,
+      content: parameters.selfClosingTag ? '/>' : '>'
+    });
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
-      this._openingDelimiterParticle,
-      this._elementNameParticle,
-      ...this._htmlAttributes,
-      this._closingDelimiterParticle
+      this._openingDelimiterParticle!,
+      this._elementNameParticle!,
+      ...this._htmlAttributes!,
+      this._closingDelimiterParticle!
     ];
   }
 

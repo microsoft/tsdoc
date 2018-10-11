@@ -5,11 +5,6 @@ import { TextRange } from './TextRange';
  */
 export enum TokenKind {
   /**
-   * A null/undefined value.
-   */
-  None = 2000,
-
-  /**
    * A token representing the end of the input.  The Token.range will be an empty range
    * at the end of the provided input.
    */
@@ -28,7 +23,7 @@ export enum TokenKind {
   Spacing = 2003,
 
   /**
-   * A token representing one or more ASCII letters and numbers.
+   * A token representing one or more ASCII letters, numbers, and underscores.
    */
   AsciiWord = 2004,
 
@@ -143,7 +138,37 @@ export enum TokenKind {
    * The right square bracket character.
    * The Token.range will always be a string of length 1.
    */
-  RightSquareBracket = 2023
+  RightSquareBracket = 2023,
+
+  /**
+   * The pipe character `|`.
+   * The Token.range will always be a string of length 1.
+   */
+  Pipe = 2024,
+
+  /**
+   * The left parenthesis character.
+   * The Token.range will always be a string of length 1.
+   */
+  LeftParenthesis = 2025,
+
+  /**
+   * The right parenthesis character.
+   * The Token.range will always be a string of length 1.
+   */
+  RightParenthesis = 2026,
+
+  /**
+   * The pound character ("#").
+   * The Token.range will always be a string of length 1.
+   */
+  PoundSymbol = 2027,
+
+  /**
+   * The plus character ("+").
+   * The Token.range will always be a string of length 1.
+   */
+  Plus = 2028
 }
 
 /**

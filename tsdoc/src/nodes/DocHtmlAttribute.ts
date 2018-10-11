@@ -24,17 +24,17 @@ export interface IDocHtmlAttributeParameters extends IDocNodeParameters {
  * Example: `href="#"` inside `<a href="#" />`
  */
 export class DocHtmlAttribute extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.HtmlAttribute;
 
   // The attribute name
-  private readonly _attributeNameParticle: DocParticle;
+  private _attributeNameParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   // The "=" delimiter
-  private readonly _equalsParticle: DocParticle;
+  private _equalsParticle: DocParticle | undefined;         // never undefined after updateParameters()
 
   // The attribute value including quotation marks
-  private readonly _attributeValueParticle: DocParticle;
+  private _attributeValueParticle: DocParticle | undefined; // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -42,31 +42,13 @@ export class DocHtmlAttribute extends DocNode {
    */
   public constructor(parameters: IDocHtmlAttributeParameters) {
     super(parameters);
-
-    this._attributeNameParticle = new DocParticle({
-      excerpt: parameters.attributeNameExcerpt,
-      content: parameters.attributeName,
-      spacingAfterContent: parameters.spacingAfterAttributeName
-    });
-
-    this._equalsParticle = new DocParticle({
-      excerpt: parameters.equalsExcerpt,
-      content: '=',
-      spacingAfterContent: parameters.spacingAfterEquals
-    });
-
-    this._attributeValueParticle = new DocParticle({
-      excerpt: parameters.attributeValueExcerpt,
-      content: parameters.attributeValue,
-      spacingAfterContent: parameters.spacingAfterAttributeValue
-    });
   }
 
   /**
    * The HTML attribute name.
    */
   public get attributeName(): string {
-    return this._attributeNameParticle.content;
+    return this._attributeNameParticle!.content;
   }
 
   /**
@@ -74,7 +56,7 @@ export class DocHtmlAttribute extends DocNode {
    * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
    */
   public get spacingAfterAttributeName(): string | undefined {
-    return this._attributeNameParticle.spacingAfterContent;
+    return this._attributeNameParticle!.spacingAfterContent;
   }
 
   /**
@@ -82,14 +64,14 @@ export class DocHtmlAttribute extends DocNode {
    * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
    */
   public get spacingAfterEquals(): string | undefined {
-    return this._equalsParticle.spacingAfterContent;
+    return this._equalsParticle!.spacingAfterContent;
   }
 
   /**
    * The HTML attribute value.
    */
   public get attributeValue(): string {
-    return this._attributeValueParticle.content;
+    return this._attributeValueParticle!.content;
   }
 
   /**
@@ -97,14 +79,40 @@ export class DocHtmlAttribute extends DocNode {
    * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
    */
   public get spacingAfterAttributeValue(): string | undefined {
-    return this._attributeValueParticle.spacingAfterContent;
+    return this._attributeValueParticle!.spacingAfterContent;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocHtmlAttributeParameters): void {
+    super.updateParameters(parameters);
+
+    this._attributeNameParticle = new DocParticle({
+      particleId: 'attributeName',
+      excerpt: parameters.attributeNameExcerpt,
+      content: parameters.attributeName,
+      spacingAfterContent: parameters.spacingAfterAttributeName
+    });
+
+    this._equalsParticle = new DocParticle({
+      particleId: 'equals',
+      excerpt: parameters.equalsExcerpt,
+      content: '=',
+      spacingAfterContent: parameters.spacingAfterEquals
+    });
+
+    this._attributeValueParticle = new DocParticle({
+      particleId: 'attributeValue',
+      excerpt: parameters.attributeValueExcerpt,
+      content: parameters.attributeValue,
+      spacingAfterContent: parameters.spacingAfterAttributeValue
+    });
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
-    return [ this._attributeNameParticle, this._equalsParticle, this._attributeValueParticle ];
+    return [ this._attributeNameParticle!, this._equalsParticle!, this._attributeValueParticle! ];
   }
 }

@@ -60,6 +60,21 @@ export class StandardTags {
   /**
    * (Extended)
    *
+   * This block tag is used to document the default value for a field or property,
+   * if a value is not assigned explicitly.
+   *
+   * @remarks
+   * This tag should only be used with fields or properties that are members of a class or interface.
+   */
+  public static readonly defaultValue: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@defaultValue',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Extended)
+   *
    * When applied to a class or interface property, this indicates that the property
    * returns an event object that event handlers can be attached to.  The event-handling
    * API is implementation-defined, but typically the property return type would be a class
@@ -132,6 +147,21 @@ export class StandardTags {
     tagName: '@internal',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
     standardization: Standardization.Discretionary
+  });
+
+  /**
+   * (Core)
+   *
+   * The `{@label}` inline tag is used to label a declaration, so that it can be referenced
+   * using a selector in the TSDoc declaration reference notation.
+   *
+   * TODO: The `{@label}` notation is still being standardized.  See this issue:
+   * https://github.com/Microsoft/tsdoc/issues/9
+   */
+  public static readonly label: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@label',
+    syntaxKind: TSDocTagSyntaxKind.InlineTag,
+    standardization: Standardization.Core
   });
 
   /**
@@ -287,6 +317,20 @@ export class StandardTags {
   });
 
   /**
+   * (Core)
+   *
+   * Used to document a generic parameter.  The `@typeParam` tag is followed by a parameter
+   * name, followed by a hyphen, followed by a description.  The TSDoc parser recognizes
+   * this syntax and will extract it into a DocParamBlock node.
+   */
+  public static readonly typeParam: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@typeParam',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    allowMultiple: true,
+    standardization: Standardization.Core
+  });
+
+  /**
    * (Extended)
    *
    * This modifier has similar semantics to the `virtual` keyword in C# or Java.
@@ -309,11 +353,13 @@ export class StandardTags {
     StandardTags.alpha,
     StandardTags.beta,
     StandardTags.deprecated,
+    StandardTags.defaultValue,
     StandardTags.eventProperty,
     StandardTags.example,
     StandardTags.experimental,
     StandardTags.inheritDoc,
     StandardTags.internal,
+    StandardTags.label,
     StandardTags.link,
     StandardTags.override,
     StandardTags.packageDocumentation,
@@ -324,6 +370,7 @@ export class StandardTags {
     StandardTags.remarks,
     StandardTags.returns,
     StandardTags.sealed,
+    StandardTags.typeParam,
     StandardTags.virtual
   ];
 

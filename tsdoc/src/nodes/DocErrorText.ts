@@ -1,10 +1,11 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNodeKind } from './DocNode';
+import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
 import { TokenSequence } from '../parser/TokenSequence';
 
 /**
  * Constructor parameters for {@link DocErrorText}.
  */
-export interface IDocErrorTextParameters extends IDocNodeParameters {
+export interface IDocErrorTextParameters extends IDocNodeLeafParameters {
   text: string;
   errorMessage: string;
   errorLocation: TokenSequence;
@@ -14,20 +15,36 @@ export interface IDocErrorTextParameters extends IDocNodeParameters {
  * Represents a span of text that contained invalid markup.
  * The characters should be rendered as plain text.
  */
-export class DocErrorText extends DocNode {
-  /** {@inheritdoc} */
+export class DocErrorText extends DocNodeLeaf {
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ErrorText;
+
+  private _text: string | undefined;                  // never undefined after updateParameters()
+  private _errorMessage: string | undefined;          // never undefined after updateParameters()
+  private _errorLocation: TokenSequence | undefined;  // never undefined after updateParameters()
+
+  /**
+   * Don't call this directly.  Instead use {@link TSDocParser}
+   * @internal
+   */
+  public constructor(parameters: IDocErrorTextParameters) {
+    super(parameters);
+  }
 
   /**
    * The characters that should be rendered as plain text because they
    * could not be parsed successfully.
    */
-  public readonly text: string;
+  public get text(): string {
+    return this._text!;
+  }
 
   /**
    * A description of why the character could not be parsed.
    */
-  public readonly errorMessage: string;
+  public get errorMessage(): string {
+    return this._errorMessage!;
+  }
 
   /**
    * The range of characters that caused the error.  In general these may be
@@ -38,16 +55,16 @@ export class DocErrorText extends DocNode {
    * will correspond to the `<` character that looked like an HTML tag, whereas the
    * error location might be the `@` character that caused the trouble.
    */
-  public readonly errorLocation: TokenSequence;
+  public get errorLocation(): TokenSequence {
+    return this._errorLocation!;
+  }
 
-  /**
-   * Don't call this directly.  Instead use {@link TSDocParser}
-   * @internal
-   */
-  public constructor(parameters: IDocErrorTextParameters) {
-    super(parameters);
-    this.text = parameters.text;
-    this.errorMessage = parameters.errorMessage;
-    this.errorLocation = parameters.errorLocation;
+  /** @override */
+  public updateParameters(parameters: IDocErrorTextParameters): void {
+    super.updateParameters(parameters);
+
+    this._text = parameters.text;
+    this._errorMessage = parameters.errorMessage;
+    this._errorLocation = parameters.errorLocation;
   }
 }

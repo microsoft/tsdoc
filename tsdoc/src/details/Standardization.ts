@@ -6,7 +6,8 @@ export const enum Standardization {
   /**
    * TSDoc tags in the "Core" standardization group are considered essential.
    * Their meaning is standardized, and every documentation tool is expected
-   * to recognize them.
+   * to recognize them.  The TSDoc parser library typically provides dedicated APIs
+   * for accessing these tags.
    */
   Core = 'Core',
 

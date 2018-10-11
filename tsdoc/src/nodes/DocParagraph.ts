@@ -13,7 +13,7 @@ export interface IDocParagraphParameters extends IDocNodeContainerParameters {
  * instead of explicitly notating them.
  */
 export class DocParagraph extends DocNodeContainer {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Paragraph;
 
   /**
@@ -25,7 +25,7 @@ export class DocParagraph extends DocNodeContainer {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public isAllowedChildNode(docNode: DocNode): boolean {
@@ -38,6 +38,7 @@ export class DocParagraph extends DocNodeContainer {
       case DocNodeKind.HtmlStartTag:
       case DocNodeKind.HtmlEndTag:
       case DocNodeKind.InlineTag:
+      case DocNodeKind.LinkTag:
       case DocNodeKind.PlainText:
       case DocNodeKind.SoftBreak:
         return true;

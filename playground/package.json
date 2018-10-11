@@ -1,0 +1,43 @@
+{
+  "name": "tsdoc-playground",
+  "version": "0.1.0",
+  "description": "An interactive web application for experimenting with TSDoc syntax",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "node build.js --production",
+    "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.dev.config.js --open"
+  },
+  "dependencies": {
+    "@microsoft/tsdoc": "0.8.1",
+    "@types/react": "16.4.16",
+    "@types/react-dom": "16.0.8",
+    "promise": "8.0.1",
+    "monaco-editor": "0.14.3",
+    "tslib": "1.9.3"
+  },
+  "devDependencies": {
+    "@microsoft/set-webpack-public-path-plugin": "~2.1.16",
+    "@types/webpack-env": "~1.13.6",
+    "clean-webpack-plugin": "~0.1.19",
+    "css-loader": "~0.28.11",
+    "file-loader": "~1.1.11",
+    "fork-ts-checker-webpack-plugin": "0.4.10",
+    "handlebars": "4.0.12",
+    "handlebars-loader": "1.7.0",
+    "html-webpack-plugin": "~3.2.0",
+    "node-sass": "~4.9.3",
+    "raw-loader": "~0.5.1",
+    "sass-loader": "~7.1.0",
+    "style-loader": "~0.22.1",
+    "ts-loader": "5.2.1",
+    "tslint": "~5.11.0",
+    "tslint-loader": "~3.6.0",
+    "tslint-microsoft-contrib": "~5.2.1",
+    "typescript": "~3.1.2",
+    "webpack": "~4.20.2",
+    "webpack-bundle-analyzer": "~2.13.1",
+    "webpack-cli": "~3.0.3",
+    "webpack-dev-server": "~3.1.4"
+  }
+}

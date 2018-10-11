@@ -1,11 +1,12 @@
 import {
   StandardModifierTagSet,
   DocComment,
-  ParserContext
+  ParserContext,
+  TSDocParserConfiguration,
+  TSDocTagDefinition,
+  TSDocTagSyntaxKind
 } from '../index';
 import { TestHelpers } from '../parser/__tests__/TestHelpers';
-import { TSDocParserConfiguration } from '../parser/TSDocParserConfiguration';
-import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../parser/TSDocTagDefinition';
 
 test('01 Simple @beta and @internal extraction', () => {
   const parserContext: ParserContext = TestHelpers.parseAndMatchDocCommentSnapshot([
@@ -24,7 +25,7 @@ test('01 Simple @beta and @internal extraction', () => {
   expect(modifierTagSet.isInternal()).toEqual(true);
 });
 
-test('02 A basic TSDoc comment with all components', () => {
+test('02 A basic TSDoc comment with common components', () => {
   const configuration: TSDocParserConfiguration = new TSDocParserConfiguration();
   configuration.addTagDefinitions([
     new TSDocTagDefinition({
@@ -39,17 +40,17 @@ test('02 A basic TSDoc comment with all components', () => {
 
   const parserContext: ParserContext = TestHelpers.parseAndMatchDocCommentSnapshot([
     '/**',
-    ' * Adds two numbers together.',
+    ' * Returns the average of two numbers.',
     ' *',
     ' * @remarks',
-    ' * This method is part of the {@link core-library/Math | Math subsystem}.',
+    ' * This method is part of the {@link core-library#Statistics | Statistics subsystem}.',
     ' *',
     ' * @customBlock',
     ' * This is a custom block containing an @undefinedBlockTag',
     ' *',
-    ' * @param x - The first number to add',
-    ' * @param y - The second number to add',
-    ' * @returns The sum of `x` and `y`',
+    ' * @param x - The first input number',
+    ' * @param y - The second input number',
+    ' * @returns The arithmetic mean of `x` and `y`',
     ' *',
     ' * @beta @customModifier',
     ' */'
@@ -74,11 +75,11 @@ test('03 Jumbled order', () => {
 
   const parserContext: ParserContext = TestHelpers.parseAndMatchDocCommentSnapshot([
     '/**',
-    ' * Adds two numbers together. @remarks This method is part of the',
-    ' * {@link core-library/Math | Math subsystem}.',
+    ' * Returns the average of two numbers. @remarks This method is part of the',
+    ' * {@link core-library#Statistics | Statistics subsystem}.',
     ' * @beta @customModifier',
-    ' * @returns The sum of `x` and `y`',
-    ' * @param x - The first number to add @param y - The second number to add',
+    ' * @returns The arithmetic mean of `x` and `y`',
+    ' * @param x - The first input number @param y - The second input number',
     ' * @customBlock',
     ' * This is a custom block containing an @undefinedBlockTag',
     ' */'
@@ -91,9 +92,22 @@ test('03 Jumbled order', () => {
 test('03 Incomplete @param blocks', () => {
   TestHelpers.parseAndMatchDocCommentSnapshot([
     '/**',
-    ' * @param - The first number to add',
-    ' * @param y The first number to add',
-    ' * @returns The sum of `x` and `y`',
+    ' * @param - The first input number',
+    ' * @param y The second input number',
+    ' * @returns The arithmetic mean of `x` and `y`',
+    ' */'
+  ].join('\n'));
+});
+
+test('04 typeParam blocks', () => {
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * Constructs a map from a JavaScript object',
+    ' *',
+    ' * @typeParam K - The generic type parameter indicating the key type',
+    ' * @param jsonObject - The input object',
+    ' * @typeParam V - The generic type parameter indicating the value type',
+    ' * @returns The map',
     ' */'
   ].join('\n'));
 });

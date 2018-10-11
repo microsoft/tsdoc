@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`01 trimSpacesInParagraphNodes() 1`] = `
+Object {
+  "kind": "Paragraph",
+  "nodes": Array [
+    Object {
+      "kind": "PlainText",
+      "nodeExcerpt": "   This [t] is    the",
+      "nodePlainText": "This is the",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodeExcerpt": "first   ",
+      "nodePlainText": " first ",
+    },
+    Object {
+      "kind": "InlineTag",
+      "nodes": Array [
+        Object {
+          "kind": "Particle: openingDelimiter",
+          "nodeExcerpt": "{",
+        },
+        Object {
+          "kind": "Particle: tagName",
+          "nodeExcerpt": "@mylink",
+        },
+        Object {
+          "kind": "Particle: tagContent",
+        },
+        Object {
+          "kind": "Particle: closingDelimiter",
+          "nodeExcerpt": "}",
+        },
+      ],
+    },
+    Object {
+      "kind": "PlainText",
+      "nodeExcerpt": "sentence.",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodeExcerpt": "        This is another",
+      "nodePlainText": " This is another",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodeExcerpt": "sentence.",
+      "nodePlainText": " sentence.",
+    },
+  ],
+}
+`;

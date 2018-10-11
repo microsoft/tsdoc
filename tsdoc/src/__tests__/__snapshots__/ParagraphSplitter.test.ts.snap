@@ -2,7 +2,7 @@
 
 exports[`01 Basic paragraph splitting 1`] = `
 Object {
-  "_0_lines": Array [
+  "_00_lines": Array [
     "",
     "This is the",
     "first paragraph.",
@@ -15,7 +15,8 @@ Object {
     "",
     "",
   ],
-  "_1_summarySection": Object {
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -95,24 +96,29 @@ Object {
       },
     ],
   },
-  "_2_remarksBlock": undefined,
-  "_3_customBlocks": Array [],
-  "_4_paramBlocks": Array [],
-  "_5_returnsBlock": undefined,
-  "_6_modifierTags": Array [],
-  "_7_logMessages": Array [],
+  "_03_remarksBlock": undefined,
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [],
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": undefined,
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [],
+  "_12_logMessages": Array [],
 }
 `;
 
 exports[`02 Degenerate paragraph 1`] = `
 Object {
-  "_0_lines": Array [
+  "_00_lines": Array [
     "line 1",
     "line 2",
     "",
     "  @public line 3",
   ],
-  "_1_summarySection": Object {
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -159,17 +165,21 @@ Object {
       },
     ],
   },
-  "_2_remarksBlock": undefined,
-  "_3_customBlocks": Array [],
-  "_4_paramBlocks": Array [],
-  "_5_returnsBlock": undefined,
-  "_6_modifierTags": Array [
+  "_03_remarksBlock": undefined,
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [],
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": undefined,
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodeExcerpt": "@public",
     },
   ],
-  "_7_logMessages": Array [],
+  "_12_logMessages": Array [],
 }
 `;
 
@@ -182,12 +192,14 @@ Object {
       "nodes": Array [
         Object {
           "kind": "PlainText",
+          "nodePlainText": "  para 1 ",
         },
         Object {
           "kind": "SoftBreak",
         },
         Object {
           "kind": "PlainText",
+          "nodePlainText": "   ",
         },
         Object {
           "kind": "SoftBreak",
@@ -199,15 +211,18 @@ Object {
       "nodes": Array [
         Object {
           "kind": "PlainText",
+          "nodePlainText": " [t]  ",
         },
         Object {
           "kind": "PlainText",
+          "nodePlainText": "   ",
         },
         Object {
           "kind": "BlockTag",
         },
         Object {
           "kind": "PlainText",
+          "nodePlainText": "  para 2 ",
         },
         Object {
           "kind": "SoftBreak",
@@ -222,6 +237,7 @@ Object {
       "nodes": Array [
         Object {
           "kind": "PlainText",
+          "nodePlainText": "  para 3  ",
         },
       ],
     },

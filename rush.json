@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+  "rushVersion": "5.3.2",
+  "yarnVersion": "1.10.1",
+  "nodeSupportedVersionRange": ">=6.9.0 <7.0.0 || >=8.9.4 <9.0.0",
+  "ensureConsistentVersions": true,
+  "projectFolderMinDepth": 1,
+  "projectFolderMaxDepth": 2,
+  "gitPolicy": {
+    "allowedEmailRegExps": [
+      "[^@]+@users\\.noreply\\.github\\.com",
+      "travis@example\\.org"
+    ],
+    "sampleEmail": "mrexample@users.noreply.github.com"
+  },
+  "projects": [
+    {
+      "packageName": "api-demo",
+      "projectFolder": "api-demo"
+    },
+    {
+      "packageName": "tsdoc-playground",
+      "projectFolder": "playground"
+    },
+    {
+      "packageName": "@microsoft/tsdoc",
+      "projectFolder": "tsdoc"
+    }
+  ]
+}

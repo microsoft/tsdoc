@@ -19,16 +19,16 @@ export interface IDocInlineTagParameters extends IDocNodeParameters {
 }
 
 /**
- * Represents a TSDoc inline tag such as `{@inheritdoc}` or `{@link}`.
+ * Represents a TSDoc inline tag such as `{@inheritDoc}` or `{@link}`.
  */
 export class DocInlineTag extends DocNode {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.InlineTag;
 
-  private readonly _openingDelimiterParticle: DocParticle;
-  private readonly _tagNameParticle: DocParticle;
-  private readonly _tagContentParticle: DocParticle;
-  private readonly _closingDelimiterParticle: DocParticle;
+  private _openingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
+  private _tagNameParticle: DocParticle | undefined;           // never undefined after updateParameters()
+  private _tagContentParticle: DocParticle | undefined;        // never undefined after updateParameters()
+  private _closingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -36,27 +36,6 @@ export class DocInlineTag extends DocNode {
    */
   public constructor(parameters: IDocInlineTagParameters) {
     super(parameters);
-
-    this._openingDelimiterParticle = new DocParticle({
-      excerpt: parameters.openingDelimiterExcerpt,
-      content: '{'
-    });
-
-    StringChecks.validateTSDocTagName(parameters.tagName);
-    this._tagNameParticle = new DocParticle({
-      excerpt: parameters.tagNameExcerpt,
-      content: parameters.tagName
-    });
-
-    this._tagContentParticle = new DocParticle({
-      excerpt: parameters.tagContentExcerpt,
-      content: parameters.tagContent
-    });
-
-    this._closingDelimiterParticle = new DocParticle({
-      excerpt: parameters.closingDelimiterExcerpt,
-      content: '}'
-    });
   }
 
   /**
@@ -65,7 +44,7 @@ export class DocInlineTag extends DocNode {
    * then the tag name would be `@link`.
    */
   public get tagName(): string {
-    return this._tagNameParticle.content;
+    return this._tagNameParticle!.content;
   }
 
   /**
@@ -74,19 +53,65 @@ export class DocInlineTag extends DocNode {
    * then the tag content would be `Guid.toString | the toString() method`.
    */
   public get tagContent(): string {
-    return this._tagContentParticle.content;
+    return this._tagContentParticle!.content;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocInlineTagParameters): void {
+    StringChecks.validateTSDocTagName(parameters.tagName);
+
+    super.updateParameters(parameters);
+
+    this._openingDelimiterParticle = new DocParticle({
+      particleId: 'openingDelimiter',
+      excerpt: parameters.openingDelimiterExcerpt,
+      content: '{'
+    });
+
+    this._tagNameParticle = new DocParticle({
+      particleId: 'tagName',
+      excerpt: parameters.tagNameExcerpt,
+      content: parameters.tagName
+    });
+
+    this._tagContentParticle = new DocParticle({
+      particleId: 'tagContent',
+      excerpt: parameters.tagContentExcerpt,
+      content: parameters.tagContent
+    });
+
+    this._closingDelimiterParticle = new DocParticle({
+      particleId: 'closingDelimiter',
+      excerpt: parameters.closingDelimiterExcerpt,
+      content: '}'
+    });
   }
 
   /**
-   * {@inheritdoc}
-   * @override
+   * {@inheritDoc}
+   * @override @sealed
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
-      this._openingDelimiterParticle,
-      this._tagNameParticle,
-      this._tagContentParticle,
-      this._closingDelimiterParticle
+      this._openingDelimiterParticle!,
+      this._tagNameParticle!,
+      ...this.getChildNodesForContent(),
+      this._closingDelimiterParticle!
     ];
+  }
+
+  /**
+   * Allows child classes to replace the tagContentParticle with a more detailed
+   * set of nodes.
+   * @virtual
+   */
+  protected getChildNodesForContent(): ReadonlyArray<DocNode> {
+    return [
+      this._tagContentParticle!
+    ];
+  }
+
+  protected get tagContentParticle(): DocParticle {
+    return this._tagContentParticle!;
   }
 }

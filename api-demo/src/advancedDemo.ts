@@ -3,6 +3,7 @@ import * as os from 'os';
 import * as path from 'path';
 import * as ts from 'typescript';
 import * as tsdoc from '@microsoft/tsdoc';
+import { DocNodeLeaf } from '@microsoft/tsdoc';
 
 /**
  * The advanced demo invokes the TypeScript compiler and extracts the comment from the AST.
@@ -238,7 +239,7 @@ function parseTSDoc(foundComment: IFoundComment): void {
 
 function dumpTSDocTree(docNode: tsdoc.DocNode, indent: string): void {
   let dumpText: string = `${indent}- ${docNode.kind}`;
-  if (docNode.excerpt) {
+  if (docNode instanceof DocNodeLeaf && docNode.excerpt) {
     const content: string = docNode.excerpt.content.toString();
     if (content.length > 0) {
       dumpText += ': ' + colors.cyan(JSON.stringify(content));

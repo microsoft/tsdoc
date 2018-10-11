@@ -14,13 +14,10 @@ export interface IDocBlockParameters extends IDocSectionParameters {
  * For example, an `@example` block.
  */
 export class DocBlock extends DocSection {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Block;
 
-  /**
-   * The TSDoc tag that introduces this section.
-   */
-  public readonly blockTag: DocBlockTag;
+  private _blockTag: DocBlockTag | undefined; // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -28,11 +25,23 @@ export class DocBlock extends DocSection {
    */
   public constructor(parameters: IDocBlockParameters) {
     super(parameters);
-    this.blockTag = parameters.blockTag;
   }
 
   /**
-   * {@inheritdoc}
+   * The TSDoc tag that introduces this section.
+   */
+  public get blockTag(): DocBlockTag {
+    return this._blockTag!;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocBlockParameters): void {
+    super.updateParameters(parameters);
+    this._blockTag = parameters.blockTag;
+  }
+
+  /**
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {

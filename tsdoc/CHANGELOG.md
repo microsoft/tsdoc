@@ -1,5 +1,34 @@
 # Change Log - @microsoft/tsdoc
 
+## 0.8.1
+- Improve error reporting for declaration references that are probably missing a `"#"` delimiter
+- Rename `DocCodeFence` to `DocFencedCode`
+
+## 0.8.0
+- Introduce a distinction between "defined" tags (i.e. recognized) versus "supported" tags (i.e. implemented by the tool)
+- The parser optionally reports usage of undefined tags
+- The parser optionally reports usage of unsupported tags
+- The parser reports usage of inline/block syntax that is inconsistent with the tag definition
+- Code spans are now allowed to be adjacent to other text, but must contain at least one character
+- An `@deprecated` block must contain a deprecation message
+- If `@inheritDoc` is used, then the summary section must be empty, and there must not be an `@remarks` block
+
+## 0.7.0
+- Add support for `@defaultValue` tag
+- Add support for `@typeParam` tag
+
+## 0.6.0
+- Add support for `@link` tags using the new declaration reference syntax
+- Add support for `@inheritDoc` tags
+- Add new APIs: `DocDeclarationReference`, `DocInheritDocTag`, `DocLinkTag`, `DocMemberIdentifier`, `DocMemberReference`, `DocMemberSelector`, `DocMemberSymbol`
+- Remove `ParserContext.verbatimNodes`
+- Add `DocParticle.particleId` property
+
+## 0.5.0
+- Add a new API `DocNode.updateParameters()` that allows a `DocNode` object to be updated after it was created; the tree nodes are no longer immutable
+- Add `DocNodeTransforms.trimSpacesInParagraphNodes()` for collapsing whitespace inside `DocParagraph` subtrees
+- Extract the `DocNode.excerpt` property into a new abstract base class `DocNodeLeaf`
+
 ## 0.4.1
 Mon, 30 Aug 2018
 

@@ -1,9 +1,10 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNodeKind } from './DocNode';
+import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
 
 /**
  * Constructor parameters for {@link DocPlainText}.
  */
-export interface IDocPlainTextParameters extends IDocNodeParameters {
+export interface IDocPlainTextParameters extends IDocNodeLeafParameters {
   text: string;
 }
 
@@ -15,18 +16,15 @@ export interface IDocPlainTextParameters extends IDocNodeParameters {
  * The text content must not contain newline characters.
  * Use DocSoftBreak to represent manual line splitting.
  */
-export class DocPlainText extends DocNode {
+export class DocPlainText extends DocNodeLeaf {
   // TODO: We should also prohibit "\r", but this requires updating LineExtractor
   // to interpret a lone "\r" as a newline
   private static readonly _newlineCharacterRegExp: RegExp = /[\n]/;
 
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.PlainText;
 
-  /**
-   * The text content.
-   */
-  public readonly text: string;
+  private _text: string | undefined;  // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -34,10 +32,24 @@ export class DocPlainText extends DocNode {
    */
   public constructor(parameters: IDocPlainTextParameters) {
     super(parameters);
+  }
+
+  /**
+   * The text content.
+   */
+  public get text(): string {
+    return this._text!;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocPlainTextParameters): void {
     if (DocPlainText._newlineCharacterRegExp.test(parameters.text)) {
       // Use DocSoftBreak to represent manual line splitting
       throw new Error('The DocPlainText content must not contain newline characters');
     }
-    this.text = parameters.text;
+
+    super.updateParameters(parameters);
+
+    this._text = parameters.text;
   }
 }

@@ -14,15 +14,15 @@ export interface IDocParamBlockParameters extends IDocBlockParameters {
 }
 
 /**
- * Represents a parsed `@param` block, which provides a description for a
+ * Represents a parsed `@param` or `@typeParam` block, which provides a description for a
  * function parameter.
  */
 export class DocParamBlock extends DocBlock {
-  /** {@inheritdoc} */
+  /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ParamBlock;
 
-  private readonly _parameterNameParticle: DocParticle;
-  private readonly _hyphenParticle: DocParticle;
+  private _parameterNameParticle: DocParticle | undefined;  // never undefined after updateParameters()
+  private _hyphenParticle: DocParticle | undefined;         // never undefined after updateParameters()
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -30,16 +30,6 @@ export class DocParamBlock extends DocBlock {
    */
   public constructor(parameters: IDocParamBlockParameters) {
     super(parameters);
-
-    this._parameterNameParticle = new DocParticle({
-      excerpt: parameters.parameterNameExcerpt,
-      content: parameters.parameterName
-    });
-
-    this._hyphenParticle = new DocParticle({
-      excerpt: parameters.hyphenExcerpt,
-      content: '-'
-    });
   }
 
   /**
@@ -47,18 +37,35 @@ export class DocParamBlock extends DocBlock {
    * For example "width" in `@param width - the width of the object`.
    */
   public get parameterName(): string {
-    return this._parameterNameParticle.content;
+    return this._parameterNameParticle!.content;
+  }
+
+  /** @override */
+  public updateParameters(parameters: IDocParamBlockParameters): void {
+    super.updateParameters(parameters);
+
+    this._parameterNameParticle = new DocParticle({
+      particleId: 'parameterName',
+      excerpt: parameters.parameterNameExcerpt,
+      content: parameters.parameterName
+    });
+
+    this._hyphenParticle = new DocParticle({
+      particleId: 'hyphen',
+      excerpt: parameters.hyphenExcerpt,
+      content: '-'
+    });
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    * @override
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     return [
       this.blockTag,
-      this._parameterNameParticle,
-      this._hyphenParticle,
+      this._parameterNameParticle!,
+      this._hyphenParticle!,
 
       ...this.nodes
     ];

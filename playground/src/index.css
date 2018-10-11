@@ -1,0 +1,37 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: Tahoma, sans-serif;
+}
+
+.doc-heading {
+  color: #2F5496;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.doc-table {
+  border-collapse: collapse;
+}
+
+.doc-table th, td {
+  text-align: left;
+  padding: 5px 10px;
+  border-bottom: 2px solid #e0e0e0
+}
+
+.doc-fenced-code {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border-radius: 3px;
+  overflow: auto;
+}
+
+.doc-code-span {
+  background-color: #f0f0f0;
+  color: #000;
+  border-radius: 2pt;
+  border: 1px solid #ccc;
+  padding: 1pt;
+}
