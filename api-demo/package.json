@@ -16,7 +16,7 @@
     "typescript": "~3.1.2"
   },
   "scripts": {
-    "build": "rimraf ./lib/ && echo -- TYPESCRIPT -- && tsc && echo -- TSLINT -- && tslint --config tslint.json --project . --rules-dir node_modules/tslint-microsoft-contrib",
+    "build": "node ./build.js",
     "simple": "node ./lib/start.js simple",
     "advanced": "node ./lib/start.js advanced"
   }

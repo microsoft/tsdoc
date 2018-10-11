@@ -72,7 +72,7 @@ manager tool.  See [Contributing.md](../Contributing.md) for more information.
   $ rush build
   ```
 
-  You can also build just the api-demo project like this:
+  You can also build just the **api-demo** project like this:
 
   ```shell
   $ cd ./api-demo
