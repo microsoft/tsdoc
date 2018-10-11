@@ -32,6 +32,6 @@ Check out the [TSDoc Playground](https://microsoft.github.io/tsdoc/) for a cool 
 
 ## Get involved
 
-The **TSDoc** project is under active development and evolving.  Please visit our GitHub project for up-to-date documentation, instructions for building/debugging the projects, and other resources:
+The **TSDoc** project is actively evolving.  Please visit our GitHub project for the latest documentation, instructions for building/debugging the projects, and other resources:
 
 https://github.com/Microsoft/tsdoc

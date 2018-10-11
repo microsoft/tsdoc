@@ -29,7 +29,7 @@ export class Statistics {
 
 We are developing a library package [@microsoft/tsdoc](https://www.npmjs.com/package/@microsoft/tsdoc) that provides an open source reference implementation of a parser.  Using this library is an easy way to ensure that your tool is 100% compatible with the standard.
 
-⏵ ***Give it a try!**  The <a target="_blank" href="https://microsoft.github.io/tsdoc/">TSDoc Playground</a> provides an interactive showcase of our parser!**
+⏵ ***Give it a try!**  The <a target="_blank" href="https://microsoft.github.io/tsdoc/">TSDoc Playground</a> provides an interactive showcase of our parser!*
 
 ###  Why do we need TSDoc?
 
@@ -66,7 +66,7 @@ The **@microsoft/tsdoc** library package brings in some additional goals:
 
 ### How do I get started with TSDoc?
 
-The **@microsoft/tsdoc** library is intended to be incorporated into other build tools that analyze TypeScript source code, such as the projects linked below.  By itself, the TSDoc library is not a documentation tool that you can use directly.
+NOTE: The **@microsoft/tsdoc** library is intended to be incorporated into other build tools that analyze TypeScript source code, such as the projects linked below.  (By itself, the TSDoc library is not a documentation tool that you can use directly.)
 
 - Check out the [TSDoc Playground](https://microsoft.github.io/tsdoc/) for a cool interactive demo of TSDoc!  :-)
 - The library [@microsoft/tsdoc](https://www.npmjs.com/package/@microsoft/tsdoc) provides a TSDoc parser that you can use in your own projects.  The source code for this library can be found in the [/tsdoc](./tsdoc/) folder.
@@ -95,7 +95,7 @@ The collaborators currently driving the TSDoc standard are:
 - Write up all the interesting design questions as "RFC" GitHub issues to collect community feedback
 - Arrive at an initial consensus on the basic approach and strategy for TSDoc
 - Develop an initial feature-complete prototype of the **@microsoft/tsdoc** library and publish the NPM package
-- Convert Microsoft's API Extractor tool to use **@microsoft/tsdoc** (replacing its proprietary AEDoc engine); this demonstrates that TSDoc can meet the needs of [a large production documentation web site](https://aka.ms/spfx)
+- Convert Microsoft's API Extractor tool to use **@microsoft/tsdoc** (replacing its proprietary AEDoc engine); this demonstrates that TSDoc can meet the needs of [a large production documentation web site](https://docs.microsoft.com/en-us/javascript/api/sp-core-library?view=sp-typescript-latest)
 
 **What's next:**
 

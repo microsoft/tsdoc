@@ -74,19 +74,19 @@ Before submitting your PR, you will need to install the Rush tool and build the 
 
 > **What's this Rush thing?**  Rush is Microsoft's build orchestrator that handles policy validation,
 > change log management, installing (using [Yarn](https://yarnpkg.com/en/)), linking, building,
-> and publishing:  When it's time to publish the TSDoc NPM package and deploy the playground to the website,
-> our automation system gets its configuration from the [rush.json](./rush.json) file in this repo.
+> and publishing.  When it's time to publish the NPM package and deploy the TSDoc playground to the website,
+> the automation system looks for its configuration in the [rush.json](./rush.json) file in this repo.
 > To learn more about how to use Rush, please visit: https://rushjs.io/
 
-1. Install the [Rush](https://rushjs.io/pages/developer/new_developer/) software:
+1. [Install](https://rushjs.io/pages/developer/new_developer/) the Rush software:
 
   ```shell
   $ npm install -g @microsoft/rush
   ```
 
-  *NOTE: If this command fails because your user account does not have permissions to
+  NOTE: If this command fails because your user account does not have permissions to
   access NPM's global folder, you may need to
-  [fix your NPM configuration](https://docs.npmjs.com/getting-started/fixing-npm-permissions).*
+  [fix your NPM configuration](https://docs.npmjs.com/getting-started/fixing-npm-permissions).
 
 2. Install dependencies for all projects in the monorepo:
 
@@ -95,9 +95,9 @@ Before submitting your PR, you will need to install the Rush tool and build the 
   $ rush install
   ```
 
-  *IMPORTANT: After you run `rush install`, your repo will be in a "Rush-linked" state,
-  with special symlinks in the node_modules folders.  DO NOT run `npm install` in this state.
-  If you want to go back to working in standalone mode, first run `rush unlink && rush purge`.*
+  > IMPORTANT: After you run `rush install`, your repo will be in a "Rush-linked" state,
+  > with special symlinks in the node_modules folders.  DO NOT run `npm install` in this state.
+  > If you want to go back to working in standalone mode, first run `rush unlink && rush purge`.
 
 3. Build and test all the projects in the monorepo:
 
@@ -113,20 +113,23 @@ Before submitting your PR, you will need to install the Rush tool and build the 
   ```
 
 4. Manual testing:  Before submitting your PR, you should also try running the
-   [/api-demo](./api-demo/) and [/playground](./playground) to make sure they work
-   as expected.
+   [/api-demo](./api-demo/) and [/playground](./playground) projects to make sure they
+   weren't broken by your change.
 
 5. Change logs:  If your PR modifies the published NPM package, you will need to write a
-   change entry for the [CHANGELOG.md](./tsdoc/CHANGELOG.md) change log.  Please read the
+   change entry for our [CHANGELOG.md](./tsdoc/CHANGELOG.md) change log.  Please read the
    "[recommended practices](https://rushjs.io/pages/best_practices/change_logs/)" for
    authoring change logs.
 
    ```shell
    $ rush change
+   # (The tool will ask you to write a sentence describing your change.)
    ```
 
-   This will create a file under the **common/changes** folder that you should add to Git
-   and include in your PR.
+   The `rush change` command will create a file under the **common/changes** folder.
+   Add this file to Git and include in your pull request.  Please see
+   [Everyday commands](https://rushjs.io/pages/developer/everyday_commands/) for
+   more details about how these files are used.
 
 
 ##  Contributor License Agreement (CLA)
