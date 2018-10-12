@@ -206,6 +206,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       <select
         className='playground-select-sample'
         value={this.state.selectSampleValue}
+        aria-label='Select a code sample'
         onChange={this._selectSample_onChange.bind(this)}>
 
         <option value='none'>Choose a sample...</option>
@@ -221,6 +222,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       <select
         className='playground-select-theme'
         value={this.state.selectedTheme}
+        aria-label='Select an editor theme'
         onChange={this._selectTheme_onChange.bind(this)}>
 
         <option value='vs'>Light Theme</option>
