@@ -40,6 +40,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     paddingLeft: '8px',
     paddingRight: '8px'
   };
+  private readonly _localStorageSourceKey: string = 'src';
 
   private _reparseTimerHandle: number | undefined = undefined;
   private _reparseNeeded: boolean = true;
@@ -48,7 +49,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     super(props, context);
 
     this.state = {
-      inputText: SampleInputs.basic,
+      inputText: this.getInitialInputText(),
       parserContext: undefined,
       parserFailureText: undefined,
       selectSampleValue: undefined,
@@ -332,10 +333,40 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     );
   }
 
+  private getInitialInputText(): string {
+    if (this.isLocalStorageSupported()) {
+      const storedSourceString: string | null = localStorage.getItem(this._localStorageSourceKey);
+
+      if (storedSourceString) {
+        return storedSourceString;
+      }
+    }
+
+    return SampleInputs.basic;
+  }
+
+  // Check to see if LocalStorage is available in current browsing context.
+  // Test copied from https://github.com/Modernizr/Modernizr/blob/master/feature-detects/storage/localstorage.js.
+  private isLocalStorageSupported(): boolean {
+    const testString: string = 'tsdoc';
+    try {
+      localStorage.setItem(testString, testString);
+      localStorage.removeItem(testString);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   private _inputTextArea_onChange(value: string): void {
     this.setState({
       inputText: value
     });
+
+    if (this.isLocalStorageSupported()) {
+      localStorage.setItem(this._localStorageSourceKey, value);
+    }
+
     this._reparseNeeded = true;
   }
 
