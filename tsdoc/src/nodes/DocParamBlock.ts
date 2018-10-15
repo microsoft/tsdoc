@@ -1,16 +1,28 @@
 import { DocNodeKind, DocNode } from './DocNode';
-import { DocBlock, IDocBlockParameters } from './DocBlock';
-import { DocParticle } from './DocParticle';
-import { Excerpt } from '../parser/Excerpt';
+import { DocBlock, IDocBlockParameters, IDocBlockParsedParameters } from './DocBlock';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptId } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocParamBlock}.
  */
 export interface IDocParamBlockParameters extends IDocBlockParameters {
-  parameterNameExcerpt?: Excerpt;
+  parameterName: string;
+}
+
+/**
+ * Constructor parameters for {@link DocParamBlock}.
+ */
+export interface IDocParamBlockParsedParameters extends IDocBlockParsedParameters {
+  spacingBeforeParameterNameExcerpt?: TokenSequence;
+
+  parameterNameExcerpt: TokenSequence;
   parameterName: string;
 
-  hyphenExcerpt?: Excerpt;
+  spacingAfterParameterNameExcerpt?: TokenSequence;
+
+  hyphenExcerpt: TokenSequence;
+  spacingAfterHyphenExcerpt?: TokenSequence;
 }
 
 /**
@@ -21,15 +33,58 @@ export class DocParamBlock extends DocBlock {
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ParamBlock;
 
-  private _parameterNameParticle: DocParticle | undefined;  // never undefined after updateParameters()
-  private _hyphenParticle: DocParticle | undefined;         // never undefined after updateParameters()
+  private readonly _spacingBeforeParameterNameExcerpt: DocExcerpt | undefined;
+
+  private readonly _parameterName: string;
+  private readonly _parameterNameExcerpt: DocExcerpt | undefined;
+
+  private readonly _spacingAfterParameterNameExcerpt: DocExcerpt | undefined;
+
+  private readonly _hyphenExcerpt: DocExcerpt | undefined;
+
+  private readonly _spacingAfterHyphenExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocParamBlockParameters) {
+  public constructor(parameters: IDocParamBlockParameters | IDocParamBlockParsedParameters) {
     super(parameters);
+
+    this._parameterName = parameters.parameterName;
+
+    if (DocNode.isParsedParameters(parameters)) {
+      if (parameters.spacingBeforeParameterNameExcerpt) {
+        this._spacingBeforeParameterNameExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.Spacing,
+          content: parameters.spacingBeforeParameterNameExcerpt
+        });
+      }
+
+      this._parameterNameExcerpt = new DocExcerpt({
+        excerptId: ExcerptId.ParamBlock_ParameterName,
+        content: parameters.parameterNameExcerpt
+      });
+
+      if (parameters.spacingAfterParameterNameExcerpt) {
+        this._spacingAfterParameterNameExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.Spacing,
+          content: parameters.spacingAfterParameterNameExcerpt
+        });
+      }
+
+      this._hyphenExcerpt = new DocExcerpt({
+        excerptId: ExcerptId.ParamBlock_Hyphen,
+        content: parameters.hyphenExcerpt
+      });
+
+      if (parameters.spacingAfterHyphenExcerpt) {
+        this._spacingAfterHyphenExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.Spacing,
+          content: parameters.spacingAfterHyphenExcerpt
+        });
+      }
+    }
   }
 
   /**
@@ -37,35 +92,18 @@ export class DocParamBlock extends DocBlock {
    * For example "width" in `@param width - the width of the object`.
    */
   public get parameterName(): string {
-    return this._parameterNameParticle!.content;
+    return this._parameterName;
   }
 
   /** @override */
-  public updateParameters(parameters: IDocParamBlockParameters): void {
-    super.updateParameters(parameters);
-
-    this._parameterNameParticle = new DocParticle({
-      particleId: 'parameterName',
-      excerpt: parameters.parameterNameExcerpt,
-      content: parameters.parameterName
-    });
-
-    this._hyphenParticle = new DocParticle({
-      particleId: 'hyphen',
-      excerpt: parameters.hyphenExcerpt,
-      content: '-'
-    });
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
       this.blockTag,
-      this._parameterNameParticle!,
-      this._hyphenParticle!,
+      this._spacingBeforeParameterNameExcerpt,
+      this._parameterNameExcerpt,
+      this._spacingAfterParameterNameExcerpt,
+      this._hyphenExcerpt,
+      this._spacingAfterHyphenExcerpt,
 
       ...this.nodes
     ];

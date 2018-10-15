@@ -1,17 +1,25 @@
-import { DocNodeKind, DocNode, IDocNodeParameters } from './DocNode';
+import { DocNodeKind, DocNode, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { DocDeclarationReference } from './DocDeclarationReference';
-import { DocParticle } from './DocParticle';
-import { Excerpt } from '../parser/Excerpt';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptId } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocMemberSymbol}.
  */
 export interface IDocMemberSymbolParameters extends IDocNodeParameters {
-  leftBracketExcerpt?: Excerpt;
+  symbolReference: DocDeclarationReference;
+}
 
-  symbolReference: DocDeclarationReference | undefined;
+/**
+ * Constructor parameters for {@link DocMemberSymbol}.
+ */
+export interface IDocMemberSymbolParsedParameters extends IDocNodeParsedParameters {
+  leftBracketExcerpt: TokenSequence;
+  spacingAfterLeftBracketExcerpt?: TokenSequence;
 
-  rightBracketExcerpt?: Excerpt;
+  symbolReference: DocDeclarationReference;
+
+  rightBracketExcerpt: TokenSequence;
 }
 
 /**
@@ -28,18 +36,40 @@ export class DocMemberSymbol extends DocNode {
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberSymbol;
 
-  private _leftBracketParticle: DocParticle | undefined;          // never undefined after updateParameters()
+  private readonly _leftBracketExcerpt: DocExcerpt | undefined;
+  private readonly _spacingAfterLeftBracketExcerpt: DocExcerpt | undefined;
 
-  private _symbolReference: DocDeclarationReference | undefined;  // never undefined after updateParameters()
+  private readonly _symbolReference: DocDeclarationReference;
 
-  private _rightBracketParticle: DocParticle | undefined;         // never undefined after updateParameters()
+  private readonly _rightBracketExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocMemberSymbolParameters) {
+  public constructor(parameters: IDocMemberSymbolParameters | IDocMemberSymbolParsedParameters) {
     super(parameters);
+
+    if (DocNode.isParsedParameters(parameters)) {
+      this._leftBracketExcerpt = new DocExcerpt({
+        excerptId: ExcerptId.DocMemberSymbol_LeftBracket,
+        content: parameters.leftBracketExcerpt
+      });
+
+      if (parameters.spacingAfterLeftBracketExcerpt) {
+        this._spacingAfterLeftBracketExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.Spacing,
+          content: parameters.spacingAfterLeftBracketExcerpt
+        });
+      }
+
+      this._rightBracketExcerpt = new DocExcerpt({
+        excerptId: ExcerptId.DocMemberSymbol_RightBracket,
+        content: parameters.rightBracketExcerpt
+      });
+    }
+
+    this._symbolReference = parameters.symbolReference;
   }
 
   /**
@@ -47,37 +77,16 @@ export class DocMemberSymbol extends DocNode {
    * the identifier for the member.
    */
   public get symbolReference(): DocDeclarationReference {
-    return this._symbolReference!;
+    return this._symbolReference;
   }
 
   /** @override */
-  public updateParameters(parameters: IDocMemberSymbolParameters): void {
-    super.updateParameters(parameters);
-
-    this._leftBracketParticle = new DocParticle({
-      particleId: 'leftBracket',
-      excerpt: parameters.leftBracketExcerpt,
-      content: '['
-    });
-
-    this._symbolReference = parameters.symbolReference;
-
-    this._rightBracketParticle = new DocParticle({
-      particleId: 'rightBracket',
-      excerpt: parameters.rightBracketExcerpt,
-      content: ']'
-    });
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
-      this._leftBracketParticle!,
-      this._symbolReference!,
-      this._rightBracketParticle!
+      this._leftBracketExcerpt,
+      this._spacingAfterLeftBracketExcerpt,
+      this._symbolReference,
+      this._rightBracketExcerpt
     ];
   }
 }

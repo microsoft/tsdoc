@@ -1,21 +1,30 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
-import { DocParticle } from './DocParticle';
-import { Excerpt } from '../parser/Excerpt';
+import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptId } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocHtmlAttribute}.
  */
 export interface IDocHtmlAttributeParameters extends IDocNodeParameters {
-  attributeNameExcerpt?: Excerpt;
-  attributeName: string;
-  spacingAfterAttributeName: string | undefined;
+  name: string;
+  spacingAfterName?: string;
+  spacingAfterEquals?: string;
+  value: string;
+  spacingAfterValue?: string;
+}
 
-  equalsExcerpt?: Excerpt;
-  spacingAfterEquals: string | undefined;
+/**
+ * Constructor parameters for {@link DocHtmlAttribute}.
+ */
+export interface IDocHtmlAttributeParsedParameters extends IDocNodeParsedParameters {
+  nameExcerpt: TokenSequence;
+  spacingAfterNameExcerpt?: TokenSequence;
 
-  attributeValueExcerpt?: Excerpt;
-  attributeValue: string;
-  spacingAfterAttributeValue: string | undefined;
+  equalsExcerpt: TokenSequence;
+  spacingAfterEqualsExcerpt?: TokenSequence;
+
+  valueExcerpt: TokenSequence;
+  spacingAfterValueExcerpt?: TokenSequence;
 }
 
 /**
@@ -28,35 +37,98 @@ export class DocHtmlAttribute extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.HtmlAttribute;
 
   // The attribute name
-  private _attributeNameParticle: DocParticle | undefined;  // never undefined after updateParameters()
+  private _name: string | undefined;
+  private readonly _nameExcerpt: DocExcerpt | undefined;
+
+  private _spacingAfterName: string | undefined;
+  private readonly _spacingAfterNameExcerpt: DocExcerpt | undefined;
 
   // The "=" delimiter
-  private _equalsParticle: DocParticle | undefined;         // never undefined after updateParameters()
+  private readonly _equalsExcerpt: DocExcerpt | undefined;
+
+  private _spacingAfterEquals: string | undefined;
+  private readonly _spacingAfterEqualsExcerpt: DocExcerpt | undefined;
 
   // The attribute value including quotation marks
-  private _attributeValueParticle: DocParticle | undefined; // never undefined after updateParameters()
+  private _value: string | undefined;
+  private readonly _valueExcerpt: DocExcerpt | undefined;
+
+  private _spacingAfterValue: string | undefined;
+  private readonly _spacingAfterValueExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocHtmlAttributeParameters) {
+  public constructor(parameters: IDocHtmlAttributeParameters | IDocHtmlAttributeParsedParameters) {
     super(parameters);
+
+    if (DocNode.isParsedParameters(parameters)) {
+      this._nameExcerpt = new DocExcerpt({
+        excerptId: ExcerptId.HtmlAttribute_Name,
+        content: parameters.nameExcerpt
+      });
+      if (parameters.spacingAfterNameExcerpt) {
+        this._spacingAfterNameExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.Spacing,
+          content: parameters.spacingAfterNameExcerpt
+        });
+      }
+
+      this._equalsExcerpt = new DocExcerpt({
+        excerptId: ExcerptId.HtmlAttribute_Equals,
+        content: parameters.equalsExcerpt
+      });
+      if (parameters.spacingAfterEqualsExcerpt) {
+        this._spacingAfterEqualsExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.Spacing,
+          content: parameters.spacingAfterEqualsExcerpt
+        });
+      }
+
+      this._valueExcerpt = new DocExcerpt({
+        excerptId: ExcerptId.HtmlAttribute_Value,
+        content: parameters.valueExcerpt
+      });
+      if (parameters.spacingAfterValueExcerpt) {
+        this._spacingAfterValueExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.Spacing,
+          content: parameters.spacingAfterValueExcerpt
+        });
+      }
+
+    } else {
+      this._name = parameters.name;
+      this._spacingAfterName = parameters.spacingAfterName;
+
+      this._spacingAfterEquals = parameters.spacingAfterEquals;
+
+      this._value = parameters.value;
+      this._spacingAfterValue = parameters.spacingAfterValue;
+    }
   }
 
   /**
    * The HTML attribute name.
    */
-  public get attributeName(): string {
-    return this._attributeNameParticle!.content;
+  public get name(): string {
+    if (this._name === undefined) {
+      this._name = this._nameExcerpt!.content.toString();
+    }
+    return this._name;
   }
 
   /**
    * Explicit whitespace that a renderer should insert after the HTML attribute name.
    * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
    */
-  public get spacingAfterAttributeName(): string | undefined {
-    return this._attributeNameParticle!.spacingAfterContent;
+  public get spacingAfterName(): string | undefined {
+    if (this._spacingAfterName === undefined) {
+      if (this._spacingAfterNameExcerpt !== undefined) {
+        this._spacingAfterName = this._spacingAfterNameExcerpt.content.toString();
+      }
+    }
+    return this._spacingAfterName;
   }
 
   /**
@@ -64,55 +136,46 @@ export class DocHtmlAttribute extends DocNode {
    * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
    */
   public get spacingAfterEquals(): string | undefined {
-    return this._equalsParticle!.spacingAfterContent;
+    if (this._spacingAfterEquals === undefined) {
+      if (this._spacingAfterEqualsExcerpt !== undefined) {
+        this._spacingAfterEquals = this._spacingAfterEqualsExcerpt.content.toString();
+      }
+    }
+    return this._spacingAfterEquals;
   }
 
   /**
    * The HTML attribute value.
    */
-  public get attributeValue(): string {
-    return this._attributeValueParticle!.content;
+  public get value(): string {
+    if (this._value === undefined) {
+      this._value = this._valueExcerpt!.content.toString();
+    }
+    return this._value;
   }
 
   /**
    * Explicit whitespace that a renderer should insert after the HTML attribute name.
    * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
    */
-  public get spacingAfterAttributeValue(): string | undefined {
-    return this._attributeValueParticle!.spacingAfterContent;
+  public get spacingAfterValue(): string | undefined {
+    if (this._spacingAfterValue === undefined) {
+      if (this._spacingAfterValueExcerpt !== undefined) {
+        this._spacingAfterValue = this._spacingAfterValueExcerpt.content.toString();
+      }
+    }
+    return this._spacingAfterValue;
   }
 
   /** @override */
-  public updateParameters(parameters: IDocHtmlAttributeParameters): void {
-    super.updateParameters(parameters);
-
-    this._attributeNameParticle = new DocParticle({
-      particleId: 'attributeName',
-      excerpt: parameters.attributeNameExcerpt,
-      content: parameters.attributeName,
-      spacingAfterContent: parameters.spacingAfterAttributeName
-    });
-
-    this._equalsParticle = new DocParticle({
-      particleId: 'equals',
-      excerpt: parameters.equalsExcerpt,
-      content: '=',
-      spacingAfterContent: parameters.spacingAfterEquals
-    });
-
-    this._attributeValueParticle = new DocParticle({
-      particleId: 'attributeValue',
-      excerpt: parameters.attributeValueExcerpt,
-      content: parameters.attributeValue,
-      spacingAfterContent: parameters.spacingAfterAttributeValue
-    });
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
-    return [ this._attributeNameParticle!, this._equalsParticle!, this._attributeValueParticle! ];
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return [
+      this._nameExcerpt,
+      this._spacingAfterNameExcerpt,
+      this._equalsExcerpt,
+      this._spacingAfterEqualsExcerpt,
+      this._valueExcerpt,
+      this._spacingAfterValueExcerpt
+    ];
   }
 }

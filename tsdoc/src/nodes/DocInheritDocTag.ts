@@ -1,30 +1,47 @@
 import { DocNodeKind, DocNode } from './DocNode';
-import { DocInlineTag, IDocInlineTagParameters } from './DocInlineTag';
 import { DocDeclarationReference } from './DocDeclarationReference';
+import {
+  DocInlineTagBase,
+  IDocInlineTagBaseParsedParameters,
+  IDocInlineTagBaseParameters
+} from './DocInlineTagBase';
 
 /**
  * Constructor parameters for {@link DocInheritDocTag}.
  */
-export interface IDocInheritDocTagParameters extends IDocInlineTagParameters {
+export interface IDocInheritDocTagParameters extends IDocInlineTagBaseParameters {
+  declarationReference?: DocDeclarationReference;
+}
+
+/**
+ * Constructor parameters for {@link DocInheritDocTag}.
+ */
+export interface IDocInheritDocTagParsedParameters extends IDocInlineTagBaseParsedParameters {
   declarationReference?: DocDeclarationReference;
 }
 
 /**
  * Represents an `{@inheritDoc}` tag.
  */
-export class DocInheritDocTag extends DocInlineTag {
+export class DocInheritDocTag extends DocInlineTagBase {
 
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.InheritDocTag;
 
-  private _declarationReference: DocDeclarationReference | undefined;
+  private readonly _declarationReference: DocDeclarationReference | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocInheritDocTagParameters) {
+  public constructor(parameters: IDocInheritDocTagParameters | IDocInheritDocTagParsedParameters) {
     super(parameters);
+
+    if (this.tagNameWithUpperCase !== '@INHERITDOC') {
+      throw new Error('DocInheritDocTag requires the tag name to be "{@inheritDoc}"');
+    }
+
+    this._declarationReference = parameters.declarationReference;
   }
 
   /**
@@ -36,30 +53,9 @@ export class DocInheritDocTag extends DocInlineTag {
   }
 
   /** @override */
-  public updateParameters(parameters: IDocInheritDocTagParameters): void {
-    if (parameters.tagName.toUpperCase() !== '@INHERITDOC') {
-      throw new Error('DocInheritDocTag requires the tag name to be "{@inheritDoc}"');
-    }
-
-    super.updateParameters(parameters);
-
-    this._declarationReference = parameters.declarationReference;
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  protected getChildNodesForContent(): ReadonlyArray<DocNode> {
-    if (this.tagContentParticle.excerpt) {
-      // If the parser associated the inline tag input with the tagContentExcerpt (e.g. because
-      // second stage parsing encountered an error), then fall back to the base class's representation
-      return super.getChildNodesForContent();
-    } else {
-      // Otherwise return the detailed structure
-      return DocNode.trimUndefinedNodes([
-        this._declarationReference
-      ]);
-    }
+  protected getChildNodesForContent(): ReadonlyArray<DocNode | undefined> { // abstract
+    return [
+      this._declarationReference
+    ];
   }
 }

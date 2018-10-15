@@ -1,10 +1,18 @@
-import { DocNodeKind } from './DocNode';
-import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
+import { DocNodeKind, IDocNodeParameters, DocNode, IDocNodeParsedParameters } from './DocNode';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptId } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocSoftBreak}.
  */
-export interface IDocSoftBreakParameters extends IDocNodeLeafParameters {
+export interface IDocSoftBreakParameters extends IDocNodeParameters {
+}
+
+/**
+ * Constructor parameters for {@link DocSoftBreak}.
+ */
+export interface IDocSoftBreakParsedParameters extends IDocNodeParsedParameters {
+  softBreakExcerpt: TokenSequence;
 }
 
 /**
@@ -20,15 +28,31 @@ export interface IDocSoftBreakParameters extends IDocNodeLeafParameters {
  * TSDoc follows the same conventions, except the renderer avoids emitting
  * two empty lines (because that could start a new CommonMark paragraph).
  */
-export class DocSoftBreak extends DocNodeLeaf {
+export class DocSoftBreak extends DocNode {
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.SoftBreak;
+
+  private readonly _softBreakExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocSoftBreakParameters) {
+  public constructor(parameters: IDocSoftBreakParameters | IDocSoftBreakParsedParameters) {
     super(parameters);
+
+    if (DocNode.isParsedParameters(parameters)) {
+      this._softBreakExcerpt = new DocExcerpt({
+        excerptId: ExcerptId.SoftBreak,
+        content: parameters.softBreakExcerpt
+      });
+    }
+  }
+
+  /** @override */
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return [
+      this._softBreakExcerpt
+    ];
   }
 }

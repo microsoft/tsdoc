@@ -1,22 +1,32 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { DocHtmlAttribute } from './DocHtmlAttribute';
-import { DocParticle } from './DocParticle';
-import { Excerpt } from '../parser/Excerpt';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptId } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocHtmlStartTag}.
  */
 export interface IDocHtmlStartTagParameters extends IDocNodeParameters {
-  openingDelimiterExcerpt?: Excerpt;
+  name: string;
+  spacingAfterName?: string;
 
-  elementNameExcerpt?: Excerpt;
-  elementName: string;
-  spacingAfterElementName?: string;
+  htmlAttributes: DocHtmlAttribute[];
+  selfClosingTag: boolean;
+}
+
+/**
+ * Constructor parameters for {@link DocHtmlStartTag}.
+ */
+export interface IDocHtmlStartTagParsedParameters extends IDocNodeParsedParameters {
+  openingDelimiterExcerpt: TokenSequence;
+
+  nameExcerpt: TokenSequence;
+  spacingAfterNameExcerpt?: TokenSequence;
 
   htmlAttributes: DocHtmlAttribute[];
   selfClosingTag: boolean;
 
-  closingDelimiterExcerpt?: Excerpt;
+  closingDelimiterExcerpt: TokenSequence;
 }
 
 /**
@@ -29,93 +39,107 @@ export class DocHtmlStartTag extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.HtmlStartTag;
 
   // The "<" delimiter
-  private _openingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
+  private readonly _openingDelimiterExcerpt: DocExcerpt | undefined;
 
   // The element name
-  private _elementNameParticle: DocParticle | undefined;       // never undefined after updateParameters()
+  private _name: string | undefined;
+  private readonly _nameExcerpt: DocExcerpt | undefined;
 
-  private _htmlAttributes: DocHtmlAttribute[] | undefined;     // never undefined after updateParameters()
+  private _spacingAfterName: string | undefined;
+  private readonly _spacingAfterNameExcerpt: DocExcerpt | undefined;
 
-  private _selfClosingTag: boolean | undefined;                // never undefined after updateParameters()
+  private readonly _htmlAttributes: DocHtmlAttribute[];
+
+  private readonly _selfClosingTag: boolean;
 
   // The ">" or "/>" delimiter
-  private _closingDelimiterParticle: DocParticle | undefined;
+  private readonly _closingDelimiterExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocHtmlStartTagParameters) {
+  public constructor(parameters: IDocHtmlStartTagParameters | IDocHtmlStartTagParsedParameters) {
     super(parameters);
+
+    if (DocNode.isParsedParameters(parameters)) {
+      this._openingDelimiterExcerpt = new DocExcerpt({
+        excerptId: ExcerptId.HtmlStartTag_OpeningDelimiter,
+        content: parameters.openingDelimiterExcerpt
+      });
+
+      this._nameExcerpt = new DocExcerpt({
+        excerptId: ExcerptId.HtmlStartTag_Name,
+        content: parameters.nameExcerpt
+      });
+      if (parameters.spacingAfterNameExcerpt) {
+        this._spacingAfterNameExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.Spacing,
+          content: parameters.spacingAfterNameExcerpt
+        });
+      }
+
+      this._closingDelimiterExcerpt = new DocExcerpt({
+        excerptId: ExcerptId.HtmlStartTag_ClosingDelimiter,
+        content: parameters.closingDelimiterExcerpt
+      });
+    } else {
+      this._name = parameters.name;
+      this._spacingAfterName = parameters.spacingAfterName;
+    }
+
+    this._htmlAttributes = [];
+    this._htmlAttributes.push(...parameters.htmlAttributes);
+
+    this._selfClosingTag = parameters.selfClosingTag;
   }
 
   /**
    * The HTML element name.
    */
-  public get elementName(): string {
-    return this._elementNameParticle!.content;
+  public get name(): string {
+    if (this._name === undefined) {
+      this._name = this._nameExcerpt!.content.toString();
+    }
+    return this._name;
   }
 
   /**
    * The HTML attributes belonging to this HTML element.
    */
   public get htmlAttributes(): ReadonlyArray<DocHtmlAttribute> {
-    return this._htmlAttributes!;
+    return this._htmlAttributes;
   }
 
   /**
    * If true, then the HTML tag ends with "/>" instead of ">".
    */
   public get selfClosingTag(): boolean {
-    return this._selfClosingTag!;
+    return this._selfClosingTag;
   }
 
   /**
    * Explicit whitespace that a renderer should insert after the HTML element name.
    * If undefined, then the renderer can use a formatting rule to generate appropriate spacing.
    */
-  public get spacingAfterElementName(): string | undefined {
-    return this._elementNameParticle!.spacingAfterContent;
+  public get spacingAfterName(): string | undefined {
+    if (this._spacingAfterName === undefined) {
+      if (this._spacingAfterNameExcerpt !== undefined) {
+        this._spacingAfterName = this._spacingAfterNameExcerpt.content.toString();
+      }
+    }
+
+    return this._spacingAfterName;
   }
 
   /** @override */
-  public updateParameters(parameters: IDocHtmlStartTagParameters): void {
-    super.updateParameters(parameters);
-
-    this._openingDelimiterParticle = new DocParticle({
-      particleId: 'openingDelimiter',
-      excerpt: parameters.openingDelimiterExcerpt,
-      content: '<'
-    });
-
-    this._elementNameParticle = new DocParticle({
-      particleId: 'elementName',
-      excerpt: parameters.elementNameExcerpt,
-      content: parameters.elementName,
-      spacingAfterContent: parameters.spacingAfterElementName
-    });
-
-    this._htmlAttributes = parameters.htmlAttributes;
-
-    this._selfClosingTag = parameters.selfClosingTag;
-
-    this._closingDelimiterParticle = new DocParticle({
-      particleId: 'closingDelimiter',
-      excerpt: parameters.closingDelimiterExcerpt,
-      content: parameters.selfClosingTag ? '/>' : '>'
-    });
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
-      this._openingDelimiterParticle!,
-      this._elementNameParticle!,
-      ...this._htmlAttributes!,
-      this._closingDelimiterParticle!
+      this._openingDelimiterExcerpt,
+      this._nameExcerpt,
+      this._spacingAfterNameExcerpt,
+      ...this._htmlAttributes,
+      this._closingDelimiterExcerpt
     ];
   }
 

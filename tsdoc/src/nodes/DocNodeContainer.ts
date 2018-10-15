@@ -1,4 +1,4 @@
-import { DocNode, IDocNodeParameters } from './DocNode';
+import { DocNode, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 
 /**
  * Constructor parameters for {@link DocNodeContainer}.
@@ -8,43 +8,32 @@ export interface IDocNodeContainerParameters extends IDocNodeParameters {
 }
 
 /**
+ * Constructor parameters for {@link DocNodeContainer}.
+ */
+export interface IDocNodeContainerParsedParameters extends IDocNodeParsedParameters {
+
+}
+
+/**
  * DocNodeContainer is the base class for DocNode classes that act as a simple container
  * for other child nodes.  The child classes are {@link DocParagraph} and {@link DocSection}.
  */
 export abstract class DocNodeContainer extends DocNode {
-  private _nodes: DocNode[] | undefined;  // never undefined after updateParameters()
+  private readonly _nodes: DocNode[] = [];
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocNodeContainerParameters) {
+  public constructor(parameters: IDocNodeContainerParameters | IDocNodeContainerParsedParameters) {
     super(parameters);
   }
 
   /**
-   * The child nodes.  Note that for subclasses {@link getChildNodes()} may enumerate
-   * additional nodes that are not part of this collection.
+   * The nodes that were added to this container.
    */
   public get nodes(): ReadonlyArray<DocNode> {
-    return this._nodes!;
-  }
-
-  /** @override */
-  public updateParameters(parameters: IDocNodeContainerParameters): void {
-    super.updateParameters(parameters);
-
-    if (this._nodes === undefined) {
-      this._nodes = [];
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
-    return this._nodes!;
+    return this._nodes;
   }
 
   /**
@@ -59,7 +48,7 @@ export abstract class DocNodeContainer extends DocNode {
   }
 
   /**
-   * Append a node to the collection.
+   * Append a node to the container.
    */
   public appendNode(docNode: DocNode): void {
     if (!this.isAllowedChildNode(docNode)) {
@@ -69,7 +58,7 @@ export abstract class DocNodeContainer extends DocNode {
   }
 
   /**
-   * Append nodes to the collection.
+   * Append nodes to the container.
    */
   public appendNodes(docNodes: ReadonlyArray<DocNode>): void {
     for (const docNode of docNodes) {
@@ -78,9 +67,14 @@ export abstract class DocNodeContainer extends DocNode {
   }
 
   /**
-   * Remove all nodes from the collection.
+   * Remove all nodes from the container.
    */
   public clearNodes(): void {
     this._nodes!.length = 0;
+  }
+
+  /** @override */
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return this._nodes;
   }
 }

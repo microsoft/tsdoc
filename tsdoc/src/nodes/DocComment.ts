@@ -125,12 +125,9 @@ export class DocComment extends DocNode {
     this._customBlocks.push(block);
   }
 
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
-    return DocNode.trimUndefinedNodes([
+  /** @override */
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return [
       this.summarySection,
       this.remarksBlock,
       this.privateRemarks,
@@ -141,6 +138,6 @@ export class DocComment extends DocNode {
       ...this._customBlocks,
       this.inheritDocTag,
       ...this.modifierTagSet.nodes
-    ]);
+    ];
   }
 }

@@ -1,11 +1,22 @@
 import { DocNode, DocNodeKind } from './DocNode';
 import { DocParagraph } from './DocParagraph';
-import { DocNodeContainer, IDocNodeContainerParameters } from './DocNodeContainer';
+import {
+  DocNodeContainer,
+  IDocNodeContainerParameters,
+  IDocNodeContainerParsedParameters
+} from './DocNodeContainer';
 
 /**
  * Constructor parameters for {@link DocSection}.
  */
 export interface IDocSectionParameters extends IDocNodeContainerParameters {
+
+}
+
+/**
+ * Constructor parameters for {@link DocSection}.
+ */
+export interface IDocSectionParsedParameters extends IDocNodeContainerParsedParameters {
 
 }
 
@@ -21,7 +32,7 @@ export class DocSection extends DocNodeContainer {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocSectionParameters) {
+  public constructor(parameters: IDocSectionParameters | IDocSectionParsedParameters) {
     super(parameters);
   }
 

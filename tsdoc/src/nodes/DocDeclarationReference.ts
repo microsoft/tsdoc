@@ -1,20 +1,25 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { DocMemberReference } from './DocMemberReference';
-import { DocParticle } from './DocParticle';
-import { Excerpt } from '../parser/Excerpt';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptId } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocDeclarationReference}.
  */
 export interface IDocDeclarationReferenceParameters extends IDocNodeParameters {
-  packageNameExcerpt?: Excerpt;
   packageName?: string;
-
-  importPathExcerpt?: Excerpt;
   importPath?: string;
+  memberReferences?: DocMemberReference[];
+}
 
-  importHashExcerpt?: Excerpt;
-
+/**
+ * Constructor parameters for {@link DocDeclarationReference}.
+ */
+export interface IDocDeclarationReferenceParsedParameters extends IDocNodeParsedParameters {
+  packageNameExcerpt?: TokenSequence;
+  importPathExcerpt?: TokenSequence;
+  importHashExcerpt?: TokenSequence;
+  spacingAfterImportHashExcerpt?: TokenSequence;
   memberReferences?: DocMemberReference[];
 }
 
@@ -29,17 +34,58 @@ export class DocDeclarationReference extends DocNode {
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.DeclarationReference;
 
-  private _packageNameParticle: DocParticle | undefined;
-  private _importPathParticle: DocParticle | undefined;
-  private _importHashParticle: DocParticle | undefined;
-  private _memberReferences: DocMemberReference[] | undefined; // never undefined after updateParameters()
+  private _packageName: string | undefined;
+  private readonly _packageNameExcerpt: DocExcerpt | undefined;
+
+  private _importPath: string | undefined;
+  private readonly _importPathExcerpt: DocExcerpt | undefined;
+
+  private readonly _importHashExcerpt: DocExcerpt | undefined;
+  private readonly _spacingAfterImportHashExcerpt: DocExcerpt | undefined;
+
+  private readonly _memberReferences: DocMemberReference[];
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocDeclarationReferenceParameters) {
+  public constructor(parameters: IDocDeclarationReferenceParameters | IDocDeclarationReferenceParsedParameters) {
     super(parameters);
+
+    if (DocNode.isParsedParameters(parameters)) {
+      if (parameters.packageNameExcerpt) {
+        this._packageNameExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.DeclarationReference_PackageName,
+          content: parameters.packageNameExcerpt
+        });
+      }
+      if (parameters.importPathExcerpt) {
+        this._importPathExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.DeclarationReference_ImportPath,
+          content: parameters.importPathExcerpt
+        });
+      }
+      if (parameters.importHashExcerpt ){
+        this._importHashExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.DeclarationReference_ImportHash,
+          content: parameters.importHashExcerpt
+        });
+      }
+      if (parameters.spacingAfterImportHashExcerpt ){
+        this._spacingAfterImportHashExcerpt = new DocExcerpt({
+          excerptId: ExcerptId.Spacing,
+          content: parameters.spacingAfterImportHashExcerpt
+        });
+      }
+    } else {
+      this._packageName = parameters.packageName;
+      this._importPath = parameters.importPath;
+    }
+
+    this._memberReferences = [];
+    if (parameters.memberReferences) {
+      this._memberReferences.push(...parameters.memberReferences);
+    }
   }
 
   /**
@@ -48,11 +94,12 @@ export class DocDeclarationReference extends DocNode {
    * Example: `"@scope/my-package"`
    */
   public get packageName(): string | undefined {
-    if (this._packageNameParticle) {
-      return this._packageNameParticle.content;
-    } else {
-      return undefined;
+    if (this._packageName === undefined) {
+      if (this._packageNameExcerpt !== undefined) {
+        this._packageName = this._packageNameExcerpt.content.toString();
+      }
     }
+    return this._packageName;
   }
 
   /**
@@ -65,11 +112,12 @@ export class DocDeclarationReference extends DocNode {
    * Example: `"../path2/path2"`
    */
   public get importPath(): string | undefined {
-    if (this._importPathParticle) {
-      return this._importPathParticle.content;
-    } else {
-      return undefined;
+    if (this._importPath === undefined) {
+      if (this._importPathExcerpt !== undefined) {
+        this._importPath = this._importPathExcerpt.content.toString();
+      }
     }
+    return this._importPath;
   }
 
   /**
@@ -78,54 +126,17 @@ export class DocDeclarationReference extends DocNode {
    * because the reference refers to a module.
    */
   public get memberReferences(): ReadonlyArray<DocMemberReference> {
-    return this._memberReferences!;
+    return this._memberReferences;
   }
 
   /** @override */
-  public updateParameters(parameters: IDocDeclarationReferenceParameters): void {
-    super.updateParameters(parameters);
-
-    this._packageNameParticle = undefined;
-    this._importPathParticle = undefined;
-    this._importHashParticle = undefined;
-
-    if (parameters.packageName) {
-      this._packageNameParticle = new DocParticle({
-        particleId: 'packageName',
-        content: parameters.packageName,
-        excerpt: parameters.packageNameExcerpt
-      });
-    }
-
-    if (parameters.importPath) {
-      this._importPathParticle = new DocParticle({
-        particleId: 'importPath',
-        content: parameters.importPath || '',
-        excerpt: parameters.importPathExcerpt
-      });
-    }
-
-    if ((parameters.packageName && this._importPathParticle) || parameters.importHashExcerpt) {
-      this._importHashParticle = new DocParticle({
-        particleId: 'importHash',
-        content: '#',
-        excerpt: parameters.importHashExcerpt
-      });
-    }
-
-    this._memberReferences = parameters.memberReferences || [];
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
-    return DocNode.trimUndefinedNodes([
-      this._packageNameParticle,
-      this._importPathParticle,
-      this._importHashParticle,
-      ...this._memberReferences!
-    ]);
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return [
+      this._packageNameExcerpt,
+      this._importPathExcerpt,
+      this._importHashExcerpt,
+      this._spacingAfterImportHashExcerpt,
+      ...this._memberReferences
+    ];
   }
 }

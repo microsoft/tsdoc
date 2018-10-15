@@ -3,9 +3,8 @@ import {
   DocNode,
   DocNodeKind,
   DocPlainText,
-  IDocPlainTextParameters
+  IDocPlainTextParsedParameters
 } from '../nodes';
-import { Excerpt } from '../parser/Excerpt';
 import { TokenSequence } from '../parser/TokenSequence';
 
 /**
@@ -19,7 +18,7 @@ export class TrimSpacesTransform {
     let pendingSpace: boolean = false;
 
     // The DocPlainText node that we're currently accumulating
-    let accumulatedPlainTextNode: IDocPlainTextParameters | undefined = undefined;
+    let accumulatedPlainTextNode: IDocPlainTextParsedParameters | undefined = undefined;
 
     // We always trim leading whitespace for a paragraph.  This flag gets set to true
     // as soon as nonempty content is encountered.
@@ -41,7 +40,9 @@ export class TrimSpacesTransform {
           if (collapsedText.length > 0) {
             if (accumulatedPlainTextNode) {
               // If this node can't be merged, then eject it
-              if (!TrimSpacesTransform._canMergeExcerpts(accumulatedPlainTextNode.excerpt, docPlainText.excerpt)) {
+              if (!TrimSpacesTransform._canMergeExcerpts(
+                accumulatedPlainTextNode.textExcerpt, docPlainText.textExcerpt)) {
+
                 transformedNodes.push(new DocPlainText(accumulatedPlainTextNode));
                 accumulatedPlainTextNode = undefined;
               }
@@ -50,8 +51,8 @@ export class TrimSpacesTransform {
             // If we haven't started an accumulatedPlainTextNode, create it now
             if (!accumulatedPlainTextNode) {
               accumulatedPlainTextNode = {
-                excerpt: undefined,
-                text: ''
+                parsed: true,
+                textExcerpt: undefined!
               };
             }
 
@@ -112,30 +113,22 @@ export class TrimSpacesTransform {
     return transformedParagraph;
   }
 
-  private static _canMergeExcerpts(currentExcerpt: Excerpt | undefined,
-    followingExcerpt: Excerpt | undefined): boolean {
+  private static _canMergeExcerpts(currentExcerpt: TokenSequence | undefined,
+    followingExcerpt: TokenSequence | undefined): boolean {
 
     if (currentExcerpt === undefined || followingExcerpt === undefined) {
       return true;
     }
 
-    if (!currentExcerpt.spacingAfterContent.isEmpty()
-      || !followingExcerpt.spacingAfterContent.isEmpty()) {
+    if (currentExcerpt.parserContext !== currentExcerpt.parserContext) {
       return false;
     }
 
-    const currentSequence: TokenSequence = currentExcerpt.content;
-    const followingSequence: TokenSequence = followingExcerpt.content;
-
-    if (currentSequence.parserContext !== followingSequence.parserContext) {
-      return false;
-    }
-
-    return currentSequence.endIndex === followingSequence.startIndex;
+    return currentExcerpt.endIndex === currentExcerpt.startIndex;
   }
 
-  private static _mergeExcerpts(currentExcerpt: Excerpt | undefined,
-    followingExcerpt: Excerpt | undefined): Excerpt | undefined {
+  private static _mergeExcerpts(currentExcerpt: TokenSequence | undefined,
+    followingExcerpt: TokenSequence | undefined): TokenSequence | undefined {
 
     if (currentExcerpt === undefined) {
       return followingExcerpt;
@@ -145,28 +138,16 @@ export class TrimSpacesTransform {
       return currentExcerpt;
     }
 
-    if (!currentExcerpt.spacingAfterContent.isEmpty()
-      || !followingExcerpt.spacingAfterContent.isEmpty()) {
-      // This would be a program bug
-      throw new Error('mergeExcerpts(): Cannot merge excerpts with spacingAfterContent');
-    }
-
-    const currentSequence: TokenSequence = currentExcerpt.content;
-    const followingSequence: TokenSequence = followingExcerpt.content;
-
-    if (currentSequence.parserContext !== followingSequence.parserContext) {
+    if (currentExcerpt.parserContext !== followingExcerpt.parserContext) {
       // This would be a program bug
       throw new Error('mergeExcerpts(): Cannot merge excerpts with incompatible parser contexts');
     }
 
-    if (currentSequence.endIndex !== followingSequence.startIndex) {
+    if (currentExcerpt.endIndex !== followingExcerpt.startIndex) {
       // This would be a program bug
       throw new Error('mergeExcerpts(): Cannot merge excerpts that are not adjacent');
     }
 
-    return new Excerpt({
-      content: currentSequence.getNewSequence(currentSequence.startIndex,
-        followingSequence.endIndex)
-    });
+    return currentExcerpt.getNewSequence(currentExcerpt.startIndex, followingExcerpt.endIndex);
   }
 }

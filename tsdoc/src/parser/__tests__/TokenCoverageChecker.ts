@@ -1,4 +1,4 @@
-import { DocNode, DocNodeLeaf } from '../../nodes';
+import { DocNode, DocExcerpt } from '../../nodes';
 import { TokenSequence } from '../TokenSequence';
 import { ParserContext } from '../ParserContext';
 import { TokenKind, Token } from '../Token';
@@ -41,15 +41,8 @@ export class TokenCoverageChecker {
   }
 
   private _addNodeTree(node: DocNode): void {
-    if (node instanceof DocNodeLeaf) {
-      if (node.excerpt) {
-        if (node.excerpt.content) {
-          this._addSequence(node.excerpt.content, node);
-        }
-        if (node.excerpt.spacingAfterContent) {
-          this._addSequence(node.excerpt.spacingAfterContent, node);
-        }
-      }
+    if (node instanceof DocExcerpt) {
+      this._addSequence(node.content, node);
     }
 
     for (const childNode of node.getChildNodes()) {
