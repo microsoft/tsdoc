@@ -30,7 +30,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
         rows.push(
           <tr key={`param_${rows.length}`}>
             <td> { paramBlock.parameterName } </td>
-            <td> { this._renderContainer(paramBlock) } </td>
+            <td> { this._renderContainer(paramBlock.content) } </td>
           </tr>
         );
       }
@@ -58,7 +58,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       outputElements.push(
         <React.Fragment key='returns'>
           <h2 className='doc-heading'>Return Value</h2>
-          { this._renderContainer(docComment.returnsBlock) }
+          { this._renderContainer(docComment.returnsBlock.content) }
         </React.Fragment>
       );
     }
@@ -67,7 +67,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       outputElements.push(
         <React.Fragment key='remarks'>
           <h2 className='doc-heading'>Remarks</h2>
-          { this._renderContainer(docComment.remarksBlock) }
+          { this._renderContainer(docComment.remarksBlock.content) }
         </React.Fragment>
       );
     }
