@@ -68,10 +68,8 @@ export class DocLinkTag extends DocInlineTagBase {
     this._codeDestination = parameters.codeDestination;
 
     if (DocNode.isParsedParameters(parameters)) {
-      if (parameters.codeDestination !== undefined) {
-        if (parameters.urlDestinationExcerpt !== undefined) {
-          throw new Error('Either the codeDestination or the urlDestination may be specified, but not both');
-        }
+      if (parameters.codeDestination !== undefined && parameters.urlDestinationExcerpt !== undefined) {
+        throw new Error('Either the codeDestination or the urlDestination may be specified, but not both');
       }
 
       if (parameters.urlDestinationExcerpt) {
@@ -101,10 +99,8 @@ export class DocLinkTag extends DocInlineTagBase {
         });
       }
     } else {
-      if (parameters.codeDestination !== undefined) {
-        if (parameters.urlDestination !== undefined) {
-          throw new Error('Either the codeDestination or the urlDestination may be specified, but not both');
-        }
+      if (parameters.codeDestination !== undefined && parameters.urlDestination !== undefined) {
+        throw new Error('Either the codeDestination or the urlDestination may be specified, but not both');
       }
 
       this._urlDestination = parameters.urlDestination;

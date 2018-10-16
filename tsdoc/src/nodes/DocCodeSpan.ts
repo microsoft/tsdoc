@@ -50,11 +50,11 @@ export class DocCodeSpan extends DocNode {
         excerptId: ExcerptId.CodeSpan_OpeningDelimiter,
         content: parameters.openingDelimiterExcerpt
       });
-      this._openingDelimiterExcerpt = new DocExcerpt({
+      this._codeExcerpt = new DocExcerpt({
         excerptId: ExcerptId.CodeSpan_Code,
         content: parameters.codeExcerpt
       });
-      this._openingDelimiterExcerpt = new DocExcerpt({
+      this._closingDelimiterExcerpt = new DocExcerpt({
         excerptId: ExcerptId.CodeSpan_ClosingDelimiter,
         content: parameters.closingDelimiterExcerpt
       });

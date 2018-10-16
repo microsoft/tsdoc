@@ -4,7 +4,7 @@
 export const enum DocNodeKind {
   Block = 'Block',
   BlockTag = 'BlockTag',
-  Excerpt = 'Particle',
+  Excerpt = 'Excerpt',
   FencedCode = 'FencedCode',
   CodeSpan = 'CodeSpan',
   Comment = 'Comment',
