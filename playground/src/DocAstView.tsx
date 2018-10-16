@@ -29,16 +29,12 @@ export class DocAstView extends React.Component<IDocAstViewProps> {
   }
 
   private _dumpTSDocTree(outputLines: string[], docNode: tsdoc.DocNode, indent: string = ''): void {
-    let dumpText: string = `${indent}- ${docNode.kind}`;
-    if (docNode instanceof tsdoc.DocParticle) {
-      dumpText += ` (${docNode.particleId})`;
-    }
-
-    if (docNode instanceof tsdoc.DocNodeLeaf && docNode.excerpt) {
-      const content: string = docNode.excerpt.content.toString();
-      if (content.length > 0) {
-        dumpText += ': ' + JSON.stringify(content);
-      }
+    let dumpText: string = '';
+    if (docNode instanceof tsdoc.DocExcerpt) {
+      const content: string = docNode.content.toString();
+      dumpText += `${indent}* ${docNode.excerptId}=` + JSON.stringify(content);
+    } else {
+      dumpText += `${indent}- ${docNode.kind}`;
     }
     outputLines.push(dumpText);
 
