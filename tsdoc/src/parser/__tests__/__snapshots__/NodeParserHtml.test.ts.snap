@@ -27,59 +27,75 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag-a",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag-b",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
@@ -88,67 +104,91 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag-c",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag-d",
-                    "nodeSpacing": "[n]",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "[n]",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag-e",
-                    "nodeSpacing": "[n]     ",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "[n]     ",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -193,77 +233,147 @@ Object {
                 "errorLocationPrecedingToken": "<",
                 "errorMessage": "Invalid HTML element: A space is not allowed here",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": " tag/",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": " tag/",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": "/",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "-",
                 "errorLocationPrecedingToken": " ",
                 "errorMessage": "The HTML tag has invalid syntax: Expecting an attribute or [q][>][q] or [q]/[>][q]",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "tag -a /",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag -a /",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": "/",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "/",
                 "errorLocationPrecedingToken": " ",
                 "errorMessage": "The HTML tag has invalid syntax: Expecting an attribute or [q][>][q] or [q]/[>][q]",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "tag-b /",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-b /",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "/",
                 "errorLocationPrecedingToken": " ",
                 "errorMessage": "The HTML tag has invalid syntax: Expecting an attribute or [q][>][q] or [q]/[>][q]",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "tag-c / ",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-c / ",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": " ",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "",
@@ -271,15 +381,30 @@ Object {
 ",
                 "errorMessage": "The HTML tag has invalid syntax: Expecting an attribute or [q][>][q] or [q]/[>][q]",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "tag-d",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-d",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -315,83 +440,111 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag-a",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: attributeName",
+                        "kind": "Excerpt: HtmlAttribute_Name",
                         "nodeExcerpt": "attr-one",
                       },
                       Object {
-                        "kind": "Particle: equals",
+                        "kind": "Excerpt: HtmlAttribute_Equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle: attributeValue",
+                        "kind": "Excerpt: HtmlAttribute_Value",
                         "nodeExcerpt": "[q]one[q]",
-                        "nodeSpacing": " ",
+                      },
+                      Object {
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": " ",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag-b",
-                    "nodeSpacing": "[n]  ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "[n]  ",
                   },
                   Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: attributeName",
+                        "kind": "Excerpt: HtmlAttribute_Name",
                         "nodeExcerpt": "attr-two",
-                        "nodeSpacing": "[n]  ",
                       },
                       Object {
-                        "kind": "Particle: equals",
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": "[n]  ",
+                      },
+                      Object {
+                        "kind": "Excerpt: HtmlAttribute_Equals",
                         "nodeExcerpt": "=",
-                        "nodeSpacing": " ",
                       },
                       Object {
-                        "kind": "Particle: attributeValue",
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": " ",
+                      },
+                      Object {
+                        "kind": "Excerpt: HtmlAttribute_Value",
                         "nodeExcerpt": "[q]2[q]",
-                        "nodeSpacing": "[n]",
+                      },
+                      Object {
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": "[n]",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -429,29 +582,35 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag-c",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: attributeName",
+                        "kind": "Excerpt: HtmlAttribute_Name",
                         "nodeExcerpt": "attr-three",
                       },
                       Object {
-                        "kind": "Particle: equals",
+                        "kind": "Excerpt: HtmlAttribute_Equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle: attributeValue",
+                        "kind": "Excerpt: HtmlAttribute_Value",
                         "nodeExcerpt": "[q]3[q]",
-                        "nodeSpacing": " ",
+                      },
+                      Object {
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": " ",
                       },
                     ],
                   },
@@ -459,58 +618,75 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: attributeName",
+                        "kind": "Excerpt: HtmlAttribute_Name",
                         "nodeExcerpt": "four",
                       },
                       Object {
-                        "kind": "Particle: equals",
+                        "kind": "Excerpt: HtmlAttribute_Equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle: attributeValue",
+                        "kind": "Excerpt: HtmlAttribute_Value",
                         "nodeExcerpt": "'4'",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag-d",
-                    "nodeSpacing": "[n]  ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "[n]  ",
                   },
                   Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: attributeName",
+                        "kind": "Excerpt: HtmlAttribute_Name",
                         "nodeExcerpt": "attr-five",
-                        "nodeSpacing": "[n]  ",
                       },
                       Object {
-                        "kind": "Particle: equals",
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": "[n]  ",
+                      },
+                      Object {
+                        "kind": "Excerpt: HtmlAttribute_Equals",
                         "nodeExcerpt": "=",
-                        "nodeSpacing": " ",
                       },
                       Object {
-                        "kind": "Particle: attributeValue",
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": " ",
+                      },
+                      Object {
+                        "kind": "Excerpt: HtmlAttribute_Value",
                         "nodeExcerpt": "[q]5[q]",
-                        "nodeSpacing": "[n]  ",
+                      },
+                      Object {
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": "[n]  ",
                       },
                     ],
                   },
@@ -518,31 +694,45 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: attributeName",
+                        "kind": "Excerpt: HtmlAttribute_Name",
                         "nodeExcerpt": "six",
-                        "nodeSpacing": "[n]  ",
                       },
                       Object {
-                        "kind": "Particle: equals",
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": "[n]  ",
+                      },
+                      Object {
+                        "kind": "Excerpt: HtmlAttribute_Equals",
                         "nodeExcerpt": "=",
-                        "nodeSpacing": " ",
                       },
                       Object {
-                        "kind": "Particle: attributeValue",
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": " ",
+                      },
+                      Object {
+                        "kind": "Excerpt: HtmlAttribute_Value",
                         "nodeExcerpt": "'6'",
-                        "nodeSpacing": "[n]",
+                      },
+                      Object {
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": "[n]",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -580,29 +770,35 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag-e",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: attributeName",
+                        "kind": "Excerpt: HtmlAttribute_Name",
                         "nodeExcerpt": "attr-one",
                       },
                       Object {
-                        "kind": "Particle: equals",
+                        "kind": "Excerpt: HtmlAttribute_Equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle: attributeValue",
+                        "kind": "Excerpt: HtmlAttribute_Value",
                         "nodeExcerpt": "[q]one[q]",
-                        "nodeSpacing": " ",
+                      },
+                      Object {
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": " ",
                       },
                     ],
                   },
@@ -610,58 +806,75 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: attributeName",
+                        "kind": "Excerpt: HtmlAttribute_Name",
                         "nodeExcerpt": "two",
                       },
                       Object {
-                        "kind": "Particle: equals",
+                        "kind": "Excerpt: HtmlAttribute_Equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle: attributeValue",
+                        "kind": "Excerpt: HtmlAttribute_Value",
                         "nodeExcerpt": "'two'",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag-f",
-                    "nodeSpacing": "[n]  ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "[n]  ",
                   },
                   Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: attributeName",
+                        "kind": "Excerpt: HtmlAttribute_Name",
                         "nodeExcerpt": "attr-one",
-                        "nodeSpacing": "[n]  ",
                       },
                       Object {
-                        "kind": "Particle: equals",
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": "[n]  ",
+                      },
+                      Object {
+                        "kind": "Excerpt: HtmlAttribute_Equals",
                         "nodeExcerpt": "=",
-                        "nodeSpacing": " ",
                       },
                       Object {
-                        "kind": "Particle: attributeValue",
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": " ",
+                      },
+                      Object {
+                        "kind": "Excerpt: HtmlAttribute_Value",
                         "nodeExcerpt": "[q]one[q]",
-                        "nodeSpacing": "[n]  ",
+                      },
+                      Object {
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": "[n]  ",
                       },
                     ],
                   },
@@ -669,31 +882,45 @@ Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: attributeName",
+                        "kind": "Excerpt: HtmlAttribute_Name",
                         "nodeExcerpt": "two",
-                        "nodeSpacing": "[n]  ",
                       },
                       Object {
-                        "kind": "Particle: equals",
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": "[n]  ",
+                      },
+                      Object {
+                        "kind": "Excerpt: HtmlAttribute_Equals",
                         "nodeExcerpt": "=",
-                        "nodeSpacing": " ",
                       },
                       Object {
-                        "kind": "Particle: attributeValue",
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": " ",
+                      },
+                      Object {
+                        "kind": "Excerpt: HtmlAttribute_Value",
                         "nodeExcerpt": "'two'",
-                        "nodeSpacing": "[n]",
+                      },
+                      Object {
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": "[n]",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -746,154 +973,294 @@ Object {
                 "errorLocationPrecedingToken": " ",
                 "errorMessage": "The HTML element has an invalid attribute: Expecting [q]=[q] after HTML attribute name",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "tag-a attr -one=[q]one[q] /",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-a attr -one=[q]one[q] /",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": "/",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "attr-",
                 "errorLocationPrecedingToken": " ",
                 "errorMessage": "The HTML element has an invalid attribute: An HTML name must be a sequence of letters separated by hyphens",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "tag-b attr- two=[q]two[q] /",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-b attr- two=[q]two[q] /",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": "/",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "'",
                 "errorLocationPrecedingToken": "=",
                 "errorMessage": "The HTML element has an invalid attribute: The HTML string is missing its closing quote",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "tag-c attr-three='three[q] /",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-c attr-three='three[q] /",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": "/",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "@",
                 "errorLocationPrecedingToken": "=",
                 "errorMessage": "The HTML element has an invalid attribute: Expecting an HTML string starting with a single-quote or double-quote character",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "tag-d attr-four=",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-d attr-four=",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "@",
                 "errorLocationPrecedingToken": "=",
                 "errorMessage": "A TSDoc tag must be preceded by whitespace",
                 "kind": "ErrorText",
-                "nodeExcerpt": "@",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "@",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "[q]four[q] /",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "[q]four[q] /",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": "/",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "@",
                 "errorLocationPrecedingToken": "five",
                 "errorMessage": "The HTML element has an invalid attribute: Expecting [q]=[q] after HTML attribute name",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "tag-e attr-five",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-e attr-five",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "@",
                 "errorLocationPrecedingToken": "five",
                 "errorMessage": "A TSDoc tag must be preceded by whitespace",
                 "kind": "ErrorText",
-                "nodeExcerpt": "@",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "@",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "=[q]five[q] /",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "=[q]five[q] /",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": "/",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "seven",
                 "errorLocationPrecedingToken": "\\"",
                 "errorMessage": "The HTML element has an invalid attribute: The next character after a closing quote must be spacing or punctuation",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "tag-f attr-six=[q]six[q]seven=[q]seven[q] /",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-f attr-six=[q]six[q]seven=[q]seven[q] /",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": "/",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -930,30 +1297,60 @@ Object {
                 "errorLocationPrecedingToken": "=",
                 "errorMessage": "The HTML element has an invalid attribute: The HTML string is missing its closing quote",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "tag-g attr=[q]multi",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-g attr=[q]multi",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "line[q] /",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "line[q] /",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": "/",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -985,41 +1382,52 @@ Object {
                 "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "tag",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "HtmlAttribute",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: attributeName",
+                        "kind": "Excerpt: HtmlAttribute_Name",
                         "nodeExcerpt": "attr-one",
                       },
                       Object {
-                        "kind": "Particle: equals",
+                        "kind": "Excerpt: HtmlAttribute_Equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
-                        "kind": "Particle: attributeValue",
+                        "kind": "Excerpt: HtmlAttribute_Value",
                         "nodeExcerpt": "[q]@tag[q]",
-                        "nodeSpacing": " ",
+                      },
+                      Object {
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": " ",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "/[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -1054,66 +1462,87 @@ Object {
                 "kind": "HtmlEndTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlEndTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]/",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlEndTag_Name",
                     "nodeExcerpt": "tag-a",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: HtmlEndTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "HtmlEndTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlEndTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]/",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlEndTag_Name",
                     "nodeExcerpt": "tag-b",
-                    "nodeSpacing": "  ",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "  ",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlEndTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "HtmlEndTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: HtmlEndTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]/",
                   },
                   Object {
-                    "kind": "Particle: elementName",
+                    "kind": "Excerpt: HtmlEndTag_Name",
                     "nodeExcerpt": "tag-c",
-                    "nodeSpacing": "[n]  ",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "[n]  ",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlEndTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -1154,44 +1583,84 @@ Object {
                 "errorLocationPrecedingToken": "a",
                 "errorMessage": "Expecting a closing [q][>][q] for the HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "/tag-a/",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "/tag-a/",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": "/",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "errorLocation": " ",
                 "errorLocationPrecedingToken": "/",
                 "errorMessage": "Expecting an HTML element name: A space is not allowed here",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "/ tag-b",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "/ tag-b",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[>]",
                 "errorLocationPrecedingToken": "b",
                 "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[>]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "",
@@ -1199,15 +1668,30 @@ Object {
 ",
                 "errorMessage": "Expecting a closing [q][>][q] for the HTML tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[<]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "/tag-c",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "/tag-c",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },

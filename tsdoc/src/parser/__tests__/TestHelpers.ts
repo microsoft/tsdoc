@@ -154,9 +154,8 @@ export class TestHelpers {
 
     if (docNode instanceof DocPlainText) {
       const docPlainText: DocPlainText = docNode as DocPlainText;
-      const nodePlainText: string = TestHelpers.getEscaped(docPlainText.text);
-      if (nodePlainText !== item.nodeExcerpt) {
-        item.nodePlainText = nodePlainText;
+      if (docPlainText.textExcerpt === undefined) {
+        item.nodePlainText = TestHelpers.getEscaped(docPlainText.text);
       }
     }
 

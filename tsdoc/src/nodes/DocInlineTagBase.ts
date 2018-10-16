@@ -52,7 +52,7 @@ export abstract class DocInlineTagBase extends DocNode {
       });
 
       this._tagNameExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.InlineTag_TagContent,
+        excerptId: ExcerptId.InlineTag_TagName,
         content: parameters.tagNameExcerpt
       });
 

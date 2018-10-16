@@ -65,7 +65,7 @@ export class DocMemberIdentifier extends DocNode {
       });
 
       if (parameters.rightQuoteExcerpt) {
-        this._leftQuoteExcerpt = new DocExcerpt({
+        this._rightQuoteExcerpt = new DocExcerpt({
           excerptId: ExcerptId.MemberIdentifier_RightQuote,
           content: parameters.rightQuoteExcerpt
         });

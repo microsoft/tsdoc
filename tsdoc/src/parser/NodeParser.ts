@@ -86,6 +86,7 @@ export class NodeParser {
           this._pushAccumulatedPlainText(tokenReader);
           tokenReader.readToken();
           this._pushParagraphNode(new DocSoftBreak({
+            parsed: true,
             softBreakExcerpt: tokenReader.extractAccumulatedSequence()
           }));
           break;
@@ -548,7 +549,7 @@ export class NodeParser {
     this._readSpacingAndNewlines(tokenReader);
     const spacingAfterTagNameExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
 
-    if (spacingAfterTagNameExcerpt) {
+    if (spacingAfterTagNameExcerpt === undefined) {
       // If there were no spaces at all, that's an error unless it's the degenerate "{@tag}" case
       if (tokenReader.peekTokenKind() !== TokenKind.RightCurlyBracket) {
         const failure: IFailure = this._createFailureForToken(tokenReader,
@@ -607,7 +608,8 @@ export class NodeParser {
       openingDelimiterExcerpt,
 
       tagNameExcerpt,
-      tagName: tagName,
+      tagName,
+      spacingAfterTagNameExcerpt,
 
       tagContentExcerpt,
 
@@ -1153,6 +1155,8 @@ export class NodeParser {
       tokenReader.readToken();
 
       parameters.rightParenthesisExcerpt = tokenReader.extractAccumulatedSequence();
+
+      this._readSpacingAndNewlines(tokenReader);
       parameters.spacingAfterRightParenthesisExcerpt = tokenReader.tryExtractAccumulatedSequence();
     }
 
@@ -1199,6 +1203,7 @@ export class NodeParser {
     const rightBracketExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     return new DocMemberSymbol({
+      parsed: true,
       leftBracketExcerpt,
       spacingAfterLeftBracketExcerpt,
       symbolReference: declarationReference,
@@ -1318,12 +1323,10 @@ export class NodeParser {
     const openingDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // Read the element name
-    const elementName: ResultOrFailure<TokenSequence> = this._parseHtmlName(tokenReader);
-    if (isFailure(elementName)) {
-      return this._backtrackAndCreateErrorForFailure(tokenReader, marker, 'Invalid HTML element: ', elementName);
+    const nameExcerpt: ResultOrFailure<TokenSequence> = this._parseHtmlName(tokenReader);
+    if (isFailure(nameExcerpt)) {
+      return this._backtrackAndCreateErrorForFailure(tokenReader, marker, 'Invalid HTML element: ', nameExcerpt);
     }
-
-    const nameExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     this._readSpacingAndNewlines(tokenReader);
     const spacingAfterNameExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
@@ -1705,7 +1708,7 @@ export class NodeParser {
 
     // Example: "```"
     const closingFenceExcerpt: TokenSequence = codeAndDelimiterExcerpt.getNewSequence(
-      codeEndMarker, codeAndDelimiterExcerpt.endIndex);
+      closingFenceStartMarker, codeAndDelimiterExcerpt.endIndex);
 
     // Read the spacing and newline after the closing delimiter
     done = false;
@@ -1736,15 +1739,15 @@ export class NodeParser {
     return new DocFencedCode({
       parsed: true,
 
-      spacingBeforeClosingFenceExcerpt,
       openingFenceExcerpt,
       spacingAfterOpeningFenceExcerpt,
 
       languageExcerpt,
       spacingAfterLanguageExcerpt,
 
-      codeExcerpt: codeExcerpt,
+      codeExcerpt,
 
+      spacingBeforeClosingFenceExcerpt,
       closingFenceExcerpt,
       spacingAfterClosingFenceExcerpt
     });
