@@ -516,23 +516,28 @@ Object {
             ],
           },
           Object {
-            "kind": "Paragraph",
+            "kind": "Section",
             "nodes": Array [
               Object {
-                "kind": "SoftBreak",
+                "kind": "Paragraph",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
                   },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
                   },
                 ],
               },

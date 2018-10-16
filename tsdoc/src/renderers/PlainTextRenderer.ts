@@ -1,4 +1,4 @@
-import { DocNode, DocNodeKind, DocNodeContainer, DocPlainText } from '../nodes';
+import { DocNode, DocNodeKind, DocPlainText } from '../nodes';
 
 /**
  * Renders a DocNode tree as plain text, without any rich text formatting or markup.
@@ -31,11 +31,9 @@ export class PlainTextRenderer {
           break;
       }
 
-      if (node instanceof DocNodeContainer) {
-        for (const childNode of node.getChildNodes()) {
-          if (this.hasAnyTextContent(childNode)) {
-            return true;
-          }
+      for (const childNode of node.getChildNodes()) {
+        if (this.hasAnyTextContent(childNode)) {
+          return true;
         }
       }
     }

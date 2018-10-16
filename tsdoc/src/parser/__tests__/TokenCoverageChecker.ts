@@ -22,12 +22,12 @@ interface ITokenAssociation {
  */
 export class TokenCoverageChecker {
   private readonly _parserContext: ParserContext;
-  private readonly _tokenAssocations: (ITokenAssociation | undefined)[];
+  private readonly _tokenAssociations: (ITokenAssociation | undefined)[];
 
   public constructor(parserContext: ParserContext) {
     this._parserContext = parserContext;
-    this._tokenAssocations = [];
-    this._tokenAssocations.length = parserContext.tokens.length;
+    this._tokenAssociations = [];
+    this._tokenAssociations.length = parserContext.tokens.length;
   }
 
   public getGaps(rootNode: DocNode): TokenSequence[] {
@@ -54,14 +54,14 @@ export class TokenCoverageChecker {
     const newTokenAssociation: ITokenAssociation = { docNode, tokenSequence };
 
     for (let i: number = tokenSequence.startIndex; i < tokenSequence.endIndex; ++i) {
-      const tokenAssociation: ITokenAssociation | undefined = this._tokenAssocations[i];
+      const tokenAssociation: ITokenAssociation | undefined = this._tokenAssociations[i];
       if (tokenAssociation) {
         throw new Error(`Overlapping content encountered between`
           + ` ${this._formatTokenAssociation(tokenAssociation)} and`
           + ` ${this._formatTokenAssociation(newTokenAssociation)}`);
       }
 
-      this._tokenAssocations[i] = newTokenAssociation;
+      this._tokenAssociations[i] = newTokenAssociation;
     }
   }
 
@@ -78,7 +78,7 @@ export class TokenCoverageChecker {
 
     for (let i: number = 0; i < this._parserContext.tokens.length - 1; ++i) {
 
-      const tokenAssociation: ITokenAssociation | undefined = this._tokenAssocations[i];
+      const tokenAssociation: ITokenAssociation | undefined = this._tokenAssociations[i];
 
       if (gapStartIndex === undefined) {
         // No gap found yet
