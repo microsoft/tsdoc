@@ -318,8 +318,7 @@ export class NodeParser {
   private _parseParamBlock(tokenReader: TokenReader, docBlockTag: DocBlockTag): DocParamBlock {
     const startMarker: number = tokenReader.createMarker();
 
-    this._readSpacingAndNewlines(tokenReader);
-    const spacingBeforeParameterNameExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingBeforeParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     let parameterName: string = '';
 
@@ -355,8 +354,7 @@ export class NodeParser {
     const parameterNameExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // TODO: Warn if there is no space before or after the hyphen
-    this._readSpacingAndNewlines(tokenReader);
-    const spacingAfterParameterNameExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     if (tokenReader.peekTokenKind() !== TokenKind.Hyphen) {
       tokenReader.backtrackToMarker(startMarker);
@@ -377,8 +375,7 @@ export class NodeParser {
     const hyphenExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // TODO: Only read one space
-    this._readSpacingAndNewlines(tokenReader);
-    const spacingAfterHyphenExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterHyphenExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     return new DocParamBlock({
       parsed: true,
@@ -546,8 +543,7 @@ export class NodeParser {
 
     const tagNameExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    this._readSpacingAndNewlines(tokenReader);
-    const spacingAfterTagNameExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterTagNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     if (spacingAfterTagNameExcerpt === undefined) {
       // If there were no spaces at all, that's an error unless it's the degenerate "{@tag}" case
@@ -828,9 +824,8 @@ export class NodeParser {
       return false;
     }
 
-    this._readSpacingAndNewlines(embeddedTokenReader);
     parameters.urlDestinationExcerpt = urlDestinationExcerpt;
-    parameters.spacingAfterDestinationExcerpt = embeddedTokenReader.tryExtractAccumulatedSequence();
+    parameters.spacingAfterDestinationExcerpt = this._tryReadSpacingAndNewlines(embeddedTokenReader);
 
     return true;
   }
@@ -1004,8 +999,7 @@ export class NodeParser {
       tokenReader.readToken();
       importHashExcerpt = tokenReader.extractAccumulatedSequence();
 
-      this._readSpacingAndNewlines(tokenReader);
-      spacingAfterImportHashExcerpt = tokenReader.tryExtractAccumulatedSequence();
+      spacingAfterImportHashExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
 
       if (packageNameExcerpt === undefined && importPathExcerpt === undefined) {
         this._parserContext.log.addMessageForTokenSequence(
@@ -1079,8 +1073,7 @@ export class NodeParser {
       tokenReader.readToken();
       parameters.dotExcerpt = tokenReader.extractAccumulatedSequence();
 
-      this._readSpacingAndNewlines(tokenReader);
-      parameters.spacingAfterDotExcerpt = tokenReader.tryExtractAccumulatedSequence();
+      parameters.spacingAfterDotExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
     }
 
     // Read the left parenthesis if there is one
@@ -1088,8 +1081,7 @@ export class NodeParser {
       tokenReader.readToken();
       parameters.leftParenthesisExcerpt = tokenReader.extractAccumulatedSequence();
 
-      this._readSpacingAndNewlines(tokenReader);
-      parameters.spacingAfterLeftParenthesisExcerpt = tokenReader.tryExtractAccumulatedSequence();
+      parameters.spacingAfterLeftParenthesisExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
     }
 
     // Read the member identifier or symbol
@@ -1106,8 +1098,7 @@ export class NodeParser {
         return undefined;
       }
     }
-    this._readSpacingAndNewlines(tokenReader);
-    parameters.spacingAfterMemberExcerpt = tokenReader.tryExtractAccumulatedSequence();
+    parameters.spacingAfterMemberExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the colon
     if (tokenReader.peekTokenKind() === TokenKind.Colon) {
@@ -1115,8 +1106,7 @@ export class NodeParser {
 
       parameters.colonExcerpt = tokenReader.extractAccumulatedSequence();
 
-      this._readSpacingAndNewlines(tokenReader);
-      parameters.spacingAfterColonExcerpt = tokenReader.tryExtractAccumulatedSequence();
+      parameters.spacingAfterColonExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
 
       if (!parameters.leftParenthesisExcerpt) {
         // In the current TSDoc draft standard, a member reference with a selector requires the parentheses.
@@ -1134,8 +1124,7 @@ export class NodeParser {
         return undefined;
       }
 
-      this._readSpacingAndNewlines(tokenReader);
-      parameters.spacingAfterSelectorExcerpt = tokenReader.tryExtractAccumulatedSequence();
+      parameters.spacingAfterSelectorExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
     } else {
       if (parameters.leftParenthesisExcerpt) {
         this._parserContext.log.addMessageForTokenSequence('Expecting a colon after the identifier because'
@@ -1156,8 +1145,7 @@ export class NodeParser {
 
       parameters.rightParenthesisExcerpt = tokenReader.extractAccumulatedSequence();
 
-      this._readSpacingAndNewlines(tokenReader);
-      parameters.spacingAfterRightParenthesisExcerpt = tokenReader.tryExtractAccumulatedSequence();
+      parameters.spacingAfterRightParenthesisExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
     }
 
     return new DocMemberReference(parameters);
@@ -1175,8 +1163,7 @@ export class NodeParser {
     tokenReader.readToken();
     const leftBracketExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    this._readSpacingAndNewlines(tokenReader);
-    const spacingAfterLeftBracketExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterLeftBracketExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the declaration reference
     const declarationReference: DocDeclarationReference | undefined
@@ -1328,8 +1315,7 @@ export class NodeParser {
       return this._backtrackAndCreateErrorForFailure(tokenReader, marker, 'Invalid HTML element: ', nameExcerpt);
     }
 
-    this._readSpacingAndNewlines(tokenReader);
-    const spacingAfterNameExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     const htmlAttributes: DocHtmlAttribute[] = [];
 
@@ -1392,8 +1378,7 @@ export class NodeParser {
       return nameExcerpt;
     }
 
-    this._readSpacingAndNewlines(tokenReader);
-    const spacingAfterNameExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the equals
     if (tokenReader.peekTokenKind() !== TokenKind.Equals) {
@@ -1403,8 +1388,7 @@ export class NodeParser {
 
     const equalsExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    this._readSpacingAndNewlines(tokenReader);
-    const spacingAfterEqualsExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterEqualsExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the attribute value
     const attributeValue: ResultOrFailure<string> = this._parseHtmlString(tokenReader);
@@ -1414,8 +1398,7 @@ export class NodeParser {
 
     const valueExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    this._readSpacingAndNewlines(tokenReader);
-    const spacingAfterValueExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterValueExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     return new DocHtmlAttribute({
       parsed: true,
@@ -1493,8 +1476,7 @@ export class NodeParser {
         'Expecting an HTML element name: ', nameExcerpt);
     }
 
-    this._readSpacingAndNewlines(tokenReader);
-    const spacingAfterNameExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the closing ">"
     if (tokenReader.peekTokenKind() !== TokenKind.GreaterThan) {
@@ -1804,7 +1786,7 @@ export class NodeParser {
     });
   }
 
-  private _readSpacingAndNewlines(tokenReader: TokenReader): void {
+  private _tryReadSpacingAndNewlines(tokenReader: TokenReader): TokenSequence | undefined {
     let done: boolean = false;
     do {
       switch (tokenReader.peekTokenKind()) {
@@ -1817,6 +1799,7 @@ export class NodeParser {
           break;
       }
     } while (!done);
+    return tokenReader.tryExtractAccumulatedSequence();
   }
 
   /**
