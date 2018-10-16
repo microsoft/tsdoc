@@ -5,7 +5,7 @@ import {
   IDocInlineTagBaseParsedParameters,
   IDocInlineTagBaseParameters
 } from './DocInlineTagBase';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 import { TokenSequence } from '../parser/TokenSequence';
 
 /**
@@ -74,27 +74,27 @@ export class DocLinkTag extends DocInlineTagBase {
 
       if (parameters.urlDestinationExcerpt) {
         this._urlDestinationExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.LinkTag_UrlDestination,
+          excerptKind: ExcerptKind.LinkTag_UrlDestination,
           content: parameters.urlDestinationExcerpt
         });
       }
       if (parameters.spacingAfterDestinationExcerpt) {
         this._spacingAfterDestinationExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterDestinationExcerpt
         });
       }
 
       if (parameters.pipeExcerpt) {
         this._pipeExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.LinkTag_Pipe,
+          excerptKind: ExcerptKind.LinkTag_Pipe,
           content: parameters.pipeExcerpt
         });
       }
 
       if (parameters.linkTextExcerpt) {
         this._linkTextExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.LinkTag_LinkText,
+          excerptKind: ExcerptKind.LinkTag_LinkText,
           content: parameters.linkTextExcerpt
         });
       }

@@ -1,6 +1,6 @@
 import { DocNodeKind, IDocNodeParameters, DocNode, IDocNodeParsedParameters } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocCodeSpan}.
@@ -47,15 +47,15 @@ export class DocCodeSpan extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingDelimiterExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.CodeSpan_OpeningDelimiter,
+        excerptKind: ExcerptKind.CodeSpan_OpeningDelimiter,
         content: parameters.openingDelimiterExcerpt
       });
       this._codeExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.CodeSpan_Code,
+        excerptKind: ExcerptKind.CodeSpan_Code,
         content: parameters.codeExcerpt
       });
       this._closingDelimiterExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.CodeSpan_ClosingDelimiter,
+        excerptKind: ExcerptKind.CodeSpan_ClosingDelimiter,
         content: parameters.closingDelimiterExcerpt
       });
     } else {

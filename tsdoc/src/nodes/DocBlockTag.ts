@@ -1,7 +1,7 @@
 import { DocNodeKind, DocNode, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { StringChecks } from '../parser/StringChecks';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocBlockTag}.
@@ -42,7 +42,7 @@ export class DocBlockTag extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._tagNameExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.BlockTag,
+        excerptKind: ExcerptKind.BlockTag,
         content: parameters.tagNameExcerpt
       });
     }

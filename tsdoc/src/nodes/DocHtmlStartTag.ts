@@ -1,7 +1,7 @@
 import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { DocHtmlAttribute } from './DocHtmlAttribute';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocHtmlStartTag}.
@@ -64,23 +64,23 @@ export class DocHtmlStartTag extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingDelimiterExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.HtmlStartTag_OpeningDelimiter,
+        excerptKind: ExcerptKind.HtmlStartTag_OpeningDelimiter,
         content: parameters.openingDelimiterExcerpt
       });
 
       this._nameExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.HtmlStartTag_Name,
+        excerptKind: ExcerptKind.HtmlStartTag_Name,
         content: parameters.nameExcerpt
       });
       if (parameters.spacingAfterNameExcerpt) {
         this._spacingAfterNameExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterNameExcerpt
         });
       }
 
       this._closingDelimiterExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.HtmlStartTag_ClosingDelimiter,
+        excerptKind: ExcerptKind.HtmlStartTag_ClosingDelimiter,
         content: parameters.closingDelimiterExcerpt
       });
     } else {

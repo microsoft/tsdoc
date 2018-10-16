@@ -1,7 +1,7 @@
 import { IDocNodeParameters, DocNode, IDocNodeParsedParameters } from './DocNode';
 import { StringChecks } from '../parser/StringChecks';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocInlineTagBase}.
@@ -47,24 +47,24 @@ export abstract class DocInlineTagBase extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingDelimiterExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.InlineTag_OpeningDelimiter,
+        excerptKind: ExcerptKind.InlineTag_OpeningDelimiter,
         content: parameters.openingDelimiterExcerpt
       });
 
       this._tagNameExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.InlineTag_TagName,
+        excerptKind: ExcerptKind.InlineTag_TagName,
         content: parameters.tagNameExcerpt
       });
 
       if (parameters.spacingAfterTagNameExcerpt) {
         this._spacingAfterTagNameExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterTagNameExcerpt
         });
       }
 
       this._closingDelimiterExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.InlineTag_ClosingDelimiter,
+        excerptKind: ExcerptKind.InlineTag_ClosingDelimiter,
         content: parameters.closingDelimiterExcerpt
       });
     }

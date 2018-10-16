@@ -240,7 +240,7 @@ function dumpTSDocTree(docNode: tsdoc.DocNode, indent: string): void {
   let dumpText: string = '';
   if (docNode instanceof tsdoc.DocExcerpt) {
     const content: string = docNode.content.toString();
-    dumpText += colors.gray(`${indent}* ${docNode.excerptId}=`) + colors.cyan(JSON.stringify(content));
+    dumpText += colors.gray(`${indent}* ${docNode.excerptKind}=`) + colors.cyan(JSON.stringify(content));
   } else {
     dumpText += `${indent}- ${docNode.kind}`;
   }

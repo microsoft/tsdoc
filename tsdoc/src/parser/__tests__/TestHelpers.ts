@@ -147,7 +147,7 @@ export class TestHelpers {
     };
 
     if (docNode instanceof DocExcerpt) {
-      item.kind += ': ' + docNode.excerptId;
+      item.kind += ': ' + docNode.excerptKind;
 
       item.nodeExcerpt = TestHelpers.getEscaped(docNode.content.toString());
     }

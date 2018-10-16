@@ -1,6 +1,6 @@
 import { DocNodeKind, IDocNodeParameters, DocNode, IDocNodeParsedParameters } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocFencedCode}.
@@ -68,47 +68,47 @@ export class DocFencedCode extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingFenceExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.FencedCode_OpeningFence,
+        excerptKind: ExcerptKind.FencedCode_OpeningFence,
         content: parameters.openingFenceExcerpt
       });
       if (parameters.spacingAfterOpeningFenceExcerpt) {
         this._spacingAfterOpeningFenceExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterOpeningFenceExcerpt
         });
       }
 
       if (parameters.languageExcerpt) {
         this._languageExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.FencedCode_Language,
+          excerptKind: ExcerptKind.FencedCode_Language,
           content: parameters.languageExcerpt
         });
       }
       if (parameters.spacingAfterLanguageExcerpt) {
         this._spacingAfterLanguageExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterLanguageExcerpt
         });
       }
 
       this._codeExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.FencedCode_Code,
+        excerptKind: ExcerptKind.FencedCode_Code,
         content: parameters.codeExcerpt
       });
 
       if (parameters.spacingBeforeClosingFenceExcerpt) {
         this._spacingBeforeClosingFenceExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingBeforeClosingFenceExcerpt
         });
       }
       this._closingFenceExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.FencedCode_ClosingFence,
+        excerptKind: ExcerptKind.FencedCode_ClosingFence,
         content: parameters.closingFenceExcerpt
       });
       if (parameters.spacingAfterClosingFenceExcerpt) {
         this._spacingAfterClosingFenceExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterClosingFenceExcerpt
         });
       }

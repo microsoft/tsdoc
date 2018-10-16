@@ -2,7 +2,7 @@ import { DocNode, IDocNodeParameters, DocNodeKind } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
 import { TokenKind } from '../parser/Token';
 
-export const enum ExcerptId {
+export const enum ExcerptKind {
   Spacing = 'Spacing',
 
   BlockTag = 'BlockTag',
@@ -71,7 +71,7 @@ export const enum ExcerptId {
  * Constructor parameters for {@link DocExcerpt}.
  */
 export interface IDocExcerptParameters extends IDocNodeParameters {
-  excerptId: ExcerptId;
+  excerptKind: ExcerptKind;
   content: TokenSequence;
 }
 
@@ -79,7 +79,7 @@ export class DocExcerpt extends DocNode {
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Excerpt;
 
-  private readonly _excerptId: ExcerptId;
+  private readonly _excerptKind: ExcerptKind;
   private readonly _content: TokenSequence;
 
   /**
@@ -89,7 +89,7 @@ export class DocExcerpt extends DocNode {
   public constructor(parameters: IDocExcerptParameters) {
     super(parameters);
 
-    if (parameters.excerptId === ExcerptId.Spacing) {
+    if (parameters.excerptKind === ExcerptKind.Spacing) {
       for (const token of parameters.content!.tokens) {
         switch (token.kind) {
           case TokenKind.Spacing:
@@ -97,17 +97,17 @@ export class DocExcerpt extends DocNode {
           case TokenKind.EndOfInput:
             break;
           default:
-            throw new Error(`The excerptId=Spacing but the range contains a non-whitespace token`);
+            throw new Error(`The excerptKind=Spacing but the range contains a non-whitespace token`);
         }
       }
     }
 
-    this._excerptId = parameters.excerptId;
+    this._excerptKind = parameters.excerptKind;
     this._content = parameters.content;
   }
 
-  public get excerptId(): ExcerptId {
-    return this._excerptId;
+  public get excerptKind(): ExcerptKind {
+    return this._excerptKind;
   }
 
   public get content(): TokenSequence {

@@ -1,6 +1,6 @@
 import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocHtmlAttribute}.
@@ -65,34 +65,34 @@ export class DocHtmlAttribute extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._nameExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.HtmlAttribute_Name,
+        excerptKind: ExcerptKind.HtmlAttribute_Name,
         content: parameters.nameExcerpt
       });
       if (parameters.spacingAfterNameExcerpt) {
         this._spacingAfterNameExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterNameExcerpt
         });
       }
 
       this._equalsExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.HtmlAttribute_Equals,
+        excerptKind: ExcerptKind.HtmlAttribute_Equals,
         content: parameters.equalsExcerpt
       });
       if (parameters.spacingAfterEqualsExcerpt) {
         this._spacingAfterEqualsExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterEqualsExcerpt
         });
       }
 
       this._valueExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.HtmlAttribute_Value,
+        excerptKind: ExcerptKind.HtmlAttribute_Value,
         content: parameters.valueExcerpt
       });
       if (parameters.spacingAfterValueExcerpt) {
         this._spacingAfterValueExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterValueExcerpt
         });
       }

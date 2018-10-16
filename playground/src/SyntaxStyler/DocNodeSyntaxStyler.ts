@@ -71,7 +71,7 @@ export class DocNodeSyntaxStyler {
     if (docNode instanceof tsdoc.DocExcerpt) {
       // Match the context against a color (i.e. tsdoc.link.url)
 
-      switch (docNode.excerptId) {
+      switch (docNode.excerptKind) {
         case 'CodeSpan_ClosingDelimiter':
         case 'CodeSpan_OpeningDelimiter':
         case 'DeclarationReference_ImportHash':

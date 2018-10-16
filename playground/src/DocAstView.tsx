@@ -32,7 +32,7 @@ export class DocAstView extends React.Component<IDocAstViewProps> {
     let dumpText: string = '';
     if (docNode instanceof tsdoc.DocExcerpt) {
       const content: string = docNode.content.toString();
-      dumpText += `${indent}* ${docNode.excerptId}=` + JSON.stringify(content);
+      dumpText += `${indent}* ${docNode.excerptKind}=` + JSON.stringify(content);
     } else {
       dumpText += `${indent}- ${docNode.kind}`;
     }

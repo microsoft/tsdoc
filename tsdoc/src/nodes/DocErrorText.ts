@@ -1,6 +1,6 @@
 import { DocNodeKind, DocNode, IDocNodeParsedParameters } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocErrorText}.
@@ -34,7 +34,7 @@ export class DocErrorText extends DocNode {
     super(parameters);
 
     this._textExcerpt = new DocExcerpt({
-      excerptId: ExcerptId.ErrorText,
+      excerptKind: ExcerptKind.ErrorText,
       content: parameters.textExcerpt
     });
 

@@ -1,6 +1,6 @@
 import { DocNodeKind, IDocNodeParameters, DocNode, IDocNodeParsedParameters } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocSoftBreak}.
@@ -43,7 +43,7 @@ export class DocSoftBreak extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._softBreakExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.SoftBreak,
+        excerptKind: ExcerptKind.SoftBreak,
         content: parameters.softBreakExcerpt
       });
     }

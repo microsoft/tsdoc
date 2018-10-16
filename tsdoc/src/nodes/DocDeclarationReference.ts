@@ -1,7 +1,7 @@
 import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { DocMemberReference } from './DocMemberReference';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocDeclarationReference}.
@@ -55,25 +55,25 @@ export class DocDeclarationReference extends DocNode {
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.packageNameExcerpt) {
         this._packageNameExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.DeclarationReference_PackageName,
+          excerptKind: ExcerptKind.DeclarationReference_PackageName,
           content: parameters.packageNameExcerpt
         });
       }
       if (parameters.importPathExcerpt) {
         this._importPathExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.DeclarationReference_ImportPath,
+          excerptKind: ExcerptKind.DeclarationReference_ImportPath,
           content: parameters.importPathExcerpt
         });
       }
       if (parameters.importHashExcerpt ) {
         this._importHashExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.DeclarationReference_ImportHash,
+          excerptKind: ExcerptKind.DeclarationReference_ImportHash,
           content: parameters.importHashExcerpt
         });
       }
       if (parameters.spacingAfterImportHashExcerpt ) {
         this._spacingAfterImportHashExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterImportHashExcerpt
         });
       }

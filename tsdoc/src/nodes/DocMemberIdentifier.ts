@@ -1,7 +1,7 @@
 import { DocNodeKind, DocNode, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { StringChecks } from '../parser/StringChecks';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocMemberIdentifier}.
@@ -54,19 +54,19 @@ export class DocMemberIdentifier extends DocNode {
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.leftQuoteExcerpt) {
         this._leftQuoteExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.MemberIdentifier_LeftQuote,
+          excerptKind: ExcerptKind.MemberIdentifier_LeftQuote,
           content: parameters.leftQuoteExcerpt
         });
       }
 
       this._identifierExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.MemberIdentifier_Identifier,
+        excerptKind: ExcerptKind.MemberIdentifier_Identifier,
         content: parameters.identifierExcerpt
       });
 
       if (parameters.rightQuoteExcerpt) {
         this._rightQuoteExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.MemberIdentifier_RightQuote,
+          excerptKind: ExcerptKind.MemberIdentifier_RightQuote,
           content: parameters.rightQuoteExcerpt
         });
       }

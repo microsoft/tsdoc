@@ -1,7 +1,7 @@
 import { DocNodeKind, DocNode, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { DocDeclarationReference } from './DocDeclarationReference';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocMemberSymbol}.
@@ -52,19 +52,19 @@ export class DocMemberSymbol extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._leftBracketExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.DocMemberSymbol_LeftBracket,
+        excerptKind: ExcerptKind.DocMemberSymbol_LeftBracket,
         content: parameters.leftBracketExcerpt
       });
 
       if (parameters.spacingAfterLeftBracketExcerpt) {
         this._spacingAfterLeftBracketExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterLeftBracketExcerpt
         });
       }
 
       this._rightBracketExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.DocMemberSymbol_RightBracket,
+        excerptKind: ExcerptKind.DocMemberSymbol_RightBracket,
         content: parameters.rightBracketExcerpt
       });
     }

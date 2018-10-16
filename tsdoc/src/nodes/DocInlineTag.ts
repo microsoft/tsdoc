@@ -1,6 +1,6 @@
 import { DocNodeKind, DocNode } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 import {
   IDocInlineTagBaseParameters,
   IDocInlineTagBaseParsedParameters,
@@ -41,7 +41,7 @@ export class DocInlineTag extends DocInlineTagBase {
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.tagContentExcerpt) {
         this._tagContentExcerpt  = new DocExcerpt({
-          excerptId: ExcerptId.InlineTag_TagContent,
+          excerptKind: ExcerptKind.InlineTag_TagContent,
           content: parameters.tagContentExcerpt
         });
       }

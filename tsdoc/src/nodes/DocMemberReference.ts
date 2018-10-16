@@ -3,7 +3,7 @@ import { DocMemberIdentifier } from './DocMemberIdentifier';
 import { DocMemberSymbol } from './DocMemberSymbol';
 import { DocMemberSelector } from './DocMemberSelector';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocMemberReference}.
@@ -90,66 +90,66 @@ export class DocMemberReference extends DocNode {
       this._hasDot = !!parameters.dotExcerpt;
       if (parameters.dotExcerpt) {
         this._dotExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.MemberReference_Dot,
+          excerptKind: ExcerptKind.MemberReference_Dot,
           content: parameters.dotExcerpt
         });
       }
       if (parameters.spacingAfterDotExcerpt) {
         this._spacingAfterDotExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterDotExcerpt
         });
       }
 
       if (parameters.leftParenthesisExcerpt) {
         this._leftParenthesisExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.MemberReference_LeftParenthesis,
+          excerptKind: ExcerptKind.MemberReference_LeftParenthesis,
           content: parameters.leftParenthesisExcerpt
         });
       }
       if (parameters.spacingAfterLeftParenthesisExcerpt) {
         this._spacingAfterLeftParenthesisExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterLeftParenthesisExcerpt
         });
       }
 
       if (parameters.spacingAfterMemberExcerpt) {
         this._spacingAfterMemberExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterMemberExcerpt
         });
       }
 
       if (parameters.colonExcerpt) {
         this._colonExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.MemberReference_Colon,
+          excerptKind: ExcerptKind.MemberReference_Colon,
           content: parameters.colonExcerpt
         });
       }
       if (parameters.spacingAfterColonExcerpt) {
         this._spacingAfterColonExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterColonExcerpt
         });
       }
 
       if (parameters.spacingAfterSelectorExcerpt) {
         this._spacingAfterSelectorExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterSelectorExcerpt
         });
       }
 
       if (parameters.rightParenthesisExcerpt) {
         this._rightParenthesisExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.MemberReference_RightParenthesis,
+          excerptKind: ExcerptKind.MemberReference_RightParenthesis,
           content: parameters.rightParenthesisExcerpt
         });
       }
       if (parameters.spacingAfterRightParenthesisExcerpt) {
         this._spacingAfterRightParenthesisExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterRightParenthesisExcerpt
         });
       }

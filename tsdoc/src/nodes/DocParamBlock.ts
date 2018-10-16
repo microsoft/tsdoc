@@ -1,7 +1,7 @@
 import { DocNodeKind, DocNode } from './DocNode';
 import { DocBlock, IDocBlockParameters, IDocBlockParsedParameters } from './DocBlock';
 import { TokenSequence } from '../parser/TokenSequence';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocParamBlock}.
@@ -56,31 +56,31 @@ export class DocParamBlock extends DocBlock {
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.spacingBeforeParameterNameExcerpt) {
         this._spacingBeforeParameterNameExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingBeforeParameterNameExcerpt
         });
       }
 
       this._parameterNameExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.ParamBlock_ParameterName,
+        excerptKind: ExcerptKind.ParamBlock_ParameterName,
         content: parameters.parameterNameExcerpt
       });
 
       if (parameters.spacingAfterParameterNameExcerpt) {
         this._spacingAfterParameterNameExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterParameterNameExcerpt
         });
       }
 
       this._hyphenExcerpt = new DocExcerpt({
-        excerptId: ExcerptId.ParamBlock_Hyphen,
+        excerptKind: ExcerptKind.ParamBlock_Hyphen,
         content: parameters.hyphenExcerpt
       });
 
       if (parameters.spacingAfterHyphenExcerpt) {
         this._spacingAfterHyphenExcerpt = new DocExcerpt({
-          excerptId: ExcerptId.Spacing,
+          excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterHyphenExcerpt
         });
       }

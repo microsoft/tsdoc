@@ -1,5 +1,5 @@
 import { DocNodeKind, IDocNodeParsedParameters, DocNode } from './DocNode';
-import { DocExcerpt, ExcerptId } from './DocExcerpt';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 import { TokenSequence } from '../parser/TokenSequence';
 
 /**
@@ -49,7 +49,7 @@ export class DocEscapedText extends DocNode {
     this._escapeStyle = parameters.escapeStyle;
 
     this._encodedTextExcerpt = new DocExcerpt({
-      excerptId: ExcerptId.EscapedText,
+      excerptKind: ExcerptKind.EscapedText,
       content: parameters.encodedTextExcerpt
     });
 
