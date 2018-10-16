@@ -29,8 +29,8 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       for (const paramBlock of docComment.paramBlocks) {
         rows.push(
           <tr key={`param_${rows.length}`}>
-            <td> { paramBlock.parameterName } </td>
-            <td> { this._renderContainer(paramBlock.content) } </td>
+            <td>{ paramBlock.parameterName }</td>
+            <td>{ this._renderContainer(paramBlock.content) }</td>
           </tr>
         );
       }
@@ -104,7 +104,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       const key: string = `key_${elements.length}`;
       elements.push(this._renderDocNode(node, key));
     }
-    return (<React.Fragment> {elements} </React.Fragment> );
+    return (<React.Fragment>{elements}</React.Fragment> );
   }
 
   private _renderDocNode(node: tsdoc.DocNode, key: string): React.ReactNode | undefined {
@@ -112,9 +112,9 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       case 'CodeSpan':
         return <code key={key} className='doc-code-span'>{(node as tsdoc.DocCodeSpan).code}</code>;
       case 'ErrorText':
-        return <span key={key}>{(node as tsdoc.DocErrorText).text}</span>;
+        return <React.Fragment key={key}>{(node as tsdoc.DocErrorText).text}</React.Fragment>;
       case 'EscapedText':
-        return <span key={key}>{(node as tsdoc.DocEscapedText).decodedText}</span>;
+        return <React.Fragment key={key}>{(node as tsdoc.DocEscapedText).decodedText}</React.Fragment>;
       case 'FencedCode':
         const docFencedCode: tsdoc.DocFencedCode = node as tsdoc.DocFencedCode;
         return (
@@ -144,16 +144,18 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
             }
           }
           const linkText: string = linkTag.linkText || identifier || '???';
-          return <a key={key} href='#'>{linkText}</a>;
+          return <a key={key} href='#'>{linkText.trim()}</a>;
         }
       case 'Paragraph':
+        // Collapse spaces in the paragraph
+        const transformedParagraph: tsdoc.DocParagraph = tsdoc.DocNodeTransforms.trimSpacesInParagraph(
+          node as tsdoc.DocParagraph);
+
         return (
-          <p key={key}>
-            { this._renderContainer(node as tsdoc.DocParagraph) }
-          </p>
+          <p key={key}>{ this._renderContainer(transformedParagraph) }</p>
         );
       case 'PlainText':
-        return <span key={key}>{(node as tsdoc.DocPlainText).text}</span>;
+        return <React.Fragment key={key}>{(node as tsdoc.DocPlainText).text}</React.Fragment>;
       case 'SoftBreak':
         return <React.Fragment key={key}>{' '}</React.Fragment>;
     }
