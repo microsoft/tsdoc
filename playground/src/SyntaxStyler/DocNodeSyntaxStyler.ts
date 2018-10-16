@@ -62,169 +62,170 @@ export class DocNodeSyntaxStyler {
     options: IGetStylesForDocCommentInternalOptions
   ): void {
     const {
-      parentNode,
       docNode,
       parserContext,
       styleTokens,
       theme
     } = options;
 
-    if (docNode instanceof tsdoc.DocParticle) {
+    if (docNode instanceof tsdoc.DocExcerpt) {
       // Match the context against a color (i.e. tsdoc.link.url)
 
-      switch (docNode.particleId) {
-        case 'openingDelimiter':
-        case 'closingDelimiter':
-        case 'pipe':
-        case 'colon':
-        case 'hyphen':
-        case 'equals':
-        case 'leftParenthesis':
-        case 'rightParenthesis':
-        case 'leftBracket':
-        case 'rightBracket':
-        case 'importHash':
-        case 'dot': {
+      switch (docNode.excerptKind) {
+        case 'CodeSpan_ClosingDelimiter':
+        case 'CodeSpan_OpeningDelimiter':
+        case 'DeclarationReference_ImportHash':
+        case 'DocMemberSymbol_LeftBracket':
+        case 'DocMemberSymbol_RightBracket':
+        case 'FencedCode_ClosingFence':
+        case 'FencedCode_OpeningFence':
+        case 'HtmlAttribute_Equals':
+        case 'HtmlEndTag_ClosingDelimiter':
+        case 'HtmlEndTag_OpeningDelimiter':
+        case 'HtmlStartTag_ClosingDelimiter':
+        case 'HtmlStartTag_OpeningDelimiter':
+        case 'InlineTag_ClosingDelimiter':
+        case 'InlineTag_OpeningDelimiter':
+        case 'LinkTag_Pipe':
+        case 'MemberIdentifier_LeftQuote':
+        case 'MemberIdentifier_RightQuote':
+        case 'MemberReference_Colon':
+        case 'MemberReference_Dot':
+        case 'MemberReference_LeftParenthesis':
+        case 'MemberReference_RightParenthesis':
+        case 'ParamBlock_Hyphen': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
-            docNode.excerpt,
+            docNode.content,
             { theme, styleTokens: [...styleTokens, 'delimiter'] }
           );
           break;
         }
 
-        case 'tagName': {
-          if (parentNode instanceof tsdoc.DocInlineTag || parentNode instanceof tsdoc.DocBlockTag) {
-            const tagDefinition: tsdoc.TSDocTagDefinition | undefined = parserContext.configuration.tryGetTagDefinition(
-              parentNode.tagName
-            );
-            DocNodeSyntaxStyler._addStylesForTag(
-              styles,
-              docNode.excerpt,
-              tagDefinition,
-              { theme, styleTokens: [...styleTokens, 'tag'] }
-            );
-          } else {
-            // Undefined tag
-            DocNodeSyntaxStyler._addTokenStyles(
-              styles,
-              docNode.excerpt,
-              { theme, styleTokens: [...styleTokens, 'tag', 'undefined'] }
-            );
-          }
-
+        case 'InlineTag_TagName':
+        case 'BlockTag': {
+          const tagDefinition: tsdoc.TSDocTagDefinition | undefined = parserContext.configuration.tryGetTagDefinition(
+            docNode.content.toString()
+          );
+          DocNodeSyntaxStyler._addStylesForTag(
+            styles,
+            docNode.content,
+            tagDefinition,
+            { theme, styleTokens: [...styleTokens, 'tag'] }
+          );
           break;
         }
 
-        case 'identifier': {
+        case 'MemberIdentifier_Identifier': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
-            docNode.excerpt,
+            docNode.content,
             { theme, styleTokens: [...styleTokens, 'member', 'identifier'] }
         );
           break;
         }
 
-        case 'packageName': {
+        case 'DeclarationReference_PackageName': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
-            docNode.excerpt,
+            docNode.content,
             { theme, styleTokens: [...styleTokens, 'packageName'] }
           );
           break;
         }
 
-        case 'importPath': {
+        case 'DeclarationReference_ImportPath': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
-            docNode.excerpt,
+            docNode.content,
             { theme, styleTokens: [...styleTokens, 'importPath'] }
           );
           break;
         }
 
-        case 'urlDestination': {
+        case 'LinkTag_UrlDestination': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
-            docNode.excerpt,
+            docNode.content,
             { theme, styleTokens: [...styleTokens, 'url'] }
           );
           break;
         }
 
-        case 'code': {
+        case 'CodeSpan_Code':
+        case 'FencedCode_Code': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
-            docNode.excerpt,
+            docNode.content,
             { theme, styleTokens: [...styleTokens, 'code'] }
           );
           break;
         }
 
-        case 'language': {
+        case 'FencedCode_Language': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
-            docNode.excerpt,
+            docNode.content,
             { theme, styleTokens: [...styleTokens, 'language'] }
           );
           break;
         }
 
-        case 'elementName': {
+        case 'HtmlEndTag_Name':
+        case 'HtmlStartTag_Name': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
-            docNode.excerpt,
+            docNode.content,
             { theme, styleTokens: [...styleTokens, 'element', 'name'] }
           );
           break;
         }
 
-        case 'attributeName': {
+        case 'HtmlAttribute_Name': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
-            docNode.excerpt,
+            docNode.content,
             { theme, styleTokens: [...styleTokens, 'element', 'attribute', 'name'] }
           );
           break;
         }
 
-        case 'attributeValue': {
+        case 'HtmlAttribute_Value': {
           DocNodeSyntaxStyler._addTokenStyles(
             styles,
-            docNode.excerpt,
+            docNode.content,
             { theme, styleTokens: [...styleTokens, 'element', 'attribute', 'value'] }
           );
           break;
         }
+
+        case 'ErrorText': {
+          DocNodeSyntaxStyler._addTokenStyles(
+            styles,
+            docNode.content,
+            { theme, styleTokens: [...styleTokens, 'error'] }
+          );
+          break;
+        }
+
+        case 'EscapedText': {
+          DocNodeSyntaxStyler._addTokenStyles(
+            styles,
+            docNode.content,
+            { theme, styleTokens: [...styleTokens, 'escaped'] }
+          );
+          break;
+        }
+
+        case 'MemberSelector': {
+          DocNodeSyntaxStyler._addTokenStyles(
+            styles,
+            docNode.content,
+            { theme, styleTokens: [...styleTokens, 'member', 'selector'] }
+          );
+          break;
+        }
       }
-    } else if (docNode instanceof tsdoc.DocBlockTag) {
-      const tagDefinition: tsdoc.TSDocTagDefinition | undefined = parserContext.configuration.tryGetTagDefinition(
-        docNode.tagName
-      );
-      DocNodeSyntaxStyler._addStylesForTag(
-        styles,
-        docNode.excerpt,
-        tagDefinition,
-        { theme, styleTokens: [...styleTokens, 'tag'] }
-      );
-    } else if (docNode instanceof tsdoc.DocErrorText) {
-      DocNodeSyntaxStyler._addTokenStyles(
-        styles,
-        docNode.excerpt,
-        { theme, styleTokens: [...styleTokens, 'error'] }
-      );
-    } else if (docNode instanceof tsdoc.DocEscapedText && docNode.excerpt) {
-      DocNodeSyntaxStyler._addTokenStyles(
-        styles,
-        docNode.excerpt,
-        { theme, styleTokens: [...styleTokens, 'escaped'] }
-      );
-    } else if (docNode instanceof tsdoc.DocMemberSelector && docNode.excerpt) {
-      DocNodeSyntaxStyler._addTokenStyles(
-        styles,
-        docNode.excerpt,
-        { theme, styleTokens: [...styleTokens, 'member', 'selector'] }
-      );
     }
 
     for (const child of docNode.getChildNodes()) {
@@ -241,7 +242,7 @@ export class DocNodeSyntaxStyler {
 
   private static _addStylesForTag(
     styles: IStyledRange[],
-    excerpt: tsdoc.Excerpt | undefined,
+    excerpt: tsdoc.TokenSequence | undefined,
     tagDefinition: tsdoc.TSDocTagDefinition | undefined,
     options: IAddTokenStylesOptions
   ): void {
@@ -290,13 +291,13 @@ export class DocNodeSyntaxStyler {
 
   private static _addTokenStyles(
     styles: IStyledRange[],
-    excerpt: tsdoc.Excerpt | undefined,
+    excerpt: tsdoc.TokenSequence | undefined,
     options: IAddTokenStylesOptions
   ): void {
     if (excerpt) {
       const themeMapping: IThemeClassNameMapping = DocNodeSyntaxStyler._ensureStyleForTheme(options.theme);
 
-      for (const token of excerpt.content.tokens) {
+      for (const token of excerpt.tokens) {
         styles.push({
           pos: token.range.pos,
           end: token.range.end,

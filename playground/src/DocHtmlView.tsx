@@ -114,7 +114,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       case 'ErrorText':
         return <span key={key}>{(node as tsdoc.DocErrorText).text}</span>;
       case 'EscapedText':
-        return <span key={key}>{(node as tsdoc.DocEscapedText).text}</span>;
+        return <span key={key}>{(node as tsdoc.DocEscapedText).decodedText}</span>;
       case 'FencedCode':
         const docFencedCode: tsdoc.DocFencedCode = node as tsdoc.DocFencedCode;
         return (

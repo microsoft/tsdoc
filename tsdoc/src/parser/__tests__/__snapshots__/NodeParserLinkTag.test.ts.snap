@@ -26,159 +26,199 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: urlDestination",
-                    "nodeExcerpt": "http://example1.com",
-                  },
-                  Object {
-                    "kind": "Particle: closingDelimiter",
-                    "nodeExcerpt": "}",
-                  },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
-                "nodes": Array [
-                  Object {
-                    "kind": "Particle: openingDelimiter",
-                    "nodeExcerpt": "{",
-                  },
-                  Object {
-                    "kind": "Particle: tagName",
-                    "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
-                  },
-                  Object {
-                    "kind": "Particle: urlDestination",
-                    "nodeExcerpt": "http://example2.com",
-                  },
-                  Object {
-                    "kind": "Particle: pipe",
-                    "nodeExcerpt": "|",
-                  },
-                  Object {
-                    "kind": "Particle: closingDelimiter",
-                    "nodeExcerpt": "}",
-                  },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
-                "nodes": Array [
-                  Object {
-                    "kind": "Particle: openingDelimiter",
-                    "nodeExcerpt": "{",
-                  },
-                  Object {
-                    "kind": "Particle: tagName",
-                    "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
-                  },
-                  Object {
-                    "kind": "Particle: urlDestination",
-                    "nodeExcerpt": "http://example3.com",
-                  },
-                  Object {
-                    "kind": "Particle: pipe",
-                    "nodeExcerpt": "|",
-                  },
-                  Object {
-                    "kind": "Particle: linkText",
+                    "kind": "Excerpt: Spacing",
                     "nodeExcerpt": " ",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: LinkTag_UrlDestination",
+                    "nodeExcerpt": "http://example1.com",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: urlDestination",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_UrlDestination",
+                    "nodeExcerpt": "http://example2.com",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_Pipe",
+                    "nodeExcerpt": "|",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagName",
+                    "nodeExcerpt": "@link",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_UrlDestination",
+                    "nodeExcerpt": "http://example3.com",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_Pipe",
+                    "nodeExcerpt": "|",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_LinkText",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagName",
+                    "nodeExcerpt": "@link",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_UrlDestination",
                     "nodeExcerpt": "http://example4.com",
                   },
                   Object {
-                    "kind": "Particle: pipe",
+                    "kind": "Excerpt: LinkTag_Pipe",
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Particle: linkText",
+                    "kind": "Excerpt: LinkTag_LinkText",
                     "nodeExcerpt": " link text",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: urlDestination",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_UrlDestination",
                     "nodeExcerpt": "http://example5.com",
                   },
                   Object {
-                    "kind": "Particle: pipe",
+                    "kind": "Excerpt: LinkTag_Pipe",
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Particle: linkText",
+                    "kind": "Excerpt: LinkTag_LinkText",
                     "nodeExcerpt": " link[n]text",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -211,51 +251,64 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "LinkTag",
+                "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "http://example1.com| link | text",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -289,87 +342,111 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: urlDestination",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_UrlDestination",
                     "nodeExcerpt": "http://example1.com",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: urlDestination",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_UrlDestination",
                     "nodeExcerpt": "https://example2.com#hash",
                   },
                   Object {
-                    "kind": "Particle: pipe",
+                    "kind": "Excerpt: LinkTag_Pipe",
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Particle: linkText",
+                    "kind": "Excerpt: LinkTag_LinkText",
                     "nodeExcerpt": "link text",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: urlDestination",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_UrlDestination",
                     "nodeExcerpt": "customscheme://data",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -410,160 +487,208 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "LinkTag",
+                "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "http://example1.com spaces",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "http://example2.com spaces|link text",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "ftp+ssh://example3.com",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "mailto:bob@example4.com",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "//example5.com",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "http://",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -599,188 +724,228 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: packageName",
+                        "kind": "Excerpt: DeclarationReference_PackageName",
                         "nodeExcerpt": "my-example1",
                       },
                       Object {
-                        "kind": "Particle: importHash",
+                        "kind": "Excerpt: DeclarationReference_ImportHash",
                         "nodeExcerpt": "#",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: packageName",
+                        "kind": "Excerpt: DeclarationReference_PackageName",
                         "nodeExcerpt": "my-example2",
                       },
                       Object {
-                        "kind": "Particle: importPath",
+                        "kind": "Excerpt: DeclarationReference_ImportPath",
                         "nodeExcerpt": "/path3",
                       },
                       Object {
-                        "kind": "Particle: importHash",
+                        "kind": "Excerpt: DeclarationReference_ImportHash",
                         "nodeExcerpt": "#",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: packageName",
+                        "kind": "Excerpt: DeclarationReference_PackageName",
                         "nodeExcerpt": "my-example4",
                       },
                       Object {
-                        "kind": "Particle: importPath",
+                        "kind": "Excerpt: DeclarationReference_ImportPath",
                         "nodeExcerpt": "/path5/path6",
                       },
                       Object {
-                        "kind": "Particle: importHash",
+                        "kind": "Excerpt: DeclarationReference_ImportHash",
                         "nodeExcerpt": "#",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: packageName",
+                        "kind": "Excerpt: DeclarationReference_PackageName",
                         "nodeExcerpt": "@scope/my-example7",
                       },
                       Object {
-                        "kind": "Particle: importPath",
+                        "kind": "Excerpt: DeclarationReference_ImportPath",
                         "nodeExcerpt": "/path8/path9",
                       },
                       Object {
-                        "kind": "Particle: importHash",
+                        "kind": "Excerpt: DeclarationReference_ImportHash",
                         "nodeExcerpt": "#",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: packageName",
+                        "kind": "Excerpt: DeclarationReference_PackageName",
                         "nodeExcerpt": "@scope/my-example7",
                       },
                       Object {
-                        "kind": "Particle: importHash",
+                        "kind": "Excerpt: DeclarationReference_ImportHash",
                         "nodeExcerpt": "#",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -821,160 +986,208 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "LinkTag",
+                "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "example1/#",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "example2/a//b#",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "@scope/ex@mple3#",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "@/example4#",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "@scope//my-example5#",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "@scope#",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -1009,82 +1222,106 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "LinkTag",
+                "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "@#",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "#",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "#Button",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -1118,106 +1355,130 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: importPath",
+                        "kind": "Excerpt: DeclarationReference_ImportPath",
                         "nodeExcerpt": "../path1",
                       },
                       Object {
-                        "kind": "Particle: importHash",
+                        "kind": "Excerpt: DeclarationReference_ImportHash",
                         "nodeExcerpt": "#",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: importPath",
+                        "kind": "Excerpt: DeclarationReference_ImportPath",
                         "nodeExcerpt": "./path2",
                       },
                       Object {
-                        "kind": "Particle: importHash",
+                        "kind": "Excerpt: DeclarationReference_ImportHash",
                         "nodeExcerpt": "#",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: importPath",
+                        "kind": "Excerpt: DeclarationReference_ImportPath",
                         "nodeExcerpt": "./path3/../path4",
                       },
                       Object {
-                        "kind": "Particle: importHash",
+                        "kind": "Excerpt: DeclarationReference_ImportHash",
                         "nodeExcerpt": "#",
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -1250,56 +1511,72 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "LinkTag",
+                "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "/path1#",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "/path1 path2#",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },

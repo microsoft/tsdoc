@@ -1,11 +1,19 @@
-import { DocNodeKind } from './DocNode';
-import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
+import { DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters, DocNode } from './DocNode';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocPlainText}.
  */
-export interface IDocPlainTextParameters extends IDocNodeLeafParameters {
+export interface IDocPlainTextParameters extends IDocNodeParameters {
   text: string;
+}
+
+/**
+ * Constructor parameters for {@link DocPlainText}.
+ */
+export interface IDocPlainTextParsedParameters extends IDocNodeParsedParameters {
+  textExcerpt: TokenSequence;
 }
 
 /**
@@ -16,7 +24,7 @@ export interface IDocPlainTextParameters extends IDocNodeLeafParameters {
  * The text content must not contain newline characters.
  * Use DocSoftBreak to represent manual line splitting.
  */
-export class DocPlainText extends DocNodeLeaf {
+export class DocPlainText extends DocNode {
   // TODO: We should also prohibit "\r", but this requires updating LineExtractor
   // to interpret a lone "\r" as a newline
   private static readonly _newlineCharacterRegExp: RegExp = /[\n]/;
@@ -24,32 +32,53 @@ export class DocPlainText extends DocNodeLeaf {
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.PlainText;
 
-  private _text: string | undefined;  // never undefined after updateParameters()
+  private _text: string | undefined;
+  private readonly _textExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocPlainTextParameters) {
+  public constructor(parameters: IDocPlainTextParameters | IDocPlainTextParsedParameters) {
     super(parameters);
+
+    if (DocNode.isParsedParameters(parameters)) {
+      this._textExcerpt = new DocExcerpt({
+        excerptKind: ExcerptKind.PlainText,
+        content: parameters.textExcerpt
+      });
+    } else {
+      if (DocPlainText._newlineCharacterRegExp.test(parameters.text)) {
+        // Use DocSoftBreak to represent manual line splitting
+        throw new Error('The DocPlainText content must not contain newline characters');
+      }
+
+      this._text = parameters.text;
+    }
   }
 
   /**
    * The text content.
    */
   public get text(): string {
-    return this._text!;
+    if (this._text === undefined) {
+      this._text = this._textExcerpt!.content.toString();
+    }
+    return this._text;
+  }
+
+  public get textExcerpt(): TokenSequence | undefined {
+    if (this._textExcerpt) {
+      return this._textExcerpt.content;
+    } else {
+      return undefined;
+    }
   }
 
   /** @override */
-  public updateParameters(parameters: IDocPlainTextParameters): void {
-    if (DocPlainText._newlineCharacterRegExp.test(parameters.text)) {
-      // Use DocSoftBreak to represent manual line splitting
-      throw new Error('The DocPlainText content must not contain newline characters');
-    }
-
-    super.updateParameters(parameters);
-
-    this._text = parameters.text;
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return [
+      this._textExcerpt
+    ];
   }
 }

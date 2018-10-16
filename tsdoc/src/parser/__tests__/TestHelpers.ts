@@ -5,11 +5,9 @@ import {
   DocNode,
   DocComment,
   DocPlainText,
-  DocNodeLeaf,
-  DocParticle
+  DocExcerpt
 } from '../../nodes';
 import { ParserContext } from '../ParserContext';
-import { Excerpt } from '../Excerpt';
 import { TSDocParserConfiguration } from '../TSDocParserConfiguration';
 import { TokenCoverageChecker } from './TokenCoverageChecker';
 
@@ -148,23 +146,16 @@ export class TestHelpers {
       kind: docNode.kind
     };
 
-    if (docNode instanceof DocParticle) {
-      item.kind += ': ' + docNode.particleId;
-    }
+    if (docNode instanceof DocExcerpt) {
+      item.kind += ': ' + docNode.excerptKind;
 
-    if (docNode instanceof DocNodeLeaf && docNode.excerpt) {
-      const excerpt: Excerpt = docNode.excerpt;
-      item.nodeExcerpt = TestHelpers.getEscaped(excerpt.content.toString());
-      if (!excerpt.spacingAfterContent.isEmpty()) {
-        item.nodeSpacing = TestHelpers.getEscaped(excerpt.spacingAfterContent.toString());
-      }
+      item.nodeExcerpt = TestHelpers.getEscaped(docNode.content.toString());
     }
 
     if (docNode instanceof DocPlainText) {
       const docPlainText: DocPlainText = docNode as DocPlainText;
-      const nodePlainText: string = TestHelpers.getEscaped(docPlainText.text);
-      if (nodePlainText !== item.nodeExcerpt) {
-        item.nodePlainText = nodePlainText;
+      if (docPlainText.textExcerpt === undefined) {
+        item.nodePlainText = TestHelpers.getEscaped(docPlainText.text);
       }
     }
 

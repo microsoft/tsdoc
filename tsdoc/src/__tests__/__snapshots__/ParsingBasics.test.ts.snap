@@ -18,31 +18,66 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "START ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "START ",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "BlockTag",
-            "nodeExcerpt": "@unknownTag",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: BlockTag",
+                "nodeExcerpt": "@unknownTag",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " ",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " END",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " END",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -59,11 +94,21 @@ Object {
   "_11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
-      "nodeExcerpt": "@beta",
+      "nodes": Array [
+        Object {
+          "kind": "Excerpt: BlockTag",
+          "nodeExcerpt": "@beta",
+        },
+      ],
     },
     Object {
       "kind": "BlockTag",
-      "nodeExcerpt": "@internal",
+      "nodes": Array [
+        Object {
+          "kind": "Excerpt: BlockTag",
+          "nodeExcerpt": "@internal",
+        },
+      ],
     },
   ],
   "_12_logMessages": Array [
@@ -98,15 +143,30 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "Returns the average of two numbers.",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "Returns the average of two numbers.",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -117,40 +177,58 @@ Object {
     "nodes": Array [
       Object {
         "kind": "BlockTag",
-        "nodeExcerpt": "@remarks",
+        "nodes": Array [
+          Object {
+            "kind": "Excerpt: BlockTag",
+            "nodeExcerpt": "@remarks",
+          },
+        ],
       },
       Object {
         "kind": "Paragraph",
         "nodes": Array [
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "This method is part of the ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "This method is part of the ",
+              },
+            ],
           },
           Object {
             "kind": "LinkTag",
             "nodes": Array [
               Object {
-                "kind": "Particle: openingDelimiter",
+                "kind": "Excerpt: InlineTag_OpeningDelimiter",
                 "nodeExcerpt": "{",
               },
               Object {
-                "kind": "Particle: tagName",
+                "kind": "Excerpt: InlineTag_TagName",
                 "nodeExcerpt": "@link",
-                "nodeSpacing": " ",
+              },
+              Object {
+                "kind": "Excerpt: Spacing",
+                "nodeExcerpt": " ",
               },
               Object {
                 "kind": "DeclarationReference",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: packageName",
+                    "kind": "Excerpt: DeclarationReference_PackageName",
                     "nodeExcerpt": "core-library",
                   },
                   Object {
-                    "kind": "Particle: importHash",
+                    "kind": "Excerpt: DeclarationReference_ImportHash",
                     "nodeExcerpt": "#",
                   },
                   Object {
@@ -160,41 +238,59 @@ Object {
                         "kind": "MemberIdentifier",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: identifier",
+                            "kind": "Excerpt: MemberIdentifier_Identifier",
                             "nodeExcerpt": "Statistics",
-                            "nodeSpacing": " ",
                           },
                         ],
+                      },
+                      Object {
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": " ",
                       },
                     ],
                   },
                 ],
               },
               Object {
-                "kind": "Particle: pipe",
+                "kind": "Excerpt: LinkTag_Pipe",
                 "nodeExcerpt": "|",
               },
               Object {
-                "kind": "Particle: linkText",
+                "kind": "Excerpt: LinkTag_LinkText",
                 "nodeExcerpt": " Statistics subsystem",
               },
               Object {
-                "kind": "Particle: closingDelimiter",
+                "kind": "Excerpt: InlineTag_ClosingDelimiter",
                 "nodeExcerpt": "}",
               },
             ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": ".",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": ".",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -208,29 +304,53 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodeExcerpt": "@param",
-          "nodeSpacing": " ",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@param",
+            },
+          ],
         },
         Object {
-          "kind": "Particle: parameterName",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "x",
-          "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle: hyphen",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_Hyphen",
           "nodeExcerpt": "-",
-          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The first input number",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: PlainText",
+                  "nodeExcerpt": "The first input number",
+                },
+              ],
             },
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
           ],
         },
@@ -241,29 +361,53 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodeExcerpt": "@param",
-          "nodeSpacing": " ",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@param",
+            },
+          ],
         },
         Object {
-          "kind": "Particle: parameterName",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "y",
-          "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle: hyphen",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_Hyphen",
           "nodeExcerpt": "-",
-          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The second input number",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: PlainText",
+                  "nodeExcerpt": "The second input number",
+                },
+              ],
             },
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
           ],
         },
@@ -276,68 +420,103 @@ Object {
     "nodes": Array [
       Object {
         "kind": "BlockTag",
-        "nodeExcerpt": "@returns",
+        "nodes": Array [
+          Object {
+            "kind": "Excerpt: BlockTag",
+            "nodeExcerpt": "@returns",
+          },
+        ],
       },
       Object {
         "kind": "Paragraph",
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " The arithmetic mean of ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " The arithmetic mean of ",
+              },
+            ],
           },
           Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle: openingDelimiter",
+                "kind": "Excerpt: CodeSpan_OpeningDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle: code",
+                "kind": "Excerpt: CodeSpan_Code",
                 "nodeExcerpt": "x",
               },
               Object {
-                "kind": "Particle: closingDelimiter",
+                "kind": "Excerpt: CodeSpan_ClosingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " and ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " and ",
+              },
+            ],
           },
           Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle: openingDelimiter",
+                "kind": "Excerpt: CodeSpan_OpeningDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle: code",
+                "kind": "Excerpt: CodeSpan_Code",
                 "nodeExcerpt": "y",
               },
               Object {
-                "kind": "Particle: closingDelimiter",
+                "kind": "Excerpt: CodeSpan_ClosingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " ",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -349,30 +528,60 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodeExcerpt": "@customBlock",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@customBlock",
+            },
+          ],
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "This is a custom block containing an ",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: PlainText",
+                  "nodeExcerpt": "This is a custom block containing an ",
+                },
+              ],
             },
             Object {
               "kind": "BlockTag",
-              "nodeExcerpt": "@undefinedBlockTag",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: BlockTag",
+                  "nodeExcerpt": "@undefinedBlockTag",
+                },
+              ],
             },
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
           ],
         },
@@ -383,11 +592,21 @@ Object {
   "_11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
-      "nodeExcerpt": "@beta",
+      "nodes": Array [
+        Object {
+          "kind": "Excerpt: BlockTag",
+          "nodeExcerpt": "@beta",
+        },
+      ],
     },
     Object {
       "kind": "BlockTag",
-      "nodeExcerpt": "@customModifier",
+      "nodes": Array [
+        Object {
+          "kind": "Excerpt: BlockTag",
+          "nodeExcerpt": "@customModifier",
+        },
+      ],
     },
   ],
   "_12_logMessages": Array [
@@ -416,24 +635,33 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodeExcerpt": "@param",
-        },
-        Object {
-          "kind": "Particle: parameterName",
-        },
-        Object {
-          "kind": "Particle: hyphen",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@param",
+            },
+          ],
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": " - The first input number",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: PlainText",
+                  "nodeExcerpt": " - The first input number",
+                },
+              ],
             },
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
           ],
         },
@@ -444,24 +672,33 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodeExcerpt": "@param",
-        },
-        Object {
-          "kind": "Particle: parameterName",
-        },
-        Object {
-          "kind": "Particle: hyphen",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@param",
+            },
+          ],
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": " y The second input number",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: PlainText",
+                  "nodeExcerpt": " y The second input number",
+                },
+              ],
             },
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
           ],
         },
@@ -474,56 +711,76 @@ Object {
     "nodes": Array [
       Object {
         "kind": "BlockTag",
-        "nodeExcerpt": "@returns",
+        "nodes": Array [
+          Object {
+            "kind": "Excerpt: BlockTag",
+            "nodeExcerpt": "@returns",
+          },
+        ],
       },
       Object {
         "kind": "Paragraph",
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " The arithmetic mean of ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " The arithmetic mean of ",
+              },
+            ],
           },
           Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle: openingDelimiter",
+                "kind": "Excerpt: CodeSpan_OpeningDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle: code",
+                "kind": "Excerpt: CodeSpan_Code",
                 "nodeExcerpt": "x",
               },
               Object {
-                "kind": "Particle: closingDelimiter",
+                "kind": "Excerpt: CodeSpan_ClosingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " and ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " and ",
+              },
+            ],
           },
           Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle: openingDelimiter",
+                "kind": "Excerpt: CodeSpan_OpeningDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle: code",
+                "kind": "Excerpt: CodeSpan_Code",
                 "nodeExcerpt": "y",
               },
               Object {
-                "kind": "Particle: closingDelimiter",
+                "kind": "Excerpt: CodeSpan_ClosingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -559,7 +816,12 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "Returns the average of two numbers. ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "Returns the average of two numbers. ",
+              },
+            ],
           },
         ],
       },
@@ -570,40 +832,58 @@ Object {
     "nodes": Array [
       Object {
         "kind": "BlockTag",
-        "nodeExcerpt": "@remarks",
+        "nodes": Array [
+          Object {
+            "kind": "Excerpt: BlockTag",
+            "nodeExcerpt": "@remarks",
+          },
+        ],
       },
       Object {
         "kind": "Paragraph",
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " This method is part of the",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " This method is part of the",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "LinkTag",
             "nodes": Array [
               Object {
-                "kind": "Particle: openingDelimiter",
+                "kind": "Excerpt: InlineTag_OpeningDelimiter",
                 "nodeExcerpt": "{",
               },
               Object {
-                "kind": "Particle: tagName",
+                "kind": "Excerpt: InlineTag_TagName",
                 "nodeExcerpt": "@link",
-                "nodeSpacing": " ",
+              },
+              Object {
+                "kind": "Excerpt: Spacing",
+                "nodeExcerpt": " ",
               },
               Object {
                 "kind": "DeclarationReference",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: packageName",
+                    "kind": "Excerpt: DeclarationReference_PackageName",
                     "nodeExcerpt": "core-library",
                   },
                   Object {
-                    "kind": "Particle: importHash",
+                    "kind": "Excerpt: DeclarationReference_ImportHash",
                     "nodeExcerpt": "#",
                   },
                   Object {
@@ -613,45 +893,68 @@ Object {
                         "kind": "MemberIdentifier",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: identifier",
+                            "kind": "Excerpt: MemberIdentifier_Identifier",
                             "nodeExcerpt": "Statistics",
-                            "nodeSpacing": " ",
                           },
                         ],
+                      },
+                      Object {
+                        "kind": "Excerpt: Spacing",
+                        "nodeExcerpt": " ",
                       },
                     ],
                   },
                 ],
               },
               Object {
-                "kind": "Particle: pipe",
+                "kind": "Excerpt: LinkTag_Pipe",
                 "nodeExcerpt": "|",
               },
               Object {
-                "kind": "Particle: linkText",
+                "kind": "Excerpt: LinkTag_LinkText",
                 "nodeExcerpt": " Statistics subsystem",
               },
               Object {
-                "kind": "Particle: closingDelimiter",
+                "kind": "Excerpt: InlineTag_ClosingDelimiter",
                 "nodeExcerpt": "}",
               },
             ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": ".",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": ".",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " ",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -665,25 +968,44 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodeExcerpt": "@param",
-          "nodeSpacing": " ",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@param",
+            },
+          ],
         },
         Object {
-          "kind": "Particle: parameterName",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "x",
-          "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle: hyphen",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_Hyphen",
           "nodeExcerpt": "-",
-          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The first input number ",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: PlainText",
+                  "nodeExcerpt": "The first input number ",
+                },
+              ],
             },
           ],
         },
@@ -694,29 +1016,53 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodeExcerpt": "@param",
-          "nodeSpacing": " ",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@param",
+            },
+          ],
         },
         Object {
-          "kind": "Particle: parameterName",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "y",
-          "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle: hyphen",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_Hyphen",
           "nodeExcerpt": "-",
-          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The second input number",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: PlainText",
+                  "nodeExcerpt": "The second input number",
+                },
+              ],
             },
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
           ],
         },
@@ -729,56 +1075,76 @@ Object {
     "nodes": Array [
       Object {
         "kind": "BlockTag",
-        "nodeExcerpt": "@returns",
+        "nodes": Array [
+          Object {
+            "kind": "Excerpt: BlockTag",
+            "nodeExcerpt": "@returns",
+          },
+        ],
       },
       Object {
         "kind": "Paragraph",
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " The arithmetic mean of ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " The arithmetic mean of ",
+              },
+            ],
           },
           Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle: openingDelimiter",
+                "kind": "Excerpt: CodeSpan_OpeningDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle: code",
+                "kind": "Excerpt: CodeSpan_Code",
                 "nodeExcerpt": "x",
               },
               Object {
-                "kind": "Particle: closingDelimiter",
+                "kind": "Excerpt: CodeSpan_ClosingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " and ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " and ",
+              },
+            ],
           },
           Object {
             "kind": "CodeSpan",
             "nodes": Array [
               Object {
-                "kind": "Particle: openingDelimiter",
+                "kind": "Excerpt: CodeSpan_OpeningDelimiter",
                 "nodeExcerpt": "[c]",
               },
               Object {
-                "kind": "Particle: code",
+                "kind": "Excerpt: CodeSpan_Code",
                 "nodeExcerpt": "y",
               },
               Object {
-                "kind": "Particle: closingDelimiter",
+                "kind": "Excerpt: CodeSpan_ClosingDelimiter",
                 "nodeExcerpt": "[c]",
               },
             ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -790,26 +1156,51 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodeExcerpt": "@customBlock",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@customBlock",
+            },
+          ],
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "This is a custom block containing an ",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: PlainText",
+                  "nodeExcerpt": "This is a custom block containing an ",
+                },
+              ],
             },
             Object {
               "kind": "BlockTag",
-              "nodeExcerpt": "@undefinedBlockTag",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: BlockTag",
+                  "nodeExcerpt": "@undefinedBlockTag",
+                },
+              ],
             },
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
           ],
         },
@@ -820,11 +1211,21 @@ Object {
   "_11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
-      "nodeExcerpt": "@beta",
+      "nodes": Array [
+        Object {
+          "kind": "Excerpt: BlockTag",
+          "nodeExcerpt": "@beta",
+        },
+      ],
     },
     Object {
       "kind": "BlockTag",
-      "nodeExcerpt": "@customModifier",
+      "nodes": Array [
+        Object {
+          "kind": "Excerpt: BlockTag",
+          "nodeExcerpt": "@customModifier",
+        },
+      ],
     },
   ],
   "_12_logMessages": Array [
@@ -852,15 +1253,30 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "Constructs a map from a JavaScript object",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "Constructs a map from a JavaScript object",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -875,29 +1291,53 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodeExcerpt": "@param",
-          "nodeSpacing": " ",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@param",
+            },
+          ],
         },
         Object {
-          "kind": "Particle: parameterName",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "jsonObject",
-          "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle: hyphen",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_Hyphen",
           "nodeExcerpt": "-",
-          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The input object",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: PlainText",
+                  "nodeExcerpt": "The input object",
+                },
+              ],
             },
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
           ],
         },
@@ -910,29 +1350,53 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodeExcerpt": "@typeParam",
-          "nodeSpacing": " ",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@typeParam",
+            },
+          ],
         },
         Object {
-          "kind": "Particle: parameterName",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "K",
-          "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle: hyphen",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_Hyphen",
           "nodeExcerpt": "-",
-          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The generic type parameter indicating the key type",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: PlainText",
+                  "nodeExcerpt": "The generic type parameter indicating the key type",
+                },
+              ],
             },
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
           ],
         },
@@ -943,29 +1407,53 @@ Object {
       "nodes": Array [
         Object {
           "kind": "BlockTag",
-          "nodeExcerpt": "@typeParam",
-          "nodeSpacing": " ",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@typeParam",
+            },
+          ],
         },
         Object {
-          "kind": "Particle: parameterName",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "V",
-          "nodeSpacing": " ",
         },
         Object {
-          "kind": "Particle: hyphen",
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_Hyphen",
           "nodeExcerpt": "-",
-          "nodeSpacing": " ",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
         },
         Object {
           "kind": "Paragraph",
           "nodes": Array [
             Object {
               "kind": "PlainText",
-              "nodeExcerpt": "The generic type parameter indicating the value type",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: PlainText",
+                  "nodeExcerpt": "The generic type parameter indicating the value type",
+                },
+              ],
             },
             Object {
               "kind": "SoftBreak",
-              "nodeExcerpt": "[n]",
+              "nodes": Array [
+                Object {
+                  "kind": "Excerpt: SoftBreak",
+                  "nodeExcerpt": "[n]",
+                },
+              ],
             },
           ],
         },
@@ -977,18 +1465,33 @@ Object {
     "nodes": Array [
       Object {
         "kind": "BlockTag",
-        "nodeExcerpt": "@returns",
+        "nodes": Array [
+          Object {
+            "kind": "Excerpt: BlockTag",
+            "nodeExcerpt": "@returns",
+          },
+        ],
       },
       Object {
         "kind": "Paragraph",
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " The map",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " The map",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },

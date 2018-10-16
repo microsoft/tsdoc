@@ -1,18 +1,24 @@
-import { DocNodeKind, DocNode, IDocNodeParameters } from './DocNode';
-import { Excerpt } from '../parser/Excerpt';
-import { DocParticle } from './DocParticle';
+import { DocNodeKind, DocNode, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { StringChecks } from '../parser/StringChecks';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocMemberIdentifier}.
  */
 export interface IDocMemberIdentifierParameters extends IDocNodeParameters {
-  leftQuoteExcerpt?: Excerpt | undefined;
-
-  identifierExcerpt?: Excerpt | undefined;
   identifier: string;
+}
 
-  rightQuoteExcerpt?: Excerpt | undefined;
+/**
+ * Constructor parameters for {@link DocMemberIdentifier}.
+ */
+export interface IDocMemberIdentifierParsedParameters extends IDocNodeParsedParameters {
+  leftQuoteExcerpt?: TokenSequence;
+
+  identifierExcerpt: TokenSequence;
+
+  rightQuoteExcerpt?: TokenSequence;
 }
 
 /**
@@ -22,11 +28,12 @@ export class DocMemberIdentifier extends DocNode {
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberIdentifier;
 
-  private _leftQuoteParticle: DocParticle | undefined;
+  private readonly _leftQuoteExcerpt: DocExcerpt | undefined;
 
-  private _identifierParticle: DocParticle | undefined;  // never undefined after updateParameters()
+  private _identifier: string | undefined;
+  private readonly _identifierExcerpt: DocExcerpt | undefined;
 
-  private _rightQuoteParticle: DocParticle | undefined;
+  private readonly _rightQuoteExcerpt: DocExcerpt | undefined;
 
   /**
    * Returns true if the specified string is a valid TypeScript
@@ -41,8 +48,31 @@ export class DocMemberIdentifier extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocMemberIdentifierParameters) {
+  public constructor(parameters: IDocMemberIdentifierParameters | IDocMemberIdentifierParsedParameters) {
     super(parameters);
+
+    if (DocNode.isParsedParameters(parameters)) {
+      if (parameters.leftQuoteExcerpt) {
+        this._leftQuoteExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.MemberIdentifier_LeftQuote,
+          content: parameters.leftQuoteExcerpt
+        });
+      }
+
+      this._identifierExcerpt = new DocExcerpt({
+        excerptKind: ExcerptKind.MemberIdentifier_Identifier,
+        content: parameters.identifierExcerpt
+      });
+
+      if (parameters.rightQuoteExcerpt) {
+        this._rightQuoteExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.MemberIdentifier_RightQuote,
+          content: parameters.rightQuoteExcerpt
+        });
+      }
+    } else {
+      this._identifier = parameters.identifier;
+    }
   }
 
   /**
@@ -53,7 +83,10 @@ export class DocMemberIdentifier extends DocNode {
    * string literal during rendering.
    */
   public get identifier(): string {
-    return this._identifierParticle!.content;
+    if (this._identifier === undefined) {
+      this._identifier = this._identifierExcerpt!.content.toString();
+    }
+    return this._identifier;
   }
 
   /**
@@ -62,49 +95,19 @@ export class DocMemberIdentifier extends DocNode {
    * `identifier` property is not a valid ECMAScript identifier.
    */
   public get hasQuotes(): boolean {
-    return !!this._leftQuoteParticle;
+    if (this._identifierExcerpt) {
+      return !!this._leftQuoteExcerpt;
+    } else {
+      return !DocMemberIdentifier.isValidIdentifier(this.identifier);
+    }
   }
 
   /** @override */
-  public updateParameters(parameters: IDocMemberIdentifierParameters): void {
-    super.updateParameters(parameters);
-
-    this._leftQuoteParticle = undefined;
-    this._identifierParticle = undefined;
-    this._rightQuoteParticle = undefined;
-
-    if (parameters.leftQuoteExcerpt || !DocMemberIdentifier.isValidIdentifier(parameters.identifier)) {
-      this._leftQuoteParticle = new DocParticle({
-        particleId: 'leftQuote',
-        excerpt: parameters.leftQuoteExcerpt,
-        content: '"'
-      });
-    }
-
-    this._identifierParticle = new DocParticle({
-      particleId: 'identifier',
-      excerpt: parameters.identifierExcerpt,
-      content: parameters.identifier
-    });
-
-    if (this._leftQuoteParticle) {
-      this._rightQuoteParticle = new DocParticle({
-        particleId: 'rightQuote',
-        excerpt: parameters.rightQuoteExcerpt,
-        content: '"'
-      });
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
-    return DocNode.trimUndefinedNodes([
-      this._leftQuoteParticle,
-      this._identifierParticle,
-      this._rightQuoteParticle
-    ]);
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return [
+      this._leftQuoteExcerpt,
+      this._identifierExcerpt,
+      this._rightQuoteExcerpt
+    ];
   }
 }

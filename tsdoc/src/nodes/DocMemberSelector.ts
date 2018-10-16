@@ -1,13 +1,7 @@
-import { DocNodeKind } from './DocNode';
-import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
+import { DocNodeKind, DocNode, IDocNodeParsedParameters, IDocNodeParameters } from './DocNode';
 import { StringChecks } from '../parser/StringChecks';
-
-/**
- * Constructor parameters for {@link DocMemberSelector}.
- */
-export interface IDocMemberSelectorParameters extends IDocNodeLeafParameters {
-  selector: string;
-}
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Kinds of TSDoc selectors.
@@ -45,8 +39,22 @@ export const enum SelectorKind {
 }
 
 /**
+ * Constructor parameters for {@link DocMemberSelector}.
  */
-export class DocMemberSelector extends DocNodeLeaf {
+export interface IDocMemberSelectorParameters extends IDocNodeParameters {
+  selector: string;
+}
+
+/**
+ * Constructor parameters for {@link DocMemberSelector}.
+ */
+export interface IDocMemberSelectorParsedParameters extends IDocNodeParsedParameters {
+  selectorExcerpt: TokenSequence;
+}
+
+/**
+ */
+export class DocMemberSelector extends DocNode {
   private static readonly _likeIndexSelectorRegExp: RegExp = /^[0-9]/;
 
   private static readonly _indexSelectorRegExp: RegExp = /^[1-9][0-9]*$/;
@@ -60,52 +68,30 @@ export class DocMemberSelector extends DocNodeLeaf {
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.MemberSelector;
 
-  private _selector: string | undefined;  // never undefined after updateParameters()
+  private readonly _selector: string;
+  private _selectorExcerpt: DocExcerpt | undefined;
 
-  private _selectorKind: SelectorKind | undefined;  // never undefined after updateParameters()
+  private readonly _selectorKind: SelectorKind;
 
-  private _errorMessage: string | undefined;
+  private readonly _errorMessage: string | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocMemberSelectorParameters) {
+  public constructor(parameters: IDocMemberSelectorParameters | IDocMemberSelectorParsedParameters) {
     super(parameters);
-  }
 
-  /**
-   * The text representation of the selector.
-   *
-   * @remarks
-   * For system selectors, it will be a predefined lower case name.
-   * For label selectors, it will be an upper case name defined using the `{@label}` tag.
-   * For index selectors, it will be a positive integer.
-   */
-  public get selector(): string {
-    return this._selector!;
-  }
+    if (DocNode.isParsedParameters(parameters)) {
+      this._selectorExcerpt = new DocExcerpt({
+        excerptKind: ExcerptKind.MemberSelector,
+        content: parameters.selectorExcerpt
+      });
 
-  /**
-   * Indicates the kind of selector.
-   */
-  public get selectorKind(): SelectorKind {
-    return this._selectorKind!;
-  }
-
-  /**
-   * If the `selectorKind` is `SelectorKind.Error`, this string will be defined and provide
-   * more detail about why the string was not valid.
-   */
-  public get errorMessage(): string | undefined {
-    return this._errorMessage;
-  }
-
-  /** @override */
-  public updateParameters(parameters: IDocMemberSelectorParameters): void {
-    super.updateParameters(parameters);
-
-    this._selector = parameters.selector;
+      this._selector = parameters.selectorExcerpt.toString();
+    } else {
+      this._selector = parameters.selector;
+    }
 
     this._selectorKind = SelectorKind.Error;
     this._errorMessage = undefined;
@@ -143,5 +129,39 @@ export class DocMemberSelector extends DocNodeLeaf {
         this._errorMessage = 'Invalid syntax for selector';
       }
     }
+  }
+
+  /**
+   * The text representation of the selector.
+   *
+   * @remarks
+   * For system selectors, it will be a predefined lower case name.
+   * For label selectors, it will be an upper case name defined using the `{@label}` tag.
+   * For index selectors, it will be a positive integer.
+   */
+  public get selector(): string {
+    return this._selector;
+  }
+
+  /**
+   * Indicates the kind of selector.
+   */
+  public get selectorKind(): SelectorKind {
+    return this._selectorKind;
+  }
+
+  /**
+   * If the `selectorKind` is `SelectorKind.Error`, this string will be defined and provide
+   * more detail about why the string was not valid.
+   */
+  public get errorMessage(): string | undefined {
+    return this._errorMessage;
+  }
+
+  /** @override */
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return [
+      this._selectorExcerpt
+    ];
   }
 }

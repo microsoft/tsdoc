@@ -19,7 +19,12 @@ Object {
             "nodes": Array [
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -29,15 +34,15 @@ Object {
         "kind": "InheritDocTag",
         "nodes": Array [
           Object {
-            "kind": "Particle: openingDelimiter",
+            "kind": "Excerpt: InlineTag_OpeningDelimiter",
             "nodeExcerpt": "{",
           },
           Object {
-            "kind": "Particle: tagName",
+            "kind": "Excerpt: InlineTag_TagName",
             "nodeExcerpt": "@inheritDoc",
           },
           Object {
-            "kind": "Particle: closingDelimiter",
+            "kind": "Excerpt: InlineTag_ClosingDelimiter",
             "nodeExcerpt": "}",
           },
         ],
@@ -66,7 +71,12 @@ Object {
             "nodes": Array [
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -76,13 +86,16 @@ Object {
         "kind": "InheritDocTag",
         "nodes": Array [
           Object {
-            "kind": "Particle: openingDelimiter",
+            "kind": "Excerpt: InlineTag_OpeningDelimiter",
             "nodeExcerpt": "{",
           },
           Object {
-            "kind": "Particle: tagName",
+            "kind": "Excerpt: InlineTag_TagName",
             "nodeExcerpt": "@inheritDoc",
-            "nodeSpacing": " ",
+          },
+          Object {
+            "kind": "Excerpt: Spacing",
+            "nodeExcerpt": " ",
           },
           Object {
             "kind": "DeclarationReference",
@@ -94,7 +107,7 @@ Object {
                     "kind": "MemberIdentifier",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: identifier",
+                        "kind": "Excerpt: MemberIdentifier_Identifier",
                         "nodeExcerpt": "Class",
                       },
                     ],
@@ -105,14 +118,14 @@ Object {
                 "kind": "MemberReference",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: dot",
+                    "kind": "Excerpt: MemberReference_Dot",
                     "nodeExcerpt": ".",
                   },
                   Object {
                     "kind": "MemberIdentifier",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: identifier",
+                        "kind": "Excerpt: MemberIdentifier_Identifier",
                         "nodeExcerpt": "member",
                       },
                     ],
@@ -122,7 +135,7 @@ Object {
             ],
           },
           Object {
-            "kind": "Particle: closingDelimiter",
+            "kind": "Excerpt: InlineTag_ClosingDelimiter",
             "nodeExcerpt": "}",
           },
         ],
@@ -151,7 +164,12 @@ Object {
             "nodes": Array [
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -161,25 +179,31 @@ Object {
         "kind": "InheritDocTag",
         "nodes": Array [
           Object {
-            "kind": "Particle: openingDelimiter",
+            "kind": "Excerpt: InlineTag_OpeningDelimiter",
             "nodeExcerpt": "{",
           },
           Object {
-            "kind": "Particle: tagName",
+            "kind": "Excerpt: InlineTag_TagName",
             "nodeExcerpt": "@inheritDoc",
-            "nodeSpacing": " ",
+          },
+          Object {
+            "kind": "Excerpt: Spacing",
+            "nodeExcerpt": " ",
           },
           Object {
             "kind": "DeclarationReference",
             "nodes": Array [
               Object {
-                "kind": "Particle: packageName",
+                "kind": "Excerpt: DeclarationReference_PackageName",
                 "nodeExcerpt": "package",
               },
               Object {
-                "kind": "Particle: importHash",
+                "kind": "Excerpt: DeclarationReference_ImportHash",
                 "nodeExcerpt": "#",
-                "nodeSpacing": " ",
+              },
+              Object {
+                "kind": "Excerpt: Spacing",
+                "nodeExcerpt": " ",
               },
               Object {
                 "kind": "MemberReference",
@@ -188,11 +212,14 @@ Object {
                     "kind": "MemberIdentifier",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: identifier",
+                        "kind": "Excerpt: MemberIdentifier_Identifier",
                         "nodeExcerpt": "Class",
-                        "nodeSpacing": " ",
                       },
                     ],
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                 ],
               },
@@ -200,15 +227,18 @@ Object {
                 "kind": "MemberReference",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: dot",
+                    "kind": "Excerpt: MemberReference_Dot",
                     "nodeExcerpt": ".",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "MemberIdentifier",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: identifier",
+                        "kind": "Excerpt: MemberIdentifier_Identifier",
                         "nodeExcerpt": "member",
                       },
                     ],
@@ -218,7 +248,7 @@ Object {
             ],
           },
           Object {
-            "kind": "Particle: closingDelimiter",
+            "kind": "Excerpt: InlineTag_ClosingDelimiter",
             "nodeExcerpt": "}",
           },
         ],
@@ -248,32 +278,40 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagName",
+                    "nodeExcerpt": "@inheritDoc",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
+                    "nodeExcerpt": "| link text",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
-          },
-        ],
-      },
-      Object {
-        "kind": "InheritDocTag",
-        "nodes": Array [
-          Object {
-            "kind": "Particle: openingDelimiter",
-            "nodeExcerpt": "{",
-          },
-          Object {
-            "kind": "Particle: tagName",
-            "nodeExcerpt": "@inheritDoc",
-            "nodeSpacing": " ",
-          },
-          Object {
-            "kind": "Particle: tagContent",
-            "nodeExcerpt": "| link text",
-          },
-          Object {
-            "kind": "Particle: closingDelimiter",
-            "nodeExcerpt": "}",
           },
         ],
       },
@@ -302,32 +340,40 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagName",
+                    "nodeExcerpt": "@inheritDoc",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
+                    "nodeExcerpt": "Class % junk",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
-          },
-        ],
-      },
-      Object {
-        "kind": "InheritDocTag",
-        "nodes": Array [
-          Object {
-            "kind": "Particle: openingDelimiter",
-            "nodeExcerpt": "{",
-          },
-          Object {
-            "kind": "Particle: tagName",
-            "nodeExcerpt": "@inheritDoc",
-            "nodeSpacing": " ",
-          },
-          Object {
-            "kind": "Particle: tagContent",
-            "nodeExcerpt": "Class % junk",
-          },
-          Object {
-            "kind": "Particle: closingDelimiter",
-            "nodeExcerpt": "}",
           },
         ],
       },
@@ -358,7 +404,12 @@ Object {
             "nodes": Array [
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "{@inheritDoc}",
@@ -366,11 +417,21 @@ Object {
 ",
                 "errorMessage": "A doc comment cannot have more than one @inheritDoc tag",
                 "kind": "ErrorText",
-                "nodeExcerpt": "{@inheritDoc}",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "{@inheritDoc}",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -380,15 +441,15 @@ Object {
         "kind": "InheritDocTag",
         "nodes": Array [
           Object {
-            "kind": "Particle: openingDelimiter",
+            "kind": "Excerpt: InlineTag_OpeningDelimiter",
             "nodeExcerpt": "{",
           },
           Object {
-            "kind": "Particle: tagName",
+            "kind": "Excerpt: InlineTag_TagName",
             "nodeExcerpt": "@inheritDoc",
           },
           Object {
-            "kind": "Particle: closingDelimiter",
+            "kind": "Excerpt: InlineTag_ClosingDelimiter",
             "nodeExcerpt": "}",
           },
         ],
@@ -422,11 +483,21 @@ Object {
             "nodes": Array [
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "summary text",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "summary text",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -437,18 +508,33 @@ Object {
         "nodes": Array [
           Object {
             "kind": "BlockTag",
-            "nodeExcerpt": "@remarks",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: BlockTag",
+                "nodeExcerpt": "@remarks",
+              },
+            ],
           },
           Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -458,15 +544,15 @@ Object {
         "kind": "InheritDocTag",
         "nodes": Array [
           Object {
-            "kind": "Particle: openingDelimiter",
+            "kind": "Excerpt: InlineTag_OpeningDelimiter",
             "nodeExcerpt": "{",
           },
           Object {
-            "kind": "Particle: tagName",
+            "kind": "Excerpt: InlineTag_TagName",
             "nodeExcerpt": "@inheritDoc",
           },
           Object {
-            "kind": "Particle: closingDelimiter",
+            "kind": "Excerpt: InlineTag_ClosingDelimiter",
             "nodeExcerpt": "}",
           },
         ],
@@ -496,32 +582,40 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagName",
+                    "nodeExcerpt": "@inheritdoc",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
+                    "nodeExcerpt": "@scope/library:IDisposable.isDisposed",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
-          },
-        ],
-      },
-      Object {
-        "kind": "InheritDocTag",
-        "nodes": Array [
-          Object {
-            "kind": "Particle: openingDelimiter",
-            "nodeExcerpt": "{",
-          },
-          Object {
-            "kind": "Particle: tagName",
-            "nodeExcerpt": "@inheritdoc",
-            "nodeSpacing": " ",
-          },
-          Object {
-            "kind": "Particle: tagContent",
-            "nodeExcerpt": "@scope/library:IDisposable.isDisposed",
-          },
-          Object {
-            "kind": "Particle: closingDelimiter",
-            "nodeExcerpt": "}",
           },
         ],
       },

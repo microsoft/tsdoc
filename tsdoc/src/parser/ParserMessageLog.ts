@@ -52,9 +52,9 @@ export class ParserMessageLog {
   public addMessageForDocErrorText(docErrorText: DocErrorText): void {
     let tokenSequence: TokenSequence;
 
-    if (docErrorText.excerpt) {
+    if (docErrorText.textExcerpt) {
       // If there is an excerpt directly associated with the DocErrorText, highlight that:
-      tokenSequence = docErrorText.excerpt.content;
+      tokenSequence = docErrorText.textExcerpt;
     } else {
       // Otherwise we can use the errorLocation, but typically that is meant to give additional
       // details, not to indicate the primary location of the problem.

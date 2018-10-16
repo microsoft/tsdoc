@@ -20,19 +20,39 @@ Object {
             "nodes": Array [
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "line 1",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "line 1",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "line 2",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "line 2",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -79,7 +99,12 @@ Object {
             "nodes": Array [
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -110,11 +135,21 @@ Object {
             "nodes": Array [
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -144,19 +179,39 @@ Object {
             "nodes": Array [
               Object {
                 "kind": "EscapedText",
-                "nodeExcerpt": "[b]$",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: EscapedText",
+                    "nodeExcerpt": "[b]$",
+                  },
+                ],
               },
               Object {
                 "kind": "EscapedText",
-                "nodeExcerpt": "[b]@",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: EscapedText",
+                    "nodeExcerpt": "[b]@",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "param",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "param",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -190,40 +245,75 @@ Object {
             "nodes": Array [
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "letter: ",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "letter: ",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[b]",
                 "errorLocationPrecedingToken": " ",
                 "errorMessage": "A backslash can only be used to escape a punctuation character",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[b]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[b]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "A space: ",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "A space: ",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[b]",
                 "errorLocationPrecedingToken": " ",
                 "errorMessage": "A backslash can only be used to escape a punctuation character",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[b]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[b]",
+                  },
+                ],
               },
               Object {
                 "kind": "PlainText",
-                "nodeExcerpt": "  end of line: ",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "  end of line: ",
+                  },
+                ],
               },
               Object {
                 "errorLocation": "[b]",
                 "errorLocationPrecedingToken": " ",
                 "errorMessage": "A backslash can only be used to escape a punctuation character",
                 "kind": "ErrorText",
-                "nodeExcerpt": "[b]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[b]",
+                  },
+                ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },

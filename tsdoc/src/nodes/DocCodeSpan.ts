@@ -1,17 +1,23 @@
-import { DocNodeKind, IDocNodeParameters, DocNode } from './DocNode';
-import { DocParticle } from './DocParticle';
-import { Excerpt } from '../parser/Excerpt';
+import { DocNodeKind, IDocNodeParameters, DocNode, IDocNodeParsedParameters } from './DocNode';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocCodeSpan}.
  */
 export interface IDocCodeSpanParameters extends IDocNodeParameters {
-  openingDelimiterExcerpt?: Excerpt;
-
-  codeExcerpt?: Excerpt;
   code: string;
+}
 
-  closingDelimiterExcerpt?: Excerpt;
+/**
+ * Constructor parameters for {@link DocCodeSpan}.
+ */
+export interface IDocCodeSpanParsedParameters extends IDocNodeParsedParameters {
+  openingDelimiterExcerpt: TokenSequence;
+
+  codeExcerpt: TokenSequence;
+
+  closingDelimiterExcerpt: TokenSequence;
 }
 
 /**
@@ -23,61 +29,56 @@ export class DocCodeSpan extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.CodeSpan;
 
   // The opening ` delimiter
-  private _openingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
+  private readonly _openingDelimiterExcerpt: DocExcerpt | undefined;
 
   // The code content
-  private _codeParticle: DocParticle | undefined;              // never undefined after updateParameters()
+  private _code: string | undefined;
+  private readonly _codeExcerpt: DocExcerpt | undefined;
 
   // The closing ` delimiter
-  private _closingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
+  private readonly _closingDelimiterExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocCodeSpanParameters) {
+  public constructor(parameters: IDocCodeSpanParameters | IDocCodeSpanParsedParameters) {
     super(parameters);
+
+    if (DocNode.isParsedParameters(parameters)) {
+      this._openingDelimiterExcerpt = new DocExcerpt({
+        excerptKind: ExcerptKind.CodeSpan_OpeningDelimiter,
+        content: parameters.openingDelimiterExcerpt
+      });
+      this._codeExcerpt = new DocExcerpt({
+        excerptKind: ExcerptKind.CodeSpan_Code,
+        content: parameters.codeExcerpt
+      });
+      this._closingDelimiterExcerpt = new DocExcerpt({
+        excerptKind: ExcerptKind.CodeSpan_ClosingDelimiter,
+        content: parameters.closingDelimiterExcerpt
+      });
+    } else {
+      this._code = parameters.code;
+    }
   }
 
   /**
    * The text that should be rendered as code, excluding the backtick delimiters.
    */
   public get code(): string {
-    return this._codeParticle!.content;
+    if (this._code === undefined) {
+      this._code = this._codeExcerpt!.content.toString();
+    }
+    return this._code;
   }
 
   /** @override */
-  public updateParameters(parameters: IDocCodeSpanParameters): void {
-    super.updateParameters(parameters);
-
-    this._openingDelimiterParticle = new DocParticle({
-      particleId: 'openingDelimiter',
-      excerpt: parameters.openingDelimiterExcerpt,
-      content: '`'
-    });
-
-    this._codeParticle = new DocParticle({
-      particleId: 'code',
-      excerpt: parameters.codeExcerpt,
-      content: parameters.code
-    });
-
-    this._closingDelimiterParticle = new DocParticle({
-      particleId: 'closingDelimiter',
-      excerpt: parameters.closingDelimiterExcerpt,
-      content: '`'
-    });
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
-      this._openingDelimiterParticle!,
-      this._codeParticle!,
-      this._closingDelimiterParticle!
+      this._openingDelimiterExcerpt,
+      this._codeExcerpt,
+      this._closingDelimiterExcerpt
     ];
   }
 }

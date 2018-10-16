@@ -24,13 +24,16 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -42,7 +45,7 @@ Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Class1",
                               },
                             ],
@@ -52,26 +55,34 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -83,7 +94,7 @@ Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Class2",
                               },
                             ],
@@ -94,14 +105,14 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: dot",
+                            "kind": "Excerpt: MemberReference_Dot",
                             "nodeExcerpt": ".",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "member2",
                               },
                             ],
@@ -111,26 +122,34 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -142,11 +161,14 @@ Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "namespace3",
-                                "nodeSpacing": " ",
                               },
                             ],
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                         ],
                       },
@@ -154,19 +176,25 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: dot",
+                            "kind": "Excerpt: MemberReference_Dot",
                             "nodeExcerpt": ".",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "namespace4",
-                                "nodeSpacing": "[n]       ",
                               },
                             ],
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": "[n]       ",
                           },
                         ],
                       },
@@ -174,41 +202,52 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: dot",
+                            "kind": "Excerpt: MemberReference_Dot",
                             "nodeExcerpt": ".",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "namespace5",
-                                "nodeSpacing": " ",
                               },
                             ],
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                         ],
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: pipe",
+                    "kind": "Excerpt: LinkTag_Pipe",
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Particle: linkText",
+                    "kind": "Excerpt: LinkTag_LinkText",
                     "nodeExcerpt": " link text",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -243,82 +282,106 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "LinkTag",
+                "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "Class1..member2",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": ".member3",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "member4.",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -353,13 +416,16 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -368,28 +434,33 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: leftParenthesis",
+                            "kind": "Excerpt: MemberReference_LeftParenthesis",
                             "nodeExcerpt": "(",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Class1",
                               },
                             ],
                           },
                           Object {
-                            "kind": "Particle: colon",
+                            "kind": "Excerpt: MemberReference_Colon",
                             "nodeExcerpt": ":",
                           },
                           Object {
                             "kind": "MemberSelector",
-                            "nodeExcerpt": "class",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberSelector",
+                                "nodeExcerpt": "class",
+                              },
+                            ],
                           },
                           Object {
-                            "kind": "Particle: rightParenthesis",
+                            "kind": "Excerpt: MemberReference_RightParenthesis",
                             "nodeExcerpt": ")",
                           },
                         ],
@@ -397,26 +468,34 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -425,28 +504,33 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: leftParenthesis",
+                            "kind": "Excerpt: MemberReference_LeftParenthesis",
                             "nodeExcerpt": "(",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Class2",
                               },
                             ],
                           },
                           Object {
-                            "kind": "Particle: colon",
+                            "kind": "Excerpt: MemberReference_Colon",
                             "nodeExcerpt": ":",
                           },
                           Object {
                             "kind": "MemberSelector",
-                            "nodeExcerpt": "class",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberSelector",
+                                "nodeExcerpt": "class",
+                              },
+                            ],
                           },
                           Object {
-                            "kind": "Particle: rightParenthesis",
+                            "kind": "Excerpt: MemberReference_RightParenthesis",
                             "nodeExcerpt": ")",
                           },
                         ],
@@ -455,32 +539,37 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: dot",
+                            "kind": "Excerpt: MemberReference_Dot",
                             "nodeExcerpt": ".",
                           },
                           Object {
-                            "kind": "Particle: leftParenthesis",
+                            "kind": "Excerpt: MemberReference_LeftParenthesis",
                             "nodeExcerpt": "(",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "member3",
                               },
                             ],
                           },
                           Object {
-                            "kind": "Particle: colon",
+                            "kind": "Excerpt: MemberReference_Colon",
                             "nodeExcerpt": ":",
                           },
                           Object {
                             "kind": "MemberSelector",
-                            "nodeExcerpt": "static",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberSelector",
+                                "nodeExcerpt": "static",
+                              },
+                            ],
                           },
                           Object {
-                            "kind": "Particle: rightParenthesis",
+                            "kind": "Excerpt: MemberReference_RightParenthesis",
                             "nodeExcerpt": ")",
                           },
                         ],
@@ -488,26 +577,34 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -519,7 +616,7 @@ Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Class4",
                               },
                             ],
@@ -530,32 +627,37 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: dot",
+                            "kind": "Excerpt: MemberReference_Dot",
                             "nodeExcerpt": ".",
                           },
                           Object {
-                            "kind": "Particle: leftParenthesis",
+                            "kind": "Excerpt: MemberReference_LeftParenthesis",
                             "nodeExcerpt": "(",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "member5",
                               },
                             ],
                           },
                           Object {
-                            "kind": "Particle: colon",
+                            "kind": "Excerpt: MemberReference_Colon",
                             "nodeExcerpt": ":",
                           },
                           Object {
                             "kind": "MemberSelector",
-                            "nodeExcerpt": "static",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberSelector",
+                                "nodeExcerpt": "static",
+                              },
+                            ],
                           },
                           Object {
-                            "kind": "Particle: rightParenthesis",
+                            "kind": "Excerpt: MemberReference_RightParenthesis",
                             "nodeExcerpt": ")",
                           },
                         ],
@@ -563,26 +665,34 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -591,31 +701,42 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: leftParenthesis",
+                            "kind": "Excerpt: MemberReference_LeftParenthesis",
                             "nodeExcerpt": "(",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Class6",
                               },
                             ],
                           },
                           Object {
-                            "kind": "Particle: colon",
+                            "kind": "Excerpt: MemberReference_Colon",
                             "nodeExcerpt": ":",
                           },
                           Object {
                             "kind": "MemberSelector",
-                            "nodeExcerpt": "class",
-                            "nodeSpacing": " ",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberSelector",
+                                "nodeExcerpt": "class",
+                              },
+                            ],
                           },
                           Object {
-                            "kind": "Particle: rightParenthesis",
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: MemberReference_RightParenthesis",
                             "nodeExcerpt": ")",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                         ],
                       },
@@ -623,34 +744,45 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: dot",
+                            "kind": "Excerpt: MemberReference_Dot",
                             "nodeExcerpt": ".",
-                            "nodeSpacing": " ",
                           },
                           Object {
-                            "kind": "Particle: leftParenthesis",
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: MemberReference_LeftParenthesis",
                             "nodeExcerpt": "(",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "member7",
                               },
                             ],
                           },
                           Object {
-                            "kind": "Particle: colon",
+                            "kind": "Excerpt: MemberReference_Colon",
                             "nodeExcerpt": ":",
                           },
                           Object {
                             "kind": "MemberSelector",
-                            "nodeExcerpt": "static",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberSelector",
+                                "nodeExcerpt": "static",
+                              },
+                            ],
                           },
                           Object {
-                            "kind": "Particle: rightParenthesis",
+                            "kind": "Excerpt: MemberReference_RightParenthesis",
                             "nodeExcerpt": ")",
                           },
                         ],
@@ -658,14 +790,19 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -709,186 +846,242 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "LinkTag",
+                "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "(Class1:class",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "(Class2:class))",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "(Class3::class)",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "(Class4 class)",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "(member5:badname)",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "(Class6:class)(member:static)",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "Class7:class",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -921,13 +1114,16 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -936,28 +1132,33 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: leftParenthesis",
+                            "kind": "Excerpt: MemberReference_LeftParenthesis",
                             "nodeExcerpt": "(",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Class1",
                               },
                             ],
                           },
                           Object {
-                            "kind": "Particle: colon",
+                            "kind": "Excerpt: MemberReference_Colon",
                             "nodeExcerpt": ":",
                           },
                           Object {
                             "kind": "MemberSelector",
-                            "nodeExcerpt": "LABEL1",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberSelector",
+                                "nodeExcerpt": "LABEL1",
+                              },
+                            ],
                           },
                           Object {
-                            "kind": "Particle: rightParenthesis",
+                            "kind": "Excerpt: MemberReference_RightParenthesis",
                             "nodeExcerpt": ")",
                           },
                         ],
@@ -965,26 +1166,34 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -993,48 +1202,73 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: leftParenthesis",
+                            "kind": "Excerpt: MemberReference_LeftParenthesis",
                             "nodeExcerpt": "(",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "function2",
-                                "nodeSpacing": " ",
                               },
                             ],
                           },
                           Object {
-                            "kind": "Particle: colon",
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: MemberReference_Colon",
                             "nodeExcerpt": ":",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                           Object {
                             "kind": "MemberSelector",
-                            "nodeExcerpt": "MY_LABEL2",
-                            "nodeSpacing": " ",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberSelector",
+                                "nodeExcerpt": "MY_LABEL2",
+                              },
+                            ],
                           },
                           Object {
-                            "kind": "Particle: rightParenthesis",
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: MemberReference_RightParenthesis",
                             "nodeExcerpt": ")",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                         ],
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -1067,56 +1301,72 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "LinkTag",
+                "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "(Class1:Label)",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "(Class2:SPAß)",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -1148,13 +1398,16 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -1163,31 +1416,45 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: leftParenthesis",
+                            "kind": "Excerpt: MemberReference_LeftParenthesis",
                             "nodeExcerpt": "(",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "function2",
-                                "nodeSpacing": " ",
                               },
                             ],
                           },
                           Object {
-                            "kind": "Particle: colon",
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: MemberReference_Colon",
                             "nodeExcerpt": ":",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                           Object {
                             "kind": "MemberSelector",
-                            "nodeExcerpt": "3",
-                            "nodeSpacing": " ",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberSelector",
+                                "nodeExcerpt": "3",
+                              },
+                            ],
                           },
                           Object {
-                            "kind": "Particle: rightParenthesis",
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: MemberReference_RightParenthesis",
                             "nodeExcerpt": ")",
                           },
                         ],
@@ -1195,14 +1462,19 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -1233,30 +1505,38 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "LinkTag",
+                "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "(function2:03)",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -1290,13 +1570,16 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -1308,15 +1591,15 @@ Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: leftQuote",
+                                "kind": "Excerpt: MemberIdentifier_LeftQuote",
                                 "nodeExcerpt": "[q]",
                               },
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "static",
                               },
                               Object {
-                                "kind": "Particle: rightQuote",
+                                "kind": "Excerpt: MemberIdentifier_RightQuote",
                                 "nodeExcerpt": "[q]",
                               },
                             ],
@@ -1326,26 +1609,34 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -1357,11 +1648,14 @@ Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Class1",
-                                "nodeSpacing": " ",
                               },
                             ],
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                         ],
                       },
@@ -1369,23 +1663,26 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: dot",
+                            "kind": "Excerpt: MemberReference_Dot",
                             "nodeExcerpt": ".",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: leftQuote",
+                                "kind": "Excerpt: MemberIdentifier_LeftQuote",
                                 "nodeExcerpt": "[q]",
                               },
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "member",
                               },
                               Object {
-                                "kind": "Particle: rightQuote",
+                                "kind": "Excerpt: MemberIdentifier_RightQuote",
                                 "nodeExcerpt": "[q]",
                               },
                             ],
@@ -1395,26 +1692,34 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -1426,7 +1731,7 @@ Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Class2",
                               },
                             ],
@@ -1437,48 +1742,56 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: dot",
+                            "kind": "Excerpt: MemberReference_Dot",
                             "nodeExcerpt": ".",
                           },
                           Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: leftQuote",
+                                "kind": "Excerpt: MemberIdentifier_LeftQuote",
                                 "nodeExcerpt": "[q]",
                               },
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "|",
                               },
                               Object {
-                                "kind": "Particle: rightQuote",
+                                "kind": "Excerpt: MemberIdentifier_RightQuote",
                                 "nodeExcerpt": "[q]",
-                                "nodeSpacing": " ",
                               },
                             ],
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                         ],
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: pipe",
+                    "kind": "Excerpt: LinkTag_Pipe",
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Particle: linkText",
+                    "kind": "Excerpt: LinkTag_LinkText",
                     "nodeExcerpt": " link text",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -1515,108 +1828,140 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "LinkTag",
+                "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "[q]static",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "Class1.[q][q]",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "Class2.interface",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "Class3.1",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },

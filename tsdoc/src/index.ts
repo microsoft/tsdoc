@@ -6,7 +6,6 @@ export { ModifierTagSet } from './details/ModifierTagSet';
 
 export * from './nodes';
 
-export { Excerpt } from './parser/Excerpt';
 export { ParserContext } from './parser/ParserContext';
 export { ParserMessage, IParserMessageParameters } from './parser/ParserMessage';
 export { ParserMessageLog } from './parser/ParserMessageLog';

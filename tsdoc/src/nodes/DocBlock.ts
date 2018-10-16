@@ -1,5 +1,5 @@
 import { DocNodeKind, DocNode } from './DocNode';
-import { DocSection, IDocSectionParameters } from './DocSection';
+import { DocSection, IDocSectionParameters, IDocSectionParsedParameters } from './DocSection';
 import { DocBlockTag } from './DocBlockTag';
 
 /**
@@ -10,41 +10,40 @@ export interface IDocBlockParameters extends IDocSectionParameters {
 }
 
 /**
+ * Constructor parameters for {@link DocBlock}.
+ */
+export interface IDocBlockParsedParameters extends IDocSectionParsedParameters {
+  blockTag: DocBlockTag;
+}
+
+/**
  * Represents a section that is introduced by a TSDoc block tag.
  * For example, an `@example` block.
  */
 export class DocBlock extends DocSection {
-  /** {@inheritDoc} */
+  /** @override */
   public readonly kind: DocNodeKind = DocNodeKind.Block;
 
-  private _blockTag: DocBlockTag | undefined; // never undefined after updateParameters()
+  private readonly _blockTag: DocBlockTag;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocBlockParameters) {
+  public constructor(parameters: IDocBlockParameters | IDocBlockParsedParameters) {
     super(parameters);
+    this._blockTag = parameters.blockTag;
   }
 
   /**
    * The TSDoc tag that introduces this section.
    */
   public get blockTag(): DocBlockTag {
-    return this._blockTag!;
+    return this._blockTag;
   }
 
   /** @override */
-  public updateParameters(parameters: IDocBlockParameters): void {
-    super.updateParameters(parameters);
-    this._blockTag = parameters.blockTag;
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
-    return [this.blockTag, ...super.getChildNodes()];
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return [this.blockTag, ...super.onGetChildNodes()];
   }
 }

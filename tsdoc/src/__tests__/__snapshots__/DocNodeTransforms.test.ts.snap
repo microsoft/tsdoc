@@ -6,47 +6,28 @@ Object {
   "nodes": Array [
     Object {
       "kind": "PlainText",
-      "nodeExcerpt": "   This [t] is    the",
-      "nodePlainText": "This is the",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "first   ",
-      "nodePlainText": " first ",
+      "nodePlainText": "This is the first ",
     },
     Object {
       "kind": "InlineTag",
       "nodes": Array [
         Object {
-          "kind": "Particle: openingDelimiter",
+          "kind": "Excerpt: InlineTag_OpeningDelimiter",
           "nodeExcerpt": "{",
         },
         Object {
-          "kind": "Particle: tagName",
+          "kind": "Excerpt: InlineTag_TagName",
           "nodeExcerpt": "@mylink",
         },
         Object {
-          "kind": "Particle: tagContent",
-        },
-        Object {
-          "kind": "Particle: closingDelimiter",
+          "kind": "Excerpt: InlineTag_ClosingDelimiter",
           "nodeExcerpt": "}",
         },
       ],
     },
     Object {
       "kind": "PlainText",
-      "nodeExcerpt": "sentence.",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "        This is another",
-      "nodePlainText": " This is another",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodeExcerpt": "sentence.",
-      "nodePlainText": " sentence.",
+      "nodePlainText": "sentence. This is another sentence.",
     },
   ],
 }

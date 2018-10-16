@@ -24,35 +24,75 @@ Object {
         "nodes": Array [
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "This is the",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "This is the",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "first paragraph.",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "first paragraph.",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -61,15 +101,30 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "This is the second paragraph.",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "This is the second paragraph.",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -78,19 +133,39 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "This is the third paragraph.",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "This is the third paragraph.",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -126,23 +201,48 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "line 1",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "line 1",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "line 2",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "line 2",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -151,15 +251,30 @@ Object {
         "nodes": Array [
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": "  ",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "  ",
+              },
+            ],
           },
           Object {
             "kind": "PlainText",
-            "nodeExcerpt": " line 3",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": " line 3",
+              },
+            ],
           },
           Object {
             "kind": "SoftBreak",
-            "nodeExcerpt": "[n]",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
           },
         ],
       },
@@ -176,7 +291,12 @@ Object {
   "_11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
-      "nodeExcerpt": "@public",
+      "nodes": Array [
+        Object {
+          "kind": "Excerpt: BlockTag",
+          "nodeExcerpt": "@public",
+        },
+      ],
     },
   ],
   "_12_logMessages": Array [],

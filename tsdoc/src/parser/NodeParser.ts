@@ -20,7 +20,6 @@ import {
   DocSection,
   DocParamBlock,
   DocFencedCode,
-  IDocInlineTagParameters,
   DocLinkTag,
   IDocLinkTagParameters,
   DocMemberReference,
@@ -29,10 +28,13 @@ import {
   DocMemberIdentifier,
   DocMemberSelector,
   DocInheritDocTag,
-  IDocInheritDocTagParameters
+  IDocInheritDocTagParameters,
+  IDocInlineTagParsedParameters,
+  DocInlineTagBase,
+  IDocLinkTagParsedParameters,
+  IDocMemberReferenceParsedParameters
 } from '../nodes';
 import { TokenSequence } from './TokenSequence';
-import { Excerpt, IExcerptParameters } from './Excerpt';
 import { TokenReader } from './TokenReader';
 import { StringChecks } from './StringChecks';
 import { ModifierTagSet } from '../details/ModifierTagSet';
@@ -61,10 +63,6 @@ function isFailure<T>(resultOrFailure: ResultOrFailure<T>): resultOrFailure is I
  * The main parser for TSDoc comments.
  */
 export class NodeParser {
-  // https://www.w3.org/TR/html5/syntax.html#tag-name
-  // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
-  private static readonly htmlNameRegExp: RegExp = /^[a-z]+(\-[a-z]+)*$/i;
-
   private readonly _parserContext: ParserContext;
   private _currentSection: DocSection;
 
@@ -88,7 +86,8 @@ export class NodeParser {
           this._pushAccumulatedPlainText(tokenReader);
           tokenReader.readToken();
           this._pushParagraphNode(new DocSoftBreak({
-            excerpt: new Excerpt({ content: tokenReader.extractAccumulatedSequence() })
+            parsed: true,
+            softBreakExcerpt: tokenReader.extractAccumulatedSequence()
           }));
           break;
         case TokenKind.Backslash:
@@ -168,7 +167,7 @@ export class NodeParser {
         this._parserContext.log.addMessageForTokenSequence(
           `The ${docComment.deprecatedBlock.blockTag.tagName} block must include a deprecation message,`
             + ` e.g. describing the recommended alternative`,
-          docComment.deprecatedBlock.blockTag.excerpt!.content,
+          docComment.deprecatedBlock.blockTag.getTokenSequence(),
           docComment.deprecatedBlock
         );
       }
@@ -179,7 +178,7 @@ export class NodeParser {
         this._parserContext.log.addMessageForTokenSequence(
           `A "${docComment.remarksBlock.blockTag.tagName}" block must not be used, because that`
           + ` content is provided by the @inheritDoc tag`,
-          docComment.remarksBlock.blockTag.excerpt!.content, docComment.remarksBlock.blockTag);
+          docComment.remarksBlock.blockTag.getTokenSequence(), docComment.remarksBlock.blockTag);
       }
       if (PlainTextRenderer.hasAnyTextContent(docComment.summarySection)) {
         this._parserContext.log.addMessageForTextRange(
@@ -230,11 +229,9 @@ export class NodeParser {
 
   private _pushAccumulatedPlainText(tokenReader: TokenReader): void {
     if (!tokenReader.isAccumulatedSequenceEmpty()) {
-      const plainTextSequence: TokenSequence = tokenReader.extractAccumulatedSequence();
-
       this._pushParagraphNode(new DocPlainText({
-        text: plainTextSequence.toString(),
-        excerpt: new Excerpt({ content: plainTextSequence })
+        parsed: true,
+        textExcerpt: tokenReader.extractAccumulatedSequence()
       }));
     }
   }
@@ -256,7 +253,7 @@ export class NodeParser {
     const tagDefinition: TSDocTagDefinition | undefined
       = configuration.tryGetTagDefinitionWithUpperCase(docBlockTag.tagNameWithUpperCase);
     this._validateTagDefinition(tagDefinition, docBlockTag.tagName, /* expectingInlineTag */ false,
-      docBlockTag.excerpt!.content, docBlockTag);
+      docBlockTag.getTokenSequence(), docBlockTag);
 
     if (tagDefinition) {
       switch (tagDefinition.syntaxKind) {
@@ -321,8 +318,7 @@ export class NodeParser {
   private _parseParamBlock(tokenReader: TokenReader, docBlockTag: DocBlockTag): DocParamBlock {
     const startMarker: number = tokenReader.createMarker();
 
-    this._readSpacingAndNewlines(tokenReader);
-    const leadingWhitespaceSequence: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingBeforeParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     let parameterName: string = '';
 
@@ -348,27 +344,24 @@ export class NodeParser {
       });
       this._parserContext.log.addMessageForTokenSequence(
         'The @param block should be followed by a parameter name',
-        docBlockTag.excerpt!.content,
+        docBlockTag.getTokenSequence(),
         docBlockTag
       );
       return errorParamBlock;
 
     }
 
-    const parameterNameExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
+    const parameterNameExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // TODO: Warn if there is no space before or after the hyphen
-    this._readSpacingAndNewlines(tokenReader);
-    parameterNameExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     if (tokenReader.peekTokenKind() !== TokenKind.Hyphen) {
       tokenReader.backtrackToMarker(startMarker);
 
       this._parserContext.log.addMessageForTokenSequence(
         'The @param block should be followed by a parameter name and then a hyphen',
-        docBlockTag.excerpt!.content,
+        docBlockTag.getTokenSequence(),
         docBlockTag
       );
 
@@ -379,29 +372,26 @@ export class NodeParser {
     }
     tokenReader.readToken();
 
-    const hyphenExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
+    const hyphenExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // TODO: Only read one space
-    this._readSpacingAndNewlines(tokenReader);
-    hyphenExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
-
-    if (leadingWhitespaceSequence) {
-      // The leading whitespace that we parsed to the docBlockTag
-      docBlockTag.updateExcerpt(new Excerpt({
-        content: docBlockTag.excerpt!.content,
-        spacingAfterContent: leadingWhitespaceSequence
-      }));
-    }
+    const spacingAfterHyphenExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     return new DocParamBlock({
+      parsed: true,
+
       blockTag: docBlockTag,
 
-      parameterNameExcerpt: new Excerpt(parameterNameExcerptParameters),
-      parameterName: parameterName,
+      spacingBeforeParameterNameExcerpt,
 
-      hyphenExcerpt: new Excerpt(hyphenExcerptParameters)
+      parameterNameExcerpt,
+      parameterName,
+
+      spacingAfterParameterNameExcerpt,
+
+      hyphenExcerpt,
+
+      spacingAfterHyphenExcerpt
     });
   }
 
@@ -417,14 +407,14 @@ export class NodeParser {
     tokenReader.assertAccumulatedSequenceIsEmpty();
     const marker: number = tokenReader.createMarker();
 
-    tokenReader.readToken();
+    tokenReader.readToken(); // read the backslash
 
     if (tokenReader.peekTokenKind() === TokenKind.EndOfInput) {
       return this._backtrackAndCreateError(tokenReader, marker,
         'A backslash must precede another character that is being escaped');
     }
 
-    const escapedToken: Token = tokenReader.readToken();
+    const escapedToken: Token = tokenReader.readToken(); // read the escaped character
 
     // In CommonMark, a backslash is only allowed before a punctuation
     // character.  In all other contexts, the backslash is interpreted as a
@@ -434,12 +424,13 @@ export class NodeParser {
         'A backslash can only be used to escape a punctuation character');
     }
 
-    const tokenSequence: TokenSequence = tokenReader.extractAccumulatedSequence();
+    const encodedTextExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     return new DocEscapedText({
-      excerpt: new Excerpt({ content: tokenSequence }),
+      parsed: true,
       escapeStyle: EscapeStyle.CommonMarkBackslash,
-      text: escapedToken.toString()
+      encodedTextExcerpt,
+      decodedText: escapedToken.toString()
     });
   }
 
@@ -501,8 +492,9 @@ export class NodeParser {
     }
 
     return new DocBlockTag({
-      excerpt: new Excerpt({ content: tokenReader.extractAccumulatedSequence() }),
-      tagName
+      parsed: true,
+      tagName,
+      tagNameExcerpt: tokenReader.extractAccumulatedSequence()
     });
   }
 
@@ -516,9 +508,7 @@ export class NodeParser {
     }
     tokenReader.readToken();
 
-    const openingDelimiterExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
+    const openingDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // For inline tags, if we handle errors by backtracking to the "{"  token, then the main loop
     // will then interpret the "@" as a block tag, which is almost certainly incorrect.  So the
@@ -551,13 +541,11 @@ export class NodeParser {
       return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker, '', failure);
     }
 
-    const tagNameExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
-    const spacingAfterTagName: string = this._readSpacingAndNewlines(tokenReader);
-    tagNameExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+    const tagNameExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    if (spacingAfterTagName.length === 0) {
+    const spacingAfterTagNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+
+    if (spacingAfterTagNameExcerpt === undefined) {
       // If there were no spaces at all, that's an error unless it's the degenerate "{@tag}" case
       if (tokenReader.peekTokenKind() !== TokenKind.RightCurlyBracket) {
         const failure: IFailure = this._createFailureForToken(tokenReader,
@@ -566,7 +554,6 @@ export class NodeParser {
       }
     }
 
-    let tagContent: string = '';
     let done: boolean = false;
     while (!done) {
       switch (tokenReader.peekTokenKind()) {
@@ -589,7 +576,7 @@ export class NodeParser {
                 'Error reading inline TSDoc tag: ', failure);
           }
 
-          tagContent += tokenReader.readToken().toString();
+          tokenReader.readToken();
           break;
         case TokenKind.LeftCurlyBracket:
           {
@@ -601,52 +588,46 @@ export class NodeParser {
           done = true;
           break;
         default:
-          tagContent += tokenReader.readToken().toString();
+          tokenReader.readToken();
           break;
       }
     }
 
-    let tagContentExcerpt: Excerpt | undefined;
-    if (!tokenReader.isAccumulatedSequenceEmpty()) {
-      tagContentExcerpt = new Excerpt({
-        content: tokenReader.extractAccumulatedSequence()
-      });
-    }
+    const tagContentExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
 
     // Read the right curly bracket
     tokenReader.readToken();
-    const closingDelimiterExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
+    const closingDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    const docInlineTagParameters: IDocInlineTagParameters = {
-      openingDelimiterExcerpt: new Excerpt(openingDelimiterExcerptParameters),
+    const docInlineTagParsedParameters: IDocInlineTagParsedParameters = {
+      parsed: true,
+      openingDelimiterExcerpt,
 
-      tagNameExcerpt: new Excerpt(tagNameExcerptParameters),
-      tagName: tagName,
+      tagNameExcerpt,
+      tagName,
+      spacingAfterTagNameExcerpt,
 
-      tagContentExcerpt: tagContentExcerpt,
-      tagContent: tagContent,
+      tagContentExcerpt,
 
-      closingDelimiterExcerpt: new Excerpt(closingDelimiterExcerptParameters)
+      closingDelimiterExcerpt
     };
 
     const tagNameWithUpperCase: string = tagName.toUpperCase();
 
     // Create a new TokenReader that will reparse the tokens corresponding to the tagContent.
     const embeddedTokenReader: TokenReader = new TokenReader(this._parserContext,
-      tagContentExcerpt ? tagContentExcerpt.content : TokenSequence.createEmpty(this._parserContext));
+      tagContentExcerpt ? tagContentExcerpt : TokenSequence.createEmpty(this._parserContext));
 
     let docNode: DocNode;
     switch (tagNameWithUpperCase) {
       case StandardTags.inheritDoc.tagNameWithUpperCase:
-        docNode = this._parseInheritDocTag(docInlineTagParameters, embeddedTokenReader);
+        docNode = this._parseInheritDocTag(docInlineTagParsedParameters, embeddedTokenReader);
         break;
       case StandardTags.link.tagNameWithUpperCase:
-        docNode = this._parseLinkTag(docInlineTagParameters, embeddedTokenReader);
+        docNode = this._parseLinkTag(docInlineTagParsedParameters, embeddedTokenReader);
         break;
       default:
-        docNode = new DocInlineTag(docInlineTagParameters);
+        docNode = new DocInlineTag(docInlineTagParsedParameters);
     }
 
     // Validate the tag
@@ -654,53 +635,55 @@ export class NodeParser {
       = this._parserContext.configuration.tryGetTagDefinitionWithUpperCase(tagNameWithUpperCase);
 
     this._validateTagDefinition(tagDefinition, tagName, /* expectingInlineTag */ true,
-      tagNameExcerptParameters.content, docNode);
+      tagNameExcerpt, docNode);
 
     return docNode;
   }
 
-  private _parseInheritDocTag(docInlineTagParameters: IDocInlineTagParameters,
-    embeddedTokenReader: TokenReader): DocInlineTag {
+  private _parseInheritDocTag(docInlineTagParsedParameters: IDocInlineTagParsedParameters,
+    embeddedTokenReader: TokenReader): DocInlineTagBase {
 
-    const docInheritDocTag: DocInheritDocTag = new DocInheritDocTag(docInlineTagParameters);
+    // If an error occurs, then return a generic DocInlineTag instead of DocInheritDocTag
+    const errorTag: DocInlineTag = new DocInlineTag(docInlineTagParsedParameters);
 
-    const parameters: IDocInheritDocTagParameters = { ...docInlineTagParameters};
+    const parameters: IDocInheritDocTagParameters = {
+      ...docInlineTagParsedParameters
+    };
 
     if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
-
       parameters.declarationReference = this._parseDeclarationReference(embeddedTokenReader,
-        docInlineTagParameters.tagNameExcerpt!.content, docInheritDocTag);
+        docInlineTagParsedParameters.tagNameExcerpt, errorTag);
       if (!parameters.declarationReference) {
-        return docInheritDocTag; // error
+        return errorTag;
       }
 
       if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
         embeddedTokenReader.readToken();
 
         this._parserContext.log.addMessageForTokenSequence('Unexpected character after declaration reference',
-          embeddedTokenReader.extractAccumulatedSequence(), docInheritDocTag);
-        return docInheritDocTag; // error
+          embeddedTokenReader.extractAccumulatedSequence(), errorTag);
+        return errorTag;
       }
     }
 
-    // We don't need the tagContentExcerpt since those tokens are now associated with the link particles
-    parameters.tagContentExcerpt = undefined;
-
-    docInheritDocTag.updateParameters(parameters);
-    return docInheritDocTag;
+    return new DocInheritDocTag(parameters);
   }
 
-  private _parseLinkTag(docInlineTagParameters: IDocInlineTagParameters, embeddedTokenReader: TokenReader): DocNode {
-    const docLinkTag: DocLinkTag = new DocLinkTag(docInlineTagParameters);
+  private _parseLinkTag(docInlineTagParsedParameters: IDocInlineTagParsedParameters,
+    embeddedTokenReader: TokenReader): DocInlineTagBase {
 
-    const parameters: IDocLinkTagParameters = { ...docInlineTagParameters};
+      // If an error occurs, then return a generic DocInlineTag instead of DocInheritDocTag
+    const errorTag: DocInlineTag = new DocInlineTag(docInlineTagParsedParameters);
 
-    if (!parameters.tagContentExcerpt) {
-      this._parserContext.log.addMessageForTokenSequence(
-        'The @link tag content is missing',
-        parameters.tagNameExcerpt!.content, docLinkTag);
+    const parameters: IDocLinkTagParsedParameters = {
+      ...docInlineTagParsedParameters
+    };
 
-      return docLinkTag; // error
+    if (!docInlineTagParsedParameters.tagContentExcerpt) {
+      this._parserContext.log.addMessageForTokenSequence('The @link tag content is missing',
+        parameters.tagNameExcerpt, errorTag);
+
+      return errorTag;
     }
 
     // Is the link destination a URL or a declaration reference?
@@ -748,14 +731,14 @@ export class NodeParser {
     if (looksLikeUrl) {
       // It starts with something like "http://", so parse it as a URL
       if (!this._parseLinkTagUrlDestination(embeddedTokenReader, parameters,
-        docInlineTagParameters.tagNameExcerpt!.content, docLinkTag)) {
-        return docLinkTag; // error
+        docInlineTagParsedParameters.tagNameExcerpt, errorTag)) {
+        return errorTag;
       }
     } else {
       // Otherwise, assume it's a declaration reference
       if (!this._parseLinkTagCodeDestination(embeddedTokenReader, parameters,
-        docInlineTagParameters.tagNameExcerpt!.content, docLinkTag)) {
-        return docLinkTag; // error
+        docInlineTagParsedParameters.tagNameExcerpt, errorTag)) {
+        return errorTag;
       }
     }
 
@@ -767,9 +750,7 @@ export class NodeParser {
     if (embeddedTokenReader.peekTokenKind() === TokenKind.Pipe) {
       // Read the link text
       embeddedTokenReader.readToken();
-      parameters.pipeExcerpt = new Excerpt({
-        content: embeddedTokenReader.extractAccumulatedSequence()
-      });
+      parameters.pipeExcerpt = embeddedTokenReader.extractAccumulatedSequence();
 
       // Read everything until the end
       // NOTE: Because we're using an embedded TokenReader, the TokenKind.EndOfInput occurs
@@ -785,41 +766,33 @@ export class NodeParser {
             const badCharacter: string = embeddedTokenReader.readToken().toString();
             this._parserContext.log.addMessageForTokenSequence(
               `The "${badCharacter}" character may not be used in the link text without escaping it`,
-              embeddedTokenReader.extractAccumulatedSequence(), docLinkTag);
-            return docLinkTag; // error
+              embeddedTokenReader.extractAccumulatedSequence(), errorTag);
+            return errorTag;
           default:
             embeddedTokenReader.readToken();
         }
       }
 
       if (!embeddedTokenReader.isAccumulatedSequenceEmpty()) {
-        const linkTextExcerpt: Excerpt = new Excerpt({
-          content: embeddedTokenReader.extractAccumulatedSequence()
-        });
-        parameters.linkText = linkTextExcerpt.content.toString();
-        parameters.linkTextExcerpt = linkTextExcerpt;
+        parameters.linkTextExcerpt = embeddedTokenReader.extractAccumulatedSequence();
       }
     } else if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
       embeddedTokenReader.readToken();
 
       this._parserContext.log.addMessageForTokenSequence('Unexpected character after link destination',
-        embeddedTokenReader.extractAccumulatedSequence(), docLinkTag);
-      return docLinkTag; // error
+        embeddedTokenReader.extractAccumulatedSequence(), errorTag);
+      return errorTag;
     }
 
-    // We don't need the tagContentExcerpt since those tokens are now associated with the link particles
-    parameters.tagContentExcerpt = undefined;
-
-    docLinkTag.updateParameters(parameters);
-    return docLinkTag;
+    return new DocLinkTag(parameters);
   }
 
-  private _parseLinkTagUrlDestination(embeddedTokenReader: TokenReader, parameters: IDocLinkTagParameters,
+  private _parseLinkTagUrlDestination(embeddedTokenReader: TokenReader, parameters: IDocLinkTagParsedParameters,
     tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): boolean {
 
     // Simply accumulate everything up to the next space. We won't try to implement a proper
     // URI parser here.
-    let url: string = '';
+    let urlDestination: string = '';
 
     let done: boolean = false;
     while (!done) {
@@ -832,32 +805,27 @@ export class NodeParser {
           done = true;
           break;
         default:
-          url += embeddedTokenReader.readToken();
+          urlDestination += embeddedTokenReader.readToken();
           break;
       }
     }
 
-    if (url.length === 0) {
+    if (urlDestination.length === 0) {
       // This should be impossible since the caller ensures that peekTokenKind() === TokenKind.AsciiWord
       throw new Error('Missing URL in _parseLinkTagUrl()');
     }
 
-    const excerptParameters: IExcerptParameters = {
-      content: embeddedTokenReader.extractAccumulatedSequence()
-    };
+    const urlDestinationExcerpt: TokenSequence = embeddedTokenReader.extractAccumulatedSequence();
 
-    const invalidUrlExplanation: string | undefined = StringChecks.explainIfInvalidLinkUrl(url);
+    const invalidUrlExplanation: string | undefined = StringChecks.explainIfInvalidLinkUrl(urlDestination);
     if (invalidUrlExplanation) {
       this._parserContext.log.addMessageForTokenSequence(invalidUrlExplanation,
-        excerptParameters.content, nodeForErrorContext);
+        urlDestinationExcerpt, nodeForErrorContext);
       return false;
     }
 
-    this._readSpacingAndNewlines(embeddedTokenReader);
-    excerptParameters.spacingAfterContent = embeddedTokenReader.tryExtractAccumulatedSequence();
-
-    parameters.urlDestination = url;
-    parameters.urlDestinationExcerpt = new Excerpt(excerptParameters);
+    parameters.urlDestinationExcerpt = urlDestinationExcerpt;
+    parameters.spacingAfterDestinationExcerpt = this._tryReadSpacingAndNewlines(embeddedTokenReader);
 
     return true;
   }
@@ -944,9 +912,10 @@ export class NodeParser {
 
     tokenReader.backtrackToMarker(marker);
 
-    let packageNameExcerpt: Excerpt | undefined;
-    let importPathExcerpt: Excerpt | undefined;
-    let importHashExcerpt: Excerpt | undefined;
+    let packageNameExcerpt: TokenSequence | undefined;
+    let importPathExcerpt: TokenSequence | undefined;
+    let importHashExcerpt: TokenSequence | undefined;
+    let spacingAfterImportHashExcerpt: TokenSequence | undefined;
 
     if (hasHash) {
 
@@ -981,19 +950,14 @@ export class NodeParser {
         }
 
         if (!tokenReader.isAccumulatedSequenceEmpty()) {
-          const packageNameExcerptParameters: IExcerptParameters = {
-            content: tokenReader.extractAccumulatedSequence()
-          };
-          this._readSpacingAndNewlines(tokenReader);
-          packageNameExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
-          packageNameExcerpt = new Excerpt(packageNameExcerptParameters);
+          packageNameExcerpt = tokenReader.extractAccumulatedSequence();
 
           // Check that the packageName is syntactically valid
           const explanation: string | undefined = StringChecks.explainIfInvalidPackageName(
-            packageNameExcerpt.content.toString());
+            packageNameExcerpt.toString());
           if (explanation) {
             this._parserContext.log.addMessageForTokenSequence(explanation,
-              packageNameExcerpt.content, nodeForErrorContext);
+              packageNameExcerpt, nodeForErrorContext);
             return undefined;
           }
         }
@@ -1015,19 +979,14 @@ export class NodeParser {
       }
 
       if (!tokenReader.isAccumulatedSequenceEmpty()) {
-        const importPathExcerptParameters: IExcerptParameters = {
-          content: tokenReader.extractAccumulatedSequence()
-        };
-        this._readSpacingAndNewlines(tokenReader);
-        importPathExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
-        importPathExcerpt = new Excerpt(importPathExcerptParameters);
+        importPathExcerpt = tokenReader.extractAccumulatedSequence();
 
         // Check that the importPath is syntactically valid
         const explanation: string | undefined = StringChecks.explainIfInvalidImportPath(
-          importPathExcerpt.content.toString(), !!packageNameExcerpt);
+          importPathExcerpt.toString(), !!packageNameExcerpt);
         if (explanation) {
           this._parserContext.log.addMessageForTokenSequence(explanation,
-            importPathExcerpt.content, nodeForErrorContext);
+            importPathExcerpt, nodeForErrorContext);
           return undefined;
         }
       }
@@ -1038,17 +997,14 @@ export class NodeParser {
         throw new Error('Expecting pound symbol');
       }
       tokenReader.readToken();
-      const importHashExcerptParameters: IExcerptParameters = {
-        content: tokenReader.extractAccumulatedSequence()
-      };
-      this._readSpacingAndNewlines(tokenReader);
-      importHashExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
-      importHashExcerpt = new Excerpt(importHashExcerptParameters);
+      importHashExcerpt = tokenReader.extractAccumulatedSequence();
+
+      spacingAfterImportHashExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
 
       if (packageNameExcerpt === undefined && importPathExcerpt === undefined) {
         this._parserContext.log.addMessageForTokenSequence(
           'The hash character must be preceded by a package name or import path',
-          importHashExcerpt.content, nodeForErrorContext);
+          importHashExcerpt, nodeForErrorContext);
         return undefined;
       }
     }
@@ -1088,22 +1044,24 @@ export class NodeParser {
     }
 
     return new DocDeclarationReference({
-      packageNameExcerpt: packageNameExcerpt,
-      packageName: packageNameExcerpt !== undefined ? packageNameExcerpt.content.toString() : undefined,
+      parsed: true,
 
-      importPathExcerpt: importPathExcerpt,
-      importPath: importPathExcerpt !== undefined ? importPathExcerpt.content.toString() : undefined,
+      packageNameExcerpt,
+      importPathExcerpt,
 
-      importHashExcerpt: importHashExcerpt,
+      importHashExcerpt,
+      spacingAfterImportHashExcerpt,
 
-      memberReferences: memberReferences
+      memberReferences
     });
   }
 
   private _parseMemberReference(tokenReader: TokenReader, expectingDot: boolean,
     tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): DocMemberReference | undefined {
 
-    let dotExcerpt: Excerpt | undefined;
+    const parameters: IDocMemberReferenceParsedParameters = {
+      parsed: true
+    };
 
     // Read the dot operator
     if (expectingDot) {
@@ -1113,114 +1071,84 @@ export class NodeParser {
         return undefined;
       }
       tokenReader.readToken();
-      const dotExcerptParameters: IExcerptParameters  = {
-        content: tokenReader.extractAccumulatedSequence()
-      };
-      this._readSpacingAndNewlines(tokenReader);
-      dotExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+      parameters.dotExcerpt = tokenReader.extractAccumulatedSequence();
 
-      dotExcerpt = new Excerpt(dotExcerptParameters);
+      parameters.spacingAfterDotExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
     }
 
     // Read the left parenthesis if there is one
-    let leftParenthesisExcerpt: Excerpt | undefined;
     if (tokenReader.peekTokenKind() === TokenKind.LeftParenthesis) {
       tokenReader.readToken();
-      const leftParenthesisExcerptParameters: IExcerptParameters = {
-        content: tokenReader.extractAccumulatedSequence()
-      };
-      this._readSpacingAndNewlines(tokenReader);
-      leftParenthesisExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
-      leftParenthesisExcerpt = new Excerpt(leftParenthesisExcerptParameters);
-    }
+      parameters.leftParenthesisExcerpt = tokenReader.extractAccumulatedSequence();
 
-    let memberIdentifier: DocMemberIdentifier | undefined = undefined;
-    let memberSymbol: DocMemberSymbol | undefined = undefined;
+      parameters.spacingAfterLeftParenthesisExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
+    }
 
     // Read the member identifier or symbol
     if (tokenReader.peekTokenKind() === TokenKind.LeftSquareBracket) {
-      memberSymbol = this._parseMemberSymbol(tokenReader, nodeForErrorContext);
-      if (!memberSymbol) {
+      parameters.memberSymbol = this._parseMemberSymbol(tokenReader, nodeForErrorContext);
+      if (!parameters.memberSymbol) {
         return undefined;
       }
     } else {
-      memberIdentifier = this._parseMemberIdentifier(tokenReader, tokenSequenceForErrorContext, nodeForErrorContext);
-      if (!memberIdentifier) {
+      parameters.memberIdentifier = this._parseMemberIdentifier(tokenReader,
+        tokenSequenceForErrorContext, nodeForErrorContext);
+
+      if (!parameters.memberIdentifier) {
         return undefined;
       }
     }
+    parameters.spacingAfterMemberExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the colon
-    let colonExcerpt: Excerpt | undefined;
-
-    let selector: DocMemberSelector | undefined = undefined;
-
     if (tokenReader.peekTokenKind() === TokenKind.Colon) {
       tokenReader.readToken();
 
-      const colonExcerptParameters: IExcerptParameters = {
-        content: tokenReader.extractAccumulatedSequence()
-      };
-      this._readSpacingAndNewlines(tokenReader);
-      colonExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
-      colonExcerpt = new Excerpt(colonExcerptParameters);
+      parameters.colonExcerpt = tokenReader.extractAccumulatedSequence();
 
-      if (!leftParenthesisExcerpt) {
+      parameters.spacingAfterColonExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
+
+      if (!parameters.leftParenthesisExcerpt) {
         // In the current TSDoc draft standard, a member reference with a selector requires the parentheses.
         // It would be reasonable to make the parentheses optional, and we are contemplating simplifying the
         // notation in the future.  But for now the parentheses are required.
         this._parserContext.log.addMessageForTokenSequence(
           'Syntax error in declaration reference: the member selector must be enclosed in parentheses',
-          colonExcerpt.content, nodeForErrorContext);
+          parameters.colonExcerpt, nodeForErrorContext);
         return undefined;
       }
 
       // If there is a colon, then read the selector
-      selector = this._parseMemberSelector(tokenReader, colonExcerptParameters.content, nodeForErrorContext);
-      if (!selector) {
+      parameters.selector = this._parseMemberSelector(tokenReader, parameters.colonExcerpt, nodeForErrorContext);
+      if (!parameters.selector) {
         return undefined;
       }
+
+      parameters.spacingAfterSelectorExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
     } else {
-      if (leftParenthesisExcerpt) {
+      if (parameters.leftParenthesisExcerpt) {
         this._parserContext.log.addMessageForTokenSequence('Expecting a colon after the identifier because'
-          + ' the expression is in parentheses', leftParenthesisExcerpt.content, nodeForErrorContext);
+          + ' the expression is in parentheses', parameters.leftParenthesisExcerpt, nodeForErrorContext);
         return undefined;
       }
     }
 
     // Read the right parenthesis
-    let rightParenthesisExcerpt: Excerpt | undefined;
-    if (leftParenthesisExcerpt) {
+    if (parameters.leftParenthesisExcerpt) {
       if (tokenReader.peekTokenKind() !== TokenKind.RightParenthesis) {
         this._parserContext.log.addMessageForTokenSequence('Expecting a matching right parenthesis',
-          leftParenthesisExcerpt.content, nodeForErrorContext);
+        parameters.leftParenthesisExcerpt, nodeForErrorContext);
         return undefined;
       }
 
       tokenReader.readToken();
 
-      const rightParenthesisExcerptParameters: IExcerptParameters = {
-        content: tokenReader.extractAccumulatedSequence()
-      };
-      this._readSpacingAndNewlines(tokenReader);
-      rightParenthesisExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
-      rightParenthesisExcerpt = new Excerpt(rightParenthesisExcerptParameters);
+      parameters.rightParenthesisExcerpt = tokenReader.extractAccumulatedSequence();
+
+      parameters.spacingAfterRightParenthesisExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
     }
 
-    return new DocMemberReference({
-      hasDot: dotExcerpt !== undefined,
-      dotExcerpt: dotExcerpt,
-      leftParenthesisExcerpt: leftParenthesisExcerpt,
-
-      memberIdentifier: memberIdentifier,
-      memberSymbol: memberSymbol,
-
-      colonExcerpt: colonExcerpt,
-
-      selector: selector,
-
-      rightParenthesisExcerpt: rightParenthesisExcerpt
-    });
+    return new DocMemberReference(parameters);
   }
 
   private _parseMemberSymbol(tokenReader: TokenReader,
@@ -1233,62 +1161,61 @@ export class NodeParser {
     }
 
     tokenReader.readToken();
-    const leftBracketExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
-    this._readSpacingAndNewlines(tokenReader);
-    leftBracketExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+    const leftBracketExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
+
+    const spacingAfterLeftBracketExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the declaration reference
     const declarationReference: DocDeclarationReference | undefined
-      = this._parseDeclarationReference(tokenReader, leftBracketExcerptParameters.content, nodeForErrorContext);
+      = this._parseDeclarationReference(tokenReader, leftBracketExcerpt, nodeForErrorContext);
 
     if (!declarationReference) {
       this._parserContext.log.addMessageForTokenSequence('Missing declaration reference in symbol reference',
-        leftBracketExcerptParameters.content, nodeForErrorContext);
+        leftBracketExcerpt, nodeForErrorContext);
 
       return undefined;
     }
 
+    // (We don't need to worry about spacing here since _parseDeclarationReference() absorbs trailing spaces)
+
     // Read the "]"
     if (tokenReader.peekTokenKind() !== TokenKind.RightSquareBracket) {
       this._parserContext.log.addMessageForTokenSequence('Missing closing square bracket for symbol reference',
-        leftBracketExcerptParameters.content, nodeForErrorContext);
+        leftBracketExcerpt, nodeForErrorContext);
 
       return undefined;
     }
 
     tokenReader.readToken();
-    const rightBracketExcerptParameters: IExcerptParameters | undefined = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
-    this._readSpacingAndNewlines(tokenReader);
-    rightBracketExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+    const rightBracketExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     return new DocMemberSymbol({
-      leftBracketExcerpt: new Excerpt(leftBracketExcerptParameters),
+      parsed: true,
+      leftBracketExcerpt,
+      spacingAfterLeftBracketExcerpt,
       symbolReference: declarationReference,
-      rightBracketExcerpt: new Excerpt(rightBracketExcerptParameters)
+      rightBracketExcerpt
     });
   }
 
   private _parseMemberIdentifier(tokenReader: TokenReader,
     tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): DocMemberIdentifier | undefined {
 
+    let leftQuoteExcerpt: TokenSequence | undefined = undefined;
+    let rightQuoteExcerpt: TokenSequence | undefined = undefined;
+
       // Is this a quoted identifier?
     if (tokenReader.peekTokenKind() === TokenKind.DoubleQuote) {
 
       // Read the opening '"'
       tokenReader.readToken();
-      const leftQuoteExcerptParameters: IExcerptParameters = {
-        content: tokenReader.extractAccumulatedSequence()
-      };
+      leftQuoteExcerpt = tokenReader.extractAccumulatedSequence();
 
       // Read the text inside the quotes
       while (tokenReader.peekTokenKind() !== TokenKind.DoubleQuote) {
         if (tokenReader.peekTokenKind() === TokenKind.EndOfInput) {
           this._parserContext.log.addMessageForTokenSequence('Unexpected end of input inside quoted member identifier',
-            leftQuoteExcerptParameters.content, nodeForErrorContext);
+            leftQuoteExcerpt, nodeForErrorContext);
           return undefined;
         }
 
@@ -1297,27 +1224,21 @@ export class NodeParser {
 
       if (tokenReader.isAccumulatedSequenceEmpty()) {
         this._parserContext.log.addMessageForTokenSequence('The quoted identifier cannot be empty',
-          leftQuoteExcerptParameters.content, nodeForErrorContext);
+          leftQuoteExcerpt, nodeForErrorContext);
         return undefined;
       }
 
-      const identifierExcerptParameters: IExcerptParameters = {
-        content: tokenReader.extractAccumulatedSequence()
-      };
+      const identifierExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
       // Read the closing '""
       tokenReader.readToken();  // read the quote
-      const rightQuoteExcerptParameters: IExcerptParameters = {
-        content: tokenReader.extractAccumulatedSequence()
-      };
-      this._readSpacingAndNewlines(tokenReader);
-      rightQuoteExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+      rightQuoteExcerpt = tokenReader.extractAccumulatedSequence();
 
       return new DocMemberIdentifier({
-        leftQuoteExcerpt: new Excerpt(leftQuoteExcerptParameters),
-        identifierExcerpt: new Excerpt(identifierExcerptParameters),
-        identifier: identifierExcerptParameters.content.toString(),
-        rightQuoteExcerpt: new Excerpt(rightQuoteExcerptParameters)
+        parsed: true,
+        leftQuoteExcerpt,
+        identifierExcerpt,
+        rightQuoteExcerpt
       });
     } else {
       // Otherwise assume it's a valid TypeScript identifier
@@ -1330,22 +1251,20 @@ export class NodeParser {
 
       const identifier: string = tokenReader.readToken().toString();
 
-      const identifierExcerptParameters: IExcerptParameters = {
-        content: tokenReader.extractAccumulatedSequence()
-      };
-      this._readSpacingAndNewlines(tokenReader);
-      identifierExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+      const identifierExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
       const explanation: string | undefined = StringChecks.explainIfInvalidUnquotedIdentifier(identifier);
       if (explanation) {
         this._parserContext.log.addMessageForTokenSequence(explanation,
-          identifierExcerptParameters.content, nodeForErrorContext);
+          identifierExcerpt, nodeForErrorContext);
         return undefined;
       }
 
       return new DocMemberIdentifier({
-        identifierExcerpt: new Excerpt(identifierExcerptParameters),
-        identifier: identifier
+        parsed: true,
+        leftQuoteExcerpt,
+        identifierExcerpt,
+        rightQuoteExcerpt
       });
     }
   }
@@ -1359,20 +1278,17 @@ export class NodeParser {
     }
 
     const selector: string = tokenReader.readToken().toString();
-    const selectorExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
-    this._readSpacingAndNewlines(tokenReader);
-    selectorExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+    const selectorExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     const docMemberSelector: DocMemberSelector = new DocMemberSelector({
-      excerpt: new Excerpt(selectorExcerptParameters),
-      selector: selector
+      parsed: true,
+      selectorExcerpt,
+      selector
     });
 
     if (docMemberSelector.errorMessage) {
       this._parserContext.log.addMessageForTokenSequence(docMemberSelector.errorMessage,
-        selectorExcerptParameters.content, nodeForErrorContext);
+        selectorExcerpt, nodeForErrorContext);
       return undefined;
     }
 
@@ -1391,22 +1307,15 @@ export class NodeParser {
 
     // NOTE: CommonMark does not permit whitespace after the "<"
 
-    const openingDelimiterExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
+    const openingDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // Read the element name
-    const elementName: ResultOrFailure<string> = this._parseHtmlName(tokenReader);
-    if (isFailure(elementName)) {
-      return this._backtrackAndCreateErrorForFailure(tokenReader, marker, 'Invalid HTML element: ', elementName);
+    const nameExcerpt: ResultOrFailure<TokenSequence> = this._parseHtmlName(tokenReader);
+    if (isFailure(nameExcerpt)) {
+      return this._backtrackAndCreateErrorForFailure(tokenReader, marker, 'Invalid HTML element: ', nameExcerpt);
     }
 
-    const elementNameExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
-
-    const spacingAfterElementName: string = this._readSpacingAndNewlines(tokenReader);
-    elementNameExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     const htmlAttributes: DocHtmlAttribute[] = [];
 
@@ -1439,25 +1348,24 @@ export class NodeParser {
     }
     tokenReader.readToken();
 
-    const closingDelimiterExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
+    const closingDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // NOTE: We don't read excerptParameters.separator here, since if there is any it
     // will be represented as DocPlainText.
 
     return new DocHtmlStartTag({
-      openingDelimiterExcerpt: new Excerpt(openingDelimiterExcerptParameters),
+      parsed: true,
 
-      elementNameExcerpt: new Excerpt(elementNameExcerptParameters),
-      elementName,
-      spacingAfterElementName,
+      openingDelimiterExcerpt,
+
+      nameExcerpt,
+      spacingAfterNameExcerpt,
 
       htmlAttributes,
 
       selfClosingTag,
 
-      closingDelimiterExcerpt: new Excerpt(closingDelimiterExcerptParameters)
+      closingDelimiterExcerpt
     });
   }
 
@@ -1465,17 +1373,12 @@ export class NodeParser {
     tokenReader.assertAccumulatedSequenceIsEmpty();
 
     // Read the attribute name
-    const attributeName: ResultOrFailure<string> = this._parseHtmlName(tokenReader);
-    if (isFailure(attributeName)) {
-      return attributeName;
+    const nameExcerpt: ResultOrFailure<TokenSequence> = this._parseHtmlName(tokenReader);
+    if (isFailure(nameExcerpt)) {
+      return nameExcerpt;
     }
 
-    const attributeNameExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
-
-    const spacingAfterAttributeName: string = this._readSpacingAndNewlines(tokenReader);
-    attributeNameExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the equals
     if (tokenReader.peekTokenKind() !== TokenKind.Equals) {
@@ -1483,12 +1386,9 @@ export class NodeParser {
     }
     tokenReader.readToken();
 
-    const equalsExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
+    const equalsExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    const spacingAfterEquals: string = this._readSpacingAndNewlines(tokenReader);
-    equalsExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterEqualsExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the attribute value
     const attributeValue: ResultOrFailure<string> = this._parseHtmlString(tokenReader);
@@ -1496,24 +1396,21 @@ export class NodeParser {
       return attributeValue;
     }
 
-    const attributeValueExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
+    const valueExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    const spacingAfterAttributeValue: string = this._readSpacingAndNewlines(tokenReader);
-    attributeValueExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterValueExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     return new DocHtmlAttribute({
-      attributeNameExcerpt: new Excerpt(attributeNameExcerptParameters),
-      attributeName,
-      spacingAfterAttributeName,
+      parsed: true,
 
-      equalsExcerpt: new Excerpt(equalsExcerptParameters),
-      spacingAfterEquals,
+      nameExcerpt,
+      spacingAfterNameExcerpt,
 
-      attributeValueExcerpt: new Excerpt(attributeValueExcerptParameters),
-      attributeValue,
-      spacingAfterAttributeValue
+      equalsExcerpt,
+      spacingAfterEqualsExcerpt,
+
+      valueExcerpt,
+      spacingAfterValueExcerpt
     });
   }
 
@@ -1570,23 +1467,16 @@ export class NodeParser {
     // NOTE: Spaces are not permitted here
     // https://www.w3.org/TR/html5/syntax.html#end-tags
 
-    const openingDelimiterExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
+    const openingDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // Read the tag name
-    const elementName: ResultOrFailure<string> = this._parseHtmlName(tokenReader);
-    if (isFailure(elementName)) {
+    const nameExcerpt: ResultOrFailure<TokenSequence> = this._parseHtmlName(tokenReader);
+    if (isFailure(nameExcerpt)) {
       return this._backtrackAndCreateErrorForFailure(tokenReader, marker,
-        'Expecting an HTML element name: ', elementName);
+        'Expecting an HTML element name: ', nameExcerpt);
     }
 
-    const elementNameExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
-
-    this._readSpacingAndNewlines(tokenReader);
-    elementNameExcerptParameters.spacingAfterContent = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the closing ">"
     if (tokenReader.peekTokenKind() !== TokenKind.GreaterThan) {
@@ -1596,26 +1486,24 @@ export class NodeParser {
     }
     tokenReader.readToken();
 
-    const closingDelimiterExcerptParameters: IExcerptParameters = {
-      content: tokenReader.extractAccumulatedSequence()
-    };
+    const closingDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     return new DocHtmlEndTag({
-      openingDelimiterExcerpt: new Excerpt(openingDelimiterExcerptParameters),
+      parsed: true,
 
-      elementNameExcerpt: new Excerpt(elementNameExcerptParameters),
-      elementName,
+      openingDelimiterExcerpt,
 
-      closingDelimiterExcerpt: new Excerpt(closingDelimiterExcerptParameters)
+      nameExcerpt,
+      spacingAfterNameExcerpt,
+
+      closingDelimiterExcerpt
     });
   }
 
   /**
    * Parses an HTML name such as an element name or attribute name.
    */
-  private _parseHtmlName(tokenReader: TokenReader): ResultOrFailure<string> {
-    let htmlName: string = '';
-
+  private _parseHtmlName(tokenReader: TokenReader): ResultOrFailure<TokenSequence> {
     const marker: number = tokenReader.createMarker();
 
     if (tokenReader.peekTokenKind() === TokenKind.Spacing) {
@@ -1627,24 +1515,28 @@ export class NodeParser {
       switch (tokenReader.peekTokenKind()) {
         case TokenKind.AsciiWord:
         case TokenKind.Hyphen:
-          htmlName += tokenReader.readToken().toString();
+          tokenReader.readToken();
           break;
         default:
           done = true;
           break;
       }
     }
+    const excerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
 
-    if (htmlName.length === 0) {
+    if (!excerpt) {
       return this._createFailureForToken(tokenReader, 'Expecting an HTML name');
     }
 
-    if (!NodeParser.htmlNameRegExp.test(htmlName)) {
-      return this._createFailureForTokensSince(tokenReader,
-        'An HTML name must be a sequence of letters separated by hyphens', marker);
+    const htmlName: string = excerpt.toString();
+
+    const explanation: string | undefined = StringChecks.explainIfInvalidHtmlName(htmlName);
+
+    if (explanation) {
+      return this._createFailureForTokensSince(tokenReader, explanation, marker);
     }
 
-    return htmlName;
+    return excerpt;
   }
 
   private _parseFencedCode(tokenReader: TokenReader): DocNode {
@@ -1679,18 +1571,15 @@ export class NodeParser {
       throw new Error('Expecting three backticks');
     }
 
-    const openingDelimiterSequence: TokenSequence = tokenReader.extractAccumulatedSequence();
+    const openingFenceExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // Read any spaces after the delimiter,
-    // but NOT the Newline since that goes with the language particle
+    // but NOT the Newline since that goes with the spacingAfterLanguageExcerpt
     while (tokenReader.peekTokenKind() === TokenKind.Spacing) {
       tokenReader.readToken();
     }
 
-    const openingDelimiterExcerpt: Excerpt = new Excerpt({
-      content: openingDelimiterSequence,
-      spacingAfterContent: tokenReader.tryExtractAccumulatedSequence()
-    });
+    const spacingAfterOpeningFenceExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
 
     // Read the language specifier (if present) and newline
     let done: boolean = false;
@@ -1728,17 +1617,19 @@ export class NodeParser {
 
     // At this point, we must have accumulated at least a newline token.
     // Example: "pov-ray sdl    \n"
-    const languageSequence: TokenSequence = tokenReader.extractAccumulatedSequence();
+    const restOfLineExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    const languageExcerpt: Excerpt = new Excerpt({
-      // Example: "pov-ray sdl"
-      content: languageSequence.getNewSequence(languageSequence.startIndex, startOfPaddingMarker!),
-      // Example: "    \n"
-      spacingAfterContent: languageSequence.getNewSequence(startOfPaddingMarker!, languageSequence.endIndex)
-    });
+    // Example: "pov-ray sdl"
+    const languageExcerpt: TokenSequence = restOfLineExcerpt.getNewSequence(
+      restOfLineExcerpt.startIndex, startOfPaddingMarker!);
+
+    // Example: "    \n"
+    const spacingAfterLanguageExcerpt: TokenSequence | undefined = restOfLineExcerpt.getNewSequence(
+      startOfPaddingMarker!, restOfLineExcerpt.endIndex);
 
     // Read the code content until we see the closing ``` delimiter
     let codeEndMarker: number = -1;
+    let closingFenceStartMarker: number = -1;
     done = false;
     let tokenBeforeDelimiter: Token;
     while (!done) {
@@ -1759,6 +1650,7 @@ export class NodeParser {
           if (tokenReader.peekTokenKind() !== TokenKind.Backtick) {
             break;
           }
+          closingFenceStartMarker = tokenReader.createMarker();
           tokenReader.readToken(); // first backtick
 
           if (tokenReader.peekTokenKind() !== TokenKind.Backtick) {
@@ -1785,12 +1677,20 @@ export class NodeParser {
         tokenBeforeDelimiter!.range);
     }
 
-    // Example: "code 1\ncode 2\n   ```"
-    const codeAndDelimiterSequence: TokenSequence = tokenReader.extractAccumulatedSequence();
+    // Example: "code 1\ncode 2\n  ```"
+    const codeAndDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    const codeExcerpt: Excerpt = new Excerpt({
-      content: codeAndDelimiterSequence.getNewSequence(codeAndDelimiterSequence.startIndex, codeEndMarker)
-    });
+    // Example: "code 1\ncode 2\n"
+    const codeExcerpt: TokenSequence = codeAndDelimiterExcerpt.getNewSequence(
+      codeAndDelimiterExcerpt.startIndex, codeEndMarker);
+
+    // Example: "  "
+    const spacingBeforeClosingFenceExcerpt: TokenSequence | undefined = codeAndDelimiterExcerpt.getNewSequence(
+      codeEndMarker, closingFenceStartMarker);
+
+    // Example: "```"
+    const closingFenceExcerpt: TokenSequence = codeAndDelimiterExcerpt.getNewSequence(
+      closingFenceStartMarker, codeAndDelimiterExcerpt.endIndex);
 
     // Read the spacing and newline after the closing delimiter
     done = false;
@@ -1815,23 +1715,23 @@ export class NodeParser {
       }
     }
 
-    const closingDelimiterExcerpt: Excerpt = new Excerpt({
-      // Example: "```"
-      content: codeAndDelimiterSequence.getNewSequence(codeEndMarker, codeAndDelimiterSequence.endIndex),
-      // Example: "   \n"
-      spacingAfterContent: tokenReader.tryExtractAccumulatedSequence()
-    });
+    // Example: "   \n"
+    const spacingAfterClosingFenceExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
 
     return new DocFencedCode({
-      openingDelimiterExcerpt: openingDelimiterExcerpt,
+      parsed: true,
 
-      languageExcerpt: languageExcerpt,
-      language: languageExcerpt.content.toString(),
+      openingFenceExcerpt,
+      spacingAfterOpeningFenceExcerpt,
 
-      codeExcerpt: codeExcerpt,
-      code: codeExcerpt.content.toString(),
+      languageExcerpt,
+      spacingAfterLanguageExcerpt,
 
-      closingDelimiterExcerpt: closingDelimiterExcerpt
+      codeExcerpt,
+
+      spacingBeforeClosingFenceExcerpt,
+      closingFenceExcerpt,
+      spacingAfterClosingFenceExcerpt
     });
   }
 
@@ -1847,12 +1747,10 @@ export class NodeParser {
 
     tokenReader.readToken(); // read the backtick
 
-    const openingDelimiterExcerpt: Excerpt = new Excerpt({
-      content: tokenReader.extractAccumulatedSequence()
-    });
+    const openingDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    let codeExcerpt: Excerpt;
-    let closingDelimiterExcerpt: Excerpt;
+    let codeExcerpt: TokenSequence | undefined = undefined;
+    let closingDelimiterExcerpt: TokenSequence | undefined = undefined;
 
     // Parse the content backtick
     while (true) {
@@ -1864,14 +1762,10 @@ export class NodeParser {
             'A code span must contain at least one character between the backticks');
         }
 
-        codeExcerpt = new Excerpt({
-          content: tokenReader.extractAccumulatedSequence()
-        });
+        codeExcerpt = tokenReader.extractAccumulatedSequence();
 
         tokenReader.readToken();
-        closingDelimiterExcerpt = new Excerpt({
-          content: tokenReader.extractAccumulatedSequence()
-        });
+        closingDelimiterExcerpt = tokenReader.extractAccumulatedSequence();
         break;
       }
       if (peekedTokenKind === TokenKind.EndOfInput ||  peekedTokenKind === TokenKind.Newline) {
@@ -1882,32 +1776,30 @@ export class NodeParser {
     }
 
     return new DocCodeSpan({
+      parsed: true,
+
       openingDelimiterExcerpt,
 
       codeExcerpt,
-      code: codeExcerpt.content.toString(),
 
       closingDelimiterExcerpt
     });
   }
 
-  private _readSpacingAndNewlines(tokenReader: TokenReader): string {
-    let result: string = '';
-
+  private _tryReadSpacingAndNewlines(tokenReader: TokenReader): TokenSequence | undefined {
     let done: boolean = false;
     do {
       switch (tokenReader.peekTokenKind()) {
         case TokenKind.Spacing:
         case TokenKind.Newline:
-          result += tokenReader.readToken().toString();
+          tokenReader.readToken();
           break;
         default:
           done = true;
           break;
       }
     } while (!done);
-
-    return result;
+    return tokenReader.tryExtractAccumulatedSequence();
   }
 
   /**
@@ -1916,13 +1808,15 @@ export class NodeParser {
   private _createError(tokenReader: TokenReader, errorMessage: string): DocErrorText {
     tokenReader.readToken();
 
-    const tokenSequence: TokenSequence = tokenReader.extractAccumulatedSequence();
+    const textExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     const docErrorText: DocErrorText = new DocErrorText({
-      excerpt: new Excerpt({ content: tokenSequence }),
-      text: tokenSequence.toString(),
+      parsed: true,
+
+      textExcerpt,
+
       errorMessage,
-      errorLocation: tokenSequence
+      errorLocation: textExcerpt
     });
     this._parserContext.log.addMessageForDocErrorText(docErrorText);
     return docErrorText;
@@ -1951,13 +1845,15 @@ export class NodeParser {
       tokenReader.readToken();
     }
 
-    const tokenSequence: TokenSequence = tokenReader.extractAccumulatedSequence();
+    const textExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     const docErrorText: DocErrorText = new DocErrorText({
-      excerpt: new Excerpt({ content: tokenSequence }),
-      text: tokenSequence.toString(),
+      parsed: true,
+
+      textExcerpt,
+
       errorMessage: errorMessage,
-      errorLocation: tokenSequence
+      errorLocation: textExcerpt
     });
     this._parserContext.log.addMessageForDocErrorText(docErrorText);
     return docErrorText;
@@ -1973,11 +1869,13 @@ export class NodeParser {
     tokenReader.backtrackToMarker(marker);
     tokenReader.readToken();
 
-    const tokenSequence: TokenSequence = tokenReader.extractAccumulatedSequence();
+    const textExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     const docErrorText: DocErrorText = new DocErrorText({
-      excerpt: new Excerpt({ content: tokenSequence }),
-      text: tokenSequence.toString(),
+      parsed: true,
+
+      textExcerpt,
+
       errorMessage: errorMessagePrefix + failure.failureMessage,
       errorLocation: failure.failureLocation
     });
@@ -2000,11 +1898,12 @@ export class NodeParser {
       tokenReader.readToken();
     }
 
-    const tokenSequence: TokenSequence = tokenReader.extractAccumulatedSequence();
+    const textExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     const docErrorText: DocErrorText = new DocErrorText({
-      excerpt: new Excerpt({ content: tokenSequence }),
-      text: tokenSequence.toString(),
+      parsed: true,
+      textExcerpt,
+
       errorMessage: errorMessagePrefix + failure.failureMessage,
       errorLocation: failure.failureLocation
     });

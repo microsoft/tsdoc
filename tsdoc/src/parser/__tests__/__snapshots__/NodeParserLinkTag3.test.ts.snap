@@ -22,13 +22,16 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -40,7 +43,7 @@ Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Class1",
                               },
                             ],
@@ -51,14 +54,14 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: dot",
+                            "kind": "Excerpt: MemberReference_Dot",
                             "nodeExcerpt": ".",
                           },
                           Object {
                             "kind": "MemberSymbol",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: leftBracket",
+                                "kind": "Excerpt: DocMemberSymbol_LeftBracket",
                                 "nodeExcerpt": "[",
                               },
                               Object {
@@ -71,7 +74,7 @@ Object {
                                         "kind": "MemberIdentifier",
                                         "nodes": Array [
                                           Object {
-                                            "kind": "Particle: identifier",
+                                            "kind": "Excerpt: MemberIdentifier_Identifier",
                                             "nodeExcerpt": "WellknownSymbols",
                                           },
                                         ],
@@ -82,14 +85,14 @@ Object {
                                     "kind": "MemberReference",
                                     "nodes": Array [
                                       Object {
-                                        "kind": "Particle: dot",
+                                        "kind": "Excerpt: MemberReference_Dot",
                                         "nodeExcerpt": ".",
                                       },
                                       Object {
                                         "kind": "MemberIdentifier",
                                         "nodes": Array [
                                           Object {
-                                            "kind": "Particle: identifier",
+                                            "kind": "Excerpt: MemberIdentifier_Identifier",
                                             "nodeExcerpt": "toStringPrimitive",
                                           },
                                         ],
@@ -99,7 +102,7 @@ Object {
                                 ],
                               },
                               Object {
-                                "kind": "Particle: rightBracket",
+                                "kind": "Excerpt: DocMemberSymbol_RightBracket",
                                 "nodeExcerpt": "]",
                               },
                             ],
@@ -109,26 +112,34 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
               Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
@@ -140,11 +151,14 @@ Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Class1",
-                                "nodeSpacing": " ",
                               },
                             ],
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                         ],
                       },
@@ -152,22 +166,31 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: dot",
+                            "kind": "Excerpt: MemberReference_Dot",
                             "nodeExcerpt": ".",
-                            "nodeSpacing": " ",
                           },
                           Object {
-                            "kind": "Particle: leftParenthesis",
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: MemberReference_LeftParenthesis",
                             "nodeExcerpt": "(",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                           Object {
                             "kind": "MemberSymbol",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: leftBracket",
+                                "kind": "Excerpt: DocMemberSymbol_LeftBracket",
                                 "nodeExcerpt": "[",
-                                "nodeSpacing": " ",
+                              },
+                              Object {
+                                "kind": "Excerpt: Spacing",
+                                "nodeExcerpt": " ",
                               },
                               Object {
                                 "kind": "DeclarationReference",
@@ -179,11 +202,14 @@ Object {
                                         "kind": "MemberIdentifier",
                                         "nodes": Array [
                                           Object {
-                                            "kind": "Particle: identifier",
+                                            "kind": "Excerpt: MemberIdentifier_Identifier",
                                             "nodeExcerpt": "WellknownSymbols",
-                                            "nodeSpacing": " ",
                                           },
                                         ],
+                                      },
+                                      Object {
+                                        "kind": "Excerpt: Spacing",
+                                        "nodeExcerpt": " ",
                                       },
                                     ],
                                   },
@@ -191,66 +217,91 @@ Object {
                                     "kind": "MemberReference",
                                     "nodes": Array [
                                       Object {
-                                        "kind": "Particle: dot",
+                                        "kind": "Excerpt: MemberReference_Dot",
                                         "nodeExcerpt": ".",
-                                        "nodeSpacing": " ",
+                                      },
+                                      Object {
+                                        "kind": "Excerpt: Spacing",
+                                        "nodeExcerpt": " ",
                                       },
                                       Object {
                                         "kind": "MemberIdentifier",
                                         "nodes": Array [
                                           Object {
-                                            "kind": "Particle: identifier",
+                                            "kind": "Excerpt: MemberIdentifier_Identifier",
                                             "nodeExcerpt": "toStringPrimitive",
-                                            "nodeSpacing": " ",
                                           },
                                         ],
+                                      },
+                                      Object {
+                                        "kind": "Excerpt: Spacing",
+                                        "nodeExcerpt": " ",
                                       },
                                     ],
                                   },
                                 ],
                               },
                               Object {
-                                "kind": "Particle: rightBracket",
+                                "kind": "Excerpt: DocMemberSymbol_RightBracket",
                                 "nodeExcerpt": "]",
-                                "nodeSpacing": " ",
                               },
                             ],
                           },
                           Object {
-                            "kind": "Particle: colon",
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: MemberReference_Colon",
                             "nodeExcerpt": ":",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                           Object {
                             "kind": "MemberSelector",
-                            "nodeExcerpt": "static",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberSelector",
+                                "nodeExcerpt": "static",
+                              },
+                            ],
                           },
                           Object {
-                            "kind": "Particle: rightParenthesis",
+                            "kind": "Excerpt: MemberReference_RightParenthesis",
                             "nodeExcerpt": ")",
-                            "nodeSpacing": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
                           },
                         ],
                       },
                     ],
                   },
                   Object {
-                    "kind": "Particle: pipe",
+                    "kind": "Excerpt: LinkTag_Pipe",
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Particle: linkText",
+                    "kind": "Excerpt: LinkTag_LinkText",
                     "nodeExcerpt": " link text",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -284,56 +335,72 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "LinkTag",
+                "kind": "InlineTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "Class1.[WellknownSymbols.toStringPrimitive",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
-              },
-              Object {
-                "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
                   },
                   Object {
-                    "kind": "Particle: tagContent",
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
                     "nodeExcerpt": "Class1.[]",
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },
@@ -365,23 +432,26 @@ Object {
                 "kind": "LinkTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Particle: openingDelimiter",
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
                     "nodeExcerpt": "{",
                   },
                   Object {
-                    "kind": "Particle: tagName",
+                    "kind": "Excerpt: InlineTag_TagName",
                     "nodeExcerpt": "@link",
-                    "nodeSpacing": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "DeclarationReference",
                     "nodes": Array [
                       Object {
-                        "kind": "Particle: importPath",
+                        "kind": "Excerpt: DeclarationReference_ImportPath",
                         "nodeExcerpt": "./lib/controls/Button",
                       },
                       Object {
-                        "kind": "Particle: importHash",
+                        "kind": "Excerpt: DeclarationReference_ImportHash",
                         "nodeExcerpt": "#",
                       },
                       Object {
@@ -391,7 +461,7 @@ Object {
                             "kind": "MemberIdentifier",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: identifier",
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
                                 "nodeExcerpt": "Button",
                               },
                             ],
@@ -402,18 +472,18 @@ Object {
                         "kind": "MemberReference",
                         "nodes": Array [
                           Object {
-                            "kind": "Particle: dot",
+                            "kind": "Excerpt: MemberReference_Dot",
                             "nodeExcerpt": ".",
                           },
                           Object {
-                            "kind": "Particle: leftParenthesis",
+                            "kind": "Excerpt: MemberReference_LeftParenthesis",
                             "nodeExcerpt": "(",
                           },
                           Object {
                             "kind": "MemberSymbol",
                             "nodes": Array [
                               Object {
-                                "kind": "Particle: leftBracket",
+                                "kind": "Excerpt: DocMemberSymbol_LeftBracket",
                                 "nodeExcerpt": "[",
                               },
                               Object {
@@ -423,28 +493,33 @@ Object {
                                     "kind": "MemberReference",
                                     "nodes": Array [
                                       Object {
-                                        "kind": "Particle: leftParenthesis",
+                                        "kind": "Excerpt: MemberReference_LeftParenthesis",
                                         "nodeExcerpt": "(",
                                       },
                                       Object {
                                         "kind": "MemberIdentifier",
                                         "nodes": Array [
                                           Object {
-                                            "kind": "Particle: identifier",
+                                            "kind": "Excerpt: MemberIdentifier_Identifier",
                                             "nodeExcerpt": "WellknownSymbols",
                                           },
                                         ],
                                       },
                                       Object {
-                                        "kind": "Particle: colon",
+                                        "kind": "Excerpt: MemberReference_Colon",
                                         "nodeExcerpt": ":",
                                       },
                                       Object {
                                         "kind": "MemberSelector",
-                                        "nodeExcerpt": "namespace",
+                                        "nodes": Array [
+                                          Object {
+                                            "kind": "Excerpt: MemberSelector",
+                                            "nodeExcerpt": "namespace",
+                                          },
+                                        ],
                                       },
                                       Object {
-                                        "kind": "Particle: rightParenthesis",
+                                        "kind": "Excerpt: MemberReference_RightParenthesis",
                                         "nodeExcerpt": ")",
                                       },
                                     ],
@@ -453,14 +528,14 @@ Object {
                                     "kind": "MemberReference",
                                     "nodes": Array [
                                       Object {
-                                        "kind": "Particle: dot",
+                                        "kind": "Excerpt: MemberReference_Dot",
                                         "nodeExcerpt": ".",
                                       },
                                       Object {
                                         "kind": "MemberIdentifier",
                                         "nodes": Array [
                                           Object {
-                                            "kind": "Particle: identifier",
+                                            "kind": "Excerpt: MemberIdentifier_Identifier",
                                             "nodeExcerpt": "toStringPrimitive",
                                           },
                                         ],
@@ -470,21 +545,26 @@ Object {
                                 ],
                               },
                               Object {
-                                "kind": "Particle: rightBracket",
+                                "kind": "Excerpt: DocMemberSymbol_RightBracket",
                                 "nodeExcerpt": "]",
                               },
                             ],
                           },
                           Object {
-                            "kind": "Particle: colon",
+                            "kind": "Excerpt: MemberReference_Colon",
                             "nodeExcerpt": ":",
                           },
                           Object {
                             "kind": "MemberSelector",
-                            "nodeExcerpt": "instance",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberSelector",
+                                "nodeExcerpt": "instance",
+                              },
+                            ],
                           },
                           Object {
-                            "kind": "Particle: rightParenthesis",
+                            "kind": "Excerpt: MemberReference_RightParenthesis",
                             "nodeExcerpt": ")",
                           },
                         ],
@@ -492,14 +572,19 @@ Object {
                     ],
                   },
                   Object {
-                    "kind": "Particle: closingDelimiter",
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
                   },
                 ],
               },
               Object {
                 "kind": "SoftBreak",
-                "nodeExcerpt": "[n]",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
               },
             ],
           },

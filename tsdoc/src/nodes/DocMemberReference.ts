@@ -1,26 +1,45 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
-import { DocParticle } from './DocParticle';
-import { Excerpt } from '../parser/Excerpt';
+import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { DocMemberIdentifier } from './DocMemberIdentifier';
 import { DocMemberSymbol } from './DocMemberSymbol';
 import { DocMemberSelector } from './DocMemberSelector';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocMemberReference}.
  */
 export interface IDocMemberReferenceParameters extends IDocNodeParameters {
   hasDot: boolean;
-  dotExcerpt?: Excerpt;
-  leftParenthesisExcerpt?: Excerpt;
 
   memberIdentifier?: DocMemberIdentifier;
   memberSymbol?: DocMemberSymbol;
 
-  colonExcerpt?: Excerpt;
+  selector?: DocMemberSelector;
+}
+
+/**
+ * Constructor parameters for {@link DocMemberReference}.
+ */
+export interface IDocMemberReferenceParsedParameters extends IDocNodeParsedParameters {
+  dotExcerpt?: TokenSequence;
+  spacingAfterDotExcerpt?: TokenSequence;
+
+  leftParenthesisExcerpt?: TokenSequence;
+  spacingAfterLeftParenthesisExcerpt?: TokenSequence;
+
+  memberIdentifier?: DocMemberIdentifier;
+  memberSymbol?: DocMemberSymbol;
+
+  spacingAfterMemberExcerpt?: TokenSequence;
+
+  colonExcerpt?: TokenSequence;
+  spacingAfterColonExcerpt?: TokenSequence;
 
   selector?: DocMemberSelector;
+  spacingAfterSelectorExcerpt?: TokenSequence;
 
-  rightParenthesisExcerpt?: Excerpt;
+  rightParenthesisExcerpt?: TokenSequence;
+  spacingAfterRightParenthesisExcerpt?: TokenSequence;
 }
 
 /**
@@ -37,27 +56,110 @@ export class DocMemberReference extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.MemberReference;
 
   // The "." token if unless this was the member reference in the chain
-  private _dotParticle: DocParticle | undefined;
+  private readonly _hasDot: boolean;
+  private readonly _dotExcerpt: DocExcerpt | undefined;
+  private readonly _spacingAfterDotExcerpt: DocExcerpt | undefined;
 
-  private _leftParenthesisParticle: DocParticle | undefined;
+  private readonly _leftParenthesisExcerpt: DocExcerpt | undefined;
+  private readonly _spacingAfterLeftParenthesisExcerpt: DocExcerpt | undefined;
 
-  private _memberIdentifier: DocMemberIdentifier | undefined;
+  private readonly _memberIdentifier: DocMemberIdentifier | undefined;
 
-  private _memberSymbol: DocMemberSymbol | undefined;
+  private readonly _memberSymbol: DocMemberSymbol | undefined;
+
+  private readonly _spacingAfterMemberExcerpt: DocExcerpt | undefined;
 
   // The ":" token that separates the identifier and selector parts
-  private _colonParticle: DocParticle | undefined;
+  private readonly _colonExcerpt: DocExcerpt | undefined;
+  private readonly _spacingAfterColonExcerpt: DocExcerpt | undefined;
 
-  private _selector: DocMemberSelector | undefined;
+  private readonly _selector: DocMemberSelector | undefined;
+  private readonly _spacingAfterSelectorExcerpt: DocExcerpt | undefined;
 
-  private _rightParenthesisParticle: DocParticle | undefined;
+  private readonly _rightParenthesisExcerpt: DocExcerpt | undefined;
+  private readonly _spacingAfterRightParenthesisExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocMemberReferenceParameters) {
+  public constructor(parameters: IDocMemberReferenceParameters | IDocMemberReferenceParsedParameters) {
     super(parameters);
+
+    if (DocNode.isParsedParameters(parameters)) {
+      this._hasDot = !!parameters.dotExcerpt;
+      if (parameters.dotExcerpt) {
+        this._dotExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.MemberReference_Dot,
+          content: parameters.dotExcerpt
+        });
+      }
+      if (parameters.spacingAfterDotExcerpt) {
+        this._spacingAfterDotExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterDotExcerpt
+        });
+      }
+
+      if (parameters.leftParenthesisExcerpt) {
+        this._leftParenthesisExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.MemberReference_LeftParenthesis,
+          content: parameters.leftParenthesisExcerpt
+        });
+      }
+      if (parameters.spacingAfterLeftParenthesisExcerpt) {
+        this._spacingAfterLeftParenthesisExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterLeftParenthesisExcerpt
+        });
+      }
+
+      if (parameters.spacingAfterMemberExcerpt) {
+        this._spacingAfterMemberExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterMemberExcerpt
+        });
+      }
+
+      if (parameters.colonExcerpt) {
+        this._colonExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.MemberReference_Colon,
+          content: parameters.colonExcerpt
+        });
+      }
+      if (parameters.spacingAfterColonExcerpt) {
+        this._spacingAfterColonExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterColonExcerpt
+        });
+      }
+
+      if (parameters.spacingAfterSelectorExcerpt) {
+        this._spacingAfterSelectorExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterSelectorExcerpt
+        });
+      }
+
+      if (parameters.rightParenthesisExcerpt) {
+        this._rightParenthesisExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.MemberReference_RightParenthesis,
+          content: parameters.rightParenthesisExcerpt
+        });
+      }
+      if (parameters.spacingAfterRightParenthesisExcerpt) {
+        this._spacingAfterRightParenthesisExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterRightParenthesisExcerpt
+        });
+      }
+    } else {
+      this._hasDot = parameters.hasDot;
+    }
+
+    this._memberIdentifier = parameters.memberIdentifier;
+    this._memberSymbol = parameters.memberSymbol;
+    this._selector = parameters.selector;
   }
 
   /**
@@ -65,7 +167,7 @@ export class DocMemberReference extends DocNode {
    * It should be false only for the first member in the chain.
    */
   public get hasDot(): boolean {
-    return !!this._dotParticle;
+    return this._hasDot;
   }
 
   /**
@@ -96,70 +198,26 @@ export class DocMemberReference extends DocNode {
   }
 
   /** @override */
-  public updateParameters(parameters: IDocMemberReferenceParameters): void {
-    if (parameters.memberIdentifier && parameters.memberSymbol) {
-      throw new Error('"memberIdentifier" or "memberSymbol" may be specified, but not both');
-    }
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return [
+      this._dotExcerpt,
+      this._spacingAfterDotExcerpt,
 
-    super.updateParameters(parameters);
+      this._leftParenthesisExcerpt,
+      this._spacingAfterLeftParenthesisExcerpt,
 
-    this._dotParticle = undefined;
-    this._leftParenthesisParticle = undefined;
-    this._colonParticle = undefined;
-    this._selector = undefined;
-    this._rightParenthesisParticle = undefined;
-
-    if (parameters.hasDot || parameters.dotExcerpt) {
-      this._dotParticle = new DocParticle({
-        particleId: 'dot',
-        excerpt: parameters.dotExcerpt,
-        content: '.'
-      });
-    }
-
-    if (parameters.leftParenthesisExcerpt || parameters.selector) {
-      this._leftParenthesisParticle = new DocParticle({
-        particleId: 'leftParenthesis',
-        excerpt: parameters.leftParenthesisExcerpt,
-        content: '('
-      });
-    }
-
-    this._memberIdentifier = parameters.memberIdentifier;
-    this._memberSymbol = parameters.memberSymbol;
-
-    if (parameters.colonExcerpt || parameters.selector) {
-      this._colonParticle = new DocParticle({
-        particleId: 'colon',
-        excerpt: parameters.colonExcerpt,
-        content: ':'
-      });
-    }
-
-    this._selector = parameters.selector;
-
-    if (this._leftParenthesisParticle) {
-      this._rightParenthesisParticle = new DocParticle({
-        particleId: 'rightParenthesis',
-        excerpt: parameters.rightParenthesisExcerpt,
-        content: ')'
-      });
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
-    return DocNode.trimUndefinedNodes([
-      this._dotParticle,
-      this._leftParenthesisParticle,
       this._memberIdentifier,
       this._memberSymbol,
-      this._colonParticle,
+      this._spacingAfterMemberExcerpt,
+
+      this._colonExcerpt,
+      this._spacingAfterColonExcerpt,
+
       this._selector,
-      this._rightParenthesisParticle
-    ]);
+      this._spacingAfterSelectorExcerpt,
+
+      this._rightParenthesisExcerpt,
+      this._spacingAfterRightParenthesisExcerpt
+    ];
   }
 }

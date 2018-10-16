@@ -1,10 +1,20 @@
 # Change Log - @microsoft/tsdoc
 
+This log was last generated on Tue, 16 Oct 2018 18:51:11 GMT and should not be manually modified.
+
 ## 0.8.1
+Sun, 07 Oct 2018 06:30:34 GMT
+
+### Patches
+
 - Improve error reporting for declaration references that are probably missing a `"#"` delimiter
 - Rename `DocCodeFence` to `DocFencedCode`
 
 ## 0.8.0
+Wed, 03 Oct 2018 02:43:47 GMT
+
+### Minor changes
+
 - Introduce a distinction between "defined" tags (i.e. recognized) versus "supported" tags (i.e. implemented by the tool)
 - The parser optionally reports usage of undefined tags
 - The parser optionally reports usage of unsupported tags
@@ -14,10 +24,18 @@
 - If `@inheritDoc` is used, then the summary section must be empty, and there must not be an `@remarks` block
 
 ## 0.7.0
+Tue, 02 Oct 2018 02:35:35 GMT
+
+### Minor changes
+
 - Add support for `@defaultValue` tag
 - Add support for `@typeParam` tag
 
 ## 0.6.0
+Mon, 01 Oct 2018 22:11:24 GMT
+
+### Minor changes
+
 - Add support for `@link` tags using the new declaration reference syntax
 - Add support for `@inheritDoc` tags
 - Add new APIs: `DocDeclarationReference`, `DocInheritDocTag`, `DocLinkTag`, `DocMemberIdentifier`, `DocMemberReference`, `DocMemberSelector`, `DocMemberSymbol`
@@ -25,18 +43,26 @@
 - Add `DocParticle.particleId` property
 
 ## 0.5.0
+Tue, 25 Sep 2018 03:04:06 GMT
+
+### Minor changes
+
 - Add a new API `DocNode.updateParameters()` that allows a `DocNode` object to be updated after it was created; the tree nodes are no longer immutable
 - Add `DocNodeTransforms.trimSpacesInParagraphNodes()` for collapsing whitespace inside `DocParagraph` subtrees
 - Extract the `DocNode.excerpt` property into a new abstract base class `DocNodeLeaf`
 
 ## 0.4.1
-Mon, 30 Aug 2018
+Fri, 31 Aug 2018 03:32:18 GMT
+
+### Patches
 
 - Improve the error location reporting for DocErrorText objects
 - Separate the **api-demo** sample into a "simple" scenario which parses a simple text string, and an "advanced" scenario which uses the TypeScript compiler API to extract comments and parse custom TSDoc tags
 
 ## 0.4.0
-Mon, 27 Aug 2018
+Tue, 28 Aug 2018 03:17:20 GMT
+
+### Minor changes
 
 - Rename `DocCodeSpan.text` to `DocCodeSpan.code` and model the delimiters using particles
 - Add support for code fences (`DocCodeFence`)
@@ -44,14 +70,18 @@ Mon, 27 Aug 2018
 - Rename `DocComment.deprecated` to `deprecatedBlock`
 
 ## 0.3.0
-Fri, 24 Aug 2018
+Sat, 25 Aug 2018 05:53:56 GMT
+
+### Minor changes
 
 - Add TextRange.isEmpty()
 - Improve the ModifierTagSet API
 - Implement the @privateRemarks and @deprecated tags
 
 ## 0.2.0
-Thu, 23 Aug 2018
+Fri, 24 Aug 2018 01:19:56 GMT
+
+### Minor changes
 
 - Rename `CoreTags` to `StandardTags` so we can include non-core tags in the standard definitions
 - Rename `CoreModifierTagSet` to `StandardModifierTagSet` and convert properties to functions
@@ -60,6 +90,9 @@ Thu, 23 Aug 2018
 - Replace TSDocTagDefinition.singleton with TSDocTagDefinition.allowMultiple, since in practice most tags are single-usage
 
 ## 0.1.0
-Thu, 16 Aug 2018
+Thu, 16 Aug 2018 18:18:02 GMT
+
+### Minor changes
 
 - Initial release of the TSDoc library!  :-)
+

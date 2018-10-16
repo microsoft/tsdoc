@@ -7,6 +7,10 @@ export class StringChecks {
   private static readonly _urlSchemeRegExp: RegExp = /^[a-z][a-z0-9]*\:\/\//i;
   private static readonly _urlSchemeAfterRegExp: RegExp = /^[a-z][a-z0-9]*\:\/\/./i;
 
+  // https://www.w3.org/TR/html5/syntax.html#tag-name
+  // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
+  private static readonly _htmlNameRegExp: RegExp = /^[a-z]+(\-[a-z]+)*$/i;
+
   private static readonly _identifierNotWordCharRegExp: RegExp = /\W/u;
   private static readonly _identifierNumberStartRegExp: RegExp = /^[0-9]/u;
 
@@ -66,6 +70,27 @@ export class StringChecks {
     }
 
     return undefined;
+  }
+
+  /**
+   * Tests whether the input string is a valid HTML element or attribute name.
+   */
+  public static explainIfInvalidHtmlName(htmlName: string): string | undefined {
+    if (!StringChecks._htmlNameRegExp.test(htmlName)) {
+      return 'An HTML name must be a sequence of letters separated by hyphens';
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Throws an exception if the input string is a not valid HTML element or attribute name.
+   */
+  public static validateHtmlName(htmlName: string): void {
+    const explanation: string | undefined = StringChecks.explainIfInvalidHtmlName(htmlName);
+    if (explanation) {
+      throw new Error(explanation);
+    }
   }
 
   /**

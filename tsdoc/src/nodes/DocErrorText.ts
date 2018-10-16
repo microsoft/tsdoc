@@ -1,12 +1,13 @@
-import { DocNodeKind } from './DocNode';
-import { DocNodeLeaf, IDocNodeLeafParameters } from './DocNodeLeaf';
+import { DocNodeKind, DocNode, IDocNodeParsedParameters } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocErrorText}.
  */
-export interface IDocErrorTextParameters extends IDocNodeLeafParameters {
-  text: string;
+export interface IDocErrorTextParsedParameters extends IDocNodeParsedParameters {
+  textExcerpt: TokenSequence;
+
   errorMessage: string;
   errorLocation: TokenSequence;
 }
@@ -15,20 +16,30 @@ export interface IDocErrorTextParameters extends IDocNodeLeafParameters {
  * Represents a span of text that contained invalid markup.
  * The characters should be rendered as plain text.
  */
-export class DocErrorText extends DocNodeLeaf {
+export class DocErrorText extends DocNode {
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.ErrorText;
 
-  private _text: string | undefined;                  // never undefined after updateParameters()
-  private _errorMessage: string | undefined;          // never undefined after updateParameters()
-  private _errorLocation: TokenSequence | undefined;  // never undefined after updateParameters()
+  private _text: string | undefined;
+  private readonly _textExcerpt: DocExcerpt;
+
+  private readonly _errorMessage: string;
+  private readonly _errorLocation: TokenSequence;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocErrorTextParameters) {
+  public constructor(parameters: IDocErrorTextParsedParameters) {
     super(parameters);
+
+    this._textExcerpt = new DocExcerpt({
+      excerptKind: ExcerptKind.ErrorText,
+      content: parameters.textExcerpt
+    });
+
+    this._errorMessage = parameters.errorMessage;
+    this._errorLocation = parameters.errorLocation;
   }
 
   /**
@@ -36,14 +47,25 @@ export class DocErrorText extends DocNodeLeaf {
    * could not be parsed successfully.
    */
   public get text(): string {
-    return this._text!;
+    if (this._text === undefined) {
+      this._text = this._textExcerpt.toString();
+    }
+    return  this._text;
+  }
+
+  public get textExcerpt(): TokenSequence | undefined {
+    if (this._textExcerpt) {
+      return this._textExcerpt.content;
+    } else {
+      return undefined;
+    }
   }
 
   /**
    * A description of why the character could not be parsed.
    */
   public get errorMessage(): string {
-    return this._errorMessage!;
+    return this._errorMessage;
   }
 
   /**
@@ -56,15 +78,13 @@ export class DocErrorText extends DocNodeLeaf {
    * error location might be the `@` character that caused the trouble.
    */
   public get errorLocation(): TokenSequence {
-    return this._errorLocation!;
+    return this._errorLocation;
   }
 
   /** @override */
-  public updateParameters(parameters: IDocErrorTextParameters): void {
-    super.updateParameters(parameters);
-
-    this._text = parameters.text;
-    this._errorMessage = parameters.errorMessage;
-    this._errorLocation = parameters.errorLocation;
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return [
+      this._textExcerpt
+    ];
   }
 }

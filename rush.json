@@ -24,7 +24,8 @@
     },
     {
       "packageName": "@microsoft/tsdoc",
-      "projectFolder": "tsdoc"
+      "projectFolder": "tsdoc",
+      "shouldPublish": true
     }
   ]
 }

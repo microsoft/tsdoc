@@ -1,20 +1,31 @@
-import { DocNodeKind, IDocNodeParameters, DocNode } from './DocNode';
-import { Excerpt } from '../parser/Excerpt';
-import { DocParticle } from './DocParticle';
+import { DocNodeKind, IDocNodeParameters, DocNode, IDocNodeParsedParameters } from './DocNode';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
  * Constructor parameters for {@link DocFencedCode}.
  */
 export interface IDocFencedCodeParameters extends IDocNodeParameters {
-  openingDelimiterExcerpt?: Excerpt;
+  language: string;
 
-  languageExcerpt?: Excerpt;
-  language?: string | 'ts' | '';
-
-  codeExcerpt?: Excerpt;
   code: string;
+}
 
-  closingDelimiterExcerpt?: Excerpt;
+/**
+ * Constructor parameters for {@link DocFencedCode}.
+ */
+export interface IDocFencedCodeParsedParameters extends IDocNodeParsedParameters {
+  openingFenceExcerpt: TokenSequence;
+  spacingAfterOpeningFenceExcerpt?: TokenSequence;
+
+  languageExcerpt?: TokenSequence;
+  spacingAfterLanguageExcerpt?: TokenSequence;
+
+  codeExcerpt: TokenSequence;
+
+  spacingBeforeClosingFenceExcerpt?: TokenSequence;
+  closingFenceExcerpt: TokenSequence;
+  spacingAfterClosingFenceExcerpt?: TokenSequence;
 }
 
 /**
@@ -27,23 +38,84 @@ export class DocFencedCode extends DocNode {
   public readonly kind: DocNodeKind = DocNodeKind.FencedCode;
 
   // The opening ``` delimiter and padding
-  private _openingDelimiterParticle: DocParticle | undefined; // never undefined after updateParameters()
+  private readonly _openingFenceExcerpt: DocExcerpt | undefined;
 
-  // The optional language string, and newline
-  private _languageParticle: DocParticle | undefined;         // never undefined after updateParameters()
+  private readonly _spacingAfterOpeningFenceExcerpt: DocExcerpt | undefined;
+
+  // The optional language string
+  private _language: string | undefined;
+  private readonly _languageExcerpt: DocExcerpt | undefined;
+
+  private readonly _spacingAfterLanguageExcerpt: DocExcerpt | undefined;
 
   // The code content
-  private _codeParticle: DocParticle | undefined;             // never undefined after updateParameters()
+  private _code: string | undefined;
+  private readonly _codeExcerpt: DocExcerpt | undefined;
 
-  // The closing ``` delimiter, spacing, and newline
-  private _closingDelimiterParticle: DocParticle | undefined; // never undefined after updateParameters()
+  // The closing ``` delimiter and padding
+  private readonly _spacingBeforeClosingFenceExcerpt: DocExcerpt | undefined;
+
+  private readonly _closingFenceExcerpt: DocExcerpt | undefined;
+
+  private readonly _spacingAfterClosingFenceExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocFencedCodeParameters) {
+  public constructor(parameters: IDocFencedCodeParameters | IDocFencedCodeParsedParameters) {
     super(parameters);
+
+    if (DocNode.isParsedParameters(parameters)) {
+      this._openingFenceExcerpt = new DocExcerpt({
+        excerptKind: ExcerptKind.FencedCode_OpeningFence,
+        content: parameters.openingFenceExcerpt
+      });
+      if (parameters.spacingAfterOpeningFenceExcerpt) {
+        this._spacingAfterOpeningFenceExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterOpeningFenceExcerpt
+        });
+      }
+
+      if (parameters.languageExcerpt) {
+        this._languageExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.FencedCode_Language,
+          content: parameters.languageExcerpt
+        });
+      }
+      if (parameters.spacingAfterLanguageExcerpt) {
+        this._spacingAfterLanguageExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterLanguageExcerpt
+        });
+      }
+
+      this._codeExcerpt = new DocExcerpt({
+        excerptKind: ExcerptKind.FencedCode_Code,
+        content: parameters.codeExcerpt
+      });
+
+      if (parameters.spacingBeforeClosingFenceExcerpt) {
+        this._spacingBeforeClosingFenceExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingBeforeClosingFenceExcerpt
+        });
+      }
+      this._closingFenceExcerpt = new DocExcerpt({
+        excerptKind: ExcerptKind.FencedCode_ClosingFence,
+        content: parameters.closingFenceExcerpt
+      });
+      if (parameters.spacingAfterClosingFenceExcerpt) {
+        this._spacingAfterClosingFenceExcerpt = new DocExcerpt({
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterClosingFenceExcerpt
+        });
+      }
+    } else {
+      this._code = parameters.code;
+      this._language = parameters.language;
+    }
   }
 
   /**
@@ -62,55 +134,42 @@ export class DocFencedCode extends DocNode {
    * https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml
    */
   public get language(): string | 'ts' | '' {
-    return this._languageParticle!.content;
+    if (this._language === undefined) {
+      if (this._languageExcerpt !== undefined) {
+        this._language = this._languageExcerpt.content.toString();
+      } else {
+        this._language = '';
+      }
+    }
+    return this.language;
   }
 
   /**
    * The text that should be rendered as code.
    */
   public get code(): string {
-    return this._codeParticle!.content;
+    if (this._code === undefined) {
+      if (this._codeExcerpt !== undefined) {
+        this._code = this._codeExcerpt.content.toString();
+      }
+    }
+    return this._code!;
   }
 
   /** @override */
-  public updateParameters(parameters: IDocFencedCodeParameters): void {
-    super.updateParameters(parameters);
-
-    this._openingDelimiterParticle = new DocParticle({
-      particleId: 'openingDelimiter',
-      excerpt: parameters.openingDelimiterExcerpt,
-      content: '```'
-    });
-
-    this._languageParticle = new DocParticle({
-      particleId: 'language',
-      excerpt: parameters.languageExcerpt,
-      content: parameters.language || ''
-    });
-
-    this._codeParticle = new DocParticle({
-      particleId: 'code',
-      excerpt: parameters.codeExcerpt,
-      content: parameters.code
-    });
-
-    this._closingDelimiterParticle = new DocParticle({
-      particleId: 'closingDelimiter',
-      excerpt: parameters.closingDelimiterExcerpt,
-      content: '```'
-    });
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
-      this._openingDelimiterParticle!,
-      this._languageParticle!,
-      this._codeParticle!,
-      this._closingDelimiterParticle!
+      this._openingFenceExcerpt,
+      this._spacingAfterOpeningFenceExcerpt,
+
+      this._languageExcerpt,
+      this._spacingAfterLanguageExcerpt,
+
+      this._codeExcerpt,
+
+      this._spacingBeforeClosingFenceExcerpt,
+      this._closingFenceExcerpt,
+      this._spacingAfterClosingFenceExcerpt
     ];
   }
 }

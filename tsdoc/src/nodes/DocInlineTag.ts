@@ -1,117 +1,83 @@
-import { DocNodeKind, IDocNodeParameters, DocNode } from './DocNode';
-import { StringChecks } from '../parser/StringChecks';
-import { DocParticle } from './DocParticle';
-import { Excerpt } from '../parser/Excerpt';
+import { DocNodeKind, DocNode } from './DocNode';
+import { TokenSequence } from '../parser/TokenSequence';
+import { DocExcerpt, ExcerptKind } from './DocExcerpt';
+import {
+  IDocInlineTagBaseParameters,
+  IDocInlineTagBaseParsedParameters,
+  DocInlineTagBase
+} from './DocInlineTagBase';
 
 /**
  * Constructor parameters for {@link DocInlineTag}.
  */
-export interface IDocInlineTagParameters extends IDocNodeParameters {
-  openingDelimiterExcerpt?: Excerpt;
-
-  tagNameExcerpt?: Excerpt;
-  tagName: string;
-
-  tagContentExcerpt?: Excerpt;
+export interface IDocInlineTagParameters extends IDocInlineTagBaseParameters {
   tagContent: string;
-
-  closingDelimiterExcerpt?: Excerpt;
 }
 
 /**
- * Represents a TSDoc inline tag such as `{@inheritDoc}` or `{@link}`.
+ * Constructor parameters for {@link DocInlineTag}.
  */
-export class DocInlineTag extends DocNode {
+export interface IDocInlineTagParsedParameters extends IDocInlineTagBaseParsedParameters {
+  tagContentExcerpt?: TokenSequence;
+}
+
+/**
+ * Represents a generic TSDoc inline tag, including custom tags.
+ *
+ * @remarks
+ * NOTE: Certain tags such as `{@link}` and `{@inheritDoc}` have specialized structures and parser rules,
+ * and thus are represented using {@link DocLinkTag} or {@link DocInheritDocTag} instead.  However, if the
+ * specialized parser rule encounters a syntax error, but the outer framing is correct, then the parser constructs
+ * a generic `DocInlineTag` instead of `DocErrorText`.  This means, for example, that it is possible sometimes for
+ * `DocInlineTag.tagName` to be `"@link"`.
+ */
+export class DocInlineTag extends DocInlineTagBase {
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.InlineTag;
 
-  private _openingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
-  private _tagNameParticle: DocParticle | undefined;           // never undefined after updateParameters()
-  private _tagContentParticle: DocParticle | undefined;        // never undefined after updateParameters()
-  private _closingDelimiterParticle: DocParticle | undefined;  // never undefined after updateParameters()
+  private _tagContent: string | undefined;
+  private readonly _tagContentExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocInlineTagParameters) {
+  public constructor(parameters: IDocInlineTagParameters | IDocInlineTagParsedParameters) {
     super(parameters);
-  }
 
-  /**
-   * The TSDoc tag name.
-   * For example, if the inline tag is `{@link Guid.toString | the toString() method}`
-   * then the tag name would be `@link`.
-   */
-  public get tagName(): string {
-    return this._tagNameParticle!.content;
+    if (DocNode.isParsedParameters(parameters)) {
+      if (parameters.tagContentExcerpt) {
+        this._tagContentExcerpt  = new DocExcerpt({
+          excerptKind: ExcerptKind.InlineTag_TagContent,
+          content: parameters.tagContentExcerpt
+        });
+      }
+    } else {
+      this._tagContent = parameters.tagContent;
+    }
   }
 
   /**
    * The tag content.
-   * For example, if the inline tag is `{@link Guid.toString | the toString() method}`
-   * then the tag content would be `Guid.toString | the toString() method`.
+   * @remarks
+   * For example, if the tag is `{@myTag x=12.34 y=56.78 }` then the tag content
+   * would be `x=12.34 y=56.78 `, including the trailing space but not the leading space.
    */
   public get tagContent(): string {
-    return this._tagContentParticle!.content;
+    if (this._tagContent === undefined) {
+      if (this._tagContentExcerpt) {
+        this._tagContent = this._tagContentExcerpt.content.toString();
+      } else {
+        return '';
+      }
+    }
+    return this._tagContent;
   }
 
   /** @override */
-  public updateParameters(parameters: IDocInlineTagParameters): void {
-    StringChecks.validateTSDocTagName(parameters.tagName);
-
-    super.updateParameters(parameters);
-
-    this._openingDelimiterParticle = new DocParticle({
-      particleId: 'openingDelimiter',
-      excerpt: parameters.openingDelimiterExcerpt,
-      content: '{'
-    });
-
-    this._tagNameParticle = new DocParticle({
-      particleId: 'tagName',
-      excerpt: parameters.tagNameExcerpt,
-      content: parameters.tagName
-    });
-
-    this._tagContentParticle = new DocParticle({
-      particleId: 'tagContent',
-      excerpt: parameters.tagContentExcerpt,
-      content: parameters.tagContent
-    });
-
-    this._closingDelimiterParticle = new DocParticle({
-      particleId: 'closingDelimiter',
-      excerpt: parameters.closingDelimiterExcerpt,
-      content: '}'
-    });
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override @sealed
-   */
-  public getChildNodes(): ReadonlyArray<DocNode> {
+  protected getChildNodesForContent(): ReadonlyArray<DocNode | undefined> { // abstract
     return [
-      this._openingDelimiterParticle!,
-      this._tagNameParticle!,
-      ...this.getChildNodesForContent(),
-      this._closingDelimiterParticle!
+      this._tagContentExcerpt
     ];
-  }
-
-  /**
-   * Allows child classes to replace the tagContentParticle with a more detailed
-   * set of nodes.
-   * @virtual
-   */
-  protected getChildNodesForContent(): ReadonlyArray<DocNode> {
-    return [
-      this._tagContentParticle!
-    ];
-  }
-
-  protected get tagContentParticle(): DocParticle {
-    return this._tagContentParticle!;
   }
 }
