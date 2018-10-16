@@ -23,6 +23,13 @@ export interface IDocInlineTagParsedParameters extends IDocInlineTagBaseParsedPa
 
 /**
  * Represents a generic TSDoc inline tag, including custom tags.
+ *
+ * @remarks
+ * NOTE: Certain tags such as `{@link}` and `{@inheritDoc}` have specialized structures and parser rules,
+ * and thus are represented using {@link DocLinkTag} or {@link DocInheritDocTag} instead.  However, if the
+ * specialized parser rule encounters a syntax error, but the outer framing is correct, then the parser constructs
+ * a generic `DocInlineTag` instead of `DocErrorText`.  This means, for example, that it is possible sometimes for
+ * `DocInlineTag.tagName` to be `"@link"`.
  */
 export class DocInlineTag extends DocInlineTagBase {
   /** {@inheritDoc} */

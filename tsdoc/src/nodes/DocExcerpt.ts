@@ -2,6 +2,9 @@ import { DocNode, IDocNodeParameters, DocNodeKind } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
 import { TokenKind } from '../parser/Token';
 
+/**
+ * Indicates the type of {@link DocExcerpt}.
+ */
 export const enum ExcerptKind {
   Spacing = 'Spacing',
 
@@ -75,6 +78,20 @@ export interface IDocExcerptParameters extends IDocNodeParameters {
   content: TokenSequence;
 }
 
+/**
+ * Represents a parsed token sequence.
+ *
+ * @remarks
+ * When a `DocNode` is created by parsing a doc comment, it will have `DocExcerpt` child nodes corresponding to
+ * the parsed syntax elements such as names, keywords, punctuation, and spaces.  These excerpts indicate the original
+ * coordinates of the syntax element, and thus can be used for syntax highlighting and precise error reporting.
+ * They could also be used to rewrite specific words in a source file (e.g. renaming a parameter) without disturbing
+ * any other characters in the file.
+ *
+ * Every parsed character will correspond to at most one DocExcerpt object.  In other words, excerpts never overlap.
+ * A given excerpt can span multiple comment lines, and it may contain gaps, for example to skip the `*` character
+ * that starts a new TSDoc comment line.
+ */
 export class DocExcerpt extends DocNode {
   /** {@inheritDoc} */
   public readonly kind: DocNodeKind = DocNodeKind.Excerpt;
@@ -106,10 +123,19 @@ export class DocExcerpt extends DocNode {
     this._content = parameters.content;
   }
 
+  /**
+   * Indicates the kind of DocExcerpt.
+   */
   public get excerptKind(): ExcerptKind {
     return this._excerptKind;
   }
 
+  /**
+   * The input token sequence corresponding to this excerpt.
+   * @remarks
+   * Note that a token sequence can span multiple input lines and may contain gaps, for example to skip the `*`
+   * character that starts a new TSDoc comment line.
+   */
   public get content(): TokenSequence {
     return this._content;
   }

@@ -1574,7 +1574,7 @@ export class NodeParser {
     const openingFenceExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // Read any spaces after the delimiter,
-    // but NOT the Newline since that goes with the language particle
+    // but NOT the Newline since that goes with the spacingAfterLanguageExcerpt
     while (tokenReader.peekTokenKind() === TokenKind.Spacing) {
       tokenReader.readToken();
     }

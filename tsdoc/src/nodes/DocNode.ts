@@ -30,14 +30,30 @@ export const enum DocNodeKind {
 
 /**
  * Constructor parameters for {@link DocNode}.
+ *
+ * @remarks
+ * There are two scenarios for constructing `DocNode` objects.  The "builder scenario" constructs the object based on
+ * literal strings, does NOT create DocExcerpt child nodes, and generally uses the `IDocNodeParameters`
+ * hierarchy for its constructor parameters.  The "parser scenario" constructs the object by parsing a TypeScript
+ * source file, does create DocExcerpt child nodes, and generally uses the {@link IDocNodeParsedParameters} hierarchy.
  */
 export interface IDocNodeParameters {
 }
 
 /**
  * Constructor parameters for {@link DocNode}.
+ *
+ * @remarks
+ * There are two scenarios for constructing `DocNode` objects.  The "builder scenario" constructs the object based on
+ * literal strings, does NOT create DocExcerpt child nodes, and generally uses the {@link IDocNodeParameters}
+ * hierarchy for its constructor parameters.  The "parser scenario" constructs the object by parsing a TypeScript
+ * source file, does create DocExcerpt child nodes, and generally uses the `IDocNodeParsedParameters` hierarchy.
  */
 export interface IDocNodeParsedParameters {
+  /**
+   * This is a marker used by {@link DocNode.isParsedParameters} to determine whether the constructor was
+   * invoked using `IDocNodeParameters` (builder scenario) or `IDocNodeParsedParameters` (parser scenario).
+   */
   parsed: true;
 }
 
@@ -64,13 +80,22 @@ export abstract class DocNode {
   }
 
   /**
-   * Used to implement {@link DocNode.getChildNodes}.
+   * Overridden by child classes to implement {@link DocNode.getChildNodes}.
    * @virtual
    */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [];
   }
 
+  /**
+   * A type guard that returns true if the input uses the `IDocNodeParsedParameters` (parser scenario).
+   *
+   * @remarks
+   * There are two scenarios for constructing `DocNode` objects.  The "builder scenario" constructs the object based on
+   * literal strings, does NOT create DocExcerpt child nodes, and generally uses the {@link IDocNodeParameters}
+   * hierarchy for its constructor parameters.  The "parser scenario" constructs the object by parsing a TypeScript
+   * source file, does create DocExcerpt child nodes, and generally uses the {@link IDocNodeParsedParameters} hierarchy.
+   */
   public static isParsedParameters(parameters: IDocNodeParameters | IDocNodeParsedParameters):
     parameters is IDocNodeParsedParameters {
 
