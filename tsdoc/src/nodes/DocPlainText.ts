@@ -67,7 +67,7 @@ export class DocPlainText extends DocNode {
     return this._text;
   }
 
-  public get textExcerpt(): TokenSequence | undefined{
+  public get textExcerpt(): TokenSequence | undefined {
     if (this._textExcerpt) {
       return this._textExcerpt.content;
     } else {

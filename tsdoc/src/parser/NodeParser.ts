@@ -373,7 +373,7 @@ export class NodeParser {
     }
     tokenReader.readToken();
 
-    const hyphenExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence()
+    const hyphenExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // TODO: Only read one space
     this._readSpacingAndNewlines(tokenReader);
@@ -596,7 +596,7 @@ export class NodeParser {
       }
     }
 
-    let tagContentExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const tagContentExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
 
     // Read the right curly bracket
     tokenReader.readToken();

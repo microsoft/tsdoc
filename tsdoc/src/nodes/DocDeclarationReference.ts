@@ -65,13 +65,13 @@ export class DocDeclarationReference extends DocNode {
           content: parameters.importPathExcerpt
         });
       }
-      if (parameters.importHashExcerpt ){
+      if (parameters.importHashExcerpt ) {
         this._importHashExcerpt = new DocExcerpt({
           excerptId: ExcerptId.DeclarationReference_ImportHash,
           content: parameters.importHashExcerpt
         });
       }
-      if (parameters.spacingAfterImportHashExcerpt ){
+      if (parameters.spacingAfterImportHashExcerpt ) {
         this._spacingAfterImportHashExcerpt = new DocExcerpt({
           excerptId: ExcerptId.Spacing,
           content: parameters.spacingAfterImportHashExcerpt
