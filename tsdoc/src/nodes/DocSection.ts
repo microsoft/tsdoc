@@ -21,8 +21,7 @@ export interface IDocSectionParsedParameters extends IDocNodeContainerParsedPara
 }
 
 /**
- * Represents a general block of rich text.  DocSection is the base class for DocNode classes that
- * act as a simple container for other child nodes.
+ * Represents a general block of rich text.
  */
 export class DocSection extends DocNodeContainer {
   /** {@inheritDoc} */

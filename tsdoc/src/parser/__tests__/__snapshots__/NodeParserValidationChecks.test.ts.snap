@@ -28,32 +28,37 @@ Object {
             ],
           },
           Object {
-            "kind": "Paragraph",
+            "kind": "Section",
             "nodes": Array [
               Object {
-                "kind": "SoftBreak",
+                "kind": "Paragraph",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
                   },
-                ],
-              },
-              Object {
-                "kind": "PlainText",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: PlainText",
-                    "nodeExcerpt": "Use the other thing",
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": "Use the other thing",
+                      },
+                    ],
                   },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
                   },
                 ],
               },
@@ -97,32 +102,37 @@ Object {
             ],
           },
           Object {
-            "kind": "Paragraph",
+            "kind": "Section",
             "nodes": Array [
               Object {
-                "kind": "SoftBreak",
+                "kind": "Paragraph",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
                   },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
                   },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
                   },
                 ],
               },

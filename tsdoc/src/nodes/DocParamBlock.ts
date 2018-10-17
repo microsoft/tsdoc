@@ -104,8 +104,7 @@ export class DocParamBlock extends DocBlock {
       this._spacingAfterParameterNameExcerpt,
       this._hyphenExcerpt,
       this._spacingAfterHyphenExcerpt,
-
-      ...this.nodes
+      this.content
     ];
   }
 }

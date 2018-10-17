@@ -1,18 +1,18 @@
-import { DocNodeKind, DocNode } from './DocNode';
-import { DocSection, IDocSectionParameters, IDocSectionParsedParameters } from './DocSection';
+import { DocNodeKind, DocNode, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
+import { DocSection } from './DocSection';
 import { DocBlockTag } from './DocBlockTag';
 
 /**
  * Constructor parameters for {@link DocBlock}.
  */
-export interface IDocBlockParameters extends IDocSectionParameters {
+export interface IDocBlockParameters extends IDocNodeParameters {
   blockTag: DocBlockTag;
 }
 
 /**
  * Constructor parameters for {@link DocBlock}.
  */
-export interface IDocBlockParsedParameters extends IDocSectionParsedParameters {
+export interface IDocBlockParsedParameters extends IDocNodeParsedParameters {
   blockTag: DocBlockTag;
 }
 
@@ -20,11 +20,12 @@ export interface IDocBlockParsedParameters extends IDocSectionParsedParameters {
  * Represents a section that is introduced by a TSDoc block tag.
  * For example, an `@example` block.
  */
-export class DocBlock extends DocSection {
+export class DocBlock extends DocNode {
   /** @override */
   public readonly kind: DocNodeKind = DocNodeKind.Block;
 
   private readonly _blockTag: DocBlockTag;
+  private readonly _content: DocSection;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -33,6 +34,7 @@ export class DocBlock extends DocSection {
   public constructor(parameters: IDocBlockParameters | IDocBlockParsedParameters) {
     super(parameters);
     this._blockTag = parameters.blockTag;
+    this._content = new DocSection({});
   }
 
   /**
@@ -42,8 +44,15 @@ export class DocBlock extends DocSection {
     return this._blockTag;
   }
 
+  /**
+   * The TSDoc tag that introduces this section.
+   */
+  public get content(): DocSection {
+    return this._content;
+  }
+
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
-    return [this.blockTag, ...super.onGetChildNodes()];
+    return [this.blockTag, this._content];
   }
 }

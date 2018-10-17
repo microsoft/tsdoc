@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "(API change) Change `DocBlock` to have a `DocSection` property rather than inheriting from `DocSection`; this eliminates confusion about which nodes belong to the container",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "pgonzal@users.noreply.github.com"
+}
