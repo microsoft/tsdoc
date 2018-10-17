@@ -1,5 +1,4 @@
 import {
-  DocComment,
   DocSection,
   DocNode,
   DocNodeKind,
@@ -20,12 +19,16 @@ export class ParagraphSplitter {
   private static readonly _whitespaceRegExp: RegExp = /^\s*$/;
 
   /**
-   * Split all paragraphs belonging to the provided DocComment.
+   * Split all paragraphs belonging to the provided subtree.
    */
-  public static splitParagraphs(docComment: DocComment): void {
-    for (const node of docComment.getChildNodes()) {
-      if (node instanceof DocSection) {
-        ParagraphSplitter.splitParagraphsForSection(node);
+  public static splitParagraphs(node: DocNode): void {
+    if (node instanceof DocSection) {
+      ParagraphSplitter.splitParagraphsForSection(node);
+
+      // (We don't recurse here, since sections cannot contain subsections)
+    } else {
+      for (const childNode of node.getChildNodes()) {
+        ParagraphSplitter.splitParagraphs(childNode);
       }
     }
   }

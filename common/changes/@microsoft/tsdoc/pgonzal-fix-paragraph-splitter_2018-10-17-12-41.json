@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Fix a regression where the paragraph splitter was sometimes skipping blocks",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "pgonzal@users.noreply.github.com"
+}
