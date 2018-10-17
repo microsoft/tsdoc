@@ -141,7 +141,7 @@ export class DocFencedCode extends DocNode {
         this._language = '';
       }
     }
-    return this.language;
+    return this._language;
   }
 
   /**
