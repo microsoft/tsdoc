@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Wed, 17 Oct 2018 12:49:01 GMT and should not be manually modified.
+This log was last generated on Wed, 17 Oct 2018 13:41:54 GMT and should not be manually modified.
+
+## 0.9.2
+Wed, 17 Oct 2018 13:41:54 GMT
+
+### Patches
+
+- Fix stack overflow in DocFencedCode.language property getter
 
 ## 0.9.1
 Wed, 17 Oct 2018 12:49:01 GMT
