@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Wed, 17 Oct 2018 04:47:19 GMT and should not be manually modified.
+This log was last generated on Wed, 17 Oct 2018 12:49:01 GMT and should not be manually modified.
+
+## 0.9.1
+Wed, 17 Oct 2018 12:49:01 GMT
+
+### Patches
+
+- Fix a regression where the paragraph splitter was sometimes skipping blocks
 
 ## 0.9.0
 Wed, 17 Oct 2018 04:47:19 GMT

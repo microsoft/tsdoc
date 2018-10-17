@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.9.1",
+      "tag": "@microsoft/tsdoc_v0.9.1",
+      "date": "Wed, 17 Oct 2018 12:49:01 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix a regression where the paragraph splitter was sometimes skipping blocks"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.9.0",
       "tag": "@microsoft/tsdoc_v0.9.0",
       "date": "Wed, 17 Oct 2018 04:47:19 GMT",
