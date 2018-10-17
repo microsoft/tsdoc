@@ -20,7 +20,20 @@ test('01 Basic paragraph splitting', () => {
   ].join('\n'));
 });
 
-test('02 Degenerate paragraph', () => {
+test('02 Basic paragraph splitting in blocks', () => {
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * P1',
+    ' * @remarks P2',
+    ' *',
+    ' * P3 @deprecated P4',
+    ' *',
+    ' * P5',
+    ' */'
+  ].join('\n'));
+});
+
+test('03 Degenerate comment framing', () => {
   TestHelpers.parseAndMatchDocCommentSnapshot([
     '/** line 1',
     ' * line 2',
@@ -29,7 +42,7 @@ test('02 Degenerate paragraph', () => {
   ].join('\n'));
 });
 
-test('03 Degenerate manually constructed nodes', () => {
+test('04 Degenerate manually constructed nodes', () => {
   const docSection: DocSection = new DocSection({ });
 
   const docParagraph: DocParagraph = new DocParagraph({ } );

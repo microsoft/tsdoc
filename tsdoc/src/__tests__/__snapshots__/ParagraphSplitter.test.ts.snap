@@ -184,7 +184,186 @@ Object {
 }
 `;
 
-exports[`02 Degenerate paragraph 1`] = `
+exports[`02 Basic paragraph splitting in blocks 1`] = `
+Object {
+  "_00_lines": Array [
+    "P1",
+    "@remarks P2",
+    "",
+    "P3 @deprecated P4",
+    "",
+    "P5",
+  ],
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
+    "kind": "Section",
+    "nodes": Array [
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "P1",
+              },
+            ],
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  "_03_remarksBlock": Object {
+    "kind": "Block",
+    "nodes": Array [
+      Object {
+        "kind": "BlockTag",
+        "nodes": Array [
+          Object {
+            "kind": "Excerpt: BlockTag",
+            "nodeExcerpt": "@remarks",
+          },
+        ],
+      },
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": " P2",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "P3 ",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": Object {
+    "kind": "Block",
+    "nodes": Array [
+      Object {
+        "kind": "BlockTag",
+        "nodes": Array [
+          Object {
+            "kind": "Excerpt: BlockTag",
+            "nodeExcerpt": "@deprecated",
+          },
+        ],
+      },
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": " P4",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "P5",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  "_06_paramBlocks": Array [],
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": undefined,
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [],
+  "_12_logMessages": Array [],
+}
+`;
+
+exports[`03 Degenerate comment framing 1`] = `
 Object {
   "_00_lines": Array [
     "line 1",
@@ -303,7 +482,7 @@ Object {
 }
 `;
 
-exports[`03 Degenerate manually constructed nodes 1`] = `
+exports[`04 Degenerate manually constructed nodes 1`] = `
 Object {
   "kind": "Section",
   "nodes": Array [
