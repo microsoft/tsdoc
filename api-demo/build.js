@@ -20,8 +20,9 @@ try {
   child_process.execSync(path.join(baseDir, 'node_modules/.bin/tslint')
     + ' --config tslint.json --project .',
     { stdio: 'inherit' });
+
+  process.exitCode = 0;
 } catch (e) {
   console.log('ERROR: ' + e.message);
 }
 
-process.exitCode = 0;
