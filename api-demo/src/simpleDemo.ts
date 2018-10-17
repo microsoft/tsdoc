@@ -48,17 +48,17 @@ export function simpleDemo(): void {
 
   if (docComment.remarksBlock) {
     console.log(colors.cyan('Remarks: ')
-    + JSON.stringify(Formatter.renderDocNodes(docComment.remarksBlock.nodes)));
+    + JSON.stringify(Formatter.renderDocNode(docComment.remarksBlock.content)));
   }
 
   for (const paramBlock of docComment.paramBlocks) {
     console.log(colors.cyan(`Parameter "${paramBlock.parameterName}": `)
-    + JSON.stringify(Formatter.renderDocNodes(paramBlock.nodes)));
+    + JSON.stringify(Formatter.renderDocNode(paramBlock.content)));
   }
 
   if (docComment.returnsBlock) {
     console.log(colors.cyan('Returns: ')
-    + JSON.stringify(Formatter.renderDocNodes(docComment.returnsBlock.nodes)));
+    + JSON.stringify(Formatter.renderDocNode(docComment.returnsBlock.content)));
   }
 
   console.log(colors.cyan('Modifiers: ')
