@@ -1,6 +1,18 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Tue, 16 Oct 2018 18:51:11 GMT and should not be manually modified.
+This log was last generated on Wed, 17 Oct 2018 04:47:19 GMT and should not be manually modified.
+
+## 0.9.0
+Wed, 17 Oct 2018 04:47:19 GMT
+
+### Minor changes
+
+- (API change) Change `DocBlock` to have a `DocSection` property rather than inheriting from `DocSection`; this eliminates confusion about which nodes belong to the container
+- (API change) Rename `DocParticle` to `DocExcerpt`, and eliminate the `Excerpt` class
+- (API change) Eliminate `DocNodeLeaf`, since now `DocExcerpt` is the only class that can represent excerpts
+- (API change) Remove `DocNode.updateParameters()` because it is no longer needed
+- (API change) Spacing is now represented as a normal `DocExcerpt`, rather than via a special `Excerpt.spacingAfterContent`
+- (API change) Simplify `DocNodeTransforms.trimSpacesInParagraph()` to no longer merge/remap excerpts during the transformation. If we need this information, we will track it differently.
 
 ## 0.8.1
 Sun, 07 Oct 2018 06:30:34 GMT

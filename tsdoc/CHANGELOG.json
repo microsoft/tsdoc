@@ -2,6 +2,33 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.9.0",
+      "tag": "@microsoft/tsdoc_v0.9.0",
+      "date": "Wed, 17 Oct 2018 04:47:19 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "(API change) Change `DocBlock` to have a `DocSection` property rather than inheriting from `DocSection`; this eliminates confusion about which nodes belong to the container"
+          },
+          {
+            "comment": "(API change) Rename `DocParticle` to `DocExcerpt`, and eliminate the `Excerpt` class"
+          },
+          {
+            "comment": "(API change) Eliminate `DocNodeLeaf`, since now `DocExcerpt` is the only class that can represent excerpts"
+          },
+          {
+            "comment": "(API change) Remove `DocNode.updateParameters()` because it is no longer needed"
+          },
+          {
+            "comment": "(API change) Spacing is now represented as a normal `DocExcerpt`, rather than via a special `Excerpt.spacingAfterContent`"
+          },
+          {
+            "comment": "(API change) Simplify `DocNodeTransforms.trimSpacesInParagraph()` to no longer merge/remap excerpts during the transformation. If we need this information, we will track it differently."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.8.1",
       "tag": "@microsoft/api-extractor_v0.8.1",
       "date": "Sun, 07 Oct 2018 06:30:34 GMT",
@@ -12,7 +39,7 @@
           },
           {
             "comment": "Rename `DocCodeFence` to `DocFencedCode`"
-          },
+          }
         ]
       }
     },
@@ -192,6 +219,6 @@
           }
         ]
       }
-    },
+    }
   ]
 }
