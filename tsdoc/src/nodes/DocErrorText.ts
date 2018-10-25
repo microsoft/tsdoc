@@ -48,7 +48,7 @@ export class DocErrorText extends DocNode {
    */
   public get text(): string {
     if (this._text === undefined) {
-      this._text = this._textExcerpt.toString();
+      this._text = this._textExcerpt.content.toString();
     }
     return  this._text;
   }
