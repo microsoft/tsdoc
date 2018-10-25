@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Wed, 17 Oct 2018 13:41:54 GMT and should not be manually modified.
+This log was last generated on Thu, 25 Oct 2018 08:29:36 GMT and should not be manually modified.
+
+## 0.9.3
+Thu, 25 Oct 2018 08:29:36 GMT
+
+### Patches
+
+- Fix issue where `DocErrorText.text` returned `[object Object]` instead of the text
 
 ## 0.9.2
 Wed, 17 Oct 2018 13:41:54 GMT
