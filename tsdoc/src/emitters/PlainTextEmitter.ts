@@ -3,7 +3,7 @@ import { DocNode, DocNodeKind, DocPlainText } from '../nodes';
 /**
  * Renders a DocNode tree as plain text, without any rich text formatting or markup.
  */
-export class PlainTextRenderer {
+export class PlainTextEmitter {
 
   /**
    * Returns true if the specified collection of nodes contains any text content.

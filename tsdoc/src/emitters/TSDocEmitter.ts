@@ -22,7 +22,7 @@ enum LineState {
 /**
  * Renders a DocNode tree as a code comment.
  */
-export class CommentRenderer {
+export class TSDocEmitter {
   public readonly eol: string = '\n';
 
   private _lineState: LineState = LineState.Closed;

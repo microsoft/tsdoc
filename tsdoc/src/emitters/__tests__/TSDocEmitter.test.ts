@@ -1,6 +1,6 @@
-import { TSDocParser, ParserContext } from "../../index";
-import { StringBuilder } from "../StringBuilder";
-import { CommentRenderer } from "../CommentRenderer";
+import { TSDocParser, ParserContext } from '../../index';
+import { TSDocEmitter } from '../TSDocEmitter';
+import { StringBuilder } from '../StringBuilder';
 
 const input: string = `
 /**
@@ -21,17 +21,17 @@ const input: string = `
  */
 `;
 
-test("Render a comment", () => {
+test('Render a comment', () => {
   const tsdocParser: TSDocParser = new TSDocParser();
   const parserContext: ParserContext = tsdocParser.parseString(input);
 
   const output: StringBuilder = new StringBuilder();
-  const commentRenderer: CommentRenderer = new CommentRenderer();
+  const commentRenderer: TSDocEmitter = new TSDocEmitter();
   commentRenderer.renderComment(output, parserContext.docComment);
 
   expect({
     errors: parserContext.log.messages.map(x => x.toString()),
-    output: "\n" + output.toString()
+    output: '\n' + output.toString()
   }).toMatchInlineSnapshot(`
 Object {
   "errors": Array [],
