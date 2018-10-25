@@ -124,7 +124,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
                 { title: 'HTML', render: this._renderHtml.bind(this) },
                 { title: 'DOM', render: this._renderDom.bind(this) },
                 { title: 'Lines', render: this._renderLines.bind(this) },
-                { title: 'AST', render: this._renderAst.bind(this) }
+                { title: 'AST', render: this._renderAst.bind(this) },
+                { title: 'Emitter', render: this._renderEmitter.bind(this) }
               ] }
             />
           </FlexRowDiv>
@@ -300,6 +301,23 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         parserContext={this.state.parserContext}
         theme={ this.state.selectedTheme }
       />
+    );
+  }
+
+  private _renderEmitter(): React.ReactNode {
+    let outputText: string = '';
+    const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
+    if (parserContext && parserContext.docComment) {
+      outputText = tsdoc.TSDocEmitter.emit(parserContext.docComment);
+    }
+
+    return (
+      <textarea
+        className='playground-lines-text-editor'
+        style={ { ...this._textAreaStyle, border: 'none' } }
+        readOnly={ true }
+        value={ outputText }
+        />
     );
   }
 

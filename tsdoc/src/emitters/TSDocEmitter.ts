@@ -27,6 +27,13 @@ export class TSDocEmitter {
 
   private _lineState: LineState = LineState.Closed;
 
+  public static emit(docComment: DocComment): string {
+    const stringBuilder: StringBuilder = new StringBuilder();
+    const emitter: TSDocEmitter = new TSDocEmitter();
+    emitter.renderComment(stringBuilder, docComment);
+    return stringBuilder.toString();
+  }
+
   public renderComment(output: StringBuilder, docComment: DocComment): void {
     this._lineState = LineState.Closed;
 
@@ -104,7 +111,7 @@ export class TSDocEmitter {
     }
   }
 
-  private _writeContent(output: StringBuilder, content: string) {
+  private _writeContent(output: StringBuilder, content: string): void {
     if (content.length === 0) {
       return;
     }
@@ -137,7 +144,7 @@ export class TSDocEmitter {
     this._lineState = LineState.MiddleOfLine;
   }
 
-  private _writeNewline(output: StringBuilder) {
+  private _writeNewline(output: StringBuilder): void {
     if (this._lineState === LineState.Closed) {
       output.append('/**' + this.eol
         + ' *');
@@ -148,7 +155,7 @@ export class TSDocEmitter {
     this._lineState = LineState.StartOfLine;
   }
 
-  private _writeEnd(output: StringBuilder) {
+  private _writeEnd(output: StringBuilder): void {
     if (this._lineState === LineState.MiddleOfLine) {
       this._writeNewline(output);
     }
