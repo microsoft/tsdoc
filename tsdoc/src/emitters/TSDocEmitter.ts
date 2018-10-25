@@ -22,10 +22,12 @@ import {
   DocMemberIdentifier,
   DocMemberReference,
   DocMemberSymbol,
-  DocMemberSelector
+  DocMemberSelector,
+  DocParamBlock
 } from '../nodes';
 import { StringBuilder } from './StringBuilder';
 import { DocNodeTransforms } from '../transforms/DocNodeTransforms';
+import { StandardTags } from '../details/StandardTags';
 
 enum LineState {
   Closed,
@@ -46,14 +48,25 @@ export interface ITSDocEmitterParameters {
 export class TSDocEmitter {
   public readonly eol: string = '\n';
 
-  private _lineState: LineState = LineState.Closed;
-  private _previousLineHadContent: boolean = false;
   private _output: StringBuilder | undefined;
 
+  // This state machine is used by the writer functions to generate the /** */ framing around the emitted lines
+  private _lineState: LineState = LineState.Closed;
+
+  // State for _ensureLineSkipped()
+  private _previousLineHadContent: boolean = false;
+
+  // Normally a paragraph is precede by a blank line (unless it's the first thing written).
+  // But sometimes we want the paragraph to be attached to the previous element, e.g. when it's part of
+  // an "@param" block.  Setting _hangingParagraph=true accomplishes that.
+  private _hangingParagraph: boolean = false;
+
   public renderComment(output: StringBuilder, docComment: DocComment): void {
+    this._output = output;
+
     this._lineState = LineState.Closed;
     this._previousLineHadContent = false;
-    this._output = output;
+    this._hangingParagraph = false;
 
     this._renderNode(docComment);
 
@@ -68,8 +81,14 @@ export class TSDocEmitter {
     switch (docNode.kind) {
       case DocNodeKind.Block:
         const docBlock: DocBlock = docNode as DocBlock;
-        this._writeNewline();
+        this._ensureLineSkipped();
         this._renderNode(docBlock.blockTag);
+
+        if (docBlock.blockTag.tagNameWithUpperCase === StandardTags.returns.tagNameWithUpperCase) {
+          this._writeContent(' ');
+          this._hangingParagraph = true;
+        }
+
         this._renderNode(docBlock.content);
         break;
 
@@ -269,10 +288,28 @@ export class TSDocEmitter {
       case DocNodeKind.Paragraph:
         const trimmedParagraph: DocParagraph = DocNodeTransforms.trimSpacesInParagraph(docNode as DocParagraph);
         if (trimmedParagraph.nodes.length > 0) {
-          this._ensureLineSkipped();
+          if (this._hangingParagraph) {
+            // If it's a hanging paragraph, then don't skip a line
+            this._hangingParagraph = false;
+          } else {
+            this._ensureLineSkipped();
+          }
+
           this._renderNodes(trimmedParagraph.nodes);
           this._writeNewline();
         }
+        break;
+
+      case DocNodeKind.ParamBlock:
+        const docParamBlock: DocParamBlock = docNode as DocParamBlock;
+        this._ensureLineSkipped();
+        this._renderNode(docParamBlock.blockTag);
+        this._writeContent(' ');
+        this._writeContent(docParamBlock.parameterName);
+        this._writeContent(' - ');
+        this._hangingParagraph = true;
+        this._renderNode(docParamBlock.content);
+        this._hangingParagraph = false;
         break;
 
       case DocNodeKind.PlainText:
@@ -297,12 +334,14 @@ export class TSDocEmitter {
     }
   }
 
+  // Calls _writeNewline() only if we're not already at the start of a new line
   private _ensureAtStartOfLine(): void {
     if (this._lineState === LineState.MiddleOfLine) {
       this._writeNewline();
     }
   }
 
+  // Calls _writeNewline() if needed to ensure that we have skipped at least one line
   private _ensureLineSkipped(): void {
     this._ensureAtStartOfLine();
     if (this._previousLineHadContent) {
@@ -310,6 +349,8 @@ export class TSDocEmitter {
     }
   }
 
+  // Writes literal text content.  If it contains newlines, they will automatically be converted to
+  // _writeNewline() calls, to ensure that "*" is written at the start of each line.
   private _writeContent(content: string | undefined): void {
     if (content === undefined || content.length === 0) {
       return;
@@ -344,6 +385,7 @@ export class TSDocEmitter {
     this._previousLineHadContent = true;
   }
 
+  // Starts a new line, and inserts "/**" or "*" as appropriate.
   private _writeNewline(): void {
     if (this._lineState === LineState.Closed) {
       this._output!.append('/**' + this.eol
@@ -355,8 +397,10 @@ export class TSDocEmitter {
 
     this._output!.append(this.eol + ' *');
     this._lineState = LineState.StartOfLine;
+    this._hangingParagraph = false;
   }
 
+  // Closes the comment, adding the final "*/" delimiter
   private _writeEnd(): void {
     if (this._lineState === LineState.MiddleOfLine) {
       this._writeNewline();
