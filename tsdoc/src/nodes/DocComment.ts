@@ -135,7 +135,7 @@ export class DocComment extends DocNode {
       ...this.paramBlocks,
       ...this.typeParamBlocks,
       this.returnsBlock,
-      ...this._customBlocks,
+      ...this.customBlocks,
       this.inheritDocTag,
       ...this.modifierTagSet.nodes
     ];

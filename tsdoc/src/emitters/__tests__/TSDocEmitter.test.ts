@@ -39,11 +39,13 @@ Object {
  * This is summary paragraph 2.
  *
  * @remarks
+ *
  * This is the remarks paragraph 1.
  *
  * This is the remarks paragraph 2.
  *
  * @example
+ *
  * blah
  *
  * @example
