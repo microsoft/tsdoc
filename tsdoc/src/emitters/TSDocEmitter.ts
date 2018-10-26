@@ -14,7 +14,15 @@ import {
   DocEscapedText,
   DocHtmlEndTag,
   DocHtmlStartTag,
-  DocHtmlAttribute
+  DocHtmlAttribute,
+  DocInheritDocTag,
+  DocInlineTagBase,
+  DocInlineTag,
+  DocLinkTag,
+  DocMemberIdentifier,
+  DocMemberReference,
+  DocMemberSymbol,
+  DocMemberSelector
 } from '../nodes';
 import { StringBuilder } from './StringBuilder';
 import { DocNodeTransforms } from '../transforms/DocNodeTransforms';
@@ -84,8 +92,10 @@ export class TSDocEmitter {
           ...docComment.customBlocks,
           docComment.inheritDocTag
         ]);
-        this._ensureLineSkipped(output);
-        this._renderNodes(output, docComment.modifierTagSet.nodes);
+        if (docComment.modifierTagSet.nodes.length > 0) {
+          this._ensureLineSkipped(output);
+          this._renderNodes(output, docComment.modifierTagSet.nodes);
+        }
         break;
 
       case DocNodeKind.DeclarationReference:
@@ -153,9 +163,93 @@ export class TSDocEmitter {
             this._writeContent(output, ' ');
           }
           this._renderNode(output, attribute);
-          needsSpace = true;
+          needsSpace = attribute.spacingAfterValue === undefined || attribute.spacingAfterValue.length === 0;
         }
         this._writeContent(output, docHtmlStartTag.selfClosingTag ? '/>' : '>');
+        break;
+
+      case DocNodeKind.InheritDocTag:
+        const docInheritDocTag: DocInheritDocTag = docNode as DocInheritDocTag;
+        this._renderInlineTag(output, docInheritDocTag, () => {
+          if (docInheritDocTag.declarationReference) {
+            this._writeContent(output, ' ');
+            this._renderNode(output, docInheritDocTag.declarationReference);
+          }
+        });
+        break;
+
+      case DocNodeKind.InlineTag:
+        const docInlineTag: DocInlineTag = docNode as DocInlineTag;
+        this._renderInlineTag(output, docInlineTag, () => {
+          if (docInlineTag.tagContent.length > 0) {
+            this._writeContent(output, ' ');
+            this._writeContent(output, docInlineTag.tagContent);
+          }
+        });
+        break;
+
+      case DocNodeKind.LinkTag:
+        const docLinkTag: DocLinkTag = docNode as DocLinkTag;
+        this._renderInlineTag(output, docLinkTag, () => {
+          if (docLinkTag.urlDestination !== undefined || docLinkTag.codeDestination !== undefined) {
+            this._writeContent(output, ' ');
+            if (docLinkTag.urlDestination !== undefined) {
+              this._writeContent(output, docLinkTag.urlDestination);
+            } else {
+              this._renderNode(output, docLinkTag.codeDestination);
+            }
+          }
+          if (docLinkTag.linkText !== undefined) {
+            this._writeContent(output, '|');
+            this._writeContent(output, docLinkTag.linkText);
+          }
+        });
+        break;
+
+      case DocNodeKind.MemberIdentifier:
+        const docMemberIdentifier: DocMemberIdentifier = docNode as DocMemberIdentifier;
+        if (docMemberIdentifier.hasQuotes) {
+          this._writeContent(output, '"');
+          this._writeContent(output, docMemberIdentifier.identifier); // todo: encoding
+          this._writeContent(output, '"');
+        } else {
+          this._writeContent(output, docMemberIdentifier.identifier);
+        }
+        break;
+
+      case DocNodeKind.MemberReference:
+        const docMemberReference: DocMemberReference = docNode as DocMemberReference;
+        if (docMemberReference.hasDot) {
+          this._writeContent(output, '.');
+        }
+
+        if (docMemberReference.selector) {
+          this._writeContent(output, '(');
+        }
+
+        if (docMemberReference.memberSymbol) {
+          this._renderNode(output, docMemberReference.memberSymbol);
+        } else {
+          this._renderNode(output, docMemberReference.memberIdentifier);
+        }
+
+        if (docMemberReference.selector) {
+          this._writeContent(output, ':');
+          this._renderNode(output, docMemberReference.selector);
+          this._writeContent(output, ')');
+        }
+        break;
+
+      case DocNodeKind.MemberSelector:
+        const docMemberSelector: DocMemberSelector = docNode as DocMemberSelector;
+        this._writeContent(output, docMemberSelector.selector);
+        break;
+
+      case DocNodeKind.MemberSymbol:
+        const docMemberSymbol: DocMemberSymbol = docNode as DocMemberSymbol;
+        this._writeContent(output, '[');
+        this._renderNode(output, docMemberSymbol.symbolReference);
+        this._writeContent(output, ']');
         break;
 
       case DocNodeKind.Section:
@@ -177,6 +271,15 @@ export class TSDocEmitter {
         this._writeContent(output, docPlainText.text);
         break;
     }
+  }
+
+  private _renderInlineTag(output: StringBuilder, docInlineTagBase: DocInlineTagBase,
+    writeInlineTagContent: () => void): void {
+
+    this._writeContent(output, '{');
+    this._writeContent(output, docInlineTagBase.tagName);
+    writeInlineTagContent();
+    this._writeContent(output, '}');
   }
 
   private _renderNodes(output: StringBuilder, docNodes: ReadonlyArray<DocNode | undefined>): void {

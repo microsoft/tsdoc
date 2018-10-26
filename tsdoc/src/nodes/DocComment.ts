@@ -5,7 +5,6 @@ import { DocBlock } from './DocBlock';
 import { DocParamBlock } from './DocParamBlock';
 import { DocInheritDocTag } from './DocInheritDocTag';
 import { StringBuilder } from '../emitters/StringBuilder';
-import { TSDocEmitter } from '..';
 
 /**
  * Constructor parameters for {@link DocComment}.
@@ -157,8 +156,12 @@ export class DocComment extends DocNode {
    */
   public emitAsTsdoc(): string {
     const stringBuilder: StringBuilder = new StringBuilder();
+    // tslint:disable-next-line:no-use-before-declare
     const emitter: TSDocEmitter = new TSDocEmitter();
     emitter.renderComment(stringBuilder, this);
     return stringBuilder.toString();
   }
 }
+
+// Circular reference
+import { TSDocEmitter } from '../emitters/TSDocEmitter';

@@ -1,6 +1,63 @@
 import { TSDocParser, ParserContext } from '../../index';
 
-const input: string = `
+function createSnapshot(input: string): {} {
+  const tsdocParser: TSDocParser = new TSDocParser();
+  const parserContext: ParserContext = tsdocParser.parseString(input);
+  const output: string = parserContext.docComment.emitAsTsdoc();
+  return {
+    errors: parserContext.log.messages.map(x => x.toString()),
+    output: '\n' + output
+  };
+}
+
+test('01 Emit trivial comments', () => {
+  expect(createSnapshot(`/***/`)).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+",
+}
+`);
+  expect(createSnapshot(`/**x*/`)).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+/**
+ * x
+ */
+",
+}
+`);
+  expect(createSnapshot(`/** x */`)).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+/**
+ * x
+ */
+",
+}
+`);
+  expect(
+    createSnapshot(`
+/**
+ * x
+ */
+`)
+  ).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+/**
+ * x
+ */
+",
+}
+`);
+});
+
+test('02 Emit a basic comment', () => {
+  const input: string = `
 /**
  * This is summary paragraph 1.
  *
@@ -19,15 +76,7 @@ const input: string = `
  */
 `;
 
-test('Render a comment', () => {
-  const tsdocParser: TSDocParser = new TSDocParser();
-  const parserContext: ParserContext = tsdocParser.parseString(input);
-  const output: string = parserContext.docComment.emitAsTsdoc();
-
-  expect({
-    errors: parserContext.log.messages.map(x => x.toString()),
-    output: '\n' + output
-  }).toMatchInlineSnapshot(`
+  expect(createSnapshot(input)).toMatchInlineSnapshot(`
 Object {
   "errors": Array [],
   "output": "
