@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.10.0",
+      "tag": "@microsoft/tsdoc_v0.10.0",
+      "date": "Fri, 26 Oct 2018 08:42:51 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add new APIs `DocComment.emitAsTsdoc()`, `TSDocEmitter`, and `StringBuilder`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.9.3",
       "tag": "@microsoft/tsdoc_v0.9.3",
       "date": "Thu, 25 Oct 2018 08:29:36 GMT",

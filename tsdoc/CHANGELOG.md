@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Thu, 25 Oct 2018 08:29:36 GMT and should not be manually modified.
+This log was last generated on Fri, 26 Oct 2018 08:42:51 GMT and should not be manually modified.
+
+## 0.10.0
+Fri, 26 Oct 2018 08:42:51 GMT
+
+### Minor changes
+
+- Add new APIs `DocComment.emitAsTsdoc()`, `TSDocEmitter`, and `StringBuilder`
 
 ## 0.9.3
 Thu, 25 Oct 2018 08:29:36 GMT
