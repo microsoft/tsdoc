@@ -4,6 +4,9 @@ export { Standardization } from './details/Standardization';
 export { StandardModifierTagSet } from './details/StandardModifierTagSet';
 export { ModifierTagSet } from './details/ModifierTagSet';
 
+export { StringBuilder } from './emitters/StringBuilder';
+export { TSDocEmitter } from './emitters/TSDocEmitter';
+
 export * from './nodes';
 
 export { ParserContext } from './parser/ParserContext';

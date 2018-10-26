@@ -44,7 +44,7 @@ import {
   TSDocTagSyntaxKind
 } from './TSDocTagDefinition';
 import { StandardTags } from '../details/StandardTags';
-import { PlainTextRenderer } from '../renderers/PlainTextRenderer';
+import { PlainTextEmitter } from '../emitters/PlainTextEmitter';
 
 interface IFailure {
   // (We use "failureMessage" instead of "errorMessage" here so that DocErrorText doesn't
@@ -163,7 +163,7 @@ export class NodeParser {
   private _performValidationChecks(): void {
     const docComment: DocComment = this._parserContext.docComment;
     if (docComment.deprecatedBlock) {
-      if (!PlainTextRenderer.hasAnyTextContent(docComment.deprecatedBlock)) {
+      if (!PlainTextEmitter.hasAnyTextContent(docComment.deprecatedBlock)) {
         this._parserContext.log.addMessageForTokenSequence(
           `The ${docComment.deprecatedBlock.blockTag.tagName} block must include a deprecation message,`
             + ` e.g. describing the recommended alternative`,
@@ -180,7 +180,7 @@ export class NodeParser {
           + ` content is provided by the @inheritDoc tag`,
           docComment.remarksBlock.blockTag.getTokenSequence(), docComment.remarksBlock.blockTag);
       }
-      if (PlainTextRenderer.hasAnyTextContent(docComment.summarySection)) {
+      if (PlainTextEmitter.hasAnyTextContent(docComment.summarySection)) {
         this._parserContext.log.addMessageForTextRange(
           'The summary section must not have any content, because that'
           + ' content is provided by the @inheritDoc tag',
