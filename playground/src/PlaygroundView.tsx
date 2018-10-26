@@ -308,7 +308,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     let outputText: string = '';
     const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
     if (parserContext && parserContext.docComment) {
-      outputText = tsdoc.TSDocEmitter.emit(parserContext.docComment);
+      outputText = parserContext.docComment.emitAsTsdoc();
     }
 
     return (

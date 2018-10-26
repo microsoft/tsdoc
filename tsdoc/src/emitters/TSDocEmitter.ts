@@ -34,13 +34,6 @@ export class TSDocEmitter {
   private _lineState: LineState = LineState.Closed;
   private _previousLineHadContent: boolean = false;
 
-  public static emit(docComment: DocComment): string {
-    const stringBuilder: StringBuilder = new StringBuilder();
-    const emitter: TSDocEmitter = new TSDocEmitter();
-    emitter.renderComment(stringBuilder, docComment);
-    return stringBuilder.toString();
-  }
-
   public renderComment(output: StringBuilder, docComment: DocComment): void {
     this._lineState = LineState.Closed;
     this._previousLineHadContent = false;

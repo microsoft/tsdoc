@@ -1,5 +1,4 @@
 import { TSDocParser, ParserContext } from '../../index';
-import { TSDocEmitter } from '../TSDocEmitter';
 
 const input: string = `
 /**
@@ -23,8 +22,7 @@ const input: string = `
 test('Render a comment', () => {
   const tsdocParser: TSDocParser = new TSDocParser();
   const parserContext: ParserContext = tsdocParser.parseString(input);
-
-  const output: string = TSDocEmitter.emit(parserContext.docComment);
+  const output: string = parserContext.docComment.emitAsTsdoc();
 
   expect({
     errors: parserContext.log.messages.map(x => x.toString()),

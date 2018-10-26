@@ -4,6 +4,8 @@ import { StandardModifierTagSet } from '../details/StandardModifierTagSet';
 import { DocBlock } from './DocBlock';
 import { DocParamBlock } from './DocParamBlock';
 import { DocInheritDocTag } from './DocInheritDocTag';
+import { StringBuilder } from '../emitters/StringBuilder';
+import { TSDocEmitter } from '..';
 
 /**
  * Constructor parameters for {@link DocComment}.
@@ -139,5 +141,24 @@ export class DocComment extends DocNode {
       this.inheritDocTag,
       ...this.modifierTagSet.nodes
     ];
+  }
+
+  /**
+   * Generates a doc comment corresponding to the `DocComment` tree.  The output is in a normalized form,
+   * and may ignore formatting/spacing from the original input.
+   *
+   * @remarks
+   * After parsing a string, and possibly modifying the result, `emitAsTsdoc()` can be used to render the result
+   * as a doc comment in a normalized format.  It can also be used to emit a `DocComment` tree that was constructed
+   * manually.
+   *
+   * This method is provided as convenience for simple use cases.  To customize the output, or if you need
+   * to render into a `StringBuilder, use the {@link TSDocEmitter} class instead.
+   */
+  public emitAsTsdoc(): string {
+    const stringBuilder: StringBuilder = new StringBuilder();
+    const emitter: TSDocEmitter = new TSDocEmitter();
+    emitter.renderComment(stringBuilder, this);
+    return stringBuilder.toString();
   }
 }
