@@ -312,12 +312,13 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     }
 
     return (
-      <textarea
-        className='playground-lines-text-editor'
-        style={ { ...this._textAreaStyle, border: 'none' } }
+      <CodeEditor
+        className='playground-emitter-text-editor'
         readOnly={ true }
         value={ outputText }
-        />
+        theme={ this.state.selectedTheme }
+        wordWrap={true}
+      />
     );
   }
 

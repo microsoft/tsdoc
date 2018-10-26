@@ -40,6 +40,7 @@ export interface ICodeEditorProps {
   theme?: string;
   markers?: ISyntaxMarker[];
   syntaxStyles?: IStyledRange[];
+  wordWrap?: boolean;
 }
 
 export interface ICodeEditorState {
@@ -290,7 +291,8 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
               enabled: false
             },
             lineNumbers: this.props.disableLineNumbers ? 'off' : 'on',
-            theme: this.props.theme
+            theme: this.props.theme,
+            wordWrap: this.props.wordWrap ? 'on' : 'off'
           }
         );
 
