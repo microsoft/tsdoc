@@ -1,6 +1,15 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Fri, 26 Oct 2018 08:42:51 GMT and should not be manually modified.
+This log was last generated on Sat, 27 Oct 2018 04:52:23 GMT and should not be manually modified.
+
+## 0.11.0
+Sat, 27 Oct 2018 04:52:23 GMT
+
+### Minor changes
+
+- (API change) Introduce `DocParamCollection` to enable efficient lookups of parameters by name
+- (API change) Rename `DocComment.typeParamBlocks` --> `DocComment.typeParams`
+- (API change) Rename `DocComment.paramBlocks` --> `DocComment.params`
 
 ## 0.10.0
 Fri, 26 Oct 2018 08:42:51 GMT

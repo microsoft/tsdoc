@@ -2,6 +2,24 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.11.0",
+      "tag": "@microsoft/tsdoc_v0.11.0",
+      "date": "Sat, 27 Oct 2018 04:52:23 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "(API change) Introduce `DocParamCollection` to enable efficient lookups of parameters by name"
+          },
+          {
+            "comment": "(API change) Rename `DocComment.typeParamBlocks` --> `DocComment.typeParams`"
+          },
+          {
+            "comment": "(API change) Rename `DocComment.paramBlocks` --> `DocComment.params`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.10.0",
       "tag": "@microsoft/tsdoc_v0.10.0",
       "date": "Fri, 26 Oct 2018 08:42:51 GMT",
