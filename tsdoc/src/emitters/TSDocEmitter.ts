@@ -301,7 +301,7 @@ export class TSDocEmitter {
         }
         break;
 
-        case DocNodeKind.ParamBlock:
+      case DocNodeKind.ParamBlock:
         const docParamBlock: DocParamBlock = docNode as DocParamBlock;
         this._ensureLineSkipped();
         this._renderNode(docParamBlock.blockTag);
