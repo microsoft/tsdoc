@@ -51,7 +51,7 @@ export function simpleDemo(): void {
     + JSON.stringify(Formatter.renderDocNode(docComment.remarksBlock.content)));
   }
 
-  for (const paramBlock of docComment.paramBlocks) {
+  for (const paramBlock of docComment.params.blocks) {
     console.log(colors.cyan(`Parameter "${paramBlock.parameterName}": `)
     + JSON.stringify(Formatter.renderDocNode(paramBlock.content)));
   }

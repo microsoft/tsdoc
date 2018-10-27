@@ -28,6 +28,7 @@ import {
 import { StringBuilder } from './StringBuilder';
 import { DocNodeTransforms } from '../transforms/DocNodeTransforms';
 import { StandardTags } from '../details/StandardTags';
+import { DocParamCollection } from '../nodes/DocParamCollection';
 
 enum LineState {
   Closed,
@@ -114,8 +115,8 @@ export class TSDocEmitter {
           docComment.remarksBlock,
           docComment.privateRemarks,
           docComment.deprecatedBlock,
-          ...docComment.paramBlocks,
-          ...docComment.typeParamBlocks,
+          docComment.params,
+          docComment.typeParams,
           docComment.returnsBlock,
           ...docComment.customBlocks,
           docComment.inheritDocTag
@@ -300,7 +301,7 @@ export class TSDocEmitter {
         }
         break;
 
-      case DocNodeKind.ParamBlock:
+        case DocNodeKind.ParamBlock:
         const docParamBlock: DocParamBlock = docNode as DocParamBlock;
         this._ensureLineSkipped();
         this._renderNode(docParamBlock.blockTag);
@@ -310,6 +311,11 @@ export class TSDocEmitter {
         this._hangingParagraph = true;
         this._renderNode(docParamBlock.content);
         this._hangingParagraph = false;
+        break;
+
+      case DocNodeKind.ParamCollection:
+        const docParamCollection: DocParamCollection = docNode as DocParamCollection;
+        this._renderNodes(docParamCollection.blocks);
         break;
 
       case DocNodeKind.PlainText:
