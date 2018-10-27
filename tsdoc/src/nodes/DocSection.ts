@@ -31,8 +31,8 @@ export class DocSection extends DocNodeContainer {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocSectionParameters | IDocSectionParsedParameters) {
-    super(parameters);
+  public constructor(parameters?: IDocSectionParameters | IDocSectionParsedParameters) {
+    super(parameters || {});
   }
 
   /**

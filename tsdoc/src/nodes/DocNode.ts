@@ -23,6 +23,7 @@ export const enum DocNodeKind {
   MemberSymbol = 'MemberSymbol',
   Paragraph = 'Paragraph',
   ParamBlock = 'ParamBlock',
+  ParamCollection = 'ParamCollection',
   PlainText = 'PlainText',
   Section = 'Section',
   SoftBreak = 'SoftBreak'

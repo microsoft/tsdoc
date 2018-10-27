@@ -23,10 +23,10 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
     }
 
     // Parameters
-    if (docComment.paramBlocks.length > 0) {
+    if (docComment.params.count > 0) {
       const rows: React.ReactNode[] = [];
 
-      for (const paramBlock of docComment.paramBlocks) {
+      for (const paramBlock of docComment.params.blocks) {
         rows.push(
           <tr key={`param_${rows.length}`}>
             <td>{ paramBlock.parameterName }</td>

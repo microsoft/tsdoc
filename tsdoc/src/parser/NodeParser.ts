@@ -261,14 +261,14 @@ export class NodeParser {
           if (docBlockTag.tagNameWithUpperCase === StandardTags.param.tagNameWithUpperCase) {
             const docParamBlock: DocParamBlock = this._parseParamBlock(tokenReader, docBlockTag);
 
-            this._parserContext.docComment.paramBlocks.push(docParamBlock);
+            this._parserContext.docComment.params.add(docParamBlock);
 
             this._currentSection = docParamBlock.content;
             return;
           } else if (docBlockTag.tagNameWithUpperCase === StandardTags.typeParam.tagNameWithUpperCase) {
             const docParamBlock: DocParamBlock = this._parseParamBlock(tokenReader, docBlockTag);
 
-            this._parserContext.docComment.typeParamBlocks.push(docParamBlock);
+            this._parserContext.docComment.typeParams.add(docParamBlock);
 
             this._currentSection = docParamBlock.content;
             return;

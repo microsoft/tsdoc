@@ -2,9 +2,9 @@ import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 import { DocSection } from './DocSection';
 import { StandardModifierTagSet } from '../details/StandardModifierTagSet';
 import { DocBlock } from './DocBlock';
-import { DocParamBlock } from './DocParamBlock';
 import { DocInheritDocTag } from './DocInheritDocTag';
 import { StringBuilder } from '../emitters/StringBuilder';
+import { DocParamCollection } from './DocParamCollection';
 
 /**
  * Constructor parameters for {@link DocComment}.
@@ -67,12 +67,12 @@ export class DocComment extends DocNode {
   /**
    * The collection of parsed `@param` blocks for this doc comment.
    */
-  public paramBlocks: DocParamBlock[];
+  public readonly params: DocParamCollection;
 
   /**
    * The collection of parsed `@typeParam` blocks for this doc comment.
    */
-  public typeParamBlocks: DocParamBlock[];
+  public readonly typeParams: DocParamCollection;
 
   /**
    * The `@returns` block for this doc comment, or undefined if there is not one.
@@ -96,15 +96,15 @@ export class DocComment extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocCommentParameters) {
-    super(parameters);
+  public constructor(parameters?: IDocCommentParameters) {
+    super(parameters || {});
 
-    this.summarySection = new DocSection(parameters);
+    this.summarySection = new DocSection();
     this.remarksBlock = undefined;
     this.privateRemarks = undefined;
     this.deprecatedBlock = undefined;
-    this.paramBlocks = [];
-    this.typeParamBlocks = [];
+    this.params = new DocParamCollection();
+    this.typeParams = new DocParamCollection();
     this.returnsBlock = undefined;
 
     this.modifierTagSet = new StandardModifierTagSet();
@@ -133,8 +133,8 @@ export class DocComment extends DocNode {
       this.remarksBlock,
       this.privateRemarks,
       this.deprecatedBlock,
-      ...this.paramBlocks,
-      ...this.typeParamBlocks,
+      this.params.count > 0 ? this.params : undefined,
+      this.typeParams.count > 0 ? this.typeParams : undefined,
       this.returnsBlock,
       ...this.customBlocks,
       this.inheritDocTag,
