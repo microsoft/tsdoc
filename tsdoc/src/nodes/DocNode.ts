@@ -1,32 +1,37 @@
 /**
  * Indicates the type of {@link DocNode}.
+ *
+ * @remarks
+ * When creating custom subclasses of `DocNode`, it's recommended to create your own const enum to identify them.
+ * To avoid naming conflicts between projects, the enum value should be a string comprised of your full
+ * NPM package name, followed by a "#" symbol, followed by the class name (without the "Doc" prefix).
  */
 export const enum DocNodeKind {
-  Block = 'Block',
-  BlockTag = 'BlockTag',
-  Excerpt = 'Excerpt',
-  FencedCode = 'FencedCode',
-  CodeSpan = 'CodeSpan',
-  Comment = 'Comment',
-  DeclarationReference = 'DeclarationReference',
-  ErrorText = 'ErrorText',
-  EscapedText = 'EscapedText',
-  HtmlAttribute = 'HtmlAttribute',
-  HtmlEndTag = 'HtmlEndTag',
-  HtmlStartTag = 'HtmlStartTag',
-  InheritDocTag = 'InheritDocTag',
-  InlineTag = 'InlineTag',
-  LinkTag = 'LinkTag',
-  MemberIdentifier = 'MemberIdentifier',
-  MemberReference = 'MemberReference',
-  MemberSelector = 'MemberSelector',
-  MemberSymbol = 'MemberSymbol',
-  Paragraph = 'Paragraph',
-  ParamBlock = 'ParamBlock',
-  ParamCollection = 'ParamCollection',
-  PlainText = 'PlainText',
-  Section = 'Section',
-  SoftBreak = 'SoftBreak'
+  Block                         = '@microsoft/tsdoc#Block',
+  BlockTag                      = '@microsoft/tsdoc#BlockTag',
+  Excerpt                       = '@microsoft/tsdoc#Excerpt',
+  FencedCode                    = '@microsoft/tsdoc#FencedCode',
+  CodeSpan                      = '@microsoft/tsdoc#CodeSpan',
+  Comment                       = '@microsoft/tsdoc#Comment',
+  DeclarationReference          = '@microsoft/tsdoc#DeclarationReference',
+  ErrorText                     = '@microsoft/tsdoc#ErrorText',
+  EscapedText                   = '@microsoft/tsdoc#EscapedText',
+  HtmlAttribute                 = '@microsoft/tsdoc#HtmlAttribute',
+  HtmlEndTag                    = '@microsoft/tsdoc#HtmlEndTag',
+  HtmlStartTag                  = '@microsoft/tsdoc#HtmlStartTag',
+  InheritDocTag                 = '@microsoft/tsdoc#InheritDocTag',
+  InlineTag                     = '@microsoft/tsdoc#InlineTag',
+  LinkTag                       = '@microsoft/tsdoc#LinkTag',
+  MemberIdentifier              = '@microsoft/tsdoc#MemberIdentifier',
+  MemberReference               = '@microsoft/tsdoc#MemberReference',
+  MemberSelector                = '@microsoft/tsdoc#MemberSelector',
+  MemberSymbol                  = '@microsoft/tsdoc#MemberSymbol',
+  Paragraph                     = '@microsoft/tsdoc#Paragraph',
+  ParamBlock                    = '@microsoft/tsdoc#ParamBlock',
+  ParamCollection               = '@microsoft/tsdoc#ParamCollection',
+  PlainText                     = '@microsoft/tsdoc#PlainText',
+  Section                       = '@microsoft/tsdoc#Section',
+  SoftBreak                     = '@microsoft/tsdoc#SoftBreak'
 }
 
 /**
@@ -65,7 +70,7 @@ export abstract class DocNode {
   /**
    * Indicates the kind of DocNode.
    */
-  public abstract readonly kind: DocNodeKind;
+  public abstract readonly kind: DocNodeKind | string;
 
   public constructor(parameters: IDocNodeParameters | IDocNodeParsedParameters) {
     // (abstract)
