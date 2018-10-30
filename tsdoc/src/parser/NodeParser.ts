@@ -85,14 +85,14 @@ export class NodeParser {
         case TokenKind.Newline:
           this._pushAccumulatedPlainText(tokenReader);
           tokenReader.readToken();
-          this._pushParagraphNode(new DocSoftBreak({
+          this._pushNode(new DocSoftBreak({
             parsed: true,
             softBreakExcerpt: tokenReader.extractAccumulatedSequence()
           }));
           break;
         case TokenKind.Backslash:
           this._pushAccumulatedPlainText(tokenReader);
-          this._pushParagraphNode(this._parseBackslashEscape(tokenReader));
+          this._pushNode(this._parseBackslashEscape(tokenReader));
           break;
         case TokenKind.AtSign:
           this._pushAccumulatedPlainText(tokenReader);
@@ -112,32 +112,32 @@ export class NodeParser {
             if (docComment.inheritDocTag === undefined) {
               this._parserContext.docComment.inheritDocTag = docNode;
             } else {
-              this._pushParagraphNode(this._backtrackAndCreateErrorRange(tokenReader, marker, tagEndMarker,
+              this._pushNode(this._backtrackAndCreateErrorRange(tokenReader, marker, tagEndMarker,
                 'A doc comment cannot have more than one @inheritDoc tag')
               );
             }
           } else {
-            this._pushParagraphNode(docNode);
+            this._pushNode(docNode);
           }
           break;
         }
         case TokenKind.RightCurlyBracket:
           this._pushAccumulatedPlainText(tokenReader);
-          this._pushParagraphNode(this._createError(tokenReader,
+          this._pushNode(this._createError(tokenReader,
             'The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag'));
           break;
         case TokenKind.LessThan:
           this._pushAccumulatedPlainText(tokenReader);
           // Look ahead two tokens to see if this is "<a>" or "</a>".
           if (tokenReader.peekTokenAfterKind() === TokenKind.Slash) {
-            this._pushParagraphNode(this._parseHtmlEndTag(tokenReader));
+            this._pushNode(this._parseHtmlEndTag(tokenReader));
           } else {
-            this._pushParagraphNode(this._parseHtmlStartTag(tokenReader));
+            this._pushNode(this._parseHtmlStartTag(tokenReader));
           }
           break;
         case TokenKind.GreaterThan:
           this._pushAccumulatedPlainText(tokenReader);
-          this._pushParagraphNode(this._createError(tokenReader,
+          this._pushNode(this._createError(tokenReader,
             'The ">" character should be escaped using a backslash to avoid confusion with an HTML tag'));
           break;
         case TokenKind.Backtick:
@@ -145,9 +145,9 @@ export class NodeParser {
 
           if (tokenReader.peekTokenAfterKind() === TokenKind.Backtick
             && tokenReader.peekTokenAfterAfterKind() === TokenKind.Backtick) {
-            this._pushSectionNode(this._parseFencedCode(tokenReader));
+            this._pushNode(this._parseFencedCode(tokenReader));
           } else {
-            this._pushParagraphNode(this._parseCodeSpan(tokenReader));
+            this._pushNode(this._parseCodeSpan(tokenReader));
           }
           break;
         default:
@@ -229,7 +229,7 @@ export class NodeParser {
 
   private _pushAccumulatedPlainText(tokenReader: TokenReader): void {
     if (!tokenReader.isAccumulatedSequenceEmpty()) {
-      this._pushParagraphNode(new DocPlainText({
+      this._pushNode(new DocPlainText({
         parsed: true,
         textExcerpt: tokenReader.extractAccumulatedSequence()
       }));
@@ -243,7 +243,7 @@ export class NodeParser {
 
     const parsedBlockTag: DocNode = this._parseBlockTag(tokenReader);
     if (parsedBlockTag.kind !== DocNodeKind.BlockTag) {
-      this._pushParagraphNode(parsedBlockTag);
+      this._pushNode(parsedBlockTag);
       return;
     }
 
@@ -291,7 +291,7 @@ export class NodeParser {
       }
     }
 
-    this._pushParagraphNode(docBlockTag);
+    this._pushNode(docBlockTag);
   }
 
   private _addBlockToDocComment(block: DocBlock): void {
@@ -395,12 +395,12 @@ export class NodeParser {
     });
   }
 
-  private _pushParagraphNode(docNode: DocNode): void {
-    this._currentSection.appendNodeInParagraph(docNode);
-  }
-
-  private _pushSectionNode(docNode: DocNode): void {
-    this._currentSection.appendNode(docNode);
+  private _pushNode(docNode: DocNode): void {
+    if (DocSection.isAllowedChildNode(docNode)) {
+      this._currentSection.appendNode(docNode);
+    } else {
+      this._currentSection.appendNodeInParagraph(docNode);
+    }
   }
 
   private _parseBackslashEscape(tokenReader: TokenReader): DocNode {

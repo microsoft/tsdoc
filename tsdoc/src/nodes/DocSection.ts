@@ -36,17 +36,24 @@ export class DocSection extends DocNodeContainer {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritDoc DocNode.isAllowedChildNode}
    * @override
    */
-  public isAllowedChildNode(docNode: DocNode): boolean {
+  public static isAllowedChildNode(docNode: DocNode): boolean {
     switch (docNode.kind) {
       case DocNodeKind.FencedCode:
-      case DocNodeKind.ErrorText:
       case DocNodeKind.Paragraph:
         return true;
     }
     return false;
+  }
+
+  /**
+   * {@inheritDoc}
+   * @override
+   */
+  public isAllowedChildNode(docNode: DocNode): boolean {
+    return DocSection.isAllowedChildNode(docNode);
   }
 
   /**
