@@ -2,6 +2,7 @@ import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } fr
 import { DocMemberReference } from './DocMemberReference';
 import { TokenSequence } from '../parser/TokenSequence';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
+import { StringBuilder } from '../emitters/StringBuilder';
 
 /**
  * Constructor parameters for {@link DocDeclarationReference}.
@@ -129,6 +130,17 @@ export class DocDeclarationReference extends DocNode {
     return this._memberReferences;
   }
 
+  /**
+   * Generates the TSDoc representation of this declaration reference.
+   */
+  public emitAsTsdoc(): string {
+    const stringBuilder: StringBuilder = new StringBuilder();
+    // tslint:disable-next-line:no-use-before-declare
+    const emitter: TSDocEmitter = new TSDocEmitter();
+    emitter.renderDeclarationReference(stringBuilder, this);
+    return stringBuilder.toString();
+  }
+
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
@@ -140,3 +152,6 @@ export class DocDeclarationReference extends DocNode {
     ];
   }
 }
+
+// Circular reference
+import { TSDocEmitter } from '../emitters/TSDocEmitter';

@@ -63,13 +63,25 @@ export class TSDocEmitter {
   private _hangingParagraph: boolean = false;
 
   public renderComment(output: StringBuilder, docComment: DocComment): void {
+    this._renderCompleteObject(output, docComment);
+  }
+
+  public renderHtmlTag(output: StringBuilder, htmlTag: DocHtmlStartTag | DocHtmlEndTag): void {
+    this._renderCompleteObject(output, htmlTag);
+  }
+
+  public renderDeclarationReference(output: StringBuilder, declarationReference: DocDeclarationReference): void {
+    this._renderCompleteObject(output, declarationReference);
+  }
+
+  private _renderCompleteObject(output: StringBuilder, docNode: DocNode): void {
     this._output = output;
 
     this._lineState = LineState.Closed;
     this._previousLineHadContent = false;
     this._hangingParagraph = false;
 
-    this._renderNode(docComment);
+    this._renderNode(docNode);
 
     this._writeEnd();
   }

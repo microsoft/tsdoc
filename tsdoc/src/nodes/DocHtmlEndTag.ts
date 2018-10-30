@@ -1,6 +1,7 @@
 import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
+import { StringBuilder } from '../emitters/StringBuilder';
 
 /**
  * Constructor parameters for {@link DocHtmlEndTag}.
@@ -82,6 +83,18 @@ export class DocHtmlEndTag extends DocNode {
     return this._name;
   }
 
+  /**
+   * Generates the HTML for this tag.
+   */
+  public emitAsHtml(): string {
+    // NOTE: Here we're assuming that the TSDoc representation for a tag is also a valid HTML expression.
+    const stringBuilder: StringBuilder = new StringBuilder();
+    // tslint:disable-next-line:no-use-before-declare
+    const emitter: TSDocEmitter = new TSDocEmitter();
+    emitter.renderHtmlTag(stringBuilder, this);
+    return stringBuilder.toString();
+  }
+
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
@@ -91,5 +104,7 @@ export class DocHtmlEndTag extends DocNode {
       this._closingDelimiterExcerpt
     ];
   }
-
 }
+
+// Circular reference
+import { TSDocEmitter } from '../emitters/TSDocEmitter';
