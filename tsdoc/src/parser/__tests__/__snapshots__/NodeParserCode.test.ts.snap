@@ -520,23 +520,18 @@ Object {
                   },
                 ],
               },
-            ],
-          },
-          Object {
-            "errorLocation": "[c][c][c]",
-            "errorLocationPrecedingToken": "   ",
-            "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
-            "kind": "ErrorText",
-            "nodes": Array [
               Object {
-                "kind": "Excerpt: ErrorText",
-                "nodeExcerpt": "[c][c][c]",
+                "errorLocation": "[c][c][c]",
+                "errorLocationPrecedingToken": "   ",
+                "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[c][c][c]",
+                  },
+                ],
               },
-            ],
-          },
-          Object {
-            "kind": "Paragraph",
-            "nodes": Array [
               Object {
                 "kind": "SoftBreak",
                 "nodes": Array [
@@ -602,23 +597,18 @@ Object {
                   },
                 ],
               },
-            ],
-          },
-          Object {
-            "errorLocation": "[c][c][c]",
-            "errorLocationPrecedingToken": "a",
-            "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
-            "kind": "ErrorText",
-            "nodes": Array [
               Object {
-                "kind": "Excerpt: ErrorText",
-                "nodeExcerpt": "[c][c][c]",
+                "errorLocation": "[c][c][c]",
+                "errorLocationPrecedingToken": "a",
+                "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[c][c][c]",
+                  },
+                ],
               },
-            ],
-          },
-          Object {
-            "kind": "Paragraph",
-            "nodes": Array [
               Object {
                 "kind": "SoftBreak",
                 "nodes": Array [
@@ -675,24 +665,19 @@ Object {
                   },
                 ],
               },
-            ],
-          },
-          Object {
-            "errorLocation": "",
-            "errorLocationPrecedingToken": "
-",
-            "errorMessage": "Error parsing code fence: Missing closing delimiter",
-            "kind": "ErrorText",
-            "nodes": Array [
               Object {
-                "kind": "Excerpt: ErrorText",
-                "nodeExcerpt": "[c][c][c]",
+                "errorLocation": "",
+                "errorLocationPrecedingToken": "
+",
+                "errorMessage": "Error parsing code fence: Missing closing delimiter",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[c][c][c]",
+                  },
+                ],
               },
-            ],
-          },
-          Object {
-            "kind": "Paragraph",
-            "nodes": Array [
               Object {
                 "kind": "SoftBreak",
                 "nodes": Array [
@@ -749,24 +734,19 @@ Object {
                   },
                 ],
               },
-            ],
-          },
-          Object {
-            "errorLocation": "",
-            "errorLocationPrecedingToken": "
-",
-            "errorMessage": "Error parsing code fence: Missing closing delimiter",
-            "kind": "ErrorText",
-            "nodes": Array [
               Object {
-                "kind": "Excerpt: ErrorText",
-                "nodeExcerpt": "[c][c][c]",
+                "errorLocation": "",
+                "errorLocationPrecedingToken": "
+",
+                "errorMessage": "Error parsing code fence: Missing closing delimiter",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[c][c][c]",
+                  },
+                ],
               },
-            ],
-          },
-          Object {
-            "kind": "Paragraph",
-            "nodes": Array [
               Object {
                 "kind": "PlainText",
                 "nodes": Array [
@@ -833,23 +813,18 @@ Object {
                   },
                 ],
               },
-            ],
-          },
-          Object {
-            "errorLocation": "[c]",
-            "errorLocationPrecedingToken": " ",
-            "errorMessage": "Error parsing code fence: The language specifier cannot contain backtick characters",
-            "kind": "ErrorText",
-            "nodes": Array [
               Object {
-                "kind": "Excerpt: ErrorText",
-                "nodeExcerpt": "[c][c][c]",
+                "errorLocation": "[c]",
+                "errorLocationPrecedingToken": " ",
+                "errorMessage": "Error parsing code fence: The language specifier cannot contain backtick characters",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[c][c][c]",
+                  },
+                ],
               },
-            ],
-          },
-          Object {
-            "kind": "Paragraph",
-            "nodes": Array [
               Object {
                 "kind": "PlainText",
                 "nodes": Array [
@@ -859,23 +834,18 @@ Object {
                   },
                 ],
               },
-            ],
-          },
-          Object {
-            "errorLocation": "[c][c][c]",
-            "errorLocationPrecedingToken": " ",
-            "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
-            "kind": "ErrorText",
-            "nodes": Array [
               Object {
-                "kind": "Excerpt: ErrorText",
-                "nodeExcerpt": "[c][c][c]",
+                "errorLocation": "[c][c][c]",
+                "errorLocationPrecedingToken": " ",
+                "errorMessage": "The opening backtick for a code fence must appear at the start of the line",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[c][c][c]",
+                  },
+                ],
               },
-            ],
-          },
-          Object {
-            "kind": "Paragraph",
-            "nodes": Array [
               Object {
                 "kind": "SoftBreak",
                 "nodes": Array [

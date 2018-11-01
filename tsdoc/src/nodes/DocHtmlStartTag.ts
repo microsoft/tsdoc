@@ -2,6 +2,7 @@ import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } fr
 import { DocHtmlAttribute } from './DocHtmlAttribute';
 import { TokenSequence } from '../parser/TokenSequence';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
+import { StringBuilder } from '../emitters/StringBuilder';
 
 /**
  * Constructor parameters for {@link DocHtmlStartTag}.
@@ -132,6 +133,18 @@ export class DocHtmlStartTag extends DocNode {
     return this._spacingAfterName;
   }
 
+  /**
+   * Generates the HTML for this tag.
+   */
+  public emitAsHtml(): string {
+    // NOTE: Here we're assuming that the TSDoc representation for a tag is also a valid HTML expression.
+    const stringBuilder: StringBuilder = new StringBuilder();
+    // tslint:disable-next-line:no-use-before-declare
+    const emitter: TSDocEmitter = new TSDocEmitter();
+    emitter.renderHtmlTag(stringBuilder, this);
+    return stringBuilder.toString();
+  }
+
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
@@ -144,3 +157,6 @@ export class DocHtmlStartTag extends DocNode {
   }
 
 }
+
+// Circular reference
+import { TSDocEmitter } from '../emitters/TSDocEmitter';
