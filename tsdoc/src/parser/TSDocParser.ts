@@ -3,7 +3,7 @@ import { ParserContext } from './ParserContext';
 import { LineExtractor } from './LineExtractor';
 import { Tokenizer } from './Tokenizer';
 import { NodeParser } from './NodeParser';
-import { TSDocParserConfiguration } from './TSDocParserConfiguration';
+import { TSDocConfiguration } from './TSDocConfiguration';
 import { ParagraphSplitter } from './ParagraphSplitter';
 
 /**
@@ -13,13 +13,13 @@ export class TSDocParser {
   /**
    * The configuration that was provided for the TSDocParser.
    */
-  public readonly configuration: TSDocParserConfiguration;
+  public readonly configuration: TSDocConfiguration;
 
-  public constructor(configuration?: TSDocParserConfiguration) {
+  public constructor(configuration?: TSDocConfiguration) {
     if (configuration) {
       this.configuration = configuration;
     } else {
-      this.configuration = new TSDocParserConfiguration();
+      this.configuration = new TSDocConfiguration();
     }
   }
 

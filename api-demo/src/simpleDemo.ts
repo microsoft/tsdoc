@@ -17,7 +17,7 @@ export function simpleDemo(): void {
 
   const inputBuffer: string = fs.readFileSync(inputFilename).toString();
 
-  // NOTE: Optionally, can provide a TSDocParserConfiguration here
+  // NOTE: Optionally, can provide a TSDocConfiguration here
   const tsdocParser: TSDocParser = new TSDocParser();
   const parserContext: ParserContext = tsdocParser.parseString(inputBuffer);
 

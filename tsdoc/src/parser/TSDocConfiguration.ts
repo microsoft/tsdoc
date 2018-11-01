@@ -2,7 +2,7 @@ import { StandardTags } from '../details/StandardTags';
 import { TSDocTagDefinition } from './TSDocTagDefinition';
 
 /**
- * Part of the {@link TSDocParserConfiguration} object.
+ * Part of the {@link TSDocConfiguration} object.
  */
 export class TSDocParserValidationConfiguration {
   /**
@@ -11,7 +11,7 @@ export class TSDocParserValidationConfiguration {
    *
    * @remarks
    * Normally the parser will issue errors when it encounters tag names that do not
-   * have a corresponding definition in {@link TSDocParserConfiguration.tagDefinitions}.
+   * have a corresponding definition in {@link TSDocConfiguration.tagDefinitions}.
    * This helps to catch common mistakes such as a misspelled tag.
    *
    * @defaultValue `false`
@@ -30,7 +30,7 @@ export class TSDocParserValidationConfiguration {
    *
    * For a better experience, you can tell the parser which tags you support, and then it
    * will issue warnings wherever unsupported tags are used.  This is done using
-   * {@link TSDocParserConfiguration.setSupportForTag}.  Note that calling that function
+   * {@link TSDocConfiguration.setSupportForTag}.  Note that calling that function
    * automatically sets `reportUnsupportedTags` to true.
    *
    * @defaultValue `false`
@@ -41,7 +41,7 @@ export class TSDocParserValidationConfiguration {
 /**
  * Configuration for the TSDocParser.
  */
-export class TSDocParserConfiguration {
+export class TSDocConfiguration {
   private readonly _tagDefinitions: TSDocTagDefinition[];
   private readonly _tagDefinitionsByName: Map<string, TSDocTagDefinition>;
   private readonly _supportedTagDefinitions: Set<TSDocTagDefinition>;
@@ -65,7 +65,7 @@ export class TSDocParserConfiguration {
   }
 
   /**
-   * Returns the subset of {@link TSDocParserConfiguration.tagDefinitions}
+   * Returns the subset of {@link TSDocConfiguration.tagDefinitions}
    * that are supported in this configuration.
    *
    * @remarks
@@ -101,7 +101,7 @@ export class TSDocParserConfiguration {
 
   /**
    * Define a new TSDoc tag to be recognized by the TSDocParser, and mark it as unsupported.
-   * Use {@link TSDocParserConfiguration.setSupportForTag} to mark it as supported.
+   * Use {@link TSDocConfiguration.setSupportForTag} to mark it as supported.
    *
    * @remarks
    * If a tag is "defined" this means that the parser recognizes it and understands its syntax.
@@ -124,10 +124,10 @@ export class TSDocParserConfiguration {
   }
 
   /**
-   * Calls {@link TSDocParserConfiguration.addTagDefinition} for a list of definitions,
+   * Calls {@link TSDocConfiguration.addTagDefinition} for a list of definitions,
    * and optionally marks them as supported.
    * @param tagDefinitions - the definitions to be added
-   * @param supported - if specified, calls the {@link TSDocParserConfiguration.setSupportForTag}
+   * @param supported - if specified, calls the {@link TSDocConfiguration.setSupportForTag}
    *    method to mark the definitions as supported or unsupported
    */
   public addTagDefinitions(tagDefinitions: ReadonlyArray<TSDocTagDefinition>,
@@ -173,7 +173,7 @@ export class TSDocParserConfiguration {
   }
 
   /**
-   * Calls {@link TSDocParserConfiguration.setSupportForTag} for multiple tag definitions.
+   * Calls {@link TSDocConfiguration.setSupportForTag} for multiple tag definitions.
    */
   public setSupportForTags(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported: boolean): void {
     for (const tagDefinition of tagDefinitions) {
@@ -189,6 +189,6 @@ export class TSDocParserConfiguration {
         return;
       }
     }
-    throw new Error('The specified TSDocTagDefinition is not defined for this TSDocParserConfiguration');
+    throw new Error('The specified TSDocTagDefinition is not defined for this TSDocConfiguration');
   }
 }

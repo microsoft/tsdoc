@@ -38,7 +38,7 @@ import { TokenSequence } from './TokenSequence';
 import { TokenReader } from './TokenReader';
 import { StringChecks } from './StringChecks';
 import { ModifierTagSet } from '../details/ModifierTagSet';
-import { TSDocParserConfiguration } from './TSDocParserConfiguration';
+import { TSDocConfiguration } from './TSDocConfiguration';
 import {
   TSDocTagDefinition,
   TSDocTagSyntaxKind
@@ -238,7 +238,7 @@ export class NodeParser {
 
   private _parseAndPushBlock(tokenReader: TokenReader): void {
     const docComment: DocComment = this._parserContext.docComment;
-    const configuration: TSDocParserConfiguration = this._parserContext.configuration;
+    const configuration: TSDocConfiguration = this._parserContext.configuration;
     const modifierTagSet: ModifierTagSet = docComment.modifierTagSet;
 
     const parsedBlockTag: DocNode = this._parseBlockTag(tokenReader);

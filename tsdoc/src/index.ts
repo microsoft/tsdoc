@@ -16,7 +16,7 @@ export { TextRange, ITextLocation } from './parser/TextRange';
 export { Token, TokenKind } from './parser/Token';
 export { TokenSequence, ITokenSequenceParameters } from './parser/TokenSequence';
 export { TSDocParser } from './parser/TSDocParser';
-export { TSDocParserConfiguration, TSDocParserValidationConfiguration } from './parser/TSDocParserConfiguration';
+export { TSDocConfiguration, TSDocParserValidationConfiguration } from './parser/TSDocConfiguration';
 export {
   ITSDocTagDefinitionParameters,
   TSDocTagSyntaxKind,
