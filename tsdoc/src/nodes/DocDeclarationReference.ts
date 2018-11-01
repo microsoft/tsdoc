@@ -56,24 +56,28 @@ export class DocDeclarationReference extends DocNode {
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.packageNameExcerpt) {
         this._packageNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.DeclarationReference_PackageName,
           content: parameters.packageNameExcerpt
         });
       }
       if (parameters.importPathExcerpt) {
         this._importPathExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.DeclarationReference_ImportPath,
           content: parameters.importPathExcerpt
         });
       }
       if (parameters.importHashExcerpt ) {
         this._importHashExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.DeclarationReference_ImportHash,
           content: parameters.importHashExcerpt
         });
       }
       if (parameters.spacingAfterImportHashExcerpt ) {
         this._spacingAfterImportHashExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterImportHashExcerpt
         });

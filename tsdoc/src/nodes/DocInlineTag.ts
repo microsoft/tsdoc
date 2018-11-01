@@ -48,6 +48,7 @@ export class DocInlineTag extends DocInlineTagBase {
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.tagContentExcerpt) {
         this._tagContentExcerpt  = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.InlineTag_TagContent,
           content: parameters.tagContentExcerpt
         });

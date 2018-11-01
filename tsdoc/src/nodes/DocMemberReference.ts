@@ -90,12 +90,14 @@ export class DocMemberReference extends DocNode {
       this._hasDot = !!parameters.dotExcerpt;
       if (parameters.dotExcerpt) {
         this._dotExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.MemberReference_Dot,
           content: parameters.dotExcerpt
         });
       }
       if (parameters.spacingAfterDotExcerpt) {
         this._spacingAfterDotExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterDotExcerpt
         });
@@ -103,12 +105,14 @@ export class DocMemberReference extends DocNode {
 
       if (parameters.leftParenthesisExcerpt) {
         this._leftParenthesisExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.MemberReference_LeftParenthesis,
           content: parameters.leftParenthesisExcerpt
         });
       }
       if (parameters.spacingAfterLeftParenthesisExcerpt) {
         this._spacingAfterLeftParenthesisExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterLeftParenthesisExcerpt
         });
@@ -116,6 +120,7 @@ export class DocMemberReference extends DocNode {
 
       if (parameters.spacingAfterMemberExcerpt) {
         this._spacingAfterMemberExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterMemberExcerpt
         });
@@ -124,11 +129,13 @@ export class DocMemberReference extends DocNode {
       if (parameters.colonExcerpt) {
         this._colonExcerpt = new DocExcerpt({
           excerptKind: ExcerptKind.MemberReference_Colon,
+          configuration: this.configuration,
           content: parameters.colonExcerpt
         });
       }
       if (parameters.spacingAfterColonExcerpt) {
         this._spacingAfterColonExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterColonExcerpt
         });
@@ -136,6 +143,7 @@ export class DocMemberReference extends DocNode {
 
       if (parameters.spacingAfterSelectorExcerpt) {
         this._spacingAfterSelectorExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterSelectorExcerpt
         });
@@ -143,12 +151,14 @@ export class DocMemberReference extends DocNode {
 
       if (parameters.rightParenthesisExcerpt) {
         this._rightParenthesisExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.MemberReference_RightParenthesis,
           content: parameters.rightParenthesisExcerpt
         });
       }
       if (parameters.spacingAfterRightParenthesisExcerpt) {
         this._spacingAfterRightParenthesisExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterRightParenthesisExcerpt
         });

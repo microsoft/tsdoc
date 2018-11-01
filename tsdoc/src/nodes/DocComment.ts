@@ -96,15 +96,15 @@ export class DocComment extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters?: IDocCommentParameters) {
-    super(parameters || {});
+  public constructor(parameters: IDocCommentParameters) {
+    super(parameters);
 
-    this.summarySection = new DocSection();
+    this.summarySection = new DocSection({ configuration: this.configuration });
     this.remarksBlock = undefined;
     this.privateRemarks = undefined;
     this.deprecatedBlock = undefined;
-    this.params = new DocParamCollection();
-    this.typeParams = new DocParamCollection();
+    this.params = new DocParamCollection({ configuration: this.configuration });
+    this.typeParams = new DocParamCollection({ configuration: this.configuration });
     this.returnsBlock = undefined;
 
     this.modifierTagSet = new StandardModifierTagSet();

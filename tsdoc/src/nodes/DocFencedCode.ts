@@ -68,11 +68,13 @@ export class DocFencedCode extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingFenceExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.FencedCode_OpeningFence,
         content: parameters.openingFenceExcerpt
       });
       if (parameters.spacingAfterOpeningFenceExcerpt) {
         this._spacingAfterOpeningFenceExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterOpeningFenceExcerpt
         });
@@ -80,34 +82,40 @@ export class DocFencedCode extends DocNode {
 
       if (parameters.languageExcerpt) {
         this._languageExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.FencedCode_Language,
           content: parameters.languageExcerpt
         });
       }
       if (parameters.spacingAfterLanguageExcerpt) {
         this._spacingAfterLanguageExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterLanguageExcerpt
         });
       }
 
       this._codeExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.FencedCode_Code,
         content: parameters.codeExcerpt
       });
 
       if (parameters.spacingBeforeClosingFenceExcerpt) {
         this._spacingBeforeClosingFenceExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingBeforeClosingFenceExcerpt
         });
       }
       this._closingFenceExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.FencedCode_ClosingFence,
         content: parameters.closingFenceExcerpt
       });
       if (parameters.spacingAfterClosingFenceExcerpt) {
         this._spacingAfterClosingFenceExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterClosingFenceExcerpt
         });

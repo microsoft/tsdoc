@@ -23,8 +23,8 @@ export class DocParamCollection extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters?: IDocParamCollectionParameters) {
-    super(parameters || {});
+  public constructor(parameters: IDocParamCollectionParameters) {
+    super(parameters);
   }
 
   /**

@@ -47,14 +47,17 @@ export class DocCodeSpan extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.CodeSpan_OpeningDelimiter,
         content: parameters.openingDelimiterExcerpt
       });
       this._codeExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.CodeSpan_Code,
         content: parameters.codeExcerpt
       });
       this._closingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.CodeSpan_ClosingDelimiter,
         content: parameters.closingDelimiterExcerpt
       });

@@ -43,6 +43,7 @@ export class DocSoftBreak extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._softBreakExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.SoftBreak,
         content: parameters.softBreakExcerpt
       });

@@ -34,6 +34,7 @@ export class DocErrorText extends DocNode {
     super(parameters);
 
     this._textExcerpt = new DocExcerpt({
+      configuration: this.configuration,
       excerptKind: ExcerptKind.ErrorText,
       content: parameters.textExcerpt
     });

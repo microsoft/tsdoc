@@ -42,6 +42,7 @@ export class DocBlockTag extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._tagNameExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.BlockTag,
         content: parameters.tagNameExcerpt
       });

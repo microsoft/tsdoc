@@ -49,7 +49,7 @@ export class ParserContext {
     this.configuration = configuration;
     this.sourceRange = sourceRange;
 
-    this.docComment = new DocComment();
+    this.docComment = new DocComment({ configuration: this.configuration });
 
     this.log = new ParserMessageLog();
   }

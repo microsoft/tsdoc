@@ -49,22 +49,26 @@ export class DocHtmlEndTag extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlEndTag_OpeningDelimiter,
         content: parameters.openingDelimiterExcerpt
       });
       this._nameExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlEndTag_Name,
         content: parameters.nameExcerpt
       });
 
       if (parameters.spacingAfterNameExcerpt) {
         this._spacingAfterNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterNameExcerpt
         });
       }
 
       this._closingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlEndTag_ClosingDelimiter,
         content: parameters.closingDelimiterExcerpt
       });

@@ -71,6 +71,7 @@ export class TrimSpacesTransform {
             // TODO: We should probably track the accumulatedNodes somehow, e.g. so we can map them back to the
             // original excerpts.  But we need a developer scenario before we can design this API.
             transformedNodes.push(new DocPlainText({
+              configuration: docParagraph.configuration,
               text: accumulatedTextChunks.join('')
             }));
             accumulatedTextChunks.length = 0;
@@ -85,13 +86,14 @@ export class TrimSpacesTransform {
     // Push the accumulated text
     if (accumulatedTextChunks.length > 0) {
       transformedNodes.push(new DocPlainText({
+        configuration: docParagraph.configuration,
         text: accumulatedTextChunks.join('')
       }));
       accumulatedTextChunks.length = 0;
       accumulatedNodes.length = 0;
     }
 
-    const transformedParagraph: DocParagraph = new DocParagraph({ });
+    const transformedParagraph: DocParagraph = new DocParagraph({ configuration: docParagraph.configuration });
     transformedParagraph.appendNodes(transformedNodes);
     return transformedParagraph;
   }

@@ -49,6 +49,7 @@ export class DocEscapedText extends DocNode {
     this._escapeStyle = parameters.escapeStyle;
 
     this._encodedTextExcerpt = new DocExcerpt({
+      configuration: this.configuration,
       excerptKind: ExcerptKind.EscapedText,
       content: parameters.encodedTextExcerpt
     });

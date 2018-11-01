@@ -65,33 +65,39 @@ export class DocHtmlAttribute extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._nameExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlAttribute_Name,
         content: parameters.nameExcerpt
       });
       if (parameters.spacingAfterNameExcerpt) {
         this._spacingAfterNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterNameExcerpt
         });
       }
 
       this._equalsExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlAttribute_Equals,
         content: parameters.equalsExcerpt
       });
       if (parameters.spacingAfterEqualsExcerpt) {
         this._spacingAfterEqualsExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterEqualsExcerpt
         });
       }
 
       this._valueExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlAttribute_Value,
         content: parameters.valueExcerpt
       });
       if (parameters.spacingAfterValueExcerpt) {
         this._spacingAfterValueExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterValueExcerpt
         });

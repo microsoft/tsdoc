@@ -52,18 +52,21 @@ export class DocMemberSymbol extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._leftBracketExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.DocMemberSymbol_LeftBracket,
         content: parameters.leftBracketExcerpt
       });
 
       if (parameters.spacingAfterLeftBracketExcerpt) {
         this._spacingAfterLeftBracketExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterLeftBracketExcerpt
         });
       }
 
       this._rightBracketExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.DocMemberSymbol_RightBracket,
         content: parameters.rightBracketExcerpt
       });

@@ -84,6 +84,7 @@ export class DocMemberSelector extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._selectorExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.MemberSelector,
         content: parameters.selectorExcerpt
       });

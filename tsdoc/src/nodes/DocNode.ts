@@ -1,3 +1,5 @@
+import { TSDocConfiguration } from '../parser/TSDocConfiguration';
+
 /**
  * Indicates the type of {@link DocNode}.
  *
@@ -44,6 +46,7 @@ export const enum DocNodeKind {
  * source file, does create DocExcerpt child nodes, and generally uses the {@link IDocNodeParsedParameters} hierarchy.
  */
 export interface IDocNodeParameters {
+  configuration: TSDocConfiguration;
 }
 
 /**
@@ -56,6 +59,8 @@ export interface IDocNodeParameters {
  * source file, does create DocExcerpt child nodes, and generally uses the `IDocNodeParsedParameters` hierarchy.
  */
 export interface IDocNodeParsedParameters {
+  configuration: TSDocConfiguration;
+
   /**
    * This is a marker used by {@link DocNode.isParsedParameters} to determine whether the constructor was
    * invoked using `IDocNodeParameters` (builder scenario) or `IDocNodeParsedParameters` (parser scenario).
@@ -72,8 +77,10 @@ export abstract class DocNode {
    */
   public abstract readonly kind: DocNodeKind | string;
 
+  public readonly configuration: TSDocConfiguration;
+
   public constructor(parameters: IDocNodeParameters | IDocNodeParsedParameters) {
-    // (abstract)
+    this.configuration = parameters.configuration;
   }
 
   /**

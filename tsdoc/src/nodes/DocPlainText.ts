@@ -44,6 +44,7 @@ export class DocPlainText extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._textExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.PlainText,
         content: parameters.textExcerpt
       });

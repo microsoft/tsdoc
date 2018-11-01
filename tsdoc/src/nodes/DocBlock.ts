@@ -34,7 +34,7 @@ export class DocBlock extends DocNode {
   public constructor(parameters: IDocBlockParameters | IDocBlockParsedParameters) {
     super(parameters);
     this._blockTag = parameters.blockTag;
-    this._content = new DocSection();
+    this._content = new DocSection({ configuration: this.configuration });
   }
 
   /**

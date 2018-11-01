@@ -31,8 +31,8 @@ export class DocSection extends DocNodeContainer {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters?: IDocSectionParameters | IDocSectionParsedParameters) {
-    super(parameters || {});
+  public constructor(parameters: IDocSectionParameters | IDocSectionParsedParameters) {
+    super(parameters);
   }
 
   /**
@@ -70,7 +70,7 @@ export class DocSection extends DocNodeContainer {
       }
     }
     if (!paragraphNode) {
-      paragraphNode = new DocParagraph({ });
+      paragraphNode = new DocParagraph({ configuration: this.configuration });
       this.appendNode(paragraphNode);
     }
 

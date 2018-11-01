@@ -54,18 +54,21 @@ export class DocMemberIdentifier extends DocNode {
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.leftQuoteExcerpt) {
         this._leftQuoteExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.MemberIdentifier_LeftQuote,
           content: parameters.leftQuoteExcerpt
         });
       }
 
       this._identifierExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.MemberIdentifier_Identifier,
         content: parameters.identifierExcerpt
       });
 
       if (parameters.rightQuoteExcerpt) {
         this._rightQuoteExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.MemberIdentifier_RightQuote,
           content: parameters.rightQuoteExcerpt
         });
