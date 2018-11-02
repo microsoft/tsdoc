@@ -38,10 +38,6 @@ export interface IDocLinkTagParsedParameters extends IDocInlineTagBaseParsedPara
  * Represents an `{@link}` tag.
  */
 export class DocLinkTag extends DocInlineTagBase {
-
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.LinkTag;
-
   private readonly _codeDestination: DocDeclarationReference | undefined;
 
   private _urlDestination: string | undefined;
@@ -111,6 +107,11 @@ export class DocLinkTag extends DocInlineTagBase {
       this._linkText = parameters.linkText;
     }
 
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.LinkTag;
   }
 
   /**

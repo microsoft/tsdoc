@@ -34,9 +34,6 @@ export interface IDocFencedCodeParsedParameters extends IDocNodeParsedParameters
  * can also specify a language for a syntax highlighter.
  */
 export class DocFencedCode extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.FencedCode;
-
   // The opening ``` delimiter and padding
   private readonly _openingFenceExcerpt: DocExcerpt | undefined;
 
@@ -124,6 +121,11 @@ export class DocFencedCode extends DocNode {
       this._code = parameters.code;
       this._language = parameters.language;
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.FencedCode;
   }
 
   /**

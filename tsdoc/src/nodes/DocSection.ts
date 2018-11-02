@@ -24,15 +24,17 @@ export interface IDocSectionParsedParameters extends IDocNodeContainerParsedPara
  * Represents a general block of rich text.
  */
 export class DocSection extends DocNodeContainer {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.Section;
-
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
   public constructor(parameters: IDocSectionParameters | IDocSectionParsedParameters) {
     super(parameters);
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.Section;
   }
 
   /**

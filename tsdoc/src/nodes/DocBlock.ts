@@ -21,9 +21,6 @@ export interface IDocBlockParsedParameters extends IDocNodeParsedParameters {
  * For example, an `@example` block.
  */
 export class DocBlock extends DocNode {
-  /** @override */
-  public readonly kind: DocNodeKind = DocNodeKind.Block;
-
   private readonly _blockTag: DocBlockTag;
   private readonly _content: DocSection;
 
@@ -35,6 +32,11 @@ export class DocBlock extends DocNode {
     super(parameters);
     this._blockTag = parameters.blockTag;
     this._content = new DocSection({ configuration: this.configuration });
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.Block;
   }
 
   /**

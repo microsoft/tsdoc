@@ -30,9 +30,6 @@ export interface IDocParamBlockParsedParameters extends IDocBlockParsedParameter
  * function parameter.
  */
 export class DocParamBlock extends DocBlock {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.ParamBlock;
-
   private readonly _spacingBeforeParameterNameExcerpt: DocExcerpt | undefined;
 
   private readonly _parameterName: string;
@@ -90,6 +87,11 @@ export class DocParamBlock extends DocBlock {
         });
       }
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.ParamBlock;
   }
 
   /**

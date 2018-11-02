@@ -33,9 +33,6 @@ export interface IDocMemberSymbolParsedParameters extends IDocNodeParsedParamete
  * of the class.
  */
 export class DocMemberSymbol extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.MemberSymbol;
-
   private readonly _leftBracketExcerpt: DocExcerpt | undefined;
   private readonly _spacingAfterLeftBracketExcerpt: DocExcerpt | undefined;
 
@@ -73,6 +70,11 @@ export class DocMemberSymbol extends DocNode {
     }
 
     this._symbolReference = parameters.symbolReference;
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.MemberSymbol;
   }
 
   /**

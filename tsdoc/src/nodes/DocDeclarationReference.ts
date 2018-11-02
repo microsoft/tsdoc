@@ -32,9 +32,6 @@ export interface IDocDeclarationReferenceParsedParameters extends IDocNodeParsed
  * or `{@inheritDoc}` that need to refer to another declaration.
  */
 export class DocDeclarationReference extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.DeclarationReference;
-
   private _packageName: string | undefined;
   private readonly _packageNameExcerpt: DocExcerpt | undefined;
 
@@ -91,6 +88,11 @@ export class DocDeclarationReference extends DocNode {
     if (parameters.memberReferences) {
       this._memberReferences.push(...parameters.memberReferences);
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.DeclarationReference;
   }
 
   /**

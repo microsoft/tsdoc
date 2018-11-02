@@ -29,9 +29,6 @@ export interface IDocSoftBreakParsedParameters extends IDocNodeParsedParameters 
  * two empty lines (because that could start a new CommonMark paragraph).
  */
 export class DocSoftBreak extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.SoftBreak;
-
   private readonly _softBreakExcerpt: DocExcerpt | undefined;
 
   /**
@@ -48,6 +45,11 @@ export class DocSoftBreak extends DocNode {
         content: parameters.softBreakExcerpt
       });
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.SoftBreak;
   }
 
   /** @override */

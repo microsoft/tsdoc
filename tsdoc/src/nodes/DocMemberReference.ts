@@ -52,9 +52,6 @@ export interface IDocMemberReferenceParsedParameters extends IDocNodeParsedParam
  * `ui`, `.controls`, and `.Button`, and `.(render:static)`.
  */
 export class DocMemberReference extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.MemberReference;
-
   // The "." token if unless this was the member reference in the chain
   private readonly _hasDot: boolean;
   private readonly _dotExcerpt: DocExcerpt | undefined;
@@ -170,6 +167,11 @@ export class DocMemberReference extends DocNode {
     this._memberIdentifier = parameters.memberIdentifier;
     this._memberSymbol = parameters.memberSymbol;
     this._selector = parameters.selector;
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.MemberReference;
   }
 
   /**

@@ -22,9 +22,6 @@ export interface IDocBlockTagParsedParameters extends IDocNodeParsedParameters {
  * Represents a TSDoc block tag such as `@param` or `@public`.
  */
 export class DocBlockTag extends DocNode {
-  /** @override */
-  public readonly kind: DocNodeKind = DocNodeKind.BlockTag;
-
   private readonly _tagName: string;
   private readonly _tagNameWithUpperCase: string;
   private readonly _tagNameExcerpt: DocExcerpt | undefined;
@@ -47,6 +44,11 @@ export class DocBlockTag extends DocNode {
         content: parameters.tagNameExcerpt
       });
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.BlockTag;
   }
 
   /**

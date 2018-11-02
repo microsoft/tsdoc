@@ -33,9 +33,6 @@ export interface IDocHtmlAttributeParsedParameters extends IDocNodeParsedParamet
  * Example: `href="#"` inside `<a href="#" />`
  */
 export class DocHtmlAttribute extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.HtmlAttribute;
-
   // The attribute name
   private _name: string | undefined;
   private readonly _nameExcerpt: DocExcerpt | undefined;
@@ -112,6 +109,11 @@ export class DocHtmlAttribute extends DocNode {
       this._value = parameters.value;
       this._spacingAfterValue = parameters.spacingAfterValue;
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.HtmlAttribute;
   }
 
   /**

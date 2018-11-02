@@ -36,9 +36,6 @@ export interface IDocHtmlStartTagParsedParameters extends IDocNodeParsedParamete
  * Example: `<a href="#" />`
  */
 export class DocHtmlStartTag extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.HtmlStartTag;
-
   // The "<" delimiter
   private readonly _openingDelimiterExcerpt: DocExcerpt | undefined;
 
@@ -97,6 +94,11 @@ export class DocHtmlStartTag extends DocNode {
     this._htmlAttributes.push(...parameters.htmlAttributes);
 
     this._selfClosingTag = parameters.selfClosingTag;
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.HtmlStartTag;
   }
 
   /**

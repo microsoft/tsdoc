@@ -29,9 +29,6 @@ export class DocPlainText extends DocNode {
   // to interpret a lone "\r" as a newline
   private static readonly _newlineCharacterRegExp: RegExp = /[\n]/;
 
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.PlainText;
-
   private _text: string | undefined;
   private readonly _textExcerpt: DocExcerpt | undefined;
 
@@ -56,6 +53,11 @@ export class DocPlainText extends DocNode {
 
       this._text = parameters.text;
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.PlainText;
   }
 
   /**

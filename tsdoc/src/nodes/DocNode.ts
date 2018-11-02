@@ -72,16 +72,17 @@ export interface IDocNodeParsedParameters {
  * The base class for the parser's Abstract Syntax Tree nodes.
  */
 export abstract class DocNode {
-  /**
-   * Indicates the kind of DocNode.
-   */
-  public abstract readonly kind: DocNodeKind | string;
-
   public readonly configuration: TSDocConfiguration;
 
   public constructor(parameters: IDocNodeParameters | IDocNodeParsedParameters) {
     this.configuration = parameters.configuration;
   }
+
+  /**
+   * Returns a text string that uniquely identifies the child class type.  This is used for example by
+   * switch statements to efficiently determine the kind of node.
+   */
+  public abstract get kind(): DocNodeKind | string;
 
   /**
    * Returns the list of child nodes for this node.  This is useful for visitors that want

@@ -29,9 +29,6 @@ export enum EscapeStyle {
  * forces a specific escaping that may not be the default.
  */
 export class DocEscapedText extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.EscapedText;
-
   private readonly _escapeStyle: EscapeStyle;
 
   private _encodedText: string | undefined;
@@ -55,6 +52,11 @@ export class DocEscapedText extends DocNode {
     });
 
     this._decodedText = parameters.decodedText;
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.EscapedText;
   }
 
   /**

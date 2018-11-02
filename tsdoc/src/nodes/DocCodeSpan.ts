@@ -25,9 +25,6 @@ export interface IDocCodeSpanParsedParameters extends IDocNodeParsedParameters {
  * backtick characters.
  */
 export class DocCodeSpan extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.CodeSpan;
-
   // The opening ` delimiter
   private readonly _openingDelimiterExcerpt: DocExcerpt | undefined;
 
@@ -64,6 +61,11 @@ export class DocCodeSpan extends DocNode {
     } else {
       this._code = parameters.code;
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.CodeSpan;
   }
 
   /**
