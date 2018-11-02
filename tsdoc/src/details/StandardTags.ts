@@ -2,7 +2,7 @@ import {
   TSDocTagDefinition,
   TSDocTagSyntaxKind,
   ITSDocTagDefinitionInternalParameters
-} from '../parser/TSDocTagDefinition';
+} from '../configuration/TSDocTagDefinition';
 import { Standardization } from './Standardization';
 
 /**

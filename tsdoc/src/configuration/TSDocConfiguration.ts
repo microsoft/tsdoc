@@ -1,5 +1,5 @@
 import { StandardTags } from '../details/StandardTags';
-import { TSDocTagDefinition } from '../parser/TSDocTagDefinition';
+import { TSDocTagDefinition } from './TSDocTagDefinition';
 import { TSDocValidationConfiguration } from './TSDocValidationConfiguration';
 
 /**

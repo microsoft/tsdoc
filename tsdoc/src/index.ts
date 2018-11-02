@@ -1,5 +1,10 @@
 
 export { TSDocConfiguration } from './configuration/TSDocConfiguration';
+export {
+  ITSDocTagDefinitionParameters,
+  TSDocTagSyntaxKind,
+  TSDocTagDefinition
+} from './configuration/TSDocTagDefinition';
 export { TSDocValidationConfiguration } from './configuration/TSDocValidationConfiguration';
 
 export { StandardTags } from './details/StandardTags';
@@ -19,10 +24,5 @@ export { TextRange, ITextLocation } from './parser/TextRange';
 export { Token, TokenKind } from './parser/Token';
 export { TokenSequence, ITokenSequenceParameters } from './parser/TokenSequence';
 export { TSDocParser } from './parser/TSDocParser';
-export {
-  ITSDocTagDefinitionParameters,
-  TSDocTagSyntaxKind,
-  TSDocTagDefinition
-} from './parser/TSDocTagDefinition';
 
 export { DocNodeTransforms } from './transforms/DocNodeTransforms';

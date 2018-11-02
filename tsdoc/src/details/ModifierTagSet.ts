@@ -1,5 +1,5 @@
 import { DocBlockTag } from '../nodes/DocBlockTag';
-import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../parser/TSDocTagDefinition';
+import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTagDefinition';
 
 /**
  * Represents a set of modifier tags that were extracted from a doc comment.

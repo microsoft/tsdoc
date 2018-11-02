@@ -42,7 +42,7 @@ import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
 import {
   TSDocTagDefinition,
   TSDocTagSyntaxKind
-} from './TSDocTagDefinition';
+} from '../configuration/TSDocTagDefinition';
 import { StandardTags } from '../details/StandardTags';
 import { PlainTextEmitter } from '../emitters/PlainTextEmitter';
 
