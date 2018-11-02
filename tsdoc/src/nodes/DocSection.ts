@@ -36,27 +36,6 @@ export class DocSection extends DocNodeContainer {
   }
 
   /**
-   * {@inheritDoc DocNode.isAllowedChildNode}
-   * @override
-   */
-  public static isAllowedChildNode(docNode: DocNode): boolean {
-    switch (docNode.kind) {
-      case DocNodeKind.FencedCode:
-      case DocNodeKind.Paragraph:
-        return true;
-    }
-    return false;
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public isAllowedChildNode(docNode: DocNode): boolean {
-    return DocSection.isAllowedChildNode(docNode);
-  }
-
-  /**
    * If the last item in DocSection.nodes is not a DocParagraph, a new paragraph
    * is started.  Either way, the provided docNode will be appended to the paragraph.
    */

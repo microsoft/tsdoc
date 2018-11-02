@@ -404,7 +404,7 @@ export class NodeParser {
   }
 
   private _pushNode(docNode: DocNode): void {
-    if (DocSection.isAllowedChildNode(docNode)) {
+    if (this._configuration.docNodeManager.isAllowedChild(DocNodeKind.Section, docNode.kind)) {
       this._currentSection.appendNode(docNode);
     } else {
       this._currentSection.appendNodeInParagraph(docNode);

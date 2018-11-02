@@ -1,4 +1,9 @@
 
+export {
+  DocNodeManager,
+  IDocNodeDefinition,
+  DocNodeConstructor
+} from './configuration/DocNodeManager';
 export { TSDocConfiguration } from './configuration/TSDocConfiguration';
 export {
   ITSDocTagDefinitionParameters,

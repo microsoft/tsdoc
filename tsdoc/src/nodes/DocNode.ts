@@ -9,31 +9,31 @@ import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
  * NPM package name, followed by a "#" symbol, followed by the class name (without the "Doc" prefix).
  */
 export const enum DocNodeKind {
-  Block                         = '@microsoft/tsdoc#Block',
-  BlockTag                      = '@microsoft/tsdoc#BlockTag',
-  Excerpt                       = '@microsoft/tsdoc#Excerpt',
-  FencedCode                    = '@microsoft/tsdoc#FencedCode',
-  CodeSpan                      = '@microsoft/tsdoc#CodeSpan',
-  Comment                       = '@microsoft/tsdoc#Comment',
-  DeclarationReference          = '@microsoft/tsdoc#DeclarationReference',
-  ErrorText                     = '@microsoft/tsdoc#ErrorText',
-  EscapedText                   = '@microsoft/tsdoc#EscapedText',
-  HtmlAttribute                 = '@microsoft/tsdoc#HtmlAttribute',
-  HtmlEndTag                    = '@microsoft/tsdoc#HtmlEndTag',
-  HtmlStartTag                  = '@microsoft/tsdoc#HtmlStartTag',
-  InheritDocTag                 = '@microsoft/tsdoc#InheritDocTag',
-  InlineTag                     = '@microsoft/tsdoc#InlineTag',
-  LinkTag                       = '@microsoft/tsdoc#LinkTag',
-  MemberIdentifier              = '@microsoft/tsdoc#MemberIdentifier',
-  MemberReference               = '@microsoft/tsdoc#MemberReference',
-  MemberSelector                = '@microsoft/tsdoc#MemberSelector',
-  MemberSymbol                  = '@microsoft/tsdoc#MemberSymbol',
-  Paragraph                     = '@microsoft/tsdoc#Paragraph',
-  ParamBlock                    = '@microsoft/tsdoc#ParamBlock',
-  ParamCollection               = '@microsoft/tsdoc#ParamCollection',
-  PlainText                     = '@microsoft/tsdoc#PlainText',
-  Section                       = '@microsoft/tsdoc#Section',
-  SoftBreak                     = '@microsoft/tsdoc#SoftBreak'
+  Block                         = 'Block',
+  BlockTag                      = 'BlockTag',
+  Excerpt                       = 'Excerpt',
+  FencedCode                    = 'FencedCode',
+  CodeSpan                      = 'CodeSpan',
+  Comment                       = 'Comment',
+  DeclarationReference          = 'DeclarationReference',
+  ErrorText                     = 'ErrorText',
+  EscapedText                   = 'EscapedText',
+  HtmlAttribute                 = 'HtmlAttribute',
+  HtmlEndTag                    = 'HtmlEndTag',
+  HtmlStartTag                  = 'HtmlStartTag',
+  InheritDocTag                 = 'InheritDocTag',
+  InlineTag                     = 'InlineTag',
+  LinkTag                       = 'LinkTag',
+  MemberIdentifier              = 'MemberIdentifier',
+  MemberReference               = 'MemberReference',
+  MemberSelector                = 'MemberSelector',
+  MemberSymbol                  = 'MemberSymbol',
+  Paragraph                     = 'Paragraph',
+  ParamBlock                    = 'ParamBlock',
+  ParamCollection               = 'ParamCollection',
+  PlainText                     = 'PlainText',
+  Section                       = 'Section',
+  SoftBreak                     = 'SoftBreak'
 }
 
 /**
@@ -89,6 +89,9 @@ export abstract class DocNode {
    * intermediary nodes.
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
+    // Do this sanity check here, since the constructor cannot access abstract members
+    this.configuration.docNodeManager.requireRegisteredKind(this.kind);
+
     return this.onGetChildNodes().filter(x => x !== undefined) as ReadonlyArray<DocNode>;
   }
 

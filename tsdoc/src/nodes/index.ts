@@ -23,6 +23,7 @@ export * from './DocNode';
 export * from './DocNodeContainer';
 export * from './DocParagraph';
 export * from './DocParamBlock';
+export * from './DocParamCollection';
 export * from './DocPlainText';
 export * from './DocSection';
 export * from './DocSoftBreak';

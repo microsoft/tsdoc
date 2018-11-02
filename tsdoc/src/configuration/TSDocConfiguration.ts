@@ -1,6 +1,8 @@
 import { StandardTags } from '../details/StandardTags';
 import { TSDocTagDefinition } from './TSDocTagDefinition';
 import { TSDocValidationConfiguration } from './TSDocValidationConfiguration';
+import { DocNodeManager } from './DocNodeManager';
+import { BuiltInDocNodes } from '../nodes/BuiltInDocNodes';
 
 /**
  * Configuration for the TSDocParser.
@@ -10,15 +12,20 @@ export class TSDocConfiguration {
   private readonly _tagDefinitionsByName: Map<string, TSDocTagDefinition>;
   private readonly _supportedTagDefinitions: Set<TSDocTagDefinition>;
   private readonly _validation: TSDocValidationConfiguration;
+  private readonly _docNodeManager: DocNodeManager;
 
   public constructor() {
     this._tagDefinitions = [];
     this._tagDefinitionsByName = new Map<string, TSDocTagDefinition>();
     this._supportedTagDefinitions = new Set<TSDocTagDefinition>();
     this._validation = new TSDocValidationConfiguration();
+    this._docNodeManager = new DocNodeManager();
 
     // Define all the standard tags
     this.addTagDefinitions(StandardTags.allDefinitions);
+
+    // Register the built-in node kinds
+    BuiltInDocNodes.register(this);
   }
 
   /**
@@ -45,6 +52,13 @@ export class TSDocConfiguration {
    */
   public get validation(): TSDocValidationConfiguration {
     return this._validation;
+  }
+
+  /**
+   * Register custom DocNode subclasses.
+   */
+  public get docNodeManager(): DocNodeManager {
+    return this._docNodeManager;
   }
 
   /**

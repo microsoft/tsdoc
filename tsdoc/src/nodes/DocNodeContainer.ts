@@ -37,23 +37,13 @@ export abstract class DocNodeContainer extends DocNode {
   }
 
   /**
-   * Returns true if the specified `docNode` is allowed to be added as a child node.
-   * The {@link appendNode()} and {@link appendNodes()} functions use this to validate their
-   * inputs.
-   *
-   * @virtual
-   */
-  public isAllowedChildNode(docNode: DocNode): boolean {
-    return false;
-  }
-
-  /**
    * Append a node to the container.
    */
   public appendNode(docNode: DocNode): void {
-    if (!this.isAllowedChildNode(docNode)) {
-      throw new Error(`A ${this.kind} cannot contain nodes of type ${docNode.kind}`);
+    if (!this.configuration.docNodeManager.isAllowedChild(this.kind, docNode.kind)) {
+      throw new Error(`The TSDocConfiguration does not permit ${this.kind} to contain nodes of type ${docNode.kind}`);
     }
+
     this._nodes!.push(docNode);
   }
 
