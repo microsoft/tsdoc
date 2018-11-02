@@ -1,5 +1,5 @@
 
-export { TSDocConfiguration, TSDocParserValidationConfiguration } from './configuration/TSDocConfiguration';
+export { TSDocConfiguration, TSDocValidationConfiguration } from './configuration/TSDocConfiguration';
 
 export { StandardTags } from './details/StandardTags';
 export { Standardization } from './details/Standardization';

@@ -4,7 +4,7 @@ import { TSDocTagDefinition } from '../parser/TSDocTagDefinition';
 /**
  * Part of the {@link TSDocConfiguration} object.
  */
-export class TSDocParserValidationConfiguration {
+export class TSDocValidationConfiguration {
   /**
    * Set `ignoreUndefinedTags` to true to silently ignore unrecognized tags,
    * instead of reporting a warning.
@@ -45,13 +45,13 @@ export class TSDocConfiguration {
   private readonly _tagDefinitions: TSDocTagDefinition[];
   private readonly _tagDefinitionsByName: Map<string, TSDocTagDefinition>;
   private readonly _supportedTagDefinitions: Set<TSDocTagDefinition>;
-  private readonly _validation: TSDocParserValidationConfiguration;
+  private readonly _validation: TSDocValidationConfiguration;
 
   public constructor() {
     this._tagDefinitions = [];
     this._tagDefinitionsByName = new Map<string, TSDocTagDefinition>();
     this._supportedTagDefinitions = new Set<TSDocTagDefinition>();
-    this._validation = new TSDocParserValidationConfiguration();
+    this._validation = new TSDocValidationConfiguration();
 
     // Define all the standard tags
     this.addTagDefinitions(StandardTags.allDefinitions);
@@ -70,7 +70,7 @@ export class TSDocConfiguration {
    *
    * @remarks
    * This property is only used when
-   * {@link TSDocParserValidationConfiguration.reportUnsupportedTags} is enabled.
+   * {@link TSDocValidationConfiguration.reportUnsupportedTags} is enabled.
    */
   public get supportedTagDefinitions(): ReadonlyArray<TSDocTagDefinition> {
     return this.tagDefinitions.filter(x => this.isTagSupported(x));
@@ -79,7 +79,7 @@ export class TSDocConfiguration {
   /**
    * Enable/disable validation checks performed by the parser.
    */
-  public get validation(): TSDocParserValidationConfiguration {
+  public get validation(): TSDocValidationConfiguration {
     return this._validation;
   }
 
@@ -158,7 +158,7 @@ export class TSDocConfiguration {
    * If a tag is "defined" this means that the parser recognizes it and understands its syntax.
    * Whereas if a tag is "supported", this means it is defined AND the application implements the tag.
    *
-   * This function automatically sets {@link TSDocParserValidationConfiguration.reportUnsupportedTags}
+   * This function automatically sets {@link TSDocValidationConfiguration.reportUnsupportedTags}
    * to true.
    */
   public setSupportForTag(tagDefinition: TSDocTagDefinition, supported: boolean): void {
