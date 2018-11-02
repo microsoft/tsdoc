@@ -3,7 +3,7 @@ import { ParserContext } from './ParserContext';
 import { LineExtractor } from './LineExtractor';
 import { Tokenizer } from './Tokenizer';
 import { NodeParser } from './NodeParser';
-import { TSDocConfiguration } from './TSDocConfiguration';
+import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
 import { ParagraphSplitter } from './ParagraphSplitter';
 
 /**

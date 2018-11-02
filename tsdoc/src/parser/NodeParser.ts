@@ -38,7 +38,7 @@ import { TokenSequence } from './TokenSequence';
 import { TokenReader } from './TokenReader';
 import { StringChecks } from './StringChecks';
 import { ModifierTagSet } from '../details/ModifierTagSet';
-import { TSDocConfiguration } from './TSDocConfiguration';
+import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
 import {
   TSDocTagDefinition,
   TSDocTagSyntaxKind

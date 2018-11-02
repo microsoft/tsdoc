@@ -8,7 +8,7 @@ import {
   DocExcerpt
 } from '../../nodes';
 import { ParserContext } from '../ParserContext';
-import { TSDocConfiguration } from '../TSDocConfiguration';
+import { TSDocConfiguration } from '../../configuration/TSDocConfiguration';
 import { TokenCoverageChecker } from './TokenCoverageChecker';
 
 interface ISnapshotItem {

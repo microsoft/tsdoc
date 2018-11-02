@@ -1,7 +1,7 @@
 import { TextRange } from './TextRange';
 import { Token } from './Token';
 import { DocComment } from '../nodes';
-import { TSDocConfiguration } from './TSDocConfiguration';
+import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
 import { ParserMessageLog } from './ParserMessageLog';
 
 /**

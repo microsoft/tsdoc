@@ -1,4 +1,6 @@
 
+export { TSDocConfiguration, TSDocParserValidationConfiguration } from './configuration/TSDocConfiguration';
+
 export { StandardTags } from './details/StandardTags';
 export { Standardization } from './details/Standardization';
 export { StandardModifierTagSet } from './details/StandardModifierTagSet';
@@ -16,7 +18,6 @@ export { TextRange, ITextLocation } from './parser/TextRange';
 export { Token, TokenKind } from './parser/Token';
 export { TokenSequence, ITokenSequenceParameters } from './parser/TokenSequence';
 export { TSDocParser } from './parser/TSDocParser';
-export { TSDocConfiguration, TSDocParserValidationConfiguration } from './parser/TSDocConfiguration';
 export {
   ITSDocTagDefinitionParameters,
   TSDocTagSyntaxKind,

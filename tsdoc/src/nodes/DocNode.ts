@@ -1,4 +1,4 @@
-import { TSDocConfiguration } from '../parser/TSDocConfiguration';
+import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
 
 /**
  * Indicates the type of {@link DocNode}.
