@@ -1,6 +1,21 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Sat, 27 Oct 2018 04:52:23 GMT and should not be manually modified.
+This log was last generated on Sat, 03 Nov 2018 02:07:10 GMT and should not be manually modified.
+
+## 0.12.0
+Sat, 03 Nov 2018 02:07:10 GMT
+
+### Minor changes
+
+- (API change) `DocErrorText` is no longer allowed in `DocSection`; instead it must be part of a `DocParagraph`
+- (API change) Rename `TSDocParserConfiguration` to `TSDocConfiguration`
+- (API change) Require an associated `TSDocConfiguration` to be included with the parameters for every `DocNode` constructor
+- Introduce `TSDocConfiguration.docNodeManager` for registering custom `DocNode` subclasses and their container relationships
+
+### Patches
+
+- Add `DocDeclarationReference.emitAsTsdoc()`, `DocHtmlStartTag.emitAsHtml()`, and `DocHtmlEndTag.emitAsHtml()`
+- Child nodes can now be specified as a second constructor parameter for `DocNodeContainer`
 
 ## 0.11.0
 Sat, 27 Oct 2018 04:52:23 GMT

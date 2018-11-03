@@ -2,6 +2,35 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.0",
+      "tag": "@microsoft/tsdoc_v0.12.0",
+      "date": "Sat, 03 Nov 2018 02:07:10 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add `DocDeclarationReference.emitAsTsdoc()`, `DocHtmlStartTag.emitAsHtml()`, and `DocHtmlEndTag.emitAsHtml()`"
+          },
+          {
+            "comment": "Child nodes can now be specified as a second constructor parameter for `DocNodeContainer`"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "(API change) `DocErrorText` is no longer allowed in `DocSection`; instead it must be part of a `DocParagraph`"
+          },
+          {
+            "comment": "(API change) Rename `TSDocParserConfiguration` to `TSDocConfiguration`"
+          },
+          {
+            "comment": "(API change) Require an associated `TSDocConfiguration` to be included with the parameters for every `DocNode` constructor"
+          },
+          {
+            "comment": "Introduce `TSDocConfiguration.docNodeManager` for registering custom `DocNode` subclasses and their container relationships"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.11.0",
       "tag": "@microsoft/tsdoc_v0.11.0",
       "date": "Sat, 27 Oct 2018 04:52:23 GMT",
