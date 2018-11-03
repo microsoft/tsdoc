@@ -16,15 +16,17 @@ export class DocParamCollection extends DocNode {
   private readonly _blocks: DocParamBlock[] = [];
   private _blocksByName: Map<string, DocParamBlock> | undefined;
 
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.ParamCollection;
-
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters?: IDocParamCollectionParameters) {
-    super(parameters || {});
+  public constructor(parameters: IDocParamCollectionParameters) {
+    super(parameters);
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.ParamCollection;
   }
 
   /**

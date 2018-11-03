@@ -65,9 +65,6 @@ export class DocMemberSelector extends DocNode {
 
   private static readonly _likeSystemSelectorRegExp: RegExp = /^[a-z]+$/u;
 
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.MemberSelector;
-
   private readonly _selector: string;
   private _selectorExcerpt: DocExcerpt | undefined;
 
@@ -84,6 +81,7 @@ export class DocMemberSelector extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._selectorExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.MemberSelector,
         content: parameters.selectorExcerpt
       });
@@ -129,6 +127,11 @@ export class DocMemberSelector extends DocNode {
         this._errorMessage = 'Invalid syntax for selector';
       }
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.MemberSelector;
   }
 
   /**

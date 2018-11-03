@@ -13,36 +13,16 @@ export interface IDocParagraphParameters extends IDocNodeContainerParameters {
  * instead of explicitly notating them.
  */
 export class DocParagraph extends DocNodeContainer {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.Paragraph;
-
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocParagraphParameters) {
-    super(parameters);
+  public constructor(parameters: IDocParagraphParameters, children?: DocNode[]) {
+    super(parameters, children);
   }
 
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public isAllowedChildNode(docNode: DocNode): boolean {
-    // NOTE: DocNodeKind.Paragraph cannot be nested
-    switch (docNode.kind) {
-      case DocNodeKind.BlockTag:
-      case DocNodeKind.CodeSpan:
-      case DocNodeKind.ErrorText:
-      case DocNodeKind.EscapedText:
-      case DocNodeKind.HtmlStartTag:
-      case DocNodeKind.HtmlEndTag:
-      case DocNodeKind.InlineTag:
-      case DocNodeKind.LinkTag:
-      case DocNodeKind.PlainText:
-      case DocNodeKind.SoftBreak:
-        return true;
-    }
-    return false;
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.Paragraph;
   }
 }

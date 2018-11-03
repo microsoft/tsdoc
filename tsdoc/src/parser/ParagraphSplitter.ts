@@ -56,7 +56,7 @@ export class ParagraphSplitter {
   private static _splitParagraph(oldParagraph: DocParagraph, outputNodes: DocNode[]): void {
     const inputParagraphNodes: ReadonlyArray<DocNode> = oldParagraph.nodes;
 
-    let currentParagraph: DocParagraph = new DocParagraph({ });
+    let currentParagraph: DocParagraph = new DocParagraph({ configuration: oldParagraph.configuration });
     outputNodes.push(currentParagraph);
 
     const enum SplitterState {
@@ -105,7 +105,7 @@ export class ParagraphSplitter {
           // begin a new paragraph
           if (!isBlankLine) {
             // Start a new paragraph
-            currentParagraph = new DocParagraph({ });
+            currentParagraph = new DocParagraph({ configuration: oldParagraph.configuration });
             outputNodes.push(currentParagraph);
 
             state = SplitterState.AwaitingTrailer;

@@ -1,32 +1,39 @@
+import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
+
 /**
  * Indicates the type of {@link DocNode}.
+ *
+ * @remarks
+ * When creating custom subclasses of `DocNode`, it's recommended to create your own const enum to identify them.
+ * To avoid naming conflicts between projects, the enum value should be a string comprised of your full
+ * NPM package name, followed by a "#" symbol, followed by the class name (without the "Doc" prefix).
  */
 export const enum DocNodeKind {
-  Block = 'Block',
-  BlockTag = 'BlockTag',
-  Excerpt = 'Excerpt',
-  FencedCode = 'FencedCode',
-  CodeSpan = 'CodeSpan',
-  Comment = 'Comment',
-  DeclarationReference = 'DeclarationReference',
-  ErrorText = 'ErrorText',
-  EscapedText = 'EscapedText',
-  HtmlAttribute = 'HtmlAttribute',
-  HtmlEndTag = 'HtmlEndTag',
-  HtmlStartTag = 'HtmlStartTag',
-  InheritDocTag = 'InheritDocTag',
-  InlineTag = 'InlineTag',
-  LinkTag = 'LinkTag',
-  MemberIdentifier = 'MemberIdentifier',
-  MemberReference = 'MemberReference',
-  MemberSelector = 'MemberSelector',
-  MemberSymbol = 'MemberSymbol',
-  Paragraph = 'Paragraph',
-  ParamBlock = 'ParamBlock',
-  ParamCollection = 'ParamCollection',
-  PlainText = 'PlainText',
-  Section = 'Section',
-  SoftBreak = 'SoftBreak'
+  Block                         = 'Block',
+  BlockTag                      = 'BlockTag',
+  Excerpt                       = 'Excerpt',
+  FencedCode                    = 'FencedCode',
+  CodeSpan                      = 'CodeSpan',
+  Comment                       = 'Comment',
+  DeclarationReference          = 'DeclarationReference',
+  ErrorText                     = 'ErrorText',
+  EscapedText                   = 'EscapedText',
+  HtmlAttribute                 = 'HtmlAttribute',
+  HtmlEndTag                    = 'HtmlEndTag',
+  HtmlStartTag                  = 'HtmlStartTag',
+  InheritDocTag                 = 'InheritDocTag',
+  InlineTag                     = 'InlineTag',
+  LinkTag                       = 'LinkTag',
+  MemberIdentifier              = 'MemberIdentifier',
+  MemberReference               = 'MemberReference',
+  MemberSelector                = 'MemberSelector',
+  MemberSymbol                  = 'MemberSymbol',
+  Paragraph                     = 'Paragraph',
+  ParamBlock                    = 'ParamBlock',
+  ParamCollection               = 'ParamCollection',
+  PlainText                     = 'PlainText',
+  Section                       = 'Section',
+  SoftBreak                     = 'SoftBreak'
 }
 
 /**
@@ -39,6 +46,7 @@ export const enum DocNodeKind {
  * source file, does create DocExcerpt child nodes, and generally uses the {@link IDocNodeParsedParameters} hierarchy.
  */
 export interface IDocNodeParameters {
+  configuration: TSDocConfiguration;
 }
 
 /**
@@ -51,6 +59,8 @@ export interface IDocNodeParameters {
  * source file, does create DocExcerpt child nodes, and generally uses the `IDocNodeParsedParameters` hierarchy.
  */
 export interface IDocNodeParsedParameters {
+  configuration: TSDocConfiguration;
+
   /**
    * This is a marker used by {@link DocNode.isParsedParameters} to determine whether the constructor was
    * invoked using `IDocNodeParameters` (builder scenario) or `IDocNodeParsedParameters` (parser scenario).
@@ -62,14 +72,17 @@ export interface IDocNodeParsedParameters {
  * The base class for the parser's Abstract Syntax Tree nodes.
  */
 export abstract class DocNode {
-  /**
-   * Indicates the kind of DocNode.
-   */
-  public abstract readonly kind: DocNodeKind;
+  public readonly configuration: TSDocConfiguration;
 
   public constructor(parameters: IDocNodeParameters | IDocNodeParsedParameters) {
-    // (abstract)
+    this.configuration = parameters.configuration;
   }
+
+  /**
+   * Returns a text string that uniquely identifies the child class type.  This is used for example by
+   * switch statements to efficiently determine the kind of node.
+   */
+  public abstract get kind(): DocNodeKind | string;
 
   /**
    * Returns the list of child nodes for this node.  This is useful for visitors that want
@@ -77,6 +90,9 @@ export abstract class DocNode {
    * intermediary nodes.
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
+    // Do this sanity check here, since the constructor cannot access abstract members
+    this.configuration.docNodeManager.throwIfNotRegisteredKind(this.kind);
+
     return this.onGetChildNodes().filter(x => x !== undefined) as ReadonlyArray<DocNode>;
   }
 

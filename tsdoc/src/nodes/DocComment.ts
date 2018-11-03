@@ -17,9 +17,6 @@ export interface IDocCommentParameters extends IDocNodeParameters {
  * This is the root of the DocNode tree.
  */
 export class DocComment extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.Comment;
-
   /**
    * The main documentation for an API item is separated into a brief "summary" section,
    * optionally followed by an `@remarks` block containing additional details.
@@ -96,20 +93,25 @@ export class DocComment extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters?: IDocCommentParameters) {
-    super(parameters || {});
+  public constructor(parameters: IDocCommentParameters) {
+    super(parameters);
 
-    this.summarySection = new DocSection();
+    this.summarySection = new DocSection({ configuration: this.configuration });
     this.remarksBlock = undefined;
     this.privateRemarks = undefined;
     this.deprecatedBlock = undefined;
-    this.params = new DocParamCollection();
-    this.typeParams = new DocParamCollection();
+    this.params = new DocParamCollection({ configuration: this.configuration });
+    this.typeParams = new DocParamCollection({ configuration: this.configuration });
     this.returnsBlock = undefined;
 
     this.modifierTagSet = new StandardModifierTagSet();
 
     this._customBlocks = [];
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.Comment;
   }
 
   /**

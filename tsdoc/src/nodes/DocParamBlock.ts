@@ -30,9 +30,6 @@ export interface IDocParamBlockParsedParameters extends IDocBlockParsedParameter
  * function parameter.
  */
 export class DocParamBlock extends DocBlock {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.ParamBlock;
-
   private readonly _spacingBeforeParameterNameExcerpt: DocExcerpt | undefined;
 
   private readonly _parameterName: string;
@@ -56,35 +53,45 @@ export class DocParamBlock extends DocBlock {
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.spacingBeforeParameterNameExcerpt) {
         this._spacingBeforeParameterNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingBeforeParameterNameExcerpt
         });
       }
 
       this._parameterNameExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.ParamBlock_ParameterName,
         content: parameters.parameterNameExcerpt
       });
 
       if (parameters.spacingAfterParameterNameExcerpt) {
         this._spacingAfterParameterNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterParameterNameExcerpt
         });
       }
 
       this._hyphenExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.ParamBlock_Hyphen,
         content: parameters.hyphenExcerpt
       });
 
       if (parameters.spacingAfterHyphenExcerpt) {
         this._spacingAfterHyphenExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterHyphenExcerpt
         });
       }
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.ParamBlock;
   }
 
   /**

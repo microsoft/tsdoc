@@ -1,7 +1,7 @@
 import { TextRange } from './TextRange';
 import { Token } from './Token';
 import { DocComment } from '../nodes';
-import { TSDocParserConfiguration } from './TSDocParserConfiguration';
+import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
 import { ParserMessageLog } from './ParserMessageLog';
 
 /**
@@ -12,7 +12,7 @@ export class ParserContext {
   /**
    * The configuration that was provided for the TSDocParser.
    */
-  public readonly configuration: TSDocParserConfiguration;
+  public readonly configuration: TSDocConfiguration;
 
   /**
    * The `sourceRange` indicates the start and end of the original input that was parsed.
@@ -45,11 +45,11 @@ export class ParserContext {
    */
   public readonly log: ParserMessageLog;
 
-  public constructor(configuration: TSDocParserConfiguration, sourceRange: TextRange) {
+  public constructor(configuration: TSDocConfiguration, sourceRange: TextRange) {
     this.configuration = configuration;
     this.sourceRange = sourceRange;
 
-    this.docComment = new DocComment();
+    this.docComment = new DocComment({ configuration: this.configuration });
 
     this.log = new ParserMessageLog();
   }

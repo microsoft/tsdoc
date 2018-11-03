@@ -17,9 +17,6 @@ export interface IDocErrorTextParsedParameters extends IDocNodeParsedParameters 
  * The characters should be rendered as plain text.
  */
 export class DocErrorText extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.ErrorText;
-
   private _text: string | undefined;
   private readonly _textExcerpt: DocExcerpt;
 
@@ -34,12 +31,18 @@ export class DocErrorText extends DocNode {
     super(parameters);
 
     this._textExcerpt = new DocExcerpt({
+      configuration: this.configuration,
       excerptKind: ExcerptKind.ErrorText,
       content: parameters.textExcerpt
     });
 
     this._errorMessage = parameters.errorMessage;
     this._errorLocation = parameters.errorLocation;
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.ErrorText;
   }
 
   /**

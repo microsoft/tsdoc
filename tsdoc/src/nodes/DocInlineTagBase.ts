@@ -47,23 +47,27 @@ export abstract class DocInlineTagBase extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.InlineTag_OpeningDelimiter,
         content: parameters.openingDelimiterExcerpt
       });
 
       this._tagNameExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.InlineTag_TagName,
         content: parameters.tagNameExcerpt
       });
 
       if (parameters.spacingAfterTagNameExcerpt) {
         this._spacingAfterTagNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterTagNameExcerpt
         });
       }
 
       this._closingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.InlineTag_ClosingDelimiter,
         content: parameters.closingDelimiterExcerpt
       });

@@ -1,4 +1,4 @@
-import { StringChecks } from './StringChecks';
+import { StringChecks } from '../parser/StringChecks';
 import { Standardization } from '../details/Standardization';
 
 /**

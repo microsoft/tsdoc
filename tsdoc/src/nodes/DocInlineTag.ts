@@ -32,9 +32,6 @@ export interface IDocInlineTagParsedParameters extends IDocInlineTagBaseParsedPa
  * `DocInlineTag.tagName` to be `"@link"`.
  */
 export class DocInlineTag extends DocInlineTagBase {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.InlineTag;
-
   private _tagContent: string | undefined;
   private readonly _tagContentExcerpt: DocExcerpt | undefined;
 
@@ -48,6 +45,7 @@ export class DocInlineTag extends DocInlineTagBase {
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.tagContentExcerpt) {
         this._tagContentExcerpt  = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.InlineTag_TagContent,
           content: parameters.tagContentExcerpt
         });
@@ -55,6 +53,11 @@ export class DocInlineTag extends DocInlineTagBase {
     } else {
       this._tagContent = parameters.tagContent;
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.InlineTag;
   }
 
   /**

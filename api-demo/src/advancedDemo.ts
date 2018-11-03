@@ -6,7 +6,7 @@ import * as tsdoc from '@microsoft/tsdoc';
 
 /**
  * The advanced demo invokes the TypeScript compiler and extracts the comment from the AST.
- * It also illustrates how to define custom TSDoc tags using TSDocParserConfiguration.
+ * It also illustrates how to define custom TSDoc tags using TSDocConfiguration.
  */
 export function advancedDemo(): void {
   console.log(colors.yellow('*** TSDoc API demo: Advanced Scenario ***') + os.EOL);
@@ -177,7 +177,7 @@ function parseTSDoc(foundComment: IFoundComment): void {
   console.log(foundComment.textRange.toString());
   console.log(colors.gray('>>>>>>'));
 
-  const customConfiguration: tsdoc.TSDocParserConfiguration = new tsdoc.TSDocParserConfiguration();
+  const customConfiguration: tsdoc.TSDocConfiguration = new tsdoc.TSDocConfiguration();
 
   const customInlineDefinition: tsdoc.TSDocTagDefinition = new tsdoc.TSDocTagDefinition({
     tagName: '@customInline',

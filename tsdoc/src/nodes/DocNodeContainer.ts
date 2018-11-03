@@ -15,8 +15,8 @@ export interface IDocNodeContainerParsedParameters extends IDocNodeParsedParamet
 }
 
 /**
- * DocNodeContainer is the base class for DocNode classes that act as a simple container
- * for other child nodes.  The child classes are {@link DocParagraph} and {@link DocSection}.
+ * DocNodeContainer is the base class for DocNode classes that allow arbitrary child nodes to be added by the consumer.
+ * The child classes are {@link DocParagraph} and {@link DocSection}.
  */
 export abstract class DocNodeContainer extends DocNode {
   private readonly _nodes: DocNode[] = [];
@@ -25,8 +25,14 @@ export abstract class DocNodeContainer extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocNodeContainerParameters | IDocNodeContainerParsedParameters) {
+  public constructor(parameters: IDocNodeContainerParameters | IDocNodeContainerParsedParameters,
+    children?: DocNode[]) {
+
     super(parameters);
+
+    if (children !== undefined && children.length > 0) {
+      this.appendNodes(children);
+    }
   }
 
   /**
@@ -37,23 +43,13 @@ export abstract class DocNodeContainer extends DocNode {
   }
 
   /**
-   * Returns true if the specified `docNode` is allowed to be added as a child node.
-   * The {@link appendNode()} and {@link appendNodes()} functions use this to validate their
-   * inputs.
-   *
-   * @virtual
-   */
-  public isAllowedChildNode(docNode: DocNode): boolean {
-    return false;
-  }
-
-  /**
    * Append a node to the container.
    */
   public appendNode(docNode: DocNode): void {
-    if (!this.isAllowedChildNode(docNode)) {
-      throw new Error(`A ${this.kind} cannot contain nodes of type ${docNode.kind}`);
+    if (!this.configuration.docNodeManager.isAllowedChild(this.kind, docNode.kind)) {
+      throw new Error(`The TSDocConfiguration does not permit ${this.kind} to contain nodes of type ${docNode.kind}`);
     }
+
     this._nodes!.push(docNode);
   }
 

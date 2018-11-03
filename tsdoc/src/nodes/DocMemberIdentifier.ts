@@ -25,9 +25,6 @@ export interface IDocMemberIdentifierParsedParameters extends IDocNodeParsedPara
  * A member identifier is part of a {@link DocMemberReference}.
  */
 export class DocMemberIdentifier extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.MemberIdentifier;
-
   private readonly _leftQuoteExcerpt: DocExcerpt | undefined;
 
   private _identifier: string | undefined;
@@ -54,18 +51,21 @@ export class DocMemberIdentifier extends DocNode {
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.leftQuoteExcerpt) {
         this._leftQuoteExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.MemberIdentifier_LeftQuote,
           content: parameters.leftQuoteExcerpt
         });
       }
 
       this._identifierExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.MemberIdentifier_Identifier,
         content: parameters.identifierExcerpt
       });
 
       if (parameters.rightQuoteExcerpt) {
         this._rightQuoteExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.MemberIdentifier_RightQuote,
           content: parameters.rightQuoteExcerpt
         });
@@ -73,6 +73,11 @@ export class DocMemberIdentifier extends DocNode {
     } else {
       this._identifier = parameters.identifier;
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.MemberIdentifier;
   }
 
   /**

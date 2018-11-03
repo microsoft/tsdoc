@@ -8,7 +8,7 @@ import {
   DocExcerpt
 } from '../../nodes';
 import { ParserContext } from '../ParserContext';
-import { TSDocParserConfiguration } from '../TSDocParserConfiguration';
+import { TSDocConfiguration } from '../../configuration/TSDocConfiguration';
 import { TokenCoverageChecker } from './TokenCoverageChecker';
 
 interface ISnapshotItem {
@@ -86,7 +86,7 @@ export class TestHelpers {
    * Main harness for tests under `./parser/*`.
    */
   public static parseAndMatchNodeParserSnapshot(buffer: string): void {
-    const configuration: TSDocParserConfiguration = new TSDocParserConfiguration();
+    const configuration: TSDocConfiguration = new TSDocConfiguration();
 
     // For the parser tests, we use lots of custom tags without bothering to define them
     configuration.validation.ignoreUndefinedTags = true;
@@ -109,7 +109,7 @@ export class TestHelpers {
    * Main harness for tests under `./details/*`.
    */
   public static parseAndMatchDocCommentSnapshot(buffer: string,
-    configuration?: TSDocParserConfiguration): ParserContext {
+    configuration?: TSDocConfiguration): ParserContext {
 
     const tsdocParser: TSDocParser = new TSDocParser(configuration);
     const parserContext: ParserContext = tsdocParser.parseString(buffer);

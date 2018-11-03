@@ -33,9 +33,6 @@ export interface IDocHtmlAttributeParsedParameters extends IDocNodeParsedParamet
  * Example: `href="#"` inside `<a href="#" />`
  */
 export class DocHtmlAttribute extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.HtmlAttribute;
-
   // The attribute name
   private _name: string | undefined;
   private readonly _nameExcerpt: DocExcerpt | undefined;
@@ -65,33 +62,39 @@ export class DocHtmlAttribute extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._nameExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlAttribute_Name,
         content: parameters.nameExcerpt
       });
       if (parameters.spacingAfterNameExcerpt) {
         this._spacingAfterNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterNameExcerpt
         });
       }
 
       this._equalsExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlAttribute_Equals,
         content: parameters.equalsExcerpt
       });
       if (parameters.spacingAfterEqualsExcerpt) {
         this._spacingAfterEqualsExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterEqualsExcerpt
         });
       }
 
       this._valueExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlAttribute_Value,
         content: parameters.valueExcerpt
       });
       if (parameters.spacingAfterValueExcerpt) {
         this._spacingAfterValueExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterValueExcerpt
         });
@@ -106,6 +109,11 @@ export class DocHtmlAttribute extends DocNode {
       this._value = parameters.value;
       this._spacingAfterValue = parameters.spacingAfterValue;
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.HtmlAttribute;
   }
 
   /**

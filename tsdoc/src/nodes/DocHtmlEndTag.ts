@@ -26,9 +26,6 @@ export interface IDocHtmlEndTagParsedParameters extends IDocNodeParsedParameters
  * Represents an HTML end tag.  Example: `</a>`
  */
 export class DocHtmlEndTag extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.HtmlEndTag;
-
   // The "</" delimiter and padding
   private readonly _openingDelimiterExcerpt: DocExcerpt | undefined;
 
@@ -49,28 +46,37 @@ export class DocHtmlEndTag extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlEndTag_OpeningDelimiter,
         content: parameters.openingDelimiterExcerpt
       });
       this._nameExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlEndTag_Name,
         content: parameters.nameExcerpt
       });
 
       if (parameters.spacingAfterNameExcerpt) {
         this._spacingAfterNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterNameExcerpt
         });
       }
 
       this._closingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlEndTag_ClosingDelimiter,
         content: parameters.closingDelimiterExcerpt
       });
     } else {
       this._name = parameters.name;
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.HtmlEndTag;
   }
 
   /**

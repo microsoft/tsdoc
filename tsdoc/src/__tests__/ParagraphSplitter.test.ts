@@ -1,6 +1,7 @@
 import { TestHelpers } from '../parser/__tests__/TestHelpers';
 import { ParagraphSplitter } from '../parser/ParagraphSplitter';
 import { DocSection, DocPlainText, DocSoftBreak, DocParagraph, DocBlockTag } from '../index';
+import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
 
 test('01 Basic paragraph splitting', () => {
   TestHelpers.parseAndMatchDocCommentSnapshot([
@@ -43,27 +44,29 @@ test('03 Degenerate comment framing', () => {
 });
 
 test('04 Degenerate manually constructed nodes', () => {
-  const docSection: DocSection = new DocSection({ });
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
 
-  const docParagraph: DocParagraph = new DocParagraph({ } );
-  docParagraph.appendNodes([
-    new DocPlainText({ text: '  para 1 ' }),
-    new DocSoftBreak({ }),
-    new DocPlainText({ text: '   ' }),
-    new DocSoftBreak({ }),
-    new DocPlainText({ text: ' \t  ' }),
-    new DocPlainText({ text: '   ' }),
-    new DocBlockTag({ tagName: '@public' }),
-    new DocPlainText({ text: '  para 2 ' }),
-    new DocSoftBreak({ }),
-    new DocSoftBreak({ }),
-    new DocPlainText({ text: '  para 3  ' })
-  ]);
-
-  docSection.appendNode(docParagraph);
-
-  // Currently we do not discard empty paragraphs
-  docSection.appendNode(new DocParagraph({ }));
+  const docSection: DocSection = new DocSection({ configuration },
+    [
+      new DocParagraph({ configuration },
+        [
+          new DocPlainText({ configuration, text: '  para 1 ' }),
+          new DocSoftBreak({ configuration }),
+          new DocPlainText({ configuration, text: '   ' }),
+          new DocSoftBreak({ configuration }),
+          new DocPlainText({ configuration, text: ' \t  ' }),
+          new DocPlainText({ configuration, text: '   ' }),
+          new DocBlockTag( { configuration, tagName: '@public' }),
+          new DocPlainText({ configuration, text: '  para 2 ' }),
+          new DocSoftBreak({ configuration }),
+          new DocSoftBreak({ configuration }),
+          new DocPlainText({ configuration, text: '  para 3  ' })
+        ]
+      ),
+      // Currently we do not discard empty paragraphs
+      new DocParagraph({ configuration })
+    ]
+  );
 
   ParagraphSplitter.splitParagraphsForSection(docSection);
   expect(TestHelpers.getDocNodeSnapshot(docSection)).toMatchSnapshot();

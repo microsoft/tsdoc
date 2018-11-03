@@ -25,9 +25,6 @@ export interface IDocCodeSpanParsedParameters extends IDocNodeParsedParameters {
  * backtick characters.
  */
 export class DocCodeSpan extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.CodeSpan;
-
   // The opening ` delimiter
   private readonly _openingDelimiterExcerpt: DocExcerpt | undefined;
 
@@ -47,20 +44,28 @@ export class DocCodeSpan extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.CodeSpan_OpeningDelimiter,
         content: parameters.openingDelimiterExcerpt
       });
       this._codeExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.CodeSpan_Code,
         content: parameters.codeExcerpt
       });
       this._closingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.CodeSpan_ClosingDelimiter,
         content: parameters.closingDelimiterExcerpt
       });
     } else {
       this._code = parameters.code;
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.CodeSpan;
   }
 
   /**

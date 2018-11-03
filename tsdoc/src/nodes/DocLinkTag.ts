@@ -38,10 +38,6 @@ export interface IDocLinkTagParsedParameters extends IDocInlineTagBaseParsedPara
  * Represents an `{@link}` tag.
  */
 export class DocLinkTag extends DocInlineTagBase {
-
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.LinkTag;
-
   private readonly _codeDestination: DocDeclarationReference | undefined;
 
   private _urlDestination: string | undefined;
@@ -74,12 +70,14 @@ export class DocLinkTag extends DocInlineTagBase {
 
       if (parameters.urlDestinationExcerpt) {
         this._urlDestinationExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.LinkTag_UrlDestination,
           content: parameters.urlDestinationExcerpt
         });
       }
       if (parameters.spacingAfterDestinationExcerpt) {
         this._spacingAfterDestinationExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterDestinationExcerpt
         });
@@ -87,6 +85,7 @@ export class DocLinkTag extends DocInlineTagBase {
 
       if (parameters.pipeExcerpt) {
         this._pipeExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.LinkTag_Pipe,
           content: parameters.pipeExcerpt
         });
@@ -94,6 +93,7 @@ export class DocLinkTag extends DocInlineTagBase {
 
       if (parameters.linkTextExcerpt) {
         this._linkTextExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.LinkTag_LinkText,
           content: parameters.linkTextExcerpt
         });
@@ -107,6 +107,11 @@ export class DocLinkTag extends DocInlineTagBase {
       this._linkText = parameters.linkText;
     }
 
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.LinkTag;
   }
 
   /**

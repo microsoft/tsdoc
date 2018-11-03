@@ -2,7 +2,7 @@ import {
   StandardModifierTagSet,
   DocComment,
   ParserContext,
-  TSDocParserConfiguration,
+  TSDocConfiguration,
   TSDocTagDefinition,
   TSDocTagSyntaxKind
 } from '../index';
@@ -26,7 +26,7 @@ test('01 Simple @beta and @internal extraction', () => {
 });
 
 test('02 A basic TSDoc comment with common components', () => {
-  const configuration: TSDocParserConfiguration = new TSDocParserConfiguration();
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
   configuration.addTagDefinitions([
     new TSDocTagDefinition({
       tagName: '@customBlock',
@@ -61,7 +61,7 @@ test('02 A basic TSDoc comment with common components', () => {
 });
 
 test('03 Jumbled order', () => {
-  const configuration: TSDocParserConfiguration = new TSDocParserConfiguration();
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
   configuration.addTagDefinitions([
     new TSDocTagDefinition({
       tagName: '@customBlock',

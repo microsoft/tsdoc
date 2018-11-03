@@ -32,9 +32,6 @@ export interface IDocDeclarationReferenceParsedParameters extends IDocNodeParsed
  * or `{@inheritDoc}` that need to refer to another declaration.
  */
 export class DocDeclarationReference extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.DeclarationReference;
-
   private _packageName: string | undefined;
   private readonly _packageNameExcerpt: DocExcerpt | undefined;
 
@@ -56,24 +53,28 @@ export class DocDeclarationReference extends DocNode {
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.packageNameExcerpt) {
         this._packageNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.DeclarationReference_PackageName,
           content: parameters.packageNameExcerpt
         });
       }
       if (parameters.importPathExcerpt) {
         this._importPathExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.DeclarationReference_ImportPath,
           content: parameters.importPathExcerpt
         });
       }
       if (parameters.importHashExcerpt ) {
         this._importHashExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.DeclarationReference_ImportHash,
           content: parameters.importHashExcerpt
         });
       }
       if (parameters.spacingAfterImportHashExcerpt ) {
         this._spacingAfterImportHashExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterImportHashExcerpt
         });
@@ -87,6 +88,11 @@ export class DocDeclarationReference extends DocNode {
     if (parameters.memberReferences) {
       this._memberReferences.push(...parameters.memberReferences);
     }
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.DeclarationReference;
   }
 
   /**

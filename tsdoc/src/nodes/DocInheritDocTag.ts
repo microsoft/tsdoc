@@ -25,9 +25,6 @@ export interface IDocInheritDocTagParsedParameters extends IDocInlineTagBasePars
  */
 export class DocInheritDocTag extends DocInlineTagBase {
 
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.InheritDocTag;
-
   private readonly _declarationReference: DocDeclarationReference | undefined;
 
   /**
@@ -42,6 +39,11 @@ export class DocInheritDocTag extends DocInlineTagBase {
     }
 
     this._declarationReference = parameters.declarationReference;
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.InheritDocTag;
   }
 
   /**

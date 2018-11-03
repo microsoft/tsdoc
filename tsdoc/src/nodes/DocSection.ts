@@ -24,36 +24,17 @@ export interface IDocSectionParsedParameters extends IDocNodeContainerParsedPara
  * Represents a general block of rich text.
  */
 export class DocSection extends DocNodeContainer {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.Section;
-
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters?: IDocSectionParameters | IDocSectionParsedParameters) {
-    super(parameters || {});
+  public constructor(parameters: IDocSectionParameters | IDocSectionParsedParameters, children?: DocNode[]) {
+    super(parameters, children);
   }
 
-  /**
-   * {@inheritDoc DocNode.isAllowedChildNode}
-   * @override
-   */
-  public static isAllowedChildNode(docNode: DocNode): boolean {
-    switch (docNode.kind) {
-      case DocNodeKind.FencedCode:
-      case DocNodeKind.Paragraph:
-        return true;
-    }
-    return false;
-  }
-
-  /**
-   * {@inheritDoc}
-   * @override
-   */
-  public isAllowedChildNode(docNode: DocNode): boolean {
-    return DocSection.isAllowedChildNode(docNode);
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.Section;
   }
 
   /**
@@ -70,7 +51,7 @@ export class DocSection extends DocNodeContainer {
       }
     }
     if (!paragraphNode) {
-      paragraphNode = new DocParagraph({ });
+      paragraphNode = new DocParagraph({ configuration: this.configuration });
       this.appendNode(paragraphNode);
     }
 

@@ -1,4 +1,17 @@
 
+export {
+  DocNodeManager,
+  IDocNodeDefinition,
+  DocNodeConstructor
+} from './configuration/DocNodeManager';
+export { TSDocConfiguration } from './configuration/TSDocConfiguration';
+export {
+  ITSDocTagDefinitionParameters,
+  TSDocTagSyntaxKind,
+  TSDocTagDefinition
+} from './configuration/TSDocTagDefinition';
+export { TSDocValidationConfiguration } from './configuration/TSDocValidationConfiguration';
+
 export { StandardTags } from './details/StandardTags';
 export { Standardization } from './details/Standardization';
 export { StandardModifierTagSet } from './details/StandardModifierTagSet';
@@ -16,11 +29,5 @@ export { TextRange, ITextLocation } from './parser/TextRange';
 export { Token, TokenKind } from './parser/Token';
 export { TokenSequence, ITokenSequenceParameters } from './parser/TokenSequence';
 export { TSDocParser } from './parser/TSDocParser';
-export { TSDocParserConfiguration, TSDocParserValidationConfiguration } from './parser/TSDocParserConfiguration';
-export {
-  ITSDocTagDefinitionParameters,
-  TSDocTagSyntaxKind,
-  TSDocTagDefinition
-} from './parser/TSDocTagDefinition';
 
 export { DocNodeTransforms } from './transforms/DocNodeTransforms';

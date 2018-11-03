@@ -367,7 +367,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     this._reparseNeeded = false;
     try {
       const inputText: string = this.state.inputText;
-      const configuration: tsdoc.TSDocParserConfiguration = new tsdoc.TSDocParserConfiguration();
+      const configuration: tsdoc.TSDocConfiguration = new tsdoc.TSDocConfiguration();
       configuration.addTagDefinition(new tsdoc.TSDocTagDefinition({
         tagName: '@sampleCustomBlockTag',
         syntaxKind: tsdoc.TSDocTagSyntaxKind.BlockTag

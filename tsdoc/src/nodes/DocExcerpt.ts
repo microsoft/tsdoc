@@ -93,9 +93,6 @@ export interface IDocExcerptParameters extends IDocNodeParameters {
  * that starts a new TSDoc comment line.
  */
 export class DocExcerpt extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.Excerpt;
-
   private readonly _excerptKind: ExcerptKind;
   private readonly _content: TokenSequence;
 
@@ -121,6 +118,11 @@ export class DocExcerpt extends DocNode {
 
     this._excerptKind = parameters.excerptKind;
     this._content = parameters.content;
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.Excerpt;
   }
 
   /**

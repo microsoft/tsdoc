@@ -38,11 +38,11 @@ import { TokenSequence } from './TokenSequence';
 import { TokenReader } from './TokenReader';
 import { StringChecks } from './StringChecks';
 import { ModifierTagSet } from '../details/ModifierTagSet';
-import { TSDocParserConfiguration } from './TSDocParserConfiguration';
+import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
 import {
   TSDocTagDefinition,
   TSDocTagSyntaxKind
-} from './TSDocTagDefinition';
+} from '../configuration/TSDocTagDefinition';
 import { StandardTags } from '../details/StandardTags';
 import { PlainTextEmitter } from '../emitters/PlainTextEmitter';
 
@@ -64,10 +64,12 @@ function isFailure<T>(resultOrFailure: ResultOrFailure<T>): resultOrFailure is I
  */
 export class NodeParser {
   private readonly _parserContext: ParserContext;
+  private readonly _configuration: TSDocConfiguration;
   private _currentSection: DocSection;
 
   public constructor(parserContext: ParserContext) {
     this._parserContext = parserContext;
+    this._configuration = parserContext.configuration;
 
     this._currentSection = parserContext.docComment.summarySection;
   }
@@ -87,6 +89,7 @@ export class NodeParser {
           tokenReader.readToken();
           this._pushNode(new DocSoftBreak({
             parsed: true,
+            configuration: this._configuration,
             softBreakExcerpt: tokenReader.extractAccumulatedSequence()
           }));
           break;
@@ -231,6 +234,7 @@ export class NodeParser {
     if (!tokenReader.isAccumulatedSequenceEmpty()) {
       this._pushNode(new DocPlainText({
         parsed: true,
+        configuration: this._configuration,
         textExcerpt: tokenReader.extractAccumulatedSequence()
       }));
     }
@@ -238,7 +242,7 @@ export class NodeParser {
 
   private _parseAndPushBlock(tokenReader: TokenReader): void {
     const docComment: DocComment = this._parserContext.docComment;
-    const configuration: TSDocParserConfiguration = this._parserContext.configuration;
+    const configuration: TSDocConfiguration = this._parserContext.configuration;
     const modifierTagSet: ModifierTagSet = docComment.modifierTagSet;
 
     const parsedBlockTag: DocNode = this._parseBlockTag(tokenReader);
@@ -274,6 +278,7 @@ export class NodeParser {
             return;
           } else {
             const newBlock: DocBlock = new DocBlock({
+              configuration: this._configuration,
               blockTag: docBlockTag
             });
 
@@ -339,6 +344,7 @@ export class NodeParser {
       tokenReader.backtrackToMarker(startMarker);
 
       const errorParamBlock: DocParamBlock = new DocParamBlock({
+        configuration: this._configuration,
         blockTag: docBlockTag,
         parameterName: ''
       });
@@ -366,6 +372,7 @@ export class NodeParser {
       );
 
       return new DocParamBlock({
+        configuration: this._configuration,
         blockTag: docBlockTag,
         parameterName: ''
       });
@@ -379,6 +386,7 @@ export class NodeParser {
 
     return new DocParamBlock({
       parsed: true,
+      configuration: this._configuration,
 
       blockTag: docBlockTag,
 
@@ -396,7 +404,7 @@ export class NodeParser {
   }
 
   private _pushNode(docNode: DocNode): void {
-    if (DocSection.isAllowedChildNode(docNode)) {
+    if (this._configuration.docNodeManager.isAllowedChild(DocNodeKind.Section, docNode.kind)) {
       this._currentSection.appendNode(docNode);
     } else {
       this._currentSection.appendNodeInParagraph(docNode);
@@ -428,6 +436,8 @@ export class NodeParser {
 
     return new DocEscapedText({
       parsed: true,
+      configuration: this._configuration,
+
       escapeStyle: EscapeStyle.CommonMarkBackslash,
       encodedTextExcerpt,
       decodedText: escapedToken.toString()
@@ -493,6 +503,8 @@ export class NodeParser {
 
     return new DocBlockTag({
       parsed: true,
+      configuration: this._configuration,
+
       tagName,
       tagNameExcerpt: tokenReader.extractAccumulatedSequence()
     });
@@ -601,6 +613,8 @@ export class NodeParser {
 
     const docInlineTagParsedParameters: IDocInlineTagParsedParameters = {
       parsed: true,
+      configuration: this._configuration,
+
       openingDelimiterExcerpt,
 
       tagNameExcerpt,
@@ -1045,6 +1059,7 @@ export class NodeParser {
 
     return new DocDeclarationReference({
       parsed: true,
+      configuration: this._configuration,
 
       packageNameExcerpt,
       importPathExcerpt,
@@ -1060,7 +1075,8 @@ export class NodeParser {
     tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): DocMemberReference | undefined {
 
     const parameters: IDocMemberReferenceParsedParameters = {
-      parsed: true
+      parsed: true,
+      configuration: this._configuration
     };
 
     // Read the dot operator
@@ -1191,6 +1207,8 @@ export class NodeParser {
 
     return new DocMemberSymbol({
       parsed: true,
+      configuration: this._configuration,
+
       leftBracketExcerpt,
       spacingAfterLeftBracketExcerpt,
       symbolReference: declarationReference,
@@ -1236,6 +1254,8 @@ export class NodeParser {
 
       return new DocMemberIdentifier({
         parsed: true,
+        configuration: this._configuration,
+
         leftQuoteExcerpt,
         identifierExcerpt,
         rightQuoteExcerpt
@@ -1262,6 +1282,8 @@ export class NodeParser {
 
       return new DocMemberIdentifier({
         parsed: true,
+        configuration: this._configuration,
+
         leftQuoteExcerpt,
         identifierExcerpt,
         rightQuoteExcerpt
@@ -1282,6 +1304,8 @@ export class NodeParser {
 
     const docMemberSelector: DocMemberSelector = new DocMemberSelector({
       parsed: true,
+      configuration: this._configuration,
+
       selectorExcerpt,
       selector
     });
@@ -1355,6 +1379,7 @@ export class NodeParser {
 
     return new DocHtmlStartTag({
       parsed: true,
+      configuration: this._configuration,
 
       openingDelimiterExcerpt,
 
@@ -1402,6 +1427,7 @@ export class NodeParser {
 
     return new DocHtmlAttribute({
       parsed: true,
+      configuration: this._configuration,
 
       nameExcerpt,
       spacingAfterNameExcerpt,
@@ -1490,6 +1516,7 @@ export class NodeParser {
 
     return new DocHtmlEndTag({
       parsed: true,
+      configuration: this._configuration,
 
       openingDelimiterExcerpt,
 
@@ -1720,6 +1747,7 @@ export class NodeParser {
 
     return new DocFencedCode({
       parsed: true,
+      configuration: this._configuration,
 
       openingFenceExcerpt,
       spacingAfterOpeningFenceExcerpt,
@@ -1777,6 +1805,7 @@ export class NodeParser {
 
     return new DocCodeSpan({
       parsed: true,
+      configuration: this._configuration,
 
       openingDelimiterExcerpt,
 
@@ -1812,6 +1841,7 @@ export class NodeParser {
 
     const docErrorText: DocErrorText = new DocErrorText({
       parsed: true,
+      configuration: this._configuration,
 
       textExcerpt,
 
@@ -1849,6 +1879,7 @@ export class NodeParser {
 
     const docErrorText: DocErrorText = new DocErrorText({
       parsed: true,
+      configuration: this._configuration,
 
       textExcerpt,
 
@@ -1873,6 +1904,7 @@ export class NodeParser {
 
     const docErrorText: DocErrorText = new DocErrorText({
       parsed: true,
+      configuration: this._configuration,
 
       textExcerpt,
 
@@ -1902,6 +1934,8 @@ export class NodeParser {
 
     const docErrorText: DocErrorText = new DocErrorText({
       parsed: true,
+      configuration: this._configuration,
+
       textExcerpt,
 
       errorMessage: errorMessagePrefix + failure.failureMessage,

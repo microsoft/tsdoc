@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "(API change) Require an associated `TSDocConfiguration` to be included with the parameters for every `DocNode` constructor",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "pgonzal@users.noreply.github.com"
+}

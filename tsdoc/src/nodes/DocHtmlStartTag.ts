@@ -36,9 +36,6 @@ export interface IDocHtmlStartTagParsedParameters extends IDocNodeParsedParamete
  * Example: `<a href="#" />`
  */
 export class DocHtmlStartTag extends DocNode {
-  /** {@inheritDoc} */
-  public readonly kind: DocNodeKind = DocNodeKind.HtmlStartTag;
-
   // The "<" delimiter
   private readonly _openingDelimiterExcerpt: DocExcerpt | undefined;
 
@@ -65,22 +62,26 @@ export class DocHtmlStartTag extends DocNode {
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlStartTag_OpeningDelimiter,
         content: parameters.openingDelimiterExcerpt
       });
 
       this._nameExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlStartTag_Name,
         content: parameters.nameExcerpt
       });
       if (parameters.spacingAfterNameExcerpt) {
         this._spacingAfterNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterNameExcerpt
         });
       }
 
       this._closingDelimiterExcerpt = new DocExcerpt({
+        configuration: this.configuration,
         excerptKind: ExcerptKind.HtmlStartTag_ClosingDelimiter,
         content: parameters.closingDelimiterExcerpt
       });
@@ -93,6 +94,11 @@ export class DocHtmlStartTag extends DocNode {
     this._htmlAttributes.push(...parameters.htmlAttributes);
 
     this._selfClosingTag = parameters.selfClosingTag;
+  }
+
+  /** @override */
+  public get kind(): DocNodeKind | string {
+    return DocNodeKind.HtmlStartTag;
   }
 
   /**
