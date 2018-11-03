@@ -25,8 +25,14 @@ export abstract class DocNodeContainer extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocNodeContainerParameters | IDocNodeContainerParsedParameters) {
+  public constructor(parameters: IDocNodeContainerParameters | IDocNodeContainerParsedParameters,
+    children?: DocNode[]) {
+
     super(parameters);
+
+    if (children !== undefined && children.length > 0) {
+      this.appendNodes(children);
+    }
   }
 
   /**

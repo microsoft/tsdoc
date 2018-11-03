@@ -46,27 +46,27 @@ test('03 Degenerate comment framing', () => {
 test('04 Degenerate manually constructed nodes', () => {
   const configuration: TSDocConfiguration = new TSDocConfiguration();
 
-  const docSection: DocSection = new DocSection({ configuration });
-
-  const docParagraph: DocParagraph = new DocParagraph({ configuration });
-  docParagraph.appendNodes([
-    new DocPlainText({ configuration, text: '  para 1 ' }),
-    new DocSoftBreak({ configuration }),
-    new DocPlainText({ configuration, text: '   ' }),
-    new DocSoftBreak({ configuration }),
-    new DocPlainText({ configuration, text: ' \t  ' }),
-    new DocPlainText({ configuration, text: '   ' }),
-    new DocBlockTag( { configuration, tagName: '@public' }),
-    new DocPlainText({ configuration, text: '  para 2 ' }),
-    new DocSoftBreak({ configuration }),
-    new DocSoftBreak({ configuration }),
-    new DocPlainText({ configuration, text: '  para 3  ' })
-  ]);
-
-  docSection.appendNode(docParagraph);
-
-  // Currently we do not discard empty paragraphs
-  docSection.appendNode(new DocParagraph({ configuration }));
+  const docSection: DocSection = new DocSection({ configuration },
+    [
+      new DocParagraph({ configuration },
+        [
+          new DocPlainText({ configuration, text: '  para 1 ' }),
+          new DocSoftBreak({ configuration }),
+          new DocPlainText({ configuration, text: '   ' }),
+          new DocSoftBreak({ configuration }),
+          new DocPlainText({ configuration, text: ' \t  ' }),
+          new DocPlainText({ configuration, text: '   ' }),
+          new DocBlockTag( { configuration, tagName: '@public' }),
+          new DocPlainText({ configuration, text: '  para 2 ' }),
+          new DocSoftBreak({ configuration }),
+          new DocSoftBreak({ configuration }),
+          new DocPlainText({ configuration, text: '  para 3  ' })
+        ]
+      ),
+      // Currently we do not discard empty paragraphs
+      new DocParagraph({ configuration })
+    ]
+  );
 
   ParagraphSplitter.splitParagraphsForSection(docSection);
   expect(TestHelpers.getDocNodeSnapshot(docSection)).toMatchSnapshot();

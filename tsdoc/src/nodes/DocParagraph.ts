@@ -1,4 +1,4 @@
-import { DocNodeKind } from './DocNode';
+import { DocNodeKind, DocNode } from './DocNode';
 import { DocNodeContainer, IDocNodeContainerParameters } from './DocNodeContainer';
 
 /**
@@ -17,8 +17,8 @@ export class DocParagraph extends DocNodeContainer {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocParagraphParameters) {
-    super(parameters);
+  public constructor(parameters: IDocParagraphParameters, children?: DocNode[]) {
+    super(parameters, children);
   }
 
   /** @override */
