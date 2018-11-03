@@ -91,7 +91,7 @@ export abstract class DocNode {
    */
   public getChildNodes(): ReadonlyArray<DocNode> {
     // Do this sanity check here, since the constructor cannot access abstract members
-    this.configuration.docNodeManager.requireRegisteredKind(this.kind);
+    this.configuration.docNodeManager.throwIfNotRegisteredKind(this.kind);
 
     return this.onGetChildNodes().filter(x => x !== undefined) as ReadonlyArray<DocNode>;
   }
