@@ -11,8 +11,8 @@ export interface IDocHtmlStartTagParameters extends IDocNodeParameters {
   name: string;
   spacingAfterName?: string;
 
-  htmlAttributes: DocHtmlAttribute[];
-  selfClosingTag: boolean;
+  htmlAttributes?: DocHtmlAttribute[];
+  selfClosingTag?: boolean;
 }
 
 /**
@@ -91,9 +91,11 @@ export class DocHtmlStartTag extends DocNode {
     }
 
     this._htmlAttributes = [];
-    this._htmlAttributes.push(...parameters.htmlAttributes);
+    if (parameters.htmlAttributes) {
+      this._htmlAttributes.push(...parameters.htmlAttributes);
+    }
 
-    this._selfClosingTag = parameters.selfClosingTag;
+    this._selfClosingTag = !!parameters.selfClosingTag;
   }
 
   /** @override */

@@ -17,8 +17,8 @@ export class DocParagraph extends DocNodeContainer {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocParagraphParameters, children?: DocNode[]) {
-    super(parameters, children);
+  public constructor(parameters: IDocParagraphParameters, childNodes?: ReadonlyArray<DocNode>) {
+    super(parameters, childNodes);
   }
 
   /** @override */
