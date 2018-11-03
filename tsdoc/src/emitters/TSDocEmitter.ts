@@ -37,17 +37,13 @@ enum LineState {
 }
 
 /**
- * Constructor options for {@link TSDocEmitter}.
- */
-export interface ITSDocEmitterParameters {
-
-}
-
-/**
  * Renders a DocNode tree as a code comment.
  */
 export class TSDocEmitter {
   public readonly eol: string = '\n';
+
+  // Whether to emit the /** */ framing
+  private _emitCommentFraming: boolean = true;
 
   private _output: StringBuilder | undefined;
 
@@ -63,14 +59,17 @@ export class TSDocEmitter {
   private _hangingParagraph: boolean = false;
 
   public renderComment(output: StringBuilder, docComment: DocComment): void {
+    this._emitCommentFraming = true;
     this._renderCompleteObject(output, docComment);
   }
 
   public renderHtmlTag(output: StringBuilder, htmlTag: DocHtmlStartTag | DocHtmlEndTag): void {
+    this._emitCommentFraming = false;
     this._renderCompleteObject(output, htmlTag);
   }
 
   public renderDeclarationReference(output: StringBuilder, declarationReference: DocDeclarationReference): void {
+    this._emitCommentFraming = false;
     this._renderCompleteObject(output, declarationReference);
   }
 
@@ -389,13 +388,17 @@ export class TSDocEmitter {
     }
 
     if (this._lineState === LineState.Closed) {
-      this._output!.append('/**' + this.eol
-        + ' *');
+      if (this._emitCommentFraming) {
+        this._output!.append('/**' + this.eol
+          + ' *');
+      }
       this._lineState = LineState.StartOfLine;
     }
 
     if (this._lineState === LineState.StartOfLine) {
-      this._output!.append(' ');
+      if (this._emitCommentFraming) {
+        this._output!.append(' ');
+      }
     }
 
     this._output!.append(content);
@@ -406,14 +409,21 @@ export class TSDocEmitter {
   // Starts a new line, and inserts "/**" or "*" as appropriate.
   private _writeNewline(): void {
     if (this._lineState === LineState.Closed) {
-      this._output!.append('/**' + this.eol
-        + ' *');
+      if (this._emitCommentFraming) {
+        this._output!.append('/**' + this.eol
+          + ' *');
+      }
       this._lineState = LineState.StartOfLine;
     }
 
     this._previousLineHadContent = this._lineState === LineState.MiddleOfLine;
 
-    this._output!.append(this.eol + ' *');
+    if (this._emitCommentFraming) {
+      this._output!.append(this.eol + ' *');
+    } else {
+      this._output!.append(this.eol);
+    }
+
     this._lineState = LineState.StartOfLine;
     this._hangingParagraph = false;
   }
@@ -421,11 +431,15 @@ export class TSDocEmitter {
   // Closes the comment, adding the final "*/" delimiter
   private _writeEnd(): void {
     if (this._lineState === LineState.MiddleOfLine) {
-      this._writeNewline();
+      if (this._emitCommentFraming) {
+        this._writeNewline();
+      }
     }
 
     if (this._lineState !== LineState.Closed) {
-      this._output!.append('/' + this.eol);
+      if (this._emitCommentFraming) {
+        this._output!.append('/' + this.eol);
+      }
       this._lineState = LineState.Closed;
     }
   }

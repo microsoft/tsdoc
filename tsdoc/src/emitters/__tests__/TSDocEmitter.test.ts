@@ -1,4 +1,14 @@
-import { TSDocParser, ParserContext } from '../../index';
+import {
+  TSDocParser,
+  ParserContext,
+  DocHtmlStartTag,
+  DocHtmlAttribute,
+  DocDeclarationReference,
+  DocMemberReference,
+  DocMemberIdentifier,
+  DocMemberSelector,
+  TSDocConfiguration
+} from '../../index';
 
 function createSnapshot(input: string): {} {
   const tsdocParser: TSDocParser = new TSDocParser();
@@ -106,4 +116,31 @@ Object {
 ",
 }
 `);
+});
+
+test('03 TSDocEmitter.renderHtmlTag()', () => {
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
+  const htmlTag: DocHtmlStartTag = new DocHtmlStartTag({
+    configuration,
+    name: 'img',
+    htmlAttributes: [new DocHtmlAttribute({ configuration, name: 'src', value: '"http://example.com"' })]
+  });
+  expect(htmlTag.emitAsHtml()).toMatchInlineSnapshot(`"<img src=\\"http://example.com\\">"`);
+});
+
+test('04 TSDocEmitter.renderDeclarationReference()', () => {
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
+  const htmlTag: DocDeclarationReference = new DocDeclarationReference({
+    configuration,
+    packageName: 'my-package',
+    memberReferences: [
+      new DocMemberReference({
+        configuration,
+        hasDot: false,
+        memberIdentifier: new DocMemberIdentifier({ configuration, identifier: 'MyClass' }),
+        selector: new DocMemberSelector({ configuration, selector: 'class' })
+      })
+    ]
+  });
+  expect(htmlTag.emitAsTsdoc()).toMatchInlineSnapshot(`"my-package#(MyClass:class)"`);
 });
