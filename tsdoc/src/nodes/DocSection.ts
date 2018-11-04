@@ -59,4 +59,11 @@ export class DocSection extends DocNodeContainer {
 
     paragraphNode.appendNode(docNode);
   }
+
+  public appendNodesInParagraph(docNodes: ReadonlyArray<DocNode>): void {
+    for (const docNode of docNodes) {
+      this.appendNodeInParagraph(docNode);
+    }
+  }
+
 }
