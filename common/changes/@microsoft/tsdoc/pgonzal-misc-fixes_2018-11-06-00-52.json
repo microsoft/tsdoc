@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Fix a bug where `TSDocEmitter.renderHtmlTag()` and `TSDocEmitter.renderDeclarationReference()` were including comment framing",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "pgonzal@users.noreply.github.com"
+}
