@@ -2,6 +2,21 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.1",
+      "tag": "@microsoft/tsdoc_v0.12.1",
+      "date": "Tue, 06 Nov 2018 01:37:22 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Allow HTML in a `DocSection` node"
+          },
+          {
+            "comment": "Add `DocSection.appendNodesInParagraph()` API"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.0",
       "tag": "@microsoft/tsdoc_v0.12.0",
       "date": "Sat, 03 Nov 2018 02:07:10 GMT",

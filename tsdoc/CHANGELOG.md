@@ -1,6 +1,14 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Sat, 03 Nov 2018 02:07:10 GMT and should not be manually modified.
+This log was last generated on Tue, 06 Nov 2018 01:37:22 GMT and should not be manually modified.
+
+## 0.12.1
+Tue, 06 Nov 2018 01:37:22 GMT
+
+### Patches
+
+- Allow HTML in a `DocSection` node
+- Add `DocSection.appendNodesInParagraph()` API
 
 ## 0.12.0
 Sat, 03 Nov 2018 02:07:10 GMT
