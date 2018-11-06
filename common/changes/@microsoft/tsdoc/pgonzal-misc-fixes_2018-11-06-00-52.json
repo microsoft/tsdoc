@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc",
-      "comment": "Fix a bug where `TSDocEmitter.renderHtmlTag()` and `TSDocEmitter.renderDeclarationReference()` were including comment framing",
+      "comment": "Add `DocSection.appendNodesInParagraph()` API",
       "type": "patch"
     }
   ],
