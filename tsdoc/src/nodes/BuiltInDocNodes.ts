@@ -37,7 +37,9 @@ export class BuiltInDocNodes {
 
     docNodeManager.registerAllowableChildren(DocNodeKind.Section, [
       DocNodeKind.FencedCode,
-      DocNodeKind.Paragraph
+      DocNodeKind.Paragraph,
+      DocNodeKind.HtmlStartTag,
+      DocNodeKind.HtmlEndTag
     ]);
 
     docNodeManager.registerAllowableChildren(DocNodeKind.Paragraph, [

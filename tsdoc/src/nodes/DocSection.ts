@@ -28,8 +28,10 @@ export class DocSection extends DocNodeContainer {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocSectionParameters | IDocSectionParsedParameters, children?: DocNode[]) {
-    super(parameters, children);
+  public constructor(parameters: IDocSectionParameters | IDocSectionParsedParameters,
+    childNodes?: ReadonlyArray<DocNode>) {
+
+    super(parameters, childNodes);
   }
 
   /** @override */
@@ -57,4 +59,11 @@ export class DocSection extends DocNodeContainer {
 
     paragraphNode.appendNode(docNode);
   }
+
+  public appendNodesInParagraph(docNodes: ReadonlyArray<DocNode>): void {
+    for (const docNode of docNodes) {
+      this.appendNodeInParagraph(docNode);
+    }
+  }
+
 }

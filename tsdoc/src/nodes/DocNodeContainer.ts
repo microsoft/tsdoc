@@ -26,12 +26,12 @@ export abstract class DocNodeContainer extends DocNode {
    * @internal
    */
   public constructor(parameters: IDocNodeContainerParameters | IDocNodeContainerParsedParameters,
-    children?: DocNode[]) {
+    childNodes?: ReadonlyArray<DocNode>) {
 
     super(parameters);
 
-    if (children !== undefined && children.length > 0) {
-      this.appendNodes(children);
+    if (childNodes !== undefined && childNodes.length > 0) {
+      this.appendNodes(childNodes);
     }
   }
 
@@ -47,7 +47,8 @@ export abstract class DocNodeContainer extends DocNode {
    */
   public appendNode(docNode: DocNode): void {
     if (!this.configuration.docNodeManager.isAllowedChild(this.kind, docNode.kind)) {
-      throw new Error(`The TSDocConfiguration does not permit ${this.kind} to contain nodes of type ${docNode.kind}`);
+      throw new Error(`The TSDocConfiguration does not allow a ${this.kind} node to`
+        + ` contain a node of type ${docNode.kind}`);
     }
 
     this._nodes!.push(docNode);
