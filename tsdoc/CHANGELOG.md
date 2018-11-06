@@ -1,6 +1,6 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Tue, 06 Nov 2018 01:37:22 GMT and should not be manually modified.
+This log was last generated on Tue, 06 Nov 2018 01:44:44 GMT and should not be manually modified.
 
 ## 0.12.1
 Tue, 06 Nov 2018 01:37:22 GMT
@@ -8,6 +8,7 @@ Tue, 06 Nov 2018 01:37:22 GMT
 ### Patches
 
 - Allow HTML in a `DocSection` node
+- Fix a bug where `TSDocEmitter.renderHtmlTag()` and `TSDocEmitter.renderDeclarationReference()` were including comment framing
 - Add `DocSection.appendNodesInParagraph()` API
 
 ## 0.12.0

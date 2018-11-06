@@ -11,6 +11,9 @@
             "comment": "Allow HTML in a `DocSection` node"
           },
           {
+            "comment": "Fix a bug where `TSDocEmitter.renderHtmlTag()` and `TSDocEmitter.renderDeclarationReference()` were including comment framing"
+          },
+          {
             "comment": "Add `DocSection.appendNodesInParagraph()` API"
           }
         ]
