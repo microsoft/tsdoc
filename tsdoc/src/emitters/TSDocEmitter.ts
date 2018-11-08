@@ -232,15 +232,18 @@ export class TSDocEmitter {
         const docLinkTag: DocLinkTag = docNode as DocLinkTag;
         this._renderInlineTag(docLinkTag, () => {
           if (docLinkTag.urlDestination !== undefined || docLinkTag.codeDestination !== undefined) {
-            this._writeContent(' ');
             if (docLinkTag.urlDestination !== undefined) {
+              this._writeContent(' ');
               this._writeContent(docLinkTag.urlDestination);
-            } else {
+            } else if (docLinkTag.codeDestination !== undefined) {
+              this._writeContent(' ');
               this._renderNode(docLinkTag.codeDestination);
             }
           }
           if (docLinkTag.linkText !== undefined) {
+            this._writeContent(' ');
             this._writeContent('|');
+            this._writeContent(' ');
             this._writeContent(docLinkTag.linkText);
           }
         });
