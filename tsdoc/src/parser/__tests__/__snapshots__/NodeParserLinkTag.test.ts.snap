@@ -2,15 +2,15 @@
 
 exports[`00 Link text: positive examples 1`] = `
 Object {
-  "buffer": "/**[n] * {@link http://example1.com}[n] * {@link http://example2.com|}[n] * {@link http://example3.com| }[n] * {@link http://example4.com| link text}[n] * {@link http://example5.com| link[n] * text}[n] */",
+  "buffer": "/**[n] * {@link http://example1.com}[n] * {@link http://example2.com|}[n] * {@link http://example3.com| }[n] * {@link http://example4.com|link text}[n] * x{@link http://example5.com| link[n] * text }y[n] */",
   "gaps": Array [],
   "lines": Array [
     "{@link http://example1.com}",
     "{@link http://example2.com|}",
     "{@link http://example3.com| }",
-    "{@link http://example4.com| link text}",
-    "{@link http://example5.com| link",
-    "text}",
+    "{@link http://example4.com|link text}",
+    "x{@link http://example5.com| link",
+    "text }y",
   ],
   "logMessages": Array [],
   "nodes": Object {
@@ -161,7 +161,7 @@ Object {
                   },
                   Object {
                     "kind": "Excerpt: LinkTag_LinkText",
-                    "nodeExcerpt": " link text",
+                    "nodeExcerpt": "link text",
                   },
                   Object {
                     "kind": "Excerpt: InlineTag_ClosingDelimiter",
@@ -175,6 +175,15 @@ Object {
                   Object {
                     "kind": "Excerpt: SoftBreak",
                     "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "x",
                   },
                 ],
               },
@@ -203,11 +212,20 @@ Object {
                   },
                   Object {
                     "kind": "Excerpt: LinkTag_LinkText",
-                    "nodeExcerpt": " link[n]text",
+                    "nodeExcerpt": " link[n]text ",
                   },
                   Object {
                     "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "y",
                   },
                 ],
               },

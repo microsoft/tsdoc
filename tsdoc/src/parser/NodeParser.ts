@@ -826,7 +826,7 @@ export class NodeParser {
 
     if (urlDestination.length === 0) {
       // This should be impossible since the caller ensures that peekTokenKind() === TokenKind.AsciiWord
-      throw new Error('Missing URL in _parseLinkTagUrl()');
+      throw new Error('Missing URL in _parseLinkTagUrlDestination()');
     }
 
     const urlDestinationExcerpt: TokenSequence = embeddedTokenReader.extractAccumulatedSequence();
