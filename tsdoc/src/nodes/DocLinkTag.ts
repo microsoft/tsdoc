@@ -30,8 +30,10 @@ export interface IDocLinkTagParsedParameters extends IDocInlineTagBaseParsedPara
   spacingAfterDestinationExcerpt?: TokenSequence;
 
   pipeExcerpt?: TokenSequence;
+  spacingAfterPipeExcerpt?: TokenSequence;
 
   linkTextExcerpt?: TokenSequence;
+  spacingAfterLinkTextExcerpt?: TokenSequence;
 }
 
 /**
@@ -46,8 +48,11 @@ export class DocLinkTag extends DocInlineTagBase {
   private readonly _spacingAfterDestinationExcerpt: DocExcerpt | undefined;
 
   private readonly _pipeExcerpt: DocExcerpt | undefined;
+  private readonly _spacingAfterPipeExcerpt: DocExcerpt | undefined;
 
   private _linkText: string | undefined;
+  private readonly _spacingAfterLinkTextExcerpt: DocExcerpt | undefined;
+
   private readonly _linkTextExcerpt: DocExcerpt | undefined;
 
   /**
@@ -90,12 +95,26 @@ export class DocLinkTag extends DocInlineTagBase {
           content: parameters.pipeExcerpt
         });
       }
+      if (parameters.spacingAfterPipeExcerpt) {
+        this._spacingAfterPipeExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterPipeExcerpt
+        });
+      }
 
       if (parameters.linkTextExcerpt) {
         this._linkTextExcerpt = new DocExcerpt({
           configuration: this.configuration,
           excerptKind: ExcerptKind.LinkTag_LinkText,
           content: parameters.linkTextExcerpt
+        });
+      }
+      if (parameters.spacingAfterLinkTextExcerpt) {
+        this._spacingAfterLinkTextExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterLinkTextExcerpt
         });
       }
     } else {
@@ -143,6 +162,23 @@ export class DocLinkTag extends DocInlineTagBase {
    * An optional text string that is the hyperlink text.  If omitted, the documentation
    * renderer will use a default string based on the link itself (e.g. the URL text
    * or the declaration identifier).
+   *
+   * @remarks
+   *
+   * In HTML, the hyperlink can include leading/trailing space characters around the link text.
+   * For example, this HTML will cause a web browser to `y` and also the space character before
+   * and after it:
+   *
+   * ```html
+   * x<a href="#Button"> y </a> z
+   * ```
+   *
+   * Unlike HTML, TSDoc trims leading/trailing spaces.  For example, this TSDoc will be
+   * displayed `xy z` and underline only the `y` character:
+   *
+   * ```
+   * x{@link Button | y } z
+   * ```
    */
   public get linkText(): string | undefined {
     if (this._linkText === undefined) {
@@ -160,7 +196,9 @@ export class DocLinkTag extends DocInlineTagBase {
       this._urlDestinationExcerpt,
       this._spacingAfterDestinationExcerpt,
       this._pipeExcerpt,
-      this._linkTextExcerpt
+      this._spacingAfterPipeExcerpt,
+      this._linkTextExcerpt,
+      this._spacingAfterLinkTextExcerpt
     ];
   }
 }

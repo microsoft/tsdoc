@@ -118,7 +118,7 @@ Object {
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Excerpt: LinkTag_LinkText",
+                    "kind": "Excerpt: Spacing",
                     "nodeExcerpt": " ",
                   },
                   Object {
@@ -211,8 +211,16 @@ Object {
                     "nodeExcerpt": "|",
                   },
                   Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
                     "kind": "Excerpt: LinkTag_LinkText",
-                    "nodeExcerpt": " link[n]text ",
+                    "nodeExcerpt": "link[n]text",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "Excerpt: InlineTag_ClosingDelimiter",
@@ -257,7 +265,7 @@ Object {
   ],
   "logMessages": Array [
     "(2,5): The @link tag content is missing",
-    "(3,31): The \\"|\\" character may not be used in the link text without escaping it",
+    "(3,32): The \\"|\\" character may not be used in the link text without escaping it",
   ],
   "nodes": Object {
     "kind": "Comment",

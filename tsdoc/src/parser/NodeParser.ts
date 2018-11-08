@@ -765,11 +765,13 @@ export class NodeParser {
       // Read the link text
       embeddedTokenReader.readToken();
       parameters.pipeExcerpt = embeddedTokenReader.extractAccumulatedSequence();
+      parameters.spacingAfterPipeExcerpt = this._tryReadSpacingAndNewlines(embeddedTokenReader);
 
       // Read everything until the end
       // NOTE: Because we're using an embedded TokenReader, the TokenKind.EndOfInput occurs
       // when we reach the "}", not the end of the original input
       done = false;
+      let spacingAfterLinkTextMarker: number | undefined = undefined;
       while (!done) {
         switch (embeddedTokenReader.peekTokenKind()) {
           case TokenKind.EndOfInput:
@@ -782,14 +784,33 @@ export class NodeParser {
               `The "${badCharacter}" character may not be used in the link text without escaping it`,
               embeddedTokenReader.extractAccumulatedSequence(), errorTag);
             return errorTag;
+          case TokenKind.Spacing:
+            embeddedTokenReader.readToken();
+            break;
           default:
+            // We found a non-spacing character, so move the spacingAfterLinkTextMarker
+            spacingAfterLinkTextMarker = embeddedTokenReader.createMarker() + 1;
             embeddedTokenReader.readToken();
         }
       }
 
-      if (!embeddedTokenReader.isAccumulatedSequenceEmpty()) {
-        parameters.linkTextExcerpt = embeddedTokenReader.extractAccumulatedSequence();
+      const linkTextAndSpacing: TokenSequence | undefined = embeddedTokenReader.tryExtractAccumulatedSequence();
+      if (linkTextAndSpacing) {
+        if (spacingAfterLinkTextMarker === undefined) {
+          // We never found any non-spacing characters, so everything is trailing spacing
+          parameters.spacingAfterLinkTextExcerpt = linkTextAndSpacing;
+        } else if (spacingAfterLinkTextMarker >= linkTextAndSpacing.endIndex) {
+          // We found no trailing spacing, so everything we found is the text
+          parameters.linkTextExcerpt = linkTextAndSpacing;
+        } else {
+          // Split the trailing spacing from the link text
+          parameters.linkTextExcerpt = linkTextAndSpacing.getNewSequence(linkTextAndSpacing.startIndex,
+            spacingAfterLinkTextMarker);
+          parameters.spacingAfterLinkTextExcerpt = linkTextAndSpacing.getNewSequence(spacingAfterLinkTextMarker,
+            linkTextAndSpacing.endIndex);
+        }
       }
+
     } else if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
       embeddedTokenReader.readToken();
 
