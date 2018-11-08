@@ -785,6 +785,7 @@ export class NodeParser {
               embeddedTokenReader.extractAccumulatedSequence(), errorTag);
             return errorTag;
           case TokenKind.Spacing:
+          case TokenKind.Newline:
             embeddedTokenReader.readToken();
             break;
           default:
