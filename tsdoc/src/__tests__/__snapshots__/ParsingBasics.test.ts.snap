@@ -259,8 +259,12 @@ Object {
                     "nodeExcerpt": "|",
                   },
                   Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
                     "kind": "Excerpt: LinkTag_LinkText",
-                    "nodeExcerpt": " Statistics subsystem",
+                    "nodeExcerpt": "Statistics subsystem",
                   },
                   Object {
                     "kind": "Excerpt: InlineTag_ClosingDelimiter",
@@ -954,8 +958,12 @@ Object {
                     "nodeExcerpt": "|",
                   },
                   Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
                     "kind": "Excerpt: LinkTag_LinkText",
-                    "nodeExcerpt": " Statistics subsystem",
+                    "nodeExcerpt": "Statistics subsystem",
                   },
                   Object {
                     "kind": "Excerpt: InlineTag_ClosingDelimiter",

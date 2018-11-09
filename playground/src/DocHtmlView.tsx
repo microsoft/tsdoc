@@ -144,7 +144,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
             }
           }
           const linkText: string = linkTag.linkText || identifier || '???';
-          return <a key={key} href='#'>{linkText.trim()}</a>;
+          return <a key={key} href='#'>{linkText}</a>;
         }
       case 'Paragraph':
         // Collapse spaces in the paragraph

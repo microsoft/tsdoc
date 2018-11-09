@@ -231,8 +231,12 @@ Object {
                     "nodeExcerpt": "|",
                   },
                   Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
                     "kind": "Excerpt: LinkTag_LinkText",
-                    "nodeExcerpt": " link text",
+                    "nodeExcerpt": "link text",
                   },
                   Object {
                     "kind": "Excerpt: InlineTag_ClosingDelimiter",
@@ -1775,8 +1779,12 @@ Object {
                     "nodeExcerpt": "|",
                   },
                   Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
                     "kind": "Excerpt: LinkTag_LinkText",
-                    "nodeExcerpt": " link text",
+                    "nodeExcerpt": "link text",
                   },
                   Object {
                     "kind": "Excerpt: InlineTag_ClosingDelimiter",

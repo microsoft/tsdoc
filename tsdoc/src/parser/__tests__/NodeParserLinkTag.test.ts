@@ -6,9 +6,12 @@ test('00 Link text: positive examples', () => {
     ' * {@link http://example1.com}',
     ' * {@link http://example2.com|}',
     ' * {@link http://example3.com| }',
-    ' * {@link http://example4.com| link text}',
-    ' * {@link http://example5.com| link',
-    ' * text}',
+    ' * {@link http://example4.com|link text}',
+    ' * 1{@link http://example5.com| link',
+    ' * text }2',
+    ' * 3{@link http://example5.com| ',
+    ' * link text ',
+    ' *  }4',
     ' */'
   ].join('\n'));
 });

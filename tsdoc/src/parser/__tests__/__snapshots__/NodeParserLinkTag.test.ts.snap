@@ -2,15 +2,18 @@
 
 exports[`00 Link text: positive examples 1`] = `
 Object {
-  "buffer": "/**[n] * {@link http://example1.com}[n] * {@link http://example2.com|}[n] * {@link http://example3.com| }[n] * {@link http://example4.com| link text}[n] * {@link http://example5.com| link[n] * text}[n] */",
+  "buffer": "/**[n] * {@link http://example1.com}[n] * {@link http://example2.com|}[n] * {@link http://example3.com| }[n] * {@link http://example4.com|link text}[n] * 1{@link http://example5.com| link[n] * text }2[n] * 3{@link http://example5.com| [n] * link text [n] *  }4[n] */",
   "gaps": Array [],
   "lines": Array [
     "{@link http://example1.com}",
     "{@link http://example2.com|}",
     "{@link http://example3.com| }",
-    "{@link http://example4.com| link text}",
-    "{@link http://example5.com| link",
-    "text}",
+    "{@link http://example4.com|link text}",
+    "1{@link http://example5.com| link",
+    "text }2",
+    "3{@link http://example5.com|",
+    "link text",
+    " }4",
   ],
   "logMessages": Array [],
   "nodes": Object {
@@ -118,7 +121,7 @@ Object {
                     "nodeExcerpt": "|",
                   },
                   Object {
-                    "kind": "Excerpt: LinkTag_LinkText",
+                    "kind": "Excerpt: Spacing",
                     "nodeExcerpt": " ",
                   },
                   Object {
@@ -161,7 +164,7 @@ Object {
                   },
                   Object {
                     "kind": "Excerpt: LinkTag_LinkText",
-                    "nodeExcerpt": " link text",
+                    "nodeExcerpt": "link text",
                   },
                   Object {
                     "kind": "Excerpt: InlineTag_ClosingDelimiter",
@@ -175,6 +178,15 @@ Object {
                   Object {
                     "kind": "Excerpt: SoftBreak",
                     "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "1",
                   },
                 ],
               },
@@ -202,12 +214,97 @@ Object {
                     "nodeExcerpt": "|",
                   },
                   Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
                     "kind": "Excerpt: LinkTag_LinkText",
-                    "nodeExcerpt": " link[n]text",
+                    "nodeExcerpt": "link[n]text",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
                   },
                   Object {
                     "kind": "Excerpt: InlineTag_ClosingDelimiter",
                     "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "2",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "3",
+                  },
+                ],
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagName",
+                    "nodeExcerpt": "@link",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_UrlDestination",
+                    "nodeExcerpt": "http://example5.com",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_Pipe",
+                    "nodeExcerpt": "|",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "[n]",
+                  },
+                  Object {
+                    "kind": "Excerpt: LinkTag_LinkText",
+                    "nodeExcerpt": "link text",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "[n] ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "4",
                   },
                 ],
               },
@@ -239,7 +336,7 @@ Object {
   ],
   "logMessages": Array [
     "(2,5): The @link tag content is missing",
-    "(3,31): The \\"|\\" character may not be used in the link text without escaping it",
+    "(3,32): The \\"|\\" character may not be used in the link text without escaping it",
   ],
   "nodes": Object {
     "kind": "Comment",
