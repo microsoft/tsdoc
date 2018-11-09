@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Tue, 06 Nov 2018 01:44:44 GMT and should not be manually modified.
+This log was last generated on Fri, 09 Nov 2018 15:13:13 GMT and should not be manually modified.
+
+## 0.12.2
+Fri, 09 Nov 2018 15:13:13 GMT
+
+### Patches
+
+- Improve trimming of spacing for link text in `{@link}` tags
 
 ## 0.12.1
 Tue, 06 Nov 2018 01:37:22 GMT
