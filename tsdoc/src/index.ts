@@ -17,6 +17,7 @@ export { Standardization } from './details/Standardization';
 export { StandardModifierTagSet } from './details/StandardModifierTagSet';
 export { ModifierTagSet } from './details/ModifierTagSet';
 
+export { PlainTextEmitter } from './emitters/PlainTextEmitter';
 export { StringBuilder } from './emitters/StringBuilder';
 export { TSDocEmitter } from './emitters/TSDocEmitter';
 
