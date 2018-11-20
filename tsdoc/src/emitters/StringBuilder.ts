@@ -13,9 +13,13 @@ export interface IStringBuilder {
   append(text: string): void;
 
   /**
-   * Renders the text as a string.
+   * Returns a single string containing all the text that was appended to the buffer so far.
+   *
+   * @remarks
+   *
+   * This is a potentially expensive operation.
    */
-  getText(): string;
+  toString(): string;
 }
 
 /**
@@ -41,8 +45,8 @@ export class StringBuilder implements IStringBuilder {
     this._chunks.push(text);
   }
 
-  /** {@inheritdoc IStringBuilder.getText} */
-  public getText(): string {
+  /** {@inheritdoc IStringBuilder.toString} */
+  public toString(): string {
     if (this._chunks.length === 0) {
       return '';
     }
@@ -54,17 +58,5 @@ export class StringBuilder implements IStringBuilder {
     }
 
     return this._chunks[0];
-  }
-
-  /**
-   * A shorthand for `StringBuilder.getText()`.
-   *
-   * @remarks
-   *
-   * The `getText()` method is preferred in TypeScript, since the type system allows `Object.toString()` to be called
-   * for many objects that do not provide a useful implementation.
-   */
-  public toString(): string {
-    return this.getText();
   }
 }
