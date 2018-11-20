@@ -18,7 +18,7 @@ export { StandardModifierTagSet } from './details/StandardModifierTagSet';
 export { ModifierTagSet } from './details/ModifierTagSet';
 
 export { PlainTextEmitter } from './emitters/PlainTextEmitter';
-export { StringBuilder } from './emitters/StringBuilder';
+export { StringBuilder, IStringBuilder } from './emitters/StringBuilder';
 export { TSDocEmitter } from './emitters/TSDocEmitter';
 
 export * from './nodes';
