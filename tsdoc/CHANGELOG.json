@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.3",
+      "tag": "@microsoft/tsdoc_v0.12.3",
+      "date": "Tue, 20 Nov 2018 07:42:17 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add a new API `PlainTextEmitter.hasAnyTextContent()`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.2",
       "tag": "@microsoft/tsdoc_v0.12.2",
       "date": "Fri, 09 Nov 2018 15:13:13 GMT",

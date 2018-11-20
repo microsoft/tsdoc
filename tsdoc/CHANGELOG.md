@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Fri, 09 Nov 2018 15:13:13 GMT and should not be manually modified.
+This log was last generated on Tue, 20 Nov 2018 07:42:17 GMT and should not be manually modified.
+
+## 0.12.3
+Tue, 20 Nov 2018 07:42:17 GMT
+
+### Patches
+
+- Add a new API `PlainTextEmitter.hasAnyTextContent()`
 
 ## 0.12.2
 Fri, 09 Nov 2018 15:13:13 GMT
