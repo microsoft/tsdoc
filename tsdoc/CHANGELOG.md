@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Tue, 20 Nov 2018 07:42:17 GMT and should not be manually modified.
+This log was last generated on Tue, 20 Nov 2018 21:23:06 GMT and should not be manually modified.
+
+## 0.12.4
+Tue, 20 Nov 2018 21:23:06 GMT
+
+### Patches
+
+- Add new interface `IStringBuilder`
 
 ## 0.12.3
 Tue, 20 Nov 2018 07:42:17 GMT
