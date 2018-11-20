@@ -25,7 +25,7 @@ import {
   DocMemberSelector,
   DocParamBlock
 } from '../nodes';
-import { StringBuilder } from './StringBuilder';
+import { IStringBuilder } from './StringBuilder';
 import { DocNodeTransforms } from '../transforms/DocNodeTransforms';
 import { StandardTags } from '../details/StandardTags';
 import { DocParamCollection } from '../nodes/DocParamCollection';
@@ -45,7 +45,7 @@ export class TSDocEmitter {
   // Whether to emit the /** */ framing
   private _emitCommentFraming: boolean = true;
 
-  private _output: StringBuilder | undefined;
+  private _output: IStringBuilder | undefined;
 
   // This state machine is used by the writer functions to generate the /** */ framing around the emitted lines
   private _lineState: LineState = LineState.Closed;
@@ -58,22 +58,22 @@ export class TSDocEmitter {
   // an "@param" block.  Setting _hangingParagraph=true accomplishes that.
   private _hangingParagraph: boolean = false;
 
-  public renderComment(output: StringBuilder, docComment: DocComment): void {
+  public renderComment(output: IStringBuilder, docComment: DocComment): void {
     this._emitCommentFraming = true;
     this._renderCompleteObject(output, docComment);
   }
 
-  public renderHtmlTag(output: StringBuilder, htmlTag: DocHtmlStartTag | DocHtmlEndTag): void {
+  public renderHtmlTag(output: IStringBuilder, htmlTag: DocHtmlStartTag | DocHtmlEndTag): void {
     this._emitCommentFraming = false;
     this._renderCompleteObject(output, htmlTag);
   }
 
-  public renderDeclarationReference(output: StringBuilder, declarationReference: DocDeclarationReference): void {
+  public renderDeclarationReference(output: IStringBuilder, declarationReference: DocDeclarationReference): void {
     this._emitCommentFraming = false;
     this._renderCompleteObject(output, declarationReference);
   }
 
-  private _renderCompleteObject(output: StringBuilder, docNode: DocNode): void {
+  private _renderCompleteObject(output: IStringBuilder, docNode: DocNode): void {
     this._output = output;
 
     this._lineState = LineState.Closed;
