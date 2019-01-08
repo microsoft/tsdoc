@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
+import * as domPurify from 'dompurify';
 
 export interface IDocHtmlViewProps {
   style?: React.CSSProperties;
@@ -94,6 +95,13 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
         </React.Fragment>
       );
     }
+
+    // Example usage of DOMPurify
+    outputElements.push(
+      <div dangerouslySetInnerHTML={ { __html: domPurify.sanitize(
+        '<img src="https://api-extractor.com/images/api-extractor-title.png" onmouseover="alert(\'alert!\')" />'
+      ) } } />
+    );
 
     return <div style={ this.props.style }> {outputElements} </div>;
   }

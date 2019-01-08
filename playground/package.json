@@ -12,6 +12,7 @@
     "@microsoft/tsdoc": "0.12.4",
     "@types/react": "16.4.18",
     "@types/react-dom": "16.0.9",
+    "@types/dompurify": "0.0.32",
     "promise": "8.0.1",
     "monaco-editor": "0.14.3",
     "tslib": "1.9.3"

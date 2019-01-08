@@ -24,6 +24,10 @@ const MONACO_URL = {
   dev: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/',
   production: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/'
 };
+const DOM_PURIFY_URL = {
+  dev: 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/1.0.8/purify.js',
+  production: 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/1.0.8/purify.min.js'
+};
 
 module.exports.generateBuildWebpackConfiguration = function(env) {
   return  _generateBaseWebpackConfiguration((env || {}).production);
@@ -42,12 +46,6 @@ module.exports.generateServeWebpackConfiguration = function () {
 }
 
 function _generateBaseWebpackConfiguration(isProduction) {
-  const options = {
-    pwd: __dirname,
-    entrypoint: path.join(__dirname, 'src', 'index.ts'),
-    bundleName: 'tsdoc-playground',
-    production: (process.env || {}).production
-  };
   const distDirectory = path.join(__dirname, 'dist');
   const monacoUrl = isProduction ? MONACO_URL.production : MONACO_URL.dev;
 
@@ -100,7 +98,8 @@ function _generateBaseWebpackConfiguration(isProduction) {
     externals: {
       'react': 'React',
       'react-dom': 'ReactDOM',
-      'react-dom/server': 'ReactDOMServer'
+      'react-dom/server': 'ReactDOMServer',
+      'dompurify': 'DOMPurify'
     },
     output: {
       libraryTarget: 'this',
@@ -132,6 +131,7 @@ function _generateBaseWebpackConfiguration(isProduction) {
             { url: isProduction ? REACT_URL.production : REACT_URL.dev },
             { url: isProduction ? REACT_DOM_URL.production : REACT_DOM_URL.dev },
             { url: isProduction ? REACT_DOM_SERVER_URL.production : REACT_DOM_SERVER_URL.dev },
+            { url: isProduction ? DOM_PURIFY_URL.production : DOM_PURIFY_URL.dev },
             { url: `${monacoUrl}vs/loader.js` }
           ]
         }

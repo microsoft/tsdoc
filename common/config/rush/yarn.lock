@@ -45,6 +45,7 @@
   resolved "file:./projects/tsdoc-playground.tgz"
   dependencies:
     "@microsoft/set-webpack-public-path-plugin" "~2.1.16"
+    "@types/dompurify" "0.0.32"
     "@types/react" "16.4.18"
     "@types/react-dom" "16.0.9"
     "@types/webpack-env" "~1.13.6"
@@ -84,6 +85,11 @@
     tslint "~5.11.0"
     tslint-microsoft-contrib "~5.2.1"
     typescript "~3.1.2"
+
+"@types/dompurify@0.0.32":
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/@types/dompurify/-/dompurify-0.0.32.tgz#ccc4148d7f2e0598006611e82e840806fab4b268"
+  integrity sha512-OPiBf1Xgi5umND0m0LpBhxfRVat3dMCXeB4SBVzAIa0sKniJ9z2g9cN0trL1OcmkQnjDV14yCyRH26G2L0zWFQ==
 
 "@types/jest@23.3.3":
   version "23.3.3"
