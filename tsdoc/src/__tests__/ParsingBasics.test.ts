@@ -49,8 +49,8 @@ test('02 A basic TSDoc comment with common components', () => {
     ' * This is a custom block containing an @undefinedBlockTag',
     ' *',
     ' * @param x - The first input number',
-    ' * @param y - The second input number',
-    ' * @returns The arithmetic mean of `x` and `y`',
+    ' * @param y$_ - The second input number',
+    ' * @returns The arithmetic mean of `x` and `y$_`',
     ' *',
     ' * @beta @customModifier',
     ' */'

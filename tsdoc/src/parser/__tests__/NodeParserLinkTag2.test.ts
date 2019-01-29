@@ -80,7 +80,23 @@ test('07 Index selectors: negative examples', () => {
   ].join('\n'));
 });
 
-test('08 Quoted identifiers: positive examples', () => {
+test('08 Unusual identifiers: positive examples', () => {
+  TestHelpers.parseAndMatchNodeParserSnapshot([
+    '/**',
+    ' * {@link Class$_1 . $_1member}',
+    ' */'
+  ].join('\n'));
+});
+
+test('09 Unusual identifiers: negative examples', () => {
+  TestHelpers.parseAndMatchNodeParserSnapshot([
+    '/**',
+    ' * {@link Class-1}',
+    ' */'
+  ].join('\n'));
+});
+
+test('10 Quoted identifiers: positive examples', () => {
   TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * {@link "static"}',
@@ -90,7 +106,7 @@ test('08 Quoted identifiers: positive examples', () => {
   ].join('\n'));
 });
 
-test('09 Quoted identifiers: negative examples', () => {
+test('11 Quoted identifiers: negative examples', () => {
   TestHelpers.parseAndMatchNodeParserSnapshot([
     '/**',
     ' * {@link "static}',

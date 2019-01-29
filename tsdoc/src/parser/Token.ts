@@ -168,7 +168,13 @@ export enum TokenKind {
    * The plus character ("+").
    * The Token.range will always be a string of length 1.
    */
-  Plus = 2028
+  Plus = 2028,
+
+  /**
+   * The dollar sign character ("$").
+   * The Token.range will always be a string of length 1.
+   */
+  DollarSign = 2029
 }
 
 /**

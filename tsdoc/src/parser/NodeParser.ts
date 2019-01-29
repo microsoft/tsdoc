@@ -332,6 +332,7 @@ export class NodeParser {
       switch (tokenReader.peekTokenKind()) {
         case TokenKind.AsciiWord:
         case TokenKind.Period:
+        case TokenKind.DollarSign:
           parameterName += tokenReader.readToken();
           break;
         default:
@@ -340,7 +341,9 @@ export class NodeParser {
       }
     }
 
-    if (parameterName.length === 0) {
+    const explanation: string | undefined = StringChecks.explainIfInvalidUnquotedIdentifier(parameterName);
+
+    if (explanation !== undefined) {
       tokenReader.backtrackToMarker(startMarker);
 
       const errorParamBlock: DocParamBlock = new DocParamBlock({
@@ -348,13 +351,16 @@ export class NodeParser {
         blockTag: docBlockTag,
         parameterName: ''
       });
+      const errorMessage: string = parameterName.length > 0
+        ? 'The @param block should be followed by a valid parameter name: ' + explanation
+        : 'The @param block should be followed by a parameter name';
+
       this._parserContext.log.addMessageForTokenSequence(
-        'The @param block should be followed by a parameter name',
+        errorMessage,
         docBlockTag.getTokenSequence(),
         docBlockTag
       );
       return errorParamBlock;
-
     }
 
     const parameterNameExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
@@ -1284,16 +1290,29 @@ export class NodeParser {
       });
     } else {
       // Otherwise assume it's a valid TypeScript identifier
-      if (tokenReader.peekTokenKind() !== TokenKind.AsciiWord) {
+
+      let done: boolean = false;
+      while (!done) {
+        switch (tokenReader.peekTokenKind()) {
+          case TokenKind.AsciiWord:
+          case TokenKind.DollarSign:
+            tokenReader.readToken();
+            break;
+          default:
+            done = true;
+            break;
+        }
+      }
+
+      if (tokenReader.isAccumulatedSequenceEmpty()) {
         this._parserContext.log.addMessageForTokenSequence(
           'Syntax error in declaration reference: expecting a member identifier',
           tokenSequenceForErrorContext, nodeForErrorContext);
         return undefined;
       }
 
-      const identifier: string = tokenReader.readToken().toString();
-
       const identifierExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
+      const identifier: string = identifierExcerpt.toString();
 
       const explanation: string | undefined = StringChecks.explainIfInvalidUnquotedIdentifier(identifier);
       if (explanation) {

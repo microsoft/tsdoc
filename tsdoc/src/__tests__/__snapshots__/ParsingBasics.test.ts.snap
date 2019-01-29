@@ -129,8 +129,8 @@ Object {
     "This is a custom block containing an @undefinedBlockTag",
     "",
     "@param x - The first input number",
-    "@param y - The second input number",
-    "@returns The arithmetic mean of [c]x[c] and [c]y[c]",
+    "@param y$_ - The second input number",
+    "@returns The arithmetic mean of [c]x[c] and [c]y$_[c]",
     "",
     "@beta @customModifier",
   ],
@@ -388,7 +388,7 @@ Object {
         },
         Object {
           "kind": "Excerpt: ParamBlock_ParameterName",
-          "nodeExcerpt": "y",
+          "nodeExcerpt": "y$_",
         },
         Object {
           "kind": "Excerpt: Spacing",
@@ -496,7 +496,7 @@ Object {
                   },
                   Object {
                     "kind": "Excerpt: CodeSpan_Code",
-                    "nodeExcerpt": "y",
+                    "nodeExcerpt": "y$_",
                   },
                   Object {
                     "kind": "Excerpt: CodeSpan_ClosingDelimiter",
