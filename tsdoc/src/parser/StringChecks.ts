@@ -11,9 +11,18 @@ export class StringChecks {
   // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
   private static readonly _htmlNameRegExp: RegExp = /^[a-z]+(\-[a-z]+)*$/i;
 
-  private static readonly _identifierNotWordCharRegExp: RegExp = /\W/u;
-  private static readonly _identifierNumberStartRegExp: RegExp = /^[0-9]/u;
+  // Note: In addition to letters, numbers, underscores, and dollar signs, modern ECMAScript
+  // also allows Unicode categories such as letters, combining marks, digits, and connector punctuation.
+  // These are mostly supported in all environments except IE11, so if someone wants it, we would accept
+  // a PR to allow them (although the test surface might be somewhat large).
+  private static readonly _identifierBadCharRegExp: RegExp = /[^a-z0-9_$]/i;
 
+  // Identifiers most not start with a number.
+  private static readonly _identifierNumberStartRegExp: RegExp = /^[0-9]/;
+
+  // For detailed notes about NPM package name syntax, see:
+  // tslint:disable-next-line:max-line-length
+  // https://github.com/Microsoft/web-build-tools/blob/a417ca25c63aca31dba43a34d39cc9cd529b9c78/libraries/node-core-library/src/PackageName.ts
   private static readonly _validPackageNameRegExp: RegExp = /^(?:@[a-z0-9\-_\.]+\/)?[a-z0-9\-_\.]+$/i;
 
   private static readonly _systemSelectors: Set<string> = new Set<string>([
@@ -147,7 +156,7 @@ export class StringChecks {
       return 'The identifier cannot be an empty string';
     }
 
-    if (StringChecks._identifierNotWordCharRegExp.test(identifier)) {
+    if (StringChecks._identifierBadCharRegExp.test(identifier)) {
       return 'The identifier cannot non-word characters';
     }
 

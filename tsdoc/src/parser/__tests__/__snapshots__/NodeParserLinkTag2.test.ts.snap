@@ -1551,7 +1551,170 @@ Object {
 }
 `;
 
-exports[`08 Quoted identifiers: positive examples 1`] = `
+exports[`08 Unusual identifiers: positive examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@link Class$_1 . $_1member}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link Class$_1 . $_1member}",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagName",
+                    "nodeExcerpt": "@link",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
+                                "nodeExcerpt": "Class$_1",
+                              },
+                            ],
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
+                          },
+                        ],
+                      },
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Excerpt: MemberReference_Dot",
+                            "nodeExcerpt": ".",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
+                          },
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
+                                "nodeExcerpt": "$_1member",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`09 Unusual identifiers: negative examples 1`] = `
+Object {
+  "buffer": "/**[n] * {@link Class-1}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link Class-1}",
+  ],
+  "logMessages": Array [
+    "(2,16): Unexpected character after link destination",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "InlineTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagName",
+                    "nodeExcerpt": "@link",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagContent",
+                    "nodeExcerpt": "Class-1",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`10 Quoted identifiers: positive examples 1`] = `
 Object {
   "buffer": "/**[n] * {@link [q]static[q]}[n] * {@link Class1 . [q]member[q]}[n] * {@link Class2.[q]|[q] | link text}[n] */",
   "gaps": Array [],
@@ -1810,7 +1973,7 @@ Object {
 }
 `;
 
-exports[`09 Quoted identifiers: negative examples 1`] = `
+exports[`11 Quoted identifiers: negative examples 1`] = `
 Object {
   "buffer": "/**[n] * {@link [q]static}[n] * {@link Class1.[q][q]}[n] * {@link Class2.interface}[n] * {@link Class3.1}[n] */",
   "gaps": Array [],
