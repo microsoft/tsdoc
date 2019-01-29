@@ -146,7 +146,8 @@ export class Tokenizer {
       '('  : TokenKind.LeftParenthesis,
       ')'  : TokenKind.RightParenthesis,
       '#'  : TokenKind.PoundSymbol,
-      '+'  : TokenKind.Plus
+      '+'  : TokenKind.Plus,
+      '$'  : TokenKind.DollarSign
     };
     for (const key of Object.getOwnPropertyNames(specialMap)) {
       Tokenizer._charCodeMap[key.charCodeAt(0)] = specialMap[key];
