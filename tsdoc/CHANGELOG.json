@@ -2,6 +2,21 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.5",
+      "tag": "@microsoft/tsdoc_v0.12.5",
+      "date": "Tue, 29 Jan 2019 22:49:58 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update parser to allow `$` character in `@param` names, since ECMAScript allows this in unquoted identifiers"
+          },
+          {
+            "comment": "Allow `$` character in declaration reference member identifiers (Example: `{@link Button.$render}`)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.4",
       "tag": "@microsoft/tsdoc_v0.12.4",
       "date": "Tue, 20 Nov 2018 21:23:06 GMT",
