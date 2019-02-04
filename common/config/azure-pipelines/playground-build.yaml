@@ -10,7 +10,7 @@ steps:
   displayName: 'git config email'
 - script: 'node common\scripts\install-run-rush.js install'
   displayName: 'rush install'
-- script: 'node common\scripts\install-run-rush.js rebuild --verbose --production --to playground'
+- script: 'node common\scripts\install-run-rush.js rebuild --verbose --production --to tsdoc-playground'
   displayName: 'rush rebuild'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Playground Artifacts'
