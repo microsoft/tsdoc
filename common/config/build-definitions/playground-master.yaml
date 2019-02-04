@@ -1,0 +1,19 @@
+resources:
+- repo: self
+pool:
+  vmImage: Hosted
+steps:
+- task: NodeTool@0
+  displayName: 'Use Node 10.x'
+  inputs:
+    versionSpec: 10.x
+    checkLatest: true
+- script: 'node common\scripts\install-run-rush.js install --bypass-policy'
+  displayName: 'rush install'
+- script: 'node common\scripts\install-run-rush.js rebuild --verbose --production --to playground'
+  displayName: 'rush rebuild'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Playground Artifacts'
+  inputs:
+    PathtoPublish: playground/dist
+    ArtifactName: playground
