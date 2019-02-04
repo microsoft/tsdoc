@@ -1,7 +1,5 @@
 resources:
 - repo: self
-pool:
-  vmImage: Hosted
 steps:
 - task: NodeTool@0
   displayName: 'Use Node 10.x'
