@@ -1,0 +1,4 @@
+.github/CODEOWNERS @iclanton @nickpape-msft @octogonz
+common/config/**/* @iclanton @nickpape-msft @octogonz
+
+**/* @iclanton @nickpape-msft @octogonz
