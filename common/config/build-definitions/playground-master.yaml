@@ -8,7 +8,9 @@ steps:
   inputs:
     versionSpec: 10.x
     checkLatest: true
-- script: 'node common\scripts\install-run-rush.js install --bypass-policy'
+- script: 'git config --local user.email rushbot@users.noreply.github.com'
+  displayName: 'git config email'
+- script: 'node common\scripts\install-run-rush.js install'
   displayName: 'rush install'
 - script: 'node common\scripts\install-run-rush.js rebuild --verbose --production --to playground'
   displayName: 'rush rebuild'
