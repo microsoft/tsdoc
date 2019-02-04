@@ -2,6 +2,7 @@
 
 > A doc comment standard for TypeScript
 
+[![Build Status](https://dev.azure.com/RushStack/Gearbox%20GitHub%20Projects/_apis/build/status/tsdoc/TSDoc%20CI%20Build?branchName=master)](https://dev.azure.com/RushStack/Gearbox%20GitHub%20Projects/_build/latest?definitionId=5&branchName=master)
 
 ###  What is TSDoc?
 
