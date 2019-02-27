@@ -146,7 +146,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     const syntaxStyles: IStyledRange[] = [];
     if (this.state.parserContext) {
       for (const message of this.state.parserContext.log.messages) {
-        const text: string = message.unformattedText;
+        const text: string = `[${message.messageId}]\n\n${message.unformattedText}`;
         if (message.tokenSequence) {
           for (const token of message.tokenSequence.tokens) {
             if (!token.range.isEmpty()) {
