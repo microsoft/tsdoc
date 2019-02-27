@@ -1,5 +1,6 @@
 import { TextRange } from './TextRange';
 import { ParserContext } from './ParserContext';
+import { TSDocMessageId } from './TSDocMessageId';
 
 // Internal parser state
 enum State {
@@ -50,10 +51,14 @@ export class LineExtractor {
         switch (state) {
           case State.BeginComment1:
           case State.BeginComment2:
-            parserContext.log.addMessageForTextRange('Expecting a "/**" comment', range);
+            parserContext.log.addMessageForTextRange(
+              TSDocMessageId.CommentNotFound,
+              'Expecting a "/**" comment', range);
             return false;
           default:
-            parserContext.log.addMessageForTextRange('Unexpected end of input', range);
+            parserContext.log.addMessageForTextRange(
+              TSDocMessageId.CommentMissingClosingDelimiter,
+              'Unexpected end of input', range);
             return false;
         }
       }
@@ -70,7 +75,9 @@ export class LineExtractor {
             ++nextIndex; // skip the star
             state = State.BeginComment2;
           } else if (!LineExtractor._whitespaceCharacterRegExp.test(current)) {
-            parserContext.log.addMessageForTextRange('Expecting a leading "/**"',
+            parserContext.log.addMessageForTextRange(
+              TSDocMessageId.CommentOpeningDelimiterSyntax,
+              'Expecting a leading "/**"',
               range.getNewRange(currentIndex, currentIndex + 1));
             return false;
           }
@@ -84,7 +91,9 @@ export class LineExtractor {
             collectingLineEnd = nextIndex;
             state = State.CollectingFirstLine;
           } else {
-            parserContext.log.addMessageForTextRange('Expecting a leading "/**"',
+            parserContext.log.addMessageForTextRange(
+              TSDocMessageId.CommentOpeningDelimiterSyntax,
+              'Expecting a leading "/**"',
               range.getNewRange(currentIndex, currentIndex + 1));
             return false;
           }

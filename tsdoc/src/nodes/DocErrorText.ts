@@ -1,6 +1,7 @@
 import { DocNodeKind, DocNode, IDocNodeParsedParameters } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
+import { TSDocMessageId } from '../parser/TSDocMessageId';
 
 /**
  * Constructor parameters for {@link DocErrorText}.
@@ -8,6 +9,7 @@ import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 export interface IDocErrorTextParsedParameters extends IDocNodeParsedParameters {
   textExcerpt: TokenSequence;
 
+  messageId: TSDocMessageId;
   errorMessage: string;
   errorLocation: TokenSequence;
 }
@@ -20,6 +22,7 @@ export class DocErrorText extends DocNode {
   private _text: string | undefined;
   private readonly _textExcerpt: DocExcerpt;
 
+  private readonly _messageId: TSDocMessageId;
   private readonly _errorMessage: string;
   private readonly _errorLocation: TokenSequence;
 
@@ -36,6 +39,7 @@ export class DocErrorText extends DocNode {
       content: parameters.textExcerpt
     });
 
+    this._messageId = parameters.messageId;
     this._errorMessage = parameters.errorMessage;
     this._errorLocation = parameters.errorLocation;
   }
@@ -62,6 +66,13 @@ export class DocErrorText extends DocNode {
     } else {
       return undefined;
     }
+  }
+
+  /**
+   * The TSDoc error message identifier.
+   */
+  public get messageId(): TSDocMessageId {
+    return this._messageId;
   }
 
   /**
