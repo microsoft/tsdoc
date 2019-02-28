@@ -29,6 +29,7 @@ export { ParserMessageLog } from './parser/ParserMessageLog';
 export { TextRange, ITextLocation } from './parser/TextRange';
 export { Token, TokenKind } from './parser/Token';
 export { TokenSequence, ITokenSequenceParameters } from './parser/TokenSequence';
+export { TSDocMessageId } from './parser/TSDocMessageId';
 export { TSDocParser } from './parser/TSDocParser';
 
 export { DocNodeTransforms } from './transforms/DocNodeTransforms';

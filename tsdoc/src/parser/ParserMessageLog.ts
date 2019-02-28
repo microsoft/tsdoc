@@ -3,6 +3,7 @@ import { TextRange } from './TextRange';
 import { TokenSequence } from './TokenSequence';
 import { DocNode } from '../nodes/DocNode';
 import { DocErrorText } from '../nodes/DocErrorText';
+import { TSDocMessageId } from './TSDocMessageId';
 
 /**
  * Used to report errors and warnings that occurred during parsing.
@@ -27,8 +28,9 @@ export class ParserMessageLog {
   /**
    * Append a message associated with a TextRange.
    */
-  public addMessageForTextRange(messageText: string, textRange: TextRange): void {
+  public addMessageForTextRange(messageId: TSDocMessageId, messageText: string, textRange: TextRange): void {
     this.addMessage(new ParserMessage({
+      messageId,
       messageText,
       textRange
     }));
@@ -37,8 +39,10 @@ export class ParserMessageLog {
   /**
    * Append a message associated with a TokenSequence.
    */
-  public addMessageForTokenSequence(messageText: string, tokenSequence: TokenSequence, docNode?: DocNode): void {
+  public addMessageForTokenSequence(messageId: TSDocMessageId, messageText: string, tokenSequence: TokenSequence,
+    docNode?: DocNode): void {
     this.addMessage(new ParserMessage({
+      messageId,
       messageText,
       textRange: tokenSequence.getContainingTextRange(),
       tokenSequence,
@@ -62,6 +66,7 @@ export class ParserMessageLog {
     }
 
     this.addMessage(new ParserMessage({
+      messageId: docErrorText.messageId,
       messageText: docErrorText.errorMessage,
       textRange: tokenSequence.getContainingTextRange(),
       tokenSequence: tokenSequence,

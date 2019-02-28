@@ -1,11 +1,13 @@
 import { TextRange, ITextLocation } from './TextRange';
 import { TokenSequence } from './TokenSequence';
 import { DocNode } from '../nodes/DocNode';
+import { TSDocMessageId } from './TSDocMessageId';
 
 /**
  * Constructor parameters for {@link ParserMessage}.
  */
 export interface IParserMessageParameters {
+  messageId: TSDocMessageId;
   messageText: string;
   textRange: TextRange;
   tokenSequence?: TokenSequence;
@@ -16,6 +18,7 @@ export interface IParserMessageParameters {
  * Represents an error or warning that occurred during parsing.
  */
 export class ParserMessage {
+  public readonly messageId: TSDocMessageId;
 
   /**
    * The message text without the default prefix that shows line/column information.
@@ -54,6 +57,7 @@ export class ParserMessage {
   }
 
   public constructor(parameters: IParserMessageParameters) {
+    this.messageId = parameters.messageId;
     this.unformattedText = parameters.messageText;
     this.textRange = parameters.textRange;
     this.tokenSequence = parameters.tokenSequence;
