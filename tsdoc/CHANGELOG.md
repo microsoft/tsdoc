@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Tue, 29 Jan 2019 22:49:58 GMT and should not be manually modified.
+This log was last generated on Thu, 28 Feb 2019 01:29:39 GMT and should not be manually modified.
+
+## 0.12.6
+Thu, 28 Feb 2019 01:29:39 GMT
+
+### Patches
+
+- Add a new API ParserMessage.messageId with a unique ID useful for filtering and searching for errors
 
 ## 0.12.5
 Tue, 29 Jan 2019 22:49:58 GMT

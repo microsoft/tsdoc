@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.6",
+      "tag": "@microsoft/tsdoc_v0.12.6",
+      "date": "Thu, 28 Feb 2019 01:29:39 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add a new API ParserMessage.messageId with a unique ID useful for filtering and searching for errors"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.5",
       "tag": "@microsoft/tsdoc_v0.12.5",
       "date": "Tue, 29 Jan 2019 22:49:58 GMT",
