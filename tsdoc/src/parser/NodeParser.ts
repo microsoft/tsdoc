@@ -985,7 +985,7 @@ export class NodeParser {
       // We saw characters that will be a syntax error if interpreted as a member reference,
       // but would make sense as a package name or import path, but we did not find a "#"
       this._parserContext.log.addMessageForTokenSequence(
-        TSDocMessageId.DReferenceMissingHash,
+        TSDocMessageId.ReferenceMissingHash,
         'The declaration reference appears to contain a package name or import path,'
           + ' but it is missing the "#" delimiter',
         tokenReader.extractAccumulatedSequence(), nodeForErrorContext);
@@ -1039,7 +1039,7 @@ export class NodeParser {
             packageNameExcerpt.toString());
           if (explanation) {
             this._parserContext.log.addMessageForTokenSequence(
-              TSDocMessageId.DReferenceMalformedPackageName,
+              TSDocMessageId.ReferenceMalformedPackageName,
               explanation,
               packageNameExcerpt, nodeForErrorContext);
             return undefined;
@@ -1070,7 +1070,7 @@ export class NodeParser {
           importPathExcerpt.toString(), !!packageNameExcerpt);
         if (explanation) {
           this._parserContext.log.addMessageForTokenSequence(
-            TSDocMessageId.DReferenceMalformedImportPath,
+            TSDocMessageId.ReferenceMalformedImportPath,
             explanation,
             importPathExcerpt, nodeForErrorContext);
           return undefined;
@@ -1089,7 +1089,7 @@ export class NodeParser {
 
       if (packageNameExcerpt === undefined && importPathExcerpt === undefined) {
         this._parserContext.log.addMessageForTokenSequence(
-          TSDocMessageId.DReferenceHashSyntax,
+          TSDocMessageId.ReferenceHashSyntax,
           'The hash character must be preceded by a package name or import path',
           importHashExcerpt, nodeForErrorContext);
         return undefined;
@@ -1126,7 +1126,7 @@ export class NodeParser {
     if (packageNameExcerpt === undefined && importPathExcerpt === undefined && memberReferences.length === 0) {
       // We didn't find any parts of a declaration reference
       this._parserContext.log.addMessageForTokenSequence(
-        TSDocMessageId.MissingDReference,
+        TSDocMessageId.MissingReference,
         'Expecting a declaration reference',
         tokenSequenceForErrorContext, nodeForErrorContext);
       return undefined;
@@ -1158,7 +1158,7 @@ export class NodeParser {
     if (expectingDot) {
       if (tokenReader.peekTokenKind() !== TokenKind.Period) {
         this._parserContext.log.addMessageForTokenSequence(
-          TSDocMessageId.DReferenceMissingDot,
+          TSDocMessageId.ReferenceMissingDot,
           'Expecting a period before the next component of a declaration reference',
           tokenSequenceForErrorContext, nodeForErrorContext);
         return undefined;
@@ -1206,7 +1206,7 @@ export class NodeParser {
         // It would be reasonable to make the parentheses optional, and we are contemplating simplifying the
         // notation in the future.  But for now the parentheses are required.
         this._parserContext.log.addMessageForTokenSequence(
-          TSDocMessageId.DReferenceSelectorMissingParens,
+          TSDocMessageId.ReferenceSelectorMissingParens,
           'Syntax error in declaration reference: the member selector must be enclosed in parentheses',
           parameters.colonExcerpt, nodeForErrorContext);
         return undefined;
@@ -1222,7 +1222,7 @@ export class NodeParser {
     } else {
       if (parameters.leftParenthesisExcerpt) {
         this._parserContext.log.addMessageForTokenSequence(
-          TSDocMessageId.DReferenceMissingColon,
+          TSDocMessageId.ReferenceMissingColon,
           'Expecting a colon after the identifier because the expression is in parentheses',
           parameters.leftParenthesisExcerpt, nodeForErrorContext);
         return undefined;
@@ -1233,7 +1233,7 @@ export class NodeParser {
     if (parameters.leftParenthesisExcerpt) {
       if (tokenReader.peekTokenKind() !== TokenKind.RightParenthesis) {
         this._parserContext.log.addMessageForTokenSequence(
-          TSDocMessageId.DReferenceMissingRightParen,
+          TSDocMessageId.ReferenceMissingRightParen,
           'Expecting a matching right parenthesis',
         parameters.leftParenthesisExcerpt, nodeForErrorContext);
         return undefined;
@@ -1269,7 +1269,7 @@ export class NodeParser {
 
     if (!declarationReference) {
       this._parserContext.log.addMessageForTokenSequence(
-        TSDocMessageId.DReferenceSymbolSyntax,
+        TSDocMessageId.ReferenceSymbolSyntax,
         'Missing declaration reference in symbol reference',
         leftBracketExcerpt, nodeForErrorContext);
 
@@ -1281,7 +1281,7 @@ export class NodeParser {
     // Read the "]"
     if (tokenReader.peekTokenKind() !== TokenKind.RightSquareBracket) {
       this._parserContext.log.addMessageForTokenSequence(
-        TSDocMessageId.DReferenceMissingRightBracket,
+        TSDocMessageId.ReferenceMissingRightBracket,
         'Missing closing square bracket for symbol reference',
         leftBracketExcerpt, nodeForErrorContext);
 
@@ -1319,7 +1319,7 @@ export class NodeParser {
       while (tokenReader.peekTokenKind() !== TokenKind.DoubleQuote) {
         if (tokenReader.peekTokenKind() === TokenKind.EndOfInput) {
           this._parserContext.log.addMessageForTokenSequence(
-            TSDocMessageId.DReferenceMissingQuote,
+            TSDocMessageId.ReferenceMissingQuote,
             'Unexpected end of input inside quoted member identifier',
             leftQuoteExcerpt, nodeForErrorContext);
           return undefined;
@@ -1330,7 +1330,7 @@ export class NodeParser {
 
       if (tokenReader.isAccumulatedSequenceEmpty()) {
         this._parserContext.log.addMessageForTokenSequence(
-          TSDocMessageId.DReferenceEmptyIdentifier,
+          TSDocMessageId.ReferenceEmptyIdentifier,
           'The quoted identifier cannot be empty',
           leftQuoteExcerpt, nodeForErrorContext);
         return undefined;
@@ -1368,7 +1368,7 @@ export class NodeParser {
 
       if (tokenReader.isAccumulatedSequenceEmpty()) {
         this._parserContext.log.addMessageForTokenSequence(
-          TSDocMessageId.DReferenceMissingIdentifier,
+          TSDocMessageId.ReferenceMissingIdentifier,
           'Syntax error in declaration reference: expecting a member identifier',
           tokenSequenceForErrorContext, nodeForErrorContext);
         return undefined;
@@ -1380,7 +1380,7 @@ export class NodeParser {
       const explanation: string | undefined = StringChecks.explainIfInvalidUnquotedIdentifier(identifier);
       if (explanation) {
         this._parserContext.log.addMessageForTokenSequence(
-          TSDocMessageId.DReferenceUnquotedIdentifier,
+          TSDocMessageId.ReferenceUnquotedIdentifier,
           explanation,
           identifierExcerpt, nodeForErrorContext);
         return undefined;
@@ -1402,7 +1402,7 @@ export class NodeParser {
 
     if (tokenReader.peekTokenKind() !== TokenKind.AsciiWord) {
       this._parserContext.log.addMessageForTokenSequence(
-        TSDocMessageId.DReferenceMissingLabel,
+        TSDocMessageId.ReferenceMissingLabel,
         'Expecting a selector label after the colon',
         tokenSequenceForErrorContext, nodeForErrorContext);
     }
@@ -1420,7 +1420,7 @@ export class NodeParser {
 
     if (docMemberSelector.errorMessage) {
       this._parserContext.log.addMessageForTokenSequence(
-        TSDocMessageId.DReferenceSelectorSyntax,
+        TSDocMessageId.ReferenceSelectorSyntax,
         docMemberSelector.errorMessage,
         selectorExcerpt, nodeForErrorContext);
       return undefined;

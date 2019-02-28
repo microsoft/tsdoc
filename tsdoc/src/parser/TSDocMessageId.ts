@@ -162,75 +162,75 @@ export const enum TSDocMessageId {
   /**
    * The declaration reference appears to contain a package name or import path, but it is missing the `#` delimiter.
    */
-  DReferenceMissingHash = 'tsdoc-dreference-missing-hash',
+  ReferenceMissingHash = 'tsdoc-reference-missing-hash',
 
   /**
    * The hash character must be preceded by a package name or import path.
    */
-  DReferenceHashSyntax = 'tsdoc-dreference-hash-syntax',
+  ReferenceHashSyntax = 'tsdoc-reference-hash-syntax',
 
   /**
    * The package name cannot be an empty string.  OR
    * The package name ___ is not a valid package name.
    */
-  DReferenceMalformedPackageName = 'tsdoc-dreference-malformed-package-name',
+  ReferenceMalformedPackageName = 'tsdoc-reference-malformed-package-name',
 
   /**
    * An import path must not contain `//`.  OR
    * An import path must not end with `/`.  OR
    * An import path must not start with `/` unless prefixed by a package name.
    */
-  DReferenceMalformedImportPath = 'tsdoc-dreference-malformed-import-path',
+  ReferenceMalformedImportPath = 'tsdoc-reference-malformed-import-path',
 
   /**
    * Expecting a declaration reference.
    */
-  MissingDReference = 'tsdoc-missing-dreference',
+  MissingReference = 'tsdoc-missing-reference',
 
   /**
    * Expecting a period before the next component of a declaration reference
    */
-  DReferenceMissingDot = 'tsdoc-dreference-missing-dot',
+  ReferenceMissingDot = 'tsdoc-reference-missing-dot',
 
   /**
    * Syntax error in declaration reference: the member selector must be enclosed in parentheses.
    */
-  DReferenceSelectorMissingParens = 'tsdoc-dreference-selector-missing-parens',
+  ReferenceSelectorMissingParens = 'tsdoc-reference-selector-missing-parens',
 
   /**
    * Expecting a colon after the identifier because the expression is in parentheses.
    */
-  DReferenceMissingColon = 'tsdoc-dreference-missing-colon',
+  ReferenceMissingColon = 'tsdoc-reference-missing-colon',
 
   /**
    * Expecting a matching right parenthesis.
    */
-  DReferenceMissingRightParen = 'tsdoc-dreference-missing-right-paren',
+  ReferenceMissingRightParen = 'tsdoc-reference-missing-right-paren',
 
   /**
    * Missing declaration reference in symbol reference
    */
-  DReferenceSymbolSyntax = 'tsdoc-dreference-symbol-syntax',
+  ReferenceSymbolSyntax = 'tsdoc-reference-symbol-syntax',
 
   /**
    * Missing closing square bracket for symbol reference
    */
-  DReferenceMissingRightBracket = 'tsdoc-dreference-missing-right-bracket',
+  ReferenceMissingRightBracket = 'tsdoc-reference-missing-right-bracket',
 
   /**
    * Unexpected end of input inside quoted member identifier.
    */
-  DReferenceMissingQuote = 'tsdoc-dreference-missing-quote',
+  ReferenceMissingQuote = 'tsdoc-reference-missing-quote',
 
   /**
    * The quoted identifier cannot be empty.
    */
-  DReferenceEmptyIdentifier = 'tsdoc-dreference-empty-identifier',
+  ReferenceEmptyIdentifier = 'tsdoc-reference-empty-identifier',
 
   /**
    * Syntax error in declaration reference: expecting a member identifier.
    */
-  DReferenceMissingIdentifier = 'tsdoc-dreference-missing-identifier',
+  ReferenceMissingIdentifier = 'tsdoc-reference-missing-identifier',
 
   /**
    * The identifier cannot be an empty string. OR
@@ -238,12 +238,12 @@ export const enum TSDocMessageId {
    * The identifier must not start with a number. OR
    * The identifier ___ must be quoted because it is a TSDoc system selector name.
    */
-  DReferenceUnquotedIdentifier = 'tsdoc-dreference-unquoted-identifier',
+  ReferenceUnquotedIdentifier = 'tsdoc-reference-unquoted-identifier',
 
   /**
    * Expecting a selector label after the colon.
    */
-  DReferenceMissingLabel = 'tsdoc-dreference-missing-label',
+  ReferenceMissingLabel = 'tsdoc-reference-missing-label',
 
   /**
    * The selector cannot be an empty string.  OR
@@ -252,7 +252,7 @@ export const enum TSDocMessageId {
    * and must not start with a number.  OR
    * The selector ___ is not a recognized TSDoc system selector name.
    */
-  DReferenceSelectorSyntax = 'tsdoc-dreference-selector-syntax',
+  ReferenceSelectorSyntax = 'tsdoc-reference-selector-syntax',
 
   /**
    * Expecting an attribute or `>` or `/>`.
