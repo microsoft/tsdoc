@@ -1,7 +1,7 @@
 import { TextRange, ITextLocation } from './TextRange';
 import { TokenSequence } from './TokenSequence';
 import { DocNode } from '../nodes/DocNode';
-import { TSDocMessageId } from './TSDocMessageId';
+import { TSDocMessageId, allTsdocMessageIds } from './TSDocMessageId';
 
 /**
  * Constructor parameters for {@link ParserMessage}.
@@ -18,6 +18,9 @@ export interface IParserMessageParameters {
  * Represents an error or warning that occurred during parsing.
  */
 export class ParserMessage {
+  /**
+   * A string that uniquely identifies the messages reported by the TSDoc parser.
+   */
   public readonly messageId: TSDocMessageId;
 
   /**
@@ -54,6 +57,14 @@ export class ParserMessage {
       }
     }
     return message;
+  }
+
+  /**
+   * Returns true if the specified TSDocMessageId string is implemented by this release of the TSDoc parser.
+   * This can be used to detect misspelled identifiers.
+   */
+  public static isValidMessageId(messageId: TSDocMessageId): boolean {
+    return allTsdocMessageIds.has(messageId);
   }
 
   public constructor(parameters: IParserMessageParameters) {
