@@ -59,14 +59,6 @@ export class ParserMessage {
     return message;
   }
 
-  /**
-   * Returns true if the specified TSDocMessageId string is implemented by this release of the TSDoc parser.
-   * This can be used to detect misspelled identifiers.
-   */
-  public static isValidMessageId(messageId: TSDocMessageId): boolean {
-    return allTsdocMessageIds.has(messageId);
-  }
-
   public constructor(parameters: IParserMessageParameters) {
     this.messageId = parameters.messageId;
     this.unformattedText = parameters.messageText;

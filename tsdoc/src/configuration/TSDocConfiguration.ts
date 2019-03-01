@@ -3,6 +3,7 @@ import { TSDocTagDefinition } from './TSDocTagDefinition';
 import { TSDocValidationConfiguration } from './TSDocValidationConfiguration';
 import { DocNodeManager } from './DocNodeManager';
 import { BuiltInDocNodes } from '../nodes/BuiltInDocNodes';
+import { TSDocMessageId, allTsdocMessageIds } from '../parser/TSDocMessageId';
 
 /**
  * Configuration for the TSDocParser.
@@ -157,6 +158,19 @@ export class TSDocConfiguration {
     for (const tagDefinition of tagDefinitions) {
       this.setSupportForTag(tagDefinition, supported);
     }
+  }
+
+  /**
+   * Returns true if the specified {@link TSDocMessageId} string is implemented by this release of the TSDoc parser.
+   * This can be used to detect misspelled identifiers.
+   *
+   * @privateRemarks
+   *
+   * Why this API is associated with TSDocConfiguration:  In the future, if we enable support for custom extensions
+   * of the TSDoc parser, we may provide a way to register custom message identifiers.
+   */
+  public isKnownMessageId(messageId: TSDocMessageId): boolean {
+    return allTsdocMessageIds.has(messageId);
   }
 
   private _requireTagToBeDefined(tagDefinition: TSDocTagDefinition): void {
