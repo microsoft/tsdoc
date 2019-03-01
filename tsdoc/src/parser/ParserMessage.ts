@@ -18,6 +18,9 @@ export interface IParserMessageParameters {
  * Represents an error or warning that occurred during parsing.
  */
 export class ParserMessage {
+  /**
+   * A string that uniquely identifies the messages reported by the TSDoc parser.
+   */
   public readonly messageId: TSDocMessageId;
 
   /**

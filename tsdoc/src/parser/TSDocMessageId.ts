@@ -1,10 +1,13 @@
 
 /**
- * Message IDs for messages rpoted by the TSDoc parser.
+ * Unique identifiers for messages reported by the TSDoc parser.
  *
  * @remarks
  *
  * These strings are possible values for the {@link ParserMessage.messageId} property.
+ * These identifiers can be used to suppress or configure the reporting of individual messages.
+ * They are also useful when searching for help about a particular error.
+ *
  * @public
  */
 export const enum TSDocMessageId {
@@ -326,3 +329,67 @@ export const enum TSDocMessageId {
    */
   CodeSpanMissingDelimiter = 'tsdoc-code-span-missing-delimiter'
 }
+
+// Exposed via ParserMessage.isValidMessageId()
+export const allTsdocMessageIds: Set<string> = new Set<string>([
+  'tsdoc-comment-not-found',
+  'tsdoc-comment-missing-opening-delimiter',
+  'tsdoc-comment-missing-closing-delimiter',
+  'tsdoc-extra-inheritdoc-tag',
+  'tsdoc-escape-right-brace',
+  'tsdoc-escape-greater-than',
+  'tsdoc-missing-deprecation-message',
+  'tsdoc-inheritdoc-incompatible-tag',
+  'tsdoc-inheritdoc-incompatible-summary',
+  'tsdoc-inline-tag-missing-braces',
+  'tsdoc-tag-should-not-have-braces',
+  'tsdoc-unsupported-tag',
+  'tsdoc-undefined-tag',
+  'tsdoc-param-tag-with-invalid-name',
+  'tsdoc-param-tag-missing-hyphen',
+  'tsdoc-unnecessary-backslash',
+  'tsdoc-missing-tag',
+  'tsdoc-at-sign-in-word',
+  'tsdoc-at-sign-without-tag-name',
+  'tsdoc-malformed-inline-tag',
+  'tsdoc-malformed-tag-name',
+  'tsdoc-text-after-tag',
+  'tsdoc-inline-tag-missing-right-brace',
+  'tsdoc-inline-tag-unescaped-brace',
+  'tsdoc-inheritdoc-tag-syntax',
+  'tsdoc-link-tag-empty',
+  'tsdoc-link-tag-unescaped-text',
+  'tsdoc-link-tag-destination-syntax',
+  'tsdoc-link-tag-invalid-url',
+  'tsdoc-reference-missing-hash',
+  'tsdoc-reference-hash-syntax',
+  'tsdoc-reference-malformed-package-name',
+  'tsdoc-reference-malformed-import-path',
+  'tsdoc-missing-reference',
+  'tsdoc-reference-missing-dot',
+  'tsdoc-reference-selector-missing-parens',
+  'tsdoc-reference-missing-colon',
+  'tsdoc-reference-missing-right-paren',
+  'tsdoc-reference-symbol-syntax',
+  'tsdoc-reference-missing-right-bracket',
+  'tsdoc-reference-missing-quote',
+  'tsdoc-reference-empty-identifier',
+  'tsdoc-reference-missing-identifier',
+  'tsdoc-reference-unquoted-identifier',
+  'tsdoc-reference-missing-label',
+  'tsdoc-reference-selector-syntax',
+  'tsdoc-html-tag-missing-greater-than',
+  'tsdoc-html-tag-missing-equals',
+  'tsdoc-html-tag-missing-string',
+  'tsdoc-html-string-missing-quote',
+  'tsdoc-text-after-html-string',
+  'tsdoc-missing-html-end-tag',
+  'tsdoc-malformed-html-name',
+  'tsdoc-code-fence-opening-indent',
+  'tsdoc-code-fence-specifier-syntax',
+  'tsdoc-code-fence-closing-indent',
+  'tsdoc-code-fence-missing-delimiter',
+  'tsdoc-code-fence-closing-syntax',
+  'tsdoc-code-span-empty',
+  'tsdoc-code-span-missing-delimiter'
+]);
