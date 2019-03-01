@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Thu, 28 Feb 2019 01:29:39 GMT and should not be manually modified.
+This log was last generated on Fri, 01 Mar 2019 06:39:52 GMT and should not be manually modified.
+
+## 0.12.7
+Fri, 01 Mar 2019 06:39:52 GMT
+
+### Patches
+
+- Add new API TSDocConfiguration.isKnownMessageId()
 
 ## 0.12.6
 Thu, 28 Feb 2019 01:29:39 GMT
