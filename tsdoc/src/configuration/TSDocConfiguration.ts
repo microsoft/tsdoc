@@ -169,7 +169,7 @@ export class TSDocConfiguration {
    * Why this API is associated with TSDocConfiguration:  In the future, if we enable support for custom extensions
    * of the TSDoc parser, we may provide a way to register custom message identifiers.
    */
-  public isKnownMessageId(messageId: TSDocMessageId): boolean {
+  public isKnownMessageId(messageId: TSDocMessageId | string): boolean {
     return allTsdocMessageIds.has(messageId);
   }
 
