@@ -1,7 +1,7 @@
 import { TextRange, ITextLocation } from './TextRange';
 import { TokenSequence } from './TokenSequence';
 import { DocNode } from '../nodes/DocNode';
-import { TSDocMessageId, allTsdocMessageIds } from './TSDocMessageId';
+import { TSDocMessageId } from './TSDocMessageId';
 
 /**
  * Constructor parameters for {@link ParserMessage}.
