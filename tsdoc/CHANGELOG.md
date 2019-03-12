@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Fri, 01 Mar 2019 06:39:52 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Mar 2019 23:18:11 GMT and should not be manually modified.
+
+## 0.12.8
+Tue, 12 Mar 2019 23:18:11 GMT
+
+### Patches
+
+- Fix an issue where tsdoc-param-tag-with-invalid-name was sometimes incorrectly reported certain identifiers (issue #148)
 
 ## 0.12.7
 Fri, 01 Mar 2019 06:39:52 GMT

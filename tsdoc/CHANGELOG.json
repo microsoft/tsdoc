@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.8",
+      "tag": "@microsoft/tsdoc_v0.12.8",
+      "date": "Tue, 12 Mar 2019 23:18:11 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix an issue where tsdoc-param-tag-with-invalid-name was sometimes incorrectly reported certain identifiers (issue #148)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.7",
       "tag": "@microsoft/tsdoc_v0.12.7",
       "date": "Fri, 01 Mar 2019 06:39:52 GMT",
