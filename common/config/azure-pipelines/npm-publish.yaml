@@ -1,5 +1,6 @@
 resources:
 - repo: self
+  persistCredentials: true
 variables:
   NodeVersion: 10
 steps:
