@@ -1,17 +1,9 @@
 resources:
 - repo: self
+variables:
+  NodeVersion: 10
 steps:
-- task: NodeTool@0
-  displayName: 'Use Node 10.x'
-  inputs:
-    versionSpec: 10.x
-    checkLatest: true
-- script: 'git config --local user.email rushbot@users.noreply.github.com'
-  displayName: 'git config email'
-- script: 'node common\scripts\install-run-rush.js install'
-  displayName: 'rush install'
-- script: 'node common\scripts\install-run-rush.js rebuild --verbose --production --to tsdoc-playground'
-  displayName: 'rush rebuild'
+- template: templates/build.yaml
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Playground Artifacts'
   inputs:

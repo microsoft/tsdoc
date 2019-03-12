@@ -1,0 +1,15 @@
+resources:
+- repo: self
+variables:
+  NodeVersion: 10
+steps:
+- template: templates/build.yaml
+- script: 'node common\scripts\install-run-rush.js version --bump --version-policy BOGUS --target-branch $(Build.SourceBranchName)'
+  displayName: 'Rush Version'
+- task: npmAuthenticate@0
+  displayName: 'npm Authenticate'
+  inputs:
+    workingFile: '$(HOME)/.npmrc'
+    customEndpoint: ODSPNPM
+- script: 'node common\scripts\install-run-rush.js publish --apply --publish --include-all --npm-auth-token $(npmToken)'
+  displayName: 'Rush Publish'
