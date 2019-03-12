@@ -33,12 +33,16 @@ export class DocMemberIdentifier extends DocNode {
   private readonly _rightQuoteExcerpt: DocExcerpt | undefined;
 
   /**
-   * Returns true if the specified string is a valid TypeScript
-   * identifier.  If not, {@link DocMemberIdentifier.hasQuotes} will be
-   * required.
+   * Tests whether the input string can be used without quotes as a member identifier in a declaration reference.
+   * If not, {@link DocMemberIdentifier.hasQuotes} will be required.
+   *
+   * @remarks
+   * In order to be used without quotes, the string must follow the identifier syntax for ECMAScript / TypeScript,
+   * and it must not be one of the reserved words used for system selectors (such as `instance`, `static`,
+   * `constructor`, etc).
    */
   public static isValidIdentifier(identifier: string): boolean {
-    return !StringChecks.explainIfInvalidUnquotedIdentifier(identifier);
+    return !StringChecks.explainIfInvalidUnquotedMemberIdentifier(identifier);
   }
 
   /**

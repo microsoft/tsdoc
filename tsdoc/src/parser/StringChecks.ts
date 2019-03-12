@@ -164,6 +164,19 @@ export class StringChecks {
       return 'The identifier must not start with a number';
     }
 
+    return undefined;
+  }
+
+  /**
+   * Tests whether the input string can be used without quotes as a member identifier in a declaration reference.
+   * If not, it should be enclosed in quotes.
+   */
+  public static explainIfInvalidUnquotedMemberIdentifier(identifier: string): string | undefined {
+    const explanation: string | undefined = StringChecks.explainIfInvalidUnquotedIdentifier(identifier);
+    if (explanation !== undefined) {
+      return explanation;
+    }
+
     if (StringChecks.isSystemSelector(identifier)) {
       // We do this to avoid confusion about the declaration reference syntax rules.
       // For example if someone were to see "MyClass.(static:instance)" it would be unclear which
