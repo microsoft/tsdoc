@@ -3,6 +3,7 @@ resources:
 variables:
   NodeVersion: 10
 steps:
+- checkout: self
 - template: templates/build.yaml
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Playground Artifacts'

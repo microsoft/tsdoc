@@ -1,9 +1,8 @@
-resources:
-- repo: self
-  persistCredentials: true
 variables:
   NodeVersion: 10
 steps:
+- checkout: self
+  persistCredentials: true
 - template: templates/build.yaml
 - script: 'node common\scripts\install-run-rush.js version --bump --version-policy BOGUS --target-branch $(Build.SourceBranchName)'
   displayName: 'Rush Version'
