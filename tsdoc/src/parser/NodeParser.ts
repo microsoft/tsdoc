@@ -1377,7 +1377,7 @@ export class NodeParser {
       const identifierExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
       const identifier: string = identifierExcerpt.toString();
 
-      const explanation: string | undefined = StringChecks.explainIfInvalidUnquotedIdentifier(identifier);
+      const explanation: string | undefined = StringChecks.explainIfInvalidUnquotedMemberIdentifier(identifier);
       if (explanation) {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.ReferenceUnquotedIdentifier,
