@@ -487,7 +487,7 @@ export class NodeParser {
       default:
         return this._backtrackAndCreateError(tokenReader, marker,
           TSDocMessageId.AtSignInWord,
-          'A TSDoc tag must be preceded by whitespace');
+          'The "@" character looks like part of a TSDoc tag; use a backslash to escape it');
     }
 
     // Include the "@" as part of the tagName
@@ -496,7 +496,7 @@ export class NodeParser {
     if (tokenReader.peekTokenKind() !== TokenKind.AsciiWord) {
       return this._backtrackAndCreateError(tokenReader, marker,
         TSDocMessageId.AtSignWithoutTagName,
-        'Expecting a TSDoc tag name after the "@" character (or use a backslash to escape this character)');
+        'Expecting a TSDoc tag name after "@"; if it is not a tag, use a backslash to escape this character');
     }
 
     const tagNameMarker: number = tokenReader.createMarker();
@@ -505,10 +505,18 @@ export class NodeParser {
       tagName += tokenReader.readToken().toString();
     }
 
-    if (tagName.length === 0) {
-      return this._backtrackAndCreateError(tokenReader, marker,
-        TSDocMessageId.MalformedInlineTag,
-        'Expecting an inline TSDoc tag name immediately after "{@"');
+    switch (tokenReader.peekTokenKind()) {
+      case TokenKind.Spacing:
+      case TokenKind.Newline:
+      case TokenKind.EndOfInput:
+        break;
+      default:
+        const badCharacter: string = tokenReader.peekToken().range.toString()[0];
+        return this._backtrackAndCreateError(tokenReader, marker,
+          TSDocMessageId.CharactersAfterBlockTag,
+          `The token "${tagName}" looks like a TSDoc tag but contains an invalid character`
+          + ` ${JSON.stringify(badCharacter)}; if it is not a tag, use a backslash to escape the "@"`
+        );
     }
 
     if (StringChecks.explainIfInvalidTSDocTagName(tagName)) {
@@ -516,17 +524,6 @@ export class NodeParser {
         TSDocMessageId.MalformedTagName,
         'A TSDoc tag name must start with a letter and contain only letters and numbers', tagNameMarker);
       return this._backtrackAndCreateErrorForFailure(tokenReader, marker, '', failure);
-    }
-
-    switch (tokenReader.peekTokenKind()) {
-      case TokenKind.Spacing:
-      case TokenKind.Newline:
-      case TokenKind.EndOfInput:
-        break;
-      default:
-        return this._backtrackAndCreateError(tokenReader, marker,
-          TSDocMessageId.TextAfterTag,
-          'A TSDoc tag must be followed by whitespace');
     }
 
     return new DocBlockTag({
@@ -592,9 +589,11 @@ export class NodeParser {
     if (spacingAfterTagNameExcerpt === undefined) {
       // If there were no spaces at all, that's an error unless it's the degenerate "{@tag}" case
       if (tokenReader.peekTokenKind() !== TokenKind.RightCurlyBracket) {
+        const badCharacter: string = tokenReader.peekToken().range.toString()[0];
         const failure: IFailure = this._createFailureForToken(tokenReader,
-          TSDocMessageId.TextAfterTag,
-          'Expecting a space after the TSDoc inline tag name');
+          TSDocMessageId.CharactersAfterInlineTag,
+          `The character ${JSON.stringify(badCharacter)} cannot appear after the TSDoc tag name; expecting a space`
+        );
         return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker, '', failure);
       }
     }

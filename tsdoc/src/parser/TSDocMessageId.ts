@@ -100,20 +100,26 @@ export const enum TSDocMessageId {
   MissingTag = 'tsdoc-missing-tag',
 
   /**
-   * A TSDoc tag must be preceded by whitespace.
+   * The "@" character looks like part of a TSDoc tag; use a backslash to escape it.
    */
   AtSignInWord = 'tsdoc-at-sign-in-word',
 
   /**
-   * Expecting a TSDoc tag name after the `@` character (or use a backslash to escape this character).
+   * Expecting a TSDoc tag name after `@`; if it is not a tag, use a backslash to escape this character.
    */
   AtSignWithoutTagName = 'tsdoc-at-sign-without-tag-name',
 
   /**
-   * Expecting an inline TSDoc tag name immediately after `{@`.  OR
+   * Expecting a TSDoc tag starting with `{@`.  OR
    * Expecting a TSDoc inline tag name after the `{@` characters.
    */
   MalformedInlineTag = 'tsdoc-malformed-inline-tag',
+
+  /**
+   * The token ___ looks like a TSDoc tag but contains an invalid character ___; if it is not a tag,
+   * use a backslash to escape the `@`.
+   */
+  CharactersAfterBlockTag = 'tsdoc-characters-after-block-tag',
 
   /**
    * A TSDoc tag name must start with a letter and contain only letters and numbers.
@@ -121,9 +127,9 @@ export const enum TSDocMessageId {
   MalformedTagName = 'tsdoc-malformed-tag-name',
 
   /**
-   * A TSDoc tag must be followed by whitespace.
+   * The character ___ cannot appear after the TSDoc tag name; expecting a space.
    */
-  TextAfterTag = 'tsdoc-text-after-tag',
+  CharactersAfterInlineTag = 'tsdoc-characters-after-inline-tag',
 
   /**
    * The TSDoc inline tag name is missing its closing `}`.

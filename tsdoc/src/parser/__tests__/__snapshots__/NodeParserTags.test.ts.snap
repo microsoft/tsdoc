@@ -73,9 +73,9 @@ Object {
     "@two+",
   ],
   "logMessages": Array [
-    "(2,4): Expecting a TSDoc tag name after the \\"@\\" character (or use a backslash to escape this character)",
-    "(3,5): A TSDoc tag must be preceded by whitespace",
-    "(4,4): A TSDoc tag must be followed by whitespace",
+    "(2,4): Expecting a TSDoc tag name after \\"@\\"; if it is not a tag, use a backslash to escape this character",
+    "(3,5): The \\"@\\" character looks like part of a TSDoc tag; use a backslash to escape it",
+    "(4,4): The token \\"@two\\" looks like a TSDoc tag but contains an invalid character \\"+\\"; if it is not a tag, use a backslash to escape the \\"@\\"",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -88,7 +88,7 @@ Object {
             "nodes": Array [
               Object {
                 "errorLocation": "@",
-                "errorMessage": "Expecting a TSDoc tag name after the [q]@[q] character (or use a backslash to escape this character)",
+                "errorMessage": "Expecting a TSDoc tag name after [q]@[q]; if it is not a tag, use a backslash to escape this character",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -127,7 +127,7 @@ Object {
               Object {
                 "errorLocation": "@",
                 "errorLocationPrecedingToken": "+",
-                "errorMessage": "A TSDoc tag must be preceded by whitespace",
+                "errorMessage": "The [q]@[q] character looks like part of a TSDoc tag; use a backslash to escape it",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -158,7 +158,7 @@ Object {
                 "errorLocation": "@",
                 "errorLocationPrecedingToken": "
 ",
-                "errorMessage": "A TSDoc tag must be followed by whitespace",
+                "errorMessage": "The token [q]@two[q] looks like a TSDoc tag but contains an invalid character [q]+[q]; if it is not a tag, use a backslash to escape the [q]@[q]",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -366,10 +366,10 @@ Object {
   "logMessages": Array [
     "(2,4): Expecting a TSDoc inline tag name after the \\"{@\\" characters",
     "(2,10): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
-    "(3,4): Expecting a space after the TSDoc inline tag name",
+    "(3,4): The character \\"~\\" cannot appear after the TSDoc tag name; expecting a space",
     "(3,10): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
     "(4,4): Expecting a TSDoc tag starting with \\"{@\\"",
-    "(4,6): A TSDoc tag must be followed by whitespace",
+    "(4,6): The token \\"@three\\" looks like a TSDoc tag but contains an invalid character \\"}\\"; if it is not a tag, use a backslash to escape the \\"@\\"",
     "(4,12): The \\"}\\" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag",
     "(5,4): The TSDoc inline tag name is missing its closing \\"}\\"",
   ],
@@ -427,7 +427,7 @@ Object {
               Object {
                 "errorLocation": "~",
                 "errorLocationPrecedingToken": "two",
-                "errorMessage": "Expecting a space after the TSDoc inline tag name",
+                "errorMessage": "The character [q]~[q] cannot appear after the TSDoc tag name; expecting a space",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -491,7 +491,7 @@ Object {
               Object {
                 "errorLocation": "@",
                 "errorLocationPrecedingToken": " ",
-                "errorMessage": "A TSDoc tag must be followed by whitespace",
+                "errorMessage": "The token [q]@three[q] looks like a TSDoc tag but contains an invalid character [q]}[q]; if it is not a tag, use a backslash to escape the [q]@[q]",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {

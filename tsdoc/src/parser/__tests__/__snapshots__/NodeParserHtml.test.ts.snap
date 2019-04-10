@@ -951,10 +951,10 @@ Object {
     "(4,4): The HTML element has an invalid attribute: The HTML string is missing its closing quote",
     "(4,31): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
     "(5,4): The HTML element has an invalid attribute: Expecting an HTML string starting with a single-quote or double-quote character",
-    "(5,21): A TSDoc tag must be preceded by whitespace",
+    "(5,21): The \\"@\\" character looks like part of a TSDoc tag; use a backslash to escape it",
     "(5,30): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
     "(6,4): The HTML element has an invalid attribute: Expecting \\"=\\" after HTML attribute name",
-    "(6,20): A TSDoc tag must be preceded by whitespace",
+    "(6,20): The \\"@\\" character looks like part of a TSDoc tag; use a backslash to escape it",
     "(6,30): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
     "(7,4): The HTML element has an invalid attribute: The next character after a closing quote must be spacing or punctuation",
     "(7,40): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
@@ -1118,7 +1118,7 @@ Object {
               Object {
                 "errorLocation": "@",
                 "errorLocationPrecedingToken": "=",
-                "errorMessage": "A TSDoc tag must be preceded by whitespace",
+                "errorMessage": "The [q]@[q] character looks like part of a TSDoc tag; use a backslash to escape it",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -1181,7 +1181,7 @@ Object {
               Object {
                 "errorLocation": "@",
                 "errorLocationPrecedingToken": "five",
-                "errorMessage": "A TSDoc tag must be preceded by whitespace",
+                "errorMessage": "The [q]@[q] character looks like part of a TSDoc tag; use a backslash to escape it",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
