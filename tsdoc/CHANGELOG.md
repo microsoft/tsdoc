@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Tue, 12 Mar 2019 23:18:11 GMT and should not be manually modified.
+This log was last generated on Thu, 11 Apr 2019 03:58:35 GMT and should not be manually modified.
+
+## 0.12.9
+Thu, 11 Apr 2019 03:58:35 GMT
+
+### Patches
+
+- Improve the wording of the error messages involving character sequences that look like TSDoc tags
 
 ## 0.12.8
 Tue, 12 Mar 2019 23:18:11 GMT
