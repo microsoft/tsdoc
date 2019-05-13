@@ -385,7 +385,7 @@ export class ClassI1 {
 export interface InterfaceJ1 {
   /**
    * Shortest name:  {@link InterfaceJ1."abc. def"}
-   * Full name:      {@link (InterfaceJ1:interface).("abc. def":static)}
+   * Full name:      {@link (InterfaceJ1:interface)."abc. def"}
    */
   'abc. def': string;
 
