@@ -1,0 +1,162 @@
+//
+// Lexical Grammar
+//
+
+SourceCharacter::
+  > Any unicode code point
+
+WhiteSpace::
+  <TAB>
+  <VT>
+  <FF>
+  <SP>
+  <NBSP>
+  <ZWNBSP>
+  <USP>
+
+LineTerminator::
+  <LF>
+  <CR>
+  <LS>
+  <PS>
+
+// MeaningKeyword represents each of the possible meanings of a TypeScript symbol, 
+// in addition to some custom types.
+MeaningKeyword: one of
+  `class`                                       // SymbolFlags.Class
+  `interface`                                   // SymbolFlags.Interface
+  `typealias`                                   // SymbolFlags.TypeAlias
+  `enum`                                        // SymbolFlags.Enum
+  `namespace`                                   // SymbolFlags.Module
+  `function`                                    // SymbolFlags.Function
+  `variable`                                    // SymbolFlags.Variable
+  `constructor`                                 // SymbolFlags.Constructor
+  `member`                                      // SymbolFlags.ClassMember
+  `event`                                       //
+  `enummember`                                  // SymbolFlags.EnumMember
+  `signature`                                   // SymbolFlags.Signature
+  `type`                                        // Any complex type
+
+Punctuator:: one of
+  `{` `}` `(` `)` `[` `]` `!` `.` `#` `~` `:` `,`
+
+FutureReservedPunctuator:: one of
+  `{` `}`
+
+NavigationPunctuator: one of
+  `.`                                           // Navigate via 'exports' of symbol
+  `#`                                           // Navigate via 'members' of symbol
+  `~`                                           // Navigate via 'locals' of symbol
+
+DecimalDigits::
+  DecimalDigit
+  DecimalDigits DecimalDigit
+
+DecimalDigit:: one of
+  `0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
+
+HexDigits::
+  HexDigit HexDigits?
+
+HexDigit:: one of
+  `0` `1` `2` `3` `4` `5` `6` `7` `8` `9` `a` `b` `c` `d` `e` `f` `A` `B` `C` `D` `E` `F`
+
+String::
+  `"` StringCharacters? `"`
+
+StringCharacters::
+  StringCharacter StringCharacters?
+
+StringCharacter::
+  SourceCharacter but not one of `"` or `\` or LineTerminator
+  `\` EscapeSequence
+
+EscapeSequence::
+  CharacterEscapeSequence
+  `0` [lookahead != DecimalDigit]
+  HexEscapeSequence
+  UnicodeEscapeSequence
+
+CharacterEscapeSequence::
+  SingleEscapeCharacter
+  NonEscapeCharacter
+
+SingleEscapeCharacter:: one of
+  `'` `"` `\` `b` `f` `n` `r` `t` `v`
+
+NonEscapeCharacter::
+  SourceCharacter but not one of EscapeCharacter or LineTerminator
+
+EscapeCharacter::
+  SingleEscapeCharacter
+  DecimalDigit
+  `x`
+  `u`
+
+HexEscapeSequence::
+  `x` HexDigit HexDigit
+
+UnicodeEscapeSequence::
+  `u` Hex4Digits
+  `u` `{` CodePoint `}`
+
+Hex4Digits::
+  HexDigit HexDigit HexDigit HexDigit
+
+CodePoint::
+  > |HexDigits| but only if MV of |HexDigits| ≤ 0x10FFFF
+
+Component::
+  String
+  ComponentAtoms
+
+ComponentAtoms::
+  ComponentAtom ComponentAtoms?
+
+ComponentAtom::
+  SourceCharacter but not one of `"` or Punctuator or FutureReservedPunctuator or WhiteSpace or LineTerminator
+  BracketedComponent
+
+BracketedComponent::
+  `[` BracketedAtoms `]`
+
+BracketedAtoms::
+  BracketedAtom BracketedAtoms?
+
+BracketedAtom::
+  String
+  ComponentAtom
+
+//
+// Syntactic Grammar
+//
+
+// NOTE: The following grammar is incorrect as |SymbolReference| and |ModuleSource| have an
+//       ambiguous parse. The correct solution is to use a cover grammar to parse
+//       |SymbolReference| until we hit a `!` and then reinterpret the grammar.
+Uid:
+  [empty]
+  SymbolReference                               // Shorthand reference to symbol
+  ModuleSource `!`                              // Reference to a module
+  ModuleSource `!` SymbolReference              // Reference to an export of a module
+  ModuleSource `|` `~` SymbolReference          // Reference to a local of a module
+  `!` SymbolReference                           // Reference to global symbol
+
+// Represents the path for a module
+ModuleSource:
+  Component
+
+SymbolReference:
+  Components Meaning?
+
+Components:
+  Component
+  Components `.` Component                      // Navigate via 'exports' of |Components|
+  Components `#` Component                      // Navigate via 'members' of |Components|
+  Components `~` Component                      // Navigate via 'locals' of |Components|
+
+Meaning:
+  `:` MeaningKeyword                            // Indicates the meaning of a symbol (i.e. ':class')
+  `:` MeaningKeyword `(` DecimalDigits `)`      // Indicates an overloaded meaning (i.e. ':function(1)')
+  `:` `(` DecimalDigits `)`                     // Shorthand for an overloaded meaning (i.e. `:(1)`)
+  `:` DecimalDigits                             // Shorthand for an overloaded meaning (i.e. ':1')

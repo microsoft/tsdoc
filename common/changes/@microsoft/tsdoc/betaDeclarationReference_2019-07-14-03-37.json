@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Add beta implementation of new DeclarationReference API",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "ron.buckton@microsoft.com"
+}
