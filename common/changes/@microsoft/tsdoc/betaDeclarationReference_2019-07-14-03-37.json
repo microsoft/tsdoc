@@ -3,7 +3,7 @@
     {
       "packageName": "@microsoft/tsdoc",
       "comment": "Add beta implementation of new DeclarationReference API",
-      "type": "minor"
+      "type": "patch"
     }
   ],
   "packageName": "@microsoft/tsdoc",
