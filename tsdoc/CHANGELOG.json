@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.10",
+      "tag": "@microsoft/tsdoc_v0.12.10",
+      "date": "Fri, 19 Jul 2019 02:47:09 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add beta implementation of new DeclarationReference API"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.9",
       "tag": "@microsoft/tsdoc_v0.12.9",
       "date": "Thu, 11 Apr 2019 03:58:35 GMT",

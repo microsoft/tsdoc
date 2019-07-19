@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Thu, 11 Apr 2019 03:58:35 GMT and should not be manually modified.
+This log was last generated on Fri, 19 Jul 2019 02:47:09 GMT and should not be manually modified.
+
+## 0.12.10
+Fri, 19 Jul 2019 02:47:09 GMT
+
+### Patches
+
+- Add beta implementation of new DeclarationReference API
 
 ## 0.12.9
 Thu, 11 Apr 2019 03:58:35 GMT
