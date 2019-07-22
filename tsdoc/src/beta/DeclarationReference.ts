@@ -47,6 +47,9 @@ export class DeclarationReference {
   public static parse(text: string): DeclarationReference {
     const parser: Parser = new Parser(text);
     const reference: DeclarationReference = parser.parseDeclarationReference();
+    if (parser.errors.length) {
+      throw new SyntaxError(`Invalid DeclarationReference '${text}':\n  ${parser.errors.join('\n  ')}`);
+    }
     if (!parser.eof) {
       throw new SyntaxError(`Invalid DeclarationReference '${text}'`);
     }
@@ -89,13 +92,9 @@ export class DeclarationReference {
    * Determines whether the provided string is a well-formed symbol navigation component string.
    */
   public static isWellFormedComponentString(text: string): boolean {
-    try {
-      const parser: Parser = new Parser(text);
-      parser.parseComponent();
-      return parser.eof;
-    } catch {
-      return false;
-    }
+    const parser: Parser = new Parser(text);
+    parser.parseComponent();
+    return parser.errors.length === 0 && parser.eof;
   }
 
   public static empty(): DeclarationReference {
@@ -733,15 +732,23 @@ class Scanner {
 }
 
 class Parser {
-  private scanner: Scanner;
+  private _errors: string[];
+  private _scanner: Scanner;
+
+  public static readonly "x-y": unique symbol;
 
   constructor(text: string) {
-    this.scanner = new Scanner(text);
-    this.scanner.scan();
+    this._errors = [];
+    this._scanner = new Scanner(text);
+    this._scanner.scan();
   }
 
   public get eof(): boolean {
-    return this.scanner.eof;
+    return this._scanner.eof;
+  }
+
+  public get errors(): ReadonlyArray<string> {
+    return this._errors;
   }
 
   public parseDeclarationReference(): DeclarationReference {
@@ -778,7 +785,7 @@ class Parser {
   }
 
   public parseComponent(): string {
-    switch (this.scanner.token()) {
+    switch (this._scanner.token()) {
       case Token.String:
         return this.parseString();
       default:
@@ -787,7 +794,7 @@ class Parser {
   }
 
   private token(): Token {
-    return this.scanner.token();
+    return this._scanner.token();
   }
 
   private parseSymbol(): SymbolReference {
@@ -808,7 +815,7 @@ class Parser {
 
   private parseRootComponent(): Component {
     if (!this.isStartOfComponent()) {
-      return this.fail();
+      return this.fail('Component expected', new RootComponent('', /*userEscaped*/ true));
     }
 
     const text: string = this.parseComponent();
@@ -832,30 +839,30 @@ class Parser {
   }
 
   private parseNavigation(): Navigation {
-    switch (this.scanner.token()) {
-      case Token.DotToken: return this.scanner.scan(), Navigation.Exports;
-      case Token.HashToken: return this.scanner.scan(), Navigation.Members;
-      case Token.TildeToken: return this.scanner.scan(), Navigation.Locals;
-      default: return this.fail();
+    switch (this._scanner.token()) {
+      case Token.DotToken: return this._scanner.scan(), Navigation.Exports;
+      case Token.HashToken: return this._scanner.scan(), Navigation.Members;
+      case Token.TildeToken: return this._scanner.scan(), Navigation.Locals;
+      default: return this.fail('Expected \'.\', \'#\', or \'~\'', Navigation.Exports);
     }
   }
 
   private tryParseMeaning(): Meaning | undefined {
-    switch (this.scanner.rescanMeaning()) {
-      case Token.ClassKeyword: return this.scanner.scan(), Meaning.Class;
-      case Token.InterfaceKeyword: return this.scanner.scan(), Meaning.Interface;
-      case Token.TypeKeyword: return this.scanner.scan(), Meaning.TypeAlias;
-      case Token.EnumKeyword: return this.scanner.scan(), Meaning.Enum;
-      case Token.NamespaceKeyword: return this.scanner.scan(), Meaning.Namespace;
-      case Token.FunctionKeyword: return this.scanner.scan(), Meaning.Function;
-      case Token.VarKeyword: return this.scanner.scan(), Meaning.Variable;
-      case Token.ConstructorKeyword: return this.scanner.scan(), Meaning.Constructor;
-      case Token.MemberKeyword: return this.scanner.scan(), Meaning.Member;
-      case Token.EventKeyword: return this.scanner.scan(), Meaning.Event;
-      case Token.CallKeyword: return this.scanner.scan(), Meaning.CallSignature;
-      case Token.NewKeyword: return this.scanner.scan(), Meaning.ConstructSignature;
-      case Token.IndexKeyword: return this.scanner.scan(), Meaning.IndexSignature;
-      case Token.ComplexKeyword: return this.scanner.scan(), Meaning.ComplexType;
+    switch (this._scanner.rescanMeaning()) {
+      case Token.ClassKeyword: return this._scanner.scan(), Meaning.Class;
+      case Token.InterfaceKeyword: return this._scanner.scan(), Meaning.Interface;
+      case Token.TypeKeyword: return this._scanner.scan(), Meaning.TypeAlias;
+      case Token.EnumKeyword: return this._scanner.scan(), Meaning.Enum;
+      case Token.NamespaceKeyword: return this._scanner.scan(), Meaning.Namespace;
+      case Token.FunctionKeyword: return this._scanner.scan(), Meaning.Function;
+      case Token.VarKeyword: return this._scanner.scan(), Meaning.Variable;
+      case Token.ConstructorKeyword: return this._scanner.scan(), Meaning.Constructor;
+      case Token.MemberKeyword: return this._scanner.scan(), Meaning.Member;
+      case Token.EventKeyword: return this._scanner.scan(), Meaning.Event;
+      case Token.CallKeyword: return this._scanner.scan(), Meaning.CallSignature;
+      case Token.NewKeyword: return this._scanner.scan(), Meaning.ConstructSignature;
+      case Token.IndexKeyword: return this._scanner.scan(), Meaning.IndexSignature;
+      case Token.ComplexKeyword: return this._scanner.scan(), Meaning.ComplexType;
       default: return undefined;
     }
   }
@@ -872,13 +879,13 @@ class Parser {
   }
 
   private parseDecimalDigits(): number {
-    switch (this.scanner.rescanDecimalDigits()) {
+    switch (this._scanner.rescanDecimalDigits()) {
       case Token.DecimalDigits:
-        const value: number = +this.scanner.tokenText;
-        this.scanner.scan();
+        const value: number = +this._scanner.tokenText;
+        this._scanner.scan();
         return value;
       default:
-        return this.fail();
+        return this.fail('Decimal digit expected', 0);
     }
   }
 
@@ -896,7 +903,7 @@ class Parser {
   private parseComponentAtoms(): string {
     let text: string = '';
     for (; ;) {
-      switch (this.scanner.token()) {
+      switch (this._scanner.token()) {
         case Token.Text:
           text += this.parseText();
           break;
@@ -910,21 +917,25 @@ class Parser {
   }
 
   private parseText(): string {
-    if (this.scanner.token() === Token.Text) {
-      const text: string = this.scanner.tokenText;
-      this.scanner.scan();
+    if (this._scanner.token() === Token.Text) {
+      const text: string = this._scanner.tokenText;
+      this._scanner.scan();
       return text;
     }
-    return this.fail();
+    return this.fail('Text expected', '');
   }
 
   private parseString(): string {
-    if (this.scanner.token() === Token.String) {
-      const text: string = this.scanner.tokenText;
-      this.scanner.scan();
+    if (this._scanner.token() === Token.String) {
+      const text: string = this._scanner.tokenText;
+      const stringIsUnterminated: boolean = this._scanner.stringIsUnterminated;
+      this._scanner.scan();
+      if (stringIsUnterminated) {
+        return this.fail('Unterminated string literal', text);
+      }
       return text;
     }
-    return this.fail();
+    return this.fail('String expected', '');
   }
 
   private parseBracketedComponent(): string {
@@ -937,10 +948,10 @@ class Parser {
   private parseBracketedAtoms(): string {
     let text: string = '';
     for (; ;) {
-      switch (this.scanner.token()) {
+      switch (this._scanner.token()) {
         case Token.DotToken:
           text += '.';
-          this.scanner.scan();
+          this._scanner.scan();
           continue;
         case Token.String:
           text += this.parseString();
@@ -958,24 +969,25 @@ class Parser {
   }
 
   private optionalToken(token: Token): boolean {
-    if (this.scanner.token() === token) {
-      this.scanner.scan();
+    if (this._scanner.token() === token) {
+      this._scanner.scan();
       return true;
     }
     return false;
   }
 
   private expectToken(token: Token, message?: string): void {
-    if (this.scanner.token() !== token) {
+    if (this._scanner.token() !== token) {
       const expected: string = tokenToString(token);
-      const actual: string = tokenToString(this.scanner.token());
-      return this.fail(message || `Expected token '${expected}', received '${actual}' instead.`);
+      const actual: string = tokenToString(this._scanner.token());
+      return this.fail(message || `Expected token '${expected}', received '${actual}' instead.`, undefined);
     }
-    this.scanner.scan();
+    this._scanner.scan();
   }
 
-  private fail(message?: string): never {
-    throw new SyntaxError(`Invalid DeclarationReference '${this.scanner.text}'${message ? `: ${message}` : ''}`);
+  private fail<T>(message: string, fallback: T): T {
+    this._errors.push(message);
+    return fallback;
   }
 }
 

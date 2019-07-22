@@ -136,7 +136,7 @@ BracketedAtom::
 // NOTE: The following grammar is incorrect as |SymbolReference| and |ModuleSource| have an
 //       ambiguous parse. The correct solution is to use a cover grammar to parse
 //       |SymbolReference| until we hit a `!` and then reinterpret the grammar.
-Uid:
+DeclarationReference:
   [empty]
   SymbolReference                               // Shorthand reference to symbol
   ModuleSource `!`                              // Reference to a module
