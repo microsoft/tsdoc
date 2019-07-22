@@ -93,7 +93,7 @@ export class DeclarationReference {
    */
   public static isWellFormedComponentString(text: string): boolean {
     const parser: Parser = new Parser(text);
-    parser.parseComponent();
+    parser.parseComponentString();
     return parser.errors.length === 0 && parser.eof;
   }
 
@@ -129,8 +129,9 @@ export class DeclarationReference {
     return this._symbol === symbol ? this : new DeclarationReference(this._source, this._navigation, symbol);
   }
 
-  public withComponent(component: Component): DeclarationReference {
-    return this.withSymbol(this.symbol ? this.symbol.withComponent(component) : new SymbolReference(component));
+  public withComponentPath(componentPath: ComponentPath): DeclarationReference {
+    return this.withSymbol(this.symbol ? this.symbol.withComponentPath(componentPath) :
+      new SymbolReference(componentPath));
   }
 
   public withMeaning(meaning: Meaning | undefined): DeclarationReference {
@@ -153,14 +154,15 @@ export class DeclarationReference {
     return this.withSymbol(this.symbol.withOverloadIndex(overloadIndex));
   }
 
-  public addNavigationStep(navigation: Navigation, text: string, userEscaped?: boolean): DeclarationReference {
+  public addNavigationStep(navigation: Navigation, component: ComponentLike): DeclarationReference {
     if (this.symbol) {
-      return this.withSymbol(this.symbol.addNavigationStep(navigation, text, userEscaped));
+      return this.withSymbol(this.symbol.addNavigationStep(navigation, component));
     }
     if (navigation === Navigation.Members) {
       navigation = Navigation.Exports;
     }
-    return new DeclarationReference(this.source, navigation, new SymbolReference(new RootComponent(text, userEscaped)));
+    const symbol: SymbolReference = new SymbolReference(new ComponentRoot(Component.from(component)));
+    return new DeclarationReference(this.source, navigation, symbol);
   }
 
   public toString(): string {
@@ -303,23 +305,99 @@ export class GlobalSource {
  * @beta
  */
 export type Component =
-  | RootComponent
-  | NavigationComponent
+  | ComponentString
+  | ComponentReference
   ;
 
 /**
  * @beta
  */
-export abstract class ComponentBase {
+export namespace Component {
+  export function from(value: ComponentLike): Component {
+    if (typeof value === 'string') {
+      return new ComponentString(value);
+    }
+    if (value instanceof DeclarationReference) {
+      return new ComponentReference(value);
+    }
+    return value;
+  }
+}
+
+/**
+ * @beta
+ */
+export type ComponentLike =
+  | Component
+  | DeclarationReference
+  | string
+  ;
+
+/**
+ * @beta
+ */
+export class ComponentString {
   public readonly text: string;
 
   constructor(text: string, userEscaped?: boolean) {
-    this.text = escapeIfNeeded(text, userEscaped);
+    this.text = this instanceof ParsedComponentString ? text : escapeIfNeeded(text, userEscaped);
   }
 
-  public addNavigationStep(this: Component, navigation: Navigation, text: string, userEscaped?: boolean): Component {
+  public toString(): string {
+    return this.text;
+  }
+}
+
+class ParsedComponentString extends ComponentString {
+}
+
+/**
+ * @beta
+ */
+export class ComponentReference {
+  public readonly reference: DeclarationReference;
+
+  constructor(reference: DeclarationReference) {
+    this.reference = reference;
+  }
+
+  public static parse(text: string): ComponentReference {
+    if (text.length > 2 && text.charAt(0) === '[' && text.charAt(text.length - 1) === ']') {
+      return new ComponentReference(DeclarationReference.parse(text.slice(1, -1)));
+    }
+    throw new SyntaxError(`Invalid component reference: '${text}'`);
+  }
+
+  public withReference(reference: DeclarationReference): ComponentReference {
+    return this.reference === reference ? this : new ComponentReference(reference);
+  }
+
+  public toString(): string {
+    return `[${this.reference}]`;
+  }
+}
+
+/**
+ * @beta
+ */
+export type ComponentPath =
+  | ComponentRoot
+  | ComponentNavigation
+  ;
+
+/**
+ * @beta
+ */
+export abstract class ComponentPathBase {
+  public readonly component: Component;
+
+  constructor(component: Component) {
+    this.component = component;
+  }
+
+  public addNavigationStep(this: ComponentPath, navigation: Navigation, component: ComponentLike): ComponentPath {
     // tslint:disable-next-line:no-use-before-declare
-    return new NavigationComponent(this, navigation, text, userEscaped);
+    return new ComponentNavigation(this, navigation, Component.from(component));
   }
 
   public abstract toString(): string;
@@ -328,27 +406,44 @@ export abstract class ComponentBase {
 /**
  * @beta
  */
-export class RootComponent extends ComponentBase {
+export class ComponentRoot extends ComponentPathBase {
+  public withComponent(component: ComponentLike): ComponentRoot {
+    return this.component === component ? this : new ComponentRoot(Component.from(component));
+  }
+
   public toString(): string {
-    return this.text;
+    return this.component.toString();
   }
 }
 
 /**
  * @beta
  */
-export class NavigationComponent extends ComponentBase {
-  public readonly parent: Component;
+export class ComponentNavigation extends ComponentPathBase {
+  public readonly parent: ComponentPath;
   public readonly navigation: Navigation;
 
-  constructor(source: Component, navigation: Navigation, text: string, userEscaped?: boolean) {
-    super(text, userEscaped);
-    this.parent = source;
+  constructor(parent: ComponentPath, navigation: Navigation, component: Component) {
+    super(component);
+    this.parent = parent;
     this.navigation = navigation;
   }
 
+  public withParent(parent: ComponentPath): ComponentNavigation {
+    return this.parent === parent ? this : new ComponentNavigation(parent, this.navigation, this.component);
+  }
+
+  public withNavigation(navigation: Navigation): ComponentNavigation {
+    return this.navigation === navigation ? this : new ComponentNavigation(this.parent, navigation, this.component);
+  }
+
+  public withComponent(component: ComponentLike): ComponentNavigation {
+    return this.component === component ? this :
+      new ComponentNavigation(this.parent, this.navigation, Component.from(component));
+  }
+
   public toString(): string {
-    return `${this.parent}${formatNavigation(this.navigation)}${this.text}`;
+    return `${this.parent}${formatNavigation(this.navigation)}${this.component}`;
   }
 }
 
@@ -385,12 +480,12 @@ export interface ISymbolReferenceOptions {
  * @beta
  */
 export class SymbolReference {
-  public readonly component: Component | undefined;
+  public readonly componentPath: ComponentPath | undefined;
   public readonly meaning: Meaning | undefined;
   public readonly overloadIndex: number | undefined;
 
-  constructor(component: Component | undefined, { meaning, overloadIndex }: ISymbolReferenceOptions = {}) {
-    this.component = component;
+  constructor(component: ComponentPath | undefined, { meaning, overloadIndex }: ISymbolReferenceOptions = {}) {
+    this.componentPath = component;
     this.overloadIndex = overloadIndex;
     this.meaning = meaning;
   }
@@ -399,36 +494,36 @@ export class SymbolReference {
     return new SymbolReference(/*component*/ undefined);
   }
 
-  public withComponent(component: Component | undefined): SymbolReference {
-    return this.component === component ? this : new SymbolReference(component, {
+  public withComponentPath(componentPath: ComponentPath | undefined): SymbolReference {
+    return this.componentPath === componentPath ? this : new SymbolReference(componentPath, {
       meaning: this.meaning,
       overloadIndex: this.overloadIndex
     });
   }
 
   public withMeaning(meaning: Meaning | undefined): SymbolReference {
-    return this.meaning === meaning ? this : new SymbolReference(this.component, {
+    return this.meaning === meaning ? this : new SymbolReference(this.componentPath, {
       meaning,
       overloadIndex: this.overloadIndex
     });
   }
 
   public withOverloadIndex(overloadIndex: number | undefined): SymbolReference {
-    return this.overloadIndex === overloadIndex ? this : new SymbolReference(this.component, {
+    return this.overloadIndex === overloadIndex ? this : new SymbolReference(this.componentPath, {
       meaning: this.meaning,
       overloadIndex
     });
   }
 
-  public addNavigationStep(navigation: Navigation, text: string, userEscaped?: boolean): SymbolReference {
-    if (!this.component) {
+  public addNavigationStep(navigation: Navigation, component: ComponentLike): SymbolReference {
+    if (!this.componentPath) {
         throw new Error('Cannot add a navigation step to an empty symbol reference.');
     }
-    return new SymbolReference(this.component.addNavigationStep(navigation, text, userEscaped));
+    return new SymbolReference(this.componentPath.addNavigationStep(navigation, component));
   }
 
   public toString(): string {
-    let result: string = `${this.component || ''}`;
+    let result: string = `${this.componentPath || ''}`;
     if (this.meaning && this.overloadIndex !== undefined) {
       result += `:${this.meaning}(${this.overloadIndex})`;
     } else if (this.meaning) {
@@ -735,8 +830,6 @@ class Parser {
   private _errors: string[];
   private _scanner: Scanner;
 
-  public static readonly "x-y": unique symbol;
-
   constructor(text: string) {
     this._errors = [];
     this._scanner = new Scanner(text);
@@ -761,10 +854,10 @@ class Parser {
       symbol = this.parseSymbol();
     } else if (this.isStartOfComponent()) {
       // Either path for module source or first component of symbol
-      const root: string = this.parseComponent();
-      if (this.optionalToken(Token.ExclamationToken)) {
+      const root: Component = this.parseComponent();
+      if (root instanceof ComponentString && this.optionalToken(Token.ExclamationToken)) {
         // Definitely path for module source
-        source = new ModuleSource(root, /*userEscaped*/ true);
+        source = new ModuleSource(root.text, /*userEscaped*/ true);
 
         // Check for optional `~` navigation token.
         if (this.optionalToken(Token.TildeToken)) {
@@ -776,20 +869,20 @@ class Parser {
         }
       } else {
         // Definitely a symbol
-        symbol = this.parseSymbolRest(this.parseComponentRest(new RootComponent(root, /*userEscaped*/ true)));
+        symbol = this.parseSymbolRest(this.parseComponentRest(new ComponentRoot(root)));
       }
     } else if (this.token() === Token.ColonToken) {
-        symbol = this.parseSymbolRest(new RootComponent(''));
+        symbol = this.parseSymbolRest(new ComponentRoot(new ComponentString('', /*userEscaped*/ true)));
     }
     return new DeclarationReference(source, navigation, symbol);
   }
 
-  public parseComponent(): string {
+  public parseComponentString(): string {
     switch (this._scanner.token()) {
       case Token.String:
         return this.parseString();
       default:
-        return this.parseComponentAtoms();
+        return this.parseComponentCharacters();
     }
   }
 
@@ -798,11 +891,11 @@ class Parser {
   }
 
   private parseSymbol(): SymbolReference {
-    const component: Component = this.parseComponentRest(this.parseRootComponent());
+    const component: ComponentPath = this.parseComponentRest(this.parseRootComponent());
     return this.parseSymbolRest(component);
   }
 
-  private parseSymbolRest(component: Component): SymbolReference {
+  private parseSymbolRest(component: ComponentPath): SymbolReference {
     let meaning: Meaning | undefined;
     let overloadIndex: number | undefined;
     if (this.optionalToken(Token.ColonToken)) {
@@ -813,24 +906,24 @@ class Parser {
     return new SymbolReference(component, { meaning, overloadIndex });
   }
 
-  private parseRootComponent(): Component {
+  private parseRootComponent(): ComponentPath {
     if (!this.isStartOfComponent()) {
-      return this.fail('Component expected', new RootComponent('', /*userEscaped*/ true));
+      return this.fail('Component expected', new ComponentRoot(new ComponentString('', /*userEscaped*/ true)));
     }
 
-    const text: string = this.parseComponent();
-    return new RootComponent(text, /*userEscaped*/ true);
+    const component: Component = this.parseComponent();
+    return new ComponentRoot(component);
   }
 
-  private parseComponentRest(component: Component): Component {
+  private parseComponentRest(component: ComponentPath): ComponentPath {
     for (; ;) {
       switch (this.token()) {
         case Token.DotToken:
         case Token.HashToken:
         case Token.TildeToken:
           const navigation: Navigation = this.parseNavigation();
-          const text: string = this.parseComponent();
-          component = new NavigationComponent(component, navigation, text, /*userEscaped*/ true);
+          const right: Component = this.parseComponent();
+          component = new ComponentNavigation(component, navigation, right);
           break;
         default:
           return component;
@@ -900,15 +993,12 @@ class Parser {
     }
   }
 
-  private parseComponentAtoms(): string {
+  private parseComponentCharacters(): string {
     let text: string = '';
     for (; ;) {
       switch (this._scanner.token()) {
         case Token.Text:
           text += this.parseText();
-          break;
-        case Token.OpenBracketToken:
-          text += this.parseBracketedComponent();
           break;
         default:
           return text;
@@ -938,34 +1028,20 @@ class Parser {
     return this.fail('String expected', '');
   }
 
-  private parseBracketedComponent(): string {
-    this.expectToken(Token.OpenBracketToken);
-    const text: string = this.parseBracketedAtoms();
-    this.expectToken(Token.CloseBracketToken);
-    return `[${text}]`;
+  private parseComponent(): Component {
+    switch (this._scanner.token()) {
+      case Token.OpenBracketToken:
+        return this.parseBracketedComponent();
+      default:
+        return new ParsedComponentString(this.parseComponentString(), /*userEscaped*/ true);
+    }
   }
 
-  private parseBracketedAtoms(): string {
-    let text: string = '';
-    for (; ;) {
-      switch (this._scanner.token()) {
-        case Token.DotToken:
-          text += '.';
-          this._scanner.scan();
-          continue;
-        case Token.String:
-          text += this.parseString();
-          continue;
-        case Token.Text:
-          text += this.parseText();
-          continue;
-        case Token.OpenBracketToken:
-          text += this.parseBracketedComponent();
-          continue;
-        default:
-          return text;
-      }
-    }
+  private parseBracketedComponent(): ComponentReference {
+    this.expectToken(Token.OpenBracketToken);
+    const reference: DeclarationReference = this.parseDeclarationReference();
+    this.expectToken(Token.CloseBracketToken);
+    return new ComponentReference(reference);
   }
 
   private optionalToken(token: Token): boolean {

@@ -109,25 +109,14 @@ CodePoint::
 
 Component::
   String
-  ComponentAtoms
+  ComponentCharacters
+  `[` DeclarationReference `]`
 
-ComponentAtoms::
-  ComponentAtom ComponentAtoms?
+ComponentCharacters::
+  ComponentCharacter ComponentCharacters?
 
-ComponentAtom::
+ComponentCharacter::
   SourceCharacter but not one of `"` or Punctuator or FutureReservedPunctuator or WhiteSpace or LineTerminator
-  BracketedComponent
-
-BracketedComponent::
-  `[` BracketedAtoms `]`
-
-BracketedAtoms::
-  BracketedAtom BracketedAtoms?
-
-BracketedAtom::
-  `.`
-  String
-  ComponentAtom
 
 //
 // Syntactic Grammar
@@ -149,14 +138,14 @@ ModuleSource:
   Component
 
 SymbolReference:
-  Components Meaning?
+  ComponentPath Meaning?
   Meaning
 
-Components:
+ComponentPath:
   Component
-  Components `.` Component                      // Navigate via 'exports' of |Components|
-  Components `#` Component                      // Navigate via 'members' of |Components|
-  Components `~` Component                      // Navigate via 'locals' of |Components|
+  ComponentPath `.` Component                      // Navigate via 'exports' of |ComponentPath|
+  ComponentPath `#` Component                      // Navigate via 'members' of |ComponentPath|
+  ComponentPath `~` Component                      // Navigate via 'locals' of |ComponentPath|
 
 Meaning:
   `:` MeaningKeyword                            // Indicates the meaning of a symbol (i.e. ':class')
