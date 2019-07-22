@@ -2,11 +2,12 @@ import {
   ModuleSource,
   GlobalSource,
   Meaning,
-  RootComponent,
+  ComponentRoot,
   Navigation,
-  NavigationComponent,
+  ComponentNavigation,
   DeclarationReference,
-  SymbolReference
+  SymbolReference,
+  ComponentReference
 } from '../DeclarationReference';
 
 describe('parser', () => {
@@ -14,22 +15,22 @@ describe('parser', () => {
     const ref: DeclarationReference = DeclarationReference.parse('abc');
     expect(ref.source).toBeUndefined();
     expect(ref.symbol).toBeInstanceOf(SymbolReference);
-    expect(ref.symbol!.component).toBeDefined();
-    expect(ref.symbol!.component!.text).toBe('abc');
+    expect(ref.symbol!.componentPath).toBeDefined();
+    expect(ref.symbol!.componentPath!.component.toString()).toBe('abc');
   });
   it('parse component text string', () => {
     const ref: DeclarationReference = DeclarationReference.parse('"abc"');
     expect(ref.source).toBeUndefined();
     expect(ref.symbol).toBeInstanceOf(SymbolReference);
-    expect(ref.symbol!.component).toBeDefined();
-    expect(ref.symbol!.component!.text).toBe('"abc"');
+    expect(ref.symbol!.componentPath).toBeDefined();
+    expect(ref.symbol!.componentPath!.component.toString()).toBe('"abc"');
   });
   it('parse bracketed component text', () => {
-    const ref: DeclarationReference = DeclarationReference.parse('[abc[def]]');
+    const ref: DeclarationReference = DeclarationReference.parse('[abc.[def]]');
     expect(ref.source).toBeUndefined();
     expect(ref.symbol).toBeInstanceOf(SymbolReference);
-    expect(ref.symbol!.component).toBeDefined();
-    expect(ref.symbol!.component!.text).toBe('[abc[def]]');
+    expect(ref.symbol!.componentPath).toBeDefined();
+    expect(ref.symbol!.componentPath!.component.toString()).toBe('[abc.[def]]');
   });
   it('parse module source', () => {
     const ref: DeclarationReference = DeclarationReference.parse('abc!');
@@ -41,8 +42,8 @@ describe('parser', () => {
     const ref: DeclarationReference = DeclarationReference.parse('!abc');
     expect(ref.source).toBe(GlobalSource.instance);
     expect(ref.symbol).toBeInstanceOf(SymbolReference);
-    expect(ref.symbol!.component).toBeDefined();
-    expect(ref.symbol!.component!.text).toBe('abc');
+    expect(ref.symbol!.componentPath).toBeDefined();
+    expect(ref.symbol!.componentPath!.component.toString()).toBe('abc');
   });
   const meanings: Meaning[] = [
     Meaning.Class,
@@ -80,28 +81,28 @@ describe('parser', () => {
     expect(symbol.meaning).toBe('member');
     expect(symbol.overloadIndex).toBe(1);
 
-    const component1: NavigationComponent = symbol.component as NavigationComponent;
-    expect(component1).toBeInstanceOf(NavigationComponent);
+    const component1: ComponentNavigation = symbol.componentPath as ComponentNavigation;
+    expect(component1).toBeInstanceOf(ComponentNavigation);
     expect(component1.navigation).toBe(Navigation.Members);
-    expect(component1.text).toBe('z');
+    expect(component1.component.toString()).toBe('z');
 
-    const component2: NavigationComponent = component1.parent as NavigationComponent;
-    expect(component2).toBeInstanceOf(NavigationComponent);
+    const component2: ComponentNavigation = component1.parent as ComponentNavigation;
+    expect(component2).toBeInstanceOf(ComponentNavigation);
     expect(component2.navigation).toBe(Navigation.Exports);
-    expect(component2.text).toBe('C');
+    expect(component2.component.toString()).toBe('C');
 
-    const component3: RootComponent = component2.parent as RootComponent;
-    expect(component3).toBeInstanceOf(RootComponent);
-    expect(component3.text).toBe('N');
+    const component3: ComponentRoot = component2.parent as ComponentRoot;
+    expect(component3).toBeInstanceOf(ComponentRoot);
+    expect(component3.component.toString()).toBe('N');
 
     expect(ref.toString()).toBe('foo/bar!N.C#z:member(1)');
   });
 });
 it('add navigation step', () => {
   const ref: DeclarationReference = DeclarationReference.empty()
-    .addNavigationStep(Navigation.Members, '[Symbol.iterator]', /*userEscaped*/ true);
+    .addNavigationStep(Navigation.Members, ComponentReference.parse('[Symbol.iterator]'));
   const symbol: SymbolReference = ref.symbol!;
   expect(symbol).toBeInstanceOf(SymbolReference);
-  expect(symbol.component).toBeDefined();
-  expect(symbol.component!.text).toBe('[Symbol.iterator]');
+  expect(symbol.componentPath).toBeDefined();
+  expect(symbol.componentPath!.component.toString()).toBe('[Symbol.iterator]');
 });
