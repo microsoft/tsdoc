@@ -55,12 +55,10 @@ describe('parser', () => {
     Meaning.Constructor,
     Meaning.Member,
     Meaning.Event,
-    Meaning.EnumMember,
     Meaning.CallSignature,
     Meaning.ConstructSignature,
     Meaning.IndexSignature,
-    Meaning.Signature,
-    Meaning.Type
+    Meaning.ComplexType
   ];
   for (const s of meanings) {
     it(`parse meaning ':${s}'`, () => {
@@ -101,7 +99,7 @@ describe('parser', () => {
 });
 it('add navigation step', () => {
   const ref: DeclarationReference = DeclarationReference.empty()
-    .addNavigationStep(Navigation.Members, '[Symbol.iterator]');
+    .addNavigationStep(Navigation.Members, '[Symbol.iterator]', /*userEscaped*/ true);
   const symbol: SymbolReference = ref.symbol!;
   expect(symbol).toBeInstanceOf(SymbolReference);
   expect(symbol.component).toBeDefined();

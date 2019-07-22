@@ -25,20 +25,18 @@ LineTerminator::
 MeaningKeyword: one of
   `class`                                       // SymbolFlags.Class
   `interface`                                   // SymbolFlags.Interface
-  `typealias`                                   // SymbolFlags.TypeAlias
+  `type`                                        // SymbolFlags.TypeAlias
   `enum`                                        // SymbolFlags.Enum
   `namespace`                                   // SymbolFlags.Module
   `function`                                    // SymbolFlags.Function
-  `variable`                                    // SymbolFlags.Variable
+  `var`                                         // SymbolFlags.Variable
   `constructor`                                 // SymbolFlags.Constructor
-  `member`                                      // SymbolFlags.ClassMember
+  `member`                                      // SymbolFlags.ClassMember | SymbolFlags.EnumMember
   `event`                                       //
-  `enummember`                                  // SymbolFlags.EnumMember
   `call`                                        // SymbolFlags.Signature (for __call)
   `new`                                         // SymbolFlags.Signature (for __new)
   `index`                                       // SymbolFlags.Signature (for __index)
-  `signature`                                   // SymbolFlags.Signature (deprecated)
-  `type`                                        // Any complex type
+  `complex`                                     // Any complex type
 
 Punctuator:: one of
   `{` `}` `(` `)` `[` `]` `!` `.` `#` `~` `:` `,`
