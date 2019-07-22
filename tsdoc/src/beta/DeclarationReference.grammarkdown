@@ -34,7 +34,10 @@ MeaningKeyword: one of
   `member`                                      // SymbolFlags.ClassMember
   `event`                                       //
   `enummember`                                  // SymbolFlags.EnumMember
-  `signature`                                   // SymbolFlags.Signature
+  `call`                                        // SymbolFlags.Signature (for __call)
+  `new`                                         // SymbolFlags.Signature (for __new)
+  `index`                                       // SymbolFlags.Signature (for __index)
+  `signature`                                   // SymbolFlags.Signature (deprecated)
   `type`                                        // Any complex type
 
 Punctuator:: one of
@@ -124,6 +127,7 @@ BracketedAtoms::
   BracketedAtom BracketedAtoms?
 
 BracketedAtom::
+  `.`
   String
   ComponentAtom
 
@@ -148,6 +152,7 @@ ModuleSource:
 
 SymbolReference:
   Components Meaning?
+  Meaning
 
 Components:
   Component

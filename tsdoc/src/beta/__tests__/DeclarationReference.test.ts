@@ -14,19 +14,22 @@ describe('parser', () => {
     const ref: DeclarationReference = DeclarationReference.parse('abc');
     expect(ref.source).toBeUndefined();
     expect(ref.symbol).toBeInstanceOf(SymbolReference);
-    expect(ref.symbol!.component.text).toBe('abc');
+    expect(ref.symbol!.component).toBeDefined();
+    expect(ref.symbol!.component!.text).toBe('abc');
   });
   it('parse component text string', () => {
     const ref: DeclarationReference = DeclarationReference.parse('"abc"');
     expect(ref.source).toBeUndefined();
     expect(ref.symbol).toBeInstanceOf(SymbolReference);
-    expect(ref.symbol!.component.text).toBe('"abc"');
+    expect(ref.symbol!.component).toBeDefined();
+    expect(ref.symbol!.component!.text).toBe('"abc"');
   });
   it('parse bracketed component text', () => {
     const ref: DeclarationReference = DeclarationReference.parse('[abc[def]]');
     expect(ref.source).toBeUndefined();
     expect(ref.symbol).toBeInstanceOf(SymbolReference);
-    expect(ref.symbol!.component.text).toBe('[abc[def]]');
+    expect(ref.symbol!.component).toBeDefined();
+    expect(ref.symbol!.component!.text).toBe('[abc[def]]');
   });
   it('parse module source', () => {
     const ref: DeclarationReference = DeclarationReference.parse('abc!');
@@ -38,7 +41,8 @@ describe('parser', () => {
     const ref: DeclarationReference = DeclarationReference.parse('!abc');
     expect(ref.source).toBe(GlobalSource.instance);
     expect(ref.symbol).toBeInstanceOf(SymbolReference);
-    expect(ref.symbol!.component.text).toBe('abc');
+    expect(ref.symbol!.component).toBeDefined();
+    expect(ref.symbol!.component!.text).toBe('abc');
   });
   const meanings: Meaning[] = [
     Meaning.Class,
@@ -52,6 +56,9 @@ describe('parser', () => {
     Meaning.Member,
     Meaning.Event,
     Meaning.EnumMember,
+    Meaning.CallSignature,
+    Meaning.ConstructSignature,
+    Meaning.IndexSignature,
     Meaning.Signature,
     Meaning.Type
   ];
@@ -91,4 +98,12 @@ describe('parser', () => {
 
     expect(ref.toString()).toBe('foo/bar!N.C#z:member(1)');
   });
+});
+it('add navigation step', () => {
+  const ref: DeclarationReference = DeclarationReference.empty()
+    .addNavigationStep(Navigation.Members, '[Symbol.iterator]');
+  const symbol: SymbolReference = ref.symbol!;
+  expect(symbol).toBeInstanceOf(SymbolReference);
+  expect(symbol.component).toBeDefined();
+  expect(symbol.component!.text).toBe('[Symbol.iterator]');
 });

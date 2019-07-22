@@ -55,8 +55,15 @@ export class DeclarationReference {
 
   public static makeSafeComponent(text: string): string {
     const parser: Parser = new Parser(text);
-    parser.parseComponent();
-    return parser.eof ? text : JSON.stringify(text);
+    try {
+        parser.parseComponent();
+        if (parser.eof) {
+            return text;
+        }
+    } catch {
+        // do nothing
+    }
+    return JSON.stringify(text);
   }
 
   public static empty(): DeclarationReference {
@@ -234,8 +241,11 @@ export const enum Meaning {
   Member = 'member',                            // SymbolFlags.ClassMember
   Event = 'event',                              //
   EnumMember = 'enummember',                    // SymbolFlags.EnumMember
-  Signature = 'signature',                      // SymbolFlags.Signature
-  Type = 'type',                                // Any complex type
+  CallSignature = 'call',                       // SymbolFlags.Signature (for __call)
+  ConstructSignature = 'new',                   // SymbolFlags.Signature (for __new)
+  IndexSignature = 'index',                     // SymbolFlags.Signature (for __index)
+  Signature = 'signature',                      // SymbolFlags.Signature (may deprecate in the future)
+  Type = 'type'                                 // Any complex type
 }
 
 /**
@@ -251,17 +261,17 @@ export interface ISymbolReferenceOptions {
  * @beta
  */
 export class SymbolReference {
-  public readonly component: Component;
+  public readonly component: Component | undefined;
   public readonly meaning: Meaning | undefined;
   public readonly overloadIndex: number | undefined;
 
-  constructor(component: Component, { meaning, overloadIndex }: ISymbolReferenceOptions = {}) {
+  constructor(component: Component | undefined, { meaning, overloadIndex }: ISymbolReferenceOptions = {}) {
     this.component = component;
     this.overloadIndex = overloadIndex;
     this.meaning = meaning;
   }
 
-  public withComponent(component: Component): SymbolReference {
+  public withComponent(component: Component | undefined): SymbolReference {
     return this.component === component ? this : new SymbolReference(component, {
       meaning: this.meaning,
       overloadIndex: this.overloadIndex
@@ -283,6 +293,9 @@ export class SymbolReference {
   }
 
   public addNavigationStep(navigation: Navigation, text: string): SymbolReference {
+    if (!this.component) {
+        throw new Error('Cannot add a navigation step to an empty symbol reference.');
+    }
     return new SymbolReference(this.component.addNavigationStep(navigation, text));
   }
 
@@ -299,7 +312,7 @@ export class SymbolReference {
   }
 }
 
-const enum Token {
+enum Token {
   None,
   EofToken,
   // Punctuator
@@ -330,6 +343,9 @@ const enum Token {
   MemberKeyword,        // 'member'
   EventKeyword,         // 'event'
   EnumMemberKeyword,    // 'enummember'
+  CallKeyword,          // 'call'
+  NewKeyword,           // 'new'
+  IndexKeyword,         // 'index'
   SignatureKeyword,     // 'signature'
   TypeKeyword           // 'type'
 }
@@ -436,6 +452,9 @@ class Scanner {
         case 'member': return this._token = Token.MemberKeyword;
         case 'event': return this._token = Token.EventKeyword;
         case 'enummember': return this._token = Token.EnumMemberKeyword;
+        case 'call': return this._token = Token.CallKeyword;
+        case 'new': return this._token = Token.NewKeyword;
+        case 'index': return this._token = Token.IndexKeyword;
         case 'signature': return this._token = Token.SignatureKeyword;
         case 'type': return this._token = Token.TypeKeyword;
       }
@@ -591,6 +610,8 @@ class Parser {
         // Definitely a symbol
         symbol = this.parseSymbolRest(this.parseComponentRest(new RootComponent(root, /*escapeIfNeeded*/ false)));
       }
+    } else if (this.token() === Token.ColonToken) {
+        symbol = this.parseSymbolRest(new RootComponent(''));
     }
     return new DeclarationReference(source, navigation, symbol);
   }
@@ -671,6 +692,9 @@ class Parser {
       case Token.MemberKeyword: return this.scanner.scan(), Meaning.Member;
       case Token.EventKeyword: return this.scanner.scan(), Meaning.Event;
       case Token.EnumMemberKeyword: return this.scanner.scan(), Meaning.EnumMember;
+      case Token.CallKeyword: return this.scanner.scan(), Meaning.CallSignature;
+      case Token.NewKeyword: return this.scanner.scan(), Meaning.ConstructSignature;
+      case Token.IndexKeyword: return this.scanner.scan(), Meaning.IndexSignature;
       case Token.SignatureKeyword: return this.scanner.scan(), Meaning.Signature;
       case Token.TypeKeyword: return this.scanner.scan(), Meaning.Type;
       default: return undefined;
@@ -755,15 +779,19 @@ class Parser {
     let text: string = '';
     for (; ;) {
       switch (this.scanner.token()) {
+        case Token.DotToken:
+          text += '.';
+          this.scanner.scan();
+          continue;
         case Token.String:
           text += this.parseString();
-          break;
+          continue;
         case Token.Text:
           text += this.parseText();
-          break;
+          continue;
         case Token.OpenBracketToken:
           text += this.parseBracketedComponent();
-          break;
+          continue;
         default:
           return text;
       }
@@ -780,7 +808,7 @@ class Parser {
 
   private expectToken(token: Token, message?: string): void {
     if (this.scanner.token() !== token) {
-      return this.fail(message);
+      return this.fail(message || `Expected token '${Token[token]}', got '${Token[this.scanner.token()]}' instead.`);
     }
     this.scanner.scan();
   }
