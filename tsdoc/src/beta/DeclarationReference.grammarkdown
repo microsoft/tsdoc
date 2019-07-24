@@ -25,17 +25,18 @@ LineTerminator::
 MeaningKeyword: one of
   `class`                                       // SymbolFlags.Class
   `interface`                                   // SymbolFlags.Interface
-  `typealias`                                   // SymbolFlags.TypeAlias
+  `type`                                        // SymbolFlags.TypeAlias
   `enum`                                        // SymbolFlags.Enum
   `namespace`                                   // SymbolFlags.Module
   `function`                                    // SymbolFlags.Function
-  `variable`                                    // SymbolFlags.Variable
+  `var`                                         // SymbolFlags.Variable
   `constructor`                                 // SymbolFlags.Constructor
-  `member`                                      // SymbolFlags.ClassMember
+  `member`                                      // SymbolFlags.ClassMember | SymbolFlags.EnumMember
   `event`                                       //
-  `enummember`                                  // SymbolFlags.EnumMember
-  `signature`                                   // SymbolFlags.Signature
-  `type`                                        // Any complex type
+  `call`                                        // SymbolFlags.Signature (for __call)
+  `new`                                         // SymbolFlags.Signature (for __new)
+  `index`                                       // SymbolFlags.Signature (for __index)
+  `complex`                                     // Any complex type
 
 Punctuator:: one of
   `{` `}` `(` `)` `[` `]` `!` `.` `#` `~` `:` `,`
@@ -108,24 +109,14 @@ CodePoint::
 
 Component::
   String
-  ComponentAtoms
+  ComponentCharacters
+  `[` DeclarationReference `]`
 
-ComponentAtoms::
-  ComponentAtom ComponentAtoms?
+ComponentCharacters::
+  ComponentCharacter ComponentCharacters?
 
-ComponentAtom::
+ComponentCharacter::
   SourceCharacter but not one of `"` or Punctuator or FutureReservedPunctuator or WhiteSpace or LineTerminator
-  BracketedComponent
-
-BracketedComponent::
-  `[` BracketedAtoms `]`
-
-BracketedAtoms::
-  BracketedAtom BracketedAtoms?
-
-BracketedAtom::
-  String
-  ComponentAtom
 
 //
 // Syntactic Grammar
@@ -134,7 +125,7 @@ BracketedAtom::
 // NOTE: The following grammar is incorrect as |SymbolReference| and |ModuleSource| have an
 //       ambiguous parse. The correct solution is to use a cover grammar to parse
 //       |SymbolReference| until we hit a `!` and then reinterpret the grammar.
-Uid:
+DeclarationReference:
   [empty]
   SymbolReference                               // Shorthand reference to symbol
   ModuleSource `!`                              // Reference to a module
@@ -147,13 +138,14 @@ ModuleSource:
   Component
 
 SymbolReference:
-  Components Meaning?
+  ComponentPath Meaning?
+  Meaning
 
-Components:
+ComponentPath:
   Component
-  Components `.` Component                      // Navigate via 'exports' of |Components|
-  Components `#` Component                      // Navigate via 'members' of |Components|
-  Components `~` Component                      // Navigate via 'locals' of |Components|
+  ComponentPath `.` Component                      // Navigate via 'exports' of |ComponentPath|
+  ComponentPath `#` Component                      // Navigate via 'members' of |ComponentPath|
+  ComponentPath `~` Component                      // Navigate via 'locals' of |ComponentPath|
 
 Meaning:
   `:` MeaningKeyword                            // Indicates the meaning of a symbol (i.e. ':class')
