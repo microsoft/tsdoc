@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Fri, 19 Jul 2019 02:47:09 GMT and should not be manually modified.
+This log was last generated on Wed, 24 Jul 2019 00:38:18 GMT and should not be manually modified.
+
+## 0.12.11
+Wed, 24 Jul 2019 00:38:18 GMT
+
+### Patches
+
+- Add new meanings to DeclarationReference and fix some parsing bugs
 
 ## 0.12.10
 Fri, 19 Jul 2019 02:47:09 GMT

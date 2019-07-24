@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.11",
+      "tag": "@microsoft/tsdoc_v0.12.11",
+      "date": "Wed, 24 Jul 2019 00:38:18 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add new meanings to DeclarationReference and fix some parsing bugs"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.10",
       "tag": "@microsoft/tsdoc_v0.12.10",
       "date": "Fri, 19 Jul 2019 02:47:09 GMT",
