@@ -56,6 +56,14 @@ export class DeclarationReference {
     return reference;
   }
 
+  public static parseComponent(text: string): Component {
+    if (text[0] === '[') {
+      return ComponentReference.parse(text);
+    } else {
+      return new ComponentString(text, true);
+    }
+  }
+
   /**
    * Escapes a string for use as a symbol navigation component. If the string contains `!.#~:,"{}()` or starts with
    * `[`, it is enclosed in quotes.
