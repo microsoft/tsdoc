@@ -334,13 +334,13 @@ export class StandardTags {
    *  * Retrieves metadata about a book from the catalog.
    *  *
    *  * @param isbnCode - the ISBN number for the book
-   *  * @returns the retrieved book
+   *  * @returns the retrieved book object
    *  *
    *  * @throws {@link IsbnSyntaxError}
-   *  * Thrown if the input is not a valid ISBN number.
+   *  * This exception is thrown if the input is not a valid ISBN number.
    *  *
-   *  * @throws {@link BookNotFound}
-   *  * Thrown if the ISBN number is valid, but no such book was found.
+   *  * @throws {@link book-lib#BookNotFoundError}
+   *  * Thrown if the ISBN number is valid, but no such book exists in the catalog.
    *  *
    *  * @public
    *  &#42;/
