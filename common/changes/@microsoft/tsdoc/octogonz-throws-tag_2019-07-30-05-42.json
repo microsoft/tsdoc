@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Add a definition for the `@throws` block tag (RFC 171)",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "4673363+octogonz@users.noreply.github.com"
+}
