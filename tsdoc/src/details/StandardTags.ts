@@ -317,6 +317,44 @@ export class StandardTags {
   });
 
   /**
+   * (Extended)
+   *
+   * Used to document an exception type that may be thrown by a function or property.
+   *
+   * @remarks
+   *
+   * A separate `@throws` block should be used to document each exception type.  This tag is for informational
+   * purposes only, and does not restrict other types from being thrown.  It is suggested, but not required,
+   * for the `@throws` block to start with a line containing only the name of the exception.
+   *
+   * For example:
+   *
+   * ```ts
+   * /**
+   *  * Retrieves metadata about a book from the catalog.
+   *  *
+   *  * @param isbnCode - the ISBN number for the book
+   *  * @returns the retrieved book
+   *  *
+   *  * @throws {@link IsbnSyntaxError}
+   *  * Thrown if the input is not a valid ISBN number.
+   *  *
+   *  * @throws {@link BookNotFound}
+   *  * Thrown if the ISBN number is valid, but no such book was found.
+   *  *
+   *  * @public
+   *  &#42;/
+   * function fetchBookByIsbn(isbnCode: string): Book;
+   * ```
+   */
+  public static readonly throws: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@throws',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    allowMultiple: true,
+    standardization: Standardization.Extended
+  });
+
+  /**
    * (Core)
    *
    * Used to document a generic parameter.  The `@typeParam` tag is followed by a parameter
@@ -370,6 +408,7 @@ export class StandardTags {
     StandardTags.remarks,
     StandardTags.returns,
     StandardTags.sealed,
+    StandardTags.throws,
     StandardTags.typeParam,
     StandardTags.virtual
   ];
