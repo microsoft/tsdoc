@@ -82,6 +82,16 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
     }
   }
 
+  private getEditorModel(): monacoEditor.editor.ITextModel {
+    if (this._editor) {
+      const model: monacoEditor.editor.ITextModel | null = this._editor.getModel();
+      if (model) {
+        return model;
+      }
+    }
+    throw new Error('Invalid access to MonacoEditor.getModel()');
+  }
+
   private static _initializeMonaco(): Promise<typeof monacoEditor> {
     if (!CodeEditor._initializePromise) {
       CodeEditor._initializePromise = new Promise(
@@ -152,11 +162,11 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
 
       if (CodeEditor._monaco) {
         CodeEditor._monaco.editor.setModelMarkers(
-          this._editor.getModel(),
+          this.getEditorModel(),
           this._editorId,
           (this.props.markers || []).map((marker) => {
-            const startPos: monacoEditor.Position = this._editor!.getModel().getPositionAt(marker.pos);
-            const endPos: monacoEditor.Position = this._editor!.getModel().getPositionAt(marker.end);
+            const startPos: monacoEditor.Position = this.getEditorModel().getPositionAt(marker.pos);
+            const endPos: monacoEditor.Position = this.getEditorModel().getPositionAt(marker.end);
             return {
               startLineNumber: startPos.lineNumber,
               startColumn: startPos.column,
@@ -238,11 +248,11 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
         }
       }
 
-      this._editor.getModel().deltaDecorations(decorationsToRemove, []);
-      const decorationIds: string[] = this._editor.getModel().deltaDecorations([], decorationsToAdd.map(
+      this.getEditorModel().deltaDecorations(decorationsToRemove, []);
+      const decorationIds: string[] = this.getEditorModel().deltaDecorations([], decorationsToAdd.map(
         (decoration) => {
-          const startPos: monacoEditor.Position = this._editor!.getModel().getPositionAt(decoration.pos);
-          const endPos: monacoEditor.Position = this._editor!.getModel().getPositionAt(decoration.end);
+          const startPos: monacoEditor.Position = this.getEditorModel().getPositionAt(decoration.pos);
+          const endPos: monacoEditor.Position = this.getEditorModel().getPositionAt(decoration.end);
 
           return {
             range: new CodeEditor._monaco.Range(
@@ -296,7 +306,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
           }
         );
 
-        this._editor.getModel().onDidChangeContent((e) => {
+        this.getEditorModel().onDidChangeContent((e) => {
           if (this._editor) {
             this._safeOnChange(this._editor.getValue());
           }

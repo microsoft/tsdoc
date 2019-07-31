@@ -16,28 +16,6 @@
     "label-position": true,
     "max-line-length": [true, 120],
     "member-access": true,
-    "member-ordering": [
-      true,
-      {
-        "order": [
-          "public-static-field",
-          "protected-static-field",
-          "private-static-field",
-          "public-instance-field",
-          "protected-instance-field",
-          "private-instance-field",
-          "public-static-method",
-          "protected-static-method",
-          "private-static-method",
-          "public-constructor",
-          "public-instance-method",
-          "protected-constructor",
-          "protected-instance-method",
-          "private-constructor",
-          "private-instance-method"
-        ]
-      }
-    ],
     "missing-optional-annotation": true,
     "no-arg": true,
     "no-any": true,
@@ -69,7 +47,6 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-semicolons": true,
     "no-unused-expression": true,
-    "no-use-before-declare": true,
     "no-with-statement": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
