@@ -58,7 +58,7 @@ interface IFailure {
 type ResultOrFailure<T> = T | IFailure;
 
 function isFailure<T>(resultOrFailure: ResultOrFailure<T>): resultOrFailure is IFailure {
-  return resultOrFailure !== undefined && resultOrFailure.hasOwnProperty('failureMessage');
+  return resultOrFailure !== undefined && Object.hasOwnProperty.call(resultOrFailure, 'failureMessage');
 }
 
 /**
@@ -624,13 +624,12 @@ export class NodeParser {
 
           tokenReader.readToken();
           break;
-        case TokenKind.LeftCurlyBracket:
-          {
-            const failure: IFailure = this._createFailureForToken(tokenReader,
-              TSDocMessageId.InlineTagUnescapedBrace,
-              'The "{" character must be escaped with a backslash when used inside a TSDoc inline tag');
-              return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker, '' , failure);
-          }
+        case TokenKind.LeftCurlyBracket: {
+          const failure: IFailure = this._createFailureForToken(tokenReader,
+            TSDocMessageId.InlineTagUnescapedBrace,
+            'The "{" character must be escaped with a backslash when used inside a TSDoc inline tag');
+          return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker, '' , failure);
+        }
         case TokenKind.RightCurlyBracket:
           done = true;
           break;
