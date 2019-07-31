@@ -2,7 +2,7 @@
 
 const webpack = require('webpack');
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { SetPublicPathPlugin } = require('@microsoft/set-webpack-public-path-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -112,17 +112,14 @@ function _generateBaseWebpackConfiguration(isProduction) {
       minimize: isProduction
     },
     plugins: [
-      new CleanWebpackPlugin(
-        [
-          'lib',
-          'dist',
-          'temp'
+      new CleanWebpackPlugin({
+        cleanOnceBeforeBuildPatterns: [
+          path.join(__dirname, 'lib/'),
+          path.join(__dirname, 'dist/'),
+          path.join(__dirname, 'temp/')
         ],
-        {
-          root: __dirname,
-          verbose: false
-        }
-      ),
+        verbose: false
+      }),
       new HtmlWebpackPlugin({
         inject: true,
         template: `handlebars-loader!${path.join(__dirname, 'public', 'index.hbs')}`,
