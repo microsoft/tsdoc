@@ -33,7 +33,8 @@
   "scripts": {
     "build": "node ./build.js",
     "test": "jest",
-    "watch": "jest --watch"
+    "watch": "jest --watch",
+    "lint": "eslint src/**/*.{ts,tsx}"
   },
   "jest": {
     "moduleFileExtensions": [

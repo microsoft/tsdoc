@@ -16,9 +16,9 @@ try {
   console.log('-- TYPESCRIPT --\n');
   child_process.execSync(path.join(baseDir, 'node_modules/.bin/tsc'), { stdio: 'inherit' });
 
-  console.log('-- TSLINT --\n');
-  child_process.execSync(path.join(baseDir, 'node_modules/.bin/tslint')
-    + ' --config tslint.json --project .',
+  console.log('-- ESLINT --\n');
+  child_process.execSync(path.join(baseDir, 'node_modules/.bin/eslint')
+    + ' src/**/*.{ts,tsx}',
     { stdio: 'inherit' });
 
   if (production) {
