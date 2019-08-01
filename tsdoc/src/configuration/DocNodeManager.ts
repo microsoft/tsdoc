@@ -39,7 +39,7 @@ export class DocNodeManager {
    * Registers a list of {@link IDocNodeDefinition} objects to be used with the associated
    * {@link TSDocConfiguration} object.
    */
-  public registerDocNodes(packageName: string, definitions: ReadonlyArray<IDocNodeDefinition>): void {
+  public registerDocNodes(packageName: string, definitions: readonly IDocNodeDefinition[]): void {
     const packageNameError: string | undefined = StringChecks.explainIfInvalidPackageName(packageName);
     if (packageNameError) {
       throw new Error('Invalid NPM package name: ' + packageNameError);
@@ -94,7 +94,7 @@ export class DocNodeManager {
    * To prevent mistakes, `DocNodeContainer` will report an error if you try to add node that was not registered
    * as an allowable child of the container.
    */
-  public registerAllowableChildren(parentKind: string, childKinds: ReadonlyArray<string>): void {
+  public registerAllowableChildren(parentKind: string, childKinds: readonly string[]): void {
     const parentDefinition: IRegisteredDocNodeDefinition = this._getDefinition(parentKind);
 
     for (const childKind of childKinds) {

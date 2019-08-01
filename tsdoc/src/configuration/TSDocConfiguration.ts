@@ -32,7 +32,7 @@ export class TSDocConfiguration {
   /**
    * The TSDoc block tag names that will be interpreted as modifier tags.
    */
-  public get tagDefinitions(): ReadonlyArray<TSDocTagDefinition> {
+  public get tagDefinitions(): readonly TSDocTagDefinition[] {
     return this._tagDefinitions;
   }
 
@@ -44,7 +44,7 @@ export class TSDocConfiguration {
    * This property is only used when
    * {@link TSDocValidationConfiguration.reportUnsupportedTags} is enabled.
    */
-  public get supportedTagDefinitions(): ReadonlyArray<TSDocTagDefinition> {
+  public get supportedTagDefinitions(): readonly TSDocTagDefinition[] {
     return this.tagDefinitions.filter(x => this.isTagSupported(x));
   }
 
@@ -109,7 +109,7 @@ export class TSDocConfiguration {
    * @param supported - if specified, calls the {@link TSDocConfiguration.setSupportForTag}
    *    method to mark the definitions as supported or unsupported
    */
-  public addTagDefinitions(tagDefinitions: ReadonlyArray<TSDocTagDefinition>,
+  public addTagDefinitions(tagDefinitions: readonly TSDocTagDefinition[],
     supported?: boolean | undefined): void {
 
     for (const tagDefinition of tagDefinitions) {
@@ -154,7 +154,7 @@ export class TSDocConfiguration {
   /**
    * Calls {@link TSDocConfiguration.setSupportForTag} for multiple tag definitions.
    */
-  public setSupportForTags(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported: boolean): void {
+  public setSupportForTags(tagDefinitions: readonly TSDocTagDefinition[], supported: boolean): void {
     for (const tagDefinition of tagDefinitions) {
       this.setSupportForTag(tagDefinition, supported);
     }

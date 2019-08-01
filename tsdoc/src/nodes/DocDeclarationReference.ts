@@ -132,7 +132,7 @@ export class DocDeclarationReference extends DocNode {
    * If this list is empty, then either the packageName or importPath must be provided,
    * because the reference refers to a module.
    */
-  public get memberReferences(): ReadonlyArray<DocMemberReference> {
+  public get memberReferences(): readonly DocMemberReference[] {
     return this._memberReferences;
   }
 
@@ -148,7 +148,7 @@ export class DocDeclarationReference extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
     return [
       this._packageNameExcerpt,
       this._importPathExcerpt,

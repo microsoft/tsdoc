@@ -79,7 +79,7 @@ export class DocCodeSpan extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
     return [
       this._openingDelimiterExcerpt,
       this._codeExcerpt,

@@ -387,7 +387,7 @@ export class StandardTags {
   /**
    * Returns the full list of all core tags.
    */
-  public static allDefinitions: ReadonlyArray<TSDocTagDefinition> = [
+  public static allDefinitions: readonly TSDocTagDefinition[] = [
     StandardTags.alpha,
     StandardTags.beta,
     StandardTags.deprecated,

@@ -995,7 +995,7 @@ class Parser {
     return this.token() === Token.EofToken;
   }
 
-  public get errors(): ReadonlyArray<string> {
+  public get errors(): readonly string[] {
     return this._errors;
   }
 
