@@ -42,7 +42,7 @@ Punctuator:: one of
   `{` `}` `(` `)` `[` `]` `!` `.` `#` `~` `:` `,`
 
 FutureReservedPunctuator:: one of
-  `{` `}`
+  `{` `}` `@`
 
 NavigationPunctuator: one of
   `.`                                           // Navigate via 'exports' of symbol
@@ -107,6 +107,17 @@ Hex4Digits::
 CodePoint::
   > |HexDigits| but only if MV of |HexDigits| ≤ 0x10FFFF
 
+// Represents the path for a module
+ModuleSource::
+  String
+  ModuleSourceCharacters
+
+ModuleSourceCharacters::
+  ModuleSourceCharacter ModuleSourceCharacters?
+
+ModuleSourceCharacter::
+  SourceCharacter but not one of `"` or `!` or LineTerminator
+
 Component::
   String
   ComponentCharacters
@@ -130,12 +141,8 @@ DeclarationReference:
   SymbolReference                               // Shorthand reference to symbol
   ModuleSource `!`                              // Reference to a module
   ModuleSource `!` SymbolReference              // Reference to an export of a module
-  ModuleSource `|` `~` SymbolReference          // Reference to a local of a module
+  ModuleSource `!` `~` SymbolReference          // Reference to a local of a module
   `!` SymbolReference                           // Reference to global symbol
-
-// Represents the path for a module
-ModuleSource:
-  Component
 
 SymbolReference:
   ComponentPath Meaning?

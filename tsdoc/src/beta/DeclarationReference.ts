@@ -65,15 +65,25 @@ export class DeclarationReference {
   }
 
   /**
-   * Escapes a string for use as a symbol navigation component. If the string contains `!.#~:,"{}()` or starts with
-   * `[`, it is enclosed in quotes.
+   * Determines whether the provided string is a well-formed symbol navigation component string.
+   */
+  public static isWellFormedComponentString(text: string): boolean {
+    const scanner: Scanner = new Scanner(text);
+    return scanner.scan() === Token.String ? scanner.scan() === Token.EofToken :
+      scanner.token() === Token.Text ? scanner.scan() === Token.EofToken :
+      scanner.token() === Token.EofToken;
+  }
+
+  /**
+   * Escapes a string for use as a symbol navigation component. If the string contains any of `!.#~:,"{}()@` or starts
+   * with `[`, it is enclosed in quotes.
    */
   public static escapeComponentString(text: string): string {
     if (text.length === 0) {
       return '""';
     }
     const ch: string = text.charAt(0);
-    if (ch === '"' || ch === '[' || !this.isWellFormedComponentString(text)) {
+    if (ch === '[' || ch === '"' || !this.isWellFormedComponentString(text)) {
       return JSON.stringify(text);
     }
     return text;
@@ -83,7 +93,7 @@ export class DeclarationReference {
    * Unescapes a string used as a symbol navigation component.
    */
   public static unescapeComponentString(text: string): string {
-    if (text.length > 2 && text.charAt(0) === '"' && text.charAt(text.length - 1) === '"') {
+    if (text.length >= 2 && text.charAt(0) === '"' && text.charAt(text.length - 1) === '"') {
       try {
         return JSON.parse(text);
       } catch {
@@ -97,12 +107,46 @@ export class DeclarationReference {
   }
 
   /**
-   * Determines whether the provided string is a well-formed symbol navigation component string.
+   * Determines whether the provided string is a well-formed module source string. The string may not
+   * have a trailing `!` character.
    */
-  public static isWellFormedComponentString(text: string): boolean {
-    const parser: Parser = new Parser(text);
-    parser.parseComponentString();
-    return parser.errors.length === 0 && parser.eof;
+  public static isWellFormedModuleSourceString(text: string): boolean {
+    const scanner: Scanner = new Scanner(text + '!');
+    return scanner.rescanModuleSource() === Token.ModuleSource
+      && !scanner.stringIsUnterminated
+      && scanner.scan() === Token.ExclamationToken
+      && scanner.scan() === Token.EofToken;
+  }
+
+  /**
+   * Escapes a string for use as a module source. If the string contains any of `!"` it is enclosed in quotes.
+   */
+  public static escapeModuleSourceString(text: string): string {
+    if (text.length === 0) {
+      return '""';
+    }
+    const ch: string = text.charAt(0);
+    if (ch === '"' || !this.isWellFormedModuleSourceString(text)) {
+      return JSON.stringify(text);
+    }
+    return text;
+  }
+
+  /**
+   * Unescapes a string used as a module source. The string may not have a trailing `!` character.
+   */
+  public static unescapeModuleSourceString(text: string): string {
+    if (text.length >= 2 && text.charAt(0) === '"' && text.charAt(text.length - 1) === '"') {
+      try {
+        return JSON.parse(text);
+      } catch {
+        throw new SyntaxError(`Invalid Module source '${text}'`);
+      }
+    }
+    if (!this.isWellFormedModuleSourceString(text)) {
+      throw new SyntaxError(`Invalid Module source '${text}'`);
+    }
+    return text;
   }
 
   public static empty(): DeclarationReference {
@@ -196,24 +240,59 @@ export const enum Navigation {
  * @beta
  */
 export class ModuleSource {
-  public readonly path: string;
+  public readonly escapedPath: string;
+  private _path: string | undefined;
 
-  private _pathComponents: { packageName: string, importPath: string } | undefined;
+  private _pathComponents: IParsedPackage | undefined;
 
   constructor(path: string, userEscaped: boolean = true) {
-    this.path = escapeIfNeeded(path, userEscaped);
+    this.escapedPath = this instanceof ParsedModuleSource ? path : escapeModuleSourceIfNeeded(path, userEscaped);
+  }
+
+  public get path(): string {
+    return this._path || (this._path = DeclarationReference.unescapeModuleSourceString(this.escapedPath));
   }
 
   public get packageName(): string {
-    return this._parsePathComponents().packageName;
+    return this._getOrParsePathComponents().packageName;
+  }
+
+  public get scopeName(): string {
+    const scopeName: string = this._getOrParsePathComponents().scopeName;
+    return scopeName ? '@' + scopeName : '';
+  }
+
+  public get unscopedPackageName(): string {
+    return this._getOrParsePathComponents().unscopedPackageName;
   }
 
   public get importPath(): string {
-    return this._parsePathComponents().importPath;
+    return this._getOrParsePathComponents().importPath || '';
+  }
+
+  public static fromScopedPackage(scopeName: string | undefined, unscopedPackageName: string, importPath?: string):
+    ModuleSource {
+
+    let packageName: string = unscopedPackageName;
+    if (scopeName) {
+      if (scopeName.charAt(0) === '@') {
+        scopeName = scopeName.slice(1);
+      }
+      packageName = `@${scopeName}/${unscopedPackageName}`;
+    }
+
+    const parsed: IParsedPackage = { packageName, scopeName: scopeName || '', unscopedPackageName };
+    return this._fromPackageName(parsed, packageName, importPath);
   }
 
   public static fromPackage(packageName: string, importPath?: string): ModuleSource {
-    if (!isValidPackageName(packageName)) {
+    return this._fromPackageName(parsePackageName(packageName), packageName, importPath);
+  }
+
+  private static _fromPackageName(parsed: IParsedPackage | null, packageName: string, importPath?: string):
+    ModuleSource {
+
+    if (!parsed || !isValidPackageName(packageName, parsed, /*allowImportPath*/ false)) {
       throw new SyntaxError(`Invalid package name '${packageName}'`);
     }
 
@@ -223,35 +302,38 @@ export class ModuleSource {
         throw new SyntaxError(`Invalid import path '${importPath}`);
       }
       path += '/' + importPath;
+      parsed.importPath = importPath;
     }
 
     const source: ModuleSource = new ModuleSource(path);
-    source._pathComponents = { packageName, importPath: importPath || '' };
+    source._pathComponents = parsed;
     return source;
   }
 
   public toString(): string {
-    return `${this.path}!`;
+    return `${this.escapedPath}!`;
   }
 
-  private _parsePathComponents(): { packageName: string, importPath: string } {
+  private _getOrParsePathComponents(): IParsedPackage {
     if (!this._pathComponents) {
-      const path: string = DeclarationReference.unescapeComponentString(this.path);
-      const match: RegExpExecArray | null = packageNameRegExp.exec(path);
-      if (match && isValidPackageName(match[1], match)) {
-        this._pathComponents = {
-          packageName: match[1],
-          importPath: match[2] || ''
-        };
+      const path: string = this.path;
+      const parsed: IParsedPackage | null = parsePackageName(path);
+      if (parsed && isValidPackageName(parsed.packageName, parsed, /*allowImportPath*/ true)) {
+        this._pathComponents = parsed;
       } else {
         this._pathComponents = {
           packageName: '',
+          scopeName: '',
+          unscopedPackageName: '',
           importPath: path
         };
       }
     }
     return this._pathComponents;
   }
+}
+
+class ParsedModuleSource extends ModuleSource {
 }
 
 // matches the following:
@@ -268,7 +350,7 @@ export class ModuleSource {
 //   2. The scope name (excluding the leading '@')
 //   3. The unscoped package name
 //   4. The package-relative import path
-const packageNameRegExp: RegExp = /^((?:@([^/]+?)\/)?([^/]+?))(?:\/(.*))?$/;
+const packageNameRegExp: RegExp = /^((?:@([^/]+?)\/)?([^/]+?))(?:\/(.+))?$/;
 
 // according to validate-npm-package-name:
 // no leading '.'
@@ -278,20 +360,35 @@ const packageNameRegExp: RegExp = /^((?:@([^/]+?)\/)?([^/]+?))(?:\/(.*))?$/;
 // not 'node_modules' or 'favicon.ico' (blacklisted)
 const invalidPackageNameRegExp: RegExp = /^[._\s]|\s$|[A-Z~'!()*]|^(node_modules|favicon.ico)$/s;
 
-// no leading './'
-// no leading '../'
-// no leading '/'
+// no leading './' or '.\'
+// no leading '../' or '..\'
+// no leading '/' or '\'
 // not '.' or '..'
-const invalidImportPathRegExp: RegExp = /^(\.\.?([\\/]|$)|\/)/;
+const invalidImportPathRegExp: RegExp = /^(\.\.?([\\/]|$)|[\\/])/;
 
-function isValidPackageName(packageName: string,
-  match: RegExpExecArray | null = packageNameRegExp.exec(packageName)): boolean {
-  return !!match // must match the minimal pattern
-    && match[1] === packageName // must not contain excess characters
-    && packageName.length <= 214 // maximum length, per validate-npm-package-name
+interface IParsedPackage {
+  packageName: string;
+  scopeName: string;
+  unscopedPackageName: string;
+  importPath?: string;
+}
+
+function parsePackageName(text: string): IParsedPackage | null {
+  const match: RegExpExecArray | null = packageNameRegExp.exec(text);
+  if (match === null) {
+    return match;
+  }
+  const [, packageName = '', scopeName = '', unscopedPackageName = '', importPath] = match;
+  return { packageName, scopeName, unscopedPackageName, importPath };
+}
+
+function isValidPackageName(packageName: string, name: IParsedPackage, allowImportPath: boolean): boolean {
+  return name.packageName.length <= 214 // maximum length, per validate-npm-package-name
     && !invalidPackageNameRegExp.test(packageName) // must not contain invalid characters
-    && (!match[2] || encodeURIComponent(match[2]) === match[2]) // scope must be URL-friendly
-    && encodeURIComponent(match[3]) === match[3]; // package must be URL-friendly
+    && (!name.scopeName || encodeURIComponent(name.scopeName) === name.scopeName) // scope must be URL-friendly
+    && encodeURIComponent(name.unscopedPackageName) === name.unscopedPackageName // package must be URL-friendly
+    && (name.importPath === undefined
+      || allowImportPath && !invalidImportPathRegExp.test(name.importPath)); // must not contain excess characters
 }
 
 /**
@@ -348,7 +445,7 @@ export class ComponentString {
   public readonly text: string;
 
   constructor(text: string, userEscaped?: boolean) {
-    this.text = this instanceof ParsedComponentString ? text : escapeIfNeeded(text, userEscaped);
+    this.text = this instanceof ParsedComponentString ? text : escapeComponentIfNeeded(text, userEscaped);
   }
 
   public toString(): string {
@@ -559,9 +656,11 @@ const enum Token {
   TildeToken,           // '~'
   ColonToken,           // ':'
   CommaToken,           // ','
+  AtToken,              // '@'
   DecimalDigits,        // '12345'
   String,               // '"abc"'
   Text,                 // 'abc'
+  ModuleSource,         // 'abc/def!' (excludes '!')
   // Keywords
   ClassKeyword,         // 'class'
   InterfaceKeyword,     // 'interface'
@@ -593,6 +692,7 @@ function tokenToString(token: Token): string {
     case Token.TildeToken: return '~';
     case Token.ColonToken: return ':';
     case Token.CommaToken: return ',';
+    case Token.AtToken: return '@';
     case Token.ClassKeyword: return 'class';
     case Token.InterfaceKeyword: return 'interface';
     case Token.TypeKeyword: return 'type';
@@ -612,6 +712,7 @@ function tokenToString(token: Token): string {
     case Token.DecimalDigits: return '<decimal digits>';
     case Token.String: return '<string>';
     case Token.Text: return '<text>';
+    case Token.ModuleSource: return '<module source>';
   }
 }
 
@@ -676,7 +777,7 @@ class Scanner {
       this._tokenPos = this._pos;
       this._stringIsUnterminated = false;
       while (!this.eof) {
-        const ch: string = this._text[this._pos++];
+        const ch: string = this._text.charAt(this._pos++);
         switch (ch) {
           case '{': return this._token = Token.OpenBraceToken;
           case '}': return this._token = Token.CloseBraceToken;
@@ -690,6 +791,7 @@ class Scanner {
           case '~': return this._token = Token.TildeToken;
           case ':': return this._token = Token.ColonToken;
           case ',': return this._token = Token.CommaToken;
+          case '@': return this._token = Token.AtToken;
           case '"':
             this.scanString();
             return this._token = Token.String;
@@ -700,6 +802,51 @@ class Scanner {
       }
     }
     return this._token = Token.EofToken;
+  }
+
+  public rescanModuleSource(): Token {
+    switch (this._token) {
+      case Token.ModuleSource:
+      case Token.ExclamationToken:
+      case Token.EofToken:
+        return this._token;
+    }
+    return this.speculate(accept => {
+      if (!this.eof) {
+        this._pos = this._tokenPos;
+        this._stringIsUnterminated = false;
+        let scanned: 'string' | 'other' | 'none' = 'none';
+        while (!this.eof) {
+          const ch: string = this._text[this._pos];
+          if (ch === '!') {
+            if (scanned === 'none') {
+              return this._token;
+            }
+            accept();
+            return this._token = Token.ModuleSource;
+          }
+          this._pos++;
+          if (ch === '"') {
+            if (scanned === 'other') {
+              // strings not allowed after scanning any other characters
+              return this._token;
+            }
+            scanned = 'string';
+            this.scanString();
+          } else {
+            if (scanned === 'string') {
+              // no other tokens allowed after string
+              return this._token;
+            }
+            scanned = 'other';
+            if (!isPunctuator(ch)) {
+              this.scanText();
+            }
+          }
+        }
+      }
+      return this._token;
+    });
   }
 
   public rescanMeaning(): Token {
@@ -737,7 +884,7 @@ class Scanner {
 
   private scanString(): void {
     while (!this.eof) {
-      const ch: string = this._text[this._pos++];
+      const ch: string = this._text.charAt(this._pos++);
       switch (ch) {
         case '"': return;
         case '\\':
@@ -845,7 +992,7 @@ class Parser {
   }
 
   public get eof(): boolean {
-    return this._scanner.eof;
+    return this.token() === Token.EofToken;
   }
 
   public get errors(): ReadonlyArray<string> {
@@ -859,30 +1006,24 @@ class Parser {
     if (this.optionalToken(Token.ExclamationToken)) {
       // Reference to global symbol
       source = GlobalSource.instance;
-      symbol = this.parseSymbol();
-    } else if (this.isStartOfComponent()) {
-      // Either path for module source or first component of symbol
-      const root: Component = this.parseComponent();
-      if (root instanceof ComponentString && this.optionalToken(Token.ExclamationToken)) {
-        // Definitely path for module source
-        source = new ModuleSource(root.text, /*userEscaped*/ true);
-
-        // Check for optional `~` navigation token.
-        if (this.optionalToken(Token.TildeToken)) {
-          navigation = Navigation.Locals;
-        }
-
-        if (this.isStartOfComponent()) {
-          symbol = this.parseSymbol();
-        }
-      } else {
-        // Definitely a symbol
-        symbol = this.parseSymbolRest(this.parseComponentRest(new ComponentRoot(root)));
+    } else if (this._scanner.rescanModuleSource() === Token.ModuleSource) {
+      source = this.parseModuleSource();
+      // Check for optional `~` navigation token.
+      if (this.optionalToken(Token.TildeToken)) {
+        navigation = Navigation.Locals;
       }
+    }
+    if (this.isStartOfComponent()) {
+      symbol = this.parseSymbol();
     } else if (this.token() === Token.ColonToken) {
-        symbol = this.parseSymbolRest(new ComponentRoot(new ComponentString('', /*userEscaped*/ true)));
+      symbol = this.parseSymbolRest(new ComponentRoot(new ComponentString('', /*userEscaped*/ true)));
     }
     return new DeclarationReference(source, navigation, symbol);
+  }
+
+  public parseModuleSourceString(): string {
+    this._scanner.rescanModuleSource();
+    return this.parseTokenString(Token.ModuleSource, 'Module source');
   }
 
   public parseComponentString(): string {
@@ -896,6 +1037,12 @@ class Parser {
 
   private token(): Token {
     return this._scanner.token();
+  }
+
+  private parseModuleSource(): ModuleSource | undefined {
+    const source: string = this.parseModuleSourceString();
+    this.expectToken(Token.ExclamationToken);
+    return new ParsedModuleSource(source, /*userEscaped*/ true);
   }
 
   private parseSymbol(): SymbolReference {
@@ -992,8 +1139,8 @@ class Parser {
 
   private isStartOfComponent(): boolean {
     switch (this.token()) {
-      case Token.String:
       case Token.Text:
+      case Token.String:
       case Token.OpenBracketToken:
         return true;
       default:
@@ -1014,26 +1161,25 @@ class Parser {
     }
   }
 
-  private parseText(): string {
-    if (this._scanner.token() === Token.Text) {
-      const text: string = this._scanner.tokenText;
-      this._scanner.scan();
-      return text;
-    }
-    return this.fail('Text expected', '');
-  }
-
-  private parseString(): string {
-    if (this._scanner.token() === Token.String) {
+  private parseTokenString(token: Token, tokenString?: string): string {
+    if (this._scanner.token() === token) {
       const text: string = this._scanner.tokenText;
       const stringIsUnterminated: boolean = this._scanner.stringIsUnterminated;
       this._scanner.scan();
       if (stringIsUnterminated) {
-        return this.fail('Unterminated string literal', text);
+        return this.fail(`${tokenString || tokenToString(token)} is unterminated`, text);
       }
       return text;
     }
-    return this.fail('String expected', '');
+    return this.fail(`${tokenString || tokenToString(token)} expected`, '');
+  }
+
+  private parseText(): string {
+    return this.parseTokenString(Token.Text, 'Text');
+  }
+
+  private parseString(): string {
+    return this.parseTokenString(Token.String, 'String');
   }
 
   private parseComponent(): Component {
@@ -1185,13 +1331,14 @@ function isPunctuator(ch: string): boolean {
     case '~':
     case ':':
     case ',':
+    case '@':
       return true;
     default:
       return false;
   }
 }
 
-function escapeIfNeeded(text: string, userEscaped?: boolean): string {
+function escapeComponentIfNeeded(text: string, userEscaped?: boolean): string {
   if (userEscaped) {
     if (!DeclarationReference.isWellFormedComponentString(text)) {
       throw new SyntaxError(`Invalid Component '${text}'`);
@@ -1199,4 +1346,14 @@ function escapeIfNeeded(text: string, userEscaped?: boolean): string {
     return text;
   }
   return DeclarationReference.escapeComponentString(text);
+}
+
+function escapeModuleSourceIfNeeded(text: string, userEscaped?: boolean): string {
+  if (userEscaped) {
+    if (!DeclarationReference.isWellFormedModuleSourceString(text)) {
+      throw new SyntaxError(`Invalid Module source '${text}'`);
+    }
+    return text;
+  }
+  return DeclarationReference.escapeModuleSourceString(text);
 }
