@@ -1,6 +1,14 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Wed, 24 Jul 2019 00:38:18 GMT and should not be manually modified.
+This log was last generated on Wed, 07 Aug 2019 23:06:02 GMT and should not be manually modified.
+
+## 0.12.12
+Wed, 07 Aug 2019 23:06:02 GMT
+
+### Patches
+
+- Improve DeclarationReference.parse for module sources
+- Add a definition for the `@throws` block tag (RFC 171)
 
 ## 0.12.11
 Wed, 24 Jul 2019 00:38:18 GMT

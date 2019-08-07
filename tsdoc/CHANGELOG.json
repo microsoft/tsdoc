@@ -2,6 +2,21 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.12",
+      "tag": "@microsoft/tsdoc_v0.12.12",
+      "date": "Wed, 07 Aug 2019 23:06:02 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Improve DeclarationReference.parse for module sources"
+          },
+          {
+            "comment": "Add a definition for the `@throws` block tag (RFC 171)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.11",
       "tag": "@microsoft/tsdoc_v0.12.11",
       "date": "Wed, 24 Jul 2019 00:38:18 GMT",
