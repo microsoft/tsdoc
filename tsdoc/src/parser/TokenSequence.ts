@@ -24,18 +24,18 @@ export class TokenSequence {
   private _startIndex: number;
   private _endIndex: number;
 
-  /**
-   * Constructs a TokenSequence object with no tokens.
-   */
-  public static createEmpty(parserContext: ParserContext): TokenSequence {
-    return new TokenSequence({ parserContext, startIndex: 0, endIndex: 0 });
-  }
-
   public constructor(parameters: ITokenSequenceParameters) {
     this.parserContext = parameters.parserContext;
     this._startIndex = parameters.startIndex;
     this._endIndex = parameters.endIndex;
     this._validateBounds();
+  }
+
+  /**
+   * Constructs a TokenSequence object with no tokens.
+   */
+  public static createEmpty(parserContext: ParserContext): TokenSequence {
+    return new TokenSequence({ parserContext, startIndex: 0, endIndex: 0 });
   }
 
   /**
