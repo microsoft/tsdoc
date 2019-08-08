@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+
 import { ParserContext } from './ParserContext';
 import { Token, TokenKind } from './Token';
 import { Tokenizer } from './Tokenizer';
@@ -1565,7 +1567,7 @@ export class NodeParser {
 
     let textWithoutQuotes: string = '';
 
-    while (true) {
+    for (;;) {
       const peekedTokenKind: TokenKind = tokenReader.peekTokenKind();
       // Did we find the matching token?
       if (peekedTokenKind === quoteTokenKind) {
@@ -1916,7 +1918,7 @@ export class NodeParser {
     let closingDelimiterExcerpt: TokenSequence | undefined = undefined;
 
     // Parse the content backtick
-    while (true) {
+    for (;;) {
       const peekedTokenKind: TokenKind = tokenReader.peekTokenKind();
       // Did we find the matching token?
       if (peekedTokenKind === TokenKind.Backtick) {

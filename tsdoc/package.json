@@ -34,7 +34,7 @@
     "build": "node ./build.js",
     "test": "jest",
     "watch": "jest --watch",
-    "lint": "eslint src/**/*.{ts,tsx}"
+    "lint": "eslint -f unix src/**/*.{ts,tsx}"
   },
   "jest": {
     "moduleFileExtensions": [

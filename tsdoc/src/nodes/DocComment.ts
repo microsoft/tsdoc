@@ -158,7 +158,7 @@ export class DocComment extends DocNode {
    */
   public emitAsTsdoc(): string {
     const stringBuilder: StringBuilder = new StringBuilder();
-    // tslint:disable-next-line:no-use-before-declare
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const emitter: TSDocEmitter = new TSDocEmitter();
     emitter.renderComment(stringBuilder, this);
     return stringBuilder.toString();

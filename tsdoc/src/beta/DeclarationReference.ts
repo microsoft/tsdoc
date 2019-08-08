@@ -1,4 +1,10 @@
-// tslint:disable:no-use-before-declare
+/* eslint-disable max-lines */
+/* eslint-disable @typescript-eslint/array-type */
+/* eslint-disable no-return-assign */
+/* eslint-disable no-sequences */
+/* eslint-disable no-inner-declarations */
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/member-naming */
 
 // NOTE: See DeclarationReference.grammarkdown for information on the underlying grammar.
 
@@ -11,7 +17,7 @@ export class DeclarationReference {
   private _navigation: Navigation.Locals | Navigation.Exports | undefined;
   private _symbol: SymbolReference | undefined;
 
-  constructor(source?: ModuleSource | GlobalSource, navigation?: Navigation.Locals | Navigation.Exports,
+  public constructor(source?: ModuleSource | GlobalSource, navigation?: Navigation.Locals | Navigation.Exports,
     symbol?: SymbolReference) {
     this._source = source;
     this._navigation = navigation;
@@ -245,7 +251,7 @@ export class ModuleSource {
 
   private _pathComponents: IParsedPackage | undefined;
 
-  constructor(path: string, userEscaped: boolean = true) {
+  public constructor(path: string, userEscaped: boolean = true) {
     this.escapedPath = this instanceof ParsedModuleSource ? path : escapeModuleSourceIfNeeded(path, userEscaped);
   }
 
@@ -375,10 +381,10 @@ interface IParsedPackage {
 
 function parsePackageName(text: string): IParsedPackage | null {
   const match: RegExpExecArray | null = packageNameRegExp.exec(text);
-  if (match === null) {
+  if (!match) {
     return match;
   }
-  const [, packageName = '', scopeName = '', unscopedPackageName = '', importPath] = match;
+  const [, packageName = '', scopeName = '', unscopedPackageName = '', importPath]: RegExpExecArray = match;
   return { packageName, scopeName, unscopedPackageName, importPath };
 }
 
@@ -417,6 +423,7 @@ export type Component =
 /**
  * @beta
  */
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Component {
   export function from(value: ComponentLike): Component {
     if (typeof value === 'string') {
@@ -444,7 +451,7 @@ export type ComponentLike =
 export class ComponentString {
   public readonly text: string;
 
-  constructor(text: string, userEscaped?: boolean) {
+  public constructor(text: string, userEscaped?: boolean) {
     this.text = this instanceof ParsedComponentString ? text : escapeComponentIfNeeded(text, userEscaped);
   }
 
@@ -462,7 +469,7 @@ class ParsedComponentString extends ComponentString {
 export class ComponentReference {
   public readonly reference: DeclarationReference;
 
-  constructor(reference: DeclarationReference) {
+  public constructor(reference: DeclarationReference) {
     this.reference = reference;
   }
 
@@ -496,7 +503,7 @@ export type ComponentPath =
 export abstract class ComponentPathBase {
   public readonly component: Component;
 
-  constructor(component: Component) {
+  public constructor(component: Component) {
     this.component = component;
   }
 
@@ -528,7 +535,7 @@ export class ComponentNavigation extends ComponentPathBase {
   public readonly parent: ComponentPath;
   public readonly navigation: Navigation;
 
-  constructor(parent: ComponentPath, navigation: Navigation, component: Component) {
+  public constructor(parent: ComponentPath, navigation: Navigation, component: Component) {
     super(component);
     this.parent = parent;
     this.navigation = navigation;
@@ -589,7 +596,7 @@ export class SymbolReference {
   public readonly meaning: Meaning | undefined;
   public readonly overloadIndex: number | undefined;
 
-  constructor(component: ComponentPath | undefined, { meaning, overloadIndex }: ISymbolReferenceOptions = {}) {
+  public constructor(component: ComponentPath | undefined, { meaning, overloadIndex }: ISymbolReferenceOptions = {}) {
     this.componentPath = component;
     this.overloadIndex = overloadIndex;
     this.meaning = meaning;
@@ -723,7 +730,7 @@ class Scanner {
   private _token: Token;
   private _stringIsUnterminated: boolean;
 
-  constructor(text: string) {
+  public constructor(text: string) {
     this._pos = 0;
     this._tokenPos = 0;
     this._stringIsUnterminated = false;
@@ -985,7 +992,7 @@ class Parser {
   private _errors: string[];
   private _scanner: Scanner;
 
-  constructor(text: string) {
+  public constructor(text: string) {
     this._errors = [];
     this._scanner = new Scanner(text);
     this._scanner.scan();

@@ -147,7 +147,7 @@ export class DocHtmlStartTag extends DocNode {
   public emitAsHtml(): string {
     // NOTE: Here we're assuming that the TSDoc representation for a tag is also a valid HTML expression.
     const stringBuilder: StringBuilder = new StringBuilder();
-    // tslint:disable-next-line:no-use-before-declare
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const emitter: TSDocEmitter = new TSDocEmitter();
     emitter.renderHtmlTag(stringBuilder, this);
     return stringBuilder.toString();
