@@ -21,13 +21,13 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "@microsoft/eslint-config-scalable-ts": "0.1.0",
     "@types/jest": "24.0.16",
+    "eslint": "^6.0.0",
     "jest": "~24.8.0",
-    "ts-jest": "~24.0.2",
     "prettier": "~1.18.2",
     "rimraf": "~2.6.3",
-    "tslint": "~5.18.0",
-    "tslint-microsoft-contrib": "~6.2.0",
+    "ts-jest": "~24.0.2",
     "typescript": "~3.5.3"
   },
   "scripts": {
