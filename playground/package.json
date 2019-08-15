@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node build.js --production",
+    "lint": "eslint -f unix src/**/*.{ts,tsx}",
     "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.dev.config.js --open"
   },
   "dependencies": {
@@ -37,6 +38,6 @@
     "webpack-bundle-analyzer": "~3.4.1",
     "webpack-cli": "~3.3.6",
     "webpack-dev-server": "~3.7.2",
-    "webpack": "~4.38.0",
+    "webpack": "~4.38.0"
   }
 }
