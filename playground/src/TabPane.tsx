@@ -18,7 +18,11 @@ export interface ITabPaneState {
 }
 
 export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
-  constructor(props: ITabPaneProps, context?: any) { // tslint:disable-line:no-any
+  // Saved bindings of _onClickTab() with a tabIndex parameter, to avoid the react/jsx-no-bind issue
+  private _onClickTabBindings: React.MouseEventHandler<HTMLAnchorElement>[] = [];
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public constructor(props: ITabPaneProps, context?: any) {
     super(props, context);
 
     this.state = {
@@ -61,11 +65,16 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
 
       } else {
 
+        if (!this._onClickTabBindings[i]) {
+          // Bind _onClickTab() with i as the tabIndex parameter
+          this._onClickTabBindings[i] = this._onClickTab.bind(this, i);
+        }
+
         buttons.push(
           <div key={`tab_${i}`} className='playground-tab-pane-inactive-tab' style={ style }>
             <a href='#'
                style={ { textDecorationLine: 'none', color: '#000000' } }
-               onClick={this._onClickTab.bind(this, i)}>
+               onClick={ this._onClickTabBindings[i] }>
               {tabDefinition.title}
             </a>
           </div>

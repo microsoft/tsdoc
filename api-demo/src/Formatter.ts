@@ -18,7 +18,7 @@ export class Formatter {
     return result;
   }
 
-  public static renderDocNodes(docNodes: ReadonlyArray<DocNode>): string {
+  public static renderDocNodes(docNodes: readonly DocNode[]): string {
     let result: string = '';
     for (const docNode of docNodes) {
       result += Formatter.renderDocNode(docNode);

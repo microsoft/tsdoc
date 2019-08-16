@@ -53,7 +53,7 @@ export class DocSoftBreak extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
     return [
       this._softBreakExcerpt
     ];

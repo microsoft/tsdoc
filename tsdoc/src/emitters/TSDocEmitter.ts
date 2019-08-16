@@ -348,7 +348,7 @@ export class TSDocEmitter {
     this._writeContent('}');
   }
 
-  private _renderNodes(docNodes: ReadonlyArray<DocNode | undefined>): void {
+  private _renderNodes(docNodes: readonly (DocNode | undefined)[]): void {
     for (const docNode of docNodes) {
       this._renderNode(docNode);
     }

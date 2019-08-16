@@ -36,6 +36,15 @@ export class ParserMessage {
 
   private _text: string | undefined;
 
+  public constructor(parameters: IParserMessageParameters) {
+    this.messageId = parameters.messageId;
+    this.unformattedText = parameters.messageText;
+    this.textRange = parameters.textRange;
+    this.tokenSequence = parameters.tokenSequence;
+    this.docNode = parameters.docNode;
+    this._text = undefined;
+  }
+
   /**
    * Generates a line/column prefix.  Example with line=2 and column=5
    * and message="An error occurred":
@@ -57,15 +66,6 @@ export class ParserMessage {
       }
     }
     return message;
-  }
-
-  public constructor(parameters: IParserMessageParameters) {
-    this.messageId = parameters.messageId;
-    this.unformattedText = parameters.messageText;
-    this.textRange = parameters.textRange;
-    this.tokenSequence = parameters.tokenSequence;
-    this.docNode = parameters.docNode;
-    this._text = undefined;
   }
 
   /**

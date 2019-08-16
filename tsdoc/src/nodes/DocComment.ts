@@ -117,7 +117,7 @@ export class DocComment extends DocNode {
   /**
    * The collection of all DocBlock nodes belonging to this doc comment.
    */
-  public get customBlocks(): ReadonlyArray<DocBlock> {
+  public get customBlocks(): readonly DocBlock[] {
     return this._customBlocks;
   }
 
@@ -129,7 +129,7 @@ export class DocComment extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
     return [
       this.summarySection,
       this.remarksBlock,
@@ -158,7 +158,7 @@ export class DocComment extends DocNode {
    */
   public emitAsTsdoc(): string {
     const stringBuilder: StringBuilder = new StringBuilder();
-    // tslint:disable-next-line:no-use-before-declare
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const emitter: TSDocEmitter = new TSDocEmitter();
     emitter.renderComment(stringBuilder, this);
     return stringBuilder.toString();

@@ -6,38 +6,38 @@
   "license": "MIT",
   "scripts": {
     "build": "node build.js --production",
+    "lint": "eslint -f unix src/**/*.{ts,tsx}",
     "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.dev.config.js --open"
   },
   "dependencies": {
     "@microsoft/tsdoc": "0.12.12",
-    "@types/react": "16.8.23",
+    "@types/react": "16.9.1",
     "@types/react-dom": "16.8.5",
     "promise": "~8.0.3",
     "monaco-editor": "~0.17.1",
     "tslib": "~1.10.0"
   },
   "devDependencies": {
+    "@microsoft/eslint-config-scalable-ts": "0.1.1",
     "@microsoft/set-webpack-public-path-plugin": "~2.1.123",
     "@types/webpack-env": "~1.14.0",
     "clean-webpack-plugin": "~3.0.0",
     "css-loader": "~3.1.0",
+    "eslint": "^6.0.0",
     "file-loader": "~4.1.0",
     "fork-ts-checker-webpack-plugin": "~1.4.3",
-    "handlebars": "~4.1.2",
     "handlebars-loader": "~1.7.1",
+    "handlebars": "~4.1.2",
     "html-webpack-plugin": "~3.2.0",
     "node-sass": "~4.12.0",
     "raw-loader": "~0.5.1",
     "sass-loader": "~7.1.0",
     "style-loader": "~0.23.1",
     "ts-loader": "~6.0.4",
-    "tslint": "~5.18.0",
-    "tslint-loader": "~3.5.4",
-    "tslint-microsoft-contrib": "~6.2.0",
     "typescript": "~3.5.3",
-    "webpack": "~4.38.0",
     "webpack-bundle-analyzer": "~3.4.1",
     "webpack-cli": "~3.3.6",
-    "webpack-dev-server": "~3.7.2"
+    "webpack-dev-server": "~3.7.2",
+    "webpack": "~4.38.0"
   }
 }

@@ -66,7 +66,7 @@ export class DocNodeSyntaxStyler {
       parserContext,
       styleTokens,
       theme
-    } = options;
+    }: IGetStylesForDocCommentInternalOptions = options;
 
     if (docNode instanceof tsdoc.DocExcerpt) {
       // Match the context against a color (i.e. tsdoc.link.url)
@@ -249,7 +249,7 @@ export class DocNodeSyntaxStyler {
     const {
       theme,
       styleTokens
-    } = options;
+    }: IAddTokenStylesOptions = options;
     if (tagDefinition) {
       switch (tagDefinition.syntaxKind) {
         case tsdoc.TSDocTagSyntaxKind.BlockTag: {

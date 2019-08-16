@@ -7,7 +7,7 @@ import { DocHtmlView } from './DocHtmlView';
 // the ambient typings for NodeJS, which is incompatible with our DOM typings.
 //
 // import * as ReactDomServer from 'react-dom/server';
-// tslint:disable-next-line
+// eslint-disable-next-line
 const ReactDomServer: any = require('react-dom/server');
 
 export interface IDocDomViewProps {
@@ -53,7 +53,13 @@ export class DocDomView extends React.Component<IDocDomViewProps> {
     let indentLevel: number = 0;
     let lastTag: string = '';
 
-    while (match = tagRegExp.exec(html)) {
+    for (;;) {
+      match = tagRegExp.exec(html);
+
+      if (!match) {
+        break;
+      }
+
       const matchIndex: number = match.index;
 
       const textBeforeMatch: string = html.substring(lastIndex, matchIndex);

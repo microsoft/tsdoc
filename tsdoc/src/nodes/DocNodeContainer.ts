@@ -26,7 +26,7 @@ export abstract class DocNodeContainer extends DocNode {
    * @internal
    */
   public constructor(parameters: IDocNodeContainerParameters | IDocNodeContainerParsedParameters,
-    childNodes?: ReadonlyArray<DocNode>) {
+    childNodes?: readonly DocNode[]) {
 
     super(parameters);
 
@@ -38,7 +38,7 @@ export abstract class DocNodeContainer extends DocNode {
   /**
    * The nodes that were added to this container.
    */
-  public get nodes(): ReadonlyArray<DocNode> {
+  public get nodes(): readonly DocNode[] {
     return this._nodes;
   }
 
@@ -57,7 +57,7 @@ export abstract class DocNodeContainer extends DocNode {
   /**
    * Append nodes to the container.
    */
-  public appendNodes(docNodes: ReadonlyArray<DocNode>): void {
+  public appendNodes(docNodes: readonly DocNode[]): void {
     for (const docNode of docNodes) {
       this.appendNode(docNode);
     }
@@ -71,7 +71,7 @@ export abstract class DocNodeContainer extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
     return this._nodes;
   }
 }

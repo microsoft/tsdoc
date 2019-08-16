@@ -132,7 +132,7 @@ export class DocDeclarationReference extends DocNode {
    * If this list is empty, then either the packageName or importPath must be provided,
    * because the reference refers to a module.
    */
-  public get memberReferences(): ReadonlyArray<DocMemberReference> {
+  public get memberReferences(): readonly DocMemberReference[] {
     return this._memberReferences;
   }
 
@@ -141,14 +141,14 @@ export class DocDeclarationReference extends DocNode {
    */
   public emitAsTsdoc(): string {
     const stringBuilder: StringBuilder = new StringBuilder();
-    // tslint:disable-next-line:no-use-before-declare
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const emitter: TSDocEmitter = new TSDocEmitter();
     emitter.renderDeclarationReference(stringBuilder, this);
     return stringBuilder.toString();
   }
 
   /** @override */
-  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
     return [
       this._packageNameExcerpt,
       this._importPathExcerpt,

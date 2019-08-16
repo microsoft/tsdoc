@@ -5,104 +5,6 @@ import * as ts from 'typescript';
 import * as tsdoc from '@microsoft/tsdoc';
 
 /**
- * The advanced demo invokes the TypeScript compiler and extracts the comment from the AST.
- * It also illustrates how to define custom TSDoc tags using TSDocConfiguration.
- */
-export function advancedDemo(): void {
-  console.log(colors.yellow('*** TSDoc API demo: Advanced Scenario ***') + os.EOL);
-
-  const inputFilename: string = path.resolve(path.join(__dirname, '..', 'assets', 'advanced-input.ts'));
-  const compilerOptions: ts.CompilerOptions = {
-    'target': ts.ScriptTarget.ES5
-  };
-
-  // Compile the input
-  console.log('Invoking the TypeScript compiler to analyze assets/advanced-input.ts...');
-
-  const program: ts.Program = ts.createProgram([ inputFilename ], compilerOptions);
-
-  // Report any compiler errors
-  const compilerDiagnostics: ReadonlyArray<ts.Diagnostic> = program.getSemanticDiagnostics();
-  if (compilerDiagnostics.length > 0) {
-    for (const diagnostic of compilerDiagnostics) {
-      const message: string = ts.flattenDiagnosticMessageText(diagnostic.messageText, os.EOL);
-      if (diagnostic.file) {
-        const location: ts.LineAndCharacter = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
-        const formattedMessage: string = `${diagnostic.file.fileName}(${location.line + 1},${location.character + 1}):`
-          + ` [TypeScript] ${message}`;
-        console.log(colors.red(formattedMessage));
-      } else {
-        console.log(colors.red(message));
-      }
-    }
-  } else {
-    console.log('No compiler errors or warnings.');
-  }
-
-  const sourceFile: ts.SourceFile | undefined = program.getSourceFile(inputFilename);
-  if (!sourceFile) {
-    throw new Error('Error retrieving source file');
-  }
-
-  console.log(os.EOL + colors.green('Scanning compiler AST for first code comment...') + os.EOL);
-
-  const foundComments: IFoundComment[] = [];
-
-  walkCompilerAstAndFindComments(sourceFile, '', foundComments);
-
-  if (foundComments.length === 0) {
-    console.log(colors.red('Error: No code comments were found in the input file'));
-  } else {
-    // For the purposes of this demo, only analyze the first comment that we found
-    parseTSDoc(foundComments[0]);
-  }
-}
-
-interface IFoundComment {
-  compilerNode: ts.Node;
-  textRange: tsdoc.TextRange;
-}
-
-function walkCompilerAstAndFindComments(node: ts.Node, indent: string, foundComments: IFoundComment[]): void {
-  // The TypeScript AST doesn't store code comments directly.  If you want to find *every* comment,
-  // you would need to rescan the SourceFile tokens similar to how tsutils.forEachComment() works:
-  // https://github.com/ajafff/tsutils/blob/v3.0.0/util/util.ts#L453
-  //
-  // However, for this demo we are modeling a tool that discovers declarations and then analyzes their doc comments,
-  // so we only care about TSDoc that would conventionally be associated with an interesting AST node.
-
-  let foundCommentsSuffix: string = '';
-  const buffer: string = node.getSourceFile().getFullText(); // don't use getText() here!
-
-  // Only consider nodes that are part of a declaration form.  Without this, we could discover
-  // the same comment twice (e.g. for a MethodDeclaration and its PublicKeyword).
-  if (isDeclarationKind(node.kind)) {
-    // Find "/** */" style comments associated with this node.
-    // Note that this reinvokes the compiler's scanner -- the result is not cached.
-    const comments: ts.CommentRange[] = getJSDocCommentRanges(node, buffer);
-
-    if (comments.length > 0) {
-      if (comments.length === 1) {
-        foundCommentsSuffix = colors.cyan(`  (FOUND 1 COMMENT)`);
-      } else {
-        foundCommentsSuffix = colors.cyan(`  (FOUND ${comments.length} COMMENTS)`);
-      }
-
-      for (const comment of comments) {
-        foundComments.push({
-          compilerNode: node,
-          textRange: tsdoc.TextRange.fromStringRange(buffer, comment.pos, comment.end)
-        });
-      }
-    }
-  }
-
-  console.log(`${indent}- ${ts.SyntaxKind[node.kind]}${foundCommentsSuffix}`);
-
-  return node.forEachChild(child => walkCompilerAstAndFindComments(child, indent + '  ', foundComments));
-}
-
-/**
  * Returns true if the specified SyntaxKind is part of a declaration form.
  *
  * Based on ts.isDeclarationKind() from the compiler.
@@ -171,6 +73,65 @@ function getJSDocCommentRanges(node: ts.Node, text: string): ts.CommentRange[] {
     text.charCodeAt(comment.pos + 3) !== 0x2F /* ts.CharacterCodes.slash */);
 }
 
+interface IFoundComment {
+  compilerNode: ts.Node;
+  textRange: tsdoc.TextRange;
+}
+
+function walkCompilerAstAndFindComments(node: ts.Node, indent: string, foundComments: IFoundComment[]): void {
+  // The TypeScript AST doesn't store code comments directly.  If you want to find *every* comment,
+  // you would need to rescan the SourceFile tokens similar to how tsutils.forEachComment() works:
+  // https://github.com/ajafff/tsutils/blob/v3.0.0/util/util.ts#L453
+  //
+  // However, for this demo we are modeling a tool that discovers declarations and then analyzes their doc comments,
+  // so we only care about TSDoc that would conventionally be associated with an interesting AST node.
+
+  let foundCommentsSuffix: string = '';
+  const buffer: string = node.getSourceFile().getFullText(); // don't use getText() here!
+
+  // Only consider nodes that are part of a declaration form.  Without this, we could discover
+  // the same comment twice (e.g. for a MethodDeclaration and its PublicKeyword).
+  if (isDeclarationKind(node.kind)) {
+    // Find "/** */" style comments associated with this node.
+    // Note that this reinvokes the compiler's scanner -- the result is not cached.
+    const comments: ts.CommentRange[] = getJSDocCommentRanges(node, buffer);
+
+    if (comments.length > 0) {
+      if (comments.length === 1) {
+        foundCommentsSuffix = colors.cyan(`  (FOUND 1 COMMENT)`);
+      } else {
+        foundCommentsSuffix = colors.cyan(`  (FOUND ${comments.length} COMMENTS)`);
+      }
+
+      for (const comment of comments) {
+        foundComments.push({
+          compilerNode: node,
+          textRange: tsdoc.TextRange.fromStringRange(buffer, comment.pos, comment.end)
+        });
+      }
+    }
+  }
+
+  console.log(`${indent}- ${ts.SyntaxKind[node.kind]}${foundCommentsSuffix}`);
+
+  return node.forEachChild(child => walkCompilerAstAndFindComments(child, indent + '  ', foundComments));
+}
+
+function dumpTSDocTree(docNode: tsdoc.DocNode, indent: string): void {
+  let dumpText: string = '';
+  if (docNode instanceof tsdoc.DocExcerpt) {
+    const content: string = docNode.content.toString();
+    dumpText += colors.gray(`${indent}* ${docNode.excerptKind}=`) + colors.cyan(JSON.stringify(content));
+  } else {
+    dumpText += `${indent}- ${docNode.kind}`;
+  }
+  console.log(dumpText);
+
+  for (const child of docNode.getChildNodes()) {
+    dumpTSDocTree(child, indent + '  ');
+  }
+}
+
 function parseTSDoc(foundComment: IFoundComment): void {
   console.log(os.EOL + colors.green('Comment to be parsed:') + os.EOL);
   console.log(colors.gray('<<<<<<'));
@@ -236,17 +197,56 @@ function parseTSDoc(foundComment: IFoundComment): void {
   dumpTSDocTree(docComment, '');
 }
 
-function dumpTSDocTree(docNode: tsdoc.DocNode, indent: string): void {
-  let dumpText: string = '';
-  if (docNode instanceof tsdoc.DocExcerpt) {
-    const content: string = docNode.content.toString();
-    dumpText += colors.gray(`${indent}* ${docNode.excerptKind}=`) + colors.cyan(JSON.stringify(content));
-  } else {
-    dumpText += `${indent}- ${docNode.kind}`;
-  }
-  console.log(dumpText);
+/**
+ * The advanced demo invokes the TypeScript compiler and extracts the comment from the AST.
+ * It also illustrates how to define custom TSDoc tags using TSDocConfiguration.
+ */
+export function advancedDemo(): void {
+  console.log(colors.yellow('*** TSDoc API demo: Advanced Scenario ***') + os.EOL);
 
-  for (const child of docNode.getChildNodes()) {
-    dumpTSDocTree(child, indent + '  ');
+  const inputFilename: string = path.resolve(path.join(__dirname, '..', 'assets', 'advanced-input.ts'));
+  const compilerOptions: ts.CompilerOptions = {
+    'target': ts.ScriptTarget.ES5
+  };
+
+  // Compile the input
+  console.log('Invoking the TypeScript compiler to analyze assets/advanced-input.ts...');
+
+  const program: ts.Program = ts.createProgram([ inputFilename ], compilerOptions);
+
+  // Report any compiler errors
+  const compilerDiagnostics: readonly ts.Diagnostic[] = program.getSemanticDiagnostics();
+  if (compilerDiagnostics.length > 0) {
+    for (const diagnostic of compilerDiagnostics) {
+      const message: string = ts.flattenDiagnosticMessageText(diagnostic.messageText, os.EOL);
+      if (diagnostic.file) {
+        const location: ts.LineAndCharacter = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
+        const formattedMessage: string = `${diagnostic.file.fileName}(${location.line + 1},${location.character + 1}):`
+          + ` [TypeScript] ${message}`;
+        console.log(colors.red(formattedMessage));
+      } else {
+        console.log(colors.red(message));
+      }
+    }
+  } else {
+    console.log('No compiler errors or warnings.');
+  }
+
+  const sourceFile: ts.SourceFile | undefined = program.getSourceFile(inputFilename);
+  if (!sourceFile) {
+    throw new Error('Error retrieving source file');
+  }
+
+  console.log(os.EOL + colors.green('Scanning compiler AST for first code comment...') + os.EOL);
+
+  const foundComments: IFoundComment[] = [];
+
+  walkCompilerAstAndFindComments(sourceFile, '', foundComments);
+
+  if (foundComments.length === 0) {
+    console.log(colors.red('Error: No code comments were found in the input file'));
+  } else {
+    // For the purposes of this demo, only analyze the first comment that we found
+    parseTSDoc(foundComments[0]);
   }
 }

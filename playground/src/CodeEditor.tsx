@@ -72,7 +72,17 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
   private _editor: monacoEditor.editor.IStandaloneCodeEditor | undefined;
 
   private _placeholderDivRef: HTMLDivElement | undefined;
-  private  _hostDivref: HTMLDivElement | undefined;
+  private  _hostDivRef: HTMLDivElement | undefined;
+
+  public constructor(props: ICodeEditorProps) {
+    super(props);
+
+    this._editorId = `tsdoc-monaco-${CodeEditor._editorIdCounter++}`;
+    this.state = {};
+    this._onWindowResize = this._onWindowResize.bind(this);
+    this._onRefHost = this._onRefHost.bind(this);
+    this._onRefPlaceholder = this._onRefPlaceholder.bind(this);
+  }
 
   private get _value(): string | undefined {
     if (this._editor) {
@@ -82,7 +92,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
     }
   }
 
-  private getEditorModel(): monacoEditor.editor.ITextModel {
+  private _getEditorModel(): monacoEditor.editor.ITextModel {
     if (this._editor) {
       const model: monacoEditor.editor.ITextModel | null = this._editor.getModel();
       if (model) {
@@ -118,18 +128,13 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
             }
           });
         }
-      ).then((monaco) => CodeEditor._monaco = monaco);
+      ).then((monaco) => {
+        CodeEditor._monaco = monaco;
+        return monaco;
+      });
     }
 
     return CodeEditor._initializePromise;
-  }
-
-  constructor(props: ICodeEditorProps) {
-    super(props);
-
-    this._editorId = `tsdoc-monaco-${CodeEditor._editorIdCounter++}`;
-    this.state = {};
-    this._onWindowResize = this._onWindowResize.bind(this);
   }
 
   public componentDidMount(): void {
@@ -149,7 +154,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
     this._editor = undefined;
 
     this._placeholderDivRef = undefined;
-    this._hostDivref = undefined;
+    this._hostDivRef = undefined;
 
     window.removeEventListener('resize', this._onWindowResize);
   }
@@ -162,11 +167,11 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
 
       if (CodeEditor._monaco) {
         CodeEditor._monaco.editor.setModelMarkers(
-          this.getEditorModel(),
+          this._getEditorModel(),
           this._editorId,
           (this.props.markers || []).map((marker) => {
-            const startPos: monacoEditor.Position = this.getEditorModel().getPositionAt(marker.pos);
-            const endPos: monacoEditor.Position = this.getEditorModel().getPositionAt(marker.end);
+            const startPos: monacoEditor.Position = this._getEditorModel().getPositionAt(marker.pos);
+            const endPos: monacoEditor.Position = this._getEditorModel().getPositionAt(marker.end);
             return {
               startLineNumber: startPos.lineNumber,
               startColumn: startPos.column,
@@ -209,16 +214,24 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
       // and manual resizing.
       return (
         <div className='playground-monaco-placeholder'
-          ref={ (element: HTMLDivElement) => { this._placeholderDivRef = element; } }
+          ref={ this._onRefPlaceholder }
           style={ { display: 'flex', flexDirection: 'column', flex: 1, ...this.props.style } }>
 
           <div className='playground-monaco-host'
-          ref={ (element: HTMLDivElement) => { this._hostDivref = element; this._createEditor(); } }
+          ref={ this._onRefHost }
           style={ { display: 'block', position: 'absolute', backgroundColor: '#00FF00' } } />
 
         </div>
       );
     }
+  }
+
+  private _onRefPlaceholder(element: HTMLDivElement): void {
+    this._placeholderDivRef = element;
+  }
+
+  private _onRefHost(element: HTMLDivElement): void{
+    this._hostDivRef = element; this._createEditor();
   }
 
   private _applySyntaxStyling(newSyntaxStyles: IStyledRange[]): void {
@@ -248,11 +261,11 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
         }
       }
 
-      this.getEditorModel().deltaDecorations(decorationsToRemove, []);
-      const decorationIds: string[] = this.getEditorModel().deltaDecorations([], decorationsToAdd.map(
+      this._getEditorModel().deltaDecorations(decorationsToRemove, []);
+      const decorationIds: string[] = this._getEditorModel().deltaDecorations([], decorationsToAdd.map(
         (decoration) => {
-          const startPos: monacoEditor.Position = this.getEditorModel().getPositionAt(decoration.pos);
-          const endPos: monacoEditor.Position = this.getEditorModel().getPositionAt(decoration.end);
+          const startPos: monacoEditor.Position = this._getEditorModel().getPositionAt(decoration.pos);
+          const endPos: monacoEditor.Position = this._getEditorModel().getPositionAt(decoration.end);
 
           return {
             range: new CodeEditor._monaco.Range(
@@ -290,9 +303,9 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
 
   private _createEditor(): void {
     CodeEditor._initializeMonaco().then((monaco) => {
-      if (!this._editor && this._hostDivref) {
+      if (!this._editor && this._hostDivRef) {
         this._editor = monaco.editor.create(
-          this._hostDivref,
+          this._hostDivRef,
           {
             value: this.props.value || '',
             language: this.props.language,
@@ -306,7 +319,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
           }
         );
 
-        this.getEditorModel().onDidChangeContent((e) => {
+        this._getEditorModel().onDidChangeContent((e) => {
           if (this._editor) {
             this._safeOnChange(this._editor.getValue());
           }
@@ -314,14 +327,16 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
 
         this._onWindowResize();
       }
+    }).catch((e) => {
+      console.error('CodeEditor._createEditor() failed: ' + e.toString());
     });
   }
 
   private _onWindowResize(): void {
-    if (this._placeholderDivRef && this._hostDivref) {
+    if (this._placeholderDivRef && this._hostDivRef) {
       // Resize the host div to match whatever the browser did for the placeholder div
-      this._hostDivref.style.width = this._placeholderDivRef.clientWidth + 'px';
-      this._hostDivref.style.height = this._placeholderDivRef.clientHeight + 'px';
+      this._hostDivRef.style.width = this._placeholderDivRef.clientWidth + 'px';
+      this._hostDivRef.style.height = this._placeholderDivRef.clientHeight + 'px';
 
       if (this._editor) {
         this._editor.layout();

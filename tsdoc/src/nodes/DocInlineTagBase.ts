@@ -98,7 +98,7 @@ export abstract class DocInlineTagBase extends DocNode {
   }
 
   /** @override @sealed */
-  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
     return [
       this._openingDelimiterExcerpt,
       this._tagNameExcerpt,
@@ -113,5 +113,5 @@ export abstract class DocInlineTagBase extends DocNode {
    * set of nodes.
    * @virtual
    */
-  protected abstract getChildNodesForContent(): ReadonlyArray<DocNode | undefined>;
+  protected abstract getChildNodesForContent(): readonly (DocNode | undefined)[];
 }

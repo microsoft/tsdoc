@@ -37,7 +37,7 @@ export class ParagraphSplitter {
    * Split all paragraphs belonging to the provided DocSection.
    */
   public static splitParagraphsForSection(docSection: DocSection): void {
-    const inputNodes: ReadonlyArray<DocNode> = docSection.nodes;
+    const inputNodes: readonly DocNode[] = docSection.nodes;
     const outputNodes: DocNode[] = [];
 
     for (const oldNode of inputNodes) {
@@ -54,7 +54,7 @@ export class ParagraphSplitter {
   }
 
   private static _splitParagraph(oldParagraph: DocParagraph, outputNodes: DocNode[]): void {
-    const inputParagraphNodes: ReadonlyArray<DocNode> = oldParagraph.nodes;
+    const inputParagraphNodes: readonly DocNode[] = oldParagraph.nodes;
 
     let currentParagraph: DocParagraph = new DocParagraph({ configuration: oldParagraph.configuration });
     outputNodes.push(currentParagraph);

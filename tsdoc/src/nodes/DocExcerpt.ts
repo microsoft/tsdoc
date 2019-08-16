@@ -2,6 +2,8 @@ import { DocNode, IDocNodeParameters, DocNodeKind } from './DocNode';
 import { TokenSequence } from '../parser/TokenSequence';
 import { TokenKind } from '../parser/Token';
 
+/* eslint-disable @typescript-eslint/camelcase */
+
 /**
  * Indicates the type of {@link DocExcerpt}.
  */
@@ -69,6 +71,9 @@ export const enum ExcerptKind {
 
   SoftBreak = 'SoftBreak'
 }
+
+/* eslint-enable @typescript-eslint/camelcase */
+
 
 /**
  * Constructor parameters for {@link DocExcerpt}.

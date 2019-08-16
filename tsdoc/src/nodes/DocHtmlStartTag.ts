@@ -116,7 +116,7 @@ export class DocHtmlStartTag extends DocNode {
   /**
    * The HTML attributes belonging to this HTML element.
    */
-  public get htmlAttributes(): ReadonlyArray<DocHtmlAttribute> {
+  public get htmlAttributes(): readonly DocHtmlAttribute[] {
     return this._htmlAttributes;
   }
 
@@ -147,14 +147,14 @@ export class DocHtmlStartTag extends DocNode {
   public emitAsHtml(): string {
     // NOTE: Here we're assuming that the TSDoc representation for a tag is also a valid HTML expression.
     const stringBuilder: StringBuilder = new StringBuilder();
-    // tslint:disable-next-line:no-use-before-declare
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const emitter: TSDocEmitter = new TSDocEmitter();
     emitter.renderHtmlTag(stringBuilder, this);
     return stringBuilder.toString();
   }
 
   /** @override */
-  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
     return [
       this._openingDelimiterExcerpt,
       this._nameExcerpt,

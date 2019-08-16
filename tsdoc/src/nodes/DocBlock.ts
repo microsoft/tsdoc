@@ -54,7 +54,7 @@ export class DocBlock extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
     return [this.blockTag, this._content];
   }
 }
