@@ -6,5 +6,12 @@ module.exports = {
     "@microsoft/eslint-config-scalable-ts",
     "@microsoft/eslint-config-scalable-ts/react"
   ],
+
+  settings: {
+    react: {
+      "version": "16.9"
+    }
+  },
+
   parserOptions: { tsconfigRootDir: __dirname },
 };
