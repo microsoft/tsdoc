@@ -44,7 +44,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   private _reparseTimerHandle: number | undefined = undefined;
   private _reparseNeeded: boolean = true;
 
-  constructor(props: IPlaygroundViewProps, context?: any) { // tslint:disable-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public constructor(props: IPlaygroundViewProps, context?: any) {
     super(props, context);
 
     this.state = {
@@ -54,6 +55,10 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       selectSampleValue: undefined,
       selectedTheme: 'vs'
     };
+
+    this._inputTextArea_onChange = this._inputTextArea_onChange.bind(this);
+    this._selectSample_onChange = this._selectSample_onChange.bind(this);
+    this._selectTheme_onChange = this._selectTheme_onChange.bind(this)
   }
 
   public componentDidMount(): void {
@@ -108,7 +113,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         <FlexRowDiv className='playground-header' style={ headerStyle }>
           <FlexColDiv style={{ fontWeight: 400, fontSize: '26px' }}>TSDoc Playground</FlexColDiv>
           <FlexColDiv style={{ fontWeight: 400, fontSize: '20px' }}>
-            <a style={navAnchorStyle} href='https://github.com/Microsoft/tsdoc' target='_blank'>
+            <a style={navAnchorStyle} href='https://github.com/Microsoft/tsdoc' target='_blank'
+              rel='noopener noreferrer'>
               What is TSDoc?</a>
           </FlexColDiv>
         </FlexRowDiv>
@@ -192,7 +198,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           className='playground-input-text-editor'
           style={ editorStyle }
           value={ this.state.inputText }
-          onChange={ this._inputTextArea_onChange.bind(this) }
+          onChange={ this._inputTextArea_onChange }
           language='typescript'
           markers={ markers }
           syntaxStyles={ syntaxStyles }
@@ -208,7 +214,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         className='playground-select-sample'
         value={this.state.selectSampleValue}
         aria-label='Select a code sample'
-        onChange={this._selectSample_onChange.bind(this)}>
+        onChange={this._selectSample_onChange}>
 
         <option value='none'>Choose a sample...</option>
         <option value='basic'>A basic example</option>
@@ -224,7 +230,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         className='playground-select-theme'
         value={this.state.selectedTheme}
         aria-label='Select an editor theme'
-        onChange={this._selectTheme_onChange.bind(this)}>
+        onChange={this._selectTheme_onChange}>
 
         <option value='vs'>Light Theme</option>
         <option value='vs-dark'>Dark Theme</option>

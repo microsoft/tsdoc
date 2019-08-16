@@ -18,7 +18,8 @@ export interface ITabPaneState {
 }
 
 export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
-  constructor(props: ITabPaneProps, context?: any) { // tslint:disable-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public constructor(props: ITabPaneProps, context?: any) {
     super(props, context);
 
     this.state = {
@@ -65,7 +66,7 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
           <div key={`tab_${i}`} className='playground-tab-pane-inactive-tab' style={ style }>
             <a href='#'
                style={ { textDecorationLine: 'none', color: '#000000' } }
-               onClick={this._onClickTab.bind(this, i)}>
+               onClick={ this._onClickTab.bind(this, i) }>
               {tabDefinition.title}
             </a>
           </div>

@@ -9,8 +9,8 @@ export interface IDocNodeSyntaxStylerTheme {
   [styleTokens: string]: IThemeRule;
 }
 
-export namespace MonacoTSDocTheme {
-  export const vs: IDocNodeSyntaxStylerTheme = {
+export class MonacoTSDocTheme {
+  public static readonly vs: IDocNodeSyntaxStylerTheme = {
     'tsdoc.delimiter': { foreground: 'a6a6a6' },
     'tsdoc.tag.block': { foreground: '003399', fontWeight: 'bold', className: 'tsdoc-blocktag' },
     'tsdoc.tag.inline': { foreground: '003399', fontWeight: 'bold' },
@@ -30,7 +30,7 @@ export namespace MonacoTSDocTheme {
     'tsdoc.escaped': { background: 'e0e0e0' }
   };
 
-  export const vsDark: IDocNodeSyntaxStylerTheme = {
+  public static readonly vsDark: IDocNodeSyntaxStylerTheme = {
     'tsdoc.delimiter': { foreground: 'a6a6a6' },
     'tsdoc.tag.block': { foreground: '646fd1', fontWeight: 'bold', className: 'tsdoc-blocktag' },
     'tsdoc.tag.inline': { foreground: '646fd1', fontWeight: 'bold' },

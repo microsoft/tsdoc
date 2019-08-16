@@ -72,7 +72,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       );
     }
 
-    const modifierTags: ReadonlyArray<tsdoc.DocBlockTag> = docComment.modifierTagSet.nodes;
+    const modifierTags: readonly tsdoc.DocBlockTag[] = docComment.modifierTagSet.nodes;
 
     if (modifierTags.length > 0) {
       const modifierElements: React.ReactNode[] = [];
@@ -134,7 +134,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
           let identifier: string = '';
           if (linkTag.codeDestination) {
             // TODO: The library should provide a default rendering for this
-            const memberReferences: ReadonlyArray<tsdoc.DocMemberReference> = linkTag.codeDestination.memberReferences;
+            const memberReferences: readonly tsdoc.DocMemberReference[] = linkTag.codeDestination.memberReferences;
             if (memberReferences.length > 0) {
               const memberIdentifier: tsdoc.DocMemberIdentifier | undefined
                 = memberReferences[memberReferences.length - 1].memberIdentifier;
