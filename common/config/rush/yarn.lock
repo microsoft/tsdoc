@@ -285,10 +285,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@microsoft/eslint-config-scalable-ts@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/eslint-config-scalable-ts/-/eslint-config-scalable-ts-0.1.0.tgz#9dfd58a42b18fef0ee0ad5d8140e81899e2c92df"
-  integrity sha512-WESAZnB93n1WcE+Ek7nKhOWEIF1893jTx0B5Qy2UATzjFHNMdqsi+hcJNob8hkR86RiX60x+7leig9sNhivpWg==
+"@microsoft/eslint-config-scalable-ts@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/eslint-config-scalable-ts/-/eslint-config-scalable-ts-0.1.1.tgz#79c4c0cf67a57476aa44b4f2539afdf6be7c6385"
+  integrity sha512-Nx6rDrCHV9pkoGoELt80MXPoDdrDTeoMKUN/5EzSGgGamYoGBMmzd2EsuYvPPmYB1etOAw1xqaYJo0Om1ZtdHQ==
   dependencies:
     "@typescript-eslint/eslint-plugin" "2.0.0"
     "@typescript-eslint/experimental-utils" "2.0.0"
@@ -312,9 +312,9 @@
 
 "@rush-temp/api-demo@file:./projects/api-demo.tgz":
   version "0.0.0"
-  resolved "file:./projects/api-demo.tgz#91a90bbd89669fcc7400475d4ffead5f786907aa"
+  resolved "file:./projects/api-demo.tgz#c52b73a13ced0fd7644aed110005c433e77ef269"
   dependencies:
-    "@microsoft/eslint-config-scalable-ts" "0.1.0"
+    "@microsoft/eslint-config-scalable-ts" "0.1.1"
     "@types/node" "10.7.1"
     colors "~1.3.3"
     eslint "^6.0.0"
@@ -325,9 +325,9 @@
 
 "@rush-temp/tsdoc-playground@file:./projects/tsdoc-playground.tgz":
   version "0.0.0"
-  resolved "file:./projects/tsdoc-playground.tgz#809aaf85a71a6133f4e1dba98babf1a7649a14f8"
+  resolved "file:./projects/tsdoc-playground.tgz#723acec12703984f55951d60b699e767f8cb5318"
   dependencies:
-    "@microsoft/eslint-config-scalable-ts" "0.1.0"
+    "@microsoft/eslint-config-scalable-ts" "0.1.1"
     "@microsoft/set-webpack-public-path-plugin" "~2.1.123"
     "@types/react" "16.9.1"
     "@types/react-dom" "16.8.5"
@@ -356,9 +356,9 @@
 
 "@rush-temp/tsdoc@file:./projects/tsdoc.tgz":
   version "0.0.0"
-  resolved "file:./projects/tsdoc.tgz#431b68df296afa3ada0816809791d9205769fb46"
+  resolved "file:./projects/tsdoc.tgz#6fd001fb34629e1cde1eef0541e9aca12038aa76"
   dependencies:
-    "@microsoft/eslint-config-scalable-ts" "0.1.0"
+    "@microsoft/eslint-config-scalable-ts" "0.1.1"
     "@types/jest" "24.0.16"
     eslint "^6.0.0"
     jest "~24.8.0"
