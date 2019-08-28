@@ -8,6 +8,8 @@
 
 // NOTE: See DeclarationReference.grammarkdown for information on the underlying grammar.
 
+import { StringChecks } from '../parser/StringChecks';
+
 /**
  * Represents a reference to a declaration.
  * @beta
@@ -295,11 +297,19 @@ export class ModuleSource {
     return this._fromPackageName(parsePackageName(packageName), packageName, importPath);
   }
 
-  private static _fromPackageName(parsed: IParsedPackage | null, packageName: string, importPath?: string):
-    ModuleSource {
+  private static _fromPackageName(
+    parsed: IParsedPackage | null,
+    packageName: string,
+    importPath?: string
+  ): ModuleSource {
 
-    if (!parsed || !isValidPackageName(packageName, parsed, /*allowImportPath*/ false)) {
-      throw new SyntaxError(`Invalid package name '${packageName}'`);
+    if (!parsed) {
+      throw new Error('Parsed package must be provided.');
+    }
+
+    const packageNameError: string | undefined = StringChecks.explainIfInvalidPackageName(packageName);
+    if (packageNameError) {
+      throw new Error(`Invalid NPM package name: ${packageNameError}`);
     }
 
     let path: string = packageName;
@@ -324,7 +334,7 @@ export class ModuleSource {
     if (!this._pathComponents) {
       const path: string = this.path;
       const parsed: IParsedPackage | null = parsePackageName(path);
-      if (parsed && isValidPackageName(parsed.packageName, parsed, /*allowImportPath*/ true)) {
+      if (parsed && !StringChecks.explainIfInvalidPackageName(parsed.packageName)) {
         this._pathComponents = parsed;
       } else {
         this._pathComponents = {
@@ -358,14 +368,6 @@ class ParsedModuleSource extends ModuleSource {
 //   4. The package-relative import path
 const packageNameRegExp: RegExp = /^((?:@([^/]+?)\/)?([^/]+?))(?:\/(.+))?$/;
 
-// according to validate-npm-package-name:
-// no leading '.'
-// no leading '_'
-// no leading or trailing whitespace
-// no capital letters or special characters (~'!()*)
-// not 'node_modules' or 'favicon.ico' (blacklisted)
-const invalidPackageNameRegExp: RegExp = /^[._\s]|\s$|[A-Z~'!()*]|^(node_modules|favicon.ico)$/i;
-
 // no leading './' or '.\'
 // no leading '../' or '..\'
 // no leading '/' or '\'
@@ -386,15 +388,6 @@ function parsePackageName(text: string): IParsedPackage | null {
   }
   const [, packageName = '', scopeName = '', unscopedPackageName = '', importPath]: RegExpExecArray = match;
   return { packageName, scopeName, unscopedPackageName, importPath };
-}
-
-function isValidPackageName(packageName: string, name: IParsedPackage, allowImportPath: boolean): boolean {
-  return name.packageName.length <= 214 // maximum length, per validate-npm-package-name
-    && !invalidPackageNameRegExp.test(packageName) // must not contain invalid characters
-    && (!name.scopeName || encodeURIComponent(name.scopeName) === name.scopeName) // scope must be URL-friendly
-    && encodeURIComponent(name.unscopedPackageName) === name.unscopedPackageName // package must be URL-friendly
-    && (name.importPath === undefined
-      || allowImportPath && !invalidImportPathRegExp.test(name.importPath)); // must not contain excess characters
 }
 
 /**
