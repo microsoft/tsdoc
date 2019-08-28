@@ -364,7 +364,7 @@ const packageNameRegExp: RegExp = /^((?:@([^/]+?)\/)?([^/]+?))(?:\/(.+))?$/;
 // no leading or trailing whitespace
 // no capital letters or special characters (~'!()*)
 // not 'node_modules' or 'favicon.ico' (blacklisted)
-const invalidPackageNameRegExp: RegExp = /^[._\s]|\s$|[A-Z~'!()*]|^(node_modules|favicon.ico)$/s;
+const invalidPackageNameRegExp: RegExp = /^[._\s]|\s$|[A-Z~'!()*]|^(node_modules|favicon.ico)$/i;
 
 // no leading './' or '.\'
 // no leading '../' or '..\'
