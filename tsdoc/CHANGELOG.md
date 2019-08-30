@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Wed, 07 Aug 2019 23:06:02 GMT and should not be manually modified.
+This log was last generated on Fri, 30 Aug 2019 18:38:59 GMT and should not be manually modified.
+
+## 0.12.13
+Fri, 30 Aug 2019 18:38:59 GMT
+
+### Patches
+
+- Fix an invalid regular expression.
 
 ## 0.12.12
 Wed, 07 Aug 2019 23:06:02 GMT

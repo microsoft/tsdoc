@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.13",
+      "tag": "@microsoft/tsdoc_v0.12.13",
+      "date": "Fri, 30 Aug 2019 18:38:59 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix an invalid regular expression."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.12",
       "tag": "@microsoft/tsdoc_v0.12.12",
       "date": "Wed, 07 Aug 2019 23:06:02 GMT",
