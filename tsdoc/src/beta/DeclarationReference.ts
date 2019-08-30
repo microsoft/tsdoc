@@ -309,7 +309,7 @@ export class ModuleSource {
 
     const packageNameError: string | undefined = StringChecks.explainIfInvalidPackageName(packageName);
     if (packageNameError) {
-      throw new Error(`Invalid NPM package name: ${packageNameError}`);
+      throw new SyntaxError(`Invalid NPM package name: ${packageNameError}`);
     }
 
     let path: string = packageName;
