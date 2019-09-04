@@ -117,7 +117,7 @@ export class DocComment extends DocNode {
   /**
    * The collection of all DocBlock nodes belonging to this doc comment.
    */
-  public get customBlocks(): readonly DocBlock[] {
+  public get customBlocks(): ReadonlyArray<DocBlock> {
     return this._customBlocks;
   }
 
@@ -129,7 +129,7 @@ export class DocComment extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
       this.summarySection,
       this.remarksBlock,

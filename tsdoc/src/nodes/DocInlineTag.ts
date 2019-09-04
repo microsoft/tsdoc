@@ -78,7 +78,7 @@ export class DocInlineTag extends DocInlineTagBase {
   }
 
   /** @override */
-  protected getChildNodesForContent(): readonly (DocNode | undefined)[] { // abstract
+  protected getChildNodesForContent(): ReadonlyArray<DocNode | undefined> { // abstract
     return [
       this._tagContentExcerpt
     ];

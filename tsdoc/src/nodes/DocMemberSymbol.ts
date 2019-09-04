@@ -86,7 +86,7 @@ export class DocMemberSymbol extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
       this._leftBracketExcerpt,
       this._spacingAfterLeftBracketExcerpt,

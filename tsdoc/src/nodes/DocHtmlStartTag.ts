@@ -116,7 +116,7 @@ export class DocHtmlStartTag extends DocNode {
   /**
    * The HTML attributes belonging to this HTML element.
    */
-  public get htmlAttributes(): readonly DocHtmlAttribute[] {
+  public get htmlAttributes(): ReadonlyArray<DocHtmlAttribute> {
     return this._htmlAttributes;
   }
 
@@ -154,7 +154,7 @@ export class DocHtmlStartTag extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
       this._openingDelimiterExcerpt,
       this._nameExcerpt,

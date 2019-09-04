@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@microsoft/eslint-config-scalable-ts": "0.1.1",
+    "@microsoft/eslint-config-scalable-ts": "0.3.0",
     "@types/jest": "24.0.16",
     "eslint": "^6.0.0",
     "jest": "~24.8.0",

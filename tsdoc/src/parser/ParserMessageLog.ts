@@ -14,7 +14,7 @@ export class ParserMessageLog {
   /**
    * The unfiltered list of all messages.
    */
-  public get messages(): readonly ParserMessage[] {
+  public get messages(): ReadonlyArray<ParserMessage> {
     return this._messages;
   }
 

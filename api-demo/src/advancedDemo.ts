@@ -215,7 +215,7 @@ export function advancedDemo(): void {
   const program: ts.Program = ts.createProgram([ inputFilename ], compilerOptions);
 
   // Report any compiler errors
-  const compilerDiagnostics: readonly ts.Diagnostic[] = program.getSemanticDiagnostics();
+  const compilerDiagnostics: ReadonlyArray<ts.Diagnostic> = program.getSemanticDiagnostics();
   if (compilerDiagnostics.length > 0) {
     for (const diagnostic of compilerDiagnostics) {
       const message: string = ts.flattenDiagnosticMessageText(diagnostic.messageText, os.EOL);
