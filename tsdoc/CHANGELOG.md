@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Fri, 30 Aug 2019 18:38:59 GMT and should not be manually modified.
+This log was last generated on Wed, 04 Sep 2019 03:30:10 GMT and should not be manually modified.
+
+## 0.12.14
+Wed, 04 Sep 2019 03:30:10 GMT
+
+### Patches
+
+- Fix a regression where some API signatures were incompatible with TypeScript versions prior to 3.4
 
 ## 0.12.13
 Fri, 30 Aug 2019 18:38:59 GMT

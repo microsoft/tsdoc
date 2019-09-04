@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.14",
+      "tag": "@microsoft/tsdoc_v0.12.14",
+      "date": "Wed, 04 Sep 2019 03:30:10 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix a regression where some API signatures were incompatible with TypeScript versions prior to 3.4"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.13",
       "tag": "@microsoft/tsdoc_v0.12.13",
       "date": "Fri, 30 Aug 2019 18:38:59 GMT",
