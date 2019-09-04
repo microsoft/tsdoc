@@ -10,11 +10,9 @@
     "colors": "~1.3.3"
   },
   "devDependencies": {
-    "@microsoft/eslint-config-scalable-ts": "0.1.1",
+    "@microsoft/eslint-config-scalable-ts": "0.3.0",
     "eslint": "^6.0.0",
     "rimraf": "~2.6.3",
-    "tslint-microsoft-contrib": "~6.2.0",
-    "tslint": "~5.18.0",
     "typescript": "~3.5.3"
   },
   "scripts": {
