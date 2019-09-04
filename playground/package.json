@@ -10,7 +10,7 @@
     "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.dev.config.js --open"
   },
   "dependencies": {
-    "@microsoft/tsdoc": "0.12.13",
+    "@microsoft/tsdoc": "0.12.14",
     "@types/react": "16.9.2",
     "@types/react-dom": "16.9.0",
     "promise": "~8.0.3",
