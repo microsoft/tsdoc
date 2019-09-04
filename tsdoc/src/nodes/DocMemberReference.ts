@@ -210,7 +210,7 @@ export class DocMemberReference extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
       this._dotExcerpt,
       this._spacingAfterDotExcerpt,

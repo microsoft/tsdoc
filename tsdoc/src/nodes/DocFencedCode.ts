@@ -167,7 +167,7 @@ export class DocFencedCode extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
       this._openingFenceExcerpt,
       this._spacingAfterOpeningFenceExcerpt,

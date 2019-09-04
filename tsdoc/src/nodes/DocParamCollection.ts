@@ -39,7 +39,7 @@ export class DocParamCollection extends DocNode {
   /**
    * Returns the blocks in this collection.
    */
-  public get blocks(): readonly DocParamBlock[] {
+  public get blocks(): ReadonlyArray<DocParamBlock> {
     return this._blocks;
   }
 
@@ -93,7 +93,7 @@ export class DocParamCollection extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return this._blocks;
   }
 }

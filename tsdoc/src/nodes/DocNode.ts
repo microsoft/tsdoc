@@ -89,18 +89,18 @@ export abstract class DocNode {
    * to scan the tree looking for nodes of a specific type, without having to process
    * intermediary nodes.
    */
-  public getChildNodes(): readonly DocNode[] {
+  public getChildNodes(): ReadonlyArray<DocNode> {
     // Do this sanity check here, since the constructor cannot access abstract members
     this.configuration.docNodeManager.throwIfNotRegisteredKind(this.kind);
 
-    return this.onGetChildNodes().filter(x => x !== undefined) as readonly DocNode[];
+    return this.onGetChildNodes().filter(x => x !== undefined) as ReadonlyArray<DocNode>;
   }
 
   /**
    * Overridden by child classes to implement {@link DocNode.getChildNodes}.
    * @virtual
    */
-  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [];
   }
 

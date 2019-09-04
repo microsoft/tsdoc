@@ -29,13 +29,13 @@ export class PlainTextEmitter {
    * @param requiredCharacters - The test returns true if at least this many non-spacing characters are found.
    * The default value is 1.
    */
-  public static hasAnyTextContent(nodes: readonly DocNode[], requiredCharacters?: number): boolean;
-  public static hasAnyTextContent(nodeOrNodes: DocNode | readonly DocNode[], requiredCharacters?: number): boolean {
+  public static hasAnyTextContent(nodes: ReadonlyArray<DocNode>, requiredCharacters?: number): boolean;
+  public static hasAnyTextContent(nodeOrNodes: DocNode | ReadonlyArray<DocNode>, requiredCharacters?: number): boolean {
     if (requiredCharacters === undefined || requiredCharacters < 1) {
       requiredCharacters = 1; // default
     }
 
-    let nodes: readonly DocNode[];
+    let nodes: ReadonlyArray<DocNode>;
     if (nodeOrNodes instanceof DocNode) {
       nodes = [ nodeOrNodes ];
     } else {
@@ -47,7 +47,7 @@ export class PlainTextEmitter {
     return foundCharacters >= requiredCharacters;
   }
 
-  private static _scanTextContent(nodes: readonly DocNode[], requiredCharacters: number,
+  private static _scanTextContent(nodes: ReadonlyArray<DocNode>, requiredCharacters: number,
     foundCharacters: number): number {
 
     for (const node of nodes) {

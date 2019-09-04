@@ -103,7 +103,7 @@ export class DocParamBlock extends DocBlock {
   }
 
   /** @override */
-  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
       this.blockTag,
       this._spacingBeforeParameterNameExcerpt,

@@ -13,7 +13,7 @@ import { ParserContext } from './ParserContext';
  * that can be extracted by calling extractAccumulatedSequence().
  */
 export class TokenReader {
-  public readonly tokens: readonly Token[];
+  public readonly tokens: ReadonlyArray<Token>;
 
   private readonly _parserContext: ParserContext;
 

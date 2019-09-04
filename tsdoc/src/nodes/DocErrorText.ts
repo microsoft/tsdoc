@@ -96,7 +96,7 @@ export class DocErrorText extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
       this._textExcerpt
     ];

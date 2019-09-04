@@ -102,7 +102,7 @@ export class DocHtmlEndTag extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
       this._openingDelimiterExcerpt,
       this._nameExcerpt,

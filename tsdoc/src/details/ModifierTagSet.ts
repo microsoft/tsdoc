@@ -21,7 +21,7 @@ export class ModifierTagSet {
   /**
    * The original block tag nodes that defined the modifiers in this set, excluding duplicates.
    */
-  public get nodes(): readonly DocBlockTag[] {
+  public get nodes(): ReadonlyArray<DocBlockTag> {
     return this._nodes;
   }
 

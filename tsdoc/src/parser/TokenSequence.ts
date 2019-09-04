@@ -52,7 +52,7 @@ export class TokenSequence {
     return this._endIndex;
   }
 
-  public get tokens(): readonly Token[] {
+  public get tokens(): ReadonlyArray<Token> {
     return this.parserContext.tokens.slice(this._startIndex, this._endIndex);
   }
 

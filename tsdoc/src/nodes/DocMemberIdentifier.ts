@@ -112,7 +112,7 @@ export class DocMemberIdentifier extends DocNode {
   }
 
   /** @override */
-  protected onGetChildNodes(): readonly (DocNode | undefined)[] {
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
     return [
       this._leftQuoteExcerpt,
       this._identifierExcerpt,
