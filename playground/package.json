@@ -11,14 +11,14 @@
   },
   "dependencies": {
     "@microsoft/tsdoc": "0.12.14",
-    "@types/react": "16.9.2",
-    "@types/react-dom": "16.9.0",
+    "@types/react": "16.9.6",
+    "@types/react-dom": "16.9.2",
     "promise": "~8.0.3",
     "monaco-editor": "~0.17.1",
     "tslib": "~1.10.0"
   },
   "devDependencies": {
-    "@microsoft/eslint-config-scalable-ts": "0.3.0",
+    "@rushstack/eslint-config": "0.4.0",
     "@microsoft/set-webpack-public-path-plugin": "~2.1.123",
     "@types/webpack-env": "~1.14.0",
     "clean-webpack-plugin": "~3.0.0",
