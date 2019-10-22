@@ -19,6 +19,6 @@
     "build": "node ./build.js",
     "simple": "node ./lib/start.js simple",
     "advanced": "node ./lib/start.js advanced",
-    "lint": "eslint -f unix src/**/*.{ts,tsx}"
+    "lint": "eslint -f unix \"src/**/*.{ts,tsx}\""
   }
 }

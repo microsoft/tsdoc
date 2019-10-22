@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node build.js --production",
-    "lint": "eslint -f unix src/**/*.{ts,tsx}",
+    "lint": "eslint -f unix \"src/**/*.{ts,tsx}\"",
     "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.dev.config.js --open"
   },
   "dependencies": {
