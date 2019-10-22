@@ -18,7 +18,7 @@ try {
 
   console.log('-- ESLINT --\n');
   child_process.execSync(path.join(baseDir, 'node_modules/.bin/eslint')
-    + ' -f unix src/**/*.{ts,tsx}',
+    + ' -f unix \"src/**/*.{ts,tsx}\"',
     { stdio: 'inherit' });
 
   process.exitCode = 0;
