@@ -372,6 +372,10 @@
       "packageName": "@microsoft/tsdoc",
       "projectFolder": "tsdoc",
       "shouldPublish": true
+    },
+    {
+      "packageName": "eslint-plugin-tsdoc",
+      "projectFolder": "eslint-plugin"
     }
   ]
 }

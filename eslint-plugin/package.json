@@ -1,0 +1,22 @@
+{
+  "name": "eslint-plugin-tsdoc",
+  "version": "0.1.0",
+  "description": "eslint plugin for tsdoc",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "build": "node ./build.js",
+    "lint": "eslint -f unix \"src/**/*.{ts,tsx}\"",
+    "test": "node lib/tests/index.js"
+  },
+  "dependencies": {
+    "@microsoft/tsdoc": "0.12.14"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-config": "0.4.0",
+    "@types/eslint": "6.1.3",
+    "@types/node": "10.7.1",
+    "eslint": "^6.0.0",
+    "typescript": "~3.5.3"
+  }
+}
