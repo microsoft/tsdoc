@@ -16,7 +16,7 @@
    * path segment in the "$schema" field for all your Rush config files.  This will ensure
    * correct error-underlining and tab-completion for editors such as VS Code.
    */
-  "rushVersion": "5.11.1",
+  "rushVersion": "5.16.1",
 
   /**
    * The next field selects which package manager should be installed and determines its version.
@@ -26,10 +26,10 @@
    * Specify one of: "pnpmVersion", "npmVersion", or "yarnVersion".  See the Rush documentation
    * for details about these alternatives.
    */
-  // "pnpmVersion": "2.15.1",
+  "pnpmVersion": "4.1.7",
 
   // "npmVersion": "4.5.0",
-  "yarnVersion": "1.17.3",
+  // "yarnVersion": "1.9.4",
 
   /**
    * Options that are only used when the PNPM package manager is selected
@@ -46,7 +46,7 @@
      * The default value is false to avoid legacy compatibility issues.
      * It is strongly recommended to set strictPeerDependencies=true.
      */
-    // "strictPeerDependencies": true,
+    "strictPeerDependencies": true,
 
 
     /**
@@ -57,6 +57,9 @@
      * be incompatible with certain packages, for example the "@types" packages from DefinitelyTyped.  Rush's default
      * is "fewer-dependencies", which causes PNPM to avoid installing a newer version if an already installed version
      * can be reused; this is more similar to NPM's algorithm.
+     *
+     * After modifying this field, it's recommended to run "rush update --full" so that the package manager
+     * will recalculate all version selections.
      */
     // "resolutionStrategy": "fast"
   },
@@ -96,7 +99,7 @@
    * version. In those cases, you will need to add an entry to the "allowedAlternativeVersions"
    * section of the common-versions.json.
    */
-   "ensureConsistentVersions": true,
+  "ensureConsistentVersions": true,
 
   /**
    * Large monorepos can become intimidating for newcomers if project folder paths don't follow
