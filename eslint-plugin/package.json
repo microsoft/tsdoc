@@ -1,9 +1,25 @@
 {
   "name": "eslint-plugin-tsdoc",
   "version": "0.1.0",
-  "description": "eslint plugin for tsdoc",
-  "private": false,
+  "description": "An ESLint plugin that validates TypeScript doc comments",
+  "keywords": [
+    "TypeScript",
+    "documentation",
+    "doc",
+    "comments",
+    "JSDoc",
+    "TSDoc",
+    "ESLint",
+    "plugin"
+  ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/tsdoc/tree/master/eslint-plugin"
+  },
+  "homepage": "https://github.com/microsoft/tsdoc",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "build": "node ./build.js",
     "lint": "eslint -f unix \"src/**/*.{ts,tsx}\"",
