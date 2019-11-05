@@ -14,7 +14,7 @@ interface IPlugin {
     rules: {[x: string]: eslint.Rule.RuleModule};
 }
 
-export const plugin: IPlugin = {
+const plugin: IPlugin = {
   rules: {
     "syntax": {
       meta: {
@@ -31,16 +31,13 @@ export const plugin: IPlugin = {
         const tsDocParser: TSDocParser = new TSDocParser();
         const sourceCode: eslint.SourceCode = context.getSourceCode();
         const checkCommentBlocks: (node: ESTree.Node) => void = function (node: ESTree.Node) {
-          const commentBlocks: ESTree.Comment[] = sourceCode.getCommentsBefore(node).filter(function (comment: ESTree.Comment) {
-            return comment.type === "Block";
-          });
-          if (commentBlocks.length > 0) {
-            const commentBlock: ESTree.Comment = commentBlocks[0];
-            const commentString: string = "/*" + commentBlock.value + "*/";
+          const commentToken: eslint.AST.Token | null = sourceCode.getJSDocComment(node);
+          if (commentToken) {
+            const commentString: string = "/*" + commentToken.value + "*/";
             const results: ParserMessageLog = tsDocParser.parseString(commentString).log;
             for (const message of results.messages) {
               context.report({
-                node: node,
+                loc: commentToken.loc,
                 messageId: message.messageId,
                 data: {
                   unformattedText: message.unformattedText
@@ -58,3 +55,5 @@ export const plugin: IPlugin = {
     }
   }
 }
+
+export = plugin;

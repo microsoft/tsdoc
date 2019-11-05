@@ -1,6 +1,6 @@
 
 import { RuleTester } from "eslint";
-import { plugin } from "../index";
+import * as plugin from "../index";
 
 const ruleTester: RuleTester = new RuleTester({
   env: {
