@@ -30,7 +30,7 @@ export class Statistics {
 
 We are developing a library package [@microsoft/tsdoc](https://www.npmjs.com/package/@microsoft/tsdoc) that provides an open source reference implementation of a parser.  Using this library is an easy way to ensure that your tool is 100% compatible with the standard.
 
-⏵ ***Give it a try!**  The <a target="_blank" href="https://microsoft.github.io/tsdoc/">TSDoc Playground</a> provides an interactive showcase of our parser!*
+&#x1F44B; ***Give it a try!**  The <a target="_blank" href="https://microsoft.github.io/tsdoc/">TSDoc Playground</a> provides an interactive showcase of our parser!*
 
 ###  Why do we need TSDoc?
 
