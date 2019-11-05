@@ -16,13 +16,16 @@ interface IPlugin {
 
 const plugin: IPlugin = {
   rules: {
+    // NOTE: The actual ESLint rule name will be "tsdoc/syntax".  It is calculated by deleting "eslint-plugin-"
+    // from the NPM package name, and then appending this string.
     "syntax": {
       meta: {
         messages: messageIds,
         type: "problem",
         docs: {
-          description: "Validates tsdoc comments",
-          category: "Typescript",
+          description: "Validates that TypeScript documentation comments conform to the TSDoc standard",
+          category: "Stylistic Issues",
+          // This package is experimental
           recommended: false,
           url: "https://github.com/microsoft/tsdoc"
         }
