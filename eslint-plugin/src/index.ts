@@ -16,7 +16,7 @@ interface IPlugin {
 
 export const plugin: IPlugin = {
   rules: {
-    "tsdoc-comments": {
+    "syntax": {
       meta: {
         messages: messageIds,
         type: "problem",
