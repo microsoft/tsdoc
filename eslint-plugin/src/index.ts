@@ -14,15 +14,18 @@ interface IPlugin {
     rules: {[x: string]: eslint.Rule.RuleModule};
 }
 
-export const plugin: IPlugin = {
+const plugin: IPlugin = {
   rules: {
-    "tsdoc-comments": {
+    // NOTE: The actual ESLint rule name will be "tsdoc/syntax".  It is calculated by deleting "eslint-plugin-"
+    // from the NPM package name, and then appending this string.
+    "syntax": {
       meta: {
         messages: messageIds,
         type: "problem",
         docs: {
-          description: "Validates tsdoc comments",
-          category: "Typescript",
+          description: "Validates that TypeScript documentation comments conform to the TSDoc standard",
+          category: "Stylistic Issues",
+          // This package is experimental
           recommended: false,
           url: "https://github.com/microsoft/tsdoc"
         }
@@ -31,16 +34,13 @@ export const plugin: IPlugin = {
         const tsDocParser: TSDocParser = new TSDocParser();
         const sourceCode: eslint.SourceCode = context.getSourceCode();
         const checkCommentBlocks: (node: ESTree.Node) => void = function (node: ESTree.Node) {
-          const commentBlocks: ESTree.Comment[] = sourceCode.getCommentsBefore(node).filter(function (comment: ESTree.Comment) {
-            return comment.type === "Block";
-          });
-          if (commentBlocks.length > 0) {
-            const commentBlock: ESTree.Comment = commentBlocks[0];
-            const commentString: string = "/*" + commentBlock.value + "*/";
+          const commentToken: eslint.AST.Token | null = sourceCode.getJSDocComment(node);
+          if (commentToken) {
+            const commentString: string = "/*" + commentToken.value + "*/";
             const results: ParserMessageLog = tsDocParser.parseString(commentString).log;
             for (const message of results.messages) {
               context.report({
-                node: node,
+                loc: commentToken.loc,
                 messageId: message.messageId,
                 data: {
                   unformattedText: message.unformattedText
@@ -58,3 +58,5 @@ export const plugin: IPlugin = {
     }
   }
 }
+
+export = plugin;

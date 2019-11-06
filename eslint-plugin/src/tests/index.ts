@@ -1,13 +1,13 @@
 
 import { RuleTester } from "eslint";
-import { plugin } from "../index";
+import * as plugin from "../index";
 
 const ruleTester: RuleTester = new RuleTester({
   env: {
     es6: true
   }
 });
-ruleTester.run("tsdoc-comments", plugin.rules["tsdoc-comments"], {
+ruleTester.run("syntax", plugin.rules.syntax, {
   valid: [
     "/**\nA great function!\n */\nfunction foobar() {}\n",
     "/**\nA great class!\n */\nclass FooBar {}\n"
