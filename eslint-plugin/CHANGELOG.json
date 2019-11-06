@@ -1,0 +1,17 @@
+{
+  "name": "eslint-plugin-tsdoc",
+  "entries": [
+    {
+      "version": "0.1.0",
+      "tag": "eslint-plugin-tsdoc_v0.1.0",
+      "date": "Wed, 06 Nov 2019 00:40:51 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Initial release of plugin"
+          }
+        ]
+      }
+    }
+  ]
+}
