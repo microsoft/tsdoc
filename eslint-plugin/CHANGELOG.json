@@ -2,6 +2,23 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.1.2",
+      "tag": "eslint-plugin-tsdoc_v0.1.2",
+      "date": "Sat, 09 Nov 2019 05:55:42 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Improve lint rule to check every doc comment in a source file"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" from `0.12.14` to `0.12.15`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.1",
       "tag": "eslint-plugin-tsdoc_v0.1.1",
       "date": "Sat, 09 Nov 2019 04:57:59 GMT",

@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Wed, 04 Sep 2019 03:30:10 GMT and should not be manually modified.
+This log was last generated on Sat, 09 Nov 2019 05:55:42 GMT and should not be manually modified.
+
+## 0.12.15
+Sat, 09 Nov 2019 05:55:42 GMT
+
+### Patches
+
+- Add new API TSDocConfiguration.allTsdocMessageIds
 
 ## 0.12.14
 Wed, 04 Sep 2019 03:30:10 GMT

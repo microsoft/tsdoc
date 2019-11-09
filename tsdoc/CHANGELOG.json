@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.15",
+      "tag": "@microsoft/tsdoc_v0.12.15",
+      "date": "Sat, 09 Nov 2019 05:55:42 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add new API TSDocConfiguration.allTsdocMessageIds"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.14",
       "tag": "@microsoft/tsdoc_v0.12.14",
       "date": "Wed, 04 Sep 2019 03:30:10 GMT",
