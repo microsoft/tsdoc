@@ -8,13 +8,13 @@ import {
   TSDocTagSyntaxKind,
   ParserContext
 } from "@microsoft/tsdoc";
-import { allTsdocMessageIds } from "@microsoft/tsdoc/lib/parser/TSDocMessageId";
 import * as eslint from "eslint";
 import * as ESTree from "estree";
 
 const messageIds: {[x: string]: string} = {};
 
-allTsdocMessageIds.forEach((messageId: string) => {
+const defaultTSDocConfiguration: TSDocConfiguration = new TSDocConfiguration()
+defaultTSDocConfiguration.allTsdocMessageIds.forEach((messageId: string) => {
   messageIds[messageId] = `${messageId}: {{ unformattedText }}`;
 });
 
