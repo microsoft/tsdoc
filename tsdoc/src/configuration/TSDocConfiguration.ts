@@ -3,7 +3,7 @@ import { TSDocTagDefinition } from './TSDocTagDefinition';
 import { TSDocValidationConfiguration } from './TSDocValidationConfiguration';
 import { DocNodeManager } from './DocNodeManager';
 import { BuiltInDocNodes } from '../nodes/BuiltInDocNodes';
-import { TSDocMessageId, allTsdocMessageIds } from '../parser/TSDocMessageId';
+import { TSDocMessageId, allTsdocMessageIds, allTsdocMessageIdsSet } from '../parser/TSDocMessageId';
 
 /**
  * Configuration for the TSDocParser.
@@ -170,7 +170,19 @@ export class TSDocConfiguration {
    * of the TSDoc parser, we may provide a way to register custom message identifiers.
    */
   public isKnownMessageId(messageId: TSDocMessageId | string): boolean {
-    return allTsdocMessageIds.has(messageId);
+    return allTsdocMessageIdsSet.has(messageId);
+  }
+
+  /**
+   * Returns the list of {@link TSDocMessageId} strings that are implemented by this release of the TSDoc parser.
+   *
+   * @privateRemarks
+   *
+   * Why this API is associated with TSDocConfiguration:  In the future, if we enable support for custom extensions
+   * of the TSDoc parser, we may provide a way to register custom message identifiers.
+   */
+  public get allTsdocMessageIds(): ReadonlyArray<TSDocMessageId> {
+    return allTsdocMessageIds as ReadonlyArray<TSDocMessageId>;
   }
 
   private _requireTagToBeDefined(tagDefinition: TSDocTagDefinition): void {
