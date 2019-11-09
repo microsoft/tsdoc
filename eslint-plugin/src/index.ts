@@ -1,12 +1,12 @@
 
 import {
-  ParserMessageLog,
   TSDocParser,
   TextRange,
   TSDocConfiguration,
   StandardTags,
   TSDocTagDefinition,
-  TSDocTagSyntaxKind
+  TSDocTagSyntaxKind,
+  ParserContext
 } from "@microsoft/tsdoc";
 import { allTsdocMessageIds } from "@microsoft/tsdoc/lib/parser/TSDocMessageId";
 import * as eslint from "eslint";
@@ -19,7 +19,7 @@ allTsdocMessageIds.forEach((messageId: string) => {
 });
 
 interface IPlugin {
-    rules: {[x: string]: eslint.Rule.RuleModule};
+  rules: {[x: string]: eslint.Rule.RuleModule};
 }
 
 const plugin: IPlugin = {
@@ -64,11 +64,27 @@ const plugin: IPlugin = {
 
         const sourceCode: eslint.SourceCode = context.getSourceCode();
         const checkCommentBlocks: (node: ESTree.Node) => void = function (node: ESTree.Node) {
-          const commentToken: eslint.AST.Token | null = sourceCode.getJSDocComment(node);
-          if (commentToken) {
-            const textRange: TextRange = TextRange.fromStringRange(sourceCode.text, commentToken.range[0], commentToken.range[1]);
-            const results: ParserMessageLog = tsdocParser.parseRange(textRange).log;
-            for (const message of results.messages) {
+          for (const comment of sourceCode.getAllComments()) {
+            if (comment.type !== "Block") {
+              continue;
+            }
+            if (!comment.range) {
+              continue;
+            }
+
+            const textRange: TextRange = TextRange.fromStringRange(sourceCode.text, comment.range[0], comment.range[1]);
+
+            // Smallest comment is "/***/"
+            if (textRange.length < 5) {
+              continue;
+            }
+            // Make sure it starts with "/**"
+            if (textRange.buffer[textRange.pos + 2] !== '*') {
+              continue;
+            }
+
+            const parserContext: ParserContext = tsdocParser.parseRange(textRange);
+            for (const message of parserContext.log.messages) {
               context.report({
                 loc: {
                   start: sourceCode.getLocFromIndex(message.textRange.pos),
@@ -84,8 +100,7 @@ const plugin: IPlugin = {
         }
 
         return {
-          ClassDeclaration: checkCommentBlocks,
-          FunctionDeclaration: checkCommentBlocks
+          Program: checkCommentBlocks
         };
       }
     }
