@@ -336,8 +336,8 @@ export const enum TSDocMessageId {
   CodeSpanMissingDelimiter = 'tsdoc-code-span-missing-delimiter'
 }
 
-// Exposed via ParserMessage.isValidMessageId()
-export const allTsdocMessageIds: Set<string> = new Set<string>([
+// Exposed via TSDocConfiguration.allTsdocMessageIds()
+export const allTsdocMessageIds: string[] = [
   'tsdoc-comment-not-found',
   'tsdoc-comment-missing-opening-delimiter',
   'tsdoc-comment-missing-closing-delimiter',
@@ -398,4 +398,7 @@ export const allTsdocMessageIds: Set<string> = new Set<string>([
   'tsdoc-code-fence-closing-syntax',
   'tsdoc-code-span-empty',
   'tsdoc-code-span-missing-delimiter'
-]);
+];
+allTsdocMessageIds.sort();
+
+export const allTsdocMessageIdsSet: ReadonlySet<string> = new Set<string>(allTsdocMessageIds);

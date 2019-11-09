@@ -63,6 +63,15 @@ export class TextRange {
   }
 
   /**
+   * Returns the length of the text range.
+   * @remarks
+   * This value is calculated as the `end` property minus the `pos` property.
+   */
+  public get length(): number {
+    return this.end - this.pos;
+  }
+
+  /**
    * Constructs a TextRange that corresponds to a different range of an existing buffer.
    */
   public getNewRange(pos: number, end: number): TextRange {
