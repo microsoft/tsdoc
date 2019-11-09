@@ -2,6 +2,21 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.1.1",
+      "tag": "eslint-plugin-tsdoc_v0.1.1",
+      "date": "Sat, 09 Nov 2019 04:57:59 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Improve error location accuracy"
+          },
+          {
+            "comment": "Generalize the TSDoc parser configuration to allow any standard tag"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.0",
       "tag": "eslint-plugin-tsdoc_v0.1.0",
       "date": "Wed, 06 Nov 2019 00:40:51 GMT",
