@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "eslint-plugin-tsdoc",
+      "comment": "Improve lint rule to check every doc comment in a source file",
+      "type": "patch"
+    }
+  ],
+  "packageName": "eslint-plugin-tsdoc",
+  "email": "4673363+octogonz@users.noreply.github.com"
+}
