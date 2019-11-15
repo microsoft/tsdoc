@@ -377,6 +377,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@microsoft/tsdoc-config",
+      "projectFolder": "tsdoc-config",
+      "shouldPublish": false
+    },
+    {
       "packageName": "eslint-plugin-tsdoc",
       "projectFolder": "eslint-plugin",
       "shouldPublish": true
