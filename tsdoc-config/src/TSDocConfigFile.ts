@@ -37,6 +37,8 @@ interface IConfigJson {
  * @public
  */
 export class TSDocConfigFile {
+  private readonly _extendsFiles: TSDocConfigFile[] = [];
+
   /**
    * The full path of the file.
    */
@@ -48,16 +50,17 @@ export class TSDocConfigFile {
   public readonly tsdocSchema: string;
 
   /**
-   * Module paths for other config files that this file extends from.
+   * The `extends` field from the `tsdoc-config.json` file.  For the parsed file contents,
+   * use the `extendsFiles` property instead.
    */
-  public readonly extends: ReadonlyArray<string>;
+  public readonly extendsPaths: ReadonlyArray<string>;
 
   public readonly tagDefinitions: ReadonlyArray<TSDocTagDefinition>;
 
   private constructor(filePath: string, configJson: IConfigJson) {
     this.filePath = filePath;
     this.tsdocSchema = configJson.$schema;
-    this.extends = configJson.extends || [];
+    this.extendsPaths = configJson.extends || [];
     const tagDefinitions: TSDocTagDefinition[] = [];
 
     for (const jsonTagDefinition of configJson.tagDefinitions || []) {
@@ -78,6 +81,13 @@ export class TSDocConfigFile {
     }
 
     this.tagDefinitions = tagDefinitions;
+  }
+
+  /**
+   * Other config files that this file extends from.
+   */
+  public get extendsFiles(): ReadonlyArray<TSDocConfigFile> {
+    return this._extendsFiles;
   }
 
   /**
@@ -104,5 +114,12 @@ export class TSDocConfigFile {
     }
 
     return new TSDocConfigFile(fullJsonFilePath, configJson);
+  }
+
+  /**
+   * Adds an item to `TSDocConfigFile.extendsFiles`.
+   */
+  public addExtendsFile(otherFile: TSDocConfigFile): void {
+    this._extendsFiles.push(otherFile);
   }
 }

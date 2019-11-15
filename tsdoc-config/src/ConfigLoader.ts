@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as resolve from 'resolve';
 import { TSDocConfigFile } from './TSDocConfigFile';
 
 interface IPackageJson {
@@ -70,14 +71,41 @@ export class ConfigLoader {
     return undefined;
   }
 
+  private static _loadAndExtend(configFilePath: string, alreadyVisitedPaths: Set<string>): TSDocConfigFile {
+    const hashKey: string = fs.realpathSync(configFilePath);
+    if (alreadyVisitedPaths.has(hashKey)) {
+      throw new Error('Circular reference encountered for "extends" field of ' + configFilePath);
+    }
+    alreadyVisitedPaths.add(hashKey);
+
+    const configFile: TSDocConfigFile = TSDocConfigFile.loadFromFile(configFilePath);
+
+    const configFileFolder: string = path.dirname(configFile.filePath);
+
+    for (const extendsField of configFile.extendsPaths) {
+      const resolvedExtendsPath: string = resolve.sync(extendsField, { basedir: configFileFolder });
+      if (!fs.existsSync(resolvedExtendsPath)) {
+        throw new Error('Unable to resolve "extends" field of ' + configFilePath);
+      }
+
+      const baseConfigFile: TSDocConfigFile = ConfigLoader._loadAndExtend(resolvedExtendsPath, alreadyVisitedPaths);
+      configFile.addExtendsFile(baseConfigFile);
+    }
+
+    return configFile;
+  }
+
   public static tryLoadFromPackageFolder(packageFolder: string): TSDocConfigFile | undefined {
 
     const rootConfigFilePath: string | undefined = ConfigLoader._tryGetValidPath(packageFolder);
 
     if (!rootConfigFilePath) {
+      // There is no tsdoc-config.json for this project
       return undefined;
     }
 
-    return TSDocConfigFile.loadFromFile(rootConfigFilePath);
+    const alreadyVisitedPaths: Set<string> = new Set<string>();
+
+    return ConfigLoader._loadAndExtend(rootConfigFilePath, alreadyVisitedPaths);
   }
 }
