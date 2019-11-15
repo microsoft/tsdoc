@@ -71,7 +71,7 @@ test('Load p5', () => {
           "tagNameWithUpperCase": "@MYMODIFIERTAG",
         },
       ],
-      "tsdocVersion": "0.12",
+      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc-config.schema.json",
     }
   `
   );

@@ -25,24 +25,38 @@ interface ITagConfigJson {
 }
 
 interface IConfigJson {
+  $schema: string;
   tsdocVersion: string;
   extends?: string[];
   tagDefinitions: ITagConfigJson[];
 }
 
+/**
+ * Represents an individual `tsdoc-config.json` file.
+ *
+ * @public
+ */
 export class TSDocConfigFile {
-
+  /**
+   * The full path of the file.
+   */
   public readonly filePath: string;
 
-  public readonly tsdocVersion: string;
+  /**
+   * The `$schema` field from the `tsdoc-config.json` file.
+   */
+  public readonly tsdocSchema: string;
 
+  /**
+   * Module paths for other config files that this file extends from.
+   */
   public readonly extends: ReadonlyArray<string>;
 
   public readonly tagDefinitions: ReadonlyArray<TSDocTagDefinition>;
 
   private constructor(filePath: string, configJson: IConfigJson) {
     this.filePath = filePath;
-    this.tsdocVersion = configJson.tsdocVersion;
+    this.tsdocSchema = configJson.$schema;
     this.extends = configJson.extends || [];
     const tagDefinitions: TSDocTagDefinition[] = [];
 
@@ -66,7 +80,16 @@ export class TSDocConfigFile {
     this.tagDefinitions = tagDefinitions;
   }
 
-  public static load(jsonFilePath: string): TSDocConfigFile {
+  /**
+   * Loads the contents of a single JSON input file.
+   *
+   * @remarks
+   *
+   * This method does not process the `extends` field of `tsdoc-config.json`.
+   * For full functionality, including discovery of the file path, use the {@link ConfigLoader}
+   * API instead.
+   */
+  public static loadFromFile(jsonFilePath: string): TSDocConfigFile {
     const fullJsonFilePath: string = path.resolve(jsonFilePath);
 
     const configJsonContent: string = fs.readFileSync(fullJsonFilePath).toString();

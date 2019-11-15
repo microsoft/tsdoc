@@ -8,12 +8,6 @@
       "type": "string"
     },
 
-    "tsdocVersion": {
-      "description": "The target version of the TSDoc spec",
-      "type": "string",
-      "pattern": "^[0-9]+\\.[0-9]+$"
-    },
-
     "extends": {
       "description": "Optionally specifies another JSON config files that this file extends from.  This provides a way for standard settings to be shared across multiple projects.",
       "type": "array",
@@ -30,7 +24,7 @@
       }
     }
   },
-  "required": [ "tsdocVersion" ],
+  "required": [ "$schema" ],
   "additionalProperties": false,
 
   "definitions": {

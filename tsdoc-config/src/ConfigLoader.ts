@@ -11,6 +11,10 @@ interface IPackageJson {
   tsdocConfig?: string;
 }
 
+/**
+ * Use this class to load the `tsdoc-config.json` file.
+ * @public
+ */
 export class ConfigLoader {
   public static readonly JSON_FILE_NAME: string = 'tsdoc-config.json';
 
@@ -74,6 +78,6 @@ export class ConfigLoader {
       return undefined;
     }
 
-    return TSDocConfigFile.load(rootConfigFilePath);
+    return TSDocConfigFile.loadFromFile(rootConfigFilePath);
   }
 }
