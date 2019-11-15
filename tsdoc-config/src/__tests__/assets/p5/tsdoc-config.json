@@ -1,0 +1,21 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/tsdoc-config.schema.json",
+  "tsdocVersion": "0.12",
+  "extends": [],
+  "tagDefinitions": [
+    {
+      "tagName": "@myInlineTag",
+      "syntaxKind": "inline",
+      "allowMultiple": true
+    },
+    {
+      "tagName": "@myBlockTag",
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@myModifierTag",
+      "syntaxKind": "modifier",
+      "allowMultiple": false
+    }
+  ]
+}
