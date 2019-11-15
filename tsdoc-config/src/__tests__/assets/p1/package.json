@@ -1,0 +1,5 @@
+{
+  "name": "p1",
+  "version": "1.0.0",
+  "tsdocConfig": "./folder/tsdoc-config.json"
+}

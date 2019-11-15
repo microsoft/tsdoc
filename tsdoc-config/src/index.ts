@@ -1,0 +1,1 @@
+export { TSDocConfigFile } from './TSDocConfigFile';
