@@ -21,6 +21,7 @@
      * instead of the latest version.
      */
     // "some-library": "1.2.3"
+    "@types/jest-diff": "20.0.1"
   },
 
   /**
