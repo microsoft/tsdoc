@@ -1,4 +1,8 @@
-import { TSDocTagDefinition, TSDocTagSyntaxKind } from '@microsoft/tsdoc';
+import {
+  TSDocTagDefinition,
+  TSDocTagSyntaxKind,
+  TSDocConfiguration
+} from '@microsoft/tsdoc';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as Ajv from 'ajv';
@@ -121,5 +125,22 @@ export class TSDocConfigFile {
    */
   public addExtendsFile(otherFile: TSDocConfigFile): void {
     this._extendsFiles.push(otherFile);
+  }
+
+  /**
+   * Applies the settings from this config file to a TSDoc parser configuration.
+   * Any `extendsFile` settings will also applied.
+   */
+  public applyToParserConfiguration(configuration: TSDocConfiguration): void {
+    // First apply the base config files
+    for (const extendsFile of this.extendsFiles) {
+      extendsFile.applyToParserConfiguration(configuration);
+    }
+
+    // The apply this one
+    for (const tagDefinition of this.tagDefinitions) {
+      configuration.addTagDefinition(tagDefinition);
+      configuration.setSupportForTag(tagDefinition, true);
+    }
   }
 }
