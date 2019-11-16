@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json",
+  "extends": [
+    "example-lib/dist/tsdocconfig-example.json"
+  ],
+  "tagDefinitions": [
+    {
+      "tagName": "@root",
+      "syntaxKind": "modifier"
+    }
+  ]
+}
