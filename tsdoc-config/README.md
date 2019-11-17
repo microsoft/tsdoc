@@ -19,7 +19,7 @@ until it finds a folder containing **tsconfig.json** or **package.json**, and th
 **tsdoc.json** from that location.
 
 The **tsdoc.json** file conforms to the [tsdoc.schema.json](
-https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json) JSON schema.  It defines tags using
+https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json) JSON schema.  It defines tags using
 similar fields as the
 [TSDocTagDefinition](https://github.com/microsoft/tsdoc/blob/master/tsdoc/src/configuration/TSDocTagDefinition.ts)
 API used by `TSDocParser` from `@microsoft/tsdoc`.
@@ -29,7 +29,7 @@ Here's a simple example:
 **tsdoc.json**
 ```js
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
   "tagDefinitions": [
     {
       "tagName": "@myTag",
@@ -45,7 +45,7 @@ a list of paths that will be mixed in with the current file:
 **tsdoc.json**
 ```js
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
   "extends": [
     "my-package/dist/tsdoc-base.json",
     "./path/to/local/file/tsdoc-local.json"

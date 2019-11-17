@@ -48,7 +48,7 @@ interface IConfigJson {
 export class TSDocConfigFile {
   public static readonly FILENAME: string = 'tsdoc.json';
   public static readonly CURRENT_SCHEMA_URL: string
-    = 'https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json';
+    = 'https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json';
 
   /**
    * A queryable log that reports warnings and error messages that occurred during parsing.

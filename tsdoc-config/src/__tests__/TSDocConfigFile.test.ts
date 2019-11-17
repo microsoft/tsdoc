@@ -41,7 +41,7 @@ test('Load p1', () => {
       "filePath": "assets/p1/tsdoc.json",
       "messages": Array [],
       "tagDefinitions": Array [],
-      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
+      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
     }
   `);
 });
@@ -90,7 +90,7 @@ test('Load p3', () => {
               "tagNameWithUpperCase": "@BASE1",
             },
           ],
-          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
+          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
         },
         Object {
           "extendsFiles": Array [],
@@ -107,7 +107,7 @@ test('Load p3', () => {
               "tagNameWithUpperCase": "@BASE2",
             },
           ],
-          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
+          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
         },
       ],
       "extendsPaths": Array [
@@ -126,7 +126,7 @@ test('Load p3', () => {
           "tagNameWithUpperCase": "@ROOT",
         },
       ],
-      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
+      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
     }
   `);
 });
@@ -149,7 +149,7 @@ test('Load p4', () => {
               "tagNameWithUpperCase": "@EXAMPLE",
             },
           ],
-          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
+          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
         },
       ],
       "extendsPaths": Array [
@@ -167,7 +167,7 @@ test('Load p4', () => {
           "tagNameWithUpperCase": "@ROOT",
         },
       ],
-      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
+      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
     }
   `);
 });
