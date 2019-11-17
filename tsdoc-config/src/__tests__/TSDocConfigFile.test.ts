@@ -38,10 +38,10 @@ test('Load p1', () => {
       "extendsFiles": Array [],
       "extendsPaths": Array [],
       "fileNotFound": false,
-      "filePath": "assets/p1/tsdocconfig.json",
+      "filePath": "assets/p1/tsdoc.json",
       "messages": Array [],
       "tagDefinitions": Array [],
-      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json",
+      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
     }
   `);
 });
@@ -51,7 +51,7 @@ test('Load p2', () => {
       "extendsFiles": Array [],
       "extendsPaths": Array [],
       "fileNotFound": true,
-      "filePath": "assets/p2/tsdocconfig.json",
+      "filePath": "assets/p2/tsdoc.json",
       "messages": Array [
         ParserMessage {
           "_text": undefined,
@@ -79,7 +79,7 @@ test('Load p3', () => {
           "extendsFiles": Array [],
           "extendsPaths": Array [],
           "fileNotFound": false,
-          "filePath": "assets/p3/base1/tsdocconfig-base1.json",
+          "filePath": "assets/p3/base1/tsdoc-base1.json",
           "messages": Array [],
           "tagDefinitions": Array [
             TSDocTagDefinition {
@@ -90,13 +90,13 @@ test('Load p3', () => {
               "tagNameWithUpperCase": "@BASE1",
             },
           ],
-          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json",
+          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
         },
         Object {
           "extendsFiles": Array [],
           "extendsPaths": Array [],
           "fileNotFound": false,
-          "filePath": "assets/p3/base2/tsdocconfig-base2.json",
+          "filePath": "assets/p3/base2/tsdoc-base2.json",
           "messages": Array [],
           "tagDefinitions": Array [
             TSDocTagDefinition {
@@ -107,15 +107,15 @@ test('Load p3', () => {
               "tagNameWithUpperCase": "@BASE2",
             },
           ],
-          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json",
+          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
         },
       ],
       "extendsPaths": Array [
-        "./base1/tsdocconfig-base1.json",
-        "./base2/tsdocconfig-base2.json",
+        "./base1/tsdoc-base1.json",
+        "./base2/tsdoc-base2.json",
       ],
       "fileNotFound": false,
-      "filePath": "assets/p3/tsdocconfig.json",
+      "filePath": "assets/p3/tsdoc.json",
       "messages": Array [],
       "tagDefinitions": Array [
         TSDocTagDefinition {
@@ -126,7 +126,7 @@ test('Load p3', () => {
           "tagNameWithUpperCase": "@ROOT",
         },
       ],
-      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json",
+      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
     }
   `);
 });
@@ -138,7 +138,7 @@ test('Load p4', () => {
           "extendsFiles": Array [],
           "extendsPaths": Array [],
           "fileNotFound": false,
-          "filePath": "assets/p4/node_modules/example-lib/dist/tsdocconfig-example.json",
+          "filePath": "assets/p4/node_modules/example-lib/dist/tsdoc-example.json",
           "messages": Array [],
           "tagDefinitions": Array [
             TSDocTagDefinition {
@@ -149,14 +149,14 @@ test('Load p4', () => {
               "tagNameWithUpperCase": "@EXAMPLE",
             },
           ],
-          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json",
+          "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
         },
       ],
       "extendsPaths": Array [
-        "example-lib/dist/tsdocconfig-example.json",
+        "example-lib/dist/tsdoc-example.json",
       ],
       "fileNotFound": false,
-      "filePath": "assets/p4/tsdocconfig.json",
+      "filePath": "assets/p4/tsdoc.json",
       "messages": Array [],
       "tagDefinitions": Array [
         TSDocTagDefinition {
@@ -167,7 +167,7 @@ test('Load p4', () => {
           "tagNameWithUpperCase": "@ROOT",
         },
       ],
-      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json",
+      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
     }
   `);
 });

@@ -16,7 +16,7 @@ import * as Ajv from 'ajv';
 const ajv: Ajv.Ajv = new Ajv({ verbose: true });
 
 function initializeSchemaValidator(): Ajv.ValidateFunction {
-  const jsonSchemaPath: string = resolve.sync('@microsoft/tsdoc/schemas/tsdocconfig.schema.json', { basedir: __dirname });
+  const jsonSchemaPath: string = resolve.sync('@microsoft/tsdoc/schemas/tsdoc.schema.json', { basedir: __dirname });
   const jsonSchemaContent: string = fs.readFileSync(jsonSchemaPath).toString();
   const jsonSchema: object = JSON.parse(jsonSchemaContent);
   return ajv.compile(jsonSchema);
@@ -41,14 +41,14 @@ interface IConfigJson {
 }
 
 /**
- * Represents an individual `tsdocconfig.json` file.
+ * Represents an individual `tsdoc.json` file.
  *
  * @public
  */
 export class TSDocConfigFile {
-  public static readonly FILENAME: string = 'tsdocconfig.json';
+  public static readonly FILENAME: string = 'tsdoc.json';
   public static readonly CURRENT_SCHEMA_URL: string
-    = 'https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json';
+    = 'https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json';
 
   /**
    * A queryable log that reports warnings and error messages that occurred during parsing.
@@ -90,7 +90,7 @@ export class TSDocConfigFile {
   }
 
   /**
-   * If true, then the TSDocConfigFile object contains an empty state, because the `tsdocconfig.json` file could
+   * If true, then the TSDocConfigFile object contains an empty state, because the `tsdoc.json` file could
    * not be found by the loader.
    */
   public get fileNotFound(): boolean {
@@ -111,14 +111,14 @@ export class TSDocConfigFile {
   }
 
   /**
-   * The `$schema` field from the `tsdocconfig.json` file.
+   * The `$schema` field from the `tsdoc.json` file.
    */
   public get tsdocSchema(): string {
     return this._tsdocSchema;
   }
 
   /**
-   * The `extends` field from the `tsdocconfig.json` file.  For the parsed file contents,
+   * The `extends` field from the `tsdoc.json` file.  For the parsed file contents,
    * use the `extendsFiles` property instead.
    */
   public get extendsPaths(): ReadonlyArray<string> {
@@ -275,7 +275,7 @@ export class TSDocConfigFile {
   }
 
   /**
-   * For the given folder, discover the relevant tsdocconfig.json files (if any), and load them.
+   * For the given folder, discover the relevant tsdoc.json files (if any), and load them.
    * @param folderPath - the path to a folder where the search should start
    */
   public static loadForFolder(folderPath: string): TSDocConfigFile {

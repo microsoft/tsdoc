@@ -1,8 +1,8 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
   "extends": [
-    "./base1/tsdocconfig-base1.json",
-    "./base2/tsdocconfig-base2.json"
+    "./base1/tsdoc-base1.json",
+    "./base2/tsdoc-base2.json"
   ],
   "tagDefinitions": [
     {

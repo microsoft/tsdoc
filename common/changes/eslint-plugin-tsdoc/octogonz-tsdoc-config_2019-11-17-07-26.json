@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "eslint-plugin-tsdoc",
-      "comment": "Add support for defining your own custom tags using tsdocconfig.json",
+      "comment": "Add support for defining your own custom tags using tsdoc.json",
       "type": "minor"
     }
   ],

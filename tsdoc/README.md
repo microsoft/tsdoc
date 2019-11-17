@@ -38,7 +38,7 @@ The [api-demo](https://github.com/microsoft/tsdoc/tree/master/api-demo) folder o
 to invoke the TSDoc parser.
 
 A separate NPM package [`@microsoft/tsdoc-config`](https://www.npmjs.com/package/@microsoft/tsdoc)
-is used for loading the **tsdocconfig.json** file.
+is used for loading the **tsdoc.json** file.
 
 
 ## Get involved

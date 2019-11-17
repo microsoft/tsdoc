@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdoc.schema.json",
   "tagDefinitions": [
     {
       "tagName": "@base1",

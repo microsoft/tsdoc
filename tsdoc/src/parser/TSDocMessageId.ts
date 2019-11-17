@@ -14,7 +14,7 @@ export const enum TSDocMessageId {
   /**
    * File not found
    * @remarks
-   * Reported by the `@microsoft/tsdoc-config` package when it failed to find a `tsdocconfig.json` file.
+   * Reported by the `@microsoft/tsdoc-config` package when it failed to find a `tsdoc.json` file.
    */
   ConfigFileNotFound = 'tsdoc-config-file-not-found',
 
