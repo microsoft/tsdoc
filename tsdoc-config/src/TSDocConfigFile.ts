@@ -251,9 +251,14 @@ export class TSDocConfigFile {
     if (folderPath) {
       let foundFolder: string = folderPath;
       for (;;) {
-        const tsconfigFilePath: string = path.join(foundFolder, 'tsconfig.json');
-        if (fs.existsSync(tsconfigFilePath)) {
-          // Success
+        const tsconfigJsonPath: string = path.join(foundFolder, 'tsconfig.json');
+        if (fs.existsSync(tsconfigJsonPath)) {
+          // Stop when we reach a folder containing tsconfig.json
+          return path.join(foundFolder, TSDocConfigFile.FILENAME);
+        }
+        const packageJsonPath: string = path.join(foundFolder, 'package.json');
+        if (fs.existsSync(packageJsonPath)) {
+          // Stop when we reach a folder containing package.json; this avoids crawling out of the current package
           return path.join(foundFolder, TSDocConfigFile.FILENAME);
         }
 
@@ -261,7 +266,7 @@ export class TSDocConfigFile {
         foundFolder = path.dirname(foundFolder);
 
         if (!foundFolder || foundFolder === previousFolder) {
-          // Failed
+          // Give up if we reach the filesystem root directory
           break;
         }
       }
