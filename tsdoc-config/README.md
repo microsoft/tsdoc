@@ -15,7 +15,7 @@ https://github.com/microsoft/tsdoc
 
 The **tsdocconfig.json** file is optional.  When used, it is expected to be found in the same folder as
 the **tsconfig.json** file for a project.  The loader looks for it by walking upwards in the directory tree
-from until it finds a folder containing **tsconfig.json** or **package.json**, and then it attempts to load
+until it finds a folder containing **tsconfig.json** or **package.json**, and then it attempts to load
 **tsdocconfig.json** from that location.
 
 The **tsdocconfig.json** file conforms to the [tsdocconfig.schema.json](

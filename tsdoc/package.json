@@ -13,9 +13,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/tsdoc"
+    "url": "https://github.com/microsoft/tsdoc"
   },
-  "homepage": "https://github.com/Microsoft/tsdoc",
+  "homepage": "https://github.com/microsoft/tsdoc",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "license": "MIT",
