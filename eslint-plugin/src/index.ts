@@ -31,7 +31,10 @@ const plugin: IPlugin = {
     // from the NPM package name, and then appending this string.
     "syntax": {
       meta: {
-        messages: tsdocMessageIds,
+        messages: {
+          "error-loading-config-file": "Error loading TSDoc config file:\n{{details}}",
+          ...tsdocMessageIds
+        },
         type: "problem",
         docs: {
           description: "Validates that TypeScript documentation comments conform to the TSDoc standard",
@@ -48,6 +51,19 @@ const plugin: IPlugin = {
         const tsdocConfigFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(sourceFilePath);
 
         if (!tsdocConfigFile.fileNotFound) {
+          if (tsdocConfigFile.hasErrors) {
+            context.report({
+              loc: {
+                line: 1,
+                column: 1
+              },
+              messageId: "error-loading-config-file",
+              data: {
+                details: tsdocConfigFile.getErrorSummary()
+              }
+            });
+          }
+
           tsdocConfigFile.configureParser(tsdocConfiguration);
         } else {
           // If we weren't able to find a tsdoc-config.json file, then by default we will use a lax configuration

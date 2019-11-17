@@ -1,7 +1,12 @@
 import {
   TSDocTagDefinition,
   TSDocTagSyntaxKind,
-  TSDocConfiguration
+  TSDocConfiguration,
+  ParserMessageLog,
+  TSDocMessageId,
+  ParserMessage,
+  TextRange,
+  IParserMessageParameters
 } from '@microsoft/tsdoc';
 import * as fs from 'fs';
 import * as resolve from 'resolve';
@@ -42,35 +47,126 @@ interface IConfigJson {
  */
 export class TSDocConfigFile {
   public static readonly FILENAME: string = 'tsdocconfig.json';
-  public static readonly CURRENT_SCHEMA_URL: string = 'https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json';
+  public static readonly CURRENT_SCHEMA_URL: string
+    = 'https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json';
 
-  private readonly _extendsFiles: TSDocConfigFile[] = [];
+  /**
+   * A queryable log that reports warnings and error messages that occurred during parsing.
+   */
+  public readonly log: ParserMessageLog;
+
+  private readonly _extendsFiles: TSDocConfigFile[];
+  private _filePath: string;
+  private _fileNotFound: boolean;
+  private _hasErrors: boolean;
+  private _tsdocSchema: string;
+  private readonly _extendsPaths: string[];
+  private readonly _tagDefinitions: TSDocTagDefinition[];
+
+  private constructor() {
+    this.log = new ParserMessageLog();
+
+    this._extendsFiles = [];
+    this._filePath = '';
+    this._fileNotFound = true;
+    this._hasErrors = false;
+    this._tsdocSchema = '';
+    this._extendsPaths = [];
+    this._tagDefinitions= [];
+  }
+
+  /**
+   * Other config files that this file extends from.
+   */
+  public get extendsFiles(): ReadonlyArray<TSDocConfigFile> {
+    return this._extendsFiles;
+  }
 
   /**
    * The full path of the file that was attempted to load.
    */
-  public readonly filePath: string;
+  public get filePath(): string {
+    return this._filePath;
+  }
 
-  public readonly fileNotFound: boolean = false;
+  /**
+   * If true, then the TSDocConfigFile object contains an empty state, because the `tsdocconfig.json` file could
+   * not be found by the loader.
+   */
+  public get fileNotFound(): boolean {
+    return this._fileNotFound;
+  }
+
+  /**
+   * If true, then at least one error was encountered while loading this file or one of its "extends" files.
+   *
+   * @remarks
+   * You can use {@link TSDocConfigFile.getErrorSummary} to report these errors.
+   *
+   * The individual messages can be retrieved from the {@link TSDocConfigFile.log} property of each `TSDocConfigFile`
+   * object (including the {@link TSDocConfigFile.extendsFiles} tree).
+   */
+  public get hasErrors(): boolean {
+    return this._hasErrors;
+  }
 
   /**
    * The `$schema` field from the `tsdocconfig.json` file.
    */
-  public readonly tsdocSchema: string;
+  public get tsdocSchema(): string {
+    return this._tsdocSchema;
+  }
 
   /**
    * The `extends` field from the `tsdocconfig.json` file.  For the parsed file contents,
    * use the `extendsFiles` property instead.
    */
-  public readonly extendsPaths: ReadonlyArray<string>;
+  public get extendsPaths(): ReadonlyArray<string> {
+    return this._extendsPaths;
+  }
 
-  public readonly tagDefinitions: ReadonlyArray<TSDocTagDefinition>;
+  public get tagDefinitions(): ReadonlyArray<TSDocTagDefinition> {
+    return this._tagDefinitions;
+  }
 
-  private constructor(filePath: string, configJson: IConfigJson) {
-    this.filePath = filePath;
-    this.tsdocSchema = configJson.$schema;
-    this.extendsPaths = configJson.extends || [];
-    const tagDefinitions: TSDocTagDefinition[] = [];
+  private _reportError(parserMessageParameters: IParserMessageParameters): void {
+    this.log.addMessage(new ParserMessage(parserMessageParameters));
+    this._hasErrors = true;
+  }
+
+  private _loadJsonFile(): void {
+    const configJsonContent: string = fs.readFileSync(this._filePath).toString();
+
+    this._fileNotFound = false;
+
+    const configJson: IConfigJson = JSON.parse(configJsonContent);
+
+    if (configJson.$schema !== TSDocConfigFile.CURRENT_SCHEMA_URL) {
+      this._reportError({
+        messageId: TSDocMessageId.ConfigFileUnsupportedSchema,
+        messageText: `Unsupported JSON "$schema" value; expecting "${TSDocConfigFile.CURRENT_SCHEMA_URL}"`,
+        textRange: TextRange.empty
+      });
+      return;
+    }
+
+    const success: boolean = tsdocSchemaValidator(configJson) as boolean;
+
+    if (!success) {
+      const description: string = ajv.errorsText(tsdocSchemaValidator.errors);
+
+      this._reportError({
+        messageId: TSDocMessageId.ConfigFileSchemaError,
+        messageText: 'Error loading config file: ' + description,
+        textRange: TextRange.empty
+      });
+      return;
+    }
+
+    this._tsdocSchema = configJson.$schema;
+    if (configJson.extends) {
+      this._extendsPaths.push(...configJson.extends);
+    }
 
     for (const jsonTagDefinition of configJson.tagDefinitions || []) {
       let syntaxKind: TSDocTagSyntaxKind;
@@ -82,52 +178,73 @@ export class TSDocConfigFile {
           // The JSON schema should have caught this error
           throw new Error('Unexpected tag kind');
       }
-      tagDefinitions.push(new TSDocTagDefinition({
+      this._tagDefinitions.push(new TSDocTagDefinition({
         tagName: jsonTagDefinition.tagName,
         syntaxKind: syntaxKind,
         allowMultiple: jsonTagDefinition.allowMultiple
       }));
     }
-
-    this.tagDefinitions = tagDefinitions;
   }
 
-  /**
-   * Other config files that this file extends from.
-   */
-  public get extendsFiles(): ReadonlyArray<TSDocConfigFile> {
-    return this._extendsFiles;
-  }
+  private _loadWithExtends(configFilePath: string, referencingConfigFile: TSDocConfigFile | undefined,
+    alreadyVisitedPaths: Set<string>): void {
 
-  /**
-   * Loads the contents of a single JSON input file.
-   *
-   * @remarks
-   *
-   * This method does not process the `extends` field of `tsdocconfig.json`.
-   * For full functionality, including discovery of the file path, use the {@link TSDocConfigFileSet}
-   * API instead.
-   */
-  private static _loadSingleFile(jsonFilePath: string): TSDocConfigFile {
-    const fullJsonFilePath: string = path.resolve(jsonFilePath);
-
-    const configJsonContent: string = fs.readFileSync(fullJsonFilePath).toString();
-
-    const configJson: IConfigJson = JSON.parse(configJsonContent);
-    const success: boolean = tsdocSchemaValidator(configJson) as boolean;
-
-    if (!success) {
-      const description: string = ajv.errorsText(tsdocSchemaValidator.errors);
-      throw new Error('Error parsing config file: ' + description
-        + '\nError in file: ' + jsonFilePath);
+    if (!configFilePath) {
+      this._reportError({
+        messageId: TSDocMessageId.ConfigFileNotFound,
+        messageText: 'File not found',
+        textRange: TextRange.empty
+      });
+      return;
     }
 
-    if (configJson.$schema !== TSDocConfigFile.CURRENT_SCHEMA_URL) {
-      throw new Error('Expecting JSON "$schema" field to be ' + TSDocConfigFile.CURRENT_SCHEMA_URL
-        + '\nError in file: ' + jsonFilePath);
+    this._filePath = path.resolve(configFilePath);
+
+    if (!fs.existsSync(this._filePath)) {
+      this._reportError({
+        messageId: TSDocMessageId.ConfigFileNotFound,
+        messageText: 'File not found',
+        textRange: TextRange.empty
+      });
+      return;
     }
 
-    return new TSDocConfigFile(fullJsonFilePath, configJson);
+    const hashKey: string = fs.realpathSync(this._filePath);
+    if (referencingConfigFile && alreadyVisitedPaths.has(hashKey)) {
+      this._reportError({
+        messageId: TSDocMessageId.ConfigFileCyclicExtends,
+        messageText: `Circular reference encountered for "extends" field of "${referencingConfigFile.filePath}"`,
+        textRange: TextRange.empty
+      });
+      return;
+    }
+    alreadyVisitedPaths.add(hashKey);
+
+    this._loadJsonFile();
+
+    const configFileFolder: string = path.dirname(this.filePath);
+
+    for (const extendsField of this.extendsPaths) {
+      const resolvedExtendsPath: string = resolve.sync(extendsField, { basedir: configFileFolder });
+
+      const baseConfigFile: TSDocConfigFile = new TSDocConfigFile();
+
+      baseConfigFile._loadWithExtends(resolvedExtendsPath, this, alreadyVisitedPaths);
+
+      if (baseConfigFile.fileNotFound) {
+        this._reportError({
+          messageId: TSDocMessageId.ConfigFileUnresolvedExtends,
+          messageText: `Unable to resolve "extends" reference to "${extendsField}"`,
+          textRange: TextRange.empty
+        });
+      }
+
+      this._extendsFiles.push(baseConfigFile);
+
+      if (baseConfigFile.hasErrors) {
+        this._hasErrors = true;
+      }
+    }
   }
 
   private static _findConfigPathForFolder(folderPath: string): string {
@@ -152,45 +269,45 @@ export class TSDocConfigFile {
     return '';
   }
 
-  private static _loadWithExtends(configFilePath: string, alreadyVisitedPaths: Set<string>): TSDocConfigFile {
-    const hashKey: string = fs.realpathSync(configFilePath);
-    if (alreadyVisitedPaths.has(hashKey)) {
-      throw new Error('Circular reference encountered for "extends" field of ' + configFilePath);
-    }
-    alreadyVisitedPaths.add(hashKey);
-
-    const configFile: TSDocConfigFile = TSDocConfigFile._loadSingleFile(configFilePath);
-
-    const configFileFolder: string = path.dirname(configFile.filePath);
-
-    for (const extendsField of configFile.extendsPaths) {
-      const resolvedExtendsPath: string = resolve.sync(extendsField, { basedir: configFileFolder });
-      if (!fs.existsSync(resolvedExtendsPath)) {
-        throw new Error('Unable to resolve "extends" field of ' + configFilePath);
-      }
-
-      const baseConfigFile: TSDocConfigFile = TSDocConfigFile._loadWithExtends(resolvedExtendsPath, alreadyVisitedPaths);
-      configFile.addExtendsFile(baseConfigFile);
-    }
-
-    return configFile;
-  }
-
   /**
    * For the given folder, discover the relevant tsdocconfig.json files (if any), and load them.
    * @param folderPath - the path to a folder where the search should start
    */
   public static loadForFolder(folderPath: string): TSDocConfigFile {
+    const configFile: TSDocConfigFile = new TSDocConfigFile();
     const rootConfigPath: string = TSDocConfigFile._findConfigPathForFolder(folderPath);
+
     const alreadyVisitedPaths: Set<string> = new Set<string>();
-    return TSDocConfigFile._loadWithExtends(rootConfigPath, alreadyVisitedPaths);
+    configFile._loadWithExtends(rootConfigPath, undefined, alreadyVisitedPaths);
+
+    return configFile;
   }
 
   /**
-   * Adds an item to `TSDocConfigFile.extendsFiles`.
+   * Returns a report of any errors that occurred while attempting to load this file or any files
+   * referenced via the "extends" field.
+   *
+   * @remarks
+   * Use {@link TSDocConfigFile.hasErrors} to determine whether any errors occurred.
    */
-  public addExtendsFile(otherFile: TSDocConfigFile): void {
-    this._extendsFiles.push(otherFile);
+  public getErrorSummary(): string {
+    if (!this._hasErrors) {
+      return 'No errors.';
+    }
+
+    let result: string = `Errors encountered for ${this.filePath}:\n`;
+
+    for (const message of this.log.messages) {
+      result += `  ${message.text}\n`;
+    }
+
+    for (const extendsFile of this.extendsFiles) {
+      if (extendsFile.hasErrors) {
+        result += extendsFile.getErrorSummary();
+      }
+    }
+
+    return result;
   }
 
   /**

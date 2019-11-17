@@ -15,13 +15,15 @@ expect.addSnapshotSerializer({
     return value instanceof TSDocConfigFile;
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  print(value: any, serialize: (value: any) => string, indent: (str: string) => string): any {
+  print(value: TSDocConfigFile, serialize: (value: any) => string, indent: (str: string) => string): any {
     return serialize({
       tsdocSchema: value.tsdocSchema,
       filePath: getRelativePath(value.filePath),
+      fileNotFound: value.fileNotFound,
       extendsPaths: value.extendsPaths,
       extendsFiles: value.extendsFiles,
-      tagDefinitions: value.tagDefinitions
+      tagDefinitions: value.tagDefinitions,
+      messages: value.log.messages
     });
   }
 });
@@ -35,7 +37,9 @@ test('Load p1', () => {
     Object {
       "extendsFiles": Array [],
       "extendsPaths": Array [],
+      "fileNotFound": false,
       "filePath": "assets/p1/tsdocconfig.json",
+      "messages": Array [],
       "tagDefinitions": Array [],
       "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json",
     }
@@ -46,9 +50,24 @@ test('Load p2', () => {
     Object {
       "extendsFiles": Array [],
       "extendsPaths": Array [],
+      "fileNotFound": true,
       "filePath": "assets/p2/tsdocconfig.json",
+      "messages": Array [
+        ParserMessage {
+          "_text": undefined,
+          "docNode": undefined,
+          "messageId": "tsdoc-config-file-not-found",
+          "textRange": TextRange {
+            "buffer": "",
+            "end": 0,
+            "pos": 0,
+          },
+          "tokenSequence": undefined,
+          "unformattedText": "File not found",
+        },
+      ],
       "tagDefinitions": Array [],
-      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v1/tsdocconfig.schema.json",
+      "tsdocSchema": "",
     }
   `);
 });
@@ -59,7 +78,9 @@ test('Load p3', () => {
         Object {
           "extendsFiles": Array [],
           "extendsPaths": Array [],
+          "fileNotFound": false,
           "filePath": "assets/p3/base1/tsdocconfig-base1.json",
+          "messages": Array [],
           "tagDefinitions": Array [
             TSDocTagDefinition {
               "allowMultiple": false,
@@ -74,7 +95,9 @@ test('Load p3', () => {
         Object {
           "extendsFiles": Array [],
           "extendsPaths": Array [],
+          "fileNotFound": false,
           "filePath": "assets/p3/base2/tsdocconfig-base2.json",
+          "messages": Array [],
           "tagDefinitions": Array [
             TSDocTagDefinition {
               "allowMultiple": false,
@@ -91,7 +114,9 @@ test('Load p3', () => {
         "./base1/tsdocconfig-base1.json",
         "./base2/tsdocconfig-base2.json",
       ],
+      "fileNotFound": false,
       "filePath": "assets/p3/tsdocconfig.json",
+      "messages": Array [],
       "tagDefinitions": Array [
         TSDocTagDefinition {
           "allowMultiple": false,
@@ -112,7 +137,9 @@ test('Load p4', () => {
         Object {
           "extendsFiles": Array [],
           "extendsPaths": Array [],
+          "fileNotFound": false,
           "filePath": "assets/p4/node_modules/example-lib/dist/tsdocconfig-example.json",
+          "messages": Array [],
           "tagDefinitions": Array [
             TSDocTagDefinition {
               "allowMultiple": false,
@@ -128,7 +155,9 @@ test('Load p4', () => {
       "extendsPaths": Array [
         "example-lib/dist/tsdocconfig-example.json",
       ],
+      "fileNotFound": false,
       "filePath": "assets/p4/tsdocconfig.json",
+      "messages": Array [],
       "tagDefinitions": Array [
         TSDocTagDefinition {
           "allowMultiple": false,

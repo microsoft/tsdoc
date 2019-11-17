@@ -12,6 +12,42 @@
  */
 export const enum TSDocMessageId {
   /**
+   * File not found
+   * @remarks
+   * Reported by the `@microsoft/tsdoc-config` package when it failed to find a `tsdocconfig.json` file.
+   */
+  ConfigFileNotFound = 'tsdoc-config-file-not-found',
+
+  /**
+   * Unsupported JSON "$schema" value
+   * @remarks
+   * Reported by the `@microsoft/tsdoc-config` package when the file format is not supported.
+   */
+  ConfigFileUnsupportedSchema = 'tsdoc-config-unsupported-schema',
+
+  /**
+   * Error loading config file: ___
+   * @remarks
+   * Reported by the `@microsoft/tsdoc-config` package when the config file doesn't conform to its schema.
+   */
+  ConfigFileSchemaError = 'tsdoc-config-schema-error',
+
+  /**
+   * Circular reference encountered for "extends" field of "___"
+   * @remarks
+   * Reported by the `@microsoft/tsdoc-config` package when the "extends" field creates a chain of references
+   * that causes a file to indirectly extend itself.
+   */
+  ConfigFileCyclicExtends = 'tsdoc-config-cyclic-extends',
+
+  /**
+   * Unable to resolve "extends" reference to "___"
+   * @remarks
+   * Reported by the `@microsoft/tsdoc-config` package when module resolution fails for the "extends" field.
+   */
+  ConfigFileUnresolvedExtends = 'tsdoc-config-unresolved-extends',
+
+  /**
    * Expecting a `/**` comment.
    * Unexpected end of input.
    */
@@ -338,6 +374,12 @@ export const enum TSDocMessageId {
 
 // Exposed via TSDocConfiguration.allTsdocMessageIds()
 export const allTsdocMessageIds: string[] = [
+  'tsdoc-config-file-not-found',
+  'tsdoc-config-unsupported-schema',
+  'tsdoc-config-schema-error',
+  'tsdoc-config-cyclic-extends',
+  'tsdoc-config-unresolved-extends',
+
   'tsdoc-comment-not-found',
   'tsdoc-comment-missing-opening-delimiter',
   'tsdoc-comment-missing-closing-delimiter',
