@@ -325,10 +325,9 @@ export class TSDocConfigFile {
       extendsFile.configureParser(configuration);
     }
 
-    // The apply this one
+    // Then apply this one
     for (const tagDefinition of this.tagDefinitions) {
       configuration.addTagDefinition(tagDefinition);
-      configuration.setSupportForTag(tagDefinition, true);
     }
   }
 }

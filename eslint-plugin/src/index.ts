@@ -3,9 +3,6 @@ import {
   TSDocParser,
   TextRange,
   TSDocConfiguration,
-  StandardTags,
-  TSDocTagDefinition,
-  TSDocTagSyntaxKind,
   ParserContext
 } from "@microsoft/tsdoc";
 import {
@@ -33,6 +30,7 @@ const plugin: IPlugin = {
       meta: {
         messages: {
           "error-loading-config-file": "Error loading TSDoc config file:\n{{details}}",
+          "error-applying-config": "Error applying TSDoc configuration: {{details}}",
           ...tsdocMessageIds
         },
         type: "problem",
@@ -53,10 +51,7 @@ const plugin: IPlugin = {
         if (!tsdocConfigFile.fileNotFound) {
           if (tsdocConfigFile.hasErrors) {
             context.report({
-              loc: {
-                line: 1,
-                column: 1
-              },
+              loc: { line: 1, column: 1 },
               messageId: "error-loading-config-file",
               data: {
                 details: tsdocConfigFile.getErrorSummary()
@@ -64,27 +59,17 @@ const plugin: IPlugin = {
             });
           }
 
-          tsdocConfigFile.configureParser(tsdocConfiguration);
-        } else {
-          // If we weren't able to find a tsdoc-config.json file, then by default we will use a lax configuration
-          // that allows every standard tag regardless of standardization group.
-          tsdocConfiguration.setSupportForTags(StandardTags.allDefinitions, true);
-
-          // Also allow the three AEDoc tags.
-          tsdocConfiguration.addTagDefinitions([
-            new TSDocTagDefinition({
-              tagName: '@betaDocumentation',
-              syntaxKind: TSDocTagSyntaxKind.ModifierTag
-            }),
-            new TSDocTagDefinition({
-              tagName: '@internalRemarks',
-              syntaxKind: TSDocTagSyntaxKind.BlockTag
-            }),
-            new TSDocTagDefinition({
-              tagName: '@preapproved',
-              syntaxKind: TSDocTagSyntaxKind.ModifierTag
-            })
-          ], true);
+          try {
+            tsdocConfigFile.configureParser(tsdocConfiguration);
+          } catch (e) {
+            context.report({
+              loc: { line: 1, column: 1 },
+              messageId: "error-applying-config",
+              data: {
+                details: e.message
+              }
+            });
+          }
         }
 
         const tsdocParser: TSDocParser = new TSDocParser(tsdocConfiguration);
