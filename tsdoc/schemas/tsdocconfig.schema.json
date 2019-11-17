@@ -9,7 +9,7 @@
     },
 
     "extends": {
-      "description": "Optionally specifies another JSON config files that this file extends from.  This provides a way for standard settings to be shared across multiple projects.",
+      "description": "Optionally specifies one or more JSON config files that will be combined with this file.  This provides a way for standard settings to be shared across multiple projects.  Important: The \"extends\" paths are resolved using NodeJS module resolution, so a path to a local file MUST be prefixed with \"./\".",
       "type": "array",
       "items": {
         "type": "string"
