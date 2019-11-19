@@ -3,19 +3,19 @@ import {
   TSDocParser,
   TextRange,
   TSDocConfiguration,
-  StandardTags,
-  TSDocTagDefinition,
-  TSDocTagSyntaxKind,
   ParserContext
 } from "@microsoft/tsdoc";
+import {
+  TSDocConfigFile
+} from '@microsoft/tsdoc-config';
 import * as eslint from "eslint";
 import * as ESTree from "estree";
 
-const messageIds: {[x: string]: string} = {};
+const tsdocMessageIds: {[x: string]: string} = {};
 
 const defaultTSDocConfiguration: TSDocConfiguration = new TSDocConfiguration()
 defaultTSDocConfiguration.allTsdocMessageIds.forEach((messageId: string) => {
-  messageIds[messageId] = `${messageId}: {{ unformattedText }}`;
+  tsdocMessageIds[messageId] = `${messageId}: {{unformattedText}}`;
 });
 
 interface IPlugin {
@@ -28,7 +28,11 @@ const plugin: IPlugin = {
     // from the NPM package name, and then appending this string.
     "syntax": {
       meta: {
-        messages: messageIds,
+        messages: {
+          "error-loading-config-file": "Error loading TSDoc config file:\n{{details}}",
+          "error-applying-config": "Error applying TSDoc configuration: {{details}}",
+          ...tsdocMessageIds
+        },
         type: "problem",
         docs: {
           description: "Validates that TypeScript documentation comments conform to the TSDoc standard",
@@ -41,24 +45,32 @@ const plugin: IPlugin = {
       create: (context: eslint.Rule.RuleContext) => {
         const tsdocConfiguration: TSDocConfiguration = new TSDocConfiguration();
 
-        // Create a lax configuration that allows every standard tag regardless of standardization group
-        tsdocConfiguration.setSupportForTags(StandardTags.allDefinitions, true);
+        const sourceFilePath: string = context.getFilename();
+        const tsdocConfigFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(sourceFilePath);
 
-        // Also add the three AEDoc tags
-        tsdocConfiguration.addTagDefinitions([
-          new TSDocTagDefinition({
-            tagName: '@betaDocumentation',
-            syntaxKind: TSDocTagSyntaxKind.ModifierTag
-          }),
-          new TSDocTagDefinition({
-            tagName: '@internalRemarks',
-            syntaxKind: TSDocTagSyntaxKind.BlockTag
-          }),
-          new TSDocTagDefinition({
-            tagName: '@preapproved',
-            syntaxKind: TSDocTagSyntaxKind.ModifierTag
-          })
-        ], true);
+        if (!tsdocConfigFile.fileNotFound) {
+          if (tsdocConfigFile.hasErrors) {
+            context.report({
+              loc: { line: 1, column: 1 },
+              messageId: "error-loading-config-file",
+              data: {
+                details: tsdocConfigFile.getErrorSummary()
+              }
+            });
+          }
+
+          try {
+            tsdocConfigFile.configureParser(tsdocConfiguration);
+          } catch (e) {
+            context.report({
+              loc: { line: 1, column: 1 },
+              messageId: "error-applying-config",
+              data: {
+                details: e.message
+              }
+            });
+          }
+        }
 
         const tsdocParser: TSDocParser = new TSDocParser(tsdocConfiguration);
 

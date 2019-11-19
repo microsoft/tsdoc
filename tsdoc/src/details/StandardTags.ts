@@ -125,7 +125,7 @@ export class StandardTags {
    * separate NPM package.
    *
    * TODO: The notation for API item references is still being standardized.  See this issue:
-   * https://github.com/Microsoft/tsdoc/issues/9
+   * https://github.com/microsoft/tsdoc/issues/9
    */
   public static readonly inheritDoc: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@inheritDoc',
@@ -156,7 +156,7 @@ export class StandardTags {
    * using a selector in the TSDoc declaration reference notation.
    *
    * TODO: The `{@label}` notation is still being standardized.  See this issue:
-   * https://github.com/Microsoft/tsdoc/issues/9
+   * https://github.com/microsoft/tsdoc/issues/9
    */
   public static readonly label: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@label',
@@ -172,7 +172,7 @@ export class StandardTags {
    * expressions for referencing API items.
    *
    * TODO: The `{@link}` notation is still being standardized.  See this issue:
-   * https://github.com/Microsoft/tsdoc/issues/9
+   * https://github.com/microsoft/tsdoc/issues/9
    */
   public static readonly link: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@link',

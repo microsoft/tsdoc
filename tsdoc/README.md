@@ -2,7 +2,8 @@
 
 This library is the reference implementation of a parser for the TSDoc syntax.  Using this library is an easy way to ensure that your tool is 100% compatible with the standard.
 
-###  What is TSDoc?
+
+##  What is TSDoc?
 
 **TSDoc** is a proposal to standardize the doc comments used in [TypeScript](http://www.typescriptlang.org/) source files.  It allows different tools to extract content from comments without getting confused by each other's syntax.   The **TSDoc** notation looks pretty familiar:
 
@@ -30,8 +31,18 @@ export class Statistics {
 
 Check out the [TSDoc Playground](https://microsoft.github.io/tsdoc/) for a cool live demo of our parser!
 
+
+## API Usage
+
+The [api-demo](https://github.com/microsoft/tsdoc/tree/master/api-demo) folder on GitHub illustrates how
+to invoke the TSDoc parser.
+
+A separate NPM package [`@microsoft/tsdoc-config`](https://www.npmjs.com/package/@microsoft/tsdoc)
+is used for loading the **tsdoc.json** file.
+
+
 ## Get involved
 
 The **TSDoc** project is actively evolving.  Please visit our GitHub project for the latest documentation, instructions for building/debugging the projects, and other resources:
 
-https://github.com/Microsoft/tsdoc
+https://github.com/microsoft/tsdoc

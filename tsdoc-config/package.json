@@ -1,7 +1,7 @@
 {
-  "name": "@microsoft/tsdoc",
+  "name": "@microsoft/tsdoc-config",
   "version": "0.12.15",
-  "description": "A parser for the TypeScript doc comment syntax",
+  "description": "A loader for the tsdoc.json file",
   "keywords": [
     "TypeScript",
     "documentation",
@@ -19,10 +19,16 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@microsoft/tsdoc": "0.12.15",
+    "ajv": "~6.10.2",
+    "resolve": "~1.12.0"
+  },
   "devDependencies": {
     "@rushstack/eslint-config": "0.4.0",
     "@types/jest": "24.0.16",
+    "@types/resolve": "0.0.8",
+    "@types/node": "10.17.5",
     "eslint": "^6.0.0",
     "jest": "~24.8.0",
     "prettier": "~1.18.2",

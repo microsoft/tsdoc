@@ -3,7 +3,7 @@
  *
  * @remarks
  *
- * Links can point to a URL: {@link https://github.com/Microsoft/tsdoc}
+ * Links can point to a URL: {@link https://github.com/microsoft/tsdoc}
  *
  * Links can point to an API item: {@link Button}
  *

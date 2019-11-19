@@ -30,7 +30,10 @@ export class TSDocConfiguration {
   }
 
   /**
-   * The TSDoc block tag names that will be interpreted as modifier tags.
+   * The TSDoc tags that are defined in this configuration.
+   *
+   * @remarks
+   * The subset of "supported" tags is tracked by {@link TSDocConfiguration.supportedTagDefinitions}.
    */
   public get tagDefinitions(): ReadonlyArray<TSDocTagDefinition> {
     return this._tagDefinitions;
