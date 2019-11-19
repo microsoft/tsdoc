@@ -2,6 +2,26 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.2.0",
+      "tag": "eslint-plugin-tsdoc_v0.2.0",
+      "date": "Tue, 19 Nov 2019 22:01:56 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add support for defining your own custom tags using tsdoc.json"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" from `0.12.15` to `0.12.16`"
+          },
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc-config\" from `0.12.15` to `0.12.16`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.1.2",
       "tag": "eslint-plugin-tsdoc_v0.1.2",
       "date": "Sat, 09 Nov 2019 05:55:42 GMT",

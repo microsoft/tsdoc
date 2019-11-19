@@ -1,6 +1,13 @@
 # Change Log - eslint-plugin-tsdoc
 
-This log was last generated on Sat, 09 Nov 2019 05:55:42 GMT and should not be manually modified.
+This log was last generated on Tue, 19 Nov 2019 22:01:56 GMT and should not be manually modified.
+
+## 0.2.0
+Tue, 19 Nov 2019 22:01:56 GMT
+
+### Minor changes
+
+- Add support for defining your own custom tags using tsdoc.json
 
 ## 0.1.2
 Sat, 09 Nov 2019 05:55:42 GMT

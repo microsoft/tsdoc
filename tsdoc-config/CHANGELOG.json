@@ -1,0 +1,22 @@
+{
+  "name": "@microsoft/tsdoc-config",
+  "entries": [
+    {
+      "version": "0.12.16",
+      "tag": "@microsoft/tsdoc-config_v0.12.16",
+      "date": "Tue, 19 Nov 2019 22:01:56 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Initial release"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" from `0.12.15` to `0.12.16`"
+          }
+        ]
+      }
+    }
+  ]
+}
