@@ -1,6 +1,7 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 import { DocSection } from './DocSection';
 import { StandardModifierTagSet } from '../details/StandardModifierTagSet';
+import { IModifierTagSetParameters } from '../details/ModifierTagSet';
 import { DocBlock } from './DocBlock';
 import { DocInheritDocTag } from './DocInheritDocTag';
 import { StringBuilder } from '../emitters/StringBuilder';
