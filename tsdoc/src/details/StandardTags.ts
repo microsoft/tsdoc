@@ -334,6 +334,31 @@ export class StandardTags {
   /**
    * (Extended)
    *
+   * Used to document another symbol or resource that may be related to the current item being documented.
+   *
+   * @remarks
+   *
+   * For example:
+   *
+   * ```ts
+   * /**
+   *  * Make a rectangle from two points.
+   *  *
+   *  * @see {@link Point}
+   *  &#42;/
+   * function makeRect(a: Point, b: Point): Rect;
+   * ```
+   */
+  public static readonly see: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@see',
+    synonyms: ['@seeAlso'],
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Extended)
+   *
    * Used to document an exception type that may be thrown by a function or property.
    *
    * @remarks
@@ -425,6 +450,7 @@ export class StandardTags {
     StandardTags.remarks,
     StandardTags.returns,
     StandardTags.sealed,
+    StandardTags.see,
     StandardTags.throws,
     StandardTags.typeParam,
     StandardTags.virtual

@@ -323,6 +323,8 @@ export class NodeParser {
       docComment.deprecatedBlock = block;
     } else if (StandardTags.returns.isDefinitionOfTag(block.blockTag)) {
       docComment.returnsBlock = block;
+    } else if (StandardTags.see.isDefinitionOfTag(block.blockTag)) {
+      docComment.appendSeeBlock(block);
     } else {
       docComment.appendCustomBlock(block);
     }

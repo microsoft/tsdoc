@@ -130,6 +130,7 @@ export class TSDocEmitter {
           docComment.typeParams,
           docComment.returnsBlock,
           ...docComment.customBlocks,
+          ...docComment.seeBlocks,
           docComment.inheritDocTag
         ]);
         if (docComment.modifierTagSet.nodes.length > 0) {
