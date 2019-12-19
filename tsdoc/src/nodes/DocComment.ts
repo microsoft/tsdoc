@@ -103,8 +103,7 @@ export class DocComment extends DocNode {
     this.params = new DocParamCollection({ configuration: this.configuration });
     this.typeParams = new DocParamCollection({ configuration: this.configuration });
     this.returnsBlock = undefined;
-
-    this.modifierTagSet = new StandardModifierTagSet();
+    this.modifierTagSet = new StandardModifierTagSet({ configuration: this.configuration });
 
     this._customBlocks = [];
   }
@@ -167,3 +166,4 @@ export class DocComment extends DocNode {
 
 // Circular reference
 import { TSDocEmitter } from '../emitters/TSDocEmitter';
+

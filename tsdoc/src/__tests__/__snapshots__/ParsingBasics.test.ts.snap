@@ -1596,3 +1596,276 @@ Object {
   "_12_logMessages": Array [],
 }
 `;
+
+exports[`05 synonyms 1`] = `
+Object {
+  "_00_lines": Array [
+    "@param a - description1",
+    "@arg b - description2",
+    "@argument c - description3",
+    "@return description4",
+    "@readonly2",
+  ],
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
+    "kind": "Section",
+  },
+  "_03_remarksBlock": undefined,
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@param",
+            },
+          ],
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_ParameterName",
+          "nodeExcerpt": "a",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_Hyphen",
+          "nodeExcerpt": "-",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": "description1",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@arg",
+            },
+          ],
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_ParameterName",
+          "nodeExcerpt": "b",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_Hyphen",
+          "nodeExcerpt": "-",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": "description2",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@argument",
+            },
+          ],
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_ParameterName",
+          "nodeExcerpt": "c",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_Hyphen",
+          "nodeExcerpt": "-",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": "description3",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": Object {
+    "kind": "Block",
+    "nodes": Array [
+      Object {
+        "kind": "BlockTag",
+        "nodes": Array [
+          Object {
+            "kind": "Excerpt: BlockTag",
+            "nodeExcerpt": "@return",
+          },
+        ],
+      },
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": " description4",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [
+    Object {
+      "kind": "BlockTag",
+      "nodes": Array [
+        Object {
+          "kind": "Excerpt: BlockTag",
+          "nodeExcerpt": "@readonly2",
+        },
+      ],
+    },
+  ],
+  "_12_logMessages": Array [],
+}
+`;

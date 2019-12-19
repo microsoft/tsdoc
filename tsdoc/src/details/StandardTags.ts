@@ -68,6 +68,7 @@ export class StandardTags {
    */
   public static readonly defaultValue: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@defaultValue',
+    synonyms: ['@default'],
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     standardization: Standardization.Extended
   });
@@ -222,6 +223,7 @@ export class StandardTags {
    */
   public static readonly param: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@param',
+    synonyms: ['@arg', '@argument'],
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     allowMultiple: true,
     standardization: Standardization.Core
@@ -295,6 +297,7 @@ export class StandardTags {
    */
   public static readonly returns: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@returns',
+    synonyms: ['@return'],
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     standardization: Standardization.Core
   });
@@ -349,6 +352,7 @@ export class StandardTags {
    */
   public static readonly throws: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@throws',
+    synonyms: ['@exception'],
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     allowMultiple: true,
     standardization: Standardization.Extended
@@ -363,6 +367,7 @@ export class StandardTags {
    */
   public static readonly typeParam: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@typeParam',
+    synonyms: ['@template'],
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     allowMultiple: true,
     standardization: Standardization.Core

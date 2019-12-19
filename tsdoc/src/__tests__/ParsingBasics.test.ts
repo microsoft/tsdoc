@@ -7,6 +7,7 @@ import {
   TSDocTagSyntaxKind
 } from '../index';
 import { TestHelpers } from '../parser/__tests__/TestHelpers';
+import { StandardTags } from '../details/StandardTags';
 
 test('01 Simple @beta and @internal extraction', () => {
   const parserContext: ParserContext = TestHelpers.parseAndMatchDocCommentSnapshot([
@@ -110,4 +111,18 @@ test('04 typeParam blocks', () => {
     ' * @returns The map',
     ' */'
   ].join('\n'));
+});
+
+test('05 synonyms', () => {
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
+  configuration.addSynonym(StandardTags.readonly, "@readonly2");
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * @param a - description1',
+    ' * @arg b - description2',
+    ' * @argument c - description3',
+    ' * @return description4',
+    ' * @readonly2',
+    ' */'
+  ].join('\n'), configuration);
 });

@@ -22,6 +22,22 @@
       "items": {
         "$ref": "#/definitions/tsdocTagDefinition"
       }
+    },
+    
+    "synonyms": {
+      "description": "Additional synonyms to add or remove from built-in tag definitions.",
+      "type": "object",
+      "properties": {
+        "add": {
+          "description": "Synonyms to add.",
+          "$ref": "#/definitions/synonymSet"
+        },
+        "remove": {
+          "description": "Synonyms to remove.",
+          "$ref": "#/definitions/synonymSet"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "required": [ "$schema" ],
@@ -44,10 +60,28 @@
         "allowMultiple": {
           "description": "If true, then this tag may appear multiple times in a doc comment. By default, a tag may only appear once.",
           "type": "boolean"
+        },
+        "synonyms": {
+          "description": "Synonyms of the custom tag. TSDoc tag names start with an at-sign (@) followed by ASCII letters using camelCase capitalization.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": ["tagName", "syntaxKind"],
       "additionalProperties": false
+    },
+    "synonymSet": {
+      "description": "Provides the assocation between a tag and the synonyms to be added or removed.",
+      "type": "object",
+      "additionalProperties": {
+        "description": "Synonyms of the tag. TSDoc tag names start with an at-sign (@) followed by ASCII letters using camelCase capitalization.",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
     }
   }
 }
