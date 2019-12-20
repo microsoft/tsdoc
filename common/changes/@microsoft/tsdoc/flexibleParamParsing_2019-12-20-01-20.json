@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Improve parse for param/typeParam",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "ron.buckton@microsoft.com"
+}

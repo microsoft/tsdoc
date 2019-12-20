@@ -21,7 +21,7 @@ export interface IDocParamBlockParsedParameters extends IDocBlockParsedParameter
 
   spacingAfterParameterNameExcerpt?: TokenSequence;
 
-  hyphenExcerpt: TokenSequence;
+  hyphenExcerpt?: TokenSequence;
   spacingAfterHyphenExcerpt?: TokenSequence;
 }
 
@@ -73,11 +73,13 @@ export class DocParamBlock extends DocBlock {
         });
       }
 
-      this._hyphenExcerpt = new DocExcerpt({
-        configuration: this.configuration,
-        excerptKind: ExcerptKind.ParamBlock_Hyphen,
-        content: parameters.hyphenExcerpt
-      });
+      if (parameters.hyphenExcerpt) {
+        this._hyphenExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.ParamBlock_Hyphen,
+          content: parameters.hyphenExcerpt
+        });
+      }
 
       if (parameters.spacingAfterHyphenExcerpt) {
         this._spacingAfterHyphenExcerpt = new DocExcerpt({

@@ -111,3 +111,26 @@ test('04 typeParam blocks', () => {
     ' */'
   ].join('\n'));
 });
+
+test('05 Invalid JSDoc syntax in @param blocks', () => {
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * @param {type} a - description',
+    ' * @param {{}} b - description',
+    ' * @param {"{"} c - description',
+    ' * @param {"\\""} d - description',
+    ' * @param e {type} - description',
+    ' * @param f {{}} - description',
+    ' * @param g {"{"} - description',
+    ' * @param h - {type} description',
+    ' * @param i - {{}} description',
+    ' * @param j - {"{"} description',
+    ' * @param [k] - description',
+    ' * @param [l=] - description',
+    ' * @param [m=[]] - description',
+    ' * @param [n="["] - description',
+    ' * @param [o="\\""] - description',
+    ' */'
+  ].join('\n'));
+});
+
