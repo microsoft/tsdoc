@@ -12,13 +12,14 @@ import * as fs from 'fs';
 import * as resolve from 'resolve';
 import * as path from 'path';
 import * as Ajv from 'ajv';
+import * as jju from 'jju';
 
 const ajv: Ajv.Ajv = new Ajv({ verbose: true });
 
 function initializeSchemaValidator(): Ajv.ValidateFunction {
   const jsonSchemaPath: string = resolve.sync('@microsoft/tsdoc/schemas/tsdoc.schema.json', { basedir: __dirname });
   const jsonSchemaContent: string = fs.readFileSync(jsonSchemaPath).toString();
-  const jsonSchema: object = JSON.parse(jsonSchemaContent);
+  const jsonSchema: object = jju.parse(jsonSchemaContent, { mode: 'cjson' });
   return ajv.compile(jsonSchema);
 }
 
@@ -139,7 +140,7 @@ export class TSDocConfigFile {
 
     this._fileNotFound = false;
 
-    const configJson: IConfigJson = JSON.parse(configJsonContent);
+    const configJson: IConfigJson = jju.parse(configJsonContent, { mode: 'cjson' });
 
     if (configJson.$schema !== TSDocConfigFile.CURRENT_SCHEMA_URL) {
       this._reportError({
