@@ -28,18 +28,19 @@ export class ConfigCache {
    * Node.js equivalent of performance.now().
    */
   private static _getTimeInMs(): number {
-    throw new Error('oops');
     const [seconds, nanoseconds] = process.hrtime();
     return seconds * 1000 + nanoseconds / 1000000;
   }
 
   public static getForSourceFile(sourceFilePath: string): TSDocConfigFile {
+    const sourceFileFolder: string = path.dirname(path.resolve(sourceFilePath));
+
     // First, determine the file to be loaded. If not found, the configFilePath will be an empty string.
-    const configFilePath: string = TSDocConfigFile.findConfigPathForFolder(sourceFilePath);
+    const configFilePath: string = TSDocConfigFile.findConfigPathForFolder(sourceFileFolder);
 
     // If configFilePath is an empty string, then we'll use the folder of sourceFilePath as our cache key
     // (instead of an empty string)
-    const cacheKey: string = configFilePath || path.dirname(sourceFilePath);
+    const cacheKey: string = configFilePath || (sourceFileFolder + '/');
     Debug.log(`Cache key: "${cacheKey}"`);
 
     const nowMs: number = ConfigCache._getTimeInMs();
