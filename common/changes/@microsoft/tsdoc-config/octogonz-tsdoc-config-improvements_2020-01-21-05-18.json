@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "Add a new API TSDocConfigFile.checkForModifiedFiles() to facilitate caching",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config",
+  "email": "4673363+octogonz@users.noreply.github.com"
+}
