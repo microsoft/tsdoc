@@ -2,6 +2,23 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.2.1",
+      "tag": "eslint-plugin-tsdoc_v0.2.1",
+      "date": "Tue, 21 Jan 2020 21:26:36 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Use a cache to avoid repeatedly reloading tsdoc.json during linting"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc-config\" from `0.12.16` to `0.13.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.0",
       "tag": "eslint-plugin-tsdoc_v0.2.0",
       "date": "Tue, 19 Nov 2019 22:01:56 GMT",

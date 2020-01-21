@@ -1,6 +1,13 @@
 # Change Log - eslint-plugin-tsdoc
 
-This log was last generated on Tue, 19 Nov 2019 22:01:56 GMT and should not be manually modified.
+This log was last generated on Tue, 21 Jan 2020 21:26:36 GMT and should not be manually modified.
+
+## 0.2.1
+Tue, 21 Jan 2020 21:26:36 GMT
+
+### Patches
+
+- Use a cache to avoid repeatedly reloading tsdoc.json during linting
 
 ## 0.2.0
 Tue, 19 Nov 2019 22:01:56 GMT
