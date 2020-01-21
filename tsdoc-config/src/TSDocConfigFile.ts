@@ -333,7 +333,7 @@ export class TSDocConfigFile {
    */
   public static loadForFolder(folderPath: string): TSDocConfigFile {
     const rootConfigPath: string = TSDocConfigFile.findConfigPathForFolder(folderPath);
-    return TSDocConfigFile.loadForFolder(rootConfigPath);
+    return TSDocConfigFile.loadFile(rootConfigPath);
   }
 
   /**
