@@ -439,7 +439,8 @@ export const allTsdocMessageIds: string[] = [
   'tsdoc-code-fence-missing-delimiter',
   'tsdoc-code-fence-closing-syntax',
   'tsdoc-code-span-empty',
-  'tsdoc-code-span-missing-delimiter'
+  'tsdoc-code-span-missing-delimiter',
+  'tsdoc-characters-after-block-tag',
 ];
 allTsdocMessageIds.sort();
 
