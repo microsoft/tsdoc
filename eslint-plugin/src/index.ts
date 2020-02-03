@@ -1,19 +1,19 @@
-
+import * as eslint from "eslint";
+import * as ESTree from "estree";
 import {
   TSDocParser,
   TextRange,
   TSDocConfiguration,
   ParserContext
 } from "@microsoft/tsdoc";
-import {
-  TSDocConfigFile
-} from '@microsoft/tsdoc-config';
-import * as eslint from "eslint";
-import * as ESTree from "estree";
+import { TSDocConfigFile } from '@microsoft/tsdoc-config';
+
+import { Debug } from './Debug';
+import { ConfigCache } from './ConfigCache';
 
 const tsdocMessageIds: {[x: string]: string} = {};
 
-const defaultTSDocConfiguration: TSDocConfiguration = new TSDocConfiguration()
+const defaultTSDocConfiguration: TSDocConfiguration = new TSDocConfiguration();
 defaultTSDocConfiguration.allTsdocMessageIds.forEach((messageId: string) => {
   tsdocMessageIds[messageId] = `${messageId}: {{unformattedText}}`;
 });
@@ -43,33 +43,44 @@ const plugin: IPlugin = {
         }
       },
       create: (context: eslint.Rule.RuleContext) => {
-        const tsdocConfiguration: TSDocConfiguration = new TSDocConfiguration();
-
         const sourceFilePath: string = context.getFilename();
-        const tsdocConfigFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(sourceFilePath);
+        Debug.log(`Linting: "${sourceFilePath}"`);
 
-        if (!tsdocConfigFile.fileNotFound) {
-          if (tsdocConfigFile.hasErrors) {
-            context.report({
-              loc: { line: 1, column: 1 },
-              messageId: "error-loading-config-file",
-              data: {
-                details: tsdocConfigFile.getErrorSummary()
-              }
-            });
-          }
+        const tsdocConfiguration: TSDocConfiguration = new TSDocConfiguration()
 
-          try {
-            tsdocConfigFile.configureParser(tsdocConfiguration);
-          } catch (e) {
-            context.report({
-              loc: { line: 1, column: 1 },
-              messageId: "error-applying-config",
-              data: {
-                details: e.message
-              }
-            });
+        try {
+          const tsdocConfigFile: TSDocConfigFile = ConfigCache.getForSourceFile(sourceFilePath);
+          if (!tsdocConfigFile.fileNotFound) {
+            if (tsdocConfigFile.hasErrors) {
+              context.report({
+                loc: { line: 1, column: 1 },
+                messageId: "error-loading-config-file",
+                data: {
+                  details: tsdocConfigFile.getErrorSummary()
+                }
+              });
+            }
+
+            try {
+              tsdocConfigFile.configureParser(tsdocConfiguration);
+            } catch (e) {
+              context.report({
+                loc: { line: 1, column: 1 },
+                messageId: "error-applying-config",
+                data: {
+                  details: e.message
+                }
+              });
+            }
           }
+        } catch (e) {
+          context.report({
+            loc: { line: 1, column: 1 },
+            messageId: "error-loading-config-file",
+            data: {
+              details: `Unexpected exception: ${e.message}`
+            }
+          });
         }
 
         const tsdocParser: TSDocParser = new TSDocParser(tsdocConfiguration);

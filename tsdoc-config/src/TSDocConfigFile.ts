@@ -12,13 +12,14 @@ import * as fs from 'fs';
 import * as resolve from 'resolve';
 import * as path from 'path';
 import * as Ajv from 'ajv';
+import * as jju from 'jju';
 
 const ajv: Ajv.Ajv = new Ajv({ verbose: true });
 
 function initializeSchemaValidator(): Ajv.ValidateFunction {
   const jsonSchemaPath: string = resolve.sync('@microsoft/tsdoc/schemas/tsdoc.schema.json', { basedir: __dirname });
   const jsonSchemaContent: string = fs.readFileSync(jsonSchemaPath).toString();
-  const jsonSchema: object = JSON.parse(jsonSchemaContent);
+  const jsonSchema: object = jju.parse(jsonSchemaContent, { mode: 'cjson' });
   return ajv.compile(jsonSchema);
 }
 
@@ -69,6 +70,7 @@ export class TSDocConfigFile {
   private readonly _extendsFiles: TSDocConfigFile[];
   private _filePath: string;
   private _fileNotFound: boolean;
+  private _fileMTime: number;
   private _hasErrors: boolean;
   private _tsdocSchema: string;
   private readonly _extendsPaths: string[];
@@ -83,6 +85,7 @@ export class TSDocConfigFile {
     this._filePath = '';
     this._fileNotFound = true;
     this._hasErrors = false;
+    this._fileMTime = 0;
     this._tsdocSchema = '';
     this._extendsPaths = [];
     this._tagDefinitions = [];
@@ -152,6 +155,49 @@ export class TSDocConfigFile {
     return this._synonymDeletions;
   }
 
+  /**
+   * This can be used for cache eviction.  It returns true if the modification timestamp has changed for
+   * any of the files that were read when loading this `TSDocConfigFile`, which indicates that the file should be
+   * reloaded.  It does not consider cases where `TSDocConfigFile.fileNotFound` was `true`.
+   *
+   * @remarks
+   * This can be used for cache eviction.  An example eviction strategy might be like this:
+   *
+   * - call `checkForModifiedFiles()` once per second, and reload the configuration if it returns true
+   *
+   * - otherwise, reload the configuration when it is more than 10 seconds old (to handle less common cases such
+   *   as creation of a missing file, or creation of a file at an earlier location in the search path).
+   */
+  public checkForModifiedFiles(): boolean {
+    if (this._checkForModifiedFile()) {
+      return true;
+    }
+    for (const extendsFile of this.extendsFiles) {
+      if (extendsFile.checkForModifiedFiles()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Checks the last modification time for `TSDocConfigFile.filePath` and returns `true` if it has changed
+   * since the file was loaded.  If the file is missing, this returns `false`.  If the timestamp cannot be read,
+   * then this returns `true`.
+   */
+  private _checkForModifiedFile(): boolean {
+    if (this._fileNotFound || !this._filePath) {
+      return false;
+    }
+
+    try {
+      const mtimeMs: number = fs.statSync(this._filePath).mtimeMs;
+      return mtimeMs !== this._fileMTime;
+    } catch (error) {
+      return true;
+    }
+  }
+
   private _reportError(parserMessageParameters: IParserMessageParameters): void {
     this.log.addMessage(new ParserMessage(parserMessageParameters));
     this._hasErrors = true;
@@ -159,10 +205,10 @@ export class TSDocConfigFile {
 
   private _loadJsonFile(): void {
     const configJsonContent: string = fs.readFileSync(this._filePath).toString();
-
+    this._fileMTime = fs.statSync(this._filePath).mtimeMs;
     this._fileNotFound = false;
 
-    const configJson: IConfigJson = JSON.parse(configJsonContent);
+    const configJson: IConfigJson = jju.parse(configJsonContent, { mode: 'cjson' });
 
     if (configJson.$schema !== TSDocConfigFile.CURRENT_SCHEMA_URL) {
       this._reportError({
@@ -283,7 +329,13 @@ export class TSDocConfigFile {
     }
   }
 
-  private static _findConfigPathForFolder(folderPath: string): string {
+  /**
+   * For the given folder, look for the relevant tsdoc.json file (if any), and return its path.
+   *
+   * @param folderPath - the path to a folder where the search should start
+   * @returns the (possibly relative) path to tsdoc.json, or an empty string if not found
+   */
+  public static findConfigPathForFolder(folderPath: string): string {
     if (folderPath) {
       let foundFolder: string = folderPath;
       for (;;) {
@@ -311,16 +363,23 @@ export class TSDocConfigFile {
   }
 
   /**
-   * For the given folder, discover the relevant tsdoc.json files (if any), and load them.
+   * Calls `TSDocConfigFile.findConfigPathForFolder()` to find the relevant tsdoc.json config file, if one exists.
+   * Then calls `TSDocConfigFile.findConfigPathForFolder()` to return the loaded result.
    * @param folderPath - the path to a folder where the search should start
    */
   public static loadForFolder(folderPath: string): TSDocConfigFile {
+    const rootConfigPath: string = TSDocConfigFile.findConfigPathForFolder(folderPath);
+    return TSDocConfigFile.loadFile(rootConfigPath);
+  }
+
+  /**
+   * Loads the specified tsdoc.json and any base files that it refers to using the "extends" option.
+   * @param tsdocJsonFilePath - the path to the tsdoc.json config file
+   */
+  public static loadFile(tsdocJsonFilePath: string): TSDocConfigFile {
     const configFile: TSDocConfigFile = new TSDocConfigFile();
-    const rootConfigPath: string = TSDocConfigFile._findConfigPathForFolder(folderPath);
-
     const alreadyVisitedPaths: Set<string> = new Set<string>();
-    configFile._loadWithExtends(rootConfigPath, undefined, alreadyVisitedPaths);
-
+    configFile._loadWithExtends(tsdocJsonFilePath, undefined, alreadyVisitedPaths);
     return configFile;
   }
 

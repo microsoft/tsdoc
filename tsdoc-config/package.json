@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/tsdoc-config",
-  "version": "0.12.16",
+  "version": "0.13.0",
   "description": "A loader for the tsdoc.json file",
   "keywords": [
     "TypeScript",
@@ -22,11 +22,13 @@
   "dependencies": {
     "@microsoft/tsdoc": "0.12.16",
     "ajv": "~6.10.2",
+    "jju": "~1.4.0",
     "resolve": "~1.12.0"
   },
   "devDependencies": {
     "@rushstack/eslint-config": "0.4.0",
     "@types/jest": "24.0.16",
+    "@types/jju": "1.4.1",
     "@types/resolve": "0.0.8",
     "@types/node": "10.17.5",
     "eslint": "^6.0.0",
