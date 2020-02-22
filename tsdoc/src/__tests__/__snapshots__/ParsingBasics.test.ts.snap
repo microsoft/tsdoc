@@ -1653,7 +1653,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "{type} ",
         },
         Object {
@@ -1719,7 +1719,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "{{}} ",
         },
         Object {
@@ -1785,7 +1785,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "{[q]{[q]} ",
         },
         Object {
@@ -1851,7 +1851,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "{[q][b][q][q]} ",
         },
         Object {
@@ -1925,7 +1925,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "{type} ",
         },
         Object {
@@ -1991,7 +1991,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "{{}} ",
         },
         Object {
@@ -2057,7 +2057,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "{[q]{[q]} ",
         },
         Object {
@@ -2131,7 +2131,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "{type} ",
         },
         Object {
@@ -2197,7 +2197,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "{{}} ",
         },
         Object {
@@ -2263,7 +2263,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "{[q]{[q]} ",
         },
         Object {
@@ -2313,7 +2313,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "[",
         },
         Object {
@@ -2321,7 +2321,7 @@ Object {
           "nodeExcerpt": "k",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "]",
         },
         Object {
@@ -2383,7 +2383,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "[",
         },
         Object {
@@ -2391,7 +2391,7 @@ Object {
           "nodeExcerpt": "l",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "=]",
         },
         Object {
@@ -2453,7 +2453,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "[",
         },
         Object {
@@ -2461,7 +2461,7 @@ Object {
           "nodeExcerpt": "m",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "=[]]",
         },
         Object {
@@ -2523,7 +2523,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "[",
         },
         Object {
@@ -2531,7 +2531,7 @@ Object {
           "nodeExcerpt": "n",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "=[q][[q]]",
         },
         Object {
@@ -2593,7 +2593,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "[",
         },
         Object {
@@ -2601,7 +2601,7 @@ Object {
           "nodeExcerpt": "o",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "=[q][b][q][q]]",
         },
         Object {
@@ -2741,7 +2741,7 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
-          "kind": "Excerpt: ErrorText",
+          "kind": "Excerpt: NonstandardText",
           "nodeExcerpt": "[",
         },
         Object {
