@@ -80,7 +80,7 @@ export class DocParamBlock extends DocBlock {
       if (parameters.unsupportedJsdocTypeBeforeParameterNameExcerpt) {
         this._unsupportedJsdocTypeBeforeParameterNameExcerpt = new DocExcerpt({
           configuration: this.configuration,
-          excerptKind: ExcerptKind.ErrorText,
+          excerptKind: ExcerptKind.NonstandardText,
           content: parameters.unsupportedJsdocTypeBeforeParameterNameExcerpt
         });
       }
@@ -88,7 +88,7 @@ export class DocParamBlock extends DocBlock {
       if (parameters.unsupportedJsdocOptionalNameOpenBracketExcerpt) {
         this._unsupportedJsdocOptionalNameOpenBracketExcerpt = new DocExcerpt({
           configuration: this.configuration,
-          excerptKind: ExcerptKind.ErrorText,
+          excerptKind: ExcerptKind.NonstandardText,
           content: parameters.unsupportedJsdocOptionalNameOpenBracketExcerpt
         });
       }
@@ -102,7 +102,7 @@ export class DocParamBlock extends DocBlock {
       if (parameters.unsupportedJsdocOptionalNameRestExcerpt) {
         this._unsupportedJsdocOptionalNameRestExcerpt = new DocExcerpt({
           configuration: this.configuration,
-          excerptKind: ExcerptKind.ErrorText,
+          excerptKind: ExcerptKind.NonstandardText,
           content: parameters.unsupportedJsdocOptionalNameRestExcerpt
         });
       }
@@ -118,7 +118,7 @@ export class DocParamBlock extends DocBlock {
       if (parameters.unsupportedJsdocTypeAfterParameterNameExcerpt) {
         this._unsupportedJsdocTypeAfterParameterNameExcerpt = new DocExcerpt({
           configuration: this.configuration,
-          excerptKind: ExcerptKind.ErrorText,
+          excerptKind: ExcerptKind.NonstandardText,
           content: parameters.unsupportedJsdocTypeAfterParameterNameExcerpt
         });
       }
@@ -142,7 +142,7 @@ export class DocParamBlock extends DocBlock {
       if (parameters.unsupportedJsdocTypeAfterHyphenExcerpt) {
         this._unsupportedJsdocTypeAfterHyphenExcerpt = new DocExcerpt({
           configuration: this.configuration,
-          excerptKind: ExcerptKind.ErrorText,
+          excerptKind: ExcerptKind.NonstandardText,
           content: parameters.unsupportedJsdocTypeAfterHyphenExcerpt
         });
       }
