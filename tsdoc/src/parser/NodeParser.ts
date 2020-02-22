@@ -339,8 +339,8 @@ export class NodeParser {
    * an input like `@param {string} [x="]"] - the X value`.  It detects nested balanced pairs of delimiters
    * and escaped string literals.
    */
-  private _tryParseJSDocTypeOrValueRest(tokenReader: TokenReader, openKind: TokenKind, closeKind: TokenKind): TokenSequence | undefined {
-    const startMarker: number = tokenReader.createMarker();
+  private _tryParseJSDocTypeOrValueRest(tokenReader: TokenReader, openKind: TokenKind, closeKind: TokenKind,
+    startMarker: number): TokenSequence | undefined {
 
     let quoteKind: TokenKind | undefined;
     let openCount: number = 1;
@@ -398,9 +398,13 @@ export class NodeParser {
       tokenReader.peekTokenAfterKind() === TokenKind.AtSign) {
       return undefined;
     }
+
+    const startMarker: number = tokenReader.createMarker();
     tokenReader.readToken(); // read the "{"
 
-    let jsdocTypeExcerpt: TokenSequence | undefined = this._tryParseJSDocTypeOrValueRest(tokenReader, TokenKind.LeftCurlyBracket, TokenKind.RightCurlyBracket);
+    let jsdocTypeExcerpt: TokenSequence | undefined = this._tryParseJSDocTypeOrValueRest(tokenReader,
+      TokenKind.LeftCurlyBracket, TokenKind.RightCurlyBracket, startMarker);
+
     if (jsdocTypeExcerpt) {
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ParamTagWithInvalidType,
@@ -427,7 +431,9 @@ export class NodeParser {
   private _tryParseJSDocOptionalNameRest(tokenReader: TokenReader): TokenSequence | undefined {
     tokenReader.assertAccumulatedSequenceIsEmpty();
     if (tokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
-      return this._tryParseJSDocTypeOrValueRest(tokenReader, TokenKind.LeftSquareBracket, TokenKind.RightSquareBracket);
+      const startMarker: number = tokenReader.createMarker();
+      return this._tryParseJSDocTypeOrValueRest(tokenReader,
+        TokenKind.LeftSquareBracket, TokenKind.RightSquareBracket, startMarker);
     }
     return undefined;
   }
