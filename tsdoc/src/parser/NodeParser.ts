@@ -277,14 +277,14 @@ export class NodeParser {
       switch (tagDefinition.syntaxKind) {
         case TSDocTagSyntaxKind.BlockTag:
           if (docBlockTag.tagNameWithUpperCase === StandardTags.param.tagNameWithUpperCase) {
-            const docParamBlock: DocParamBlock = this._parseParamBlock(tokenReader, docBlockTag);
+            const docParamBlock: DocParamBlock = this._parseParamBlock(tokenReader, docBlockTag, StandardTags.param.tagName);
 
             this._parserContext.docComment.params.add(docParamBlock);
 
             this._currentSection = docParamBlock.content;
             return;
           } else if (docBlockTag.tagNameWithUpperCase === StandardTags.typeParam.tagNameWithUpperCase) {
-            const docParamBlock: DocParamBlock = this._parseParamBlock(tokenReader, docBlockTag);
+            const docParamBlock: DocParamBlock = this._parseParamBlock(tokenReader, docBlockTag, StandardTags.typeParam.tagName);
 
             this._parserContext.docComment.typeParams.add(docParamBlock);
 
@@ -334,10 +334,106 @@ export class NodeParser {
     }
   }
 
-  private _parseParamBlock(tokenReader: TokenReader, docBlockTag: DocBlockTag): DocParamBlock {
+  private _tryParseJSDocTypeOrValueRest(tokenReader: TokenReader, openKind: TokenKind, closeKind: TokenKind): TokenSequence | undefined {
+    const startMarker: number = tokenReader.createMarker();
+    tokenReader.readToken();
+
+    let quoteKind: TokenKind | undefined;
+    let openCount: number = 1;
+    while (openCount > 0) {
+      let tokenKind: TokenKind = tokenReader.peekTokenKind();
+      switch (tokenKind) {
+        case openKind:
+          // ignore open bracket/brace inside of a quoted string
+          if (quoteKind === undefined) openCount++;
+          break;
+        case closeKind:
+          // ignore close bracket/brace inside of a quoted string
+          if (quoteKind === undefined) openCount--;
+          break;
+        case TokenKind.Backslash:
+          // ignore backslash outside of quoted string
+          if (quoteKind !== undefined) {
+            // skip the backslash and the next character.
+            tokenReader.readToken();
+            tokenKind = tokenReader.peekTokenKind();
+          }
+          break;
+        case TokenKind.DoubleQuote:
+        case TokenKind.SingleQuote:
+        case TokenKind.Backtick:
+          if (quoteKind === tokenKind) {
+            // exit quoted string if quote character matches.
+            quoteKind = undefined;
+          }
+          else if (quoteKind === undefined) {
+            // start quoted string if not in a quoted string.
+            quoteKind = tokenKind;
+          }
+          break;
+      }
+      // give up at end of input and backtrack to start.
+      if (tokenKind === TokenKind.EndOfInput) {
+        tokenReader.backtrackToMarker(startMarker);
+        return undefined;
+      }
+      tokenReader.readToken();
+    }
+    return tokenReader.tryExtractAccumulatedSequence();
+  }
+
+  private _tryParseUnsupportedJSDocType(tokenReader: TokenReader, docBlockTag: DocBlockTag, tagName: string): TokenSequence | undefined {
+    tokenReader.assertAccumulatedSequenceIsEmpty();
+
+    // do not parse `{@...` as a JSDoc type
+    if (tokenReader.peekTokenKind() !== TokenKind.LeftCurlyBracket ||
+      tokenReader.peekTokenAfterKind() === TokenKind.AtSign) {
+      return undefined;
+    }
+
+    let jsdocTypeExcerpt: TokenSequence | undefined = this._tryParseJSDocTypeOrValueRest(tokenReader, TokenKind.LeftCurlyBracket, TokenKind.RightCurlyBracket);
+    if (jsdocTypeExcerpt) {
+      this._parserContext.log.addMessageForTokenSequence(
+        TSDocMessageId.ParamTagWithInvalidType,
+        'The ' + tagName + ' block should not include a JSDoc-style \'{type}\'',
+        jsdocTypeExcerpt,
+        docBlockTag
+      );
+
+      const spacingAfterJsdocTypeExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+      if (spacingAfterJsdocTypeExcerpt) {
+        jsdocTypeExcerpt = jsdocTypeExcerpt.getNewSequence(
+          jsdocTypeExcerpt.startIndex,
+          spacingAfterJsdocTypeExcerpt.endIndex
+        );
+      }
+    }
+    return jsdocTypeExcerpt;
+  }
+
+  private _tryParseJSDocOptionalNameRest(tokenReader: TokenReader): TokenSequence | undefined {
+    tokenReader.assertAccumulatedSequenceIsEmpty();
+    if (tokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
+      return this._tryParseJSDocTypeOrValueRest(tokenReader, TokenKind.LeftSquareBracket, TokenKind.RightSquareBracket);
+    }
+    return undefined;
+  }
+
+  private _parseParamBlock(tokenReader: TokenReader, docBlockTag: DocBlockTag, tagName: string): DocParamBlock {
     const startMarker: number = tokenReader.createMarker();
 
     const spacingBeforeParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+
+    // Skip past a JSDoc type (i.e., '@param {type} paramName') if found, and report a warning.
+    const unsupportedJsdocTypeBeforeParameterNameExcerpt: TokenSequence | undefined =
+      this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
+
+    // Parse opening of invalid JSDoc optional parameter name (e.g., '[')
+    let unsupportedJsdocOptionalNameOpenBracketExcerpt: TokenSequence | undefined;
+    if (tokenReader.peekTokenKind() === TokenKind.LeftSquareBracket) {
+      tokenReader.readToken();
+      unsupportedJsdocOptionalNameOpenBracketExcerpt = tokenReader.extractAccumulatedSequence();
+    }
 
     let parameterName: string = '';
 
@@ -366,8 +462,8 @@ export class NodeParser {
         parameterName: ''
       });
       const errorMessage: string = parameterName.length > 0
-        ? 'The @param block should be followed by a valid parameter name: ' + explanation
-        : 'The @param block should be followed by a parameter name';
+        ? 'The ' + tagName + ' block should be followed by a valid parameter name: ' + explanation
+        : 'The ' + tagName + ' block should be followed by a parameter name';
 
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ParamTagWithInvalidName,
@@ -380,31 +476,54 @@ export class NodeParser {
 
     const parameterNameExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    // TODO: Warn if there is no space before or after the hyphen
-    const spacingAfterParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+    // Parse closing of invalid JSDoc optional parameter name (e.g., ']', '=default]').
+    let unsupportedJsdocOptionalNameRestExcerpt: TokenSequence | undefined;
+    if (unsupportedJsdocOptionalNameOpenBracketExcerpt) {
+      unsupportedJsdocOptionalNameRestExcerpt = this._tryParseJSDocOptionalNameRest(tokenReader);
 
-    if (tokenReader.peekTokenKind() !== TokenKind.Hyphen) {
-      tokenReader.backtrackToMarker(startMarker);
+      let errorSequence: TokenSequence | undefined = unsupportedJsdocOptionalNameOpenBracketExcerpt;
+      if (unsupportedJsdocOptionalNameRestExcerpt) {
+        errorSequence = docBlockTag.getTokenSequence().getNewSequence(
+          unsupportedJsdocOptionalNameOpenBracketExcerpt.startIndex,
+          unsupportedJsdocOptionalNameRestExcerpt.endIndex
+        );
+      }
 
       this._parserContext.log.addMessageForTokenSequence(
+        TSDocMessageId.ParamTagWithInvalidOptionalName,
+        'The ' + tagName + ' should not include a JSDoc-style optional name; it must not be enclosed in \'[ ]\' brackets.',
+        errorSequence,
+        docBlockTag
+      );
+    }
+
+    const spacingAfterParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+
+    // Skip past a trailing JSDoc type (i.e., '@param paramName {type}') if found, and report a warning.
+    const unsupportedJsdocTypeAfterParameterNameExcerpt: TokenSequence | undefined =
+      this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
+
+    // TODO: Warn if there is no space before or after the hyphen
+    let hyphenExcerpt: TokenSequence | undefined;
+    let spacingAfterHyphenExcerpt: TokenSequence | undefined
+    let unsupportedJsdocTypeAfterHyphenExcerpt: TokenSequence | undefined;
+    if (tokenReader.peekTokenKind() === TokenKind.Hyphen) {
+      tokenReader.readToken();
+      hyphenExcerpt = tokenReader.extractAccumulatedSequence();
+      // TODO: Only read one space
+      spacingAfterHyphenExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
+
+      // Skip past a JSDoc type (i.e., '@param paramName - {type}') if found, and report a warning.
+      unsupportedJsdocTypeAfterHyphenExcerpt = this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
+    }
+    else {
+      this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ParamTagMissingHyphen,
-        'The @param block should be followed by a parameter name and then a hyphen',
+        'The ' + tagName + ' block should be followed by a parameter name and then a hyphen',
         docBlockTag.getTokenSequence(),
         docBlockTag
       );
-
-      return new DocParamBlock({
-        configuration: this._configuration,
-        blockTag: docBlockTag,
-        parameterName: ''
-      });
     }
-    tokenReader.readToken();
-
-    const hyphenExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
-
-    // TODO: Only read one space
-    const spacingAfterHyphenExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     return new DocParamBlock({
       parsed: true,
@@ -414,14 +533,23 @@ export class NodeParser {
 
       spacingBeforeParameterNameExcerpt,
 
+      unsupportedJsdocTypeBeforeParameterNameExcerpt,
+      unsupportedJsdocOptionalNameOpenBracketExcerpt,
+
       parameterNameExcerpt,
       parameterName,
 
+      unsupportedJsdocOptionalNameRestExcerpt,
+
       spacingAfterParameterNameExcerpt,
+
+      unsupportedJsdocTypeAfterParameterNameExcerpt,
 
       hyphenExcerpt,
 
-      spacingAfterHyphenExcerpt
+      spacingAfterHyphenExcerpt,
+
+      unsupportedJsdocTypeAfterHyphenExcerpt
     });
   }
 
