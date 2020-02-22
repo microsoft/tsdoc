@@ -334,9 +334,13 @@ export class NodeParser {
     }
   }
 
+  /**
+   * Used by `_parseParamBlock()`, this parses a JSDoc expression remainder like `string}` or `="]"]` from
+   * an input like `@param {string} [x="]"] - the X value`.  It detects nested balanced pairs of delimiters
+   * and escaped string literals.
+   */
   private _tryParseJSDocTypeOrValueRest(tokenReader: TokenReader, openKind: TokenKind, closeKind: TokenKind): TokenSequence | undefined {
     const startMarker: number = tokenReader.createMarker();
-    tokenReader.readToken();
 
     let quoteKind: TokenKind | undefined;
     let openCount: number = 1;
@@ -382,6 +386,10 @@ export class NodeParser {
     return tokenReader.tryExtractAccumulatedSequence();
   }
 
+  /**
+   * Used by `_parseParamBlock()`, this parses a JSDoc expression like `{string}` from
+   * an input like `@param {string} x - the X value`.
+   */
   private _tryParseUnsupportedJSDocType(tokenReader: TokenReader, docBlockTag: DocBlockTag, tagName: string): TokenSequence | undefined {
     tokenReader.assertAccumulatedSequenceIsEmpty();
 
@@ -390,6 +398,7 @@ export class NodeParser {
       tokenReader.peekTokenAfterKind() === TokenKind.AtSign) {
       return undefined;
     }
+    tokenReader.readToken(); // read the "{"
 
     let jsdocTypeExcerpt: TokenSequence | undefined = this._tryParseJSDocTypeOrValueRest(tokenReader, TokenKind.LeftCurlyBracket, TokenKind.RightCurlyBracket);
     if (jsdocTypeExcerpt) {
@@ -411,6 +420,10 @@ export class NodeParser {
     return jsdocTypeExcerpt;
   }
 
+  /**
+   * Used by `_parseParamBlock()`, this parses a JSDoc expression remainder like `=[]]` from
+   * an input like `@param {string} [x=[]] - the X value`.
+   */
   private _tryParseJSDocOptionalNameRest(tokenReader: TokenReader): TokenSequence | undefined {
     tokenReader.assertAccumulatedSequenceIsEmpty();
     if (tokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
@@ -431,7 +444,7 @@ export class NodeParser {
     // Parse opening of invalid JSDoc optional parameter name (e.g., '[')
     let unsupportedJsdocOptionalNameOpenBracketExcerpt: TokenSequence | undefined;
     if (tokenReader.peekTokenKind() === TokenKind.LeftSquareBracket) {
-      tokenReader.readToken();
+      tokenReader.readToken(); // read the "["
       unsupportedJsdocOptionalNameOpenBracketExcerpt = tokenReader.extractAccumulatedSequence();
     }
 
