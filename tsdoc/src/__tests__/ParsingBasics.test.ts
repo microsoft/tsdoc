@@ -134,3 +134,27 @@ test('05 Invalid JSDoc syntax in @param blocks', () => {
   ].join('\n'));
 });
 
+test('06 Invalid JSDoc optional name', () => {
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * Example 1',
+    ' *',
+    ' * @param [n - this is',
+    ' * the description',
+    ' *',
+    ' * @public',
+    ' */'
+  ].join('\n'));
+});
+
+test('07 Invalid JSDoc type', () => {
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * Example 1',
+    ' *',
+    ' * @param { test',
+    ' *',
+    ' * @public',
+    ' */'
+  ].join('\n'));
+});

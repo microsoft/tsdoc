@@ -16,13 +16,23 @@ export interface IDocParamBlockParameters extends IDocBlockParameters {
 export interface IDocParamBlockParsedParameters extends IDocBlockParsedParameters {
   spacingBeforeParameterNameExcerpt?: TokenSequence;
 
+  unsupportedJsdocTypeBeforeParameterNameExcerpt?: TokenSequence;
+  unsupportedJsdocOptionalNameOpenBracketExcerpt?: TokenSequence;
+
   parameterNameExcerpt: TokenSequence;
   parameterName: string;
 
+  unsupportedJsdocOptionalNameRestExcerpt?: TokenSequence;
+
   spacingAfterParameterNameExcerpt?: TokenSequence;
 
+  unsupportedJsdocTypeAfterParameterNameExcerpt?: TokenSequence;
+
   hyphenExcerpt?: TokenSequence;
+
   spacingAfterHyphenExcerpt?: TokenSequence;
+
+  unsupportedJsdocTypeAfterHyphenExcerpt?: TokenSequence;
 }
 
 /**
@@ -32,14 +42,22 @@ export interface IDocParamBlockParsedParameters extends IDocBlockParsedParameter
 export class DocParamBlock extends DocBlock {
   private readonly _spacingBeforeParameterNameExcerpt: DocExcerpt | undefined;
 
+  private readonly _unsupportedJsdocTypeBeforeParameterNameExcerpt: DocExcerpt | undefined;
+  private readonly _unsupportedJsdocOptionalNameOpenBracketExcerpt: DocExcerpt | undefined;
+
   private readonly _parameterName: string;
   private readonly _parameterNameExcerpt: DocExcerpt | undefined;
 
+  private readonly _unsupportedJsdocOptionalNameRestExcerpt: DocExcerpt | undefined;
+
   private readonly _spacingAfterParameterNameExcerpt: DocExcerpt | undefined;
 
-  private readonly _hyphenExcerpt: DocExcerpt | undefined;
+  private readonly _unsupportedJsdocTypeAfterParameterNameExcerpt: DocExcerpt | undefined;
 
+  private readonly _hyphenExcerpt: DocExcerpt | undefined;
   private readonly _spacingAfterHyphenExcerpt: DocExcerpt | undefined;
+
+  private readonly _unsupportedJsdocTypeAfterHyphenExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -59,17 +77,49 @@ export class DocParamBlock extends DocBlock {
         });
       }
 
+      if (parameters.unsupportedJsdocTypeBeforeParameterNameExcerpt) {
+        this._unsupportedJsdocTypeBeforeParameterNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.ErrorText,
+          content: parameters.unsupportedJsdocTypeBeforeParameterNameExcerpt
+        });
+      }
+
+      if (parameters.unsupportedJsdocOptionalNameOpenBracketExcerpt) {
+        this._unsupportedJsdocOptionalNameOpenBracketExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.ErrorText,
+          content: parameters.unsupportedJsdocOptionalNameOpenBracketExcerpt
+        });
+      }
+
       this._parameterNameExcerpt = new DocExcerpt({
         configuration: this.configuration,
         excerptKind: ExcerptKind.ParamBlock_ParameterName,
         content: parameters.parameterNameExcerpt
       });
 
+      if (parameters.unsupportedJsdocOptionalNameRestExcerpt) {
+        this._unsupportedJsdocOptionalNameRestExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.ErrorText,
+          content: parameters.unsupportedJsdocOptionalNameRestExcerpt
+        });
+      }
+
       if (parameters.spacingAfterParameterNameExcerpt) {
         this._spacingAfterParameterNameExcerpt = new DocExcerpt({
           configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterParameterNameExcerpt
+        });
+      }
+
+      if (parameters.unsupportedJsdocTypeAfterParameterNameExcerpt) {
+        this._unsupportedJsdocTypeAfterParameterNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.ErrorText,
+          content: parameters.unsupportedJsdocTypeAfterParameterNameExcerpt
         });
       }
 
@@ -88,6 +138,15 @@ export class DocParamBlock extends DocBlock {
           content: parameters.spacingAfterHyphenExcerpt
         });
       }
+
+      if (parameters.unsupportedJsdocTypeAfterHyphenExcerpt) {
+        this._unsupportedJsdocTypeAfterHyphenExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.ErrorText,
+          content: parameters.unsupportedJsdocTypeAfterHyphenExcerpt
+        });
+      }
+
     }
   }
 
@@ -109,10 +168,15 @@ export class DocParamBlock extends DocBlock {
     return [
       this.blockTag,
       this._spacingBeforeParameterNameExcerpt,
+      this._unsupportedJsdocTypeBeforeParameterNameExcerpt,
+      this._unsupportedJsdocOptionalNameOpenBracketExcerpt,
       this._parameterNameExcerpt,
+      this._unsupportedJsdocOptionalNameRestExcerpt,
       this._spacingAfterParameterNameExcerpt,
+      this._unsupportedJsdocTypeAfterParameterNameExcerpt,
       this._hyphenExcerpt,
       this._spacingAfterHyphenExcerpt,
+      this._unsupportedJsdocTypeAfterHyphenExcerpt,
       this.content
     ];
   }

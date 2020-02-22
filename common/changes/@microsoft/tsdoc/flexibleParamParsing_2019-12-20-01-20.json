@@ -3,7 +3,7 @@
     {
       "packageName": "@microsoft/tsdoc",
       "comment": "Improve parse for param/typeParam",
-      "type": "patch"
+      "type": "minor"
     }
   ],
   "packageName": "@microsoft/tsdoc",

@@ -1628,28 +1628,7 @@ Object {
     "@param [n=[q][[q]] - description",
     "@param [o=[q][b][q][q]] - description",
   ],
-  "_01_gaps": Array [
-    "{type} ",
-    "{{}} ",
-    "{\\"{\\"} ",
-    "{\\"\\\\\\"\\"} ",
-    "{type} ",
-    "{{}} ",
-    "{\\"{\\"} ",
-    "{type} ",
-    "{{}} ",
-    "{\\"{\\"} ",
-    "[",
-    "]",
-    "[",
-    "=]",
-    "[",
-    "=[]]",
-    "[",
-    "=\\"[\\"]",
-    "[",
-    "=\\"\\\\\\"\\"]",
-  ],
+  "_01_gaps": Array [],
   "_02_summarySection": Object {
     "kind": "Section",
   },
@@ -1672,6 +1651,10 @@ Object {
         Object {
           "kind": "Excerpt: Spacing",
           "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "{type} ",
         },
         Object {
           "kind": "Excerpt: ParamBlock_ParameterName",
@@ -1736,6 +1719,10 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "{{}} ",
+        },
+        Object {
           "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "b",
         },
@@ -1798,6 +1785,10 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "{[q]{[q]} ",
+        },
+        Object {
           "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "c",
         },
@@ -1858,6 +1849,10 @@ Object {
         Object {
           "kind": "Excerpt: Spacing",
           "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "{[q][b][q][q]} ",
         },
         Object {
           "kind": "Excerpt: ParamBlock_ParameterName",
@@ -1930,6 +1925,10 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "{type} ",
+        },
+        Object {
           "kind": "Excerpt: ParamBlock_Hyphen",
           "nodeExcerpt": "-",
         },
@@ -1992,6 +1991,10 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "{{}} ",
+        },
+        Object {
           "kind": "Excerpt: ParamBlock_Hyphen",
           "nodeExcerpt": "-",
         },
@@ -2052,6 +2055,10 @@ Object {
         Object {
           "kind": "Excerpt: Spacing",
           "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "{[q]{[q]} ",
         },
         Object {
           "kind": "Excerpt: ParamBlock_Hyphen",
@@ -2124,6 +2131,10 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "{type} ",
+        },
+        Object {
           "kind": "Section",
           "nodes": Array [
             Object {
@@ -2184,6 +2195,10 @@ Object {
         Object {
           "kind": "Excerpt: Spacing",
           "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "{{}} ",
         },
         Object {
           "kind": "Section",
@@ -2248,6 +2263,10 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "{[q]{[q]} ",
+        },
+        Object {
           "kind": "Section",
           "nodes": Array [
             Object {
@@ -2292,24 +2311,16 @@ Object {
         Object {
           "kind": "Excerpt: Spacing",
           "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "[",
         },
         Object {
           "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "k",
         },
         Object {
-          "kind": "Excerpt: Spacing",
-          "nodeExcerpt": " ",
-        },
-        Object {
-          "kind": "Excerpt: ParamBlock_Hyphen",
-          "nodeExcerpt": "-",
-        },
-        Object {
-          "kind": "Excerpt: Spacing",
-          "nodeExcerpt": " ",
-        },
-        Object {
           "kind": "Section",
           "nodes": Array [
             Object {
@@ -2320,7 +2331,7 @@ Object {
                   "nodes": Array [
                     Object {
                       "kind": "Excerpt: PlainText",
-                      "nodeExcerpt": "description",
+                      "nodeExcerpt": "] - description",
                     },
                   ],
                 },
@@ -2354,12 +2365,20 @@ Object {
         Object {
           "kind": "Excerpt: Spacing",
           "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "[",
         },
         Object {
           "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "l",
         },
         Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "=]",
+        },
+        Object {
           "kind": "Excerpt: Spacing",
           "nodeExcerpt": " ",
         },
@@ -2416,12 +2435,20 @@ Object {
         Object {
           "kind": "Excerpt: Spacing",
           "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "[",
         },
         Object {
           "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "m",
         },
         Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "=[]]",
+        },
+        Object {
           "kind": "Excerpt: Spacing",
           "nodeExcerpt": " ",
         },
@@ -2478,12 +2505,20 @@ Object {
         Object {
           "kind": "Excerpt: Spacing",
           "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "[",
         },
         Object {
           "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "n",
         },
         Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "=[q][[q]]",
+        },
+        Object {
           "kind": "Excerpt: Spacing",
           "nodeExcerpt": " ",
         },
@@ -2542,8 +2577,16 @@ Object {
           "nodeExcerpt": " ",
         },
         Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "[",
+        },
+        Object {
           "kind": "Excerpt: ParamBlock_ParameterName",
           "nodeExcerpt": "o",
+        },
+        Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "=[q][b][q][q]]",
         },
         Object {
           "kind": "Excerpt: Spacing",
@@ -2605,10 +2648,342 @@ Object {
     "(10,15): The @param block should not include a JSDoc-style '{type}'",
     "(11,15): The @param block should not include a JSDoc-style '{type}'",
     "(12,11): The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.",
+    "(12,4): The @param block should be followed by a parameter name and then a hyphen",
     "(13,11): The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.",
     "(14,11): The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.",
     "(15,11): The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.",
     "(16,11): The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.",
+  ],
+}
+`;
+
+exports[`06 Invalid JSDoc optional name 1`] = `
+Object {
+  "_00_lines": Array [
+    "Example 1",
+    "",
+    "@param [n - this is",
+    "the description",
+    "",
+    "@public",
+  ],
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
+    "kind": "Section",
+    "nodes": Array [
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "Example 1",
+              },
+            ],
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  "_03_remarksBlock": undefined,
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@param",
+            },
+          ],
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ErrorText",
+          "nodeExcerpt": "[",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_ParameterName",
+          "nodeExcerpt": "n",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Excerpt: ParamBlock_Hyphen",
+          "nodeExcerpt": "-",
+        },
+        Object {
+          "kind": "Excerpt: Spacing",
+          "nodeExcerpt": " ",
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": "this is",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": "the description",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": undefined,
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [
+    Object {
+      "kind": "BlockTag",
+      "nodes": Array [
+        Object {
+          "kind": "Excerpt: BlockTag",
+          "nodeExcerpt": "@public",
+        },
+      ],
+    },
+  ],
+  "_12_logMessages": Array [
+    "(4,11): The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.",
+  ],
+}
+`;
+
+exports[`07 Invalid JSDoc type 1`] = `
+Object {
+  "_00_lines": Array [
+    "Example 1",
+    "",
+    "@param { test",
+    "",
+    "@public",
+  ],
+  "_01_gaps": Array [],
+  "_02_summarySection": Object {
+    "kind": "Section",
+    "nodes": Array [
+      Object {
+        "kind": "Paragraph",
+        "nodes": Array [
+          Object {
+            "kind": "PlainText",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: PlainText",
+                "nodeExcerpt": "Example 1",
+              },
+            ],
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+          Object {
+            "kind": "SoftBreak",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: SoftBreak",
+                "nodeExcerpt": "[n]",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  "_03_remarksBlock": undefined,
+  "_04_privateRemarksBlock": undefined,
+  "_05_deprecatedBlock": undefined,
+  "_06_paramBlocks": Array [
+    Object {
+      "kind": "ParamBlock",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@param",
+            },
+          ],
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": " ",
+                    },
+                  ],
+                },
+                Object {
+                  "errorLocation": "{",
+                  "errorLocationPrecedingToken": " ",
+                  "errorMessage": "Expecting a TSDoc tag starting with [q]{@[q]",
+                  "kind": "ErrorText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: ErrorText",
+                      "nodeExcerpt": "{",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": " test",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "_07_typeParamBlocks": Array [],
+  "_08_returnsBlock": undefined,
+  "_09_customBlocks": Array [],
+  "_10_inheritDocTag": undefined,
+  "_11_modifierTags": Array [
+    Object {
+      "kind": "BlockTag",
+      "nodes": Array [
+        Object {
+          "kind": "Excerpt: BlockTag",
+          "nodeExcerpt": "@public",
+        },
+      ],
+    },
+  ],
+  "_12_logMessages": Array [
+    "(4,4): The @param block should be followed by a parameter name",
+    "(4,11): Expecting a TSDoc tag starting with \\"{@\\"",
   ],
 }
 `;

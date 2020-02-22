@@ -335,6 +335,9 @@ export class NodeParser {
   }
 
   private _tryParseJSDocTypeOrValueRest(tokenReader: TokenReader, openKind: TokenKind, closeKind: TokenKind): TokenSequence | undefined {
+    const startMarker: number = tokenReader.createMarker();
+    tokenReader.readToken();
+
     let quoteKind: TokenKind | undefined;
     let openCount: number = 1;
     while (openCount > 0) {
@@ -369,15 +372,17 @@ export class NodeParser {
           }
           break;
       }
+      // give up at end of input and backtrack to start.
       if (tokenKind === TokenKind.EndOfInput) {
-        break;
+        tokenReader.backtrackToMarker(startMarker);
+        return undefined;
       }
       tokenReader.readToken();
     }
     return tokenReader.tryExtractAccumulatedSequence();
   }
 
-  private _tryParseJSDocType(tokenReader: TokenReader): TokenSequence | undefined {
+  private _tryParseUnsupportedJSDocType(tokenReader: TokenReader, docBlockTag: DocBlockTag, tagName: string): TokenSequence | undefined {
     tokenReader.assertAccumulatedSequenceIsEmpty();
 
     // do not parse `{@...` as a JSDoc type
@@ -386,13 +391,32 @@ export class NodeParser {
       return undefined;
     }
 
-    tokenReader.readToken();
-    return this._tryParseJSDocTypeOrValueRest(tokenReader, TokenKind.LeftCurlyBracket, TokenKind.RightCurlyBracket);
+    let jsdocTypeExcerpt: TokenSequence | undefined = this._tryParseJSDocTypeOrValueRest(tokenReader, TokenKind.LeftCurlyBracket, TokenKind.RightCurlyBracket);
+    if (jsdocTypeExcerpt) {
+      this._parserContext.log.addMessageForTokenSequence(
+        TSDocMessageId.ParamTagWithInvalidType,
+        'The ' + tagName + ' block should not include a JSDoc-style \'{type}\'',
+        jsdocTypeExcerpt,
+        docBlockTag
+      );
+
+      const spacingAfterJsdocTypeExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+      if (spacingAfterJsdocTypeExcerpt) {
+        jsdocTypeExcerpt = jsdocTypeExcerpt.getNewSequence(
+          jsdocTypeExcerpt.startIndex,
+          spacingAfterJsdocTypeExcerpt.endIndex
+        );
+      }
+    }
+    return jsdocTypeExcerpt;
   }
 
   private _tryParseJSDocOptionalNameRest(tokenReader: TokenReader): TokenSequence | undefined {
     tokenReader.assertAccumulatedSequenceIsEmpty();
-    return this._tryParseJSDocTypeOrValueRest(tokenReader, TokenKind.LeftSquareBracket, TokenKind.RightSquareBracket);
+    if (tokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
+      return this._tryParseJSDocTypeOrValueRest(tokenReader, TokenKind.LeftSquareBracket, TokenKind.RightSquareBracket);
+    }
+    return undefined;
   }
 
   private _parseParamBlock(tokenReader: TokenReader, docBlockTag: DocBlockTag, tagName: string): DocParamBlock {
@@ -401,22 +425,14 @@ export class NodeParser {
     const spacingBeforeParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Skip past a JSDoc type (i.e., '@param {type} paramName') if found, and report a warning.
-    let jsDocTypeSequence: TokenSequence | undefined = this._tryParseJSDocType(tokenReader);
-    if (jsDocTypeSequence) {
-      this._parserContext.log.addMessageForTokenSequence(
-        TSDocMessageId.ParamTagWithInvalidType,
-        'The ' + tagName + ' block should not include a JSDoc-style \'{type}\'',
-        jsDocTypeSequence,
-        docBlockTag
-      );
-      this._tryReadSpacingAndNewlines(tokenReader);
-    }
+    const unsupportedJsdocTypeBeforeParameterNameExcerpt: TokenSequence | undefined =
+      this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
 
     // Parse opening of invalid JSDoc optional parameter name (e.g., '[')
-    let jsDocOptionalNameOpenBracketExcerpt: TokenSequence | undefined;
+    let unsupportedJsdocOptionalNameOpenBracketExcerpt: TokenSequence | undefined;
     if (tokenReader.peekTokenKind() === TokenKind.LeftSquareBracket) {
       tokenReader.readToken();
-      jsDocOptionalNameOpenBracketExcerpt = tokenReader.extractAccumulatedSequence();
+      unsupportedJsdocOptionalNameOpenBracketExcerpt = tokenReader.extractAccumulatedSequence();
     }
 
     let parameterName: string = '';
@@ -461,15 +477,15 @@ export class NodeParser {
     const parameterNameExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
     // Parse closing of invalid JSDoc optional parameter name (e.g., ']', '=default]').
-    if (jsDocOptionalNameOpenBracketExcerpt) {
-      const jsDocOptionalNameRestExcerpt: TokenSequence | undefined =
-        this._tryParseJSDocOptionalNameRest(tokenReader);
-      
-      let errorSequence: TokenSequence | undefined = jsDocOptionalNameOpenBracketExcerpt;
-      if (jsDocOptionalNameRestExcerpt) {
+    let unsupportedJsdocOptionalNameRestExcerpt: TokenSequence | undefined;
+    if (unsupportedJsdocOptionalNameOpenBracketExcerpt) {
+      unsupportedJsdocOptionalNameRestExcerpt = this._tryParseJSDocOptionalNameRest(tokenReader);
+
+      let errorSequence: TokenSequence | undefined = unsupportedJsdocOptionalNameOpenBracketExcerpt;
+      if (unsupportedJsdocOptionalNameRestExcerpt) {
         errorSequence = docBlockTag.getTokenSequence().getNewSequence(
-          jsDocOptionalNameOpenBracketExcerpt.startIndex,
-          jsDocOptionalNameRestExcerpt.endIndex
+          unsupportedJsdocOptionalNameOpenBracketExcerpt.startIndex,
+          unsupportedJsdocOptionalNameRestExcerpt.endIndex
         );
       }
 
@@ -481,23 +497,16 @@ export class NodeParser {
       );
     }
 
-    // TODO: Warn if there is no space before or after the hyphen
     const spacingAfterParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
-    // Skip past a JSDoc type (i.e., '@param paramName {type}') if found, and report a warning.
-    jsDocTypeSequence = this._tryParseJSDocType(tokenReader);
-    if (jsDocTypeSequence) {
-      this._parserContext.log.addMessageForTokenSequence(
-        TSDocMessageId.ParamTagWithInvalidType,
-        'The ' + tagName + ' block should not include a JSDoc-style \'{type}\'',
-        jsDocTypeSequence,
-        docBlockTag
-      );
-      this._tryReadSpacingAndNewlines(tokenReader);
-    }
+    // Skip past a trailing JSDoc type (i.e., '@param paramName {type}') if found, and report a warning.
+    const unsupportedJsdocTypeAfterParameterNameExcerpt: TokenSequence | undefined =
+      this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
 
+    // TODO: Warn if there is no space before or after the hyphen
     let hyphenExcerpt: TokenSequence | undefined;
     let spacingAfterHyphenExcerpt: TokenSequence | undefined
+    let unsupportedJsdocTypeAfterHyphenExcerpt: TokenSequence | undefined;
     if (tokenReader.peekTokenKind() === TokenKind.Hyphen) {
       tokenReader.readToken();
       hyphenExcerpt = tokenReader.extractAccumulatedSequence();
@@ -505,17 +514,7 @@ export class NodeParser {
       spacingAfterHyphenExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
 
       // Skip past a JSDoc type (i.e., '@param paramName - {type}') if found, and report a warning.
-      jsDocTypeSequence = this._tryParseJSDocType(tokenReader);
-      if (jsDocTypeSequence) {
-        this._parserContext.log.addMessageForTokenSequence(
-          TSDocMessageId.ParamTagWithInvalidType,
-          'The ' + tagName + ' block should not include a JSDoc-style \'{type}\'',
-          jsDocTypeSequence,
-          docBlockTag
-        );
-        this._tryReadSpacingAndNewlines(tokenReader);
-      }
-
+      unsupportedJsdocTypeAfterHyphenExcerpt = this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
     }
     else {
       this._parserContext.log.addMessageForTokenSequence(
@@ -534,14 +533,23 @@ export class NodeParser {
 
       spacingBeforeParameterNameExcerpt,
 
+      unsupportedJsdocTypeBeforeParameterNameExcerpt,
+      unsupportedJsdocOptionalNameOpenBracketExcerpt,
+
       parameterNameExcerpt,
       parameterName,
 
+      unsupportedJsdocOptionalNameRestExcerpt,
+
       spacingAfterParameterNameExcerpt,
+
+      unsupportedJsdocTypeAfterParameterNameExcerpt,
 
       hyphenExcerpt,
 
-      spacingAfterHyphenExcerpt
+      spacingAfterHyphenExcerpt,
+
+      unsupportedJsdocTypeAfterHyphenExcerpt
     });
   }
 
