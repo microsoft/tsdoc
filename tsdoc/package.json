@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/tsdoc",
-  "version": "0.12.17",
+  "version": "0.12.18",
   "description": "A parser for the TypeScript doc comment syntax",
   "keywords": [
     "TypeScript",
