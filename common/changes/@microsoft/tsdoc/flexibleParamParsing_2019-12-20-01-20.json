@@ -2,8 +2,8 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc",
-      "comment": "Improve parse for param/typeParam",
-      "type": "minor"
+      "comment": "Improve the parsing of `@param` and `@typeParam` tags to recognize legacy syntaxes",
+      "type": "patch"
     }
   ],
   "packageName": "@microsoft/tsdoc",
