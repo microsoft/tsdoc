@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.18",
+      "tag": "@microsoft/tsdoc_v0.12.18",
+      "date": "Sat, 22 Feb 2020 20:44:16 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix an issue where JSDoc optional params were not parsed correctly"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.17",
       "tag": "@microsoft/tsdoc_v0.12.17",
       "date": "Sat, 22 Feb 2020 02:55:07 GMT",

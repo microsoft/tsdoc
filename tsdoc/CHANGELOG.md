@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Sat, 22 Feb 2020 02:55:07 GMT and should not be manually modified.
+This log was last generated on Sat, 22 Feb 2020 20:44:16 GMT and should not be manually modified.
+
+## 0.12.18
+Sat, 22 Feb 2020 20:44:16 GMT
+
+### Patches
+
+- Fix an issue where JSDoc optional params were not parsed correctly
 
 ## 0.12.17
 Sat, 22 Feb 2020 02:55:07 GMT
