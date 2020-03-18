@@ -21,6 +21,7 @@
     "@rushstack/eslint-config": "0.4.0",
     "@rushstack/set-webpack-public-path-plugin": "~2.4.1",
     "@types/webpack-env": "~1.14.0",
+    "@types/webpack": "4.39.8",
     "clean-webpack-plugin": "~3.0.0",
     "css-loader": "~3.1.0",
     "eslint": "^6.0.0",
