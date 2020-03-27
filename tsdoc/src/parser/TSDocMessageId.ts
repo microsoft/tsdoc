@@ -384,12 +384,12 @@ export const enum TSDocMessageId {
 
 // Exposed via TSDocConfiguration.allTsdocMessageIds()
 export const allTsdocMessageIds: string[] = [
+  // To make comparisons easy, keep these in the same order as the enum above:
   'tsdoc-config-file-not-found',
   'tsdoc-config-unsupported-schema',
   'tsdoc-config-schema-error',
   'tsdoc-config-cyclic-extends',
   'tsdoc-config-unresolved-extends',
-
   'tsdoc-comment-not-found',
   'tsdoc-comment-missing-opening-delimiter',
   'tsdoc-comment-missing-closing-delimiter',
@@ -403,6 +403,8 @@ export const allTsdocMessageIds: string[] = [
   'tsdoc-tag-should-not-have-braces',
   'tsdoc-unsupported-tag',
   'tsdoc-undefined-tag',
+  'tsdoc-param-tag-with-invalid-type',
+  'tsdoc-param-tag-with-invalid-optional-name',
   'tsdoc-param-tag-with-invalid-name',
   'tsdoc-param-tag-missing-hyphen',
   'tsdoc-unnecessary-backslash',
@@ -410,8 +412,9 @@ export const allTsdocMessageIds: string[] = [
   'tsdoc-at-sign-in-word',
   'tsdoc-at-sign-without-tag-name',
   'tsdoc-malformed-inline-tag',
+  'tsdoc-characters-after-block-tag',
   'tsdoc-malformed-tag-name',
-  'tsdoc-text-after-tag',
+  'tsdoc-characters-after-inline-tag',
   'tsdoc-inline-tag-missing-right-brace',
   'tsdoc-inline-tag-unescaped-brace',
   'tsdoc-inheritdoc-tag-syntax',
@@ -449,8 +452,7 @@ export const allTsdocMessageIds: string[] = [
   'tsdoc-code-fence-missing-delimiter',
   'tsdoc-code-fence-closing-syntax',
   'tsdoc-code-span-empty',
-  'tsdoc-code-span-missing-delimiter',
-  'tsdoc-characters-after-block-tag',
+  'tsdoc-code-span-missing-delimiter'
 ];
 allTsdocMessageIds.sort();
 
