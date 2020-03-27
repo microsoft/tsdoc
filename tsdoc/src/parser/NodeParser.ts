@@ -1813,8 +1813,9 @@ export class NodeParser {
     let done: boolean = false;
     while (!done) {
       switch (tokenReader.peekTokenKind()) {
-        case TokenKind.AsciiWord:
         case TokenKind.Hyphen:
+        case TokenKind.Period:
+        case TokenKind.AsciiWord:
           tokenReader.readToken();
           break;
         default:
