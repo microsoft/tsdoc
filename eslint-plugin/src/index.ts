@@ -39,7 +39,7 @@ const plugin: IPlugin = {
           category: "Stylistic Issues",
           // This package is experimental
           recommended: false,
-          url: "https://github.com/microsoft/tsdoc"
+          url: "https://github.com/microsoft/tsdoc/blob/master/eslint-plugin/README.md"
         }
       },
       create: (context: eslint.Rule.RuleContext) => {

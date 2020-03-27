@@ -111,3 +111,50 @@ test('04 typeParam blocks', () => {
     ' */'
   ].join('\n'));
 });
+
+test('05 Invalid JSDoc syntax in @param blocks', () => {
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * @param {type} a - description',
+    ' * @param {{}} b - description',
+    ' * @param {"{"} c - description',
+    ' * @param {"\\""} d - description',
+    ' * @param e {type} - description',
+    ' * @param f {{}} - description',
+    ' * @param g {"{"} - description',
+    ' * @param h - {type} description',
+    ' * @param i - {{}} description',
+    ' * @param j - {"{"} description',
+    ' * @param [k] - description',
+    ' * @param [l=] - description',
+    ' * @param [m=[]] - description',
+    ' * @param [n="["] - description',
+    ' * @param [o="\\""] - description',
+    ' */'
+  ].join('\n'));
+});
+
+test('06 Invalid JSDoc optional name', () => {
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * Example 1',
+    ' *',
+    ' * @param [n - this is',
+    ' * the description',
+    ' *',
+    ' * @public',
+    ' */'
+  ].join('\n'));
+});
+
+test('07 Invalid JSDoc type', () => {
+  TestHelpers.parseAndMatchDocCommentSnapshot([
+    '/**',
+    ' * Example 1',
+    ' *',
+    ' * @param { test',
+    ' *',
+    ' * @public',
+    ' */'
+  ].join('\n'));
+});

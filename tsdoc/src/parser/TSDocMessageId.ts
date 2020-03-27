@@ -114,6 +114,16 @@ export const enum TSDocMessageId {
   UndefinedTag = 'tsdoc-undefined-tag',
 
   /**
+   * The `@param` block should not include a JSDoc-style `{type}`.
+   */
+  ParamTagWithInvalidType = 'tsdoc-param-tag-with-invalid-type',
+
+  /**
+   * The `@param` block should not include a JSDoc-style optional name; it must not be enclosed in `[ ]` brackets.
+   */
+  ParamTagWithInvalidOptionalName = 'tsdoc-param-tag-with-invalid-optional-name',
+
+  /**
    * The `@param` block should be followed by a parameter name.
    */
   ParamTagWithInvalidName = 'tsdoc-param-tag-with-invalid-name',
