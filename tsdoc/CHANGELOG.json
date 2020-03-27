@@ -2,6 +2,21 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.19",
+      "tag": "@microsoft/tsdoc_v0.12.19",
+      "date": "Fri, 27 Mar 2020 23:14:53 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add some missing entries to TSDocConfiguration.allTsdocMessageIds() which were breaking eslint-plugin-tsdoc"
+          },
+          {
+            "comment": "Fix an issue where \"h1\" was not allowed as an HTML element name"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.18",
       "tag": "@microsoft/tsdoc_v0.12.18",
       "date": "Sat, 22 Feb 2020 20:44:16 GMT",

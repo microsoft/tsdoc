@@ -2,6 +2,26 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.2.4",
+      "tag": "eslint-plugin-tsdoc_v0.2.4",
+      "date": "Fri, 27 Mar 2020 23:14:53 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Improve plugin documentation URL in ESLint metadata"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" from `0.12.18` to `0.12.19`"
+          },
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc-config\" from `0.13.2` to `0.13.3`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.3",
       "tag": "eslint-plugin-tsdoc_v0.2.3",
       "date": "Sat, 22 Feb 2020 20:44:16 GMT",

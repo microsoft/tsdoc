@@ -1,6 +1,14 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Sat, 22 Feb 2020 20:44:16 GMT and should not be manually modified.
+This log was last generated on Fri, 27 Mar 2020 23:14:53 GMT and should not be manually modified.
+
+## 0.12.19
+Fri, 27 Mar 2020 23:14:53 GMT
+
+### Patches
+
+- Add some missing entries to TSDocConfiguration.allTsdocMessageIds() which were breaking eslint-plugin-tsdoc
+- Fix an issue where "h1" was not allowed as an HTML element name
 
 ## 0.12.18
 Sat, 22 Feb 2020 20:44:16 GMT
