@@ -946,7 +946,7 @@ Object {
   "logMessages": Array [
     "(2,4): The HTML element has an invalid attribute: Expecting \\"=\\" after HTML attribute name",
     "(2,28): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(3,4): The HTML element has an invalid attribute: An HTML name must be a sequence of letters separated by hyphens",
+    "(3,4): The HTML element has an invalid attribute: Expecting \\"=\\" after HTML attribute name",
     "(3,28): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
     "(4,4): The HTML element has an invalid attribute: The HTML string is missing its closing quote",
     "(4,31): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
@@ -1011,9 +1011,9 @@ Object {
                 ],
               },
               Object {
-                "errorLocation": "attr-",
+                "errorLocation": "two",
                 "errorLocationPrecedingToken": " ",
-                "errorMessage": "The HTML element has an invalid attribute: An HTML name must be a sequence of letters separated by hyphens",
+                "errorMessage": "The HTML element has an invalid attribute: Expecting [q]=[q] after HTML attribute name",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -1681,6 +1681,139 @@ Object {
                   Object {
                     "kind": "Excerpt: PlainText",
                     "nodeExcerpt": "/tag-c",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`08 Unusual element names 1`] = `
+Object {
+  "buffer": "/**[n] * [<]a1/[>][n] * [<]a-a[>][n] * [<]a--a[>][n] * [<]a.2[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]a1/[>]",
+    "[<]a-a[>]",
+    "[<]a--a[>]",
+    "[<]a.2[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "HtmlStartTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_Name",
+                    "nodeExcerpt": "a1",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "/[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "HtmlStartTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_Name",
+                    "nodeExcerpt": "a-a",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "HtmlStartTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_Name",
+                    "nodeExcerpt": "a--a",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "HtmlStartTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_Name",
+                    "nodeExcerpt": "a.2",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
                   },
                 ],
               },
