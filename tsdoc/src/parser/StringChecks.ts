@@ -9,7 +9,7 @@ export class StringChecks {
 
   // https://www.w3.org/TR/html5/syntax.html#tag-name
   // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
-  private static readonly _htmlNameRegExp: RegExp = /^[a-z]+(\-[a-z]+)*$/i;
+  private static readonly _htmlNameRegExp: RegExp = /^[a-z][\-.0-9_a-z]*$/i;
 
   // Note: In addition to letters, numbers, underscores, and dollar signs, modern ECMAScript
   // also allows Unicode categories such as letters, combining marks, digits, and connector punctuation.
