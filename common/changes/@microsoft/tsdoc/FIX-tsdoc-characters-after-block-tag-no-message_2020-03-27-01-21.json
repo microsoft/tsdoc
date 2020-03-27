@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Add some missing entries to TSDocConfiguration.allTsdocMessageIds() which were breaking eslint-plugin-tsdoc",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "guillaumewuip@users.noreply.github.com"
+}
