@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "eslint-plugin-tsdoc",
+      "comment": "Improve plugin documentation URL in ESLint metadata",
+      "type": "patch"
+    }
+  ],
+  "packageName": "eslint-plugin-tsdoc",
+  "email": "bitjson@users.noreply.github.com"
+}
