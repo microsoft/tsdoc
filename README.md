@@ -55,7 +55,7 @@ The TSDoc specification aims to meet these requirements:
 - **Common core**: Common  tags such as `@param` and `@returns` will have consistent behavior across all tools.
 - **Extensible**: Each tool can supplement the core tags with custom tags for specialized scenarios.
 - **Interoperable**: The TSDoc standard guarantees that unsupported custom tags won't interfere with parsing of other content. TSDoc also eliminates Markdown ambiguities.  (Are backticks allowed inside a `{@link}` tag?  What happens if there is only one backtick? etc.)
-- **Multi-package support**:  Many teams ship a collection of NPM packages that work together and are documented as a set.  The cross-referencing syntax (e.g. `{@link}` or `{@inheritdoc}`) needs a portable way to reference API items imported from other packages.  We also define  *package.json* metadata that enables tooling to detect whether a dependency's *.d.ts doc comments should be parsed as TSDoc or not.
+- **Multi-package support**:  Many teams ship a collection of NPM packages that work together and are documented as a set.  The cross-referencing syntax (e.g. `{@link}` or `{@inheritDoc}`) needs a portable way to reference API items imported from other packages.  We also define  *package.json* metadata that enables tooling to detect whether a dependency's *.d.ts doc comments should be parsed as TSDoc or not.
 - **Open standard**: TSDoc is an open source, community-driven standard.  You are encouraged to contribute your own ideas and pull requests.
 
 The **@microsoft/tsdoc** library package brings in some additional goals:
