@@ -126,15 +126,15 @@ export class StandardTags {
    *
    * What gets copied
    * 
-   * The @inheritDoc tag does not copy the entire comment body. Only the following 
+   * The `@inheritDoc` tag does not copy the entire comment body. Only the following 
    * components are copied:
    * - summary section
-   * - @remarks block
-   * - @params blocks
-   * - @typeParam blocks
-   * - @returns block
-   * Other tags such as @defaultValue or @example are not copied, and need to be 
-   * explicitly included after the @inheritDoc tag.
+   * - `@remarks` block
+   * - `@params` blocks
+   * - `@typeParam` blocks
+   * - `@returns` block
+   * Other tags such as `@defaultValue` or `@example` are not copied, and need to be 
+   * explicitly included after the `@inheritDoc` tag.
    *
    * TODO: The notation for API item references is still being standardized.  See this issue:
    * https://github.com/microsoft/tsdoc/issues/9
