@@ -131,7 +131,7 @@ function getNpmPath() {
             }
             else {
                 // We aren't on Windows - assume we're on *NIX or Darwin
-                _npmPath = childProcess.execSync('which npm', { stdio: [] }).toString();
+                _npmPath = childProcess.execSync('command -v npm', { stdio: [] }).toString();
             }
         }
         catch (e) {
