@@ -107,3 +107,23 @@ test('07 Closing tags, negative', () => {
     ' */'
   ].join('\n'));
 });
+
+test('08 Unusual HTML names, positive', () => {
+  TestHelpers.parseAndMatchNodeParserSnapshot([
+    '/**',
+    ' * <a1/>',
+    ' * <a-a>',
+    ' * <a--9->',
+    ' */'
+  ].join('\n'));
+});
+
+test('09 Unusual HTML names, negative', () => {
+  TestHelpers.parseAndMatchNodeParserSnapshot([
+    '/**',
+    ' * <1a/>',
+    ' * <a.a>',
+    ' * <_a>',
+    ' */'
+  ].join('\n'));
+});

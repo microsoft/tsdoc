@@ -20,7 +20,18 @@ export const enum ExcerptKind {
   DeclarationReference_ImportPath = 'DeclarationReference_ImportPath',
   DeclarationReference_ImportHash = 'DeclarationReference_ImportHash',
 
+  /**
+   * Input characters that were reported as an error and do not appear to be part of a valid expression.
+   * A syntax highlighter might display them with an error color (e.g. red).
+   */
   ErrorText = 'ErrorText',
+
+  /**
+   * Input characters that do not conform to the TSDoc specification, but were recognized by the parser, for example
+   * as a known JSDoc pattern.  A syntax highlighter should not display them with an error color (e.g. red)
+   * because the error reporting may be suppressed for "lax" parsing of legacy source code.
+   */
+  NonstandardText = 'NonstandardText',
 
   EscapedText = 'EscapedText',
 

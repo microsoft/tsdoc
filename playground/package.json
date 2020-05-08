@@ -10,7 +10,7 @@
     "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.dev.config.js --open"
   },
   "dependencies": {
-    "@microsoft/tsdoc": "0.12.16",
+    "@microsoft/tsdoc": "0.12.19",
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.3",
     "promise": "~8.0.3",
@@ -19,15 +19,16 @@
   },
   "devDependencies": {
     "@rushstack/eslint-config": "0.4.0",
-    "@microsoft/set-webpack-public-path-plugin": "~2.1.123",
+    "@rushstack/set-webpack-public-path-plugin": "~2.4.1",
     "@types/webpack-env": "~1.14.0",
+    "@types/webpack": "4.39.8",
     "clean-webpack-plugin": "~3.0.0",
     "css-loader": "~3.1.0",
     "eslint": "^6.0.0",
     "file-loader": "~4.1.0",
     "fork-ts-checker-webpack-plugin": "~1.4.3",
     "handlebars-loader": "~1.7.1",
-    "handlebars": "~4.1.2",
+    "handlebars": "~4.7.3",
     "html-webpack-plugin": "~3.2.0",
     "node-sass": "~4.12.0",
     "raw-loader": "~0.5.1",

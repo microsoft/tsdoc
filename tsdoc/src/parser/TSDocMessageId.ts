@@ -114,6 +114,16 @@ export const enum TSDocMessageId {
   UndefinedTag = 'tsdoc-undefined-tag',
 
   /**
+   * The `@param` block should not include a JSDoc-style `{type}`.
+   */
+  ParamTagWithInvalidType = 'tsdoc-param-tag-with-invalid-type',
+
+  /**
+   * The `@param` block should not include a JSDoc-style optional name; it must not be enclosed in `[ ]` brackets.
+   */
+  ParamTagWithInvalidOptionalName = 'tsdoc-param-tag-with-invalid-optional-name',
+
+  /**
    * The `@param` block should be followed by a parameter name.
    */
   ParamTagWithInvalidName = 'tsdoc-param-tag-with-invalid-name',
@@ -374,12 +384,12 @@ export const enum TSDocMessageId {
 
 // Exposed via TSDocConfiguration.allTsdocMessageIds()
 export const allTsdocMessageIds: string[] = [
+  // To make comparisons easy, keep these in the same order as the enum above:
   'tsdoc-config-file-not-found',
   'tsdoc-config-unsupported-schema',
   'tsdoc-config-schema-error',
   'tsdoc-config-cyclic-extends',
   'tsdoc-config-unresolved-extends',
-
   'tsdoc-comment-not-found',
   'tsdoc-comment-missing-opening-delimiter',
   'tsdoc-comment-missing-closing-delimiter',
@@ -393,6 +403,8 @@ export const allTsdocMessageIds: string[] = [
   'tsdoc-tag-should-not-have-braces',
   'tsdoc-unsupported-tag',
   'tsdoc-undefined-tag',
+  'tsdoc-param-tag-with-invalid-type',
+  'tsdoc-param-tag-with-invalid-optional-name',
   'tsdoc-param-tag-with-invalid-name',
   'tsdoc-param-tag-missing-hyphen',
   'tsdoc-unnecessary-backslash',
@@ -400,8 +412,9 @@ export const allTsdocMessageIds: string[] = [
   'tsdoc-at-sign-in-word',
   'tsdoc-at-sign-without-tag-name',
   'tsdoc-malformed-inline-tag',
+  'tsdoc-characters-after-block-tag',
   'tsdoc-malformed-tag-name',
-  'tsdoc-text-after-tag',
+  'tsdoc-characters-after-inline-tag',
   'tsdoc-inline-tag-missing-right-brace',
   'tsdoc-inline-tag-unescaped-brace',
   'tsdoc-inheritdoc-tag-syntax',

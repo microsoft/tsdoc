@@ -7,9 +7,14 @@ export class StringChecks {
   private static readonly _urlSchemeRegExp: RegExp = /^[a-z][a-z0-9]*\:\/\//i;
   private static readonly _urlSchemeAfterRegExp: RegExp = /^[a-z][a-z0-9]*\:\/\/./i;
 
+  // HTML element definitions:
+  // https://spec.commonmark.org/0.29/#tag-name
   // https://www.w3.org/TR/html5/syntax.html#tag-name
   // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
-  private static readonly _htmlNameRegExp: RegExp = /^[a-z]+(\-[a-z]+)*$/i;
+  //
+  // We use the CommonMark spec:
+  // "A tag name consists of an ASCII letter followed by zero or more ASCII letters, digits, or hyphens (-)."
+  private static readonly _htmlNameRegExp: RegExp = /^[a-z]+[a-z0-9\-]*$/i;
 
   // Note: In addition to letters, numbers, underscores, and dollar signs, modern ECMAScript
   // also allows Unicode categories such as letters, combining marks, digits, and connector punctuation.
@@ -86,7 +91,7 @@ export class StringChecks {
    */
   public static explainIfInvalidHtmlName(htmlName: string): string | undefined {
     if (!StringChecks._htmlNameRegExp.test(htmlName)) {
-      return 'An HTML name must be a sequence of letters separated by hyphens';
+      return 'An HTML name must be an ASCII letter followed by zero or more letters, digits, or hyphens';
     }
 
     return undefined;

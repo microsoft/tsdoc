@@ -946,7 +946,7 @@ Object {
   "logMessages": Array [
     "(2,4): The HTML element has an invalid attribute: Expecting \\"=\\" after HTML attribute name",
     "(2,28): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(3,4): The HTML element has an invalid attribute: An HTML name must be a sequence of letters separated by hyphens",
+    "(3,4): The HTML element has an invalid attribute: Expecting \\"=\\" after HTML attribute name",
     "(3,28): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
     "(4,4): The HTML element has an invalid attribute: The HTML string is missing its closing quote",
     "(4,31): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
@@ -1011,9 +1011,9 @@ Object {
                 ],
               },
               Object {
-                "errorLocation": "attr-",
+                "errorLocation": "two",
                 "errorLocationPrecedingToken": " ",
-                "errorMessage": "The HTML element has an invalid attribute: An HTML name must be a sequence of letters separated by hyphens",
+                "errorMessage": "The HTML element has an invalid attribute: Expecting [q]=[q] after HTML attribute name",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -1681,6 +1681,273 @@ Object {
                   Object {
                     "kind": "Excerpt: PlainText",
                     "nodeExcerpt": "/tag-c",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`08 Unusual HTML names, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]a1/[>][n] * [<]a-a[>][n] * [<]a--9-[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]a1/[>]",
+    "[<]a-a[>]",
+    "[<]a--9-[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "HtmlStartTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_Name",
+                    "nodeExcerpt": "a1",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "/[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "HtmlStartTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_Name",
+                    "nodeExcerpt": "a-a",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "HtmlStartTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_Name",
+                    "nodeExcerpt": "a--9-",
+                  },
+                  Object {
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`09 Unusual HTML names, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]1a/[>][n] * [<]a.a[>][n] * [<]_a[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]1a/[>]",
+    "[<]a.a[>]",
+    "[<]_a[>]",
+  ],
+  "logMessages": Array [
+    "(2,4): Invalid HTML element: An HTML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+    "(2,8): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(3,4): Invalid HTML element: An HTML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+    "(3,8): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,4): Invalid HTML element: An HTML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+    "(4,7): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "1a",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid HTML element: An HTML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "1a/",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "a.a",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid HTML element: An HTML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "a.a",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "a",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "_a",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid HTML element: An HTML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "_a",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "_a",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
                   },
                 ],
               },
