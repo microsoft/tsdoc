@@ -329,6 +329,9 @@ export class NodeParser {
       case StandardTags.returns.tagNameWithUpperCase:
         docComment.returnsBlock = block;
         break;
+      case StandardTags.see.tagNameWithUpperCase:
+        docComment.appendSeeBlock(block);
+        break;
       default:
         docComment.appendCustomBlock(block);
     }

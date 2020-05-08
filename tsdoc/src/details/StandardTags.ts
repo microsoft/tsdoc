@@ -331,6 +331,37 @@ export class StandardTags {
   /**
    * (Extended)
    *
+   * Used to document another symbol or resource that may be related to the current item being documented.
+   *
+   * @remarks
+   *
+   * For example:
+   *
+   * ```ts
+   * /**
+   *  * Both of these will link to the bar function.
+   *  * @see {@link bar}
+   *  * @see bar
+   *  &#42;/
+   * function foo() {}
+
+   * // Use the inline {@link} tag to include a link within a free-form description.
+   * /**
+   *  * @see {@link foo} for further information.
+   *  * @see {@link http://github.com|GitHub}
+   *  &#42;/
+   * function bar() {}
+   * ```
+   */
+  public static readonly see: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@see',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Extended)
+   *
    * Used to document an exception type that may be thrown by a function or property.
    *
    * @remarks
@@ -420,6 +451,7 @@ export class StandardTags {
     StandardTags.remarks,
     StandardTags.returns,
     StandardTags.sealed,
+    StandardTags.see,
     StandardTags.throws,
     StandardTags.typeParam,
     StandardTags.virtual
