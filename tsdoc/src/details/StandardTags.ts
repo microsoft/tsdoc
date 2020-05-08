@@ -339,9 +339,8 @@ export class StandardTags {
    *
    * ```ts
    * /**
-   *  * Both of these will link to the bar function.
+   *  * Link to the bar function.
    *  * @see {@link bar}
-   *  * @see bar
    *  &#42;/
    * function foo() {}
 
