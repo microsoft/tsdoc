@@ -72,6 +72,43 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       );
     }
 
+    const exampleBlocks: tsdoc.DocBlock[] = docComment.customBlocks.filter(x => x.blockTag.tagNameWithUpperCase
+      === tsdoc.StandardTags.example.tagNameWithUpperCase);
+
+    let exampleNumber: number = 1;
+    for (const exampleBlock of exampleBlocks) {
+      const heading: string = exampleBlocks.length > 1 ? `Example ${exampleNumber}` : 'Example';
+
+      outputElements.push(
+        <React.Fragment key='seeAlso'>
+          <h2 className='doc-heading'>{heading}</h2>
+          { this._renderContainer(exampleBlock.content) }
+        </React.Fragment>
+      );
+
+      ++exampleNumber;
+    }
+
+    if (docComment.seeBlocks.length > 0) {
+      const listItems: React.ReactNode[] = [];
+      for (const seeBlock of docComment.seeBlocks) {
+        listItems.push(
+          <li key={`item_${listItems.length}`}>
+            { this._renderContainer(seeBlock.content) }
+          </li>
+        );
+      }
+
+      outputElements.push(
+        <React.Fragment key='seeAlso'>
+          <h2 className='doc-heading'>See Also</h2>
+          <ul>
+            {listItems}
+          </ul>
+        </React.Fragment>
+      );
+    }
+
     const modifierTags: ReadonlyArray<tsdoc.DocBlockTag> = docComment.modifierTagSet.nodes;
 
     if (modifierTags.length > 0) {
