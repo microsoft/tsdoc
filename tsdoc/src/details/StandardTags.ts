@@ -331,7 +331,7 @@ export class StandardTags {
   /**
    * (Extended)
    *
-   * Used build a list of references to an API item or other resource that may be related to the
+   * Used to build a list of references to an API item or other resource that may be related to the
    * current item.
    *
    * @remarks
