@@ -125,15 +125,15 @@ export class StandardTags {
    * separate NPM package.
    *
    * What gets copied
-   * 
-   * The `@inheritDoc` tag does not copy the entire comment body. Only the following 
+   *
+   * The `@inheritDoc` tag does not copy the entire comment body. Only the following
    * components are copied:
    * - summary section
    * - `@remarks` block
    * - `@params` blocks
    * - `@typeParam` blocks
    * - `@returns` block
-   * Other tags such as `@defaultValue` or `@example` are not copied, and need to be 
+   * Other tags such as `@defaultValue` or `@example` are not copied, and need to be
    * explicitly included after the `@inheritDoc` tag.
    *
    * TODO: The notation for API item references is still being standardized.  See this issue:
@@ -331,7 +331,8 @@ export class StandardTags {
   /**
    * (Extended)
    *
-   * Used to document another symbol or resource that may be related to the current item being documented.
+   * Used to build a list of references to an API item or other resource that may be related to the
+   * current item.
    *
    * @remarks
    *
@@ -339,18 +340,33 @@ export class StandardTags {
    *
    * ```ts
    * /**
-   *  * Link to the bar function.
-   *  * @see {@link bar}
+   *  * Parses a string containing a Uniform Resource Locator (URL).
+   *  * @see {@link ParsedUrl} for the returned data structure
+   *  * @see {@link https://tools.ietf.org/html/rfc1738|RFC 1738}
+   *  * for syntax
+   *  * @see your developer SDK for code samples
+   *  * @param url - the string to be parsed
+   *  * @returns the parsed result
    *  &#42;/
-   * function foo() {}
-
-   * // Use the inline {@link} tag to include a link within a free-form description.
-   * /**
-   *  * @see {@link foo} for further information.
-   *  * @see {@link http://github.com|GitHub}
-   *  &#42;/
-   * function bar() {}
+   * function parseURL(url: string): ParsedUrl;
    * ```
+   *
+   * `@see` is a block tag.  Each block becomes an item in the list of references.  For example, a documentation
+   * system might render the above blocks as follows:
+   *
+   * ```markdown
+   * `function parseURL(url: string): ParsedUrl;`
+   *
+   * Parses a string containing a Uniform Resource Locator (URL).
+   *
+   * ## See Also
+   * - ParsedUrl for the returned data structure
+   * - RFC 1738 for syntax
+   * - your developer SDK for code samples
+   * ```
+   *
+   * NOTE: JSDoc attempts to automatically hyperlink the text immediately after `@see`.  Because this is ambiguous
+   * with plain text, TSDoc instead requires an explicit `{@link}` tag to make hyperlinks.
    */
   public static readonly see: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@see',
