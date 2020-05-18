@@ -53,7 +53,7 @@ a list of paths that will be mixed in with the current file:
 }
 ```
 
-> NOTE: The `extends` paths are resolved using NodeJS module resolution, so local paths must being with `./` to avoid
+> NOTE: The `extends` paths are resolved using NodeJS module resolution, so local paths must begin with `./` to avoid
 > being interpreted as an NPM package name.
 
 
