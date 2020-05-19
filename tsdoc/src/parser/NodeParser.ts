@@ -276,14 +276,14 @@ export class NodeParser {
     if (tagDefinition) {
       switch (tagDefinition.syntaxKind) {
         case TSDocTagSyntaxKind.BlockTag:
-          if (docBlockTag.tagNameWithUpperCase === StandardTags.param.tagNameWithUpperCase) {
+          if (StandardTags.param.isDefinitionOfTag(docBlockTag)) {
             const docParamBlock: DocParamBlock = this._parseParamBlock(tokenReader, docBlockTag, StandardTags.param.tagName);
 
             this._parserContext.docComment.params.add(docParamBlock);
 
             this._currentSection = docParamBlock.content;
             return;
-          } else if (docBlockTag.tagNameWithUpperCase === StandardTags.typeParam.tagNameWithUpperCase) {
+          } else if (StandardTags.typeParam.isDefinitionOfTag(docBlockTag)) {
             const docParamBlock: DocParamBlock = this._parseParamBlock(tokenReader, docBlockTag, StandardTags.typeParam.tagName);
 
             this._parserContext.docComment.typeParams.add(docParamBlock);
@@ -315,22 +315,18 @@ export class NodeParser {
 
   private _addBlockToDocComment(block: DocBlock): void {
     const docComment: DocComment = this._parserContext.docComment;
-
-    switch (block.blockTag.tagNameWithUpperCase) {
-      case StandardTags.remarks.tagNameWithUpperCase:
-        docComment.remarksBlock = block;
-        break;
-      case StandardTags.privateRemarks.tagNameWithUpperCase:
-        docComment.privateRemarks = block;
-        break;
-      case StandardTags.deprecated.tagNameWithUpperCase:
-        docComment.deprecatedBlock = block;
-        break;
-      case StandardTags.returns.tagNameWithUpperCase:
-        docComment.returnsBlock = block;
-        break;
-      default:
-        docComment.appendCustomBlock(block);
+    if (StandardTags.remarks.isDefinitionOfTag(block.blockTag)) {
+      docComment.remarksBlock = block;
+    } else if (StandardTags.privateRemarks.isDefinitionOfTag(block.blockTag)) {
+      docComment.privateRemarks = block;
+    } else if (StandardTags.deprecated.isDefinitionOfTag(block.blockTag)) {
+      docComment.deprecatedBlock = block;
+    } else if (StandardTags.returns.isDefinitionOfTag(block.blockTag)) {
+      docComment.returnsBlock = block;
+    } else if (StandardTags.see.isDefinitionOfTag(block.blockTag)) {
+      docComment.appendSeeBlock(block);
+    } else {
+      docComment.appendCustomBlock(block);
     }
   }
 
@@ -816,15 +812,12 @@ export class NodeParser {
       tagContentExcerpt ? tagContentExcerpt : TokenSequence.createEmpty(this._parserContext));
 
     let docNode: DocNode;
-    switch (tagNameWithUpperCase) {
-      case StandardTags.inheritDoc.tagNameWithUpperCase:
-        docNode = this._parseInheritDocTag(docInlineTagParsedParameters, embeddedTokenReader);
-        break;
-      case StandardTags.link.tagNameWithUpperCase:
-        docNode = this._parseLinkTag(docInlineTagParsedParameters, embeddedTokenReader);
-        break;
-      default:
-        docNode = new DocInlineTag(docInlineTagParsedParameters);
+    if (StandardTags.inheritDoc.hasTagName(tagNameWithUpperCase)) {
+      docNode = this._parseInheritDocTag(docInlineTagParsedParameters, embeddedTokenReader);
+    } else if (StandardTags.link.hasTagName(tagNameWithUpperCase)) {
+      docNode = this._parseLinkTag(docInlineTagParsedParameters, embeddedTokenReader);
+    } else {
+      docNode = new DocInlineTag(docInlineTagParsedParameters);
     }
 
     // Validate the tag

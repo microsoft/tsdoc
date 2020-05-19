@@ -1,6 +1,8 @@
 import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
 import { DocSection } from './DocSection';
 import { StandardModifierTagSet } from '../details/StandardModifierTagSet';
+import { IModifierTagSetParameters } from '../details/ModifierTagSet';
+import { StandardTags } from '../details/StandardTags';
 import { DocBlock } from './DocBlock';
 import { DocInheritDocTag } from './DocInheritDocTag';
 import { StringBuilder } from '../emitters/StringBuilder';
@@ -87,6 +89,7 @@ export class DocComment extends DocNode {
    */
   public readonly modifierTagSet: StandardModifierTagSet;
 
+  private _seeBlocks: DocBlock[];
   private _customBlocks: DocBlock[];
 
   /**
@@ -103,9 +106,9 @@ export class DocComment extends DocNode {
     this.params = new DocParamCollection({ configuration: this.configuration });
     this.typeParams = new DocParamCollection({ configuration: this.configuration });
     this.returnsBlock = undefined;
+    this.modifierTagSet = new StandardModifierTagSet({ configuration: this.configuration });
 
-    this.modifierTagSet = new StandardModifierTagSet();
-
+    this._seeBlocks = [];
     this._customBlocks = [];
   }
 
@@ -115,10 +118,27 @@ export class DocComment extends DocNode {
   }
 
   /**
+   * The collection of all `@see` DocBlockTag nodes belonging to this doc comment.
+   */
+  public get seeBlocks(): ReadonlyArray<DocBlock> {
+    return this._seeBlocks;
+  }
+
+  /**
    * The collection of all DocBlock nodes belonging to this doc comment.
    */
   public get customBlocks(): ReadonlyArray<DocBlock> {
     return this._customBlocks;
+  }
+
+  /**
+   * Append an item to the seeBlocks collection.
+   */
+  public appendSeeBlock(block: DocBlock): void {
+    if (!StandardTags.see.isDefinitionOfTag(block.blockTag)) {
+      throw new Error("Provided block is not a @see block.");
+    }
+    this._seeBlocks.push(block);
   }
 
   /**
@@ -139,6 +159,7 @@ export class DocComment extends DocNode {
       this.typeParams.count > 0 ? this.typeParams : undefined,
       this.returnsBlock,
       ...this.customBlocks,
+      ...this.seeBlocks,
       this.inheritDocTag,
       ...this.modifierTagSet.nodes
     ];
@@ -167,3 +188,4 @@ export class DocComment extends DocNode {
 
 // Circular reference
 import { TSDocEmitter } from '../emitters/TSDocEmitter';
+

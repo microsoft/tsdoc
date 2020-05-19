@@ -1,0 +1,11 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+    "tagDefinitions": [
+        { "tagName": "@foo", "syntaxKind": "block", "synonyms": ["@bar"] }
+    ],
+    "synonyms": {
+        "add": {
+            "@readonly": ["@readonly2"]
+        }
+    }
+}

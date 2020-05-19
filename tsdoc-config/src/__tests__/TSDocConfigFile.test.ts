@@ -1,6 +1,7 @@
 import * as path from 'path';
 
 import { TSDocConfigFile } from '../TSDocConfigFile';
+import { TSDocSynonymCollection } from '@microsoft/tsdoc/lib/configuration/TSDocSynonymCollection';
 
 function getRelativePath(testPath: string): string {
   return path
@@ -23,8 +24,30 @@ expect.addSnapshotSerializer({
       extendsPaths: value.extendsPaths,
       extendsFiles: value.extendsFiles,
       tagDefinitions: value.tagDefinitions,
+      synonymAdditions: Array.from(value.synonymAdditions).reduce<Record<string, ReadonlyArray<string>>>(
+        (obj, [key, value]) => {
+          obj[key] = value;
+          return obj;
+        },
+        {}
+      ),
+      synonymDeletions: Array.from(value.synonymDeletions).reduce<Record<string, ReadonlyArray<string>>>(
+        (obj, [key, value]) => {
+          obj[key] = value;
+          return obj;
+        },
+        {}
+      ),
       messages: value.log.messages
     });
+  }
+});
+expect.addSnapshotSerializer({
+  test(value: unknown) {
+    return value instanceof TSDocSynonymCollection;
+  },
+  print(value: TSDocSynonymCollection, serialize: (value: unknown) => string, indent: (str: string) => string): string {
+    return serialize(value.synonyms);
   }
 });
 
@@ -40,6 +63,8 @@ test('Load p1', () => {
       "fileNotFound": false,
       "filePath": "assets/p1/tsdoc.json",
       "messages": Array [],
+      "synonymAdditions": Object {},
+      "synonymDeletions": Object {},
       "tagDefinitions": Array [],
       "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
     }
@@ -66,6 +91,8 @@ test('Load p2', () => {
           "unformattedText": "File not found",
         },
       ],
+      "synonymAdditions": Object {},
+      "synonymDeletions": Object {},
       "tagDefinitions": Array [],
       "tsdocSchema": "",
     }
@@ -81,8 +108,11 @@ test('Load p3', () => {
           "fileNotFound": false,
           "filePath": "assets/p3/base1/tsdoc-base1.json",
           "messages": Array [],
+          "synonymAdditions": Object {},
+          "synonymDeletions": Object {},
           "tagDefinitions": Array [
             TSDocTagDefinition {
+              "_synonymCollection": Array [],
               "allowMultiple": false,
               "standardization": "None",
               "syntaxKind": 2,
@@ -98,8 +128,11 @@ test('Load p3', () => {
           "fileNotFound": false,
           "filePath": "assets/p3/base2/tsdoc-base2.json",
           "messages": Array [],
+          "synonymAdditions": Object {},
+          "synonymDeletions": Object {},
           "tagDefinitions": Array [
             TSDocTagDefinition {
+              "_synonymCollection": Array [],
               "allowMultiple": false,
               "standardization": "None",
               "syntaxKind": 2,
@@ -117,8 +150,11 @@ test('Load p3', () => {
       "fileNotFound": false,
       "filePath": "assets/p3/tsdoc.json",
       "messages": Array [],
+      "synonymAdditions": Object {},
+      "synonymDeletions": Object {},
       "tagDefinitions": Array [
         TSDocTagDefinition {
+          "_synonymCollection": Array [],
           "allowMultiple": false,
           "standardization": "None",
           "syntaxKind": 2,
@@ -140,8 +176,11 @@ test('Load p4', () => {
           "fileNotFound": false,
           "filePath": "assets/p4/node_modules/example-lib/dist/tsdoc-example.json",
           "messages": Array [],
+          "synonymAdditions": Object {},
+          "synonymDeletions": Object {},
           "tagDefinitions": Array [
             TSDocTagDefinition {
+              "_synonymCollection": Array [],
               "allowMultiple": false,
               "standardization": "None",
               "syntaxKind": 2,
@@ -158,13 +197,46 @@ test('Load p4', () => {
       "fileNotFound": false,
       "filePath": "assets/p4/tsdoc.json",
       "messages": Array [],
+      "synonymAdditions": Object {},
+      "synonymDeletions": Object {},
       "tagDefinitions": Array [
         TSDocTagDefinition {
+          "_synonymCollection": Array [],
           "allowMultiple": false,
           "standardization": "None",
           "syntaxKind": 2,
           "tagName": "@root",
           "tagNameWithUpperCase": "@ROOT",
+        },
+      ],
+      "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+    }
+  `);
+});
+test('Load synonyms', () => {
+  expect(testLoadingFolder('assets/synonyms')).toMatchInlineSnapshot(`
+    Object {
+      "extendsFiles": Array [],
+      "extendsPaths": Array [],
+      "fileNotFound": false,
+      "filePath": "assets/synonyms/tsdoc.json",
+      "messages": Array [],
+      "synonymAdditions": Object {
+        "@readonly": Array [
+          "@readonly2",
+        ],
+      },
+      "synonymDeletions": Object {},
+      "tagDefinitions": Array [
+        TSDocTagDefinition {
+          "_synonymCollection": Array [
+            "@bar",
+          ],
+          "allowMultiple": false,
+          "standardization": "None",
+          "syntaxKind": 1,
+          "tagName": "@foo",
+          "tagNameWithUpperCase": "@FOO",
         },
       ],
       "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",

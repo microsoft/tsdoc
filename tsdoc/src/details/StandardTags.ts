@@ -68,6 +68,7 @@ export class StandardTags {
    */
   public static readonly defaultValue: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@defaultValue',
+    synonyms: ['@default'],
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     standardization: Standardization.Extended
   });
@@ -234,6 +235,7 @@ export class StandardTags {
    */
   public static readonly param: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@param',
+    synonyms: ['@arg', '@argument'],
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     allowMultiple: true,
     standardization: Standardization.Core
@@ -307,6 +309,7 @@ export class StandardTags {
    */
   public static readonly returns: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@returns',
+    synonyms: ['@return'],
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     standardization: Standardization.Core
   });
@@ -325,6 +328,31 @@ export class StandardTags {
   public static readonly sealed: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@sealed',
     syntaxKind: TSDocTagSyntaxKind.ModifierTag,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Extended)
+   *
+   * Used to document another symbol or resource that may be related to the current item being documented.
+   *
+   * @remarks
+   *
+   * For example:
+   *
+   * ```ts
+   * /**
+   *  * Make a rectangle from two points.
+   *  *
+   *  * @see {@link Point}
+   *  &#42;/
+   * function makeRect(a: Point, b: Point): Rect;
+   * ```
+   */
+  public static readonly see: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@see',
+    synonyms: ['@seeAlso'],
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
     standardization: Standardization.Extended
   });
 
@@ -361,6 +389,7 @@ export class StandardTags {
    */
   public static readonly throws: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@throws',
+    synonyms: ['@exception'],
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     allowMultiple: true,
     standardization: Standardization.Extended
@@ -375,6 +404,7 @@ export class StandardTags {
    */
   public static readonly typeParam: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@typeParam',
+    synonyms: ['@template'],
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     allowMultiple: true,
     standardization: Standardization.Core
@@ -420,6 +450,7 @@ export class StandardTags {
     StandardTags.remarks,
     StandardTags.returns,
     StandardTags.sealed,
+    StandardTags.see,
     StandardTags.throws,
     StandardTags.typeParam,
     StandardTags.virtual

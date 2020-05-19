@@ -96,7 +96,7 @@ export class TSDocEmitter {
         this._ensureLineSkipped();
         this._renderNode(docBlock.blockTag);
 
-        if (docBlock.blockTag.tagNameWithUpperCase === StandardTags.returns.tagNameWithUpperCase) {
+        if (StandardTags.returns.isDefinitionOfTag(docBlock.blockTag)) {
           this._writeContent(' ');
           this._hangingParagraph = true;
         }
@@ -130,6 +130,7 @@ export class TSDocEmitter {
           docComment.typeParams,
           docComment.returnsBlock,
           ...docComment.customBlocks,
+          ...docComment.seeBlocks,
           docComment.inheritDocTag
         ]);
         if (docComment.modifierTagSet.nodes.length > 0) {
