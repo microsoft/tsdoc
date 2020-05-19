@@ -32,6 +32,16 @@ interface ITagConfigJson {
   tagName: string;
   syntaxKind: 'inline' | 'block' | 'modifier';
   allowMultiple?: boolean;
+  synonyms?: string[];
+}
+
+interface ISynonymConfigJson {
+  add?: ISynonymSetJson;
+  remove?: ISynonymSetJson;
+}
+
+interface ISynonymSetJson {
+  [tagName: string]: string[];
 }
 
 interface IConfigJson {
@@ -39,6 +49,7 @@ interface IConfigJson {
   tsdocVersion: string;
   extends?: string[];
   tagDefinitions: ITagConfigJson[];
+  synonyms?: ISynonymConfigJson;
 }
 
 /**
@@ -64,6 +75,8 @@ export class TSDocConfigFile {
   private _tsdocSchema: string;
   private readonly _extendsPaths: string[];
   private readonly _tagDefinitions: TSDocTagDefinition[];
+  private readonly _synonymAdditions: Map<string, string[]>;
+  private readonly _synonymDeletions: Map<string, string[]>;
 
   private constructor() {
     this.log = new ParserMessageLog();
@@ -75,7 +88,9 @@ export class TSDocConfigFile {
     this._fileMTime = 0;
     this._tsdocSchema = '';
     this._extendsPaths = [];
-    this._tagDefinitions= [];
+    this._tagDefinitions = [];
+    this._synonymAdditions = new Map<string, string[]>();
+    this._synonymDeletions = new Map<string, string[]>();
   }
 
   /**
@@ -130,6 +145,14 @@ export class TSDocConfigFile {
 
   public get tagDefinitions(): ReadonlyArray<TSDocTagDefinition> {
     return this._tagDefinitions;
+  }
+
+  public get synonymAdditions(): ReadonlyMap<string, ReadonlyArray<string>> {
+    return this._synonymAdditions;
+  }
+
+  public get synonymDeletions(): ReadonlyMap<string, ReadonlyArray<string>> {
+    return this._synonymDeletions;
   }
 
   /**
@@ -227,8 +250,21 @@ export class TSDocConfigFile {
       this._tagDefinitions.push(new TSDocTagDefinition({
         tagName: jsonTagDefinition.tagName,
         syntaxKind: syntaxKind,
+        synonyms: jsonTagDefinition.synonyms,
         allowMultiple: jsonTagDefinition.allowMultiple
       }));
+    }
+    if (configJson.synonyms) {
+      if (configJson.synonyms.add) {
+        for (const tagName of Object.keys(configJson.synonyms.add)) {
+          this._synonymAdditions.set(tagName, configJson.synonyms.add[tagName]);
+        }
+      }
+      if (configJson.synonyms.remove) {
+        for (const tagName of Object.keys(configJson.synonyms.remove)) {
+          this._synonymDeletions.set(tagName, configJson.synonyms.remove[tagName]);
+        }
+      }
     }
   }
 
@@ -388,5 +424,23 @@ export class TSDocConfigFile {
     for (const tagDefinition of this.tagDefinitions) {
       configuration.addTagDefinition(tagDefinition);
     }
+
+    this.synonymDeletions.forEach((synonyms, tagName) => {
+      const tagDefinition: TSDocTagDefinition | undefined
+        = configuration.tryGetTagDefinition(tagName);
+      if (!tagDefinition) {
+        throw new Error(`A tag with the name ${tagName} could not be found.`);
+      }
+      configuration.removeSynonym(tagDefinition, ...synonyms);
+    });
+
+    this.synonymAdditions.forEach((synonyms, tagName) => {
+      const tagDefinition: TSDocTagDefinition | undefined
+        = configuration.tryGetTagDefinition(tagName);
+      if (!tagDefinition) {
+        throw new Error(`A tag with the name ${tagName} could not be found.`);
+      }
+      configuration.addSynonym(tagDefinition, ...synonyms);
+    });
   }
 }

@@ -1,5 +1,13 @@
 import { DocBlockTag } from '../nodes/DocBlockTag';
 import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTagDefinition';
+import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
+
+/**
+ * Constructor parameters for {@link ModifierTagSet}.
+ */
+export interface IModifierTagSetParameters {
+  configuration: TSDocConfiguration;
+}
 
 /**
  * Represents a set of modifier tags that were extracted from a doc comment.
@@ -11,12 +19,22 @@ import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTa
  * signature is internal (i.e. not part of the public API contract).
  */
 export class ModifierTagSet {
+  public readonly configuration: TSDocConfiguration;
+
   private readonly _nodes: DocBlockTag[] = [];
 
   // NOTE: To implement case insensitivity, the keys in this set are always upper-case.
   // This convention makes the normalization more obvious (and as a general practice handles
   // the Turkish "i" character correctly).
   private readonly _nodesByName: Map<string, DocBlockTag> = new Map<string, DocBlockTag>();
+
+  /**
+   * Don't call this directly.  Instead use {@link TSDocParser}
+   * @internal
+   */
+  public constructor(parameters: IModifierTagSetParameters) {
+    this.configuration = parameters.configuration;
+  }
 
   /**
    * The original block tag nodes that defined the modifiers in this set, excluding duplicates.
@@ -36,8 +54,7 @@ export class ModifierTagSet {
 
   /**
    * Returns true if the set contains a DocBlockTag matching the specified tag definition.
-   * Note that synonyms are not considered.  The comparison is case-insensitive.
-   * The TSDocTagDefinition must be a modifier tag.
+   * The comparison is case-insensitive.  The TSDocTagDefinition must be a modifier tag.
    * @param tagName - The name of the tag, including the `@` prefix  For example, `@internal`
    */
   public hasTag(modifierTagDefinition: TSDocTagDefinition): boolean {
@@ -53,7 +70,19 @@ export class ModifierTagSet {
     if (modifierTagDefinition.syntaxKind !== TSDocTagSyntaxKind.ModifierTag) {
       throw new Error('The tag definition is not a modifier tag');
     }
-    return this._nodesByName.get(modifierTagDefinition.tagNameWithUpperCase);
+
+    const configuredTagDefinition: TSDocTagDefinition
+      = this.configuration.getConfiguredTagDefinition(modifierTagDefinition);
+
+    let tag: DocBlockTag | undefined =
+      this._nodesByName.get(configuredTagDefinition.tagNameWithUpperCase);
+    if (!tag) {
+      for (const synonym of configuredTagDefinition.synonymsWithUpperCase) {
+        tag = this._nodesByName.get(synonym);
+        if (tag) break;
+      }
+    }
+    return tag;
   }
 
   /**

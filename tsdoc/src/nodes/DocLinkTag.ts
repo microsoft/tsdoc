@@ -7,6 +7,7 @@ import {
 } from './DocInlineTagBase';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 import { TokenSequence } from '../parser/TokenSequence';
+import { StandardTags } from '../details/StandardTags';
 
 /**
  * Constructor parameters for {@link DocLinkTag}.
@@ -62,7 +63,7 @@ export class DocLinkTag extends DocInlineTagBase {
   public constructor(parameters: IDocLinkTagParameters | IDocLinkTagParsedParameters) {
     super(parameters);
 
-    if (this.tagNameWithUpperCase !== '@LINK') {
+    if (!StandardTags.link.hasTagName(this.tagNameWithUpperCase)) {
       throw new Error('DocLinkTag requires the tag name to be "{@link}"');
     }
 
