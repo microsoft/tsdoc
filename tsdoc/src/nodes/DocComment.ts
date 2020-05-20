@@ -132,8 +132,9 @@ export class DocComment extends DocNode {
 
   /**
    * Append an item to the seeBlocks collection.
+   * @internal
    */
-  public appendSeeBlock(block: DocBlock): void {
+  public _appendSeeBlock(block: DocBlock): void {
     this._seeBlocks.push(block);
   }
 
