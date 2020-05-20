@@ -1,6 +1,14 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Fri, 27 Mar 2020 23:14:53 GMT and should not be manually modified.
+This log was last generated on Wed, 20 May 2020 22:33:27 GMT and should not be manually modified.
+
+## 0.12.20
+Wed, 20 May 2020 22:33:27 GMT
+
+### Patches
+
+- Add support for `@see` tag
+- Improve documentation for `@inheritDoc`
 
 ## 0.12.19
 Fri, 27 Mar 2020 23:14:53 GMT

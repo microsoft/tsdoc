@@ -2,6 +2,21 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.20",
+      "tag": "@microsoft/tsdoc_v0.12.20",
+      "date": "Wed, 20 May 2020 22:33:27 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add support for `@see` tag"
+          },
+          {
+            "comment": "Improve documentation for `@inheritDoc`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.19",
       "tag": "@microsoft/tsdoc_v0.12.19",
       "date": "Fri, 27 Mar 2020 23:14:53 GMT",
