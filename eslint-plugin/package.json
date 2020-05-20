@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-tsdoc",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "An ESLint plugin that validates TypeScript doc comments",
   "keywords": [
     "TypeScript",
@@ -26,8 +26,8 @@
     "test": "node lib/tests/index.js"
   },
   "dependencies": {
-    "@microsoft/tsdoc": "0.12.19",
-    "@microsoft/tsdoc-config": "0.13.3"
+    "@microsoft/tsdoc": "0.12.20",
+    "@microsoft/tsdoc-config": "0.13.4"
   },
   "devDependencies": {
     "@rushstack/eslint-config": "0.4.0",
