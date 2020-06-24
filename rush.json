@@ -16,7 +16,7 @@
    * path segment in the "$schema" field for all your Rush config files.  This will ensure
    * correct error-underlining and tab-completion for editors such as VS Code.
    */
-  "rushVersion": "5.23.2",
+  "rushVersion": "5.27.0",
 
   /**
    * The next field selects which package manager should be installed and determines its version.
@@ -77,7 +77,25 @@
      * After modifying this field, it's recommended to run "rush update --full" so that the package manager
      * will recalculate all version selections.
      */
-    // "resolutionStrategy": "fast"
+    // "resolutionStrategy": "fast",
+
+    /**
+     * If true, then `rush install` will report an error if manual modifications
+     * were made to the PNPM shrinkwrap file without running "rush update" afterwards.
+     *
+     * This feature protects against accidental inconsistencies that may be introduced
+     * if the PNPM shrinkwrap file ("pnpm-lock.yaml") is manually edited.  When this
+     * feature is enabled, "rush update" will append a hash to the file as a YAML comment,
+     * and then "rush update" and "rush install" will validate the hash.  Note that this does not prohibit
+     * manual modifications, but merely requires "rush update" be run
+     * afterwards, ensuring that PNPM can report or repair any potential inconsistencies.
+     *
+     * To temporarily disable this validation when invoking "rush install", use the
+     * "--bypass-policy" command-line parameter.
+     *
+     * The default value is false.
+     */
+    // "preventManualShrinkwrapChanges": true
   },
 
   /**
@@ -88,20 +106,20 @@
    * Specify a SemVer range to ensure developers use a Node.js version that is appropriate
    * for your repo.
    */
-  // "nodeSupportedVersionRange": ">=10.13.0 <11.0.0",
-  "nodeSupportedVersionRange": ">=6.9.0 <7.0.0 || >=8.9.4 <9.0.0 || >=10.12.0 <11.0.0",
+  // "nodeSupportedVersionRange": ">=12.13.0 <13.0.0",
+  "nodeSupportedVersionRange": ">=10.13.0 <11.0.0 || >=12.13.0 <13.0.0 || >=14.0.0 <15.0.0",
 
   /**
-  * Odd-numbered major versions of Node.js are experimental.  Even-numbered releases
-  * spend six months in a stabilization period before the first Long Term Support (LTS) version.
-  * For example, 8.9.0 was the first LTS version of Node.js 8.  Pre-LTS versions are not recommended
-  * for production usage because they frequently have bugs.  They may cause Rush itself
-  * to malfunction.
-  *
-  * Rush normally prints a warning if it detects a pre-LTS Node.js version.  If you are testing
-  * pre-LTS versions in preparation for supporting the first LTS version, you can use this setting
-  * to disable Rush's warning.
-  */
+   * Odd-numbered major versions of Node.js are experimental.  Even-numbered releases
+   * spend six months in a stabilization period before the first Long Term Support (LTS) version.
+   * For example, 8.9.0 was the first LTS version of Node.js 8.  Pre-LTS versions are not recommended
+   * for production usage because they frequently have bugs.  They may cause Rush itself
+   * to malfunction.
+   *
+   * Rush normally prints a warning if it detects a pre-LTS Node.js version.  If you are testing
+   * pre-LTS versions in preparation for supporting the first LTS version, you can use this setting
+   * to disable Rush's warning.
+   */
   // "suppressNodeLtsWarning": false,
 
   /**
@@ -144,6 +162,19 @@
   // "projectFolderMaxDepth": 2,
 
   /**
+   * Today the npmjs.com registry enforces fairly strict naming rules for packages, but in the early
+   * days there was no standard and hardly any enforcement.  A few large legacy projects are still using
+   * nonstandard package names, and private registries sometimes allow it.  Set "allowMostlyStandardPackageNames"
+   * to true to relax Rush's enforcement of package names.  This allows upper case letters and in the future may
+   * relax other rules, however we want to minimize these exceptions.  Many popular tools use certain punctuation
+   * characters as delimiters, based on the assumption that they will never appear in a package name; thus if we relax
+   * the rules too much it is likely to cause very confusing malfunctions.
+   *
+   * The default value is false.
+   */
+  // "allowMostlyStandardPackageNames": true,
+
+  /**
    * This feature helps you to review and approve new packages before they are introduced
    * to your monorepo.  For example, you may be concerned about licensing, code quality,
    * performance, or simply accumulating too many libraries with overlapping functionality.
@@ -169,14 +200,14 @@
   //     "tools",      // non-shipping projects that are part of the developer toolchain
   //     "prototypes"  // experiments that should mostly be ignored by the review process
   //   ],
-  //
+  // 
   //   /**
   //    * A list of NPM package scopes that will be excluded from review.
   //    * We recommend to exclude TypeScript typings (the "@types" scope), because
   //    * if the underlying package was already approved, this would imply that the typings
   //    * are also approved.
   //    */
-  //   // "ignoredNpmScopes": [ "@types" ]
+  //   // "ignoredNpmScopes": ["@types"]
   // },
 
   /**
@@ -297,7 +328,7 @@
     //    * The folder name for this variant.
     //    */
     //   "variantName": "old-sdk",
-    //
+    // 
     //   /**
     //    * An informative description
     //    */
@@ -336,19 +367,19 @@
     //    * The NPM package name of the project (must match package.json)
     //    */
     //   "packageName": "my-app",
-    //
+    // 
     //   /**
     //    * The path to the project folder, relative to the rush.json config file.
     //    */
     //   "projectFolder": "apps/my-app",
-    //
+    // 
     //   /**
     //    * An optional category for usage in the "browser-approved-packages.json"
     //    * and "nonbrowser-approved-packages.json" files.  The value must be one of the
     //    * strings from the "reviewCategories" defined above.
     //    */
     //   "reviewCategory": "production",
-    //
+    // 
     //   /**
     //    * A list of local projects that appear as devDependencies for this project, but cannot be
     //    * locally linked because it would create a cyclic dependency; instead, the last published
@@ -357,20 +388,20 @@
     //   "cyclicDependencyProjects": [
     //     // "my-toolchain"
     //   ],
-    //
+    // 
     //   /**
     //    * If true, then this project will be ignored by the "rush check" command.
     //    * The default value is false.
     //    */
     //   // "skipRushCheck": false,
-    //
+    // 
     //   /**
     //    * A flag indicating that changes to this project will be published to npm, which affects
     //    * the Rush change and publish workflows. The default value is false.
     //    * NOTE: "versionPolicyName" and "shouldPublish" are alternatives; you cannot specify them both.
     //    */
     //   // "shouldPublish": false,
-    //
+    // 
     //   /**
     //    * An optional version policy associated with the project.  Version policies are defined
     //    * in "version-policies.json" file.  See the "rush publish" documentation for more info.
@@ -378,13 +409,13 @@
     //    */
     //   // "versionPolicyName": ""
     // },
-    //
+    // 
     // {
     //   "packageName": "my-controls",
     //   "projectFolder": "libraries/my-controls",
     //   "reviewCategory": "production"
     // },
-    //
+    // 
     // {
     //   "packageName": "my-toolchain",
     //   "projectFolder": "tools/my-toolchain",
