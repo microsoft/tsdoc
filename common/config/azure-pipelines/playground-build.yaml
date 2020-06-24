@@ -1,7 +1,7 @@
 resources:
 - repo: self
 variables:
-  NodeVersion: 10
+  NodeVersion: 12
 steps:
 - checkout: self
 - template: templates/build.yaml

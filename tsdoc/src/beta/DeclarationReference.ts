@@ -4,7 +4,7 @@
 /* eslint-disable no-sequences */
 /* eslint-disable no-inner-declarations */
 /* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable @typescript-eslint/member-naming */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 // NOTE: See DeclarationReference.grammarkdown for information on the underlying grammar.
 

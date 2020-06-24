@@ -116,7 +116,7 @@ export class TestHelpers {
     const docComment: DocComment = parserContext.docComment;
 
     expect({
-      /* eslint-disable @typescript-eslint/camelcase */
+      /* eslint-disable @typescript-eslint/naming-convention */
       _00_lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
       _01_gaps: this._getTokenCoverageGapsSnapshot(parserContext),
       _02_summarySection: TestHelpers.getDocNodeSnapshot(docComment.summarySection),
@@ -130,7 +130,7 @@ export class TestHelpers {
       _10_inheritDocTag: TestHelpers.getDocNodeSnapshot(docComment.inheritDocTag),
       _11_modifierTags: docComment.modifierTagSet.nodes.map(x => TestHelpers.getDocNodeSnapshot(x)),
       _12_logMessages: parserContext.log.messages.map(message => message.text)
-      /* eslint-enable @typescript-eslint/camelcase */
+      /* eslint-enable @typescript-eslint/naming-convention */
     }).toMatchSnapshot();
 
     return parserContext;
