@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-config": "1.0.1",
-    "@types/jest": "24.0.16",
+    "@types/jest": "25.2.1",
     "@types/jju": "1.4.1",
     "@types/resolve": "0.0.8",
     "@types/node": "10.17.5",
