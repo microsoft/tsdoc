@@ -65,6 +65,7 @@ common/autoinstallers/*/.npmrc
 **/.rush/temp/
 
 # Common toolchain intermediate files
-temp
-lib
-dist
+temp/
+lib/
+dist/
+.heft/
