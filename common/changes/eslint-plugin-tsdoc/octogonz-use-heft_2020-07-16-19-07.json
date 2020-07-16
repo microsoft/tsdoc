@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Update build system",
+      "type": "patch",
+      "packageName": "eslint-plugin-tsdoc"
+    }
+  ],
+  "packageName": "eslint-plugin-tsdoc",
+  "email": "4673363+octogonz@users.noreply.github.com"
+}

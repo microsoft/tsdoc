@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Update build system",
+      "type": "patch",
+      "packageName": "@microsoft/tsdoc"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "4673363+octogonz@users.noreply.github.com"
+}
