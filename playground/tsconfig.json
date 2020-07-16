@@ -1,21 +1,12 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
-
+  "extends": "./node_modules/@microsoft/rush-stack-compiler-3.5/includes/tsconfig-node.json",
   "compilerOptions": {
-    "module": "esnext",
-    "target": "es5",
-    "sourceMap": true,
-    "allowJs": true,
-    "jsx": "react",
-    "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
     "importHelpers": true,
-    "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
     "types": [
       "webpack-env"
     ],
@@ -26,11 +17,6 @@
       "es2015.collection",
       "es2015.symbol",
       "es2015.iterable"
-    ],
-    "outDir": "lib"
-  },
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-  ]
+    ]
+  }
 }

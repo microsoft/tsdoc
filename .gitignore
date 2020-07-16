@@ -68,4 +68,7 @@ common/autoinstallers/*/.npmrc
 temp/
 lib/
 dist/
-.heft/
+
+# Heft
+*/.heft/build-cache/**
+*/.heft/temp/**
