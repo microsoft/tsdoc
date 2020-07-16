@@ -1,0 +1,4 @@
+{
+  "fileExtensions": [".css"],
+  "includeGlobs": [ "samples/*.ts" ]
+}
