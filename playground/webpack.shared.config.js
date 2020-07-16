@@ -48,14 +48,6 @@ function _generateBaseWebpackConfiguration(isProduction) {
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
-          loader: require.resolve('ts-loader'),
-          exclude: /(node_modules)/,
-          options: {
-            transpileOnly: true
-          }
-        },
-        {
           test: /\.css$/,
           use: [
             require.resolve('style-loader'),
