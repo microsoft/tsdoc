@@ -17,7 +17,7 @@ dependencies:
   '@types/resolve': 0.0.8
   '@types/webpack': 4.39.8
   '@types/webpack-env': 1.14.1
-  ajv: 6.10.2
+  ajv: 6.12.3
   clean-webpack-plugin: 3.0.0_webpack@4.38.0
   colors: 1.3.3
   css-loader: 3.1.0_webpack@4.38.0
@@ -942,6 +942,15 @@ packages:
     dev: false
     resolution:
       integrity: sha512-k+V+hzjm5q/Mr8ef/1Y9goCmlsK4I6Sm74teeyGvFk1XrOsbsKLjEdrvny42CZ+a8sXbk8KWpY/bDwS+FLL2UQ==
+  /ajv/6.12.3:
+    dependencies:
+      fast-deep-equal: 3.1.3
+      fast-json-stable-stringify: 2.1.0
+      json-schema-traverse: 0.4.1
+      uri-js: 4.2.2
+    dev: false
+    resolution:
+      integrity: sha512-4K0cK3L1hsqk9xIb2z9vs/XU+PGJZ9PNpJRDS9YLzmNdX6jmVPfamLvTJr0aDAusnHyCHO6MjzlkAsgtqp9teA==
   /amdefine/1.0.1:
     dev: false
     engines:
@@ -8318,7 +8327,7 @@ packages:
       '@types/jju': 1.4.1
       '@types/node': 10.17.5
       '@types/resolve': 0.0.8
-      ajv: 6.10.2
+      ajv: 6.12.3
       eslint: 7.2.0
       jest: 24.8.0
       jju: 1.4.0
@@ -8330,7 +8339,7 @@ packages:
     dev: false
     name: '@rush-temp/tsdoc-config'
     resolution:
-      integrity: sha512-6Rz91JsYCS3VS2asga8qigXE4tC1gTosWNL2fqc16FFu4gMmJe4+a9xzXleNPRb0hskpPr1mv7cdBulpB+hlyQ==
+      integrity: sha512-Ra+xttCDEBmaoDd2DMf0BUHwwA1ssbMEnspxR1G+Sw/WJ2DfkvXR3q9PL+eVMK1aQJCmt0wQb1GyGBkPMS/XTg==
       tarball: 'file:projects/tsdoc-config.tgz'
     version: 0.0.0
   'file:projects/tsdoc-playground.tgz':
@@ -8404,7 +8413,7 @@ specifiers:
   '@types/resolve': 0.0.8
   '@types/webpack': 4.39.8
   '@types/webpack-env': ~1.14.0
-  ajv: ~6.10.2
+  ajv: ~6.12.3
   clean-webpack-plugin: ~3.0.0
   colors: ~1.3.3
   css-loader: ~3.1.0
