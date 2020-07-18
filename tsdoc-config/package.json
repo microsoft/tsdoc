@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "@microsoft/tsdoc": "0.12.20",
-    "ajv": "~6.10.2",
+    "ajv": "~6.12.3",
     "jju": "~1.4.0",
     "resolve": "~1.12.0"
   },
