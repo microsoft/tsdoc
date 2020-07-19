@@ -6,5 +6,5 @@ steps:
 - checkout: self
   persistCredentials: true
 - template: templates/build.yaml
-- script: 'node common\scripts\install-run-rush.js publish --apply --publish --include-all --npm-auth-token $(npmToken)'
+- script: 'node common/scripts/install-run-rush.js publish --apply --publish --include-all --npm-auth-token $(npmToken)'
   displayName: 'Rush Publish'
