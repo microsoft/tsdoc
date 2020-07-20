@@ -5,10 +5,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build": "node build.js --production",
-    "lint": "eslint -f unix \"src/**/*.{ts,tsx}\"",
-    "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.dev.config.js --open"
-  },
+    "build": "heft build --clean",
+    "start": "heft start",
+    "lint": "eslint -f unix \"src/**/*.{ts,tsx}\""
+    },
   "dependencies": {
     "@microsoft/tsdoc": "0.12.20",
     "@types/react": "16.9.11",
@@ -18,7 +18,9 @@
     "tslib": "~1.10.0"
   },
   "devDependencies": {
+    "@microsoft/rush-stack-compiler-3.5": "~0.8.1",
     "@rushstack/eslint-config": "1.0.1",
+    "@rushstack/heft": "^0.2.0",
     "@rushstack/set-webpack-public-path-plugin": "~2.4.1",
     "@types/webpack-env": "~1.14.0",
     "@types/webpack": "4.39.8",

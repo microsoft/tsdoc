@@ -2,11 +2,9 @@
 
 const webpack = require('webpack');
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { SetPublicPathPlugin } = require('@rushstack/set-webpack-public-path-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const REACT_URL = {
   dev: 'https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.development.js',
@@ -42,12 +40,6 @@ module.exports.generateServeWebpackConfiguration = function () {
 }
 
 function _generateBaseWebpackConfiguration(isProduction) {
-  const options = {
-    pwd: __dirname,
-    entrypoint: path.join(__dirname, 'src', 'index.ts'),
-    bundleName: 'tsdoc-playground',
-    production: (process.env || {}).production
-  };
   const distDirectory = path.join(__dirname, 'dist');
   const monacoUrl = isProduction ? MONACO_URL.production : MONACO_URL.dev;
 
@@ -55,14 +47,6 @@ function _generateBaseWebpackConfiguration(isProduction) {
     mode: isProduction ? 'production' : 'development',
     module: {
       rules: [
-        {
-          test: /\.tsx?$/,
-          loader: require.resolve('ts-loader'),
-          exclude: /(node_modules)/,
-          options: {
-            transpileOnly: true
-          }
-        },
         {
           test: /\.css$/,
           use: [
@@ -88,14 +72,14 @@ function _generateBaseWebpackConfiguration(isProduction) {
       ]
     },
     resolve: {
-      extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+      extensions: ['.js', '.jsx', '.json'],
       alias: {
         'tslib': 'tslib/tslib.es6'
       }
     },
     devtool: (isProduction) ? undefined : 'source-map',
     entry: {
-      'tsdoc-playground': path.join(__dirname, 'src', 'index.tsx')
+      'tsdoc-playground': path.join(__dirname, 'lib', 'index.js')
     },
     externals: {
       'react': 'React',
@@ -112,14 +96,6 @@ function _generateBaseWebpackConfiguration(isProduction) {
       minimize: isProduction
     },
     plugins: [
-      new CleanWebpackPlugin({
-        cleanOnceBeforeBuildPatterns: [
-          path.join(__dirname, 'lib/'),
-          path.join(__dirname, 'dist/'),
-          path.join(__dirname, 'temp/')
-        ],
-        verbose: false
-      }),
       new HtmlWebpackPlugin({
         inject: true,
         template: `handlebars-loader!${path.join(__dirname, 'public', 'index.hbs')}`,
@@ -153,11 +129,6 @@ function _generateBaseWebpackConfiguration(isProduction) {
         DEBUG: !isProduction,
         'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'dev'),
         MONACO_URL: JSON.stringify(monacoUrl)
-      }),
-      new ForkTsCheckerWebpackPlugin({
-        async: false,
-        eslint: true,
-        watch: isProduction ? path.join(__dirname, 'src') : undefined
       })
     ]
   };

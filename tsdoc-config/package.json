@@ -26,36 +26,18 @@
     "resolve": "~1.12.0"
   },
   "devDependencies": {
+    "@microsoft/rush-stack-compiler-3.5": "~0.8.1",
     "@rushstack/eslint-config": "1.0.1",
-    "@types/jest": "24.0.16",
+    "@rushstack/heft": "^0.2.0",
+    "@types/jest": "25.2.1",
     "@types/jju": "1.4.1",
     "@types/resolve": "0.0.8",
     "@types/node": "10.17.5",
-    "eslint": "~7.2.0",
-    "jest": "~24.8.0",
-    "prettier": "~1.18.2",
-    "rimraf": "~2.6.3",
-    "ts-jest": "~24.0.2",
-    "typescript": "~3.5.3"
+    "eslint": "~7.2.0"
   },
   "scripts": {
-    "build": "node ./build.js",
-    "test": "jest",
-    "watch": "jest --watch",
+    "build": "heft test --clean",
+    "watch": "heft test --clean --watch",
     "lint": "eslint -f unix \"src/**/*.{ts,tsx}\""
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testMatch": [
-      "<rootDir>/src/**/*.test.ts"
-    ]
   }
 }
