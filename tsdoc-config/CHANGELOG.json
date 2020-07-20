@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc-config",
   "entries": [
     {
+      "version": "0.13.5",
+      "tag": "@microsoft/tsdoc-config_v0.13.5",
+      "date": "Sun, 19 Jul 2020 01:22:35 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump ajv dependency to ~6.12.3"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.13.4",
       "tag": "@microsoft/tsdoc-config_v0.13.4",
       "date": "Wed, 20 May 2020 22:33:27 GMT",

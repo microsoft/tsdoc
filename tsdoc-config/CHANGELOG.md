@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc-config
 
-This log was last generated on Wed, 20 May 2020 22:33:27 GMT and should not be manually modified.
+This log was last generated on Sun, 19 Jul 2020 01:22:35 GMT and should not be manually modified.
+
+## 0.13.5
+Sun, 19 Jul 2020 01:22:35 GMT
+
+### Patches
+
+- Bump ajv dependency to ~6.12.3
 
 ## 0.13.4
 Wed, 20 May 2020 22:33:27 GMT
