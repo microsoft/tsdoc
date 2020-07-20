@@ -31,7 +31,7 @@
   "devDependencies": {
     "@microsoft/rush-stack-compiler-3.5": "~0.8.1",
     "@rushstack/eslint-config": "1.0.1",
-    "@rushstack/heft": "^0.1.2",
+    "@rushstack/heft": "^0.2.0",
     "@types/eslint": "6.1.3",
     "@types/estree": "0.0.39",
     "@types/node": "10.17.5",

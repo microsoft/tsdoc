@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "heft build --clean",
-    "start": "heft serve",
+    "start": "heft start",
     "lint": "eslint -f unix \"src/**/*.{ts,tsx}\""
     },
   "dependencies": {
@@ -20,7 +20,7 @@
   "devDependencies": {
     "@microsoft/rush-stack-compiler-3.5": "~0.8.1",
     "@rushstack/eslint-config": "1.0.1",
-    "@rushstack/heft": "^0.1.2",
+    "@rushstack/heft": "^0.2.0",
     "@rushstack/set-webpack-public-path-plugin": "~2.4.1",
     "@types/webpack-env": "~1.14.0",
     "@types/webpack": "4.39.8",
