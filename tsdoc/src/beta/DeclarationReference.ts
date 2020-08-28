@@ -381,6 +381,7 @@ interface IParsedPackage {
   importPath?: string;
 }
 
+// eslint-disable-next-line @rushstack/no-new-null
 function parsePackageName(text: string): IParsedPackage | null {
   const match: RegExpExecArray | null = packageNameRegExp.exec(text);
   if (!match) {
