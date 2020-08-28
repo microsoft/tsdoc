@@ -11,7 +11,7 @@
       "es2015.iterable"
     ],
     "types": [
-      "jest"
+      "heft-jest"
     ]
   }
 }
