@@ -37,7 +37,7 @@ Check out the [TSDoc Playground](https://microsoft.github.io/tsdoc/) for a cool 
 The [api-demo](https://github.com/microsoft/tsdoc/tree/master/api-demo) folder on GitHub illustrates how
 to invoke the TSDoc parser.
 
-A separate NPM package [`@microsoft/tsdoc-config`](https://www.npmjs.com/package/@microsoft/tsdoc)
+A separate NPM package [`@microsoft/tsdoc-config`](https://www.npmjs.com/package/@microsoft/tsdoc-config)
 is used for loading the **tsdoc.json** file.
 
 
