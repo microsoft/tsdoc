@@ -260,7 +260,39 @@ Object {
 }
 `;
 
-exports[`C. Newline styles 1`] = `
+exports[`C. Missing stars 1`] = `
+Object {
+  "buffer": "/**[n][c][c][c][n]a[n] b[n] c [n]  d[n][c][c][c][n] */",
+  "comment": "/**[n][c][c][c][n]a[n] b[n] c [n]  d[n][c][c][c][n] */",
+  "lines": Array [
+    "[c][c][c]",
+    "",
+    " ",
+    " ",
+    "  ",
+    "[c][c][c]",
+  ],
+  "logMessages": Array [],
+}
+`;
+
+exports[`C. Missing stars 2`] = `
+Object {
+  "buffer": "/**[n][c][c][c][n]ee[n] ff[n] gg [n]  hh[n][c][c][c][n] */",
+  "comment": "/**[n][c][c][c][n]ee[n] ff[n] gg [n]  hh[n][c][c][c][n] */",
+  "lines": Array [
+    "[c][c][c]",
+    "ee",
+    " ff",
+    " gg",
+    "  hh",
+    "[c][c][c]",
+  ],
+  "logMessages": Array [],
+}
+`;
+
+exports[`D. Newline styles 1`] = `
 Object {
   "buffer": "[r][n]/**[r][n] * L1[r][n] */[r][n]",
   "comment": "/**[r][n] * L1[r][n] */",
@@ -271,7 +303,7 @@ Object {
 }
 `;
 
-exports[`C. Newline styles 2`] = `
+exports[`D. Newline styles 2`] = `
 Object {
   "buffer": "/**[r][n]L1[r][n]L2[r][n]*/",
   "comment": "/**[r][n]L1[r][n]L2[r][n]*/",
@@ -283,7 +315,7 @@ Object {
 }
 `;
 
-exports[`C. Newline styles 3`] = `
+exports[`D. Newline styles 3`] = `
 Object {
   "buffer": "/** L [r] 1 */",
   "comment": "/** L [r] 1 */",
@@ -294,7 +326,7 @@ Object {
 }
 `;
 
-exports[`D. Parser errors 1`] = `
+exports[`E. Parser errors 1`] = `
 Object {
   "buffer": "",
   "comment": "",
@@ -305,7 +337,7 @@ Object {
 }
 `;
 
-exports[`D. Parser errors 2`] = `
+exports[`E. Parser errors 2`] = `
 Object {
   "buffer": "/*",
   "comment": "",
@@ -316,7 +348,7 @@ Object {
 }
 `;
 
-exports[`D. Parser errors 3`] = `
+exports[`E. Parser errors 3`] = `
 Object {
   "buffer": "//",
   "comment": "",
@@ -327,7 +359,7 @@ Object {
 }
 `;
 
-exports[`D. Parser errors 4`] = `
+exports[`E. Parser errors 4`] = `
 Object {
   "buffer": "/** L1[n] L2",
   "comment": "",
@@ -338,7 +370,7 @@ Object {
 }
 `;
 
-exports[`D. Parser errors 5`] = `
+exports[`E. Parser errors 5`] = `
 Object {
   "buffer": "/** L1 *",
   "comment": "",
