@@ -6,7 +6,7 @@ dependencies:
   '@rush-temp/tsdoc-config': 'file:projects/tsdoc-config.tgz_144f0d1bbffcb7a2031a26c513b3e35d'
   '@rush-temp/tsdoc-playground': 'file:projects/tsdoc-playground.tgz'
   '@rushstack/eslint-config': 1.3.0_eslint@7.2.0+typescript@3.5.3
-  '@rushstack/heft': 0.8.0_webpack-cli@3.3.12
+  '@rushstack/heft': 0.10.2_webpack-cli@3.3.12
   '@rushstack/set-webpack-public-path-plugin': 2.4.45_@types+webpack@4.39.8
   '@types/eslint': 6.1.3
   '@types/estree': 0.0.39
@@ -31,7 +31,7 @@ dependencies:
   html-webpack-plugin: 3.2.0_webpack@4.38.0
   jju: 1.4.0
   monaco-editor: 0.17.1
-  node-sass: 4.12.0
+  node-sass: 4.14.1
   promise: 8.0.3
   raw-loader: 0.5.1
   resolve: 1.12.3
@@ -358,7 +358,7 @@ packages:
       '@jest/console': 25.5.0
       '@jest/reporters': 25.4.0
       '@jest/test-result': 25.5.0
-      '@jest/transform': 25.4.0
+      '@jest/transform': 25.5.1
       '@jest/types': 25.5.0
       ansi-escapes: 4.3.1
       chalk: 3.0.0
@@ -373,7 +373,7 @@ packages:
       jest-resolve-dependencies: 25.5.4
       jest-runner: 25.5.4
       jest-runtime: 25.5.4
-      jest-snapshot: 25.4.0
+      jest-snapshot: 25.5.1
       jest-util: 25.5.0
       jest-validate: 25.5.0
       jest-watcher: 25.5.0
@@ -425,7 +425,7 @@ packages:
       '@bcoe/v8-coverage': 0.2.3
       '@jest/console': 25.5.0
       '@jest/test-result': 25.5.0
-      '@jest/transform': 25.4.0
+      '@jest/transform': 25.5.1
       '@jest/types': 25.5.0
       chalk: 3.0.0
       collect-v8-coverage: 1.0.1
@@ -638,7 +638,7 @@ packages:
       node: '>=10.13.0'
     resolution:
       integrity: sha512-4bOHZ4cLBXEY7U4loVq7G77GRekKVPzHpQPNyjpnENJ+e78KfcmF/gybTyEtMQJqgw5EX2mmR5Ar+j63o1vtYg==
-  /@rushstack/heft/0.8.0_webpack-cli@3.3.12:
+  /@rushstack/heft/0.10.2_webpack-cli@3.3.12:
     dependencies:
       '@jest/core': 25.4.0
       '@jest/reporters': 25.4.0
@@ -664,7 +664,7 @@ packages:
     peerDependencies:
       webpack-cli: '*'
     resolution:
-      integrity: sha512-lcaUj4TpMED5ck2e+8zkpwsjmotntog9TgiPlKWVV2d95/zF1rVhS6SDFwZZ1we+dD98D3LVwCTGKolvoyeg6A==
+      integrity: sha512-HJetnDXr4dNy6h9MdlL1k76C45hBQJIr+/v7FgAi5c50G63tNBj/tRHXNLy+MIM7sT2WA6tfBOQux9SpSCNSkg==
   /@rushstack/node-core-library/3.30.0:
     dependencies:
       '@types/node': 10.17.13
@@ -1897,12 +1897,6 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-fB0W1nmhu+WcoCys7PsBHiAfWh8=
-  /camelcase/3.0.0:
-    dev: false
-    engines:
-      node: '>=0.10.0'
-    resolution:
-      integrity: sha1-MvxLn82vhF/N9+c7uXysImHwqwo=
   /camelcase/5.3.1:
     dev: false
     engines:
@@ -2072,14 +2066,6 @@ packages:
       node: '>= 10'
     resolution:
       integrity: sha512-FxqpkPPwu1HjuN93Omfm4h8uIanXofW0RxVEW3k5RKx+mJJYSthzNhp32Kzxxy3YAEZ/Dc/EWN1vZRY0+kOhbw==
-  /cliui/3.2.0:
-    dependencies:
-      string-width: 1.0.2
-      strip-ansi: 3.0.1
-      wrap-ansi: 2.1.0
-    dev: false
-    resolution:
-      integrity: sha1-EgYBU3qRbSmUD5NNo7SNWFo5IT0=
   /cliui/4.1.0:
     dependencies:
       string-width: 2.1.1
@@ -4296,12 +4282,6 @@ packages:
       node: '>= 0.10'
     resolution:
       integrity: sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
-  /invert-kv/1.0.0:
-    dev: false
-    engines:
-      node: '>=0.10.0'
-    resolution:
-      integrity: sha1-EEqOSqym09jNFXqO+L+rLXo//bY=
   /invert-kv/2.0.0:
     dev: false
     engines:
@@ -5270,14 +5250,6 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
-  /lcid/1.0.0:
-    dependencies:
-      invert-kv: 1.0.0
-    dev: false
-    engines:
-      node: '>=0.10.0'
-    resolution:
-      integrity: sha1-MIrMr6C8SDo4Z7S28rlQYlHRuDU=
   /lcid/2.0.0:
     dependencies:
       invert-kv: 2.0.0
@@ -5868,7 +5840,7 @@ packages:
     optional: true
     resolution:
       integrity: sha512-SVfQ/wMw+DesunOm5cKqr6yDcvUTDl/yc97ybGHMrteNEY6oekXpNpS3lZwgLlwz0FLgHoiW28ZpmBHUDg37cw==
-  /node-sass/4.12.0:
+  /node-sass/4.14.1:
     dependencies:
       async-foreach: 0.1.3
       chalk: 1.1.3
@@ -5884,7 +5856,7 @@ packages:
       node-gyp: 3.8.0
       npmlog: 4.1.2
       request: 2.88.2
-      sass-graph: 2.2.6
+      sass-graph: 2.2.5
       stdout-stream: 1.4.1
       true-case-path: 1.0.3
     dev: false
@@ -5893,7 +5865,7 @@ packages:
     hasBin: true
     requiresBuild: true
     resolution:
-      integrity: sha512-A1Iv4oN+Iel6EPv77/HddXErL2a+gZ4uBeZUy+a8O35CFYTXhgA8MgLCWBtwpGZdCvTvQ9d+bQxX/QC36GDPpQ==
+      integrity: sha512-sjCuOlvGyCJS40R8BscF5vhVlQjNN069NtQ1gSxyK1u9iqvn6tf7O1R4GNowVZfiZUCRt5MmMs1xd+4V/7Yr0g==
   /nopt/3.0.6:
     dependencies:
       abbrev: 1.1.1
@@ -6159,14 +6131,6 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-/7xJiDNuDoM94MFox+8VISGqf7M=
-  /os-locale/1.4.0:
-    dependencies:
-      lcid: 1.0.0
-    dev: false
-    engines:
-      node: '>=0.10.0'
-    resolution:
-      integrity: sha1-IPnxeuKe00XoveWDsT0gCYA8FNk=
   /os-locale/3.1.0:
     dependencies:
       execa: 1.0.0
@@ -7152,16 +7116,16 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-hhbzAgTIX8O7SHfp2c8/kREfEn4qO/9q8C9beyY6+tvZ87EpoZ3i1RIEvp27YBswnNbY9mWd6paKVmKbAgLfZA==
-  /sass-graph/2.2.6:
+  /sass-graph/2.2.5:
     dependencies:
       glob: 7.1.6
       lodash: 4.17.20
       scss-tokenizer: 0.2.3
-      yargs: 7.1.1
+      yargs: 13.3.2
     dev: false
     hasBin: true
     resolution:
-      integrity: sha512-MKuEYXFSGuRSi8FZ3A7imN1CeVn9Gpw0/SFJKdL1ejXJneI9a5rwlEZrKejhEFAA3O6yr3eIyl/WuvASvlT36g==
+      integrity: sha512-VFWDAHOe6mRuT4mZRd4eKE+d8Uedrk6Xnh7Sh9b4NGufQLQjOrvf/MQoOdx+0s92L89FeyUUNfU597j/3uNpag==
   /sass-loader/7.1.0_webpack@4.38.0:
     dependencies:
       clone-deep: 2.0.2
@@ -8830,10 +8794,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-WUu7Rg1DroM7oQvGWfOiAK21n74Gg+T4elXEQYkOhtyLeWiJFoOGLXPKI/9gzIie9CtwVLm8wtw6YJdKyxSjeg==
-  /which-module/1.0.0:
-    dev: false
-    resolution:
-      integrity: sha1-u6Y8qGGUiZT/MHc2CJ47lgJsKk8=
   /which-module/2.0.0:
     dev: false
     resolution:
@@ -8856,7 +8816,7 @@ packages:
       integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==
   /wide-align/1.1.3:
     dependencies:
-      string-width: 1.0.2
+      string-width: 2.1.1
     dev: false
     resolution:
       integrity: sha512-QGkOQc8XL6Bt5PwnsExKBPuMKBxnGxWWW3fU55Xt4feHozMUhdUMaBCk290qpm/wG5u/RSKzwdAC4i51YigihA==
@@ -8966,10 +8926,6 @@ packages:
       node: '>=0.4'
     resolution:
       integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
-  /y18n/3.2.1:
-    dev: false
-    resolution:
-      integrity: sha1-bRX7qITAhnnA136I53WegR4H+kE=
   /y18n/4.0.0:
     dev: false
     resolution:
@@ -9005,13 +8961,6 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==
-  /yargs-parser/5.0.0-security.0:
-    dependencies:
-      camelcase: 3.0.0
-      object.assign: 4.1.0
-    dev: false
-    resolution:
-      integrity: sha512-T69y4Ps64LNesYxeYGYPvfoMTt/7y1XtfpIslUeK4um+9Hu7hlGoRtaDLvdXb7+/tfq4opVa2HRY5xGip022rQ==
   /yargs/12.0.5:
     dependencies:
       cliui: 4.1.0
@@ -9062,24 +9011,6 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==
-  /yargs/7.1.1:
-    dependencies:
-      camelcase: 3.0.0
-      cliui: 3.2.0
-      decamelize: 1.2.0
-      get-caller-file: 1.0.3
-      os-locale: 1.4.0
-      read-pkg-up: 1.0.1
-      require-directory: 2.1.1
-      require-main-filename: 1.0.1
-      set-blocking: 2.0.0
-      string-width: 1.0.2
-      which-module: 1.0.0
-      y18n: 3.2.1
-      yargs-parser: 5.0.0-security.0
-    dev: false
-    resolution:
-      integrity: sha512-huO4Fr1f9PmiJJdll5kwoS2e4GqzGSsMT3PPMpOwoVkOK8ckqAewMTZyA6LXVQWflleb/Z8oPBEvNsMft0XE+g==
   /z-schema/3.18.4:
     dependencies:
       lodash.get: 4.4.2
@@ -9095,7 +9026,7 @@ packages:
     dependencies:
       '@microsoft/rush-stack-compiler-3.5': 0.8.10
       '@rushstack/eslint-config': 1.3.0_eslint@7.2.0+typescript@3.5.3
-      '@rushstack/heft': 0.8.0_webpack-cli@3.3.12
+      '@rushstack/heft': 0.10.2_webpack-cli@3.3.12
       '@types/node': 10.17.5
       colors: 1.3.3
       eslint: 7.2.0
@@ -9106,14 +9037,14 @@ packages:
     peerDependencies:
       webpack-cli: '*'
     resolution:
-      integrity: sha512-SNPfSYVURCF8lzck5lpdZUVoSTrWs3Th+6azLL1ugNTAt4KpXdSRszwVyHdEYVtrBeu0iaDPq6JmUoSuYi7P9w==
+      integrity: sha512-HX4UbIkfyjupF1wkv2jc7OT1YdMEcdcvbfRDl3TdRZx+AcONhbGLYg0j+jQY+yrPmdB4kvy/ROE36pYcrPWXDw==
       tarball: 'file:projects/api-demo.tgz'
     version: 0.0.0
   'file:projects/eslint-plugin-tsdoc.tgz_144f0d1bbffcb7a2031a26c513b3e35d':
     dependencies:
       '@microsoft/rush-stack-compiler-3.5': 0.8.10
       '@rushstack/eslint-config': 1.3.0_eslint@7.2.0+typescript@3.5.3
-      '@rushstack/heft': 0.8.0_webpack-cli@3.3.12
+      '@rushstack/heft': 0.10.2_webpack-cli@3.3.12
       '@types/eslint': 6.1.3
       '@types/estree': 0.0.39
       '@types/heft-jest': 1.0.1
@@ -9126,14 +9057,14 @@ packages:
       typescript: '*'
       webpack-cli: '*'
     resolution:
-      integrity: sha512-Bq1CCQAmAFvtDUPKBpYdOZaFcjdcLJOOOaoGXWMk6xEVJfyWltAWTJkrhX31S4YOH2Nz8LJNSgs9J9FkkbTIvA==
+      integrity: sha512-ZqOmx00SKAU/vLdlwzl/amkZNWfhZ5OFbGAS7yy7fdf/ekwdd2rxtmPTeF7pfQqjX8UCuHKk+MPEBvvyRFa5iA==
       tarball: 'file:projects/eslint-plugin-tsdoc.tgz'
     version: 0.0.0
   'file:projects/tsdoc-config.tgz_144f0d1bbffcb7a2031a26c513b3e35d':
     dependencies:
       '@microsoft/rush-stack-compiler-3.5': 0.8.10
       '@rushstack/eslint-config': 1.3.0_eslint@7.2.0+typescript@3.5.3
-      '@rushstack/heft': 0.8.0_webpack-cli@3.3.12
+      '@rushstack/heft': 0.10.2_webpack-cli@3.3.12
       '@types/heft-jest': 1.0.1
       '@types/jju': 1.4.1
       '@types/node': 10.17.5
@@ -9149,14 +9080,14 @@ packages:
       typescript: '*'
       webpack-cli: '*'
     resolution:
-      integrity: sha512-izaTMBN8xSkTUD/mY9E6S10B9gI95f9upo/v/PNeOAtYfhqmF2+H4TEqaxHYSKQZ88+siF39Fyk6xJSVbjDBnQ==
+      integrity: sha512-ncvpTi8IC+Lxps/xMS91BS0GCMzhqKSCK5Pf3eiQqHY2hT7vmW79qgXiAsuB13jYEteytxnYxHGiJGtkemYOmg==
       tarball: 'file:projects/tsdoc-config.tgz'
     version: 0.0.0
   'file:projects/tsdoc-playground.tgz':
     dependencies:
       '@microsoft/rush-stack-compiler-3.5': 0.8.10
       '@rushstack/eslint-config': 1.3.0_eslint@7.2.0+typescript@3.5.3
-      '@rushstack/heft': 0.8.0_webpack-cli@3.3.12
+      '@rushstack/heft': 0.10.2_webpack-cli@3.3.12
       '@rushstack/set-webpack-public-path-plugin': 2.4.45_@types+webpack@4.39.8
       '@types/react': 16.9.11
       '@types/react-dom': 16.9.3
@@ -9171,7 +9102,7 @@ packages:
       handlebars-loader: 1.7.1_handlebars@4.7.6
       html-webpack-plugin: 3.2.0_webpack@4.38.0
       monaco-editor: 0.17.1
-      node-sass: 4.12.0
+      node-sass: 4.14.1
       promise: 8.0.3
       raw-loader: 0.5.1
       sass-loader: 7.1.0_webpack@4.38.0
@@ -9186,14 +9117,14 @@ packages:
     dev: false
     name: '@rush-temp/tsdoc-playground'
     resolution:
-      integrity: sha512-1yBM20S798Np5wE6akNd7WCxAk8PzHJhmMY/MgjUJRjqV4DLaKPDxXRNjcuPfz8PrawTOhdVHieb7MSb3kmWuA==
+      integrity: sha512-mGj8jjYIlHcyhuAdtmISyeaEVxOgzt3T7QNooWEufN+/GDDUX9ONxrjbbItaIDQWz+1Jky463p+pejeCKp5IeQ==
       tarball: 'file:projects/tsdoc-playground.tgz'
     version: 0.0.0
   'file:projects/tsdoc.tgz_144f0d1bbffcb7a2031a26c513b3e35d':
     dependencies:
       '@microsoft/rush-stack-compiler-3.5': 0.8.10
       '@rushstack/eslint-config': 1.3.0_eslint@7.2.0+typescript@3.5.3
-      '@rushstack/heft': 0.8.0_webpack-cli@3.3.12
+      '@rushstack/heft': 0.10.2_webpack-cli@3.3.12
       '@types/heft-jest': 1.0.1
       eslint: 7.2.0
     dev: false
@@ -9203,9 +9134,10 @@ packages:
       typescript: '*'
       webpack-cli: '*'
     resolution:
-      integrity: sha512-atGci0WVQDWr+x5wwHuU89fmgAJ4XoMOoKL/t8tg1B/TXrD9OKsy2U2zT+yI87RmwPD8BnqOQlrfUW5XOXx5ng==
+      integrity: sha512-pW62H3MkUdurKsnLXVAh3IkPu63SZ7P+zrVEZvKtHtXmXV+nqwBWAIqYSekDdZqEMXLbhUWwF+YzIFo9aVxjWw==
       tarball: 'file:projects/tsdoc.tgz'
     version: 0.0.0
+registry: ''
 specifiers:
   '@microsoft/rush-stack-compiler-3.5': ~0.8.4
   '@rush-temp/api-demo': 'file:./projects/api-demo.tgz'
@@ -9214,7 +9146,7 @@ specifiers:
   '@rush-temp/tsdoc-config': 'file:./projects/tsdoc-config.tgz'
   '@rush-temp/tsdoc-playground': 'file:./projects/tsdoc-playground.tgz'
   '@rushstack/eslint-config': ~1.3.0
-  '@rushstack/heft': ^0.8.0
+  '@rushstack/heft': ^0.10.1
   '@rushstack/set-webpack-public-path-plugin': ~2.4.1
   '@types/eslint': 6.1.3
   '@types/estree': 0.0.39
@@ -9239,7 +9171,7 @@ specifiers:
   html-webpack-plugin: ~3.2.0
   jju: ~1.4.0
   monaco-editor: ~0.17.1
-  node-sass: ~4.12.0
+  node-sass: ~4.14.1
   promise: ~8.0.3
   raw-loader: ~0.5.1
   resolve: ~1.12.0
