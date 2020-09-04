@@ -9037,7 +9037,7 @@ packages:
     peerDependencies:
       webpack-cli: '*'
     resolution:
-      integrity: sha512-HX4UbIkfyjupF1wkv2jc7OT1YdMEcdcvbfRDl3TdRZx+AcONhbGLYg0j+jQY+yrPmdB4kvy/ROE36pYcrPWXDw==
+      integrity: sha512-WUMXU9w/DK4lMjIheb2l3uXF8Pn+tz2zpqUeZ5GRzuwfnpiO5gC3fLkkj+2QgTne70wIz71RG6ONSjsFbyk/JA==
       tarball: 'file:projects/api-demo.tgz'
     version: 0.0.0
   'file:projects/eslint-plugin-tsdoc.tgz_144f0d1bbffcb7a2031a26c513b3e35d':
@@ -9057,7 +9057,7 @@ packages:
       typescript: '*'
       webpack-cli: '*'
     resolution:
-      integrity: sha512-ZqOmx00SKAU/vLdlwzl/amkZNWfhZ5OFbGAS7yy7fdf/ekwdd2rxtmPTeF7pfQqjX8UCuHKk+MPEBvvyRFa5iA==
+      integrity: sha512-i8bbIe2eKHWh/B+C05954mLTDaESEFXuPOYSmSjL32fOMl+oZ5KLN0XMlWEmseQWmtKjLOxmgGFAVXDf2bdpuQ==
       tarball: 'file:projects/eslint-plugin-tsdoc.tgz'
     version: 0.0.0
   'file:projects/tsdoc-config.tgz_144f0d1bbffcb7a2031a26c513b3e35d':
@@ -9080,7 +9080,7 @@ packages:
       typescript: '*'
       webpack-cli: '*'
     resolution:
-      integrity: sha512-ncvpTi8IC+Lxps/xMS91BS0GCMzhqKSCK5Pf3eiQqHY2hT7vmW79qgXiAsuB13jYEteytxnYxHGiJGtkemYOmg==
+      integrity: sha512-z9Hk+LtYJ5strI9O9Dw5uGdY97+3I3i990kbQm41M4MemPot9VF2ag+bWBb3Hxc4bDkiffrKwUoDpJMIcFrRRg==
       tarball: 'file:projects/tsdoc-config.tgz'
     version: 0.0.0
   'file:projects/tsdoc-playground.tgz':
@@ -9117,7 +9117,7 @@ packages:
     dev: false
     name: '@rush-temp/tsdoc-playground'
     resolution:
-      integrity: sha512-mGj8jjYIlHcyhuAdtmISyeaEVxOgzt3T7QNooWEufN+/GDDUX9ONxrjbbItaIDQWz+1Jky463p+pejeCKp5IeQ==
+      integrity: sha512-+P02yHek24Z9Gk3l2R+JYmfKn2zDMHYByuo+CsSkF84XuruGvGrVr7KDq6ebrXAJEQ/J26t4wiwZRghRPL/EVw==
       tarball: 'file:projects/tsdoc-playground.tgz'
     version: 0.0.0
   'file:projects/tsdoc.tgz_144f0d1bbffcb7a2031a26c513b3e35d':

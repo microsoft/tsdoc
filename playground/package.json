@@ -10,7 +10,7 @@
     "lint": "eslint -f unix \"src/**/*.{ts,tsx}\""
     },
   "dependencies": {
-    "@microsoft/tsdoc": "0.12.20",
+    "@microsoft/tsdoc": "0.12.21",
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.3",
     "promise": "~8.0.3",
