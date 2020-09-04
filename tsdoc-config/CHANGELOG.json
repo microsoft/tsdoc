@@ -2,6 +2,23 @@
   "name": "@microsoft/tsdoc-config",
   "entries": [
     {
+      "version": "0.13.6",
+      "tag": "@microsoft/tsdoc-config_v0.13.6",
+      "date": "Fri, 04 Sep 2020 15:53:27 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update build system"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" from `0.12.20` to `0.12.21`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.13.5",
       "tag": "@microsoft/tsdoc-config_v0.13.5",
       "date": "Sun, 19 Jul 2020 01:22:35 GMT",

@@ -1,6 +1,14 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Wed, 20 May 2020 22:33:27 GMT and should not be manually modified.
+This log was last generated on Fri, 04 Sep 2020 15:53:27 GMT and should not be manually modified.
+
+## 0.12.21
+Fri, 04 Sep 2020 15:53:27 GMT
+
+### Patches
+
+- Fix an issue where the line extractor's trailing whitespace trimming sometimes trimmed a non-whitespace character (GitHub #258)
+- Update build system
 
 ## 0.12.20
 Wed, 20 May 2020 22:33:27 GMT

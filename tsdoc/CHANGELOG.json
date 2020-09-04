@@ -2,6 +2,21 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.21",
+      "tag": "@microsoft/tsdoc_v0.12.21",
+      "date": "Fri, 04 Sep 2020 15:53:27 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix an issue where the line extractor's trailing whitespace trimming sometimes trimmed a non-whitespace character (GitHub #258)"
+          },
+          {
+            "comment": "Update build system"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.20",
       "tag": "@microsoft/tsdoc_v0.12.20",
       "date": "Wed, 20 May 2020 22:33:27 GMT",
