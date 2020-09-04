@@ -51,7 +51,31 @@ test('B. Extra stars', () => {
  *****/ `);
 });
 
-test('C. Newline styles', () => {
+test('C. Missing stars', () => {
+  parseAndMatchSnapshot([
+    '/**',
+    '```',
+    'a',
+    ' b',
+    ' c ',
+    '  d',
+    '```',
+    ' */'
+  ].join('\n'));
+
+  parseAndMatchSnapshot([
+    '/**',
+    '```',
+    'ee',
+    ' ff',
+    ' gg ',
+    '  hh',
+    '```',
+    ' */'
+  ].join('\n'));
+});
+
+test('D. Newline styles', () => {
   parseAndMatchSnapshot([
     '',
     '/**',
@@ -71,7 +95,7 @@ test('C. Newline styles', () => {
   parseAndMatchSnapshot(`/** L \r 1 */`);
 });
 
-test('D. Parser errors', () => {
+test('E. Parser errors', () => {
   parseAndMatchSnapshot('');
   parseAndMatchSnapshot('/*');
   parseAndMatchSnapshot('//');

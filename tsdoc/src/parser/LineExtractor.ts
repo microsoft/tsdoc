@@ -151,7 +151,7 @@ export class LineExtractor {
             // Example: "/**\nL1*/"
 
             // (collectingLineStart was the start of this line)
-            collectingLineEnd = currentIndex;
+            collectingLineEnd = nextIndex;
             state = State.CollectingLine;
           }
           break;
