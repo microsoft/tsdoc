@@ -8,7 +8,7 @@
     "build": "heft build --clean",
     "start": "heft start",
     "lint": "eslint -f unix \"src/**/*.{ts,tsx}\""
-    },
+  },
   "dependencies": {
     "@microsoft/tsdoc": "0.12.21",
     "@types/react": "16.9.11",
@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@microsoft/rush-stack-compiler-3.5": "~0.8.4",
-    "@rushstack/eslint-config": "~1.3.0",
+    "@rushstack/eslint-config": "~2.1.1",
     "@rushstack/heft": "^0.10.1",
     "@rushstack/set-webpack-public-path-plugin": "~2.4.1",
     "@types/webpack-env": "~1.14.0",
