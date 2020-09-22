@@ -1,16 +1,17 @@
 // This is a workaround for https://github.com/eslint/eslint/issues/3458
-require('@rushstack/eslint-config/patch/modern-module-resolution');
+require("@rushstack/eslint-config/patch/modern-module-resolution");
 
 module.exports = {
   extends: [
-    "@rushstack/eslint-config",
-    "@rushstack/eslint-config/react"
+    "@rushstack/eslint-config/profile/web-app",
+    "@rushstack/eslint-config/mixins/friendly-locals",
+    "@rushstack/eslint-config/mixins/react",
   ],
 
   settings: {
     react: {
-      "version": "16.9"
-    }
+      version: "16.9",
+    },
   },
 
   parserOptions: { tsconfigRootDir: __dirname },

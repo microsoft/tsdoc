@@ -2,6 +2,7 @@ resources:
 - repo: self
 variables:
   NodeVersion: 12
+  FORCE_COLOR: 1
 steps:
 - checkout: self
 - template: templates/build.yaml

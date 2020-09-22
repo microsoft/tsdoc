@@ -2,6 +2,7 @@ pool:
   vmImage: 'ubuntu-latest'
 variables:
   NodeVersion: 12
+  FORCE_COLOR: 1
 steps:
 - checkout: self
   persistCredentials: true
