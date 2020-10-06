@@ -17,7 +17,7 @@ export enum TSDocTagSyntaxKind {
   BlockTag,
 
   /**
-   * The tag is intended to be a modifier tag whose presences indicates
+   * The tag is intended to be a modifier tag whose presence indicates
    * an aspect of the associated API item.  For example: `@internal`
    */
   ModifierTag
