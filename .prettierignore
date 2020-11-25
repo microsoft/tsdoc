@@ -1,3 +1,7 @@
+#-------------------------------------------------------------------------------------------------------------------
+# Keep this section in sync with .gitignore
+#-------------------------------------------------------------------------------------------------------------------
+
 # Logs
 *.log
 npm-debug.log*
@@ -81,3 +85,22 @@ dist
 # Heft
 */.heft/build-cache/**
 */.heft/temp/**
+
+#-------------------------------------------------------------------------------------------------------------------
+# Prettier-specific overrides
+#-------------------------------------------------------------------------------------------------------------------
+
+# Machine-egnerated files
+common/reviews
+common/changes
+common/scripts
+common/config/rush/browser-approved-packages.json
+common/config/rush/nonbrowser-approved-packages.json
+CHANGELOG.*
+pnpm-lock.yaml
+build-tests/*/etc
+dist-dev
+dist-prod
+
+# We'll consider enabling this later; Prettier reformats code blocks, which affects end-user content
+*.md

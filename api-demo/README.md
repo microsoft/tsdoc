@@ -1,14 +1,18 @@
 # api-demo
 
 This is a simple code sample that illustrates how to invoke the API for the
-**@microsoft/tsdoc** library.
+**@microsoft/tsdoc** library.  There are two options for installing.  (Option 1
+is easiest.  Option 2 is for contributors.)
 
-### Building and running api-demo (standalone with NPM)
 
-Here's quick instructions to see the **api-demo**.
+### Option 1: Building and running the demo using NPM
 
-> This approach will use the **latest official release** of the **@microsoft/tsdoc** library.
-> It will NOT symlink to your local build of the library.
+> IF YOU ARE CONTRIBUTING A FIX, PLEASE USE OPTION 2 INSTEAD.
+
+Here's quick instructions to try out the **api-demo**.
+
+Option 1 will uses the **latest official release** of the **@microsoft/tsdoc** library.
+It will NOT symlink to your local build of the library.
 
 1. Install the NPM dependencies for the **api-demo** project:
 
@@ -40,14 +44,14 @@ Here's quick instructions to see the **api-demo**.
    $ npm run advanced
    ```
 
-### Building and running api-demo api-demo (using Rush and Yarn)
+
+### Option 2: Building and running the demo using Rush
 
 If you're going to submit a pull request for TSDoc, you will need to use the Rush monorepo
 manager tool.  See [Contributing.md](../Contributing.md) for more information.
 
-> Rush will link **api-demo** to use your local build of the **@microsoft/tsdoc** library,
-> for easy testing/validation.
-
+Option 2 will link **api-demo** to use your local build of the **@microsoft/tsdoc** library,
+for easy testing/validation.
 
 1. Install the [Rush](https://rushjs.io/pages/developer/new_developer/) software:
 

@@ -15,17 +15,18 @@ expect.addSnapshotSerializer({
     return value instanceof TSDocConfigFile;
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  print(value: TSDocConfigFile, serialize: (value: any) => string, indent: (str: string) => string): any {
-    return serialize({
-      tsdocSchema: value.tsdocSchema,
-      filePath: getRelativePath(value.filePath),
-      fileNotFound: value.fileNotFound,
-      extendsPaths: value.extendsPaths,
-      extendsFiles: value.extendsFiles,
-      tagDefinitions: value.tagDefinitions,
-      messages: value.log.messages
+  print(value: unknown, print: (value: any) => string, indent: any, options: any, colors: any): any {
+    const configFile: TSDocConfigFile = value as TSDocConfigFile;
+    return print({
+      tsdocSchema: configFile.tsdocSchema,
+      filePath: getRelativePath(configFile.filePath),
+      fileNotFound: configFile.fileNotFound,
+      extendsPaths: configFile.extendsPaths,
+      extendsFiles: configFile.extendsFiles,
+      tagDefinitions: configFile.tagDefinitions,
+      messages: configFile.log.messages,
     });
-  }
+  },
 });
 
 function testLoadingFolder(assetPath: string): TSDocConfigFile {
