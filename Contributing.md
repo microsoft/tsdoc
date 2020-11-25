@@ -10,7 +10,7 @@ If you're going to submit a pull request for TSDoc, you will need to use the Rus
 > the automation system looks for its configuration in the [rush.json](./rush.json) file in this repo.
 > To learn more about how to use Rush, please visit: https://rushjs.io/
 
-Install the [Rush](https://rushjs.io/pages/developer/new_developer/) tool like this:
+Install the Rush tool like this:
 
 ```shell
 $ npm install -g @microsoft/rush
@@ -72,7 +72,7 @@ easier.  To debug a unit test:
 
 2. In the editor window, open a test file. For example, **src/__tests__/ParsingBasicTests.test.ts**.
 
-3. Click the **View --> Debug** (CTRL+SHIFT+D)
+3. In the VS Code window, click **View --> Debug** (CTRL+SHIFT+D)
 
 4. From the DEBUG combo box, choose the "**Debug Jest tests**" debug configuration, and click the play button.
 This will run all tests in the debugger.
@@ -80,7 +80,7 @@ This will run all tests in the debugger.
 
 ## Submitting a PR
 
-Before submitting your PR, you will need to install the Rush tool and build the monorepo.
+Follow these steps before creating your pull request:
 
 1. Make sure the Rush tool is installed, following the instructions above.
 
@@ -91,7 +91,7 @@ Before submitting your PR, you will need to install the Rush tool and build the 
    $ rush install
    ```
 
-   > IMPORTANT: After you run `rush install`, your repo will be in a "Rush-linked" state,
+   > Note: After you run `rush install`, your repo will be in a "Rush-linked" state,
    > with special symlinks in the node_modules folders.  DO NOT run `npm install` in this state.
    > If you want to go back to working in standalone mode, first run `rush unlink && rush purge`.
 
