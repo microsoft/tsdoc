@@ -75,7 +75,7 @@ export class DocBlockTag extends DocNode {
   public getTokenSequence(): TokenSequence {
     if (!this._tagNameExcerpt) {
       throw new Error(
-        'DocBlockTag.getTokenSequence() failed because this object did not' + ' originate from a parsed input'
+        'DocBlockTag.getTokenSequence() failed because this object did not originate from a parsed input'
       );
     }
     return this._tagNameExcerpt.content;

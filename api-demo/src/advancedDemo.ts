@@ -185,8 +185,9 @@ function parseTSDoc(foundComment: IFoundComment): void {
       // Since we have the compiler's analysis, use it to calculate the line/column information,
       // since this is currently faster than TSDoc's TextRange.getLocation() lookup.
       const location: ts.LineAndCharacter = sourceFile.getLineAndCharacterOfPosition(message.textRange.pos);
-      const formattedMessage: string =
-        `${sourceFile.fileName}(${location.line + 1},${location.character + 1}):` + ` [TSDoc] ${message}`;
+      const formattedMessage: string = `${sourceFile.fileName}(${location.line + 1},${
+        location.character + 1
+      }): [TSDoc] ${message}`;
       console.log(formattedMessage);
     }
   }
