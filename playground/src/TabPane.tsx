@@ -108,7 +108,7 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState>  {
     );
   }
 
-  private _onClickTab(tabIndex: number, event: MouseEvent): void {
+  private _onClickTab(tabIndex: number, event: React.MouseEvent<HTMLAnchorElement>): void {
     this.setState({ selectedTabIndex: tabIndex });
   }
 

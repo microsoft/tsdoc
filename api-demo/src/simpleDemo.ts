@@ -1,4 +1,4 @@
-import * as colors from 'colors';
+import colors from 'colors';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';

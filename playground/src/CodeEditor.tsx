@@ -68,7 +68,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
 
   private _existingSyntaxStyles: { [hash: string]: string } = {};
   private _editorId: string;
-  private _isMounted: boolean;
+  private _isMounted: boolean=false;
   private _editor: monacoEditor.editor.IStandaloneCodeEditor | undefined;
 
   private _placeholderDivRef: HTMLDivElement | undefined;
@@ -106,7 +106,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
     if (!CodeEditor._initializePromise) {
       CodeEditor._initializePromise = new Promise(
         (resolve: (monaco: typeof monacoEditor) => void, reject: (error: Error) => void ) => {
-          const monacoWindow: IMonacoWindow = window as IMonacoWindow;
+          const monacoWindow: IMonacoWindow = window as unknown as IMonacoWindow;
           monacoWindow.require.config({ paths: { 'vs': `${MONACO_BASE_URL}vs/` }});
 
           monacoWindow.MonacoEnvironment = {

@@ -11,7 +11,7 @@ import {
 import * as fs from 'fs';
 import * as resolve from 'resolve';
 import * as path from 'path';
-import * as Ajv from 'ajv';
+import Ajv from 'ajv';
 import * as jju from 'jju';
 
 const ajv: Ajv.Ajv = new Ajv({ verbose: true });
