@@ -7,12 +7,12 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Jest All",
+      "name": "Debug Jest tests",
       "program": "${workspaceFolder}/node_modules/@rushstack/heft/lib/start.js",
-      "args": ["--debug","test"],
+      "cwd": "${workspaceFolder}",
+      "args": ["--debug", "test", "--clean"],
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
       "sourceMaps": true
-    }
+    },
   ]
 }

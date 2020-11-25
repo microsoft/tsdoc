@@ -1,22 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
-  "extends": "./node_modules/@microsoft/rush-stack-compiler-3.5/includes/tsconfig-node.json",
+  "extends": "./node_modules/@rushstack/heft-web-rig/profiles/library/tsconfig-base.json",
   "compilerOptions": {
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "importHelpers": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "types": [
-      "webpack-env"
-    ],
-    "lib": [
-      "es5",
-      "dom",
-      "es2015.promise",
-      "es2015.collection",
-      "es2015.symbol",
-      "es2015.iterable"
-    ]
+    "types": ["webpack-env"]
   }
 }
