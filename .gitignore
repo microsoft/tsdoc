@@ -65,9 +65,18 @@ common/autoinstallers/*/.npmrc
 **/.rush/temp/
 
 # Common toolchain intermediate files
-temp/
-lib/
-dist/
+temp
+lib
+lib-amd
+lib-es6
+lib-esnext
+lib-commonjs
+dist
+*.scss.ts
+*.sass.ts
+
+# Visual Studio Code
+.vscode
 
 # Heft
 */.heft/build-cache/**
