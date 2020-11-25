@@ -1,18 +1,16 @@
 # api-demo
 
 This is a simple code sample that illustrates how to invoke the API for the
-**@microsoft/tsdoc** library.  There are two options for installing.  (Option 1
-is easiest.  Option 2 is for contributors.)
+**@microsoft/tsdoc** library.  There are two options for installing.  Option 1
+is easiest.  Option 2 is for contributors.
 
 
 ### Option 1: Building and running the demo using NPM
 
-> IF YOU ARE CONTRIBUTING A FIX, PLEASE USE OPTION 2 INSTEAD.
+> 👉 IF YOU ARE CONTRIBUTING A FIX, PLEASE USE OPTION 2 INSTEAD.
 
-Here's quick instructions to try out the **api-demo**.
-
-Option 1 will uses the **latest official release** of the **@microsoft/tsdoc** library.
-It will NOT symlink to your local build of the library.
+Here's quick instructions to try out the **api-demo**.  Option 1 will use the **latest official release** of
+the **@microsoft/tsdoc** library.  It will NOT symlink to your local build of the library.
 
 1. Install the NPM dependencies for the **api-demo** project:
 
@@ -55,33 +53,33 @@ for easy testing/validation.
 
 1. Install the [Rush](https://rushjs.io/pages/developer/new_developer/) software:
 
-  ```shell
-  $ npm install -g @microsoft/rush
-  ```
+   ```shell
+   $ npm install -g @microsoft/rush
+   ```
 
-  *NOTE: If this command fails because your user account does not have permissions to
-  access NPM's global folder, you may need to
-  [fix your NPM configuration](https://docs.npmjs.com/getting-started/fixing-npm-permissions).*
+   *NOTE: If this command fails because your user account does not have permissions to
+   access NPM's global folder, you may need to
+   [fix your NPM configuration](https://docs.npmjs.com/getting-started/fixing-npm-permissions).*
 
 2. Install dependencies for all projects in the monorepo:
 
-  ```shell
-  # Run this command in the folder where you cloned the TSDoc repo from GitHub
-  $ rush install
-  ```
+   ```shell
+   # Run this command in the folder where you cloned the TSDoc repo from GitHub
+   $ rush install
+   ```
 
 3. Build all the projects in the monorepo:
 
-  ```shell
-  $ rush build
-  ```
+   ```shell
+   $ rush build
+   ```
 
-  You can also build just the **api-demo** project like this:
+   You can also build just the **api-demo** project like this:
 
-  ```shell
-  $ cd ./api-demo
-  $ npm run build
-  ```
+   ```shell
+   $ cd ./api-demo
+   $ npm run build
+   ```
 
 4. Run the **api-demo** project (see above notes for more details):
 

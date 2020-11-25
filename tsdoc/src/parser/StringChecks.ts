@@ -32,10 +32,18 @@ export class StringChecks {
 
   private static readonly _systemSelectors: Set<string> = new Set<string>([
     // For classes:
-    'instance', 'static', 'constructor',
+    'instance',
+    'static',
+    'constructor',
 
     // For merged declarations:
-    'class', 'enum', 'function', 'interface', 'namespace', 'type', 'variable'
+    'class',
+    'enum',
+    'function',
+    'interface',
+    'namespace',
+    'type',
+    'variable'
   ]);
 
   /**
@@ -76,8 +84,10 @@ export class StringChecks {
       return 'The URL cannot be empty';
     }
     if (!StringChecks._urlSchemeRegExp.test(url)) {
-      return 'An @link URL must begin with a scheme comprised only of letters and numbers followed by "://".'
-        + ' (For general URLs, use an HTML "<a>" tag instead.)';
+      return (
+        'An @link URL must begin with a scheme comprised only of letters and numbers followed by "://".' +
+        ' (For general URLs, use an HTML "<a>" tag instead.)'
+      );
     }
     if (!StringChecks._urlSchemeAfterRegExp.test(url)) {
       return 'An @link URL must have at least one character after "://"';
@@ -125,7 +135,10 @@ export class StringChecks {
   /**
    * Tests whether the input string is a valid declaration reference import path.
    */
-  public static explainIfInvalidImportPath(importPath: string, prefixedByPackageName: boolean): string | undefined {
+  public static explainIfInvalidImportPath(
+    importPath: string,
+    prefixedByPackageName: boolean
+  ): string | undefined {
     if (importPath.length > 0) {
       if (importPath.indexOf('//') >= 0) {
         return 'An import path must not contain "//"';

@@ -6,7 +6,7 @@ import {
   TSDocMessageId,
   ParserMessage,
   TextRange,
-  IParserMessageParameters
+  IParserMessageParameters,
 } from '@microsoft/tsdoc';
 import * as fs from 'fs';
 import * as resolve from 'resolve';
@@ -48,8 +48,8 @@ interface IConfigJson {
  */
 export class TSDocConfigFile {
   public static readonly FILENAME: string = 'tsdoc.json';
-  public static readonly CURRENT_SCHEMA_URL: string
-    = 'https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json';
+  public static readonly CURRENT_SCHEMA_URL: string =
+    'https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json';
 
   /**
    * A queryable log that reports warnings and error messages that occurred during parsing.
@@ -75,7 +75,7 @@ export class TSDocConfigFile {
     this._fileMTime = 0;
     this._tsdocSchema = '';
     this._extendsPaths = [];
-    this._tagDefinitions= [];
+    this._tagDefinitions = [];
   }
 
   /**
@@ -191,7 +191,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileUnsupportedSchema,
         messageText: `Unsupported JSON "$schema" value; expecting "${TSDocConfigFile.CURRENT_SCHEMA_URL}"`,
-        textRange: TextRange.empty
+        textRange: TextRange.empty,
       });
       return;
     }
@@ -204,7 +204,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileSchemaError,
         messageText: 'Error loading config file: ' + description,
-        textRange: TextRange.empty
+        textRange: TextRange.empty,
       });
       return;
     }
@@ -217,29 +217,39 @@ export class TSDocConfigFile {
     for (const jsonTagDefinition of configJson.tagDefinitions || []) {
       let syntaxKind: TSDocTagSyntaxKind;
       switch (jsonTagDefinition.syntaxKind) {
-        case 'inline': syntaxKind = TSDocTagSyntaxKind.InlineTag; break;
-        case 'block': syntaxKind = TSDocTagSyntaxKind.BlockTag; break;
-        case 'modifier': syntaxKind = TSDocTagSyntaxKind.ModifierTag; break;
+        case 'inline':
+          syntaxKind = TSDocTagSyntaxKind.InlineTag;
+          break;
+        case 'block':
+          syntaxKind = TSDocTagSyntaxKind.BlockTag;
+          break;
+        case 'modifier':
+          syntaxKind = TSDocTagSyntaxKind.ModifierTag;
+          break;
         default:
           // The JSON schema should have caught this error
           throw new Error('Unexpected tag kind');
       }
-      this._tagDefinitions.push(new TSDocTagDefinition({
-        tagName: jsonTagDefinition.tagName,
-        syntaxKind: syntaxKind,
-        allowMultiple: jsonTagDefinition.allowMultiple
-      }));
+      this._tagDefinitions.push(
+        new TSDocTagDefinition({
+          tagName: jsonTagDefinition.tagName,
+          syntaxKind: syntaxKind,
+          allowMultiple: jsonTagDefinition.allowMultiple,
+        })
+      );
     }
   }
 
-  private _loadWithExtends(configFilePath: string, referencingConfigFile: TSDocConfigFile | undefined,
-    alreadyVisitedPaths: Set<string>): void {
-
+  private _loadWithExtends(
+    configFilePath: string,
+    referencingConfigFile: TSDocConfigFile | undefined,
+    alreadyVisitedPaths: Set<string>
+  ): void {
     if (!configFilePath) {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileNotFound,
         messageText: 'File not found',
-        textRange: TextRange.empty
+        textRange: TextRange.empty,
       });
       return;
     }
@@ -250,7 +260,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileNotFound,
         messageText: 'File not found',
-        textRange: TextRange.empty
+        textRange: TextRange.empty,
       });
       return;
     }
@@ -260,7 +270,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileCyclicExtends,
         messageText: `Circular reference encountered for "extends" field of "${referencingConfigFile.filePath}"`,
-        textRange: TextRange.empty
+        textRange: TextRange.empty,
       });
       return;
     }
@@ -281,7 +291,7 @@ export class TSDocConfigFile {
         this._reportError({
           messageId: TSDocMessageId.ConfigFileUnresolvedExtends,
           messageText: `Unable to resolve "extends" reference to "${extendsField}"`,
-          textRange: TextRange.empty
+          textRange: TextRange.empty,
         });
       }
 

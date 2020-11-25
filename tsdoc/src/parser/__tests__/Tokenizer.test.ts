@@ -1,6 +1,6 @@
 import { TSDocParser } from '../TSDocParser';
 import { Tokenizer } from '../Tokenizer';
-import { Token, TokenKind }  from '../Token';
+import { Token, TokenKind } from '../Token';
 import { TestHelpers } from './TestHelpers';
 import { ParserContext } from '../ParserContext';
 
@@ -48,61 +48,36 @@ test('Tokenizer.isPunctuation()', () => {
 });
 
 test('00 Tokenizer simple case', () => {
-  matchSnapshot([
-    '/**',
-    ' * line 1 ', // extra space at end of line
-    ' * line 2',
-    ' */'
-  ].join('\n'));
+  matchSnapshot(
+    [
+      '/**',
+      ' * line 1 ', // extra space at end of line
+      ' * line 2',
+      ' */'
+    ].join('\n')
+  );
 });
 
 test('01 Tokenizer degenerate cases', () => {
   matchSnapshot('/***/');
 
-  matchSnapshot([
-    '/**',
-    ' *',
-    ' */'
-  ].join('\n'));
+  matchSnapshot(['/**', ' *', ' */'].join('\n'));
 
-  matchSnapshot([
-    '/**',
-    ' ',
-    ' ',
-    ' */'
-  ].join('\n'));
-
+  matchSnapshot(['/**', ' ', ' ', ' */'].join('\n'));
 });
 
 test('02 Backslash escapes: positive examples', () => {
-  matchSnapshot([
-    '/**',
-    ' * \\$\\@param',
-    ' * double-backslash: \\\\',
-    ' */'
-  ].join('\n'));
+  matchSnapshot(['/**', ' * \\$\\@param', ' * double-backslash: \\\\', ' */'].join('\n'));
 });
 
 test('03 Backslash escapes: negative examples', () => {
-  matchSnapshot([
-    '/**',
-    ' * letter: \\A space: \\  end of line: \\',
-    ' */'
-  ].join('\n'));
+  matchSnapshot(['/**', ' * letter: \\A space: \\  end of line: \\', ' */'].join('\n'));
 });
 
 test('04 General characters', () => {
-  matchSnapshot([
-    '/**',
-    ' * !"#$%&\'()*+,\-.\/:;<=>?@[]^_`{|}~',
-    ' */'
-  ].join('\n'));
+  matchSnapshot(['/**', ' * !"#$%&\'()*+,-./:;<=>?@[]^_`{|}~', ' */'].join('\n'));
 });
 
 test('05 Spacing characters', () => {
-  matchSnapshot([
-    '/**',
-    ' * space:  tab: \t  form feed: \f end',
-    ' */'
-  ].join('\n'));
+  matchSnapshot(['/**', ' * space:  tab: \t  form feed: \f end', ' */'].join('\n'));
 });

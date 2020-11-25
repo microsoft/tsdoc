@@ -1,4 +1,3 @@
-
 /**
  * Unique identifiers for messages reported by the TSDoc parser.
  *

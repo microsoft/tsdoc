@@ -68,7 +68,10 @@ export class TSDocEmitter {
     this._renderCompleteObject(output, htmlTag);
   }
 
-  public renderDeclarationReference(output: IStringBuilder, declarationReference: DocDeclarationReference): void {
+  public renderDeclarationReference(
+    output: IStringBuilder,
+    declarationReference: DocDeclarationReference
+  ): void {
     this._emitCommentFraming = false;
     this._renderCompleteObject(output, declarationReference);
   }
@@ -143,7 +146,10 @@ export class TSDocEmitter {
         const docDeclarationReference: DocDeclarationReference = docNode as DocDeclarationReference;
         this._writeContent(docDeclarationReference.packageName);
         this._writeContent(docDeclarationReference.importPath);
-        if (docDeclarationReference.packageName !== undefined || docDeclarationReference.importPath !== undefined) {
+        if (
+          docDeclarationReference.packageName !== undefined ||
+          docDeclarationReference.importPath !== undefined
+        ) {
           this._writeContent('#');
         }
         this._renderNodes(docDeclarationReference.memberReferences);
@@ -196,8 +202,8 @@ export class TSDocEmitter {
         this._writeContent(docHtmlStartTag.name);
         this._writeContent(docHtmlStartTag.spacingAfterName);
 
-        let needsSpace: boolean = docHtmlStartTag.spacingAfterName === undefined
-          || docHtmlStartTag.spacingAfterName.length === 0;
+        let needsSpace: boolean =
+          docHtmlStartTag.spacingAfterName === undefined || docHtmlStartTag.spacingAfterName.length === 0;
 
         for (const attribute of docHtmlStartTag.htmlAttributes) {
           if (needsSpace) {
@@ -302,7 +308,9 @@ export class TSDocEmitter {
         break;
 
       case DocNodeKind.Paragraph:
-        const trimmedParagraph: DocParagraph = DocNodeTransforms.trimSpacesInParagraph(docNode as DocParagraph);
+        const trimmedParagraph: DocParagraph = DocNodeTransforms.trimSpacesInParagraph(
+          docNode as DocParagraph
+        );
         if (trimmedParagraph.nodes.length > 0) {
           if (this._hangingParagraph) {
             // If it's a hanging paragraph, then don't skip a line
@@ -340,9 +348,7 @@ export class TSDocEmitter {
     }
   }
 
-  private _renderInlineTag(docInlineTagBase: DocInlineTagBase,
-    writeInlineTagContent: () => void): void {
-
+  private _renderInlineTag(docInlineTagBase: DocInlineTagBase, writeInlineTagContent: () => void): void {
     this._writeContent('{');
     this._writeContent(docInlineTagBase.tagName);
     writeInlineTagContent();
@@ -393,8 +399,7 @@ export class TSDocEmitter {
 
     if (this._lineState === LineState.Closed) {
       if (this._emitCommentFraming) {
-        this._output!.append('/**' + this.eol
-          + ' *');
+        this._output!.append('/**' + this.eol + ' *');
       }
       this._lineState = LineState.StartOfLine;
     }
@@ -414,8 +419,7 @@ export class TSDocEmitter {
   private _writeNewline(): void {
     if (this._lineState === LineState.Closed) {
       if (this._emitCommentFraming) {
-        this._output!.append('/**' + this.eol
-          + ' *');
+        this._output!.append('/**' + this.eol + ' *');
       }
       this._lineState = LineState.StartOfLine;
     }

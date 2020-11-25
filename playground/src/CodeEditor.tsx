@@ -51,7 +51,7 @@ export interface ICodeEditorState {
 interface IMonacoWindow extends Window {
   require: {
     (paths: string[], callback: (monaco: typeof monacoEditor) => void): void;
-    config: (options: { paths: { [name: string]: string } }) => void
+    config: (options: { paths: { [name: string]: string } }) => void;
   };
   MonacoEnvironment: {
     getWorkerUrl: (workerId: string, label: string) => void;
@@ -68,11 +68,11 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
 
   private _existingSyntaxStyles: { [hash: string]: string } = {};
   private _editorId: string;
-  private _isMounted: boolean=false;
+  private _isMounted: boolean = false;
   private _editor: monacoEditor.editor.IStandaloneCodeEditor | undefined;
 
   private _placeholderDivRef: HTMLDivElement | undefined;
-  private  _hostDivRef: HTMLDivElement | undefined;
+  private _hostDivRef: HTMLDivElement | undefined;
 
   public constructor(props: ICodeEditorProps) {
     super(props);
@@ -105,17 +105,17 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
   private static _initializeMonaco(): Promise<typeof monacoEditor> {
     if (!CodeEditor._initializePromise) {
       CodeEditor._initializePromise = new Promise(
-        (resolve: (monaco: typeof monacoEditor) => void, reject: (error: Error) => void ) => {
-          const monacoWindow: IMonacoWindow = window as unknown as IMonacoWindow;
-          monacoWindow.require.config({ paths: { 'vs': `${MONACO_BASE_URL}vs/` }});
+        (resolve: (monaco: typeof monacoEditor) => void, reject: (error: Error) => void) => {
+          const monacoWindow: IMonacoWindow = (window as unknown) as IMonacoWindow;
+          monacoWindow.require.config({ paths: { vs: `${MONACO_BASE_URL}vs/` } });
 
           monacoWindow.MonacoEnvironment = {
             getWorkerUrl: (workerId, label) => {
               return `data:text/javascript;charset=utf-8,${encodeURIComponent(
                 'self.MonacoEnvironment = {' +
                   `baseUrl: '${MONACO_BASE_URL}'` +
-                '};' +
-                `importScripts('${MONACO_BASE_URL}vs/base/worker/workerMain.js');`
+                  '};' +
+                  `importScripts('${MONACO_BASE_URL}vs/base/worker/workerMain.js');`
               )}`;
             }
           };
@@ -139,14 +139,16 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
 
   public componentDidMount(): void {
     this._isMounted = true;
-    CodeEditor._initializeMonaco().then((monaco) => {
-      this.setState({ monaco });
-      if (this._isMounted) {
-        window.addEventListener('resize', this._onWindowResize);
-      }
-    }).catch((error) => {
-      this.setState({ monacoErrorMessage: `Error loading Monaco editor: ${error}` });
-    });
+    CodeEditor._initializeMonaco()
+      .then((monaco) => {
+        this.setState({ monaco });
+        if (this._isMounted) {
+          window.addEventListener('resize', this._onWindowResize);
+        }
+      })
+      .catch((error) => {
+        this.setState({ monacoErrorMessage: `Error loading Monaco editor: ${error}` });
+      });
   }
 
   public componentWillUnmount(): void {
@@ -201,26 +203,26 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
   public render(): React.ReactNode {
     if (this.state.monacoErrorMessage) {
       return (
-        <FlexColDiv
-          className={ this.props.className }
-          style={ this.props.style } >
-          { this.state.monacoErrorMessage }
+        <FlexColDiv className={this.props.className} style={this.props.style}>
+          {this.state.monacoErrorMessage}
         </FlexColDiv>
-        );
+      );
     } else {
       // The Monaco application is very complex and its div does not resize reliably.
       // To work around this, we render a blank placeholder div (that is well-behaved),
       // and then the Monaco host div floats above that using absolute positioning
       // and manual resizing.
       return (
-        <div className='playground-monaco-placeholder'
-          ref={ this._onRefPlaceholder }
-          style={ { display: 'flex', flexDirection: 'column', flex: 1, ...this.props.style } }>
-
-          <div className='playground-monaco-host'
-          ref={ this._onRefHost }
-          style={ { display: 'block', position: 'absolute', backgroundColor: '#00FF00' } } />
-
+        <div
+          className="playground-monaco-placeholder"
+          ref={this._onRefPlaceholder}
+          style={{ display: 'flex', flexDirection: 'column', flex: 1, ...this.props.style }}
+        >
+          <div
+            className="playground-monaco-host"
+            ref={this._onRefHost}
+            style={{ display: 'block', position: 'absolute', backgroundColor: '#00FF00' }}
+          />
         </div>
       );
     }
@@ -230,8 +232,9 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
     this._placeholderDivRef = element;
   }
 
-  private _onRefHost(element: HTMLDivElement): void{
-    this._hostDivRef = element; this._createEditor();
+  private _onRefHost(element: HTMLDivElement): void {
+    this._hostDivRef = element;
+    this._createEditor();
   }
 
   private _applySyntaxStyling(newSyntaxStyles: IStyledRange[]): void {
@@ -262,8 +265,9 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
       }
 
       this._getEditorModel().deltaDecorations(decorationsToRemove, []);
-      const decorationIds: string[] = this._getEditorModel().deltaDecorations([], decorationsToAdd.map(
-        (decoration) => {
+      const decorationIds: string[] = this._getEditorModel().deltaDecorations(
+        [],
+        decorationsToAdd.map((decoration) => {
           const startPos: monacoEditor.Position = this._getEditorModel().getPositionAt(decoration.pos);
           const endPos: monacoEditor.Position = this._getEditorModel().getPositionAt(decoration.end);
 
@@ -280,8 +284,8 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
               inlineClassName: decoration.className
             }
           };
-        }
-      ));
+        })
+      );
 
       for (let i: number = 0; i < decorationsToAdd.length; i++) {
         newExistingSyntaxStyles[hashesOfDecorationsToAdd[i]] = decorationIds[i];
@@ -302,11 +306,10 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
   }
 
   private _createEditor(): void {
-    CodeEditor._initializeMonaco().then((monaco) => {
-      if (!this._editor && this._hostDivRef) {
-        this._editor = monaco.editor.create(
-          this._hostDivRef,
-          {
+    CodeEditor._initializeMonaco()
+      .then((monaco) => {
+        if (!this._editor && this._hostDivRef) {
+          this._editor = monaco.editor.create(this._hostDivRef, {
             value: this.props.value || '',
             language: this.props.language,
             readOnly: this.props.readOnly,
@@ -316,20 +319,20 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
             lineNumbers: this.props.disableLineNumbers ? 'off' : 'on',
             theme: this.props.theme,
             wordWrap: this.props.wordWrap ? 'on' : 'off'
-          }
-        );
+          });
 
-        this._getEditorModel().onDidChangeContent((e) => {
-          if (this._editor) {
-            this._safeOnChange(this._editor.getValue());
-          }
-        });
+          this._getEditorModel().onDidChangeContent((e) => {
+            if (this._editor) {
+              this._safeOnChange(this._editor.getValue());
+            }
+          });
 
-        this._onWindowResize();
-      }
-    }).catch((e) => {
-      console.error('CodeEditor._createEditor() failed: ' + e.toString());
-    });
+          this._onWindowResize();
+        }
+      })
+      .catch((e) => {
+        console.error('CodeEditor._createEditor() failed: ' + e.toString());
+      });
   }
 
   private _onWindowResize(): void {

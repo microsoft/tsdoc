@@ -1,4 +1,3 @@
-
 export class Debug {
   // To debug the plugin, temporarily uncomment the body of this function
   public static log(message: string): void {

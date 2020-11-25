@@ -125,7 +125,6 @@ export class DocLinkTag extends DocInlineTagBase {
       this._urlDestination = parameters.urlDestination;
       this._linkText = parameters.linkText;
     }
-
   }
 
   /** @override */
@@ -190,7 +189,8 @@ export class DocLinkTag extends DocInlineTagBase {
   }
 
   /** @override */
-  protected getChildNodesForContent(): ReadonlyArray<DocNode | undefined> { // abstract
+  protected getChildNodesForContent(): ReadonlyArray<DocNode | undefined> {
+    // abstract
     return [
       this._codeDestination,
       this._urlDestinationExcerpt,

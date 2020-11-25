@@ -4,8 +4,7 @@ import { DocNodeContainer, IDocNodeContainerParameters } from './DocNodeContaine
 /**
  * Constructor parameters for {@link DocParagraph}.
  */
-export interface IDocParagraphParameters extends IDocNodeContainerParameters {
-}
+export interface IDocParagraphParameters extends IDocNodeContainerParameters {}
 
 /**
  * Represents a paragraph of text, similar to a `<p>` element in HTML.

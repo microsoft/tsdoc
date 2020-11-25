@@ -1,15 +1,15 @@
 variables:
   FORCE_COLOR: 1
 jobs:
-- job: PRBuild
-  condition: succeeded()
-  strategy:
-    maxParallel: 2
-    matrix:
-      'NodeJs 10':
-        NodeVersion: 10
-      'NodeJs 12':
-        NodeVersion: 12
-  steps:
-  - checkout: self
-  - template: templates/build.yaml
+  - job: PRBuild
+    condition: succeeded()
+    strategy:
+      maxParallel: 2
+      matrix:
+        'NodeJs 10':
+          NodeVersion: 10
+        'NodeJs 12':
+          NodeVersion: 12
+    steps:
+      - checkout: self
+      - template: templates/build.yaml

@@ -3,7 +3,6 @@ import { PlaygroundView } from './PlaygroundView';
 
 class App extends React.Component {
   public render(): React.ReactNode {
-
     return (
       <>
         <PlaygroundView />

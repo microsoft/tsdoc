@@ -1,11 +1,12 @@
-html, body {
+html,
+body {
   margin: 0;
   height: 100%;
   font-family: Tahoma, sans-serif;
 }
 
 .doc-heading {
-  color: #2F5496;
+  color: #2f5496;
   font-size: 24px;
   font-weight: 400;
 }
@@ -14,10 +15,11 @@ html, body {
   border-collapse: collapse;
 }
 
-.doc-table th, td {
+.doc-table th,
+td {
   text-align: left;
   padding: 5px 10px;
-  border-bottom: 2px solid #e0e0e0
+  border-bottom: 2px solid #e0e0e0;
 }
 
 .doc-fenced-code {

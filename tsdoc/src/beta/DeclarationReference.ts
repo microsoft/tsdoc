@@ -19,8 +19,11 @@ export class DeclarationReference {
   private _navigation: Navigation.Locals | Navigation.Exports | undefined;
   private _symbol: SymbolReference | undefined;
 
-  public constructor(source?: ModuleSource | GlobalSource, navigation?: Navigation.Locals | Navigation.Exports,
-    symbol?: SymbolReference) {
+  public constructor(
+    source?: ModuleSource | GlobalSource,
+    navigation?: Navigation.Locals | Navigation.Exports,
+    symbol?: SymbolReference
+  ) {
     this._source = source;
     this._navigation = navigation;
     this._symbol = symbol;
@@ -48,8 +51,7 @@ export class DeclarationReference {
   }
 
   public get isEmpty(): boolean {
-    return this.source === undefined
-      && this.symbol === undefined;
+    return this.source === undefined && this.symbol === undefined;
   }
 
   public static parse(text: string): DeclarationReference {
@@ -77,9 +79,11 @@ export class DeclarationReference {
    */
   public static isWellFormedComponentString(text: string): boolean {
     const scanner: Scanner = new Scanner(text);
-    return scanner.scan() === Token.String ? scanner.scan() === Token.EofToken :
-      scanner.token() === Token.Text ? scanner.scan() === Token.EofToken :
-      scanner.token() === Token.EofToken;
+    return scanner.scan() === Token.String
+      ? scanner.scan() === Token.EofToken
+      : scanner.token() === Token.Text
+      ? scanner.scan() === Token.EofToken
+      : scanner.token() === Token.EofToken;
   }
 
   /**
@@ -120,10 +124,12 @@ export class DeclarationReference {
    */
   public static isWellFormedModuleSourceString(text: string): boolean {
     const scanner: Scanner = new Scanner(text + '!');
-    return scanner.rescanModuleSource() === Token.ModuleSource
-      && !scanner.stringIsUnterminated
-      && scanner.scan() === Token.ExclamationToken
-      && scanner.scan() === Token.EofToken;
+    return (
+      scanner.rescanModuleSource() === Token.ModuleSource &&
+      !scanner.stringIsUnterminated &&
+      scanner.scan() === Token.ExclamationToken &&
+      scanner.scan() === Token.EofToken
+    );
   }
 
   /**
@@ -181,8 +187,12 @@ export class DeclarationReference {
     return this._source === source ? this : new DeclarationReference(source, this._navigation, this._symbol);
   }
 
-  public withNavigation(navigation: Navigation.Locals | Navigation.Exports | undefined): DeclarationReference {
-    return this._navigation === navigation ? this : new DeclarationReference(this._source, navigation, this._symbol);
+  public withNavigation(
+    navigation: Navigation.Locals | Navigation.Exports | undefined
+  ): DeclarationReference {
+    return this._navigation === navigation
+      ? this
+      : new DeclarationReference(this._source, navigation, this._symbol);
   }
 
   public withSymbol(symbol: SymbolReference | undefined): DeclarationReference {
@@ -190,8 +200,9 @@ export class DeclarationReference {
   }
 
   public withComponentPath(componentPath: ComponentPath): DeclarationReference {
-    return this.withSymbol(this.symbol ? this.symbol.withComponentPath(componentPath) :
-      new SymbolReference(componentPath));
+    return this.withSymbol(
+      this.symbol ? this.symbol.withComponentPath(componentPath) : new SymbolReference(componentPath)
+    );
   }
 
   public withMeaning(meaning: Meaning | undefined): DeclarationReference {
@@ -226,9 +237,10 @@ export class DeclarationReference {
   }
 
   public toString(): string {
-    const navigation: string = this._source instanceof ModuleSource
-      && this._symbol
-      && this.navigation === Navigation.Locals ? '~' : '';
+    const navigation: string =
+      this._source instanceof ModuleSource && this._symbol && this.navigation === Navigation.Locals
+        ? '~'
+        : '';
     return `${this.source || ''}${navigation}${this.symbol || ''}`;
   }
 }
@@ -254,7 +266,8 @@ export class ModuleSource {
   private _pathComponents: IParsedPackage | undefined;
 
   public constructor(path: string, userEscaped: boolean = true) {
-    this.escapedPath = this instanceof ParsedModuleSource ? path : escapeModuleSourceIfNeeded(path, userEscaped);
+    this.escapedPath =
+      this instanceof ParsedModuleSource ? path : escapeModuleSourceIfNeeded(path, userEscaped);
   }
 
   public get path(): string {
@@ -278,9 +291,11 @@ export class ModuleSource {
     return this._getOrParsePathComponents().importPath || '';
   }
 
-  public static fromScopedPackage(scopeName: string | undefined, unscopedPackageName: string, importPath?: string):
-    ModuleSource {
-
+  public static fromScopedPackage(
+    scopeName: string | undefined,
+    unscopedPackageName: string,
+    importPath?: string
+  ): ModuleSource {
     let packageName: string = unscopedPackageName;
     if (scopeName) {
       if (scopeName.charAt(0) === '@') {
@@ -302,7 +317,6 @@ export class ModuleSource {
     packageName: string,
     importPath?: string
   ): ModuleSource {
-
     if (!parsed) {
       throw new Error('Parsed package must be provided.');
     }
@@ -349,8 +363,7 @@ export class ModuleSource {
   }
 }
 
-class ParsedModuleSource extends ModuleSource {
-}
+class ParsedModuleSource extends ModuleSource {}
 
 // matches the following:
 //   'foo'            -> ["foo", "foo", undefined, "foo", undefined]
@@ -398,8 +411,7 @@ function parsePackageName(text: string): IParsedPackage | null {
 export class GlobalSource {
   public static readonly instance: GlobalSource = new GlobalSource();
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public toString(): string {
     return '!';
@@ -409,10 +421,7 @@ export class GlobalSource {
 /**
  * @beta
  */
-export type Component =
-  | ComponentString
-  | ComponentReference
-  ;
+export type Component = ComponentString | ComponentReference;
 
 /**
  * @beta
@@ -433,11 +442,7 @@ export namespace Component {
 /**
  * @beta
  */
-export type ComponentLike =
-  | Component
-  | DeclarationReference
-  | string
-  ;
+export type ComponentLike = Component | DeclarationReference | string;
 
 /**
  * @beta
@@ -454,8 +459,7 @@ export class ComponentString {
   }
 }
 
-class ParsedComponentString extends ComponentString {
-}
+class ParsedComponentString extends ComponentString {}
 
 /**
  * @beta
@@ -486,10 +490,7 @@ export class ComponentReference {
 /**
  * @beta
  */
-export type ComponentPath =
-  | ComponentRoot
-  | ComponentNavigation
-  ;
+export type ComponentPath = ComponentRoot | ComponentNavigation;
 
 /**
  * @beta
@@ -501,7 +502,11 @@ export abstract class ComponentPathBase {
     this.component = component;
   }
 
-  public addNavigationStep(this: ComponentPath, navigation: Navigation, component: ComponentLike): ComponentPath {
+  public addNavigationStep(
+    this: ComponentPath,
+    navigation: Navigation,
+    component: ComponentLike
+  ): ComponentPath {
     // tslint:disable-next-line:no-use-before-declare
     return new ComponentNavigation(this, navigation, Component.from(component));
   }
@@ -540,12 +545,15 @@ export class ComponentNavigation extends ComponentPathBase {
   }
 
   public withNavigation(navigation: Navigation): ComponentNavigation {
-    return this.navigation === navigation ? this : new ComponentNavigation(this.parent, navigation, this.component);
+    return this.navigation === navigation
+      ? this
+      : new ComponentNavigation(this.parent, navigation, this.component);
   }
 
   public withComponent(component: ComponentLike): ComponentNavigation {
-    return this.component === component ? this :
-      new ComponentNavigation(this.parent, this.navigation, Component.from(component));
+    return this.component === component
+      ? this
+      : new ComponentNavigation(this.parent, this.navigation, Component.from(component));
   }
 
   public toString(): string {
@@ -557,20 +565,20 @@ export class ComponentNavigation extends ComponentPathBase {
  * @beta
  */
 export const enum Meaning {
-  Class = 'class',                              // SymbolFlags.Class
-  Interface = 'interface',                      // SymbolFlags.Interface
-  TypeAlias = 'type',                           // SymbolFlags.TypeAlias
-  Enum = 'enum',                                // SymbolFlags.Enum
-  Namespace = 'namespace',                      // SymbolFlags.Module
-  Function = 'function',                        // SymbolFlags.Function
-  Variable = 'var',                             // SymbolFlags.Variable
-  Constructor = 'constructor',                  // SymbolFlags.Constructor
-  Member = 'member',                            // SymbolFlags.ClassMember | SymbolFlags.EnumMember
-  Event = 'event',                              //
-  CallSignature = 'call',                       // SymbolFlags.Signature (for __call)
-  ConstructSignature = 'new',                   // SymbolFlags.Signature (for __new)
-  IndexSignature = 'index',                     // SymbolFlags.Signature (for __index)
-  ComplexType = 'complex'                       // Any complex type
+  Class = 'class', // SymbolFlags.Class
+  Interface = 'interface', // SymbolFlags.Interface
+  TypeAlias = 'type', // SymbolFlags.TypeAlias
+  Enum = 'enum', // SymbolFlags.Enum
+  Namespace = 'namespace', // SymbolFlags.Module
+  Function = 'function', // SymbolFlags.Function
+  Variable = 'var', // SymbolFlags.Variable
+  Constructor = 'constructor', // SymbolFlags.Constructor
+  Member = 'member', // SymbolFlags.ClassMember | SymbolFlags.EnumMember
+  Event = 'event', //
+  CallSignature = 'call', // SymbolFlags.Signature (for __call)
+  ConstructSignature = 'new', // SymbolFlags.Signature (for __new)
+  IndexSignature = 'index', // SymbolFlags.Signature (for __index)
+  ComplexType = 'complex' // Any complex type
 }
 
 /**
@@ -590,7 +598,10 @@ export class SymbolReference {
   public readonly meaning: Meaning | undefined;
   public readonly overloadIndex: number | undefined;
 
-  public constructor(component: ComponentPath | undefined, { meaning, overloadIndex }: ISymbolReferenceOptions = {}) {
+  public constructor(
+    component: ComponentPath | undefined,
+    { meaning, overloadIndex }: ISymbolReferenceOptions = {}
+  ) {
     this.componentPath = component;
     this.overloadIndex = overloadIndex;
     this.meaning = meaning;
@@ -601,29 +612,35 @@ export class SymbolReference {
   }
 
   public withComponentPath(componentPath: ComponentPath | undefined): SymbolReference {
-    return this.componentPath === componentPath ? this : new SymbolReference(componentPath, {
-      meaning: this.meaning,
-      overloadIndex: this.overloadIndex
-    });
+    return this.componentPath === componentPath
+      ? this
+      : new SymbolReference(componentPath, {
+          meaning: this.meaning,
+          overloadIndex: this.overloadIndex
+        });
   }
 
   public withMeaning(meaning: Meaning | undefined): SymbolReference {
-    return this.meaning === meaning ? this : new SymbolReference(this.componentPath, {
-      meaning,
-      overloadIndex: this.overloadIndex
-    });
+    return this.meaning === meaning
+      ? this
+      : new SymbolReference(this.componentPath, {
+          meaning,
+          overloadIndex: this.overloadIndex
+        });
   }
 
   public withOverloadIndex(overloadIndex: number | undefined): SymbolReference {
-    return this.overloadIndex === overloadIndex ? this : new SymbolReference(this.componentPath, {
-      meaning: this.meaning,
-      overloadIndex
-    });
+    return this.overloadIndex === overloadIndex
+      ? this
+      : new SymbolReference(this.componentPath, {
+          meaning: this.meaning,
+          overloadIndex
+        });
   }
 
   public addNavigationStep(navigation: Navigation, component: ComponentLike): SymbolReference {
     if (!this.componentPath) {
-        throw new Error('Cannot add a navigation step to an empty symbol reference.');
+      throw new Error('Cannot add a navigation step to an empty symbol reference.');
     }
     return new SymbolReference(this.componentPath.addNavigationStep(navigation, component));
   }
@@ -645,75 +662,108 @@ const enum Token {
   None,
   EofToken,
   // Punctuator
-  OpenBraceToken,       // '{'
-  CloseBraceToken,      // '}'
-  OpenParenToken,       // '('
-  CloseParenToken,      // ')'
-  OpenBracketToken,     // '['
-  CloseBracketToken,    // ']'
-  ExclamationToken,     // '!'
-  DotToken,             // '.'
-  HashToken,            // '#'
-  TildeToken,           // '~'
-  ColonToken,           // ':'
-  CommaToken,           // ','
-  AtToken,              // '@'
-  DecimalDigits,        // '12345'
-  String,               // '"abc"'
-  Text,                 // 'abc'
-  ModuleSource,         // 'abc/def!' (excludes '!')
+  OpenBraceToken, // '{'
+  CloseBraceToken, // '}'
+  OpenParenToken, // '('
+  CloseParenToken, // ')'
+  OpenBracketToken, // '['
+  CloseBracketToken, // ']'
+  ExclamationToken, // '!'
+  DotToken, // '.'
+  HashToken, // '#'
+  TildeToken, // '~'
+  ColonToken, // ':'
+  CommaToken, // ','
+  AtToken, // '@'
+  DecimalDigits, // '12345'
+  String, // '"abc"'
+  Text, // 'abc'
+  ModuleSource, // 'abc/def!' (excludes '!')
   // Keywords
-  ClassKeyword,         // 'class'
-  InterfaceKeyword,     // 'interface'
-  TypeKeyword,          // 'type'
-  EnumKeyword,          // 'enum'
-  NamespaceKeyword,     // 'namespace'
-  FunctionKeyword,      // 'function'
-  VarKeyword,           // 'var'
-  ConstructorKeyword,   // 'constructor'
-  MemberKeyword,        // 'member'
-  EventKeyword,         // 'event'
-  CallKeyword,          // 'call'
-  NewKeyword,           // 'new'
-  IndexKeyword,         // 'index'
-  ComplexKeyword        // 'complex'
+  ClassKeyword, // 'class'
+  InterfaceKeyword, // 'interface'
+  TypeKeyword, // 'type'
+  EnumKeyword, // 'enum'
+  NamespaceKeyword, // 'namespace'
+  FunctionKeyword, // 'function'
+  VarKeyword, // 'var'
+  ConstructorKeyword, // 'constructor'
+  MemberKeyword, // 'member'
+  EventKeyword, // 'event'
+  CallKeyword, // 'call'
+  NewKeyword, // 'new'
+  IndexKeyword, // 'index'
+  ComplexKeyword // 'complex'
 }
 
 function tokenToString(token: Token): string {
   switch (token) {
-    case Token.OpenBraceToken: return '{';
-    case Token.CloseBraceToken: return '}';
-    case Token.OpenParenToken: return '(';
-    case Token.CloseParenToken: return ')';
-    case Token.OpenBracketToken: return '[';
-    case Token.CloseBracketToken: return ']';
-    case Token.ExclamationToken: return '!';
-    case Token.DotToken: return '.';
-    case Token.HashToken: return '#';
-    case Token.TildeToken: return '~';
-    case Token.ColonToken: return ':';
-    case Token.CommaToken: return ',';
-    case Token.AtToken: return '@';
-    case Token.ClassKeyword: return 'class';
-    case Token.InterfaceKeyword: return 'interface';
-    case Token.TypeKeyword: return 'type';
-    case Token.EnumKeyword: return 'enum';
-    case Token.NamespaceKeyword: return 'namespace';
-    case Token.FunctionKeyword: return 'function';
-    case Token.VarKeyword: return 'var';
-    case Token.ConstructorKeyword: return 'constructor';
-    case Token.MemberKeyword: return 'member';
-    case Token.EventKeyword: return 'event';
-    case Token.CallKeyword: return 'call';
-    case Token.NewKeyword: return 'new';
-    case Token.IndexKeyword: return 'index';
-    case Token.ComplexKeyword: return 'complex';
-    case Token.None: return '<none>';
-    case Token.EofToken: return '<eof>';
-    case Token.DecimalDigits: return '<decimal digits>';
-    case Token.String: return '<string>';
-    case Token.Text: return '<text>';
-    case Token.ModuleSource: return '<module source>';
+    case Token.OpenBraceToken:
+      return '{';
+    case Token.CloseBraceToken:
+      return '}';
+    case Token.OpenParenToken:
+      return '(';
+    case Token.CloseParenToken:
+      return ')';
+    case Token.OpenBracketToken:
+      return '[';
+    case Token.CloseBracketToken:
+      return ']';
+    case Token.ExclamationToken:
+      return '!';
+    case Token.DotToken:
+      return '.';
+    case Token.HashToken:
+      return '#';
+    case Token.TildeToken:
+      return '~';
+    case Token.ColonToken:
+      return ':';
+    case Token.CommaToken:
+      return ',';
+    case Token.AtToken:
+      return '@';
+    case Token.ClassKeyword:
+      return 'class';
+    case Token.InterfaceKeyword:
+      return 'interface';
+    case Token.TypeKeyword:
+      return 'type';
+    case Token.EnumKeyword:
+      return 'enum';
+    case Token.NamespaceKeyword:
+      return 'namespace';
+    case Token.FunctionKeyword:
+      return 'function';
+    case Token.VarKeyword:
+      return 'var';
+    case Token.ConstructorKeyword:
+      return 'constructor';
+    case Token.MemberKeyword:
+      return 'member';
+    case Token.EventKeyword:
+      return 'event';
+    case Token.CallKeyword:
+      return 'call';
+    case Token.NewKeyword:
+      return 'new';
+    case Token.IndexKeyword:
+      return 'index';
+    case Token.ComplexKeyword:
+      return 'complex';
+    case Token.None:
+      return '<none>';
+    case Token.EofToken:
+      return '<eof>';
+    case Token.DecimalDigits:
+      return '<decimal digits>';
+    case Token.String:
+      return '<string>';
+    case Token.Text:
+      return '<text>';
+    case Token.ModuleSource:
+      return '<module source>';
   }
 }
 
@@ -760,7 +810,9 @@ class Scanner {
     const stringIsUnterminated: boolean = this._stringIsUnterminated;
     let accepted: boolean = false;
     try {
-      const accept: () => void = () => { accepted = true; };
+      const accept: () => void = () => {
+        accepted = true;
+      };
       return cb(accept);
     } finally {
       if (!accepted) {
@@ -780,29 +832,42 @@ class Scanner {
       while (!this.eof) {
         const ch: string = this._text.charAt(this._pos++);
         switch (ch) {
-          case '{': return this._token = Token.OpenBraceToken;
-          case '}': return this._token = Token.CloseBraceToken;
-          case '(': return this._token = Token.OpenParenToken;
-          case ')': return this._token = Token.CloseParenToken;
-          case '[': return this._token = Token.OpenBracketToken;
-          case ']': return this._token = Token.CloseBracketToken;
-          case '!': return this._token = Token.ExclamationToken;
-          case '.': return this._token = Token.DotToken;
-          case '#': return this._token = Token.HashToken;
-          case '~': return this._token = Token.TildeToken;
-          case ':': return this._token = Token.ColonToken;
-          case ',': return this._token = Token.CommaToken;
-          case '@': return this._token = Token.AtToken;
+          case '{':
+            return (this._token = Token.OpenBraceToken);
+          case '}':
+            return (this._token = Token.CloseBraceToken);
+          case '(':
+            return (this._token = Token.OpenParenToken);
+          case ')':
+            return (this._token = Token.CloseParenToken);
+          case '[':
+            return (this._token = Token.OpenBracketToken);
+          case ']':
+            return (this._token = Token.CloseBracketToken);
+          case '!':
+            return (this._token = Token.ExclamationToken);
+          case '.':
+            return (this._token = Token.DotToken);
+          case '#':
+            return (this._token = Token.HashToken);
+          case '~':
+            return (this._token = Token.TildeToken);
+          case ':':
+            return (this._token = Token.ColonToken);
+          case ',':
+            return (this._token = Token.CommaToken);
+          case '@':
+            return (this._token = Token.AtToken);
           case '"':
             this.scanString();
-            return this._token = Token.String;
+            return (this._token = Token.String);
           default:
             this.scanText();
-            return this._token = Token.Text;
+            return (this._token = Token.Text);
         }
       }
     }
-    return this._token = Token.EofToken;
+    return (this._token = Token.EofToken);
   }
 
   public rescanModuleSource(): Token {
@@ -812,7 +877,7 @@ class Scanner {
       case Token.EofToken:
         return this._token;
     }
-    return this.speculate(accept => {
+    return this.speculate((accept) => {
       if (!this.eof) {
         this._pos = this._tokenPos;
         this._stringIsUnterminated = false;
@@ -824,7 +889,7 @@ class Scanner {
               return this._token;
             }
             accept();
-            return this._token = Token.ModuleSource;
+            return (this._token = Token.ModuleSource);
           }
           this._pos++;
           if (ch === '"') {
@@ -854,20 +919,34 @@ class Scanner {
     if (this._token === Token.Text) {
       const tokenText: string = this.tokenText;
       switch (tokenText) {
-        case 'class': return this._token = Token.ClassKeyword;
-        case 'interface': return this._token = Token.InterfaceKeyword;
-        case 'type': return this._token = Token.TypeKeyword;
-        case 'enum': return this._token = Token.EnumKeyword;
-        case 'namespace': return this._token = Token.NamespaceKeyword;
-        case 'function': return this._token = Token.FunctionKeyword;
-        case 'var': return this._token = Token.VarKeyword;
-        case 'constructor': return this._token = Token.ConstructorKeyword;
-        case 'member': return this._token = Token.MemberKeyword;
-        case 'event': return this._token = Token.EventKeyword;
-        case 'call': return this._token = Token.CallKeyword;
-        case 'new': return this._token = Token.NewKeyword;
-        case 'index': return this._token = Token.IndexKeyword;
-        case 'complex': return this._token = Token.ComplexKeyword;
+        case 'class':
+          return (this._token = Token.ClassKeyword);
+        case 'interface':
+          return (this._token = Token.InterfaceKeyword);
+        case 'type':
+          return (this._token = Token.TypeKeyword);
+        case 'enum':
+          return (this._token = Token.EnumKeyword);
+        case 'namespace':
+          return (this._token = Token.NamespaceKeyword);
+        case 'function':
+          return (this._token = Token.FunctionKeyword);
+        case 'var':
+          return (this._token = Token.VarKeyword);
+        case 'constructor':
+          return (this._token = Token.ConstructorKeyword);
+        case 'member':
+          return (this._token = Token.MemberKeyword);
+        case 'event':
+          return (this._token = Token.EventKeyword);
+        case 'call':
+          return (this._token = Token.CallKeyword);
+        case 'new':
+          return (this._token = Token.NewKeyword);
+        case 'index':
+          return (this._token = Token.IndexKeyword);
+        case 'complex':
+          return (this._token = Token.ComplexKeyword);
       }
     }
     return this._token;
@@ -877,7 +956,7 @@ class Scanner {
     if (this._token === Token.Text) {
       const tokenText: string = this.tokenText;
       if (/^\d+$/.test(tokenText)) {
-        return this._token = Token.DecimalDigits;
+        return (this._token = Token.DecimalDigits);
       }
     }
     return this._token;
@@ -887,7 +966,8 @@ class Scanner {
     while (!this.eof) {
       const ch: string = this._text.charAt(this._pos++);
       switch (ch) {
-        case '"': return;
+        case '"':
+          return;
         case '\\':
           this.scanEscapeSequence();
           break;
@@ -916,39 +996,42 @@ class Scanner {
     }
 
     // EscapeSequence:: `0` [lookahead != DecimalDigit]
-    if (ch === '0'
-      && (this._pos + 1 === this._text.length
-        || !isDecimalDigit(this._text.charAt(this._pos + 1)))) {
+    if (
+      ch === '0' &&
+      (this._pos + 1 === this._text.length || !isDecimalDigit(this._text.charAt(this._pos + 1)))
+    ) {
       this._pos++;
       return;
     }
 
     // EscapeSequence:: HexEscapeSequence
-    if (ch === 'x'
-      && this._pos + 3 <= this._text.length
-      && isHexDigit(this._text.charAt(this._pos + 1))
-      && isHexDigit(this._text.charAt(this._pos + 2))) {
+    if (
+      ch === 'x' &&
+      this._pos + 3 <= this._text.length &&
+      isHexDigit(this._text.charAt(this._pos + 1)) &&
+      isHexDigit(this._text.charAt(this._pos + 2))
+    ) {
       this._pos += 3;
       return;
     }
 
     // EscapeSequence:: UnicodeEscapeSequence
     // UnicodeEscapeSequence:: `u` Hex4Digits
-    if (ch === 'u'
-      && this._pos + 5 <= this._text.length
-      && isHexDigit(this._text.charAt(this._pos + 1))
-      && isHexDigit(this._text.charAt(this._pos + 2))
-      && isHexDigit(this._text.charAt(this._pos + 3))
-      && isHexDigit(this._text.charAt(this._pos + 4))) {
+    if (
+      ch === 'u' &&
+      this._pos + 5 <= this._text.length &&
+      isHexDigit(this._text.charAt(this._pos + 1)) &&
+      isHexDigit(this._text.charAt(this._pos + 2)) &&
+      isHexDigit(this._text.charAt(this._pos + 3)) &&
+      isHexDigit(this._text.charAt(this._pos + 4))
+    ) {
       this._pos += 5;
       return;
     }
 
     // EscapeSequence:: UnicodeEscapeSequence
     // UnicodeEscapeSequence:: `u` `{` CodePoint `}`
-    if (ch === 'u'
-      && this._pos + 4 <= this._text.length
-      && this._text.charAt(this._pos + 1) === '{') {
+    if (ch === 'u' && this._pos + 4 <= this._text.length && this._text.charAt(this._pos + 1) === '{') {
       let hexDigits: string = this._text.charAt(this._pos + 2);
       if (isHexDigit(hexDigits)) {
         for (let i: number = this._pos + 3; i < this._text.length; i++) {
@@ -1064,7 +1147,10 @@ class Parser {
 
   private parseRootComponent(): ComponentPath {
     if (!this.isStartOfComponent()) {
-      return this.fail('Component expected', new ComponentRoot(new ComponentString('', /*userEscaped*/ true)));
+      return this.fail(
+        'Component expected',
+        new ComponentRoot(new ComponentString('', /*userEscaped*/ true))
+      );
     }
 
     const component: Component = this.parseComponent();
@@ -1072,7 +1158,7 @@ class Parser {
   }
 
   private parseComponentRest(component: ComponentPath): ComponentPath {
-    for (; ;) {
+    for (;;) {
       switch (this.token()) {
         case Token.DotToken:
         case Token.HashToken:
@@ -1089,30 +1175,49 @@ class Parser {
 
   private parseNavigation(): Navigation {
     switch (this._scanner.token()) {
-      case Token.DotToken: return this._scanner.scan(), Navigation.Exports;
-      case Token.HashToken: return this._scanner.scan(), Navigation.Members;
-      case Token.TildeToken: return this._scanner.scan(), Navigation.Locals;
-      default: return this.fail('Expected \'.\', \'#\', or \'~\'', Navigation.Exports);
+      case Token.DotToken:
+        return this._scanner.scan(), Navigation.Exports;
+      case Token.HashToken:
+        return this._scanner.scan(), Navigation.Members;
+      case Token.TildeToken:
+        return this._scanner.scan(), Navigation.Locals;
+      default:
+        return this.fail("Expected '.', '#', or '~'", Navigation.Exports);
     }
   }
 
   private tryParseMeaning(): Meaning | undefined {
     switch (this._scanner.rescanMeaning()) {
-      case Token.ClassKeyword: return this._scanner.scan(), Meaning.Class;
-      case Token.InterfaceKeyword: return this._scanner.scan(), Meaning.Interface;
-      case Token.TypeKeyword: return this._scanner.scan(), Meaning.TypeAlias;
-      case Token.EnumKeyword: return this._scanner.scan(), Meaning.Enum;
-      case Token.NamespaceKeyword: return this._scanner.scan(), Meaning.Namespace;
-      case Token.FunctionKeyword: return this._scanner.scan(), Meaning.Function;
-      case Token.VarKeyword: return this._scanner.scan(), Meaning.Variable;
-      case Token.ConstructorKeyword: return this._scanner.scan(), Meaning.Constructor;
-      case Token.MemberKeyword: return this._scanner.scan(), Meaning.Member;
-      case Token.EventKeyword: return this._scanner.scan(), Meaning.Event;
-      case Token.CallKeyword: return this._scanner.scan(), Meaning.CallSignature;
-      case Token.NewKeyword: return this._scanner.scan(), Meaning.ConstructSignature;
-      case Token.IndexKeyword: return this._scanner.scan(), Meaning.IndexSignature;
-      case Token.ComplexKeyword: return this._scanner.scan(), Meaning.ComplexType;
-      default: return undefined;
+      case Token.ClassKeyword:
+        return this._scanner.scan(), Meaning.Class;
+      case Token.InterfaceKeyword:
+        return this._scanner.scan(), Meaning.Interface;
+      case Token.TypeKeyword:
+        return this._scanner.scan(), Meaning.TypeAlias;
+      case Token.EnumKeyword:
+        return this._scanner.scan(), Meaning.Enum;
+      case Token.NamespaceKeyword:
+        return this._scanner.scan(), Meaning.Namespace;
+      case Token.FunctionKeyword:
+        return this._scanner.scan(), Meaning.Function;
+      case Token.VarKeyword:
+        return this._scanner.scan(), Meaning.Variable;
+      case Token.ConstructorKeyword:
+        return this._scanner.scan(), Meaning.Constructor;
+      case Token.MemberKeyword:
+        return this._scanner.scan(), Meaning.Member;
+      case Token.EventKeyword:
+        return this._scanner.scan(), Meaning.Event;
+      case Token.CallKeyword:
+        return this._scanner.scan(), Meaning.CallSignature;
+      case Token.NewKeyword:
+        return this._scanner.scan(), Meaning.ConstructSignature;
+      case Token.IndexKeyword:
+        return this._scanner.scan(), Meaning.IndexSignature;
+      case Token.ComplexKeyword:
+        return this._scanner.scan(), Meaning.ComplexType;
+      default:
+        return undefined;
     }
   }
 
@@ -1151,7 +1256,7 @@ class Parser {
 
   private parseComponentCharacters(): string {
     let text: string = '';
-    for (; ;) {
+    for (;;) {
       switch (this._scanner.token()) {
         case Token.Text:
           text += this.parseText();
@@ -1224,21 +1329,24 @@ class Parser {
 
 function formatNavigation(navigation: Navigation | undefined): string {
   switch (navigation) {
-    case Navigation.Exports: return '.';
-    case Navigation.Members: return '#';
-    case Navigation.Locals: return '~';
-    default: return '';
+    case Navigation.Exports:
+      return '.';
+    case Navigation.Members:
+      return '#';
+    case Navigation.Locals:
+      return '~';
+    default:
+      return '';
   }
 }
 
 function isCharacterEscapeSequence(ch: string): boolean {
-  return isSingleEscapeCharacter(ch)
-    || isNonEscapeCharacter(ch);
+  return isSingleEscapeCharacter(ch) || isNonEscapeCharacter(ch);
 }
 
 function isSingleEscapeCharacter(ch: string): boolean {
   switch (ch) {
-    case '\'':
+    case "'":
     case '"':
     case '\\':
     case 'b':
@@ -1254,8 +1362,7 @@ function isSingleEscapeCharacter(ch: string): boolean {
 }
 
 function isNonEscapeCharacter(ch: string): boolean {
-  return !isEscapeCharacter(ch)
-    && !isLineTerminator(ch);
+  return !isEscapeCharacter(ch) && !isLineTerminator(ch);
 }
 
 function isEscapeCharacter(ch: string): boolean {
@@ -1264,8 +1371,7 @@ function isEscapeCharacter(ch: string): boolean {
     case 'u':
       return true;
     default:
-      return isSingleEscapeCharacter(ch)
-        || isDecimalDigit(ch);
+      return isSingleEscapeCharacter(ch) || isDecimalDigit(ch);
   }
 }
 

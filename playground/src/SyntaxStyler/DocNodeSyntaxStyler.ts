@@ -1,10 +1,6 @@
 import * as tsdoc from '@microsoft/tsdoc';
 
-import {
-  MonacoTSDocTheme,
-  IDocNodeSyntaxStylerTheme,
-  IThemeRule
-} from './DocNodeSyntaxStylerTheme';
+import { MonacoTSDocTheme, IDocNodeSyntaxStylerTheme, IThemeRule } from './DocNodeSyntaxStylerTheme';
 import { IStyledRange } from './../CodeEditor';
 
 import './syntaxStyles.css';
@@ -20,7 +16,9 @@ interface IAddTokenStylesOptions {
   theme: IDocNodeSyntaxStylerTheme;
 }
 
-interface IGetStylesForDocCommentInternalOptions extends IGetStylesForDocCommentOptions, IAddTokenStylesOptions {
+interface IGetStylesForDocCommentInternalOptions
+  extends IGetStylesForDocCommentOptions,
+    IAddTokenStylesOptions {
   parentNode?: tsdoc.DocNode;
 }
 
@@ -32,7 +30,10 @@ export class DocNodeSyntaxStyler {
   private static _classNameId: number = 0;
   private static _themeCache: { [hash: string]: IThemeClassNameMapping } = {};
 
-  public static getStylesForDocComment(styles: IStyledRange[], options: IGetStylesForDocCommentOptions): void {
+  public static getStylesForDocComment(
+    styles: IStyledRange[],
+    options: IGetStylesForDocCommentOptions
+  ): void {
     let theme: IDocNodeSyntaxStylerTheme;
     switch (options.themeName) {
       default:
@@ -47,26 +48,18 @@ export class DocNodeSyntaxStyler {
       }
     }
 
-    DocNodeSyntaxStyler._getStylesForDocCommentInternal(
-      styles,
-      {
-        ...options,
-        theme,
-        styleTokens: ['tsdoc']
-      }
-    );
+    DocNodeSyntaxStyler._getStylesForDocCommentInternal(styles, {
+      ...options,
+      theme,
+      styleTokens: ['tsdoc']
+    });
   }
 
   public static _getStylesForDocCommentInternal(
     styles: IStyledRange[],
     options: IGetStylesForDocCommentInternalOptions
   ): void {
-    const {
-      docNode,
-      parserContext,
-      styleTokens,
-      theme
-    }: IGetStylesForDocCommentInternalOptions = options;
+    const { docNode, parserContext, styleTokens, theme }: IGetStylesForDocCommentInternalOptions = options;
 
     if (docNode instanceof tsdoc.DocExcerpt) {
       // Match the context against a color (i.e. tsdoc.link.url)
@@ -94,149 +87,131 @@ export class DocNodeSyntaxStyler {
         case 'MemberReference_LeftParenthesis':
         case 'MemberReference_RightParenthesis':
         case 'ParamBlock_Hyphen': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'delimiter'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'delimiter']
+          });
           break;
         }
 
         case 'InlineTag_TagName':
         case 'BlockTag': {
-          const tagDefinition: tsdoc.TSDocTagDefinition | undefined = parserContext.configuration.tryGetTagDefinition(
-            docNode.content.toString()
-          );
-          DocNodeSyntaxStyler._addStylesForTag(
-            styles,
-            docNode.content,
-            tagDefinition,
-            { theme, styleTokens: [...styleTokens, 'tag'] }
-          );
+          const tagDefinition:
+            | tsdoc.TSDocTagDefinition
+            | undefined = parserContext.configuration.tryGetTagDefinition(docNode.content.toString());
+          DocNodeSyntaxStyler._addStylesForTag(styles, docNode.content, tagDefinition, {
+            theme,
+            styleTokens: [...styleTokens, 'tag']
+          });
           break;
         }
 
         case 'MemberIdentifier_Identifier': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'member', 'identifier'] }
-        );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'member', 'identifier']
+          });
           break;
         }
 
         case 'DeclarationReference_PackageName': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'packageName'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'packageName']
+          });
           break;
         }
 
         case 'DeclarationReference_ImportPath': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'importPath'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'importPath']
+          });
           break;
         }
 
         case 'LinkTag_UrlDestination': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'url'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'url']
+          });
           break;
         }
 
         case 'CodeSpan_Code':
         case 'FencedCode_Code': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'code'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'code']
+          });
           break;
         }
 
         case 'FencedCode_Language': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'language'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'language']
+          });
           break;
         }
 
         case 'HtmlEndTag_Name':
         case 'HtmlStartTag_Name': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'element', 'name'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'element', 'name']
+          });
           break;
         }
 
         case 'HtmlAttribute_Name': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'element', 'attribute', 'name'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'element', 'attribute', 'name']
+          });
           break;
         }
 
         case 'HtmlAttribute_Value': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'element', 'attribute', 'value'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'element', 'attribute', 'value']
+          });
           break;
         }
 
         case 'ErrorText': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'error'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'error']
+          });
           break;
         }
 
         case 'EscapedText': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'escaped'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'escaped']
+          });
           break;
         }
 
         case 'MemberSelector': {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            docNode.content,
-            { theme, styleTokens: [...styleTokens, 'member', 'selector'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
+            theme,
+            styleTokens: [...styleTokens, 'member', 'selector']
+          });
           break;
         }
       }
     }
 
     for (const child of docNode.getChildNodes()) {
-      DocNodeSyntaxStyler._getStylesForDocCommentInternal(
-        styles,
-        {
-          ...options,
-          parentNode: docNode,
-          docNode: child
-        }
-      );
+      DocNodeSyntaxStyler._getStylesForDocCommentInternal(styles, {
+        ...options,
+        parentNode: docNode,
+        docNode: child
+      });
     }
   }
 
@@ -246,46 +221,39 @@ export class DocNodeSyntaxStyler {
     tagDefinition: tsdoc.TSDocTagDefinition | undefined,
     options: IAddTokenStylesOptions
   ): void {
-    const {
-      theme,
-      styleTokens
-    }: IAddTokenStylesOptions = options;
+    const { theme, styleTokens }: IAddTokenStylesOptions = options;
     if (tagDefinition) {
       switch (tagDefinition.syntaxKind) {
         case tsdoc.TSDocTagSyntaxKind.BlockTag: {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            excerpt,
-            { theme, styleTokens: [...styleTokens, 'block'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, excerpt, {
+            theme,
+            styleTokens: [...styleTokens, 'block']
+          });
           break;
         }
 
         case tsdoc.TSDocTagSyntaxKind.InlineTag: {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            excerpt,
-            { theme, styleTokens: [...styleTokens, 'inline'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, excerpt, {
+            theme,
+            styleTokens: [...styleTokens, 'inline']
+          });
           break;
         }
 
         case tsdoc.TSDocTagSyntaxKind.ModifierTag: {
-          DocNodeSyntaxStyler._addTokenStyles(
-            styles,
-            excerpt,
-            { theme, styleTokens: [...styleTokens, 'modifier'] }
-          );
+          DocNodeSyntaxStyler._addTokenStyles(styles, excerpt, {
+            theme,
+            styleTokens: [...styleTokens, 'modifier']
+          });
           break;
         }
       }
     } else {
       // Undefined tag
-      DocNodeSyntaxStyler._addTokenStyles(
-        styles,
-        excerpt,
-        { theme, styleTokens: [...styleTokens, 'undefined'] }
-      );
+      DocNodeSyntaxStyler._addTokenStyles(styles, excerpt, {
+        theme,
+        styleTokens: [...styleTokens, 'undefined']
+      });
     }
   }
 

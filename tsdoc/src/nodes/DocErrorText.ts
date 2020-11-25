@@ -57,7 +57,7 @@ export class DocErrorText extends DocNode {
     if (this._text === undefined) {
       this._text = this._textExcerpt.content.toString();
     }
-    return  this._text;
+    return this._text;
   }
 
   public get textExcerpt(): TokenSequence | undefined {
@@ -97,8 +97,6 @@ export class DocErrorText extends DocNode {
 
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
-    return [
-      this._textExcerpt
-    ];
+    return [this._textExcerpt];
   }
 }

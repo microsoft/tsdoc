@@ -1,4 +1,3 @@
-
 export namespace SampleInputs {
   export const advanced: string = require('raw-loader!./advancedSample.ts');
   export const basic: string = require('raw-loader!./basicSample.ts');

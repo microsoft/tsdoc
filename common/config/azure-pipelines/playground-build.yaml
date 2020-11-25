@@ -1,13 +1,13 @@
 resources:
-- repo: self
+  - repo: self
 variables:
   NodeVersion: 12
   FORCE_COLOR: 1
 steps:
-- checkout: self
-- template: templates/build.yaml
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Playground Artifacts'
-  inputs:
-    PathtoPublish: playground/dist
-    ArtifactName: playground
+  - checkout: self
+  - template: templates/build.yaml
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Playground Artifacts'
+    inputs:
+      PathtoPublish: playground/dist
+      ArtifactName: playground

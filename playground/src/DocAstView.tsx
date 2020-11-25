@@ -19,11 +19,11 @@ export class DocAstView extends React.Component<IDocAstViewProps> {
 
     return (
       <CodeEditor
-        className='playground-ast-text-editor'
-        readOnly={ true }
-        value={ outputLines.join('\n') }
-        disableLineNumbers={ true }
-        theme={ this.props.theme }
+        className="playground-ast-text-editor"
+        readOnly={true}
+        value={outputLines.join('\n')}
+        disableLineNumbers={true}
+        theme={this.props.theme}
       />
     );
   }

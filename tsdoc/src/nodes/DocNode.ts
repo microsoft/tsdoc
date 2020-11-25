@@ -9,31 +9,31 @@ import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
  * NPM package name, followed by a "#" symbol, followed by the class name (without the "Doc" prefix).
  */
 export const enum DocNodeKind {
-  Block                         = 'Block',
-  BlockTag                      = 'BlockTag',
-  Excerpt                       = 'Excerpt',
-  FencedCode                    = 'FencedCode',
-  CodeSpan                      = 'CodeSpan',
-  Comment                       = 'Comment',
-  DeclarationReference          = 'DeclarationReference',
-  ErrorText                     = 'ErrorText',
-  EscapedText                   = 'EscapedText',
-  HtmlAttribute                 = 'HtmlAttribute',
-  HtmlEndTag                    = 'HtmlEndTag',
-  HtmlStartTag                  = 'HtmlStartTag',
-  InheritDocTag                 = 'InheritDocTag',
-  InlineTag                     = 'InlineTag',
-  LinkTag                       = 'LinkTag',
-  MemberIdentifier              = 'MemberIdentifier',
-  MemberReference               = 'MemberReference',
-  MemberSelector                = 'MemberSelector',
-  MemberSymbol                  = 'MemberSymbol',
-  Paragraph                     = 'Paragraph',
-  ParamBlock                    = 'ParamBlock',
-  ParamCollection               = 'ParamCollection',
-  PlainText                     = 'PlainText',
-  Section                       = 'Section',
-  SoftBreak                     = 'SoftBreak'
+  Block = 'Block',
+  BlockTag = 'BlockTag',
+  Excerpt = 'Excerpt',
+  FencedCode = 'FencedCode',
+  CodeSpan = 'CodeSpan',
+  Comment = 'Comment',
+  DeclarationReference = 'DeclarationReference',
+  ErrorText = 'ErrorText',
+  EscapedText = 'EscapedText',
+  HtmlAttribute = 'HtmlAttribute',
+  HtmlEndTag = 'HtmlEndTag',
+  HtmlStartTag = 'HtmlStartTag',
+  InheritDocTag = 'InheritDocTag',
+  InlineTag = 'InlineTag',
+  LinkTag = 'LinkTag',
+  MemberIdentifier = 'MemberIdentifier',
+  MemberReference = 'MemberReference',
+  MemberSelector = 'MemberSelector',
+  MemberSymbol = 'MemberSymbol',
+  Paragraph = 'Paragraph',
+  ParamBlock = 'ParamBlock',
+  ParamCollection = 'ParamCollection',
+  PlainText = 'PlainText',
+  Section = 'Section',
+  SoftBreak = 'SoftBreak'
 }
 
 /**
@@ -93,7 +93,7 @@ export abstract class DocNode {
     // Do this sanity check here, since the constructor cannot access abstract members
     this.configuration.docNodeManager.throwIfNotRegisteredKind(this.kind);
 
-    return this.onGetChildNodes().filter(x => x !== undefined) as ReadonlyArray<DocNode>;
+    return this.onGetChildNodes().filter((x) => x !== undefined) as ReadonlyArray<DocNode>;
   }
 
   /**
@@ -113,9 +113,9 @@ export abstract class DocNode {
    * hierarchy for its constructor parameters.  The "parser scenario" constructs the object by parsing a TypeScript
    * source file, does create DocExcerpt child nodes, and generally uses the {@link IDocNodeParsedParameters} hierarchy.
    */
-  public static isParsedParameters(parameters: IDocNodeParameters | IDocNodeParsedParameters):
-    parameters is IDocNodeParsedParameters {
-
+  public static isParsedParameters(
+    parameters: IDocNodeParameters | IDocNodeParsedParameters
+  ): parameters is IDocNodeParsedParameters {
     return (parameters as IDocNodeParsedParameters).parsed === true;
   }
 }

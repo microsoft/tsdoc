@@ -80,8 +80,6 @@ export class DocPlainText extends DocNode {
 
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
-    return [
-      this._textExcerpt
-    ];
+    return [this._textExcerpt];
   }
 }

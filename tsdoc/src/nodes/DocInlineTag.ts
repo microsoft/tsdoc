@@ -44,7 +44,7 @@ export class DocInlineTag extends DocInlineTagBase {
 
     if (DocNode.isParsedParameters(parameters)) {
       if (parameters.tagContentExcerpt) {
-        this._tagContentExcerpt  = new DocExcerpt({
+        this._tagContentExcerpt = new DocExcerpt({
           configuration: this.configuration,
           excerptKind: ExcerptKind.InlineTag_TagContent,
           content: parameters.tagContentExcerpt
@@ -78,9 +78,8 @@ export class DocInlineTag extends DocInlineTagBase {
   }
 
   /** @override */
-  protected getChildNodesForContent(): ReadonlyArray<DocNode | undefined> { // abstract
-    return [
-      this._tagContentExcerpt
-    ];
+  protected getChildNodesForContent(): ReadonlyArray<DocNode | undefined> {
+    // abstract
+    return [this._tagContentExcerpt];
   }
 }

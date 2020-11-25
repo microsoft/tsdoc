@@ -4,9 +4,7 @@ import { DocParamBlock } from './DocParamBlock';
 /**
  * Constructor parameters for {@link DocParamCollection}.
  */
-export interface IDocParamCollectionParameters extends IDocNodeParameters {
-
-}
+export interface IDocParamCollectionParameters extends IDocNodeParameters {}
 
 /**
  * Represents a collection of DocParamBlock objects and provides efficient operations for looking up the

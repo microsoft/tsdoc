@@ -15,7 +15,7 @@ function createSnapshot(input: string): {} {
   const parserContext: ParserContext = tsdocParser.parseString(input);
   const output: string = parserContext.docComment.emitAsTsdoc();
   return {
-    errors: parserContext.log.messages.map(x => x.toString()),
+    errors: parserContext.log.messages.map((x) => x.toString()),
     output: '\n' + output
   };
 }

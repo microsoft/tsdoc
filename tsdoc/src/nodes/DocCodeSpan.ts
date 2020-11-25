@@ -80,10 +80,6 @@ export class DocCodeSpan extends DocNode {
 
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
-    return [
-      this._openingDelimiterExcerpt,
-      this._codeExcerpt,
-      this._closingDelimiterExcerpt
-    ];
+    return [this._openingDelimiterExcerpt, this._codeExcerpt, this._closingDelimiterExcerpt];
   }
 }

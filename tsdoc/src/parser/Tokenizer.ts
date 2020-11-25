@@ -2,10 +2,9 @@ import { TextRange } from './TextRange';
 import { Token, TokenKind } from './Token';
 
 export class Tokenizer {
-  private static readonly _commonMarkPunctuationCharacters: string
-    = '!"#$%&\'()*+,\-.\/:;<=>?@[\\]^`{|}~';
-  private static readonly _wordCharacters: string
-    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
+  private static readonly _commonMarkPunctuationCharacters: string = '!"#$%&\'()*+,-./:;<=>?@[\\]^`{|}~';
+  private static readonly _wordCharacters: string =
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
 
   private static _charCodeMap: { [charCode: number]: TokenKind | undefined };
   private static _punctuationTokens: { [tokenKind: number]: boolean };
@@ -27,13 +26,11 @@ export class Tokenizer {
     }
 
     if (lastLine) {
-      tokens.push(new Token(TokenKind.EndOfInput,
-        lastLine.getNewRange(lastLine.end, lastLine.end),
-        lastLine));
+      tokens.push(
+        new Token(TokenKind.EndOfInput, lastLine.getNewRange(lastLine.end, lastLine.end), lastLine)
+      );
     } else {
-      tokens.push(new Token(TokenKind.EndOfInput,
-        TextRange.empty,
-        TextRange.empty));
+      tokens.push(new Token(TokenKind.EndOfInput, TextRange.empty, TextRange.empty));
     }
 
     return tokens;
@@ -68,9 +65,11 @@ export class Tokenizer {
       // 1. There is an existing token, AND
       // 2. It is the same kind of token, AND
       // 3. It's not punctuation (which is always one character)
-      if (tokenKind !== undefined
-        && characterKind === tokenKind
-        && Tokenizer._isMultiCharacterToken(tokenKind)) {
+      if (
+        tokenKind !== undefined &&
+        characterKind === tokenKind &&
+        Tokenizer._isMultiCharacterToken(tokenKind)
+      ) {
         // yes, append
       } else {
         // Is there a previous completed token to push?
@@ -125,29 +124,29 @@ export class Tokenizer {
 
     // !"#$%&\'()*+,\-.\/:;<=>?@[\\]^_`{|}~
     const specialMap: { [character: string]: TokenKind } = {
-      '\\' : TokenKind.Backslash,
-      '<'  : TokenKind.LessThan,
-      '>'  : TokenKind.GreaterThan,
-      '='  : TokenKind.Equals,
-      '\'' : TokenKind.SingleQuote,
-      '"'  : TokenKind.DoubleQuote,
-      '/'  : TokenKind.Slash,
-      '-'  : TokenKind.Hyphen,
-      '@'  : TokenKind.AtSign,
-      '{'  : TokenKind.LeftCurlyBracket,
-      '}'  : TokenKind.RightCurlyBracket,
-      '`'  : TokenKind.Backtick,
-      '.'  : TokenKind.Period,
-      ':'  : TokenKind.Colon,
-      ','  : TokenKind.Comma,
-      '['  : TokenKind.LeftSquareBracket,
-      ']'  : TokenKind.RightSquareBracket,
-      '|'  : TokenKind.Pipe,
-      '('  : TokenKind.LeftParenthesis,
-      ')'  : TokenKind.RightParenthesis,
-      '#'  : TokenKind.PoundSymbol,
-      '+'  : TokenKind.Plus,
-      '$'  : TokenKind.DollarSign
+      '\\': TokenKind.Backslash,
+      '<': TokenKind.LessThan,
+      '>': TokenKind.GreaterThan,
+      '=': TokenKind.Equals,
+      "'": TokenKind.SingleQuote,
+      '"': TokenKind.DoubleQuote,
+      '/': TokenKind.Slash,
+      '-': TokenKind.Hyphen,
+      '@': TokenKind.AtSign,
+      '{': TokenKind.LeftCurlyBracket,
+      '}': TokenKind.RightCurlyBracket,
+      '`': TokenKind.Backtick,
+      '.': TokenKind.Period,
+      ':': TokenKind.Colon,
+      ',': TokenKind.Comma,
+      '[': TokenKind.LeftSquareBracket,
+      ']': TokenKind.RightSquareBracket,
+      '|': TokenKind.Pipe,
+      '(': TokenKind.LeftParenthesis,
+      ')': TokenKind.RightParenthesis,
+      '#': TokenKind.PoundSymbol,
+      '+': TokenKind.Plus,
+      $: TokenKind.DollarSign
     };
     for (const key of Object.getOwnPropertyNames(specialMap)) {
       Tokenizer._charCodeMap[key.charCodeAt(0)] = specialMap[key];
