@@ -2,18 +2,28 @@
 
 ## Building the @microsoft/tsdoc library
 
-To build the project (**standalone with NPM**, if you are experimenting):
+If you're going to submit a pull request for TSDoc, you will need to use the Rush monorepo manager tool.
+
+> **What's this Rush thing?**  Rush is a monorepo build orchestrator that handles policy validation,
+> change log management, installing (using [PNPM](https://pnpm.js.org/)), linking, building,
+> and publishing.  When it's time to publish the NPM package and deploy the TSDoc playground to the website,
+> the automation system looks for its configuration in the [rush.json](./rush.json) file in this repo.
+> To learn more about how to use Rush, please visit: https://rushjs.io/
+
+Install the [Rush](https://rushjs.io/pages/developer/new_developer/) tool like this:
 
 ```shell
-$ cd ./tsdoc
-# Note: Be sure to specify "--no-package-lock" to avoid conflicts with Rush
-$ npm install --no-package-lock
-$ npm run build
+$ npm install -g @microsoft/rush
 ```
 
-**-- OR --**
+*NOTE: If this command fails because your user account does not have permissions to
+access NPM's global folder, you may need to
+[fix your NPM configuration](https://docs.npmjs.com/getting-started/fixing-npm-permissions).*
 
-To build the project (**using Rush and Yarn**, if you are contributing):
+Rush will symlink the **api-demo** project to use your local build of the **@microsoft/tsdoc** library,
+for easy testing/validation.
+
+To build the projects:
 
 ```shell
 $ cd ./tsdoc
@@ -21,26 +31,30 @@ $ rush install
 $ rush build
 ```
 
-> For details about Rush, see **"Submitting a PR"** later on this page.
+> For more details about Rush, see **"Submitting a PR"** later on this page.
 
-
-### Running the unit tests interactively
-
-We use the [Jest](https://jestjs.io/) test runner.  To run the TSDoc tests interactively (`jest --watch` scenario):
-
-```shell
-$ cd ./tsdoc
-$ npm run watch
-```
 
 ### To run all the unit tests from the command-line
 
-Run all the unit tests once:
+The unit tests are implemented using [Jest](https://jestjs.io/), but invoked via the
+[Heft](https://www.npmjs.com/package/@rushstack/heft) build system.
+(See the linked pages for more comprehensive documentation.)
+
+The unit tests are invoked automatically when you build a project:
 
 ```shell
 $ cd ./tsdoc
 $ npm run build
-$ npm run test
+```
+
+### Running the unit tests interactively
+
+You can also invoke Heft/Jest interactively (the `jest --watch` scenario), so that affected tests will be
+re-run whenever a source file is saved.  Launch the watch mode like this:
+
+```shell
+$ cd ./tsdoc
+$ npm run watch
 ```
 
 ### Debugging the unit tests
@@ -60,57 +74,39 @@ easier.  To debug a unit test:
 
 3. Click the **View --> Debug** (CTRL+SHIFT+D)
 
-4. From the DEBUG combo box, choose the "**Jest Current File**" debug configuration, and click the play button.
-This will run only the unit tests in the currently opened file.  (Use "**Jest All**" to run all tests in
-the debugger.)
-
-Jest is configured to run using a plugin that adds TypeScript support.  You can set breakpoints in
-the TypeScript source files, and the VS Code debugger will break on them.
+4. From the DEBUG combo box, choose the "**Debug Jest tests**" debug configuration, and click the play button.
+This will run all tests in the debugger.
 
 
 ## Submitting a PR
 
 Before submitting your PR, you will need to install the Rush tool and build the monorepo.
 
-> **What's this Rush thing?**  Rush is Microsoft's build orchestrator that handles policy validation,
-> change log management, installing (using [Yarn](https://yarnpkg.com/en/)), linking, building,
-> and publishing.  When it's time to publish the NPM package and deploy the TSDoc playground to the website,
-> the automation system looks for its configuration in the [rush.json](./rush.json) file in this repo.
-> To learn more about how to use Rush, please visit: https://rushjs.io/
-
-1. [Install](https://rushjs.io/pages/developer/new_developer/) the Rush software:
-
-  ```shell
-  $ npm install -g @microsoft/rush
-  ```
-
-  NOTE: If this command fails because your user account does not have permissions to
-  access NPM's global folder, you may need to
-  [fix your NPM configuration](https://docs.npmjs.com/getting-started/fixing-npm-permissions).
+1. Make sure the Rush tool is installed, following the instructions above.
 
 2. Install dependencies for all projects in the monorepo:
 
-  ```shell
-  # Run this command in the folder where you cloned the TSDoc repo from GitHub
-  $ rush install
-  ```
+   ```shell
+   # Run this command in the folder where you cloned the TSDoc repo from GitHub
+   $ rush install
+   ```
 
-  > IMPORTANT: After you run `rush install`, your repo will be in a "Rush-linked" state,
-  > with special symlinks in the node_modules folders.  DO NOT run `npm install` in this state.
-  > If you want to go back to working in standalone mode, first run `rush unlink && rush purge`.
+   > IMPORTANT: After you run `rush install`, your repo will be in a "Rush-linked" state,
+   > with special symlinks in the node_modules folders.  DO NOT run `npm install` in this state.
+   > If you want to go back to working in standalone mode, first run `rush unlink && rush purge`.
 
 3. Build and test all the projects in the monorepo:
 
-  ```shell
-  $ rush build
-  ```
+   ```shell
+   $ rush build
+   ```
 
-  You can also build just the **@microsoft/tsdoc** library like this:
+   You can also build just the **@microsoft/tsdoc** library like this:
 
-  ```shell
-  $ cd ./tsdoc
-  $ npm run build
-  ```
+   ```shell
+   $ cd ./tsdoc
+   $ npm run build
+   ```
 
 4. Manual testing:  Before submitting your PR, you should also try running the
    [/api-demo](./api-demo/) and [/playground](./playground) projects to make sure they
