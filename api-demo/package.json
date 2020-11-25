@@ -1,25 +1,24 @@
 {
   "name": "api-demo",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "description": "A code sample that illustrates usage of the API for @microsoft/tsdoc",
   "license": "MIT",
   "dependencies": {
     "@microsoft/tsdoc": "0.12.21",
-    "colors": "~1.3.3",
-    "typescript": "~3.5.3"
+    "colors": "~1.4.0",
+    "typescript": "~3.9.7"
   },
   "devDependencies": {
-    "@microsoft/rush-stack-compiler-3.5": "~0.8.4",
-    "@rushstack/eslint-config": "~2.1.1",
-    "@rushstack/heft": "^0.13.8",
-    "@types/node": "10.17.5",
-    "eslint": "~7.9.0"
+    "@rushstack/eslint-config": "~2.3.1",
+    "@rushstack/heft-node-rig": "0.1.28",
+    "@rushstack/heft": "^0.22.3",
+    "@types/heft-jest": "1.0.1",
+    "@types/node": "10.17.13"
   },
   "scripts": {
     "build": "heft test --clean",
     "simple": "node ./lib/start.js simple",
-    "advanced": "node ./lib/start.js advanced",
-    "lint": "eslint -f unix \"src/**/*.{ts,tsx}\""
+    "advanced": "node ./lib/start.js advanced"
   }
 }

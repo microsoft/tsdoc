@@ -21,23 +21,21 @@
   "license": "MIT",
   "dependencies": {
     "@microsoft/tsdoc": "0.12.21",
-    "ajv": "~6.12.3",
+    "ajv": "~6.12.6",
     "jju": "~1.4.0",
-    "resolve": "~1.12.0"
+    "resolve": "~1.19.0"
   },
   "devDependencies": {
-    "@microsoft/rush-stack-compiler-3.5": "~0.8.4",
-    "@rushstack/eslint-config": "~2.1.1",
-    "@rushstack/heft": "^0.13.8",
+    "@rushstack/eslint-config": "~2.3.1",
+    "@rushstack/heft-node-rig": "0.1.28",
+    "@rushstack/heft": "^0.22.3",
     "@types/heft-jest": "1.0.1",
     "@types/jju": "1.4.1",
-    "@types/node": "10.17.5",
-    "@types/resolve": "0.0.8",
-    "eslint": "~7.9.0"
+    "@types/node": "10.17.13",
+    "@types/resolve": "1.17.1"
   },
   "scripts": {
     "build": "heft test --clean",
-    "watch": "heft test --clean --watch",
-    "lint": "eslint -f unix \"src/**/*.{ts,tsx}\""
+    "watch": "heft test --clean --watch"
   }
 }

@@ -1,46 +1,41 @@
 {
   "name": "tsdoc-playground",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "An interactive web application for experimenting with TSDoc syntax",
   "private": true,
   "license": "MIT",
   "scripts": {
     "build": "heft build --clean",
-    "start": "heft start",
-    "lint": "eslint -f unix \"src/**/*.{ts,tsx}\""
+    "start": "heft start"
   },
   "dependencies": {
     "@microsoft/tsdoc": "0.12.21",
-    "@types/react": "16.9.11",
     "@types/react-dom": "16.9.3",
-    "promise": "~8.0.3",
+    "@types/react": "16.9.11",
     "monaco-editor": "~0.17.1",
+    "promise": "~8.0.3",
     "tslib": "~1.10.0"
   },
   "devDependencies": {
-    "@microsoft/rush-stack-compiler-3.5": "~0.8.4",
-    "@rushstack/eslint-config": "~2.1.1",
-    "@rushstack/heft": "^0.13.8",
-    "@rushstack/set-webpack-public-path-plugin": "~2.4.1",
+    "@rushstack/eslint-config": "~2.3.1",
+    "@rushstack/heft-web-rig": "0.1.28",
+    "@rushstack/heft": "^0.22.3",
+    "@rushstack/set-webpack-public-path-plugin": "~3.1.16",
     "@types/webpack-env": "~1.14.0",
-    "@types/webpack": "4.39.8",
-    "clean-webpack-plugin": "~3.0.0",
+    "@types/webpack": "4.41.24",
     "css-loader": "~3.1.0",
     "eslint": "~7.9.0",
     "file-loader": "~4.1.0",
-    "fork-ts-checker-webpack-plugin": "~1.4.3",
     "handlebars-loader": "~1.7.1",
     "handlebars": "~4.7.3",
     "html-webpack-plugin": "~3.2.0",
     "node-sass": "~4.14.1",
     "raw-loader": "~0.5.1",
     "sass-loader": "~7.1.0",
+    "source-map-loader": "~1.1.2",
     "style-loader": "~0.23.1",
-    "ts-loader": "~6.0.4",
-    "typescript": "~3.5.3",
+    "typescript": "~3.9.7",
     "webpack-bundle-analyzer": "~3.4.1",
-    "webpack-cli": "~3.3.6",
-    "webpack-dev-server": "~3.7.2",
-    "webpack": "~4.38.0"
+    "webpack": "~4.44.2"
   }
 }

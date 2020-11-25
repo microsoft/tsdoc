@@ -21,21 +21,20 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "build": "heft test --clean",
-    "lint": "eslint -f unix \"src/**/*.{ts,tsx}\""
+    "build": "heft test --clean"
   },
   "dependencies": {
     "@microsoft/tsdoc": "0.12.21",
     "@microsoft/tsdoc-config": "0.13.6"
   },
   "devDependencies": {
-    "@microsoft/rush-stack-compiler-3.5": "~0.8.4",
-    "@rushstack/eslint-config": "~2.1.1",
-    "@rushstack/heft": "^0.13.8",
+    "@rushstack/eslint-config": "~2.3.1",
+    "@rushstack/heft-node-rig": "0.1.28",
+    "@rushstack/heft": "^0.22.3",
     "@types/eslint": "6.1.3",
     "@types/estree": "0.0.39",
     "@types/heft-jest": "1.0.1",
-    "@types/node": "10.17.5",
+    "@types/node": "10.17.13",
     "eslint": "~7.9.0"
   }
 }
