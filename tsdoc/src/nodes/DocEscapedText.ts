@@ -85,8 +85,6 @@ export class DocEscapedText extends DocNode {
 
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
-    return [
-      this._encodedTextExcerpt
-    ];
+    return [this._encodedTextExcerpt];
   }
 }

@@ -1,10 +1,4 @@
-import {
-  DocSection,
-  DocNode,
-  DocNodeKind,
-  DocParagraph,
-  DocPlainText
-} from '../nodes';
+import { DocSection, DocNode, DocNodeKind, DocParagraph, DocPlainText } from '../nodes';
 
 /**
  * The ParagraphSplitter is a secondary stage that runs after the NodeParser has constructed
@@ -68,7 +62,6 @@ export class ParagraphSplitter {
 
     let currentIndex: number = 0;
     while (currentIndex < inputParagraphNodes.length) {
-
       // Scan forwards to the end of the line
       let isBlankLine: boolean = true;
       let lineEndIndex: number = currentIndex; // non-inclusive

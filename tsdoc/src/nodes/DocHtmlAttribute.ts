@@ -99,7 +99,6 @@ export class DocHtmlAttribute extends DocNode {
           content: parameters.spacingAfterValueExcerpt
         });
       }
-
     } else {
       this._name = parameters.name;
       this._spacingAfterName = parameters.spacingAfterName;

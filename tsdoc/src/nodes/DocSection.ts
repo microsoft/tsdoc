@@ -9,16 +9,12 @@ import {
 /**
  * Constructor parameters for {@link DocSection}.
  */
-export interface IDocSectionParameters extends IDocNodeContainerParameters {
-
-}
+export interface IDocSectionParameters extends IDocNodeContainerParameters {}
 
 /**
  * Constructor parameters for {@link DocSection}.
  */
-export interface IDocSectionParsedParameters extends IDocNodeContainerParsedParameters {
-
-}
+export interface IDocSectionParsedParameters extends IDocNodeContainerParsedParameters {}
 
 /**
  * Represents a general block of rich text.
@@ -28,9 +24,10 @@ export class DocSection extends DocNodeContainer {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocSectionParameters | IDocSectionParsedParameters,
-    childNodes?: ReadonlyArray<DocNode>) {
-
+  public constructor(
+    parameters: IDocSectionParameters | IDocSectionParsedParameters,
+    childNodes?: ReadonlyArray<DocNode>
+  ) {
     super(parameters, childNodes);
   }
 
@@ -65,5 +62,4 @@ export class DocSection extends DocNodeContainer {
       this.appendNodeInParagraph(docNode);
     }
   }
-
 }

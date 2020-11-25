@@ -48,7 +48,7 @@ export class TSDocConfiguration {
    * {@link TSDocValidationConfiguration.reportUnsupportedTags} is enabled.
    */
   public get supportedTagDefinitions(): ReadonlyArray<TSDocTagDefinition> {
-    return this.tagDefinitions.filter(x => this.isTagSupported(x));
+    return this.tagDefinitions.filter((x) => this.isTagSupported(x));
   }
 
   /**
@@ -90,8 +90,9 @@ export class TSDocConfiguration {
    * Whereas if a tag is "supported", this means it is defined AND the application implements the tag.
    */
   public addTagDefinition(tagDefinition: TSDocTagDefinition): void {
-    const existingDefinition: TSDocTagDefinition | undefined
-      = this._tagDefinitionsByName.get(tagDefinition.tagNameWithUpperCase);
+    const existingDefinition: TSDocTagDefinition | undefined = this._tagDefinitionsByName.get(
+      tagDefinition.tagNameWithUpperCase
+    );
 
     if (existingDefinition === tagDefinition) {
       return;
@@ -112,9 +113,10 @@ export class TSDocConfiguration {
    * @param supported - if specified, calls the {@link TSDocConfiguration.setSupportForTag}
    *    method to mark the definitions as supported or unsupported
    */
-  public addTagDefinitions(tagDefinitions: ReadonlyArray<TSDocTagDefinition>,
-    supported?: boolean | undefined): void {
-
+  public addTagDefinitions(
+    tagDefinitions: ReadonlyArray<TSDocTagDefinition>,
+    supported?: boolean | undefined
+  ): void {
     for (const tagDefinition of tagDefinitions) {
       this.addTagDefinition(tagDefinition);
 
@@ -189,8 +191,9 @@ export class TSDocConfiguration {
   }
 
   private _requireTagToBeDefined(tagDefinition: TSDocTagDefinition): void {
-    const matching: TSDocTagDefinition | undefined
-      = this._tagDefinitionsByName.get(tagDefinition.tagNameWithUpperCase);
+    const matching: TSDocTagDefinition | undefined = this._tagDefinitionsByName.get(
+      tagDefinition.tagNameWithUpperCase
+    );
     if (matching) {
       if (matching === tagDefinition) {
         return;

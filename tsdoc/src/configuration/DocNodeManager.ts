@@ -30,10 +30,14 @@ export class DocNodeManager {
   // Example: "_myIdentifier99"
   private static readonly _nodeKindRegExp: RegExp = /^[_a-z][_a-z0-9]*$/i;
 
-  private readonly _docNodeDefinitionsByKind: Map<string, IRegisteredDocNodeDefinition>
-    = new Map<string, IRegisteredDocNodeDefinition>();
-  private readonly _docNodeDefinitionsByConstructor: Map<DocNodeConstructor, IRegisteredDocNodeDefinition>
-    = new Map<DocNodeConstructor, IRegisteredDocNodeDefinition>();
+  private readonly _docNodeDefinitionsByKind: Map<string, IRegisteredDocNodeDefinition> = new Map<
+    string,
+    IRegisteredDocNodeDefinition
+  >();
+  private readonly _docNodeDefinitionsByConstructor: Map<
+    DocNodeConstructor,
+    IRegisteredDocNodeDefinition
+  > = new Map<DocNodeConstructor, IRegisteredDocNodeDefinition>();
 
   /**
    * Registers a list of {@link IDocNodeDefinition} objects to be used with the associated
@@ -47,22 +51,29 @@ export class DocNodeManager {
 
     for (const definition of definitions) {
       if (!DocNodeManager._nodeKindRegExp.test(definition.docNodeKind)) {
-        throw new Error(`The DocNode kind ${JSON.stringify(definition.docNodeKind)} is not a valid identifier.`
-          + ` It must start with an underscore or letter, and be comprised of letters, numbers, and underscores`);
+        throw new Error(
+          `The DocNode kind ${JSON.stringify(definition.docNodeKind)} is not a valid identifier.` +
+            ` It must start with an underscore or letter, and be comprised of letters, numbers, and underscores`
+        );
       }
 
-      let existingDefinition: IRegisteredDocNodeDefinition | undefined
-        = this._docNodeDefinitionsByKind.get(definition.docNodeKind);
+      let existingDefinition: IRegisteredDocNodeDefinition | undefined = this._docNodeDefinitionsByKind.get(
+        definition.docNodeKind
+      );
 
       if (existingDefinition !== undefined) {
-        throw new Error(`The DocNode kind "${definition.docNodeKind}" was already registered`
-          + ` by ${existingDefinition.packageName}`);
+        throw new Error(
+          `The DocNode kind "${definition.docNodeKind}" was already registered` +
+            ` by ${existingDefinition.packageName}`
+        );
       }
 
       existingDefinition = this._docNodeDefinitionsByConstructor.get(definition.constructor);
       if (existingDefinition !== undefined) {
-        throw new Error(`This DocNode constructor was already registered by ${existingDefinition.packageName}`
-          + ` as ${existingDefinition.docNodeKind}`);
+        throw new Error(
+          `This DocNode constructor was already registered by ${existingDefinition.packageName}` +
+            ` as ${existingDefinition.docNodeKind}`
+        );
       }
 
       const newDefinition: IRegisteredDocNodeDefinition = {
@@ -113,7 +124,9 @@ export class DocNodeManager {
   }
 
   private _getDefinition(docNodeKind: string): IRegisteredDocNodeDefinition {
-    const definition: IRegisteredDocNodeDefinition | undefined = this._docNodeDefinitionsByKind.get(docNodeKind);
+    const definition: IRegisteredDocNodeDefinition | undefined = this._docNodeDefinitionsByKind.get(
+      docNodeKind
+    );
     if (definition === undefined) {
       throw new Error(`The DocNode kind "${docNodeKind}" was not registered with this TSDocConfiguration`);
     }

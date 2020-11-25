@@ -69,15 +69,14 @@ export class DocBlockTag extends DocNode {
 
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
-    return [
-      this._tagNameExcerpt
-    ];
+    return [this._tagNameExcerpt];
   }
 
   public getTokenSequence(): TokenSequence {
     if (!this._tagNameExcerpt) {
-      throw new Error('DocBlockTag.getTokenSequence() failed because this object did not'
-        + ' originate from a parsed input');
+      throw new Error(
+        'DocBlockTag.getTokenSequence() failed because this object did not' + ' originate from a parsed input'
+      );
     }
     return this._tagNameExcerpt.content;
   }

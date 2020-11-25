@@ -23,19 +23,19 @@ export class DocDomView extends React.Component<IDocDomViewProps> {
 
     if (parserContext && parserContext.docComment) {
       const unindentedCode: string = ReactDomServer.renderToStaticMarkup(
-        <DocHtmlView docComment={ parserContext.docComment } />
+        <DocHtmlView docComment={parserContext.docComment} />
       );
       code = this._indentHtml(unindentedCode);
     }
 
     return (
       <CodeEditor
-        className='playground-dom-text-editor'
-        readOnly={ true }
-        value={ code }
-        language='html'
-        disableLineNumbers={ true }
-        theme={ this.props.theme }
+        className="playground-dom-text-editor"
+        readOnly={true}
+        value={code}
+        language="html"
+        disableLineNumbers={true}
+        theme={this.props.theme}
       />
     );
   }

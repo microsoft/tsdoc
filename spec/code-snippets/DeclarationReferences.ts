@@ -59,7 +59,6 @@
 // - Label selectors refer to declarations indicated using the {@label LABEL} tag.  The label
 //   must be all capitals (e.g. "WITH_NUMBERS") to avoid conflicts with system selectors.
 
-
 //---------------------------------------------------------
 // Static vs instance members
 
@@ -72,8 +71,7 @@ export class ClassA1 {
    * Shortest name:  {@link ClassA1.memberA2}
    * Full name:      {@link (ClassA1:class).(memberA2:instance)}
    */
-  public memberA2(): void {
-  }
+  public memberA2(): void {}
 
   /**
    * Shortest name:  {@link ClassA1.(memberA3:instance)}
@@ -82,15 +80,13 @@ export class ClassA1 {
    * NOTE: The shortest name cannot omit "instance" because there is a static member
    * with the same name.
    */
-  public memberA3(): void {
-  }
+  public memberA3(): void {}
 
   /**
    * Shortest name:  {@link ClassA1.(memberA3:static)}
    * Full name:      {@link (ClassA1:class).(memberA3:static)}
    */
-  public static memberA3(): void {
-  }
+  public static memberA3(): void {}
 
   /**
    * Shortest name:  {@link (ClassA1:constructor)}
@@ -128,8 +124,7 @@ export namespace B1.B2.B3 {
    * Shortest name:  {@link B1.B2.B3.functionB4}
    * Full name:      {@link (B1:namespace).(B2:namespace).(B3:namespace).(functionB4:function)}
    */
-  export function functionB4(): void {
-  }
+  export function functionB4(): void {}
 }
 
 //---------------------------------------------------------
@@ -196,7 +191,6 @@ export function functionD1(xy?: string | number): string | number {
  * Full name:      {@link (MergedE1:class)}
  */
 export class MergedE1 {
-
   /**
    * Shortest name:  {@link (MergedE1:constructor)}
    * Full name:      {@link (MergedE1:constructor)}
@@ -223,8 +217,7 @@ export class MergedE1 {
    *   the TSDoc standard discourages that, because resolving it might require
    *   unbounded backtracking.
    */
-  public memberE2(): void {
-  }
+  public memberE2(): void {}
 }
 
 /**
@@ -236,8 +229,7 @@ export namespace MergedE1 {
    * Shortest name:  {@link (MergedE1:namespace).memberE2}
    * Full name:      {@link (MergedE1:namespace).(memberE2:function)}
    */
-  export function memberE2(): void {
-  }
+  export function memberE2(): void {}
 }
 
 //---------------------------------------------------------
@@ -266,8 +258,7 @@ export function MergedF1(xy: string | number): string | number {
  * Shortest name:  {@link (MergedF1:namespace)}
  * Full name:      {@link (MergedF1:namespace)}
  */
-export namespace MergedF1 {
-}
+export namespace MergedF1 {}
 
 //---------------------------------------------------------
 // Merged declarations with extension of the same thing
@@ -320,7 +311,6 @@ export namespace MergedG1 {
   export let mergedG3: string = '';
 }
 
-
 //---------------------------------------------------------
 // Enum members
 
@@ -371,7 +361,6 @@ export class ClassI1 {
   }
 }
 
-
 //---------------------------------------------------------
 // Malformed names
 //
@@ -419,7 +408,6 @@ export interface InterfaceJ1 {
    * we need to escape the ampersand to avoid misinterpreting the string as a copyright symbol.
    */
   '&copy;': string;
-
 
   /**
    * Shortest name:  {@link InterfaceJ1."1.5"}

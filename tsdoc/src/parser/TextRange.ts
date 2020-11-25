@@ -100,11 +100,13 @@ export class TextRange {
    * then the output would be "12[345]67".
    */
   public getDebugDump(posDelimiter: string, endDelimiter: string): string {
-    return this.buffer.substring(0, this.pos)
-      + posDelimiter
-      + this.buffer.substring(this.pos, this.end)
-      + endDelimiter
-      + this.buffer.substring(this.end);
+    return (
+      this.buffer.substring(0, this.pos) +
+      posDelimiter +
+      this.buffer.substring(this.pos, this.end) +
+      endDelimiter +
+      this.buffer.substring(this.end)
+    );
   }
 
   /**
@@ -132,12 +134,14 @@ export class TextRange {
       const current: string = this.buffer[currentIndex];
       ++currentIndex;
 
-      if (current === '\r') { // CR
+      if (current === '\r') {
+        // CR
         // Ignore '\r' and assume it will always have an accompanying '\n'
         continue;
       }
 
-      if (current === '\n') { // LF
+      if (current === '\n') {
+        // LF
         ++line;
         column = 1;
       } else {

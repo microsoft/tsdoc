@@ -1,10 +1,17 @@
-import { DocNode, DocNodeKind, DocPlainText, DocFencedCode, DocCodeSpan, DocLinkTag, DocEscapedText } from '../nodes';
+import {
+  DocNode,
+  DocNodeKind,
+  DocPlainText,
+  DocFencedCode,
+  DocCodeSpan,
+  DocLinkTag,
+  DocEscapedText
+} from '../nodes';
 
 /**
  * Renders a DocNode tree as plain text, without any rich text formatting or markup.
  */
 export class PlainTextEmitter {
-
   /**
    * Returns true if the specified node contains any text content.
    *
@@ -30,14 +37,17 @@ export class PlainTextEmitter {
    * The default value is 1.
    */
   public static hasAnyTextContent(nodes: ReadonlyArray<DocNode>, requiredCharacters?: number): boolean;
-  public static hasAnyTextContent(nodeOrNodes: DocNode | ReadonlyArray<DocNode>, requiredCharacters?: number): boolean {
+  public static hasAnyTextContent(
+    nodeOrNodes: DocNode | ReadonlyArray<DocNode>,
+    requiredCharacters?: number
+  ): boolean {
     if (requiredCharacters === undefined || requiredCharacters < 1) {
       requiredCharacters = 1; // default
     }
 
     let nodes: ReadonlyArray<DocNode>;
     if (nodeOrNodes instanceof DocNode) {
-      nodes = [ nodeOrNodes ];
+      nodes = [nodeOrNodes];
     } else {
       nodes = nodeOrNodes;
     }
@@ -47,9 +57,11 @@ export class PlainTextEmitter {
     return foundCharacters >= requiredCharacters;
   }
 
-  private static _scanTextContent(nodes: ReadonlyArray<DocNode>, requiredCharacters: number,
-    foundCharacters: number): number {
-
+  private static _scanTextContent(
+    nodes: ReadonlyArray<DocNode>,
+    requiredCharacters: number,
+    foundCharacters: number
+  ): number {
     for (const node of nodes) {
       switch (node.kind) {
         case DocNodeKind.FencedCode:
@@ -81,7 +93,11 @@ export class PlainTextEmitter {
         break;
       }
 
-      foundCharacters += PlainTextEmitter._scanTextContent(node.getChildNodes(), requiredCharacters, foundCharacters);
+      foundCharacters += PlainTextEmitter._scanTextContent(
+        node.getChildNodes(),
+        requiredCharacters,
+        foundCharacters
+      );
 
       if (foundCharacters >= requiredCharacters) {
         break;
@@ -97,10 +113,10 @@ export class PlainTextEmitter {
     let i: number = 0;
     while (i < length) {
       switch (s.charCodeAt(i)) {
-        case 32:  // space
-        case 9:   // tab
-        case 13:  // CR
-        case 10:  // LF
+        case 32: // space
+        case 9: // tab
+        case 13: // CR
+        case 10: // LF
           break;
         default:
           ++count;

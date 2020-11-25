@@ -3,16 +3,12 @@ import { DocNode, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode
 /**
  * Constructor parameters for {@link DocNodeContainer}.
  */
-export interface IDocNodeContainerParameters extends IDocNodeParameters {
-
-}
+export interface IDocNodeContainerParameters extends IDocNodeParameters {}
 
 /**
  * Constructor parameters for {@link DocNodeContainer}.
  */
-export interface IDocNodeContainerParsedParameters extends IDocNodeParsedParameters {
-
-}
+export interface IDocNodeContainerParsedParameters extends IDocNodeParsedParameters {}
 
 /**
  * DocNodeContainer is the base class for DocNode classes that allow arbitrary child nodes to be added by the consumer.
@@ -25,9 +21,10 @@ export abstract class DocNodeContainer extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocNodeContainerParameters | IDocNodeContainerParsedParameters,
-    childNodes?: ReadonlyArray<DocNode>) {
-
+  public constructor(
+    parameters: IDocNodeContainerParameters | IDocNodeContainerParsedParameters,
+    childNodes?: ReadonlyArray<DocNode>
+  ) {
     super(parameters);
 
     if (childNodes !== undefined && childNodes.length > 0) {
@@ -47,8 +44,10 @@ export abstract class DocNodeContainer extends DocNode {
    */
   public appendNode(docNode: DocNode): void {
     if (!this.configuration.docNodeManager.isAllowedChild(this.kind, docNode.kind)) {
-      throw new Error(`The TSDocConfiguration does not allow a ${this.kind} node to`
-        + ` contain a node of type ${docNode.kind}`);
+      throw new Error(
+        `The TSDocConfiguration does not allow a ${this.kind} node to` +
+          ` contain a node of type ${docNode.kind}`
+      );
     }
 
     this._nodes!.push(docNode);

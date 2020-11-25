@@ -53,12 +53,16 @@ export class LineExtractor {
           case State.BeginComment2:
             parserContext.log.addMessageForTextRange(
               TSDocMessageId.CommentNotFound,
-              'Expecting a "/**" comment', range);
+              'Expecting a "/**" comment',
+              range
+            );
             return false;
           default:
             parserContext.log.addMessageForTextRange(
               TSDocMessageId.CommentMissingClosingDelimiter,
-              'Unexpected end of input', range);
+              'Unexpected end of input',
+              range
+            );
             return false;
         }
       }
@@ -78,7 +82,8 @@ export class LineExtractor {
             parserContext.log.addMessageForTextRange(
               TSDocMessageId.CommentOpeningDelimiterSyntax,
               'Expecting a leading "/**"',
-              range.getNewRange(currentIndex, currentIndex + 1));
+              range.getNewRange(currentIndex, currentIndex + 1)
+            );
             return false;
           }
           break;
@@ -94,7 +99,8 @@ export class LineExtractor {
             parserContext.log.addMessageForTextRange(
               TSDocMessageId.CommentOpeningDelimiterSyntax,
               'Expecting a leading "/**"',
-              range.getNewRange(currentIndex, currentIndex + 1));
+              range.getNewRange(currentIndex, currentIndex + 1)
+            );
             return false;
           }
           break;

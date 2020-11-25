@@ -4,7 +4,6 @@ import { DocNode, DocExcerpt } from '@microsoft/tsdoc';
  * This is a simplistic solution until we implement proper DocNode rendering APIs.
  */
 export class Formatter {
-
   public static renderDocNode(docNode: DocNode): string {
     let result: string = '';
     if (docNode) {

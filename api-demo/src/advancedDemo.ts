@@ -11,39 +11,41 @@ import * as tsdoc from '@microsoft/tsdoc';
  * https://github.com/Microsoft/TypeScript/blob/v3.0.3/src/compiler/utilities.ts#L6382
  */
 function isDeclarationKind(kind: ts.SyntaxKind): boolean {
-  return kind === ts.SyntaxKind.ArrowFunction
-    || kind === ts.SyntaxKind.BindingElement
-    || kind === ts.SyntaxKind.ClassDeclaration
-    || kind === ts.SyntaxKind.ClassExpression
-    || kind === ts.SyntaxKind.Constructor
-    || kind === ts.SyntaxKind.EnumDeclaration
-    || kind === ts.SyntaxKind.EnumMember
-    || kind === ts.SyntaxKind.ExportSpecifier
-    || kind === ts.SyntaxKind.FunctionDeclaration
-    || kind === ts.SyntaxKind.FunctionExpression
-    || kind === ts.SyntaxKind.GetAccessor
-    || kind === ts.SyntaxKind.ImportClause
-    || kind === ts.SyntaxKind.ImportEqualsDeclaration
-    || kind === ts.SyntaxKind.ImportSpecifier
-    || kind === ts.SyntaxKind.InterfaceDeclaration
-    || kind === ts.SyntaxKind.JsxAttribute
-    || kind === ts.SyntaxKind.MethodDeclaration
-    || kind === ts.SyntaxKind.MethodSignature
-    || kind === ts.SyntaxKind.ModuleDeclaration
-    || kind === ts.SyntaxKind.NamespaceExportDeclaration
-    || kind === ts.SyntaxKind.NamespaceImport
-    || kind === ts.SyntaxKind.Parameter
-    || kind === ts.SyntaxKind.PropertyAssignment
-    || kind === ts.SyntaxKind.PropertyDeclaration
-    || kind === ts.SyntaxKind.PropertySignature
-    || kind === ts.SyntaxKind.SetAccessor
-    || kind === ts.SyntaxKind.ShorthandPropertyAssignment
-    || kind === ts.SyntaxKind.TypeAliasDeclaration
-    || kind === ts.SyntaxKind.TypeParameter
-    || kind === ts.SyntaxKind.VariableDeclaration
-    || kind === ts.SyntaxKind.JSDocTypedefTag
-    || kind === ts.SyntaxKind.JSDocCallbackTag
-    || kind === ts.SyntaxKind.JSDocPropertyTag;
+  return (
+    kind === ts.SyntaxKind.ArrowFunction ||
+    kind === ts.SyntaxKind.BindingElement ||
+    kind === ts.SyntaxKind.ClassDeclaration ||
+    kind === ts.SyntaxKind.ClassExpression ||
+    kind === ts.SyntaxKind.Constructor ||
+    kind === ts.SyntaxKind.EnumDeclaration ||
+    kind === ts.SyntaxKind.EnumMember ||
+    kind === ts.SyntaxKind.ExportSpecifier ||
+    kind === ts.SyntaxKind.FunctionDeclaration ||
+    kind === ts.SyntaxKind.FunctionExpression ||
+    kind === ts.SyntaxKind.GetAccessor ||
+    kind === ts.SyntaxKind.ImportClause ||
+    kind === ts.SyntaxKind.ImportEqualsDeclaration ||
+    kind === ts.SyntaxKind.ImportSpecifier ||
+    kind === ts.SyntaxKind.InterfaceDeclaration ||
+    kind === ts.SyntaxKind.JsxAttribute ||
+    kind === ts.SyntaxKind.MethodDeclaration ||
+    kind === ts.SyntaxKind.MethodSignature ||
+    kind === ts.SyntaxKind.ModuleDeclaration ||
+    kind === ts.SyntaxKind.NamespaceExportDeclaration ||
+    kind === ts.SyntaxKind.NamespaceImport ||
+    kind === ts.SyntaxKind.Parameter ||
+    kind === ts.SyntaxKind.PropertyAssignment ||
+    kind === ts.SyntaxKind.PropertyDeclaration ||
+    kind === ts.SyntaxKind.PropertySignature ||
+    kind === ts.SyntaxKind.SetAccessor ||
+    kind === ts.SyntaxKind.ShorthandPropertyAssignment ||
+    kind === ts.SyntaxKind.TypeAliasDeclaration ||
+    kind === ts.SyntaxKind.TypeParameter ||
+    kind === ts.SyntaxKind.VariableDeclaration ||
+    kind === ts.SyntaxKind.JSDocTypedefTag ||
+    kind === ts.SyntaxKind.JSDocCallbackTag ||
+    kind === ts.SyntaxKind.JSDocPropertyTag
+  );
 }
 
 /**
@@ -61,16 +63,18 @@ function getJSDocCommentRanges(node: ts.Node, text: string): ts.CommentRange[] {
     case ts.SyntaxKind.FunctionExpression:
     case ts.SyntaxKind.ArrowFunction:
     case ts.SyntaxKind.ParenthesizedExpression:
-      commentRanges.push(...ts.getTrailingCommentRanges(text, node.pos) || []);
+      commentRanges.push(...(ts.getTrailingCommentRanges(text, node.pos) || []));
       break;
   }
-  commentRanges.push(...ts.getLeadingCommentRanges(text, node.pos) || []);
+  commentRanges.push(...(ts.getLeadingCommentRanges(text, node.pos) || []));
 
   // True if the comment starts with '/**' but not if it is '/**/'
-  return commentRanges.filter((comment) =>
-    text.charCodeAt(comment.pos + 1) === 0x2A /* ts.CharacterCodes.asterisk */ &&
-    text.charCodeAt(comment.pos + 2) === 0x2A /* ts.CharacterCodes.asterisk */ &&
-    text.charCodeAt(comment.pos + 3) !== 0x2F /* ts.CharacterCodes.slash */);
+  return commentRanges.filter(
+    (comment) =>
+      text.charCodeAt(comment.pos + 1) === 0x2a /* ts.CharacterCodes.asterisk */ &&
+      text.charCodeAt(comment.pos + 2) === 0x2a /* ts.CharacterCodes.asterisk */ &&
+      text.charCodeAt(comment.pos + 3) !== 0x2f /* ts.CharacterCodes.slash */
+  );
 }
 
 interface IFoundComment {
@@ -114,7 +118,7 @@ function walkCompilerAstAndFindComments(node: ts.Node, indent: string, foundComm
 
   console.log(`${indent}- ${ts.SyntaxKind[node.kind]}${foundCommentsSuffix}`);
 
-  return node.forEachChild(child => walkCompilerAstAndFindComments(child, indent + '  ', foundComments));
+  return node.forEachChild((child) => walkCompilerAstAndFindComments(child, indent + '  ', foundComments));
 }
 
 function dumpTSDocTree(docNode: tsdoc.DocNode, indent: string): void {
@@ -181,8 +185,8 @@ function parseTSDoc(foundComment: IFoundComment): void {
       // Since we have the compiler's analysis, use it to calculate the line/column information,
       // since this is currently faster than TSDoc's TextRange.getLocation() lookup.
       const location: ts.LineAndCharacter = sourceFile.getLineAndCharacterOfPosition(message.textRange.pos);
-      const formattedMessage: string = `${sourceFile.fileName}(${location.line + 1},${location.character + 1}):`
-        + ` [TSDoc] ${message}`;
+      const formattedMessage: string =
+        `${sourceFile.fileName}(${location.line + 1},${location.character + 1}):` + ` [TSDoc] ${message}`;
       console.log(formattedMessage);
     }
   }
@@ -193,7 +197,7 @@ function parseTSDoc(foundComment: IFoundComment): void {
     console.log(os.EOL + colors.cyan(`The ${customModifierDefinition.tagName} modifier was NOT FOUND.`));
   }
 
-  console.log(os.EOL + colors.green('Visiting TSDoc\'s DocNode tree') + os.EOL);
+  console.log(os.EOL + colors.green("Visiting TSDoc's DocNode tree") + os.EOL);
   dumpTSDocTree(docComment, '');
 }
 
@@ -206,13 +210,13 @@ export function advancedDemo(): void {
 
   const inputFilename: string = path.resolve(path.join(__dirname, '..', 'assets', 'advanced-input.ts'));
   const compilerOptions: ts.CompilerOptions = {
-    'target': ts.ScriptTarget.ES5
+    target: ts.ScriptTarget.ES5
   };
 
   // Compile the input
   console.log('Invoking the TypeScript compiler to analyze assets/advanced-input.ts...');
 
-  const program: ts.Program = ts.createProgram([ inputFilename ], compilerOptions);
+  const program: ts.Program = ts.createProgram([inputFilename], compilerOptions);
 
   // Report any compiler errors
   const compilerDiagnostics: ReadonlyArray<ts.Diagnostic> = program.getSemanticDiagnostics();
@@ -220,9 +224,12 @@ export function advancedDemo(): void {
     for (const diagnostic of compilerDiagnostics) {
       const message: string = ts.flattenDiagnosticMessageText(diagnostic.messageText, os.EOL);
       if (diagnostic.file) {
-        const location: ts.LineAndCharacter = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
-        const formattedMessage: string = `${diagnostic.file.fileName}(${location.line + 1},${location.character + 1}):`
-          + ` [TypeScript] ${message}`;
+        const location: ts.LineAndCharacter = diagnostic.file.getLineAndCharacterOfPosition(
+          diagnostic.start!
+        );
+        const formattedMessage: string =
+          `${diagnostic.file.fileName}(${location.line + 1},${location.character + 1}):` +
+          ` [TypeScript] ${message}`;
         console.log(colors.red(formattedMessage));
       } else {
         console.log(colors.red(message));

@@ -40,7 +40,7 @@ export class ConfigCache {
 
     // If configFilePath is an empty string, then we'll use the folder of sourceFilePath as our cache key
     // (instead of an empty string)
-    const cacheKey: string = configFilePath || (sourceFileFolder + '/');
+    const cacheKey: string = configFilePath || sourceFileFolder + '/';
     Debug.log(`Cache key: "${cacheKey}"`);
 
     const nowMs: number = ConfigCache._getTimeInMs();

@@ -9,8 +9,7 @@ import { DocParamCollection } from './DocParamCollection';
 /**
  * Constructor parameters for {@link DocComment}.
  */
-export interface IDocCommentParameters extends IDocNodeParameters {
-}
+export interface IDocCommentParameters extends IDocNodeParameters {}
 
 /**
  * Represents an entire documentation comment conforming to the TSDoc structure.
@@ -107,7 +106,7 @@ export class DocComment extends DocNode {
 
     this.modifierTagSet = new StandardModifierTagSet();
 
-    this._seeBlocks = []
+    this._seeBlocks = [];
     this._customBlocks = [];
   }
 

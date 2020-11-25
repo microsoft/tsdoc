@@ -41,10 +41,7 @@ import { TokenReader } from './TokenReader';
 import { StringChecks } from './StringChecks';
 import { ModifierTagSet } from '../details/ModifierTagSet';
 import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
-import {
-  TSDocTagDefinition,
-  TSDocTagSyntaxKind
-} from '../configuration/TSDocTagDefinition';
+import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTagDefinition';
 import { StandardTags } from '../details/StandardTags';
 import { PlainTextEmitter } from '../emitters/PlainTextEmitter';
 import { TSDocMessageId } from './TSDocMessageId';
@@ -91,11 +88,13 @@ export class NodeParser {
         case TokenKind.Newline:
           this._pushAccumulatedPlainText(tokenReader);
           tokenReader.readToken();
-          this._pushNode(new DocSoftBreak({
-            parsed: true,
-            configuration: this._configuration,
-            softBreakExcerpt: tokenReader.extractAccumulatedSequence()
-          }));
+          this._pushNode(
+            new DocSoftBreak({
+              parsed: true,
+              configuration: this._configuration,
+              softBreakExcerpt: tokenReader.extractAccumulatedSequence()
+            })
+          );
           break;
         case TokenKind.Backslash:
           this._pushAccumulatedPlainText(tokenReader);
@@ -119,9 +118,14 @@ export class NodeParser {
             if (docComment.inheritDocTag === undefined) {
               this._parserContext.docComment.inheritDocTag = docNode;
             } else {
-              this._pushNode(this._backtrackAndCreateErrorRange(tokenReader, marker, tagEndMarker,
-                TSDocMessageId.ExtraInheritDocTag,
-                'A doc comment cannot have more than one @inheritDoc tag')
+              this._pushNode(
+                this._backtrackAndCreateErrorRange(
+                  tokenReader,
+                  marker,
+                  tagEndMarker,
+                  TSDocMessageId.ExtraInheritDocTag,
+                  'A doc comment cannot have more than one @inheritDoc tag'
+                )
               );
             }
           } else {
@@ -131,9 +135,13 @@ export class NodeParser {
         }
         case TokenKind.RightCurlyBracket:
           this._pushAccumulatedPlainText(tokenReader);
-          this._pushNode(this._createError(tokenReader,
-            TSDocMessageId.EscapeRightBrace,
-            'The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag'));
+          this._pushNode(
+            this._createError(
+              tokenReader,
+              TSDocMessageId.EscapeRightBrace,
+              'The "}" character should be escaped using a backslash to avoid confusion with a TSDoc inline tag'
+            )
+          );
           break;
         case TokenKind.LessThan:
           this._pushAccumulatedPlainText(tokenReader);
@@ -146,15 +154,21 @@ export class NodeParser {
           break;
         case TokenKind.GreaterThan:
           this._pushAccumulatedPlainText(tokenReader);
-          this._pushNode(this._createError(tokenReader,
-            TSDocMessageId.EscapeGreaterThan,
-            'The ">" character should be escaped using a backslash to avoid confusion with an HTML tag'));
+          this._pushNode(
+            this._createError(
+              tokenReader,
+              TSDocMessageId.EscapeGreaterThan,
+              'The ">" character should be escaped using a backslash to avoid confusion with an HTML tag'
+            )
+          );
           break;
         case TokenKind.Backtick:
           this._pushAccumulatedPlainText(tokenReader);
 
-          if (tokenReader.peekTokenAfterKind() === TokenKind.Backtick
-            && tokenReader.peekTokenAfterAfterKind() === TokenKind.Backtick) {
+          if (
+            tokenReader.peekTokenAfterKind() === TokenKind.Backtick &&
+            tokenReader.peekTokenAfterAfterKind() === TokenKind.Backtick
+          ) {
             this._pushNode(this._parseFencedCode(tokenReader));
           } else {
             this._pushNode(this._parseCodeSpan(tokenReader));
@@ -176,8 +190,8 @@ export class NodeParser {
       if (!PlainTextEmitter.hasAnyTextContent(docComment.deprecatedBlock)) {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.MissingDeprecationMessage,
-          `The ${docComment.deprecatedBlock.blockTag.tagName} block must include a deprecation message,`
-            + ` e.g. describing the recommended alternative`,
+          `The ${docComment.deprecatedBlock.blockTag.tagName} block must include a deprecation message,` +
+            ` e.g. describing the recommended alternative`,
           docComment.deprecatedBlock.blockTag.getTokenSequence(),
           docComment.deprecatedBlock
         );
@@ -188,24 +202,30 @@ export class NodeParser {
       if (docComment.remarksBlock) {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.InheritDocIncompatibleTag,
-          `A "${docComment.remarksBlock.blockTag.tagName}" block must not be used, because that`
-          + ` content is provided by the @inheritDoc tag`,
-          docComment.remarksBlock.blockTag.getTokenSequence(), docComment.remarksBlock.blockTag);
+          `A "${docComment.remarksBlock.blockTag.tagName}" block must not be used, because that` +
+            ` content is provided by the @inheritDoc tag`,
+          docComment.remarksBlock.blockTag.getTokenSequence(),
+          docComment.remarksBlock.blockTag
+        );
       }
       if (PlainTextEmitter.hasAnyTextContent(docComment.summarySection)) {
         this._parserContext.log.addMessageForTextRange(
           TSDocMessageId.InheritDocIncompatibleSummary,
-          'The summary section must not have any content, because that'
-          + ' content is provided by the @inheritDoc tag',
-          this._parserContext.commentRange);
+          'The summary section must not have any content, because that' +
+            ' content is provided by the @inheritDoc tag',
+          this._parserContext.commentRange
+        );
       }
     }
   }
 
-  private _validateTagDefinition(tagDefinition: TSDocTagDefinition | undefined,
-    tagName: string, expectingInlineTag: boolean,
-    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): void {
-
+  private _validateTagDefinition(
+    tagDefinition: TSDocTagDefinition | undefined,
+    tagName: string,
+    expectingInlineTag: boolean,
+    tokenSequenceForErrorContext: TokenSequence,
+    nodeForErrorContext: DocNode
+  ): void {
     if (tagDefinition) {
       const isInlineTag: boolean = tagDefinition.syntaxKind === TSDocTagSyntaxKind.InlineTag;
 
@@ -215,12 +235,16 @@ export class NodeParser {
           this._parserContext.log.addMessageForTokenSequence(
             TSDocMessageId.InlineTagMissingBraces,
             `The TSDoc tag "${tagName}" is an inline tag; it must be enclosed in "{ }" braces`,
-            tokenSequenceForErrorContext, nodeForErrorContext);
+            tokenSequenceForErrorContext,
+            nodeForErrorContext
+          );
         } else {
           this._parserContext.log.addMessageForTokenSequence(
             TSDocMessageId.TagShouldNotHaveBraces,
             `The TSDoc tag "${tagName}" is not an inline tag; it must not be enclosed in "{ }" braces`,
-            tokenSequenceForErrorContext, nodeForErrorContext);
+            tokenSequenceForErrorContext,
+            nodeForErrorContext
+          );
         }
       } else {
         if (this._parserContext.configuration.validation.reportUnsupportedTags) {
@@ -229,7 +253,9 @@ export class NodeParser {
             this._parserContext.log.addMessageForTokenSequence(
               TSDocMessageId.UnsupportedTag,
               `The TSDoc tag "${tagName}" is not supported by this tool`,
-              tokenSequenceForErrorContext, nodeForErrorContext);
+              tokenSequenceForErrorContext,
+              nodeForErrorContext
+            );
           }
         }
       }
@@ -239,18 +265,22 @@ export class NodeParser {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.UndefinedTag,
           `The TSDoc tag "${tagName}" is not defined in this configuration`,
-          tokenSequenceForErrorContext, nodeForErrorContext);
+          tokenSequenceForErrorContext,
+          nodeForErrorContext
+        );
       }
     }
   }
 
   private _pushAccumulatedPlainText(tokenReader: TokenReader): void {
     if (!tokenReader.isAccumulatedSequenceEmpty()) {
-      this._pushNode(new DocPlainText({
-        parsed: true,
-        configuration: this._configuration,
-        textExcerpt: tokenReader.extractAccumulatedSequence()
-      }));
+      this._pushNode(
+        new DocPlainText({
+          parsed: true,
+          configuration: this._configuration,
+          textExcerpt: tokenReader.extractAccumulatedSequence()
+        })
+      );
     }
   }
 
@@ -268,23 +298,37 @@ export class NodeParser {
     const docBlockTag: DocBlockTag = parsedBlockTag as DocBlockTag;
 
     // Do we have a definition for this tag?
-    const tagDefinition: TSDocTagDefinition | undefined
-      = configuration.tryGetTagDefinitionWithUpperCase(docBlockTag.tagNameWithUpperCase);
-    this._validateTagDefinition(tagDefinition, docBlockTag.tagName, /* expectingInlineTag */ false,
-      docBlockTag.getTokenSequence(), docBlockTag);
+    const tagDefinition: TSDocTagDefinition | undefined = configuration.tryGetTagDefinitionWithUpperCase(
+      docBlockTag.tagNameWithUpperCase
+    );
+    this._validateTagDefinition(
+      tagDefinition,
+      docBlockTag.tagName,
+      /* expectingInlineTag */ false,
+      docBlockTag.getTokenSequence(),
+      docBlockTag
+    );
 
     if (tagDefinition) {
       switch (tagDefinition.syntaxKind) {
         case TSDocTagSyntaxKind.BlockTag:
           if (docBlockTag.tagNameWithUpperCase === StandardTags.param.tagNameWithUpperCase) {
-            const docParamBlock: DocParamBlock = this._parseParamBlock(tokenReader, docBlockTag, StandardTags.param.tagName);
+            const docParamBlock: DocParamBlock = this._parseParamBlock(
+              tokenReader,
+              docBlockTag,
+              StandardTags.param.tagName
+            );
 
             this._parserContext.docComment.params.add(docParamBlock);
 
             this._currentSection = docParamBlock.content;
             return;
           } else if (docBlockTag.tagNameWithUpperCase === StandardTags.typeParam.tagNameWithUpperCase) {
-            const docParamBlock: DocParamBlock = this._parseParamBlock(tokenReader, docBlockTag, StandardTags.typeParam.tagName);
+            const docParamBlock: DocParamBlock = this._parseParamBlock(
+              tokenReader,
+              docBlockTag,
+              StandardTags.typeParam.tagName
+            );
 
             this._parserContext.docComment.typeParams.add(docParamBlock);
 
@@ -342,9 +386,12 @@ export class NodeParser {
    * an input like `@param {string} [x="]"] - the X value`.  It detects nested balanced pairs of delimiters
    * and escaped string literals.
    */
-  private _tryParseJSDocTypeOrValueRest(tokenReader: TokenReader, openKind: TokenKind, closeKind: TokenKind,
-    startMarker: number): TokenSequence | undefined {
-
+  private _tryParseJSDocTypeOrValueRest(
+    tokenReader: TokenReader,
+    openKind: TokenKind,
+    closeKind: TokenKind,
+    startMarker: number
+  ): TokenSequence | undefined {
     let quoteKind: TokenKind | undefined;
     let openCount: number = 1;
     while (openCount > 0) {
@@ -372,8 +419,7 @@ export class NodeParser {
           if (quoteKind === tokenKind) {
             // exit quoted string if quote character matches.
             quoteKind = undefined;
-          }
-          else if (quoteKind === undefined) {
+          } else if (quoteKind === undefined) {
             // start quoted string if not in a quoted string.
             quoteKind = tokenKind;
           }
@@ -393,30 +439,42 @@ export class NodeParser {
    * Used by `_parseParamBlock()`, this parses a JSDoc expression like `{string}` from
    * an input like `@param {string} x - the X value`.
    */
-  private _tryParseUnsupportedJSDocType(tokenReader: TokenReader, docBlockTag: DocBlockTag, tagName: string): TokenSequence | undefined {
+  private _tryParseUnsupportedJSDocType(
+    tokenReader: TokenReader,
+    docBlockTag: DocBlockTag,
+    tagName: string
+  ): TokenSequence | undefined {
     tokenReader.assertAccumulatedSequenceIsEmpty();
 
     // do not parse `{@...` as a JSDoc type
-    if (tokenReader.peekTokenKind() !== TokenKind.LeftCurlyBracket ||
-      tokenReader.peekTokenAfterKind() === TokenKind.AtSign) {
+    if (
+      tokenReader.peekTokenKind() !== TokenKind.LeftCurlyBracket ||
+      tokenReader.peekTokenAfterKind() === TokenKind.AtSign
+    ) {
       return undefined;
     }
 
     const startMarker: number = tokenReader.createMarker();
     tokenReader.readToken(); // read the "{"
 
-    let jsdocTypeExcerpt: TokenSequence | undefined = this._tryParseJSDocTypeOrValueRest(tokenReader,
-      TokenKind.LeftCurlyBracket, TokenKind.RightCurlyBracket, startMarker);
+    let jsdocTypeExcerpt: TokenSequence | undefined = this._tryParseJSDocTypeOrValueRest(
+      tokenReader,
+      TokenKind.LeftCurlyBracket,
+      TokenKind.RightCurlyBracket,
+      startMarker
+    );
 
     if (jsdocTypeExcerpt) {
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ParamTagWithInvalidType,
-        'The ' + tagName + ' block should not include a JSDoc-style \'{type}\'',
+        'The ' + tagName + " block should not include a JSDoc-style '{type}'",
         jsdocTypeExcerpt,
         docBlockTag
       );
 
-      const spacingAfterJsdocTypeExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+      const spacingAfterJsdocTypeExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
+        tokenReader
+      );
       if (spacingAfterJsdocTypeExcerpt) {
         jsdocTypeExcerpt = jsdocTypeExcerpt.getNewSequence(
           jsdocTypeExcerpt.startIndex,
@@ -435,20 +493,31 @@ export class NodeParser {
     tokenReader.assertAccumulatedSequenceIsEmpty();
     if (tokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
       const startMarker: number = tokenReader.createMarker();
-      return this._tryParseJSDocTypeOrValueRest(tokenReader,
-        TokenKind.LeftSquareBracket, TokenKind.RightSquareBracket, startMarker);
+      return this._tryParseJSDocTypeOrValueRest(
+        tokenReader,
+        TokenKind.LeftSquareBracket,
+        TokenKind.RightSquareBracket,
+        startMarker
+      );
     }
     return undefined;
   }
 
-  private _parseParamBlock(tokenReader: TokenReader, docBlockTag: DocBlockTag, tagName: string): DocParamBlock {
+  private _parseParamBlock(
+    tokenReader: TokenReader,
+    docBlockTag: DocBlockTag,
+    tagName: string
+  ): DocParamBlock {
     const startMarker: number = tokenReader.createMarker();
 
-    const spacingBeforeParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+    const spacingBeforeParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
+      tokenReader
+    );
 
     // Skip past a JSDoc type (i.e., '@param {type} paramName') if found, and report a warning.
-    const unsupportedJsdocTypeBeforeParameterNameExcerpt: TokenSequence | undefined =
-      this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
+    const unsupportedJsdocTypeBeforeParameterNameExcerpt:
+      | TokenSequence
+      | undefined = this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
 
     // Parse opening of invalid JSDoc optional parameter name (e.g., '[')
     let unsupportedJsdocOptionalNameOpenBracketExcerpt: TokenSequence | undefined;
@@ -483,9 +552,10 @@ export class NodeParser {
         blockTag: docBlockTag,
         parameterName: ''
       });
-      const errorMessage: string = parameterName.length > 0
-        ? 'The ' + tagName + ' block should be followed by a valid parameter name: ' + explanation
-        : 'The ' + tagName + ' block should be followed by a parameter name';
+      const errorMessage: string =
+        parameterName.length > 0
+          ? 'The ' + tagName + ' block should be followed by a valid parameter name: ' + explanation
+          : 'The ' + tagName + ' block should be followed by a parameter name';
 
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ParamTagWithInvalidName,
@@ -505,29 +575,36 @@ export class NodeParser {
 
       let errorSequence: TokenSequence | undefined = unsupportedJsdocOptionalNameOpenBracketExcerpt;
       if (unsupportedJsdocOptionalNameRestExcerpt) {
-        errorSequence = docBlockTag.getTokenSequence().getNewSequence(
-          unsupportedJsdocOptionalNameOpenBracketExcerpt.startIndex,
-          unsupportedJsdocOptionalNameRestExcerpt.endIndex
-        );
+        errorSequence = docBlockTag
+          .getTokenSequence()
+          .getNewSequence(
+            unsupportedJsdocOptionalNameOpenBracketExcerpt.startIndex,
+            unsupportedJsdocOptionalNameRestExcerpt.endIndex
+          );
       }
 
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ParamTagWithInvalidOptionalName,
-        'The ' + tagName + ' should not include a JSDoc-style optional name; it must not be enclosed in \'[ ]\' brackets.',
+        'The ' +
+          tagName +
+          " should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.",
         errorSequence,
         docBlockTag
       );
     }
 
-    const spacingAfterParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+    const spacingAfterParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
+      tokenReader
+    );
 
     // Skip past a trailing JSDoc type (i.e., '@param paramName {type}') if found, and report a warning.
-    const unsupportedJsdocTypeAfterParameterNameExcerpt: TokenSequence | undefined =
-      this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
+    const unsupportedJsdocTypeAfterParameterNameExcerpt:
+      | TokenSequence
+      | undefined = this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
 
     // TODO: Warn if there is no space before or after the hyphen
     let hyphenExcerpt: TokenSequence | undefined;
-    let spacingAfterHyphenExcerpt: TokenSequence | undefined
+    let spacingAfterHyphenExcerpt: TokenSequence | undefined;
     let unsupportedJsdocTypeAfterHyphenExcerpt: TokenSequence | undefined;
     if (tokenReader.peekTokenKind() === TokenKind.Hyphen) {
       tokenReader.readToken();
@@ -536,9 +613,12 @@ export class NodeParser {
       spacingAfterHyphenExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
 
       // Skip past a JSDoc type (i.e., '@param paramName - {type}') if found, and report a warning.
-      unsupportedJsdocTypeAfterHyphenExcerpt = this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
-    }
-    else {
+      unsupportedJsdocTypeAfterHyphenExcerpt = this._tryParseUnsupportedJSDocType(
+        tokenReader,
+        docBlockTag,
+        tagName
+      );
+    } else {
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ParamTagMissingHyphen,
         'The ' + tagName + ' block should be followed by a parameter name and then a hyphen',
@@ -590,9 +670,12 @@ export class NodeParser {
     tokenReader.readToken(); // read the backslash
 
     if (tokenReader.peekTokenKind() === TokenKind.EndOfInput) {
-      return this._backtrackAndCreateError(tokenReader, marker,
+      return this._backtrackAndCreateError(
+        tokenReader,
+        marker,
         TSDocMessageId.UnnecessaryBackslash,
-        'A backslash must precede another character that is being escaped');
+        'A backslash must precede another character that is being escaped'
+      );
     }
 
     const escapedToken: Token = tokenReader.readToken(); // read the escaped character
@@ -601,9 +684,12 @@ export class NodeParser {
     // character.  In all other contexts, the backslash is interpreted as a
     // literal character.
     if (!Tokenizer.isPunctuation(escapedToken.kind)) {
-      return this._backtrackAndCreateError(tokenReader, marker,
+      return this._backtrackAndCreateError(
+        tokenReader,
+        marker,
         TSDocMessageId.UnnecessaryBackslash,
-        'A backslash can only be used to escape a punctuation character');
+        'A backslash can only be used to escape a punctuation character'
+      );
     }
 
     const encodedTextExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
@@ -623,9 +709,12 @@ export class NodeParser {
     const marker: number = tokenReader.createMarker();
 
     if (tokenReader.peekTokenKind() !== TokenKind.AtSign) {
-      return this._backtrackAndCreateError(tokenReader, marker,
+      return this._backtrackAndCreateError(
+        tokenReader,
+        marker,
         TSDocMessageId.MissingTag,
-        'Expecting a TSDoc tag starting with "@"');
+        'Expecting a TSDoc tag starting with "@"'
+      );
     }
 
     // "@one" is a valid TSDoc tag at the start of a line, but "@one@two" is
@@ -637,18 +726,24 @@ export class NodeParser {
       case TokenKind.Newline:
         break;
       default:
-        return this._backtrackAndCreateError(tokenReader, marker,
+        return this._backtrackAndCreateError(
+          tokenReader,
+          marker,
           TSDocMessageId.AtSignInWord,
-          'The "@" character looks like part of a TSDoc tag; use a backslash to escape it');
+          'The "@" character looks like part of a TSDoc tag; use a backslash to escape it'
+        );
     }
 
     // Include the "@" as part of the tagName
     let tagName: string = tokenReader.readToken().toString();
 
     if (tokenReader.peekTokenKind() !== TokenKind.AsciiWord) {
-      return this._backtrackAndCreateError(tokenReader, marker,
+      return this._backtrackAndCreateError(
+        tokenReader,
+        marker,
         TSDocMessageId.AtSignWithoutTagName,
-        'Expecting a TSDoc tag name after "@"; if it is not a tag, use a backslash to escape this character');
+        'Expecting a TSDoc tag name after "@"; if it is not a tag, use a backslash to escape this character'
+      );
     }
 
     const tagNameMarker: number = tokenReader.createMarker();
@@ -664,17 +759,22 @@ export class NodeParser {
         break;
       default:
         const badCharacter: string = tokenReader.peekToken().range.toString()[0];
-        return this._backtrackAndCreateError(tokenReader, marker,
+        return this._backtrackAndCreateError(
+          tokenReader,
+          marker,
           TSDocMessageId.CharactersAfterBlockTag,
-          `The token "${tagName}" looks like a TSDoc tag but contains an invalid character`
-          + ` ${JSON.stringify(badCharacter)}; if it is not a tag, use a backslash to escape the "@"`
+          `The token "${tagName}" looks like a TSDoc tag but contains an invalid character` +
+            ` ${JSON.stringify(badCharacter)}; if it is not a tag, use a backslash to escape the "@"`
         );
     }
 
     if (StringChecks.explainIfInvalidTSDocTagName(tagName)) {
-      const failure: IFailure = this._createFailureForTokensSince(tokenReader,
+      const failure: IFailure = this._createFailureForTokensSince(
+        tokenReader,
         TSDocMessageId.MalformedTagName,
-        'A TSDoc tag name must start with a letter and contain only letters and numbers', tagNameMarker);
+        'A TSDoc tag name must start with a letter and contain only letters and numbers',
+        tagNameMarker
+      );
       return this._backtrackAndCreateErrorForFailure(tokenReader, marker, '', failure);
     }
 
@@ -692,9 +792,12 @@ export class NodeParser {
     const marker: number = tokenReader.createMarker();
 
     if (tokenReader.peekTokenKind() !== TokenKind.LeftCurlyBracket) {
-      return this._backtrackAndCreateError(tokenReader, marker,
+      return this._backtrackAndCreateError(
+        tokenReader,
+        marker,
         TSDocMessageId.MissingTag,
-        'Expecting a TSDoc tag starting with "{"');
+        'Expecting a TSDoc tag starting with "{"'
+      );
     }
     tokenReader.readToken();
 
@@ -707,9 +810,12 @@ export class NodeParser {
     const atSignMarker: number = tokenReader.createMarker();
 
     if (tokenReader.peekTokenKind() !== TokenKind.AtSign) {
-      return this._backtrackAndCreateError(tokenReader, marker,
+      return this._backtrackAndCreateError(
+        tokenReader,
+        marker,
         TSDocMessageId.MalformedInlineTag,
-        'Expecting a TSDoc tag starting with "{@"');
+        'Expecting a TSDoc tag starting with "{@"'
+      );
     }
 
     // Include the "@" as part of the tagName
@@ -721,30 +827,41 @@ export class NodeParser {
 
     if (tagName === '@') {
       // This is an unusual case
-      const failure: IFailure = this._createFailureForTokensSince(tokenReader,
+      const failure: IFailure = this._createFailureForTokensSince(
+        tokenReader,
         TSDocMessageId.MalformedInlineTag,
-        'Expecting a TSDoc inline tag name after the "{@" characters', atSignMarker);
+        'Expecting a TSDoc inline tag name after the "{@" characters',
+        atSignMarker
+      );
       return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker, '', failure);
     }
 
     if (StringChecks.explainIfInvalidTSDocTagName(tagName)) {
-      const failure: IFailure = this._createFailureForTokensSince(tokenReader,
+      const failure: IFailure = this._createFailureForTokensSince(
+        tokenReader,
         TSDocMessageId.MalformedTagName,
-        'A TSDoc tag name must start with a letter and contain only letters and numbers', atSignMarker);
+        'A TSDoc tag name must start with a letter and contain only letters and numbers',
+        atSignMarker
+      );
       return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker, '', failure);
     }
 
     const tagNameExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    const spacingAfterTagNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+    const spacingAfterTagNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
+      tokenReader
+    );
 
     if (spacingAfterTagNameExcerpt === undefined) {
       // If there were no spaces at all, that's an error unless it's the degenerate "{@tag}" case
       if (tokenReader.peekTokenKind() !== TokenKind.RightCurlyBracket) {
         const badCharacter: string = tokenReader.peekToken().range.toString()[0];
-        const failure: IFailure = this._createFailureForToken(tokenReader,
+        const failure: IFailure = this._createFailureForToken(
+          tokenReader,
           TSDocMessageId.CharactersAfterInlineTag,
-          `The character ${JSON.stringify(badCharacter)} cannot appear after the TSDoc tag name; expecting a space`
+          `The character ${JSON.stringify(
+            badCharacter
+          )} cannot appear after the TSDoc tag name; expecting a space`
         );
         return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker, '', failure);
       }
@@ -754,9 +871,13 @@ export class NodeParser {
     while (!done) {
       switch (tokenReader.peekTokenKind()) {
         case TokenKind.EndOfInput:
-          return this._backtrackAndCreateErrorRange(tokenReader, marker, atSignMarker,
+          return this._backtrackAndCreateErrorRange(
+            tokenReader,
+            marker,
+            atSignMarker,
             TSDocMessageId.InlineTagMissingRightBrace,
-            'The TSDoc inline tag name is missing its closing "}"');
+            'The TSDoc inline tag name is missing its closing "}"'
+          );
         case TokenKind.Backslash:
           // http://usejsdoc.org/about-block-inline-tags.html
           // "If your tag's text includes a closing curly brace (}), you must escape it with
@@ -767,20 +888,29 @@ export class NodeParser {
           // character.  In all other contexts, the backslash is interpreted as a
           // literal character.
           if (!Tokenizer.isPunctuation(tokenReader.peekTokenKind())) {
-            const failure: IFailure = this._createFailureForToken(tokenReader,
+            const failure: IFailure = this._createFailureForToken(
+              tokenReader,
               TSDocMessageId.UnnecessaryBackslash,
-              'A backslash can only be used to escape a punctuation character');
-              return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker,
-                'Error reading inline TSDoc tag: ', failure);
+              'A backslash can only be used to escape a punctuation character'
+            );
+            return this._backtrackAndCreateErrorRangeForFailure(
+              tokenReader,
+              marker,
+              atSignMarker,
+              'Error reading inline TSDoc tag: ',
+              failure
+            );
           }
 
           tokenReader.readToken();
           break;
         case TokenKind.LeftCurlyBracket: {
-          const failure: IFailure = this._createFailureForToken(tokenReader,
+          const failure: IFailure = this._createFailureForToken(
+            tokenReader,
             TSDocMessageId.InlineTagUnescapedBrace,
-            'The "{" character must be escaped with a backslash when used inside a TSDoc inline tag');
-          return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker, '' , failure);
+            'The "{" character must be escaped with a backslash when used inside a TSDoc inline tag'
+          );
+          return this._backtrackAndCreateErrorRangeForFailure(tokenReader, marker, atSignMarker, '', failure);
         }
         case TokenKind.RightCurlyBracket:
           done = true;
@@ -815,8 +945,10 @@ export class NodeParser {
     const tagNameWithUpperCase: string = tagName.toUpperCase();
 
     // Create a new TokenReader that will reparse the tokens corresponding to the tagContent.
-    const embeddedTokenReader: TokenReader = new TokenReader(this._parserContext,
-      tagContentExcerpt ? tagContentExcerpt : TokenSequence.createEmpty(this._parserContext));
+    const embeddedTokenReader: TokenReader = new TokenReader(
+      this._parserContext,
+      tagContentExcerpt ? tagContentExcerpt : TokenSequence.createEmpty(this._parserContext)
+    );
 
     let docNode: DocNode;
     switch (tagNameWithUpperCase) {
@@ -831,18 +963,25 @@ export class NodeParser {
     }
 
     // Validate the tag
-    const tagDefinition: TSDocTagDefinition | undefined
-      = this._parserContext.configuration.tryGetTagDefinitionWithUpperCase(tagNameWithUpperCase);
+    const tagDefinition:
+      | TSDocTagDefinition
+      | undefined = this._parserContext.configuration.tryGetTagDefinitionWithUpperCase(tagNameWithUpperCase);
 
-    this._validateTagDefinition(tagDefinition, tagName, /* expectingInlineTag */ true,
-      tagNameExcerpt, docNode);
+    this._validateTagDefinition(
+      tagDefinition,
+      tagName,
+      /* expectingInlineTag */ true,
+      tagNameExcerpt,
+      docNode
+    );
 
     return docNode;
   }
 
-  private _parseInheritDocTag(docInlineTagParsedParameters: IDocInlineTagParsedParameters,
-    embeddedTokenReader: TokenReader): DocInlineTagBase {
-
+  private _parseInheritDocTag(
+    docInlineTagParsedParameters: IDocInlineTagParsedParameters,
+    embeddedTokenReader: TokenReader
+  ): DocInlineTagBase {
     // If an error occurs, then return a generic DocInlineTag instead of DocInheritDocTag
     const errorTag: DocInlineTag = new DocInlineTag(docInlineTagParsedParameters);
 
@@ -851,8 +990,11 @@ export class NodeParser {
     };
 
     if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
-      parameters.declarationReference = this._parseDeclarationReference(embeddedTokenReader,
-        docInlineTagParsedParameters.tagNameExcerpt, errorTag);
+      parameters.declarationReference = this._parseDeclarationReference(
+        embeddedTokenReader,
+        docInlineTagParsedParameters.tagNameExcerpt,
+        errorTag
+      );
       if (!parameters.declarationReference) {
         return errorTag;
       }
@@ -863,7 +1005,9 @@ export class NodeParser {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.InheritDocTagSyntax,
           'Unexpected character after declaration reference',
-          embeddedTokenReader.extractAccumulatedSequence(), errorTag);
+          embeddedTokenReader.extractAccumulatedSequence(),
+          errorTag
+        );
         return errorTag;
       }
     }
@@ -871,10 +1015,11 @@ export class NodeParser {
     return new DocInheritDocTag(parameters);
   }
 
-  private _parseLinkTag(docInlineTagParsedParameters: IDocInlineTagParsedParameters,
-    embeddedTokenReader: TokenReader): DocInlineTagBase {
-
-      // If an error occurs, then return a generic DocInlineTag instead of DocInheritDocTag
+  private _parseLinkTag(
+    docInlineTagParsedParameters: IDocInlineTagParsedParameters,
+    embeddedTokenReader: TokenReader
+  ): DocInlineTagBase {
+    // If an error occurs, then return a generic DocInlineTag instead of DocInheritDocTag
     const errorTag: DocInlineTag = new DocInlineTag(docInlineTagParsedParameters);
 
     const parameters: IDocLinkTagParsedParameters = {
@@ -885,7 +1030,9 @@ export class NodeParser {
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.LinkTagEmpty,
         'The @link tag content is missing',
-        parameters.tagNameExcerpt, errorTag);
+        parameters.tagNameExcerpt,
+        errorTag
+      );
 
       return errorTag;
     }
@@ -903,8 +1050,9 @@ export class NodeParser {
     // 1. Does it start with "//"?
     // 2. Does it contain "://"?
 
-    let looksLikeUrl: boolean = embeddedTokenReader.peekTokenKind() === TokenKind.Slash
-      && embeddedTokenReader.peekTokenAfterKind() === TokenKind.Slash;
+    let looksLikeUrl: boolean =
+      embeddedTokenReader.peekTokenKind() === TokenKind.Slash &&
+      embeddedTokenReader.peekTokenAfterKind() === TokenKind.Slash;
     const marker: number = embeddedTokenReader.createMarker();
 
     let done: boolean = looksLikeUrl;
@@ -920,8 +1068,9 @@ export class NodeParser {
         case TokenKind.Colon:
           embeddedTokenReader.readToken();
           // Once we a reach a colon, then it's a URL only if we see "://"
-          looksLikeUrl = embeddedTokenReader.peekTokenKind() === TokenKind.Slash
-            && embeddedTokenReader.peekTokenAfterKind() === TokenKind.Slash;
+          looksLikeUrl =
+            embeddedTokenReader.peekTokenKind() === TokenKind.Slash &&
+            embeddedTokenReader.peekTokenAfterKind() === TokenKind.Slash;
           done = true;
           break;
         default:
@@ -934,14 +1083,26 @@ export class NodeParser {
     // Is the hyperlink a URL or a declaration reference?
     if (looksLikeUrl) {
       // It starts with something like "http://", so parse it as a URL
-      if (!this._parseLinkTagUrlDestination(embeddedTokenReader, parameters,
-        docInlineTagParsedParameters.tagNameExcerpt, errorTag)) {
+      if (
+        !this._parseLinkTagUrlDestination(
+          embeddedTokenReader,
+          parameters,
+          docInlineTagParsedParameters.tagNameExcerpt,
+          errorTag
+        )
+      ) {
         return errorTag;
       }
     } else {
       // Otherwise, assume it's a declaration reference
-      if (!this._parseLinkTagCodeDestination(embeddedTokenReader, parameters,
-        docInlineTagParsedParameters.tagNameExcerpt, errorTag)) {
+      if (
+        !this._parseLinkTagCodeDestination(
+          embeddedTokenReader,
+          parameters,
+          docInlineTagParsedParameters.tagNameExcerpt,
+          errorTag
+        )
+      ) {
         return errorTag;
       }
     }
@@ -973,7 +1134,9 @@ export class NodeParser {
             this._parserContext.log.addMessageForTokenSequence(
               TSDocMessageId.LinkTagUnescapedText,
               `The "${badCharacter}" character may not be used in the link text without escaping it`,
-              embeddedTokenReader.extractAccumulatedSequence(), errorTag);
+              embeddedTokenReader.extractAccumulatedSequence(),
+              errorTag
+            );
             return errorTag;
           case TokenKind.Spacing:
           case TokenKind.Newline:
@@ -986,7 +1149,9 @@ export class NodeParser {
         }
       }
 
-      const linkTextAndSpacing: TokenSequence | undefined = embeddedTokenReader.tryExtractAccumulatedSequence();
+      const linkTextAndSpacing:
+        | TokenSequence
+        | undefined = embeddedTokenReader.tryExtractAccumulatedSequence();
       if (linkTextAndSpacing) {
         if (spacingAfterLinkTextMarker === undefined) {
           // We never found any non-spacing characters, so everything is trailing spacing
@@ -996,29 +1161,37 @@ export class NodeParser {
           parameters.linkTextExcerpt = linkTextAndSpacing;
         } else {
           // Split the trailing spacing from the link text
-          parameters.linkTextExcerpt = linkTextAndSpacing.getNewSequence(linkTextAndSpacing.startIndex,
-            spacingAfterLinkTextMarker);
-          parameters.spacingAfterLinkTextExcerpt = linkTextAndSpacing.getNewSequence(spacingAfterLinkTextMarker,
-            linkTextAndSpacing.endIndex);
+          parameters.linkTextExcerpt = linkTextAndSpacing.getNewSequence(
+            linkTextAndSpacing.startIndex,
+            spacingAfterLinkTextMarker
+          );
+          parameters.spacingAfterLinkTextExcerpt = linkTextAndSpacing.getNewSequence(
+            spacingAfterLinkTextMarker,
+            linkTextAndSpacing.endIndex
+          );
         }
       }
-
     } else if (embeddedTokenReader.peekTokenKind() !== TokenKind.EndOfInput) {
       embeddedTokenReader.readToken();
 
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.LinkTagDestinationSyntax,
         'Unexpected character after link destination',
-        embeddedTokenReader.extractAccumulatedSequence(), errorTag);
+        embeddedTokenReader.extractAccumulatedSequence(),
+        errorTag
+      );
       return errorTag;
     }
 
     return new DocLinkTag(parameters);
   }
 
-  private _parseLinkTagUrlDestination(embeddedTokenReader: TokenReader, parameters: IDocLinkTagParsedParameters,
-    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): boolean {
-
+  private _parseLinkTagUrlDestination(
+    embeddedTokenReader: TokenReader,
+    parameters: IDocLinkTagParsedParameters,
+    tokenSequenceForErrorContext: TokenSequence,
+    nodeForErrorContext: DocNode
+  ): boolean {
     // Simply accumulate everything up to the next space. We won't try to implement a proper
     // URI parser here.
     let urlDestination: string = '';
@@ -1051,7 +1224,9 @@ export class NodeParser {
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.LinkTagInvalidUrl,
         invalidUrlExplanation,
-        urlDestinationExcerpt, nodeForErrorContext);
+        urlDestinationExcerpt,
+        nodeForErrorContext
+      );
       return false;
     }
 
@@ -1061,18 +1236,26 @@ export class NodeParser {
     return true;
   }
 
-  private _parseLinkTagCodeDestination(embeddedTokenReader: TokenReader, parameters: IDocLinkTagParameters,
-    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): boolean {
-
-    parameters.codeDestination = this._parseDeclarationReference(embeddedTokenReader,
-      tokenSequenceForErrorContext, nodeForErrorContext);
+  private _parseLinkTagCodeDestination(
+    embeddedTokenReader: TokenReader,
+    parameters: IDocLinkTagParameters,
+    tokenSequenceForErrorContext: TokenSequence,
+    nodeForErrorContext: DocNode
+  ): boolean {
+    parameters.codeDestination = this._parseDeclarationReference(
+      embeddedTokenReader,
+      tokenSequenceForErrorContext,
+      nodeForErrorContext
+    );
 
     return !!parameters.codeDestination;
   }
 
-  private _parseDeclarationReference(tokenReader: TokenReader,
-    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): DocDeclarationReference | undefined {
-
+  private _parseDeclarationReference(
+    tokenReader: TokenReader,
+    tokenSequenceForErrorContext: TokenSequence,
+    nodeForErrorContext: DocNode
+  ): DocDeclarationReference | undefined {
     tokenReader.assertAccumulatedSequenceIsEmpty();
 
     // The package name can contain characters that look like a member reference.  This means we need to scan forwards
@@ -1136,9 +1319,11 @@ export class NodeParser {
       // but would make sense as a package name or import path, but we did not find a "#"
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ReferenceMissingHash,
-        'The declaration reference appears to contain a package name or import path,'
-          + ' but it is missing the "#" delimiter',
-        tokenReader.extractAccumulatedSequence(), nodeForErrorContext);
+        'The declaration reference appears to contain a package name or import path,' +
+          ' but it is missing the "#" delimiter',
+        tokenReader.extractAccumulatedSequence(),
+        nodeForErrorContext
+      );
       return undefined;
     }
 
@@ -1150,10 +1335,8 @@ export class NodeParser {
     let spacingAfterImportHashExcerpt: TokenSequence | undefined;
 
     if (hasHash) {
-
       // If it starts with a "." then it's a relative path, not a package name
       if (tokenReader.peekTokenKind() !== TokenKind.Period) {
-
         // Read the package name:
         const scopedPackageName: boolean = tokenReader.peekTokenKind() === TokenKind.AtSign;
         let finishedScope: boolean = false;
@@ -1186,12 +1369,15 @@ export class NodeParser {
 
           // Check that the packageName is syntactically valid
           const explanation: string | undefined = StringChecks.explainIfInvalidPackageName(
-            packageNameExcerpt.toString());
+            packageNameExcerpt.toString()
+          );
           if (explanation) {
             this._parserContext.log.addMessageForTokenSequence(
               TSDocMessageId.ReferenceMalformedPackageName,
               explanation,
-              packageNameExcerpt, nodeForErrorContext);
+              packageNameExcerpt,
+              nodeForErrorContext
+            );
             return undefined;
           }
         }
@@ -1217,12 +1403,16 @@ export class NodeParser {
 
         // Check that the importPath is syntactically valid
         const explanation: string | undefined = StringChecks.explainIfInvalidImportPath(
-          importPathExcerpt.toString(), !!packageNameExcerpt);
+          importPathExcerpt.toString(),
+          !!packageNameExcerpt
+        );
         if (explanation) {
           this._parserContext.log.addMessageForTokenSequence(
             TSDocMessageId.ReferenceMalformedImportPath,
             explanation,
-            importPathExcerpt, nodeForErrorContext);
+            importPathExcerpt,
+            nodeForErrorContext
+          );
           return undefined;
         }
       }
@@ -1241,7 +1431,9 @@ export class NodeParser {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.ReferenceHashSyntax,
           'The hash character must be preceded by a package name or import path',
-          importHashExcerpt, nodeForErrorContext);
+          importHashExcerpt,
+          nodeForErrorContext
+        );
         return undefined;
       }
     }
@@ -1259,8 +1451,12 @@ export class NodeParser {
         case TokenKind.LeftSquareBracket:
         case TokenKind.DoubleQuote:
           const expectingDot: boolean = memberReferences.length > 0;
-          const memberReference: DocMemberReference | undefined
-            = this._parseMemberReference(tokenReader, expectingDot, tokenSequenceForErrorContext, nodeForErrorContext);
+          const memberReference: DocMemberReference | undefined = this._parseMemberReference(
+            tokenReader,
+            expectingDot,
+            tokenSequenceForErrorContext,
+            nodeForErrorContext
+          );
 
           if (!memberReference) {
             return undefined;
@@ -1273,12 +1469,18 @@ export class NodeParser {
       }
     }
 
-    if (packageNameExcerpt === undefined && importPathExcerpt === undefined && memberReferences.length === 0) {
+    if (
+      packageNameExcerpt === undefined &&
+      importPathExcerpt === undefined &&
+      memberReferences.length === 0
+    ) {
       // We didn't find any parts of a declaration reference
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.MissingReference,
         'Expecting a declaration reference',
-        tokenSequenceForErrorContext, nodeForErrorContext);
+        tokenSequenceForErrorContext,
+        nodeForErrorContext
+      );
       return undefined;
     }
 
@@ -1296,9 +1498,12 @@ export class NodeParser {
     });
   }
 
-  private _parseMemberReference(tokenReader: TokenReader, expectingDot: boolean,
-    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): DocMemberReference | undefined {
-
+  private _parseMemberReference(
+    tokenReader: TokenReader,
+    expectingDot: boolean,
+    tokenSequenceForErrorContext: TokenSequence,
+    nodeForErrorContext: DocNode
+  ): DocMemberReference | undefined {
     const parameters: IDocMemberReferenceParsedParameters = {
       parsed: true,
       configuration: this._configuration
@@ -1310,7 +1515,9 @@ export class NodeParser {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.ReferenceMissingDot,
           'Expecting a period before the next component of a declaration reference',
-          tokenSequenceForErrorContext, nodeForErrorContext);
+          tokenSequenceForErrorContext,
+          nodeForErrorContext
+        );
         return undefined;
       }
       tokenReader.readToken();
@@ -1334,8 +1541,11 @@ export class NodeParser {
         return undefined;
       }
     } else {
-      parameters.memberIdentifier = this._parseMemberIdentifier(tokenReader,
-        tokenSequenceForErrorContext, nodeForErrorContext);
+      parameters.memberIdentifier = this._parseMemberIdentifier(
+        tokenReader,
+        tokenSequenceForErrorContext,
+        nodeForErrorContext
+      );
 
       if (!parameters.memberIdentifier) {
         return undefined;
@@ -1358,12 +1568,18 @@ export class NodeParser {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.ReferenceSelectorMissingParens,
           'Syntax error in declaration reference: the member selector must be enclosed in parentheses',
-          parameters.colonExcerpt, nodeForErrorContext);
+          parameters.colonExcerpt,
+          nodeForErrorContext
+        );
         return undefined;
       }
 
       // If there is a colon, then read the selector
-      parameters.selector = this._parseMemberSelector(tokenReader, parameters.colonExcerpt, nodeForErrorContext);
+      parameters.selector = this._parseMemberSelector(
+        tokenReader,
+        parameters.colonExcerpt,
+        nodeForErrorContext
+      );
       if (!parameters.selector) {
         return undefined;
       }
@@ -1374,7 +1590,9 @@ export class NodeParser {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.ReferenceMissingColon,
           'Expecting a colon after the identifier because the expression is in parentheses',
-          parameters.leftParenthesisExcerpt, nodeForErrorContext);
+          parameters.leftParenthesisExcerpt,
+          nodeForErrorContext
+        );
         return undefined;
       }
     }
@@ -1385,7 +1603,9 @@ export class NodeParser {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.ReferenceMissingRightParen,
           'Expecting a matching right parenthesis',
-        parameters.leftParenthesisExcerpt, nodeForErrorContext);
+          parameters.leftParenthesisExcerpt,
+          nodeForErrorContext
+        );
         return undefined;
       }
 
@@ -1399,9 +1619,10 @@ export class NodeParser {
     return new DocMemberReference(parameters);
   }
 
-  private _parseMemberSymbol(tokenReader: TokenReader,
-    nodeForErrorContext: DocNode): DocMemberSymbol | undefined {
-
+  private _parseMemberSymbol(
+    tokenReader: TokenReader,
+    nodeForErrorContext: DocNode
+  ): DocMemberSymbol | undefined {
     // Read the "["
     if (tokenReader.peekTokenKind() !== TokenKind.LeftSquareBracket) {
       // This should be impossible since the caller ensures that peekTokenKind() === TokenKind.LeftSquareBracket
@@ -1411,17 +1632,24 @@ export class NodeParser {
     tokenReader.readToken();
     const leftBracketExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    const spacingAfterLeftBracketExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+    const spacingAfterLeftBracketExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
+      tokenReader
+    );
 
     // Read the declaration reference
-    const declarationReference: DocDeclarationReference | undefined
-      = this._parseDeclarationReference(tokenReader, leftBracketExcerpt, nodeForErrorContext);
+    const declarationReference: DocDeclarationReference | undefined = this._parseDeclarationReference(
+      tokenReader,
+      leftBracketExcerpt,
+      nodeForErrorContext
+    );
 
     if (!declarationReference) {
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ReferenceSymbolSyntax,
         'Missing declaration reference in symbol reference',
-        leftBracketExcerpt, nodeForErrorContext);
+        leftBracketExcerpt,
+        nodeForErrorContext
+      );
 
       return undefined;
     }
@@ -1433,7 +1661,9 @@ export class NodeParser {
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ReferenceMissingRightBracket,
         'Missing closing square bracket for symbol reference',
-        leftBracketExcerpt, nodeForErrorContext);
+        leftBracketExcerpt,
+        nodeForErrorContext
+      );
 
       return undefined;
     }
@@ -1452,15 +1682,16 @@ export class NodeParser {
     });
   }
 
-  private _parseMemberIdentifier(tokenReader: TokenReader,
-    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): DocMemberIdentifier | undefined {
-
+  private _parseMemberIdentifier(
+    tokenReader: TokenReader,
+    tokenSequenceForErrorContext: TokenSequence,
+    nodeForErrorContext: DocNode
+  ): DocMemberIdentifier | undefined {
     let leftQuoteExcerpt: TokenSequence | undefined = undefined;
     let rightQuoteExcerpt: TokenSequence | undefined = undefined;
 
-      // Is this a quoted identifier?
+    // Is this a quoted identifier?
     if (tokenReader.peekTokenKind() === TokenKind.DoubleQuote) {
-
       // Read the opening '"'
       tokenReader.readToken();
       leftQuoteExcerpt = tokenReader.extractAccumulatedSequence();
@@ -1471,7 +1702,9 @@ export class NodeParser {
           this._parserContext.log.addMessageForTokenSequence(
             TSDocMessageId.ReferenceMissingQuote,
             'Unexpected end of input inside quoted member identifier',
-            leftQuoteExcerpt, nodeForErrorContext);
+            leftQuoteExcerpt,
+            nodeForErrorContext
+          );
           return undefined;
         }
 
@@ -1482,14 +1715,16 @@ export class NodeParser {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.ReferenceEmptyIdentifier,
           'The quoted identifier cannot be empty',
-          leftQuoteExcerpt, nodeForErrorContext);
+          leftQuoteExcerpt,
+          nodeForErrorContext
+        );
         return undefined;
       }
 
       const identifierExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
       // Read the closing '""
-      tokenReader.readToken();  // read the quote
+      tokenReader.readToken(); // read the quote
       rightQuoteExcerpt = tokenReader.extractAccumulatedSequence();
 
       return new DocMemberIdentifier({
@@ -1520,19 +1755,25 @@ export class NodeParser {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.ReferenceMissingIdentifier,
           'Syntax error in declaration reference: expecting a member identifier',
-          tokenSequenceForErrorContext, nodeForErrorContext);
+          tokenSequenceForErrorContext,
+          nodeForErrorContext
+        );
         return undefined;
       }
 
       const identifierExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
       const identifier: string = identifierExcerpt.toString();
 
-      const explanation: string | undefined = StringChecks.explainIfInvalidUnquotedMemberIdentifier(identifier);
+      const explanation: string | undefined = StringChecks.explainIfInvalidUnquotedMemberIdentifier(
+        identifier
+      );
       if (explanation) {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.ReferenceUnquotedIdentifier,
           explanation,
-          identifierExcerpt, nodeForErrorContext);
+          identifierExcerpt,
+          nodeForErrorContext
+        );
         return undefined;
       }
 
@@ -1547,14 +1788,18 @@ export class NodeParser {
     }
   }
 
-  private _parseMemberSelector(tokenReader: TokenReader,
-    tokenSequenceForErrorContext: TokenSequence, nodeForErrorContext: DocNode): DocMemberSelector | undefined {
-
+  private _parseMemberSelector(
+    tokenReader: TokenReader,
+    tokenSequenceForErrorContext: TokenSequence,
+    nodeForErrorContext: DocNode
+  ): DocMemberSelector | undefined {
     if (tokenReader.peekTokenKind() !== TokenKind.AsciiWord) {
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ReferenceMissingLabel,
         'Expecting a selector label after the colon',
-        tokenSequenceForErrorContext, nodeForErrorContext);
+        tokenSequenceForErrorContext,
+        nodeForErrorContext
+      );
     }
 
     const selector: string = tokenReader.readToken().toString();
@@ -1572,7 +1817,9 @@ export class NodeParser {
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ReferenceSelectorSyntax,
         docMemberSelector.errorMessage,
-        selectorExcerpt, nodeForErrorContext);
+        selectorExcerpt,
+        nodeForErrorContext
+      );
       return undefined;
     }
 
@@ -1598,7 +1845,12 @@ export class NodeParser {
     // Read the element name
     const nameExcerpt: ResultOrFailure<TokenSequence> = this._parseHtmlName(tokenReader);
     if (isFailure(nameExcerpt)) {
-      return this._backtrackAndCreateErrorForFailure(tokenReader, marker, 'Invalid HTML element: ', nameExcerpt);
+      return this._backtrackAndCreateErrorForFailure(
+        tokenReader,
+        marker,
+        'Invalid HTML element: ',
+        nameExcerpt
+      );
     }
 
     const spacingAfterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
@@ -1610,8 +1862,12 @@ export class NodeParser {
       // Read the attribute
       const attributeNode: ResultOrFailure<DocHtmlAttribute> = this._parseHtmlAttribute(tokenReader);
       if (isFailure(attributeNode)) {
-        return this._backtrackAndCreateErrorForFailure(tokenReader, marker,
-          'The HTML element has an invalid attribute: ', attributeNode);
+        return this._backtrackAndCreateErrorForFailure(
+          tokenReader,
+          marker,
+          'The HTML element has an invalid attribute: ',
+          attributeNode
+        );
       }
 
       htmlAttributes.push(attributeNode);
@@ -1627,11 +1883,18 @@ export class NodeParser {
       selfClosingTag = true;
     }
     if (tokenReader.peekTokenKind() !== TokenKind.GreaterThan) {
-      const failure: IFailure = this._createFailureForTokensSince(tokenReader,
+      const failure: IFailure = this._createFailureForTokensSince(
+        tokenReader,
         TSDocMessageId.HtmlTagMissingGreaterThan,
-        'Expecting an attribute or ">" or "/>"', endDelimiterMarker);
-      return this._backtrackAndCreateErrorForFailure(tokenReader, marker,
-        'The HTML tag has invalid syntax: ', failure);
+        'Expecting an attribute or ">" or "/>"',
+        endDelimiterMarker
+      );
+      return this._backtrackAndCreateErrorForFailure(
+        tokenReader,
+        marker,
+        'The HTML tag has invalid syntax: ',
+        failure
+      );
     }
     tokenReader.readToken();
 
@@ -1670,9 +1933,11 @@ export class NodeParser {
 
     // Read the equals
     if (tokenReader.peekTokenKind() !== TokenKind.Equals) {
-      return this._createFailureForToken(tokenReader,
+      return this._createFailureForToken(
+        tokenReader,
         TSDocMessageId.HtmlTagMissingEquals,
-        'Expecting "=" after HTML attribute name');
+        'Expecting "=" after HTML attribute name'
+      );
     }
     tokenReader.readToken();
 
@@ -1709,9 +1974,11 @@ export class NodeParser {
     const marker: number = tokenReader.createMarker();
     const quoteTokenKind: TokenKind = tokenReader.peekTokenKind();
     if (quoteTokenKind !== TokenKind.DoubleQuote && quoteTokenKind !== TokenKind.SingleQuote) {
-      return this._createFailureForToken(tokenReader,
+      return this._createFailureForToken(
+        tokenReader,
         TSDocMessageId.HtmlTagMissingString,
-        'Expecting an HTML string starting with a single-quote or double-quote character');
+        'Expecting an HTML string starting with a single-quote or double-quote character'
+      );
     }
     tokenReader.readToken();
 
@@ -1724,19 +1991,24 @@ export class NodeParser {
         tokenReader.readToken(); // extract the quote
         break;
       }
-      if (peekedTokenKind === TokenKind.EndOfInput ||  peekedTokenKind === TokenKind.Newline) {
-        return this._createFailureForToken(tokenReader,
+      if (peekedTokenKind === TokenKind.EndOfInput || peekedTokenKind === TokenKind.Newline) {
+        return this._createFailureForToken(
+          tokenReader,
           TSDocMessageId.HtmlStringMissingQuote,
-          'The HTML string is missing its closing quote', marker);
+          'The HTML string is missing its closing quote',
+          marker
+        );
       }
       textWithoutQuotes += tokenReader.readToken().toString();
     }
 
     // The next attribute cannot start immediately after this one
     if (tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
-      return this._createFailureForToken(tokenReader,
+      return this._createFailureForToken(
+        tokenReader,
         TSDocMessageId.TextAfterHtmlString,
-        'The next character after a closing quote must be spacing or punctuation');
+        'The next character after a closing quote must be spacing or punctuation'
+      );
     }
 
     return textWithoutQuotes;
@@ -1749,17 +2021,23 @@ export class NodeParser {
     // Read the "</" delimiter
     const lessThanToken: Token = tokenReader.peekToken();
     if (lessThanToken.kind !== TokenKind.LessThan) {
-      return this._backtrackAndCreateError(tokenReader, marker,
+      return this._backtrackAndCreateError(
+        tokenReader,
+        marker,
         TSDocMessageId.MissingHtmlEndTag,
-        'Expecting an HTML tag starting with "</"');
+        'Expecting an HTML tag starting with "</"'
+      );
     }
     tokenReader.readToken();
 
     const slashToken: Token = tokenReader.peekToken();
     if (slashToken.kind !== TokenKind.Slash) {
-      return this._backtrackAndCreateError(tokenReader, marker,
+      return this._backtrackAndCreateError(
+        tokenReader,
+        marker,
         TSDocMessageId.MissingHtmlEndTag,
-        'Expecting an HTML tag starting with "</"');
+        'Expecting an HTML tag starting with "</"'
+      );
     }
     tokenReader.readToken();
 
@@ -1771,17 +2049,23 @@ export class NodeParser {
     // Read the tag name
     const nameExcerpt: ResultOrFailure<TokenSequence> = this._parseHtmlName(tokenReader);
     if (isFailure(nameExcerpt)) {
-      return this._backtrackAndCreateErrorForFailure(tokenReader, marker,
-        'Expecting an HTML element name: ', nameExcerpt);
+      return this._backtrackAndCreateErrorForFailure(
+        tokenReader,
+        marker,
+        'Expecting an HTML element name: ',
+        nameExcerpt
+      );
     }
 
     const spacingAfterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the closing ">"
     if (tokenReader.peekTokenKind() !== TokenKind.GreaterThan) {
-      const failure: IFailure = this._createFailureForToken(tokenReader,
+      const failure: IFailure = this._createFailureForToken(
+        tokenReader,
         TSDocMessageId.HtmlTagMissingGreaterThan,
-        'Expecting a closing ">" for the HTML tag');
+        'Expecting a closing ">" for the HTML tag'
+      );
       return this._backtrackAndCreateErrorForFailure(tokenReader, marker, '', failure);
     }
     tokenReader.readToken();
@@ -1808,9 +2092,12 @@ export class NodeParser {
     const marker: number = tokenReader.createMarker();
 
     if (tokenReader.peekTokenKind() === TokenKind.Spacing) {
-      return this._createFailureForTokensSince(tokenReader,
+      return this._createFailureForTokensSince(
+        tokenReader,
         TSDocMessageId.MalformedHtmlName,
-        'A space is not allowed here', marker);
+        'A space is not allowed here',
+        marker
+      );
     }
 
     let done: boolean = false;
@@ -1829,9 +2116,11 @@ export class NodeParser {
     const excerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
 
     if (!excerpt) {
-      return this._createFailureForToken(tokenReader,
+      return this._createFailureForToken(
+        tokenReader,
         TSDocMessageId.MalformedHtmlName,
-        'Expecting an HTML name');
+        'Expecting an HTML name'
+      );
     }
 
     const htmlName: string = excerpt.toString();
@@ -1839,9 +2128,12 @@ export class NodeParser {
     const explanation: string | undefined = StringChecks.explainIfInvalidHtmlName(htmlName);
 
     if (explanation) {
-      return this._createFailureForTokensSince(tokenReader,
+      return this._createFailureForTokensSince(
+        tokenReader,
         TSDocMessageId.MalformedHtmlName,
-        explanation, marker);
+        explanation,
+        marker
+      );
     }
 
     return excerpt;
@@ -1888,7 +2180,9 @@ export class NodeParser {
       tokenReader.readToken();
     }
 
-    const spacingAfterOpeningFenceExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterOpeningFenceExcerpt:
+      | TokenSequence
+      | undefined = tokenReader.tryExtractAccumulatedSequence();
 
     // Read the language specifier (if present) and newline
     let done: boolean = false;
@@ -1907,17 +2201,31 @@ export class NodeParser {
           tokenReader.readToken();
           break;
         case TokenKind.Backtick:
-          const failure: IFailure = this._createFailureForToken(tokenReader,
+          const failure: IFailure = this._createFailureForToken(
+            tokenReader,
             TSDocMessageId.CodeFenceSpecifierSyntax,
-            'The language specifier cannot contain backtick characters');
-          return this._backtrackAndCreateErrorRangeForFailure(tokenReader, startMarker, endOfOpeningDelimiterMarker,
-            'Error parsing code fence: ', failure);
+            'The language specifier cannot contain backtick characters'
+          );
+          return this._backtrackAndCreateErrorRangeForFailure(
+            tokenReader,
+            startMarker,
+            endOfOpeningDelimiterMarker,
+            'Error parsing code fence: ',
+            failure
+          );
         case TokenKind.EndOfInput:
-          const failure2: IFailure = this._createFailureForToken(tokenReader,
+          const failure2: IFailure = this._createFailureForToken(
+            tokenReader,
             TSDocMessageId.CodeFenceMissingDelimiter,
-            'Missing closing delimiter');
-          return this._backtrackAndCreateErrorRangeForFailure(tokenReader, startMarker, endOfOpeningDelimiterMarker,
-            'Error parsing code fence: ', failure2);
+            'Missing closing delimiter'
+          );
+          return this._backtrackAndCreateErrorRangeForFailure(
+            tokenReader,
+            startMarker,
+            endOfOpeningDelimiterMarker,
+            'Error parsing code fence: ',
+            failure2
+          );
         default:
           // more non-spacing content
           startOfPaddingMarker = undefined;
@@ -1932,11 +2240,15 @@ export class NodeParser {
 
     // Example: "pov-ray sdl"
     const languageExcerpt: TokenSequence = restOfLineExcerpt.getNewSequence(
-      restOfLineExcerpt.startIndex, startOfPaddingMarker!);
+      restOfLineExcerpt.startIndex,
+      startOfPaddingMarker!
+    );
 
     // Example: "    \n"
     const spacingAfterLanguageExcerpt: TokenSequence | undefined = restOfLineExcerpt.getNewSequence(
-      startOfPaddingMarker!, restOfLineExcerpt.endIndex);
+      startOfPaddingMarker!,
+      restOfLineExcerpt.endIndex
+    );
 
     // Read the code content until we see the closing ``` delimiter
     let codeEndMarker: number = -1;
@@ -1946,11 +2258,18 @@ export class NodeParser {
     while (!done) {
       switch (tokenReader.peekTokenKind()) {
         case TokenKind.EndOfInput:
-          const failure2: IFailure = this._createFailureForToken(tokenReader,
+          const failure2: IFailure = this._createFailureForToken(
+            tokenReader,
             TSDocMessageId.CodeFenceMissingDelimiter,
-            'Missing closing delimiter');
-          return this._backtrackAndCreateErrorRangeForFailure(tokenReader, startMarker, endOfOpeningDelimiterMarker,
-            'Error parsing code fence: ', failure2);
+            'Missing closing delimiter'
+          );
+          return this._backtrackAndCreateErrorRangeForFailure(
+            tokenReader,
+            startMarker,
+            endOfOpeningDelimiterMarker,
+            'Error parsing code fence: ',
+            failure2
+          );
         case TokenKind.Newline:
           tokenBeforeDelimiter = tokenReader.readToken();
           codeEndMarker = tokenReader.createMarker();
@@ -1987,7 +2306,8 @@ export class NodeParser {
       this._parserContext.log.addMessageForTextRange(
         TSDocMessageId.CodeFenceClosingIndent,
         'The closing delimiter for a code fence must not be indented',
-        tokenBeforeDelimiter!.range);
+        tokenBeforeDelimiter!.range
+      );
     }
 
     // Example: "code 1\ncode 2\n  ```"
@@ -1995,15 +2315,20 @@ export class NodeParser {
 
     // Example: "code 1\ncode 2\n"
     const codeExcerpt: TokenSequence = codeAndDelimiterExcerpt.getNewSequence(
-      codeAndDelimiterExcerpt.startIndex, codeEndMarker);
+      codeAndDelimiterExcerpt.startIndex,
+      codeEndMarker
+    );
 
     // Example: "  "
-    const spacingBeforeClosingFenceExcerpt: TokenSequence | undefined = codeAndDelimiterExcerpt.getNewSequence(
-      codeEndMarker, closingFenceStartMarker);
+    const spacingBeforeClosingFenceExcerpt:
+      | TokenSequence
+      | undefined = codeAndDelimiterExcerpt.getNewSequence(codeEndMarker, closingFenceStartMarker);
 
     // Example: "```"
     const closingFenceExcerpt: TokenSequence = codeAndDelimiterExcerpt.getNewSequence(
-      closingFenceStartMarker, codeAndDelimiterExcerpt.endIndex);
+      closingFenceStartMarker,
+      codeAndDelimiterExcerpt.endIndex
+    );
 
     // Read the spacing and newline after the closing delimiter
     done = false;
@@ -2023,14 +2348,17 @@ export class NodeParser {
           this._parserContext.log.addMessageForTextRange(
             TSDocMessageId.CodeFenceClosingSyntax,
             'Unexpected characters after closing delimiter for code fence',
-            tokenReader.peekToken().range);
+            tokenReader.peekToken().range
+          );
           done = true;
           break;
       }
     }
 
     // Example: "   \n"
-    const spacingAfterClosingFenceExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterClosingFenceExcerpt:
+      | TokenSequence
+      | undefined = tokenReader.tryExtractAccumulatedSequence();
 
     return new DocFencedCode({
       parsed: true,
@@ -2074,9 +2402,13 @@ export class NodeParser {
       // Did we find the matching token?
       if (peekedTokenKind === TokenKind.Backtick) {
         if (tokenReader.isAccumulatedSequenceEmpty()) {
-          return this._backtrackAndCreateErrorRange(tokenReader, marker, marker + 1,
+          return this._backtrackAndCreateErrorRange(
+            tokenReader,
+            marker,
+            marker + 1,
             TSDocMessageId.CodeSpanEmpty,
-            'A code span must contain at least one character between the backticks');
+            'A code span must contain at least one character between the backticks'
+          );
         }
 
         codeExcerpt = tokenReader.extractAccumulatedSequence();
@@ -2085,10 +2417,13 @@ export class NodeParser {
         closingDelimiterExcerpt = tokenReader.extractAccumulatedSequence();
         break;
       }
-      if (peekedTokenKind === TokenKind.EndOfInput ||  peekedTokenKind === TokenKind.Newline) {
-        return this._backtrackAndCreateError(tokenReader, marker,
+      if (peekedTokenKind === TokenKind.EndOfInput || peekedTokenKind === TokenKind.Newline) {
+        return this._backtrackAndCreateError(
+          tokenReader,
+          marker,
           TSDocMessageId.CodeSpanMissingDelimiter,
-          'The code span is missing its closing backtick');
+          'The code span is missing its closing backtick'
+        );
       }
       tokenReader.readToken();
     }
@@ -2124,7 +2459,11 @@ export class NodeParser {
   /**
    * Read the next token, and report it as a DocErrorText node.
    */
-  private _createError(tokenReader: TokenReader, messageId: TSDocMessageId, errorMessage: string): DocErrorText {
+  private _createError(
+    tokenReader: TokenReader,
+    messageId: TSDocMessageId,
+    errorMessage: string
+  ): DocErrorText {
     tokenReader.readToken();
 
     const textExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
@@ -2146,9 +2485,12 @@ export class NodeParser {
   /**
    * Rewind to the specified marker, read the next token, and report it as a DocErrorText node.
    */
-  private _backtrackAndCreateError(tokenReader: TokenReader, marker: number, messageId: TSDocMessageId,
-    errorMessage: string): DocErrorText {
-
+  private _backtrackAndCreateError(
+    tokenReader: TokenReader,
+    marker: number,
+    messageId: TSDocMessageId,
+    errorMessage: string
+  ): DocErrorText {
     tokenReader.backtrackToMarker(marker);
     return this._createError(tokenReader, messageId, errorMessage);
   }
@@ -2157,9 +2499,13 @@ export class NodeParser {
    * Rewind to the errorStartMarker, read the tokens up to and including errorInclusiveEndMarker,
    * and report it as a DocErrorText node.
    */
-  private _backtrackAndCreateErrorRange(tokenReader: TokenReader, errorStartMarker: number,
-    errorInclusiveEndMarker: number, messageId: TSDocMessageId, errorMessage: string): DocErrorText {
-
+  private _backtrackAndCreateErrorRange(
+    tokenReader: TokenReader,
+    errorStartMarker: number,
+    errorInclusiveEndMarker: number,
+    messageId: TSDocMessageId,
+    errorMessage: string
+  ): DocErrorText {
     tokenReader.backtrackToMarker(errorStartMarker);
     while (tokenReader.createMarker() !== errorInclusiveEndMarker) {
       tokenReader.readToken();
@@ -2188,9 +2534,12 @@ export class NodeParser {
    * Rewind to the specified marker, read the next token, and report it as a DocErrorText node
    * whose location is based on an IFailure.
    */
-  private _backtrackAndCreateErrorForFailure(tokenReader: TokenReader, marker: number,
-    errorMessagePrefix: string, failure: IFailure): DocErrorText {
-
+  private _backtrackAndCreateErrorForFailure(
+    tokenReader: TokenReader,
+    marker: number,
+    errorMessagePrefix: string,
+    failure: IFailure
+  ): DocErrorText {
     tokenReader.backtrackToMarker(marker);
     tokenReader.readToken();
 
@@ -2214,9 +2563,13 @@ export class NodeParser {
    * Rewind to the errorStartMarker, read the tokens up to and including errorInclusiveEndMarker,
    * and report it as a DocErrorText node whose location is based on an IFailure.
    */
-  private _backtrackAndCreateErrorRangeForFailure(tokenReader: TokenReader, errorStartMarker: number,
-    errorInclusiveEndMarker: number, errorMessagePrefix: string, failure: IFailure): DocErrorText {
-
+  private _backtrackAndCreateErrorRangeForFailure(
+    tokenReader: TokenReader,
+    errorStartMarker: number,
+    errorInclusiveEndMarker: number,
+    errorMessagePrefix: string,
+    failure: IFailure
+  ): DocErrorText {
     tokenReader.backtrackToMarker(errorStartMarker);
     while (tokenReader.createMarker() !== errorInclusiveEndMarker) {
       tokenReader.readToken();
@@ -2245,9 +2598,12 @@ export class NodeParser {
    * Creates an IFailure whose TokenSequence is a single token.  If a marker is not specified,
    * then it is the current token.
    */
-  private _createFailureForToken(tokenReader: TokenReader, failureMessageId: TSDocMessageId, failureMessage: string,
-    tokenMarker?: number): IFailure {
-
+  private _createFailureForToken(
+    tokenReader: TokenReader,
+    failureMessageId: TSDocMessageId,
+    failureMessage: string,
+    tokenMarker?: number
+  ): IFailure {
     if (!tokenMarker) {
       tokenMarker = tokenReader.createMarker();
     }
@@ -2269,9 +2625,12 @@ export class NodeParser {
    * Creates an IFailure whose TokenSequence starts from the specified marker and
    * encompasses all tokens read since then.  If none were read, then the next token used.
    */
-  private _createFailureForTokensSince(tokenReader: TokenReader, failureMessageId: TSDocMessageId,
-    failureMessage: string, startMarker: number): IFailure {
-
+  private _createFailureForTokensSince(
+    tokenReader: TokenReader,
+    failureMessageId: TSDocMessageId,
+    failureMessage: string,
+    startMarker: number
+  ): IFailure {
     let endMarker: number = tokenReader.createMarker();
     if (endMarker < startMarker) {
       // This would be a parser bug

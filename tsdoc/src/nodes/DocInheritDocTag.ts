@@ -24,7 +24,6 @@ export interface IDocInheritDocTagParsedParameters extends IDocInlineTagBasePars
  * Represents an `{@inheritDoc}` tag.
  */
 export class DocInheritDocTag extends DocInlineTagBase {
-
   private readonly _declarationReference: DocDeclarationReference | undefined;
 
   /**
@@ -55,9 +54,8 @@ export class DocInheritDocTag extends DocInlineTagBase {
   }
 
   /** @override */
-  protected getChildNodesForContent(): ReadonlyArray<DocNode | undefined> { // abstract
-    return [
-      this._declarationReference
-    ];
+  protected getChildNodesForContent(): ReadonlyArray<DocNode | undefined> {
+    // abstract
+    return [this._declarationReference];
   }
 }

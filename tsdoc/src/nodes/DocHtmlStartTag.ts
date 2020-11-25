@@ -163,7 +163,6 @@ export class DocHtmlStartTag extends DocNode {
       this._closingDelimiterExcerpt
     ];
   }
-
 }
 
 // Circular reference

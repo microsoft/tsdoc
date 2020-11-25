@@ -54,8 +54,10 @@ export class TokenReader {
   public extractAccumulatedSequence(): TokenSequence {
     if (this._accumulatedStartIndex === this._currentIndex) {
       // If this happens, it indicates a parser bug:
-      throw new Error('Parser assertion failed: The queue should not be empty when'
-        + ' extractAccumulatedSequence() is called');
+      throw new Error(
+        'Parser assertion failed: The queue should not be empty when' +
+          ' extractAccumulatedSequence() is called'
+      );
     }
 
     const sequence: TokenSequence = new TokenSequence({
@@ -102,9 +104,11 @@ export class TokenReader {
         startIndex: this._accumulatedStartIndex,
         endIndex: this._currentIndex
       });
-      const tokenStrings: string[] = sequence.tokens.map(x => x.toString());
-      throw new Error('Parser assertion failed: The queue should be empty, but it contains:\n'
-        + JSON.stringify(tokenStrings));
+      const tokenStrings: string[] = sequence.tokens.map((x) => x.toString());
+      throw new Error(
+        'Parser assertion failed: The queue should be empty, but it contains:\n' +
+          JSON.stringify(tokenStrings)
+      );
     }
   }
 

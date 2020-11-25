@@ -27,7 +27,13 @@ export function simpleDemo(): void {
   console.log(colors.gray('>>>>>>'));
 
   console.log(os.EOL + colors.green('Extracted Lines:') + os.EOL);
-  console.log(JSON.stringify(parserContext.lines.map(x => x.toString()), undefined, '  '));
+  console.log(
+    JSON.stringify(
+      parserContext.lines.map((x) => x.toString()),
+      undefined,
+      '  '
+    )
+  );
 
   console.log(os.EOL + colors.green('Parser Log Messages:') + os.EOL);
 
@@ -43,24 +49,26 @@ export function simpleDemo(): void {
 
   const docComment: DocComment = parserContext.docComment;
 
-  console.log(colors.cyan('Summary: ')
-    + JSON.stringify(Formatter.renderDocNode(docComment.summarySection)));
+  console.log(colors.cyan('Summary: ') + JSON.stringify(Formatter.renderDocNode(docComment.summarySection)));
 
   if (docComment.remarksBlock) {
-    console.log(colors.cyan('Remarks: ')
-    + JSON.stringify(Formatter.renderDocNode(docComment.remarksBlock.content)));
+    console.log(
+      colors.cyan('Remarks: ') + JSON.stringify(Formatter.renderDocNode(docComment.remarksBlock.content))
+    );
   }
 
   for (const paramBlock of docComment.params.blocks) {
-    console.log(colors.cyan(`Parameter "${paramBlock.parameterName}": `)
-    + JSON.stringify(Formatter.renderDocNode(paramBlock.content)));
+    console.log(
+      colors.cyan(`Parameter "${paramBlock.parameterName}": `) +
+        JSON.stringify(Formatter.renderDocNode(paramBlock.content))
+    );
   }
 
   if (docComment.returnsBlock) {
-    console.log(colors.cyan('Returns: ')
-    + JSON.stringify(Formatter.renderDocNode(docComment.returnsBlock.content)));
+    console.log(
+      colors.cyan('Returns: ') + JSON.stringify(Formatter.renderDocNode(docComment.returnsBlock.content))
+    );
   }
 
-  console.log(colors.cyan('Modifiers: ')
-    + docComment.modifierTagSet.nodes.map(x => x.tagName).join(', '));
+  console.log(colors.cyan('Modifiers: ') + docComment.modifierTagSet.nodes.map((x) => x.tagName).join(', '));
 }

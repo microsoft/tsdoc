@@ -56,9 +56,11 @@ export class TokenCoverageChecker {
     for (let i: number = tokenSequence.startIndex; i < tokenSequence.endIndex; ++i) {
       const tokenAssociation: ITokenAssociation | undefined = this._tokenAssociations[i];
       if (tokenAssociation) {
-        throw new Error(`Overlapping content encountered between`
-          + ` ${this._formatTokenAssociation(tokenAssociation)} and`
-          + ` ${this._formatTokenAssociation(newTokenAssociation)}`);
+        throw new Error(
+          `Overlapping content encountered between` +
+            ` ${this._formatTokenAssociation(tokenAssociation)} and` +
+            ` ${this._formatTokenAssociation(newTokenAssociation)}`
+        );
       }
 
       this._tokenAssociations[i] = newTokenAssociation;
@@ -77,7 +79,6 @@ export class TokenCoverageChecker {
     }
 
     for (let i: number = 0; i < this._parserContext.tokens.length - 1; ++i) {
-
       const tokenAssociation: ITokenAssociation | undefined = this._tokenAssociations[i];
 
       if (gapStartIndex === undefined) {
@@ -123,8 +124,11 @@ export class TokenCoverageChecker {
     return gaps;
   }
 
-  private _reportGap(gap: TokenSequence, tokenAssociationBeforeGap: ITokenAssociation | undefined,
-    tokenAssociationAfterGap: ITokenAssociation | undefined): never {
+  private _reportGap(
+    gap: TokenSequence,
+    tokenAssociationBeforeGap: ITokenAssociation | undefined,
+    tokenAssociationAfterGap: ITokenAssociation | undefined
+  ): never {
     let message: string = 'Gap encountered';
 
     if (tokenAssociationBeforeGap) {

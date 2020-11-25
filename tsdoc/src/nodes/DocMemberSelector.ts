@@ -112,16 +112,18 @@ export class DocMemberSelector extends DocNode {
       if (DocMemberSelector._labelSelectorRegExp.test(this._selector)) {
         this._selectorKind = SelectorKind.Label;
       } else {
-        this._errorMessage = 'A label selector must be comprised of upper case letters, numbers,'
-          + ' and underscores and must not start with a number';
+        this._errorMessage =
+          'A label selector must be comprised of upper case letters, numbers,' +
+          ' and underscores and must not start with a number';
       }
     } else {
       if (StringChecks.isSystemSelector(this._selector)) {
         this._selectorKind = SelectorKind.System;
       } else if (DocMemberSelector._likeSystemSelectorRegExp.test(this._selector)) {
         // It looks like a system selector, but is not
-        this._errorMessage = `The selector ${JSON.stringify(this._selector)}`
-          + ` is not a recognized TSDoc system selector name`;
+        this._errorMessage =
+          `The selector ${JSON.stringify(this._selector)}` +
+          ` is not a recognized TSDoc system selector name`;
       } else {
         // It doesn't look like anything we recognize
         this._errorMessage = 'Invalid syntax for selector';
@@ -163,8 +165,6 @@ export class DocMemberSelector extends DocNode {
 
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
-    return [
-      this._selectorExcerpt
-    ];
+    return [this._selectorExcerpt];
   }
 }

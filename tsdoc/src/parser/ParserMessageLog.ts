@@ -29,25 +29,33 @@ export class ParserMessageLog {
    * Append a message associated with a TextRange.
    */
   public addMessageForTextRange(messageId: TSDocMessageId, messageText: string, textRange: TextRange): void {
-    this.addMessage(new ParserMessage({
-      messageId,
-      messageText,
-      textRange
-    }));
+    this.addMessage(
+      new ParserMessage({
+        messageId,
+        messageText,
+        textRange
+      })
+    );
   }
 
   /**
    * Append a message associated with a TokenSequence.
    */
-  public addMessageForTokenSequence(messageId: TSDocMessageId, messageText: string, tokenSequence: TokenSequence,
-    docNode?: DocNode): void {
-    this.addMessage(new ParserMessage({
-      messageId,
-      messageText,
-      textRange: tokenSequence.getContainingTextRange(),
-      tokenSequence,
-      docNode
-    }));
+  public addMessageForTokenSequence(
+    messageId: TSDocMessageId,
+    messageText: string,
+    tokenSequence: TokenSequence,
+    docNode?: DocNode
+  ): void {
+    this.addMessage(
+      new ParserMessage({
+        messageId,
+        messageText,
+        textRange: tokenSequence.getContainingTextRange(),
+        tokenSequence,
+        docNode
+      })
+    );
   }
 
   /**
@@ -65,12 +73,14 @@ export class ParserMessageLog {
       tokenSequence = docErrorText.errorLocation;
     }
 
-    this.addMessage(new ParserMessage({
-      messageId: docErrorText.messageId,
-      messageText: docErrorText.errorMessage,
-      textRange: tokenSequence.getContainingTextRange(),
-      tokenSequence: tokenSequence,
-      docNode: docErrorText
-    }));
+    this.addMessage(
+      new ParserMessage({
+        messageId: docErrorText.messageId,
+        messageText: docErrorText.errorMessage,
+        textRange: tokenSequence.getContainingTextRange(),
+        tokenSequence: tokenSequence,
+        docNode: docErrorText
+      })
+    );
   }
 }

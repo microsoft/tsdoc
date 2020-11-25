@@ -8,6 +8,6 @@
 
   "staticAssetsToCopy": {
     "fileExtensions": [".json", ".css"],
-    "includeGlobs": [ "samples/*.ts" ]
+    "includeGlobs": ["samples/*.ts"]
   }
 }

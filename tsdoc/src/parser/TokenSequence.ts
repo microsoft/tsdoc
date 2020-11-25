@@ -91,7 +91,7 @@ export class TokenSequence {
    * Returns the concatenated text of all the tokens.
    */
   public toString(): string {
-    return this.tokens.map(x => x.toString()).join('');
+    return this.tokens.map((x) => x.toString()).join('');
   }
 
   private _validateBounds(): void {

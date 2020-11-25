@@ -85,7 +85,6 @@ export const enum ExcerptKind {
 
 /* eslint-enable @typescript-eslint/naming-convention */
 
-
 /**
  * Constructor parameters for {@link DocExcerpt}.
  */

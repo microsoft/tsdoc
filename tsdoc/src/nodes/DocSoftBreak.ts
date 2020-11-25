@@ -5,8 +5,7 @@ import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 /**
  * Constructor parameters for {@link DocSoftBreak}.
  */
-export interface IDocSoftBreakParameters extends IDocNodeParameters {
-}
+export interface IDocSoftBreakParameters extends IDocNodeParameters {}
 
 /**
  * Constructor parameters for {@link DocSoftBreak}.
@@ -54,8 +53,6 @@ export class DocSoftBreak extends DocNode {
 
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
-    return [
-      this._softBreakExcerpt
-    ];
+    return [this._softBreakExcerpt];
   }
 }

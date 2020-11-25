@@ -16,16 +16,17 @@ const REACT_DOM_URL = {
 };
 const REACT_DOM_SERVER_URL = {
   dev: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.5.1/umd/react-dom-server.browser.development.js',
-  production: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.5.1/umd/react-dom-server.browser.production.min.js'
+  production:
+    'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.5.1/umd/react-dom-server.browser.production.min.js'
 };
 const MONACO_URL = {
   dev: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/',
   production: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/'
 };
 
-module.exports.generateBuildWebpackConfiguration = function(env) {
-  return  _generateBaseWebpackConfiguration((env || {}).production);
-}
+module.exports.generateBuildWebpackConfiguration = function (env) {
+  return _generateBaseWebpackConfiguration((env || {}).production);
+};
 
 module.exports.generateServeWebpackConfiguration = function () {
   const result = _generateBaseWebpackConfiguration(false);
@@ -37,7 +38,7 @@ module.exports.generateServeWebpackConfiguration = function () {
   };
 
   return result;
-}
+};
 
 function _generateBaseWebpackConfiguration(isProduction) {
   const distDirectory = path.join(__dirname, 'dist');
@@ -49,10 +50,7 @@ function _generateBaseWebpackConfiguration(isProduction) {
       rules: [
         {
           test: /\.css$/,
-          use: [
-            require.resolve('style-loader'),
-            require.resolve('css-loader')
-          ]
+          use: [require.resolve('style-loader'), require.resolve('css-loader')]
         },
         {
           test: /\.(scss|sass)$/,
@@ -74,15 +72,15 @@ function _generateBaseWebpackConfiguration(isProduction) {
     resolve: {
       extensions: ['.js', '.jsx', '.json'],
       alias: {
-        'tslib': 'tslib/tslib.es6'
+        tslib: 'tslib/tslib.es6'
       }
     },
-    devtool: (isProduction) ? undefined : 'source-map',
+    devtool: isProduction ? undefined : 'source-map',
     entry: {
       'tsdoc-playground': path.join(__dirname, 'lib', 'index.js')
     },
     externals: {
-      'react': 'React',
+      react: 'React',
       'react-dom': 'ReactDOM',
       'react-dom/server': 'ReactDOMServer'
     },
@@ -112,7 +110,7 @@ function _generateBaseWebpackConfiguration(isProduction) {
       new SetPublicPathPlugin({
         scriptName: {
           isTokenized: true,
-          name: '[name]_?[a-zA-Z0-9-_]*\.js'
+          name: '[name]_?[a-zA-Z0-9-_]*.js'
         }
       }),
       new BundleAnalyzerPlugin({

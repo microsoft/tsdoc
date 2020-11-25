@@ -77,8 +77,8 @@ export class TSDocTagDefinition {
     this.tagName = parameters.tagName;
     this.tagNameWithUpperCase = parameters.tagName.toUpperCase();
     this.syntaxKind = parameters.syntaxKind;
-    this.standardization = (parameters as ITSDocTagDefinitionInternalParameters).standardization
-      || Standardization.None;
+    this.standardization =
+      (parameters as ITSDocTagDefinitionInternalParameters).standardization || Standardization.None;
     this.allowMultiple = !!parameters.allowMultiple;
   }
 }

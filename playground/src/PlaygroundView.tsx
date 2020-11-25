@@ -6,21 +6,15 @@ import { FlexRowDiv, FlexColDiv } from './FlexDivs';
 import { DocHtmlView } from './DocHtmlView';
 import { DocDomView } from './DocDomView';
 import { DocAstView } from './DocAstView';
-import {
-  CodeEditor,
-  ISyntaxMarker,
-  IStyledRange
-} from './CodeEditor';
+import { CodeEditor, ISyntaxMarker, IStyledRange } from './CodeEditor';
 import { DocNodeSyntaxStyler } from './SyntaxStyler/DocNodeSyntaxStyler';
 import { SampleInputs } from './samples/SampleInputs';
 
 export const enum Theme {
   vs = 'vs'
-
 }
 
-export interface IPlaygroundViewProps {
-}
+export interface IPlaygroundViewProps {}
 
 export interface IPlaygroundViewState {
   inputText: string;
@@ -30,7 +24,7 @@ export interface IPlaygroundViewState {
   selectedTheme: string;
 }
 
-export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlaygroundViewState>  {
+export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlaygroundViewState> {
   private readonly _textAreaStyle: React.CSSProperties = {
     width: '100%',
     height: '100%',
@@ -58,7 +52,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     this._inputTextArea_onChange = this._inputTextArea_onChange.bind(this);
     this._selectSample_onChange = this._selectSample_onChange.bind(this);
-    this._selectTheme_onChange = this._selectTheme_onChange.bind(this)
+    this._selectTheme_onChange = this._selectTheme_onChange.bind(this);
   }
 
   public componentDidMount(): void {
@@ -109,38 +103,43 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     };
 
     return (
-      <FlexColDiv className='playground-frame' style={ { flex: 1 } }>
-        <FlexRowDiv className='playground-header' style={ headerStyle }>
+      <FlexColDiv className="playground-frame" style={{ flex: 1 }}>
+        <FlexRowDiv className="playground-header" style={headerStyle}>
           <FlexColDiv style={{ fontWeight: 400, fontSize: '26px' }}>TSDoc Playground</FlexColDiv>
           <FlexColDiv style={{ fontWeight: 400, fontSize: '20px' }}>
-            <a style={navAnchorStyle} href='https://github.com/Microsoft/tsdoc' target='_blank'
-              rel='noopener noreferrer'>
-              What is TSDoc?</a>
+            <a
+              style={navAnchorStyle}
+              href="https://github.com/Microsoft/tsdoc"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              What is TSDoc?
+            </a>
           </FlexColDiv>
         </FlexRowDiv>
 
-        <FlexColDiv className='playground-content-area' style={ { margin: '4px', flex: 1 } }>
-          <FlexRowDiv className='playground-main-row' style={ mainRowStyle }>
-            { this._renderInputBox() }
+        <FlexColDiv className="playground-content-area" style={{ margin: '4px', flex: 1 }}>
+          <FlexRowDiv className="playground-main-row" style={mainRowStyle}>
+            {this._renderInputBox()}
 
             <TabPane
-              style={ { flex: 1, marginLeft: '4px' } }
-              buttonRowStyle={ { height: '40px', boxSizing: 'border-box'  } }
-              tabs={ [
+              style={{ flex: 1, marginLeft: '4px' }}
+              buttonRowStyle={{ height: '40px', boxSizing: 'border-box' }}
+              tabs={[
                 { title: 'HTML', render: this._renderHtml.bind(this) },
                 { title: 'DOM', render: this._renderDom.bind(this) },
                 { title: 'Lines', render: this._renderLines.bind(this) },
                 { title: 'AST', render: this._renderAst.bind(this) },
                 { title: 'Emitter', render: this._renderEmitter.bind(this) }
-              ] }
+              ]}
             />
           </FlexRowDiv>
-          <FlexColDiv className='playground-errors-pane' style={ errorsPaneStyle }>
-            { this._renderErrorList() }
+          <FlexColDiv className="playground-errors-pane" style={errorsPaneStyle}>
+            {this._renderErrorList()}
           </FlexColDiv>
         </FlexColDiv>
 
-        <FlexRowDiv className='playground-footer' style={ footerStyle }>
+        <FlexRowDiv className="playground-footer" style={footerStyle}>
           &copy; 2019 Microsoft
         </FlexRowDiv>
       </FlexColDiv>
@@ -172,14 +171,11 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
         }
       }
 
-      DocNodeSyntaxStyler.getStylesForDocComment(
-        syntaxStyles,
-        {
-          docNode: this.state.parserContext.docComment,
-          parserContext: this.state.parserContext,
-          themeName: this.state.selectedTheme
-        }
-      );
+      DocNodeSyntaxStyler.getStylesForDocComment(syntaxStyles, {
+        docNode: this.state.parserContext.docComment,
+        parserContext: this.state.parserContext,
+        themeName: this.state.selectedTheme
+      });
     }
 
     const editorStyle: React.CSSProperties = {
@@ -189,21 +185,21 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     };
 
     return (
-      <FlexColDiv className='playground-input-box' style={ { flex: 1 } }>
-        <div className='playground-button-bar' style={ { height: '40px', boxSizing: 'border-box' } }>
-          { this._renderSelectSample() }
-          { this._renderThemeSelector() }
+      <FlexColDiv className="playground-input-box" style={{ flex: 1 }}>
+        <div className="playground-button-bar" style={{ height: '40px', boxSizing: 'border-box' }}>
+          {this._renderSelectSample()}
+          {this._renderThemeSelector()}
         </div>
         <CodeEditor
-          className='playground-input-text-editor'
-          style={ editorStyle }
-          value={ this.state.inputText }
-          onChange={ this._inputTextArea_onChange }
-          language='typescript'
-          markers={ markers }
-          syntaxStyles={ syntaxStyles }
-          theme={ this.state.selectedTheme }
-         />
+          className="playground-input-text-editor"
+          style={editorStyle}
+          value={this.state.inputText}
+          onChange={this._inputTextArea_onChange}
+          language="typescript"
+          markers={markers}
+          syntaxStyles={syntaxStyles}
+          theme={this.state.selectedTheme}
+        />
       </FlexColDiv>
     );
   }
@@ -211,15 +207,15 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   private _renderSelectSample(): React.ReactNode {
     return (
       <select
-        className='playground-select-sample'
+        className="playground-select-sample"
         value={this.state.selectSampleValue}
-        aria-label='Select a code sample'
-        onChange={this._selectSample_onChange}>
-
-        <option value='none'>Choose a sample...</option>
-        <option value='basic'>A basic example</option>
-        <option value='advanced'>Some advanced features</option>
-        <option value='hyperlink'>Creating hyperlinks</option>
+        aria-label="Select a code sample"
+        onChange={this._selectSample_onChange}
+      >
+        <option value="none">Choose a sample...</option>
+        <option value="basic">A basic example</option>
+        <option value="advanced">Some advanced features</option>
+        <option value="hyperlink">Creating hyperlinks</option>
       </select>
     );
   }
@@ -227,13 +223,13 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   private _renderThemeSelector(): React.ReactNode {
     return (
       <select
-        className='playground-select-theme'
+        className="playground-select-theme"
         value={this.state.selectedTheme}
-        aria-label='Select an editor theme'
-        onChange={this._selectTheme_onChange}>
-
-        <option value='vs'>Light Theme</option>
-        <option value='vs-dark'>Dark Theme</option>
+        aria-label="Select an editor theme"
+        onChange={this._selectTheme_onChange}
+      >
+        <option value="vs">Light Theme</option>
+        <option value="vs-dark">Dark Theme</option>
       </select>
     );
   }
@@ -266,8 +262,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
     if (parserContext && parserContext.docComment) {
       return (
-        <div style={ { overflow: 'auto', paddingLeft: '8px', paddingRight: '8px', flex: 1 } }>
-          <DocHtmlView docComment={ parserContext.docComment } />
+        <div style={{ overflow: 'auto', paddingLeft: '8px', paddingRight: '8px', flex: 1 }}>
+          <DocHtmlView docComment={parserContext.docComment} />
         </div>
       );
     } else {
@@ -276,12 +272,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   private _renderDom(): React.ReactNode {
-    return (
-      <DocDomView
-        parserContext={ this.state.parserContext }
-        theme={ this.state.selectedTheme }
-      />
-    );
+    return <DocDomView parserContext={this.state.parserContext} theme={this.state.selectedTheme} />;
   }
 
   private _renderLines(): React.ReactNode {
@@ -293,21 +284,16 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     return (
       <textarea
-        className='playground-lines-text-editor'
-        style={ { ...this._textAreaStyle, border: 'none' } }
-        readOnly={ true }
-        value={ outputText }
-        />
+        className="playground-lines-text-editor"
+        style={{ ...this._textAreaStyle, border: 'none' }}
+        readOnly={true}
+        value={outputText}
+      />
     );
   }
 
   private _renderAst(): React.ReactNode {
-    return (
-      <DocAstView
-        parserContext={this.state.parserContext}
-        theme={ this.state.selectedTheme }
-      />
-    );
+    return <DocAstView parserContext={this.state.parserContext} theme={this.state.selectedTheme} />;
   }
 
   private _renderEmitter(): React.ReactNode {
@@ -319,10 +305,10 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     return (
       <CodeEditor
-        className='playground-emitter-text-editor'
-        readOnly={ true }
-        value={ outputText }
-        theme={ this.state.selectedTheme }
+        className="playground-emitter-text-editor"
+        readOnly={true}
+        value={outputText}
+        theme={this.state.selectedTheme}
         wordWrap={true}
       />
     );
@@ -333,7 +319,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     if (this.state.parserFailureText) {
       errorsText = this.state.parserFailureText;
     } else if (this.state.parserContext) {
-      errorsText = this.state.parserContext.log.messages.map(x => x.toString()).join('\n');
+      errorsText = this.state.parserContext.log.messages.map((x) => x.toString()).join('\n');
     }
 
     const boxStyle: React.CSSProperties = {
@@ -345,14 +331,14 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
     return (
       <>
-        <label htmlFor='errors'>Errors:</label>
+        <label htmlFor="errors">Errors:</label>
         <FlexColDiv style={boxStyle}>
           <textarea
-            id='errors'
-            className='playground-errors-textarea'
-            readOnly={ true }
-            value={ errorsText }
-            style={ this._textAreaStyle }
+            id="errors"
+            className="playground-errors-textarea"
+            readOnly={true}
+            value={errorsText}
+            style={this._textAreaStyle}
           />
         </FlexColDiv>
       </>
@@ -374,10 +360,12 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     try {
       const inputText: string = this.state.inputText;
       const configuration: tsdoc.TSDocConfiguration = new tsdoc.TSDocConfiguration();
-      configuration.addTagDefinition(new tsdoc.TSDocTagDefinition({
-        tagName: '@sampleCustomBlockTag',
-        syntaxKind: tsdoc.TSDocTagSyntaxKind.BlockTag
-      }));
+      configuration.addTagDefinition(
+        new tsdoc.TSDocTagDefinition({
+          tagName: '@sampleCustomBlockTag',
+          syntaxKind: tsdoc.TSDocTagSyntaxKind.BlockTag
+        })
+      );
       const tsdocParser: tsdoc.TSDocParser = new tsdoc.TSDocParser(configuration);
       const parserContext: tsdoc.ParserContext = tsdocParser.parseString(inputText);
 

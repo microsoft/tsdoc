@@ -1,12 +1,6 @@
 import { TSDocParser } from '../TSDocParser';
 import { TextRange } from '../TextRange';
-import {
-  DocErrorText,
-  DocNode,
-  DocComment,
-  DocPlainText,
-  DocExcerpt
-} from '../../nodes';
+import { DocErrorText, DocNode, DocComment, DocPlainText, DocExcerpt } from '../../nodes';
 import { ParserContext } from '../ParserContext';
 import { TSDocConfiguration } from '../../configuration/TSDocConfiguration';
 import { TokenCoverageChecker } from './TokenCoverageChecker';
@@ -34,9 +28,9 @@ export class TestHelpers {
       throw new Error('Range must fall within the associated line');
     }
 
-    const paddedSpace: string[]  = [ '',   ' ',  '  ',  '   ',  '    ' ];
-    const paddedLArrow: string[] = [ '',   '>',  ' >',  '  >',  '   >' ];
-    const paddedRArrow: string[] = [ '',   '<',  '< ',  '<  ',  '<   ' ];
+    const paddedSpace: string[] = ['', ' ', '  ', '   ', '    '];
+    const paddedLArrow: string[] = ['', '>', ' >', '  >', '   >'];
+    const paddedRArrow: string[] = ['', '<', '< ', '<  ', '<   '];
 
     const buffer: string = line.buffer;
 
@@ -71,7 +65,8 @@ export class TestHelpers {
    * Workaround various characters that get ugly escapes in Jest snapshots
    */
   public static getEscaped(s: string): string {
-    return s.replace(/\n/g, '[n]')
+    return s
+      .replace(/\n/g, '[n]')
       .replace(/\r/g, '[r]')
       .replace(/\t/g, '[t]')
       .replace(/\f/g, '[f]')
@@ -96,8 +91,8 @@ export class TestHelpers {
 
     expect({
       buffer: TestHelpers.getEscaped(buffer),
-      lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
-      logMessages: parserContext.log.messages.map(message => message.text),
+      lines: parserContext.lines.map((x) => TestHelpers.getEscaped(x.toString())),
+      logMessages: parserContext.log.messages.map((message) => message.text),
       nodes: TestHelpers.getDocNodeSnapshot(parserContext.docComment),
       gaps: this._getTokenCoverageGapsSnapshot(parserContext)
     }).toMatchSnapshot();
@@ -108,28 +103,29 @@ export class TestHelpers {
   /**
    * Main harness for tests under `./details/*`.
    */
-  public static parseAndMatchDocCommentSnapshot(buffer: string,
-    configuration?: TSDocConfiguration): ParserContext {
-
+  public static parseAndMatchDocCommentSnapshot(
+    buffer: string,
+    configuration?: TSDocConfiguration
+  ): ParserContext {
     const tsdocParser: TSDocParser = new TSDocParser(configuration);
     const parserContext: ParserContext = tsdocParser.parseString(buffer);
     const docComment: DocComment = parserContext.docComment;
 
     expect({
       /* eslint-disable @typescript-eslint/naming-convention */
-      _00_lines: parserContext.lines.map(x => TestHelpers.getEscaped(x.toString())),
+      _00_lines: parserContext.lines.map((x) => TestHelpers.getEscaped(x.toString())),
       _01_gaps: this._getTokenCoverageGapsSnapshot(parserContext),
       _02_summarySection: TestHelpers.getDocNodeSnapshot(docComment.summarySection),
       _03_remarksBlock: TestHelpers.getDocNodeSnapshot(docComment.remarksBlock),
       _04_privateRemarksBlock: TestHelpers.getDocNodeSnapshot(docComment.privateRemarks),
       _05_deprecatedBlock: TestHelpers.getDocNodeSnapshot(docComment.deprecatedBlock),
-      _06_paramBlocks: docComment.params.blocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
-      _07_typeParamBlocks: docComment.typeParams.blocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _06_paramBlocks: docComment.params.blocks.map((x) => TestHelpers.getDocNodeSnapshot(x)),
+      _07_typeParamBlocks: docComment.typeParams.blocks.map((x) => TestHelpers.getDocNodeSnapshot(x)),
       _08_returnsBlock: TestHelpers.getDocNodeSnapshot(docComment.returnsBlock),
-      _09_customBlocks: docComment.customBlocks.map(x => TestHelpers.getDocNodeSnapshot(x)),
+      _09_customBlocks: docComment.customBlocks.map((x) => TestHelpers.getDocNodeSnapshot(x)),
       _10_inheritDocTag: TestHelpers.getDocNodeSnapshot(docComment.inheritDocTag),
-      _11_modifierTags: docComment.modifierTagSet.nodes.map(x => TestHelpers.getDocNodeSnapshot(x)),
-      _12_logMessages: parserContext.log.messages.map(message => message.text)
+      _11_modifierTags: docComment.modifierTagSet.nodes.map((x) => TestHelpers.getDocNodeSnapshot(x)),
+      _12_logMessages: parserContext.log.messages.map((message) => message.text)
       /* eslint-enable @typescript-eslint/naming-convention */
     }).toMatchSnapshot();
 
@@ -168,12 +164,13 @@ export class TestHelpers {
         // Show the preceding token to provide some context (e.g. is this the opening quote
         // or closing quote?)
         item.errorLocationPrecedingToken = docNode.errorLocation.parserContext.tokens[
-          docNode.errorLocation.startIndex - 1].toString();
+          docNode.errorLocation.startIndex - 1
+        ].toString();
       }
     }
 
     if (docNode.getChildNodes().length > 0) {
-      item.nodes = docNode.getChildNodes().map(x => TestHelpers.getDocNodeSnapshot(x)!);
+      item.nodes = docNode.getChildNodes().map((x) => TestHelpers.getDocNodeSnapshot(x)!);
     }
 
     return item;
@@ -181,6 +178,6 @@ export class TestHelpers {
 
   private static _getTokenCoverageGapsSnapshot(parserContext: ParserContext): string[] {
     const tokenCoverageChecker: TokenCoverageChecker = new TokenCoverageChecker(parserContext);
-    return tokenCoverageChecker.getGaps(parserContext.docComment).map(x => x.toString());
+    return tokenCoverageChecker.getGaps(parserContext.docComment).map((x) => x.toString());
   }
 }

@@ -146,7 +146,6 @@ export class DocParamBlock extends DocBlock {
           content: parameters.unsupportedJsdocTypeAfterHyphenExcerpt
         });
       }
-
     }
   }
 

@@ -3,7 +3,6 @@ import { TestHelpers } from './TestHelpers';
 
 function matchSnapshot(textRange: TextRange): void {
   for (let i: number = -1; i <= textRange.end + 1; ++i) {
-
     // Show the current character
     const c: string = TestHelpers.getEscaped(textRange.buffer.substr(Math.max(i, 0), 1));
 
@@ -29,13 +28,15 @@ test('construction scenarios', () => {
 });
 
 test('getLocation() basic', () => {
-  const textRange: TextRange = TextRange.fromString([
-    'L1',
-    'L2',
-    '', // (line 3 is blank)
-    'L4',
-    'L5+CR\rL5+CRLF\r\nL6+LFCR\n\rL7'
-  ].join('\n'));
+  const textRange: TextRange = TextRange.fromString(
+    [
+      'L1',
+      'L2',
+      '', // (line 3 is blank)
+      'L4',
+      'L5+CR\rL5+CRLF\r\nL6+LFCR\n\rL7'
+    ].join('\n')
+  );
   matchSnapshot(textRange);
 });
 

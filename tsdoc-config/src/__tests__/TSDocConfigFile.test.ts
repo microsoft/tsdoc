@@ -3,10 +3,7 @@ import * as path from 'path';
 import { TSDocConfigFile } from '../TSDocConfigFile';
 
 function getRelativePath(testPath: string): string {
-  return path
-    .relative(__dirname, testPath)
-    .split('\\')
-    .join('/');
+  return path.relative(__dirname, testPath).split('\\').join('/');
 }
 
 expect.addSnapshotSerializer({

@@ -47,7 +47,9 @@ export class DocDeclarationReference extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocDeclarationReferenceParameters | IDocDeclarationReferenceParsedParameters) {
+  public constructor(
+    parameters: IDocDeclarationReferenceParameters | IDocDeclarationReferenceParsedParameters
+  ) {
     super(parameters);
 
     if (DocNode.isParsedParameters(parameters)) {
@@ -65,14 +67,14 @@ export class DocDeclarationReference extends DocNode {
           content: parameters.importPathExcerpt
         });
       }
-      if (parameters.importHashExcerpt ) {
+      if (parameters.importHashExcerpt) {
         this._importHashExcerpt = new DocExcerpt({
           configuration: this.configuration,
           excerptKind: ExcerptKind.DeclarationReference_ImportHash,
           content: parameters.importHashExcerpt
         });
       }
-      if (parameters.spacingAfterImportHashExcerpt ) {
+      if (parameters.spacingAfterImportHashExcerpt) {
         this._spacingAfterImportHashExcerpt = new DocExcerpt({
           configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
