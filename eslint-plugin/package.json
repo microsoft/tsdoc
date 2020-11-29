@@ -35,6 +35,6 @@
     "@types/estree": "0.0.39",
     "@types/heft-jest": "1.0.1",
     "@types/node": "10.17.13",
-    "eslint": "~7.9.0"
+    "eslint": "~7.12.1"
   }
 }

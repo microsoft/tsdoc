@@ -14,7 +14,8 @@
     "@rushstack/heft-node-rig": "0.1.28",
     "@rushstack/heft": "^0.22.3",
     "@types/heft-jest": "1.0.1",
-    "@types/node": "10.17.13"
+    "@types/node": "10.17.13",
+    "eslint": "~7.12.1"
   },
   "scripts": {
     "build": "heft test --clean",

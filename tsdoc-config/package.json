@@ -32,7 +32,8 @@
     "@types/heft-jest": "1.0.1",
     "@types/jju": "1.4.1",
     "@types/node": "10.17.13",
-    "@types/resolve": "1.17.1"
+    "@types/resolve": "1.17.1",
+    "eslint": "~7.12.1"
   },
   "scripts": {
     "build": "heft test --clean",
