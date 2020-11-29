@@ -24,7 +24,7 @@
     "@types/webpack-env": "~1.14.0",
     "@types/webpack": "4.41.24",
     "css-loader": "~3.1.0",
-    "eslint": "~7.9.0",
+    "eslint": "~7.12.1",
     "file-loader": "~4.1.0",
     "handlebars-loader": "~1.7.1",
     "handlebars": "~4.7.3",
