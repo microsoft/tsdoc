@@ -2,6 +2,26 @@
   "name": "@microsoft/tsdoc-config",
   "entries": [
     {
+      "version": "0.13.7",
+      "tag": "@microsoft/tsdoc-config_v0.13.7",
+      "date": "Mon, 30 Nov 2020 06:16:21 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update documentation to reference the new website URL"
+          },
+          {
+            "comment": "Upgrade build tools and configuration"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" from `0.12.21` to `0.12.22`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.13.6",
       "tag": "@microsoft/tsdoc-config_v0.13.6",
       "date": "Fri, 04 Sep 2020 15:53:27 GMT",

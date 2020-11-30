@@ -1,6 +1,15 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Fri, 04 Sep 2020 15:53:27 GMT and should not be manually modified.
+This log was last generated on Mon, 30 Nov 2020 06:16:21 GMT and should not be manually modified.
+
+## 0.12.22
+Mon, 30 Nov 2020 06:16:21 GMT
+
+### Patches
+
+- Update documentation to reference the new website URL
+- Upgrade build tools and configuration
+- Fix typo
 
 ## 0.12.21
 Fri, 04 Sep 2020 15:53:27 GMT

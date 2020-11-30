@@ -2,6 +2,24 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.22",
+      "tag": "@microsoft/tsdoc_v0.12.22",
+      "date": "Mon, 30 Nov 2020 06:16:21 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update documentation to reference the new website URL"
+          },
+          {
+            "comment": "Upgrade build tools and configuration"
+          },
+          {
+            "comment": "Fix typo"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.21",
       "tag": "@microsoft/tsdoc_v0.12.21",
       "date": "Fri, 04 Sep 2020 15:53:27 GMT",
