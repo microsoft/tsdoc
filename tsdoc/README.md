@@ -1,5 +1,13 @@
 # @microsoft/tsdoc
 
+<div>
+  <br />
+  <a href="https://tsdoc.org/">
+    <img width="200" src="https://tsdoc.org/images/tsdoc.svg">
+  </a>
+  <p />
+</div>
+
 This library is the reference implementation of a parser for the TSDoc syntax.  Using this library is an easy way to ensure that your tool is 100% compatible with the standard.
 
 
