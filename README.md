@@ -21,10 +21,10 @@
 | Folder | Version | Changelog | Description |
 | ------ | ------- | --------- | ------- |
 | [/api-demo](./api-demo/) | (local project) |  | Code samples illustrating how to use the **@microosft/tsdoc** parser |
-| [/eslint-plugin](./eslint-plugin/) | [![npm version](https://badge.fury.io/js/eslint-plugin-tsdoc.svg)](https://badge.fury.io/js/eslint-plugin-tsdoc) | [changelog](./eslint-plugin/CHANGELOG.md) | [eslint-plugin-tsdoc](https://www.npmjs.com/package/eslint-plugin-tsdoc) |
+| [/eslint-plugin](./eslint-plugin/) | [![npm version](https://badge.fury.io/js/eslint-plugin-tsdoc.svg)](https://badge.fury.io/js/eslint-plugin-tsdoc) | [changelog](./eslint-plugin/CHANGELOG.md) | [eslint-plugin-tsdoc](https://www.npmjs.com/package/eslint-plugin-tsdoc) plugin for ESLint|
 | [/playground](./playground/) | (local project) |  | Source code for the [TSDoc Playground](https://tsdoc.org/play) web app |
-| [/tsdoc](./tsdoc/) | [![npm version](https://badge.fury.io/js/%40microsoft%2Ftsdoc.svg)](https://badge.fury.io/js/%40microsoft%2Ftsdoc) | [changelog](./tsdoc/CHANGELOG.md) | [@microsoft/tsdoc](https://www.npmjs.com/package/@microsoft/tsdoc) package |
-| [/tsdoc-config](./tsdoc/) | [![npm version](https://badge.fury.io/js/%40microsoft%2Ftsdoc-config.svg)](https://badge.fury.io/js/%40microsoft%2Ftsdoc-config) | [changelog](./tsdoc-config/CHANGELOG.md) | [@microsoft/tsdoc-config](https://www.npmjs.com/package/@microsoft/tsdoc-config) package |
+| [/tsdoc](./tsdoc/) | [![npm version](https://badge.fury.io/js/%40microsoft%2Ftsdoc.svg)](https://badge.fury.io/js/%40microsoft%2Ftsdoc) | [changelog](./tsdoc/CHANGELOG.md) | [@microsoft/tsdoc](https://www.npmjs.com/package/@microsoft/tsdoc) parser library |
+| [/tsdoc-config](./tsdoc/) | [![npm version](https://badge.fury.io/js/%40microsoft%2Ftsdoc-config.svg)](https://badge.fury.io/js/%40microsoft%2Ftsdoc-config) | [changelog](./tsdoc-config/CHANGELOG.md) | [@microsoft/tsdoc-config](https://www.npmjs.com/package/@microsoft/tsdoc-config) loader for **tsdoc.json** |
 
 
 ##  Contributor Notice
