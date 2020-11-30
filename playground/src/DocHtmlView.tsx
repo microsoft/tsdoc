@@ -7,9 +7,63 @@ export interface IDocHtmlViewProps {
 }
 
 export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
-  public render(): React.ReactNode {
-    const docComment: tsdoc.DocComment = this.props.docComment;
+  private _placeholderDivRef: HTMLDivElement | undefined;
+  private _floaterDivRef: HTMLDivElement | undefined;
 
+  public componentDidMount(): void {
+    window.addEventListener('resize', this._onWindowResize);
+  }
+
+  public componentWillUnmount(): void {
+    window.removeEventListener('resize', this._onWindowResize);
+    this._floaterDivRef = undefined;
+  }
+
+  public render(): React.ReactNode {
+    const outputElements: React.ReactNode[] = this._renderElements();
+
+    return (
+      <div
+        className="playground-html-placeholder"
+        ref={this._onRefPlaceholder}
+        style={{ display: 'flex', flexDirection: 'column', flex: 1, ...this.props.style }}
+      >
+        <div
+          className="playground-html-floater"
+          ref={this._onRefFloater}
+          style={{ display: 'flex', flexDirection: 'column', position: 'absolute', minHeight: 0 }}
+        >
+          <div
+            className="playground-html-scrollable doc-section"
+            style={{ overflowX: 'hidden', overflowY: 'scroll', paddingLeft: '8px', paddingRight: '8px' }}
+          >
+            {outputElements}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  private _onRefPlaceholder = (element: HTMLDivElement): void => {
+    this._placeholderDivRef = element;
+    this._onWindowResize();
+  };
+
+  private _onRefFloater = (element: HTMLDivElement): void => {
+    this._floaterDivRef = element;
+    this._onWindowResize();
+  };
+
+  private _onWindowResize = (): void => {
+    if (this._placeholderDivRef && this._floaterDivRef) {
+      // Resize the floater div to match whatever the browser did for the placeholder div
+      this._floaterDivRef.style.width = this._placeholderDivRef.clientWidth + 'px';
+      this._floaterDivRef.style.height = this._placeholderDivRef.clientHeight + 'px';
+    }
+  };
+
+  private _renderElements(): React.ReactNode[] {
+    const docComment: tsdoc.DocComment = this.props.docComment;
     const outputElements: React.ReactNode[] = [];
 
     // Summary
@@ -125,7 +179,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       );
     }
 
-    return <div style={this.props.style}> {outputElements} </div>;
+    return outputElements;
   }
 
   private _renderContainer(section: tsdoc.DocNodeContainer): React.ReactNode {

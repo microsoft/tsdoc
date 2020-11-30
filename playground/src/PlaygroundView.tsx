@@ -216,11 +216,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   private _renderHtml(): React.ReactNode {
     const parserContext: tsdoc.ParserContext | undefined = this.state.parserContext;
     if (parserContext && parserContext.docComment) {
-      return (
-        <div style={{ overflow: 'auto', paddingLeft: '8px', paddingRight: '8px', flex: 1 }}>
-          <DocHtmlView docComment={parserContext.docComment} />
-        </div>
-      );
+      return <DocHtmlView docComment={parserContext.docComment} />;
     } else {
       return <span />;
     }
