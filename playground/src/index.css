@@ -1,10 +1,21 @@
+.doc-section {
+  font-family: Tahoma, sans-serif;
+  font-size: 16px;
+}
+
 .doc-heading {
   color: #2f5496;
   font-size: 24px;
   font-weight: 400;
+
+  margin-block-start: 1.2em;
+  margin-block-end: 0.4em;
 }
 
 .doc-table {
+  margin: 0;
+  font-size: 16px;
+  border: none;
   border-collapse: collapse;
 }
 
