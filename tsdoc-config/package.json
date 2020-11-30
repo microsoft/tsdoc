@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/tsdoc-config",
-  "version": "0.13.6",
+  "version": "0.13.7",
   "description": "A loader for the tsdoc.json file",
   "keywords": [
     "TypeScript",
@@ -20,7 +20,7 @@
   "typings": "lib/index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "@microsoft/tsdoc": "0.12.21",
+    "@microsoft/tsdoc": "0.12.22",
     "ajv": "~6.12.6",
     "jju": "~1.4.0",
     "resolve": "~1.19.0"
