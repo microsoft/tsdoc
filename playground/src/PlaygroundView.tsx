@@ -67,17 +67,6 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   public render(): React.ReactNode {
-    const headerStyle: React.CSSProperties = {
-      height: '70px',
-      backgroundColor: '#1e9449',
-      paddingLeft: '20px',
-      paddingRight: '20px',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginBottom: '20px',
-      color: '#ffffff'
-    };
-
     const mainRowStyle: React.CSSProperties = {
       alignItems: 'stretch',
       flex: 1
@@ -88,60 +77,26 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       marginTop: '20px'
     };
 
-    const footerStyle: React.CSSProperties = {
-      height: '80px',
-      textAlign: 'center',
-      color: '#a0a0a0',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontSize: 'smaller'
-    };
-
-    const navAnchorStyle: React.CSSProperties = {
-      color: '#ffffff',
-      textDecorationLine: 'none'
-    };
-
     return (
-      <FlexColDiv className="playground-frame" style={{ flex: 1 }}>
-        <FlexRowDiv className="playground-header" style={headerStyle}>
-          <FlexColDiv style={{ fontWeight: 400, fontSize: '26px' }}>TSDoc Playground</FlexColDiv>
-          <FlexColDiv style={{ fontWeight: 400, fontSize: '20px' }}>
-            <a
-              style={navAnchorStyle}
-              href="https://github.com/Microsoft/tsdoc"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              What is TSDoc?
-            </a>
-          </FlexColDiv>
+      <FlexColDiv className="playground-content-area" style={{ margin: '4px', flex: 1 }}>
+        <FlexRowDiv className="playground-main-row" style={mainRowStyle}>
+          {this._renderInputBox()}
+
+          <TabPane
+            style={{ flex: 1, marginLeft: '4px' }}
+            buttonRowStyle={{ height: '40px', boxSizing: 'border-box' }}
+            tabs={[
+              { title: 'HTML', render: this._renderHtml.bind(this) },
+              { title: 'DOM', render: this._renderDom.bind(this) },
+              { title: 'Lines', render: this._renderLines.bind(this) },
+              { title: 'AST', render: this._renderAst.bind(this) },
+              { title: 'Emitter', render: this._renderEmitter.bind(this) }
+            ]}
+          />
         </FlexRowDiv>
-
-        <FlexColDiv className="playground-content-area" style={{ margin: '4px', flex: 1 }}>
-          <FlexRowDiv className="playground-main-row" style={mainRowStyle}>
-            {this._renderInputBox()}
-
-            <TabPane
-              style={{ flex: 1, marginLeft: '4px' }}
-              buttonRowStyle={{ height: '40px', boxSizing: 'border-box' }}
-              tabs={[
-                { title: 'HTML', render: this._renderHtml.bind(this) },
-                { title: 'DOM', render: this._renderDom.bind(this) },
-                { title: 'Lines', render: this._renderLines.bind(this) },
-                { title: 'AST', render: this._renderAst.bind(this) },
-                { title: 'Emitter', render: this._renderEmitter.bind(this) }
-              ]}
-            />
-          </FlexRowDiv>
-          <FlexColDiv className="playground-errors-pane" style={errorsPaneStyle}>
-            {this._renderErrorList()}
-          </FlexColDiv>
+        <FlexColDiv className="playground-errors-pane" style={errorsPaneStyle}>
+          {this._renderErrorList()}
         </FlexColDiv>
-
-        <FlexRowDiv className="playground-footer" style={footerStyle}>
-          &copy; 2019 Microsoft
-        </FlexRowDiv>
       </FlexColDiv>
     );
   }
@@ -285,7 +240,12 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     return (
       <textarea
         className="playground-lines-text-editor"
-        style={{ ...this._textAreaStyle, border: 'none' }}
+        style={{
+          ...this._textAreaStyle,
+          border: 'none',
+          fontFamily: 'Consolas, "Courier New", monospace',
+          fontSize: '14px'
+        }}
         readOnly={true}
         value={outputText}
       />
