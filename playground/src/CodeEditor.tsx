@@ -221,7 +221,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
           <div
             className="playground-monaco-host"
             ref={this._onRefHost}
-            style={{ display: 'block', position: 'absolute', backgroundColor: '#00FF00' }}
+            style={{ display: 'block', position: 'absolute' }}
           />
         </div>
       );
