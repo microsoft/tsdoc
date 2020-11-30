@@ -8,7 +8,7 @@ because it requires external dependencies such as NodeJS and `ajv`, whereas the 
 
 For more information about TSDoc, please visit the project website:
 
-https://github.com/microsoft/tsdoc
+https://tsdoc.org
 
 
 ## Creating config files
