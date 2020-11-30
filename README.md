@@ -12,6 +12,8 @@
 - [Zulip chat room](https://rushstack.zulipchat.com/#narrow/stream/266672-tsdoc) - live help from other developers
 - [TSDoc tag reference](https://tsdoc.org/pages/tags/alpha/) - learn about syntax elements such as `@param`, `@remarks`, etc.
 - [TSDoc Playground](https://tsdoc.org/play) - interactive demo of the parser engine
+- [Contributing: Building the projects](https://tsdoc.org/pages/contributing/building/) - how to build and debug the projects in this repo
+- [Contributing: Submitting a PR](https://tsdoc.org/pages/contributing/building/) - instructions for making a pull request
 
 
 ## Projects in this monorepo
