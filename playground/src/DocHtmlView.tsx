@@ -35,7 +35,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
         >
           <div
             className="playground-html-scrollable doc-section"
-            style={{ overflowX: 'hidden', overflowY: 'scroll', paddingLeft: '8px', paddingRight: '8px' }}
+            style={{ overflowX: 'hidden', overflowY: 'auto', paddingLeft: '8px', paddingRight: '8px' }}
           >
             {outputElements}
           </div>
