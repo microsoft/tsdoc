@@ -8,7 +8,7 @@ import * as tsdoc from '@microsoft/tsdoc';
  * Returns true if the specified SyntaxKind is part of a declaration form.
  *
  * Based on ts.isDeclarationKind() from the compiler.
- * https://github.com/Microsoft/TypeScript/blob/v3.0.3/src/compiler/utilities.ts#L6382
+ * https://github.com/microsoft/TypeScript/blob/v3.0.3/src/compiler/utilities.ts#L6382
  */
 function isDeclarationKind(kind: ts.SyntaxKind): boolean {
   return (
@@ -52,7 +52,7 @@ function isDeclarationKind(kind: ts.SyntaxKind): boolean {
  * Retrieves the JSDoc-style comments associated with a specific AST node.
  *
  * Based on ts.getJSDocCommentRanges() from the compiler.
- * https://github.com/Microsoft/TypeScript/blob/v3.0.3/src/compiler/utilities.ts#L924
+ * https://github.com/microsoft/TypeScript/blob/v3.0.3/src/compiler/utilities.ts#L924
  */
 function getJSDocCommentRanges(node: ts.Node, text: string): ts.CommentRange[] {
   const commentRanges: ts.CommentRange[] = [];
