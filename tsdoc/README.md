@@ -29,7 +29,7 @@ export class Statistics {
 
 ## Give it a try!
 
-Check out the [TSDoc Playground](https://microsoft.github.io/tsdoc/) for a cool live demo of our parser!
+Check out the [TSDoc Playground](https://tsdoc.org/play) for a cool live demo of our parser!
 
 
 ## API Usage
@@ -43,6 +43,6 @@ is used for loading the **tsdoc.json** file.
 
 ## Get involved
 
-The **TSDoc** project is actively evolving.  Please visit our GitHub project for the latest documentation, instructions for building/debugging the projects, and other resources:
+The **TSDoc** project is actively evolving.  Please visit the website for the latest documentation, instructions for building/debugging the projects, and other resources:
 
-https://github.com/microsoft/tsdoc
+https://tsdoc.org/

@@ -1,7 +1,7 @@
 # eslint-plugin-tsdoc
 
 This ESLint plugin provides a rule for validating that TypeScript doc comments conform to the
-[TSDoc specification](https://github.com/microsoft/tsdoc).
+[TSDoc specification](https://tsdoc.org/).
 
 ## Usage
 
@@ -61,4 +61,4 @@ This ESLint plugin provides a rule for validating that TypeScript doc comments c
     ```
 
 This package is maintained by the TSDoc project.  If you have questions or feedback, please
-[let us know](https://github.com/microsoft/tsdoc/issues)!
+[let us know](https://tsdoc.org/pages/resources/help)!
