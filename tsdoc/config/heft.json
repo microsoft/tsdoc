@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/heft/heft.schema.json",
+
+  "extends": "@rushstack/heft-web-rig/profiles/library/config/heft.json",
+
+  "eventActions": [
+    {
+      "actionKind": "copyFiles",
+
+      "heftEvent": "bundle",
+
+      "actionId": "add-dts-file",
+
+      "copyOperations": [
+        {
+          "sourceFolder": "lib/beta",
+          "destinationFolders": ["lib-commonjs/beta"],
+          "fileExtensions": [".d.ts"]
+        }
+      ]
+    }
+  ]
+}
