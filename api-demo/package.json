@@ -5,7 +5,7 @@
   "description": "A code sample that illustrates usage of the API for @microsoft/tsdoc",
   "license": "MIT",
   "dependencies": {
-    "@microsoft/tsdoc": "0.12.22",
+    "@microsoft/tsdoc": "0.12.23",
     "colors": "~1.4.0",
     "typescript": "~3.9.7"
   },
