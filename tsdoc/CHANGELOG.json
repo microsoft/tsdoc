@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.23",
+      "tag": "@microsoft/tsdoc_v0.12.23",
+      "date": "Thu, 03 Dec 2020 04:31:52 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add a definition for the `@decorator` block tag (RFC 271)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.22",
       "tag": "@microsoft/tsdoc_v0.12.22",
       "date": "Mon, 30 Nov 2020 06:16:21 GMT",

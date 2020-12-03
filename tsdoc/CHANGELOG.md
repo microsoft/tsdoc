@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Mon, 30 Nov 2020 06:16:21 GMT and should not be manually modified.
+This log was last generated on Thu, 03 Dec 2020 04:31:52 GMT and should not be manually modified.
+
+## 0.12.23
+Thu, 03 Dec 2020 04:31:52 GMT
+
+### Patches
+
+- Add a definition for the `@decorator` block tag (RFC 271)
 
 ## 0.12.22
 Mon, 30 Nov 2020 06:16:21 GMT
