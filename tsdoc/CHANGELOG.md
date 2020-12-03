@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Thu, 03 Dec 2020 04:31:52 GMT and should not be manually modified.
+This log was last generated on Thu, 03 Dec 2020 08:07:55 GMT and should not be manually modified.
+
+## 0.12.24
+Thu, 03 Dec 2020 08:07:55 GMT
+
+### Patches
+
+- Add a missing declaration file
 
 ## 0.12.23
 Thu, 03 Dec 2020 04:31:52 GMT

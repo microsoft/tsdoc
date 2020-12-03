@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.12.24",
+      "tag": "@microsoft/tsdoc_v0.12.24",
+      "date": "Thu, 03 Dec 2020 08:07:55 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add a missing declaration file"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.23",
       "tag": "@microsoft/tsdoc_v0.12.23",
       "date": "Thu, 03 Dec 2020 04:31:52 GMT",
