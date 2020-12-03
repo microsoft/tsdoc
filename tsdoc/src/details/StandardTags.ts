@@ -44,17 +44,33 @@ export class StandardTags {
   });
 
   /**
-   * (Core)
+   * (Extended)
    *
-   * This block tag communicates that an API item is no longer supported and may be removed
-   * in a future release.  The `@deprecated` tag is followed by a sentence describing
-   * the recommended alternative.  It recursively applies to members of the container.
-   * For example, if a class is deprecated, then so are all of its members.
+   * ECMAScript decorators are sometimes an important part of an API contract.
+   * However, today the TypeScript compiler does not represent decorators in the
+   * .d.ts output files used by API consumers.  The `@decorator` tag provides a workaround,
+   * enabling a decorator expressions to be quoted in a doc comment.
+   *
+   * @example
+   * ```ts
+   * class Book {
+   *   /**
+   *    * The title of the book.
+   *    * @decorator `@jsonSerialized`
+   *    * @decorator `@jsonFormat(JsonFormats.Url)`
+   *    *
+   *+/
+   *   @jsonSerialized
+   *   @jsonFormat(JsonFormats.Url)
+   *   public website: string;
+   * }
+   * ```
    */
-  public static readonly deprecated: TSDocTagDefinition = StandardTags._defineTag({
-    tagName: '@deprecated',
+  public static readonly decorator: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@decorator',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
-    standardization: Standardization.Core
+    allowMultiple: true,
+    standardization: Standardization.Extended
   });
 
   /**
@@ -70,6 +86,20 @@ export class StandardTags {
     tagName: '@defaultValue',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     standardization: Standardization.Extended
+  });
+
+  /**
+   * (Core)
+   *
+   * This block tag communicates that an API item is no longer supported and may be removed
+   * in a future release.  The `@deprecated` tag is followed by a sentence describing
+   * the recommended alternative.  It recursively applies to members of the container.
+   * For example, if a class is deprecated, then so are all of its members.
+   */
+  public static readonly deprecated: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@deprecated',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Core
   });
 
   /**
@@ -448,8 +478,9 @@ export class StandardTags {
   public static allDefinitions: ReadonlyArray<TSDocTagDefinition> = [
     StandardTags.alpha,
     StandardTags.beta,
-    StandardTags.deprecated,
     StandardTags.defaultValue,
+    StandardTags.decorator,
+    StandardTags.deprecated,
     StandardTags.eventProperty,
     StandardTags.example,
     StandardTags.experimental,
