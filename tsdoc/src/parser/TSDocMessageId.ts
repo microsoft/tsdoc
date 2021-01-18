@@ -412,6 +412,7 @@ export const allTsdocMessageIds: string[] = [
   'tsdoc-config-unresolved-extends',
   'tsdoc-config-undefined-tag',
   'tsdoc-config-duplicate-tag-name',
+  'tsdoc-config-invalid-tag-name',
 
   'tsdoc-comment-not-found',
   'tsdoc-comment-missing-opening-delimiter',
