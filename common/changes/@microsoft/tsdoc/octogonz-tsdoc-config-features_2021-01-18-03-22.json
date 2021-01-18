@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Add new APIs: TSDocConfiguration.clear() and TSDocTagDefinition.validateTSDocTagName()",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "4673363+octogonz@users.noreply.github.com"
+}
