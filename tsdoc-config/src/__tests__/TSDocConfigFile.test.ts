@@ -21,6 +21,7 @@ expect.addSnapshotSerializer({
       extendsPaths: configFile.extendsPaths,
       extendsFiles: configFile.extendsFiles,
       tagDefinitions: configFile.tagDefinitions,
+      supportForTags: Array.from(configFile.supportForTags).map(([tagName, supported]) => ({ tagName, supported })),
       messages: configFile.log.messages,
     });
   },
@@ -38,6 +39,7 @@ test('Load p1', () => {
       "fileNotFound": false,
       "filePath": "assets/p1/tsdoc.json",
       "messages": Array [],
+      "supportForTags": Array [],
       "tagDefinitions": Array [],
       "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
     }
@@ -64,6 +66,7 @@ test('Load p2', () => {
           "unformattedText": "File not found",
         },
       ],
+      "supportForTags": Array [],
       "tagDefinitions": Array [],
       "tsdocSchema": "",
     }
@@ -79,6 +82,12 @@ test('Load p3', () => {
           "fileNotFound": false,
           "filePath": "assets/p3/base1/tsdoc-base1.json",
           "messages": Array [],
+          "supportForTags": Array [
+            Object {
+              "supported": true,
+              "tagName": "@base1",
+            },
+          ],
           "tagDefinitions": Array [
             TSDocTagDefinition {
               "allowMultiple": false,
@@ -96,6 +105,12 @@ test('Load p3', () => {
           "fileNotFound": false,
           "filePath": "assets/p3/base2/tsdoc-base2.json",
           "messages": Array [],
+          "supportForTags": Array [
+            Object {
+              "supported": false,
+              "tagName": "@base2",
+            },
+          ],
           "tagDefinitions": Array [
             TSDocTagDefinition {
               "allowMultiple": false,
@@ -115,6 +130,12 @@ test('Load p3', () => {
       "fileNotFound": false,
       "filePath": "assets/p3/tsdoc.json",
       "messages": Array [],
+      "supportForTags": Array [
+        Object {
+          "supported": true,
+          "tagName": "@base2",
+        },
+      ],
       "tagDefinitions": Array [
         TSDocTagDefinition {
           "allowMultiple": false,
@@ -138,6 +159,7 @@ test('Load p4', () => {
           "fileNotFound": false,
           "filePath": "assets/p4/node_modules/example-lib/dist/tsdoc-example.json",
           "messages": Array [],
+          "supportForTags": Array [],
           "tagDefinitions": Array [
             TSDocTagDefinition {
               "allowMultiple": false,
@@ -156,6 +178,7 @@ test('Load p4', () => {
       "fileNotFound": false,
       "filePath": "assets/p4/tsdoc.json",
       "messages": Array [],
+      "supportForTags": Array [],
       "tagDefinitions": Array [
         TSDocTagDefinition {
           "allowMultiple": false,

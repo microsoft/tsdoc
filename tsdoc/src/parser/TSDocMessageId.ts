@@ -47,6 +47,11 @@ export const enum TSDocMessageId {
   ConfigFileUnresolvedExtends = 'tsdoc-config-unresolved-extends',
 
   /**
+   * The "supportForTags" field refers to an undefined tag "___".
+   */
+  ConfigFileUndefinedTag = 'tsdoc-config-undefined-tag',
+
+  /**
    * Expecting a `/**` comment.
    * Unexpected end of input.
    */
@@ -389,6 +394,8 @@ export const allTsdocMessageIds: string[] = [
   'tsdoc-config-schema-error',
   'tsdoc-config-cyclic-extends',
   'tsdoc-config-unresolved-extends',
+  'tsdoc-config-undefined-tag',
+
   'tsdoc-comment-not-found',
   'tsdoc-comment-missing-opening-delimiter',
   'tsdoc-comment-missing-closing-delimiter',

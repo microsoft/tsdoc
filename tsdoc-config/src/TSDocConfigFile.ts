@@ -38,7 +38,8 @@ interface IConfigJson {
   $schema: string;
   tsdocVersion: string;
   extends?: string[];
-  tagDefinitions: ITagConfigJson[];
+  tagDefinitions?: ITagConfigJson[];
+  supportForTags?: { [tagName: string]: boolean };
 }
 
 /**
@@ -64,6 +65,7 @@ export class TSDocConfigFile {
   private _tsdocSchema: string;
   private readonly _extendsPaths: string[];
   private readonly _tagDefinitions: TSDocTagDefinition[];
+  private readonly _supportForTags: Map<string, boolean>;
 
   private constructor() {
     this.log = new ParserMessageLog();
@@ -76,6 +78,7 @@ export class TSDocConfigFile {
     this._tsdocSchema = '';
     this._extendsPaths = [];
     this._tagDefinitions = [];
+    this._supportForTags = new Map();
   }
 
   /**
@@ -130,6 +133,10 @@ export class TSDocConfigFile {
 
   public get tagDefinitions(): ReadonlyArray<TSDocTagDefinition> {
     return this._tagDefinitions;
+  }
+
+  public get supportForTags(): ReadonlyMap<string, boolean> {
+    return this._supportForTags;
   }
 
   /**
@@ -237,6 +244,14 @@ export class TSDocConfigFile {
           allowMultiple: jsonTagDefinition.allowMultiple,
         })
       );
+    }
+
+    if (configJson.supportForTags) {
+      for (const tagName of Object.keys(configJson.supportForTags)) {
+        const supported: boolean = configJson.supportForTags[tagName];
+
+        this._supportForTags.set(tagName, supported);
+      }
     }
   }
 
@@ -398,5 +413,19 @@ export class TSDocConfigFile {
     for (const tagDefinition of this.tagDefinitions) {
       configuration.addTagDefinition(tagDefinition);
     }
+
+    this.supportForTags.forEach((supported: boolean, tagName: string) => {
+      const tagDefinition: TSDocTagDefinition | undefined = configuration.tryGetTagDefinition(tagName);
+      if (tagDefinition) {
+        // Note that setSupportForTag() automatically enables configuration.validation.reportUnsupportedTags
+        configuration.setSupportForTag(tagDefinition, supported);
+      } else {
+        this._reportError({
+          messageId: TSDocMessageId.ConfigFileUndefinedTag,
+          messageText: `The "supportForTags" field refers to an undefined tag ${JSON.stringify(tagName)}.`,
+          textRange: TextRange.empty,
+        });
+      }
+    });
   }
 }
