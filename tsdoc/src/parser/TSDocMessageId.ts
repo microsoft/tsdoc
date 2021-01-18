@@ -48,8 +48,24 @@ export const enum TSDocMessageId {
 
   /**
    * The "supportForTags" field refers to an undefined tag "___".
+   * @remarks
+   * Reported by the `@microsoft/tsdoc-config` package when loading the tsdoc.json config file.
    */
   ConfigFileUndefinedTag = 'tsdoc-config-undefined-tag',
+
+  /**
+   * The "tagDefinitions" field specifies more than one tag with the name "___".
+   * @remarks
+   * Reported by the `@microsoft/tsdoc-config` package when loading the tsdoc.json config file.
+   */
+  ConfigFileDuplicateTagName = 'tsdoc-config-duplicate-tag-name',
+
+  /**
+   * A TSDoc tag name must start with a letter and contain only letters and numbers.
+   * @remarks
+   * Reported by the `@microsoft/tsdoc-config` package when loading the tsdoc.json config file.
+   */
+  ConfigFileInvalidTagName = 'tsdoc-config-invalid-tag-name',
 
   /**
    * Expecting a `/**` comment.
@@ -395,6 +411,7 @@ export const allTsdocMessageIds: string[] = [
   'tsdoc-config-cyclic-extends',
   'tsdoc-config-unresolved-extends',
   'tsdoc-config-undefined-tag',
+  'tsdoc-config-duplicate-tag-name',
 
   'tsdoc-comment-not-found',
   'tsdoc-comment-missing-opening-delimiter',

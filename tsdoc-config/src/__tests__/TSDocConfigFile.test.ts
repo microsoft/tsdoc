@@ -1,4 +1,6 @@
+import { TSDocConfiguration } from '@microsoft/tsdoc';
 import * as path from 'path';
+import { config } from 'process';
 
 import { TSDocConfigFile } from '../TSDocConfigFile';
 
@@ -198,6 +200,7 @@ test('Load p4', () => {
 
 test('Re-serialize p2', () => {
   const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p3'));
+  // This is the data from p3/tsdoc.json, ignoring its "extends" field.
   expect(configFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
@@ -205,6 +208,259 @@ test('Re-serialize p2', () => {
         "@base2": true,
       },
       "tagDefinitions": Array [
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@root",
+        },
+      ],
+    }
+  `);
+
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
+
+  const defaultsConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(configuration);
+  // This is the default configuration created by the TSDocConfigFile constructor.
+  expect(defaultsConfigFile.saveToObject()).toMatchInlineSnapshot(`
+    Object {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "tagDefinitions": Array [
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@alpha",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@beta",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@defaultValue",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "block",
+          "tagName": "@decorator",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@deprecated",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@eventProperty",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "block",
+          "tagName": "@example",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@experimental",
+        },
+        Object {
+          "syntaxKind": "inline",
+          "tagName": "@inheritDoc",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@internal",
+        },
+        Object {
+          "syntaxKind": "inline",
+          "tagName": "@label",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "inline",
+          "tagName": "@link",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@override",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@packageDocumentation",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "block",
+          "tagName": "@param",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@privateRemarks",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@public",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@readonly",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@remarks",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@returns",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@sealed",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@see",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "block",
+          "tagName": "@throws",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "block",
+          "tagName": "@typeParam",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@virtual",
+        },
+      ],
+    }
+  `);
+
+  configFile.configureParser(configuration);
+  const roundtripConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(configuration);
+
+  // This is the result of merging p3/tsdoc.json, tsdoc-base1.json, tsdoc-base2.json, and
+  // the TSDocConfiguration defaults.
+  expect(roundtripConfigFile.saveToObject()).toMatchInlineSnapshot(`
+    Object {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "supportForTags": Object {
+        "@base1": true,
+        "@base2": true,
+      },
+      "tagDefinitions": Array [
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@alpha",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@beta",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@defaultValue",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "block",
+          "tagName": "@decorator",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@deprecated",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@eventProperty",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "block",
+          "tagName": "@example",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@experimental",
+        },
+        Object {
+          "syntaxKind": "inline",
+          "tagName": "@inheritDoc",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@internal",
+        },
+        Object {
+          "syntaxKind": "inline",
+          "tagName": "@label",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "inline",
+          "tagName": "@link",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@override",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@packageDocumentation",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "block",
+          "tagName": "@param",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@privateRemarks",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@public",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@readonly",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@remarks",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@returns",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@sealed",
+        },
+        Object {
+          "syntaxKind": "block",
+          "tagName": "@see",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "block",
+          "tagName": "@throws",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "block",
+          "tagName": "@typeParam",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@virtual",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@base1",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@base2",
+        },
         Object {
           "syntaxKind": "modifier",
           "tagName": "@root",

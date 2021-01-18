@@ -7,12 +7,14 @@ import {
   ParserMessage,
   TextRange,
   IParserMessageParameters,
+  ITSDocTagDefinitionParameters,
 } from '@microsoft/tsdoc';
 import * as fs from 'fs';
 import * as resolve from 'resolve';
 import * as path from 'path';
 import Ajv from 'ajv';
 import * as jju from 'jju';
+import { config } from 'process';
 
 const ajv: Ajv.Ajv = new Ajv({ verbose: true });
 
@@ -64,6 +66,7 @@ export class TSDocConfigFile {
   private _tsdocSchema: string;
   private readonly _extendsPaths: string[];
   private readonly _tagDefinitions: TSDocTagDefinition[];
+  private readonly _tagDefinitionNames: Set<string>;
   private readonly _supportForTags: Map<string, boolean>;
 
   private constructor() {
@@ -77,6 +80,7 @@ export class TSDocConfigFile {
     this._tsdocSchema = '';
     this._extendsPaths = [];
     this._tagDefinitions = [];
+    this._tagDefinitionNames = new Set();
     this._supportForTags = new Map();
   }
 
@@ -136,6 +140,71 @@ export class TSDocConfigFile {
 
   public get supportForTags(): ReadonlyMap<string, boolean> {
     return this._supportForTags;
+  }
+
+  /**
+   * Removes all items from the `tagDefinitions` array.
+   */
+  public clearTagDefinitions(): void {
+    this._tagDefinitions.length = 0;
+    this._tagDefinitionNames.clear();
+  }
+
+  /**
+   * Adds a new item to the `tagDefinitions` array.
+   */
+  public addTagDefinition(parameters: ITSDocTagDefinitionParameters): void {
+    // This validates the tag name
+    const tagDefinition: TSDocTagDefinition = new TSDocTagDefinition(parameters);
+
+    if (this._tagDefinitionNames.has(tagDefinition.tagNameWithUpperCase)) {
+      throw new Error(`A tag defintion was already added with the tag name "${parameters.tagName}"`);
+    }
+    this._tagDefinitionNames.add(tagDefinition.tagName);
+
+    this._tagDefinitions.push(tagDefinition);
+  }
+
+  // Similar to addTagDefinition() but reports errors using _reportError()
+  private _addTagDefinitionForLoad(parameters: ITSDocTagDefinitionParameters): void {
+    let tagDefinition: TSDocTagDefinition;
+    try {
+      // This validates the tag name
+      tagDefinition = new TSDocTagDefinition(parameters);
+    } catch (error) {
+      this._reportError({
+        messageId: TSDocMessageId.ConfigFileInvalidTagName,
+        messageText: error.message,
+        textRange: TextRange.empty,
+      });
+      return;
+    }
+
+    if (this._tagDefinitionNames.has(tagDefinition.tagNameWithUpperCase)) {
+      this._reportError({
+        messageId: TSDocMessageId.ConfigFileDuplicateTagName,
+        messageText: `The "tagDefinitions" field specifies more than one tag with the name "${parameters.tagName}"`,
+        textRange: TextRange.empty,
+      });
+    }
+    this._tagDefinitionNames.add(tagDefinition.tagName);
+
+    this._tagDefinitions.push(tagDefinition);
+  }
+
+  /**
+   * Removes all entries from the "supportForTags" map.
+   */
+  public clearSupportForTags(): void {
+    this._supportForTags.clear();
+  }
+
+  /**
+   * Sets an entry in the "supportForTags" map.
+   */
+  public setSupportForTag(tagName: string, supported: boolean): void {
+    TSDocTagDefinition.validateTSDocTagName(tagName);
+    this._supportForTags.set(tagName, supported);
   }
 
   /**
@@ -236,13 +305,12 @@ export class TSDocConfigFile {
           // The JSON schema should have caught this error
           throw new Error('Unexpected tag kind');
       }
-      this._tagDefinitions.push(
-        new TSDocTagDefinition({
-          tagName: jsonTagDefinition.tagName,
-          syntaxKind: syntaxKind,
-          allowMultiple: jsonTagDefinition.allowMultiple,
-        })
-      );
+
+      this._addTagDefinitionForLoad({
+        tagName: jsonTagDefinition.tagName,
+        syntaxKind: syntaxKind,
+        allowMultiple: jsonTagDefinition.allowMultiple,
+      });
     }
 
     if (configJson.supportForTags) {
@@ -368,6 +436,27 @@ export class TSDocConfigFile {
     const configFile: TSDocConfigFile = new TSDocConfigFile();
     const alreadyVisitedPaths: Set<string> = new Set<string>();
     configFile._loadWithExtends(tsdocJsonFilePath, undefined, alreadyVisitedPaths);
+    return configFile;
+  }
+
+  /**
+   * Initializes a TSDocConfigFile object using the state from the provided `TSDocConfiguration` object.
+   */
+  public static loadFromParser(configuration: TSDocConfiguration): TSDocConfigFile {
+    const configFile: TSDocConfigFile = new TSDocConfigFile();
+
+    for (const tagDefinition of configuration.tagDefinitions) {
+      configFile.addTagDefinition({
+        syntaxKind: tagDefinition.syntaxKind,
+        tagName: tagDefinition.tagName,
+        allowMultiple: tagDefinition.allowMultiple,
+      });
+    }
+
+    for (const tagDefinition of configuration.supportedTagDefinitions) {
+      configFile.setSupportForTag(tagDefinition.tagName, true);
+    }
+
     return configFile;
   }
 
