@@ -215,10 +215,56 @@ test('Re-serialize p2', () => {
       ],
     }
   `);
+});
 
-  const configuration: TSDocConfiguration = new TSDocConfiguration();
+test('Re-serialize p2 without defaults', () => {
+  const parserConfiguration: TSDocConfiguration = new TSDocConfiguration();
+  parserConfiguration.clear(true);
 
-  const defaultsConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(configuration);
+  const defaultsConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(parserConfiguration);
+  // This is the default configuration created by the TSDocConfigFile constructor.
+  expect(defaultsConfigFile.saveToObject()).toMatchInlineSnapshot(`
+    Object {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+    }
+  `);
+
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p3'));
+  configFile.configureParser(parserConfiguration);
+
+  const mergedConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(parserConfiguration);
+
+  // This is the result of merging p3/tsdoc.json, tsdoc-base1.json, tsdoc-base2.json, and
+  // the TSDocConfiguration defaults.
+  expect(mergedConfigFile.saveToObject()).toMatchInlineSnapshot(`
+    Object {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "supportForTags": Object {
+        "@base1": true,
+        "@base2": true,
+      },
+      "tagDefinitions": Array [
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@base1",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@base2",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@root",
+        },
+      ],
+    }
+  `);
+});
+
+test('Re-serialize p2 with defaults', () => {
+  const parserConfiguration: TSDocConfiguration = new TSDocConfiguration();
+
+  const defaultsConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(parserConfiguration);
   // This is the default configuration created by the TSDocConfigFile constructor.
   expect(defaultsConfigFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
@@ -334,12 +380,14 @@ test('Re-serialize p2', () => {
     }
   `);
 
-  configFile.configureParser(configuration);
-  const roundtripConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(configuration);
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p3'));
+  configFile.configureParser(parserConfiguration);
+
+  const mergedConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(parserConfiguration);
 
   // This is the result of merging p3/tsdoc.json, tsdoc-base1.json, tsdoc-base2.json, and
   // the TSDocConfiguration defaults.
-  expect(roundtripConfigFile.saveToObject()).toMatchInlineSnapshot(`
+  expect(mergedConfigFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
       "supportForTags": Object {

@@ -22,11 +22,28 @@ export class TSDocConfiguration {
     this._validation = new TSDocValidationConfiguration();
     this._docNodeManager = new DocNodeManager();
 
-    // Define all the standard tags
-    this.addTagDefinitions(StandardTags.allDefinitions);
+    this.clear(false);
 
     // Register the built-in node kinds
     BuiltInDocNodes.register(this);
+  }
+
+  /**
+   * Resets the `TSDocConfiguration` object to its initial empty state.
+   * @param noStandardTags - The `TSDocConfiguration` constructor normally adds definitions for the
+   * standard TSDoc tags.  Set `noStandardTags` to true for a completely empty `tagDefinitions` collection.
+   */
+  public clear(noStandardTags: boolean = false): void {
+    this._tagDefinitions.length = 0;
+    this._tagDefinitionsByName.clear();
+    this._supportedTagDefinitions.clear();
+    this._validation.ignoreUndefinedTags = false;
+    this._validation.reportUnsupportedTags = false;
+
+    if (!noStandardTags) {
+      // Define all the standard tags
+      this.addTagDefinitions(StandardTags.allDefinitions);
+    }
   }
 
   /**
