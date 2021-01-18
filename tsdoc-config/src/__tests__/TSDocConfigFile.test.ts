@@ -45,6 +45,7 @@ test('Load p1', () => {
     }
   `);
 });
+
 test('Load p2', () => {
   expect(testLoadingFolder('assets/p2')).toMatchInlineSnapshot(`
     Object {
@@ -72,6 +73,7 @@ test('Load p2', () => {
     }
   `);
 });
+
 test('Load p3', () => {
   expect(testLoadingFolder('assets/p3')).toMatchInlineSnapshot(`
     Object {
@@ -149,6 +151,7 @@ test('Load p3', () => {
     }
   `);
 });
+
 test('Load p4', () => {
   expect(testLoadingFolder('assets/p4')).toMatchInlineSnapshot(`
     Object {
@@ -189,6 +192,24 @@ test('Load p4', () => {
         },
       ],
       "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+    }
+  `);
+});
+
+test('Re-serialize p2', () => {
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p3'));
+  expect(configFile.saveToObject()).toMatchInlineSnapshot(`
+    Object {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "supportForTags": Object {
+        "@base2": true,
+      },
+      "tagDefinitions": Array [
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@root",
+        },
+      ],
     }
   `);
 });

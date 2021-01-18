@@ -36,7 +36,6 @@ interface ITagConfigJson {
 
 interface IConfigJson {
   $schema: string;
-  tsdocVersion: string;
   extends?: string[];
   tagDefinitions?: ITagConfigJson[];
   supportForTags?: { [tagName: string]: boolean };
@@ -370,6 +369,66 @@ export class TSDocConfigFile {
     const alreadyVisitedPaths: Set<string> = new Set<string>();
     configFile._loadWithExtends(tsdocJsonFilePath, undefined, alreadyVisitedPaths);
     return configFile;
+  }
+
+  /**
+   * Writes the config file content to a JSON file with the specified file path.
+   */
+  public saveFile(jsonFilePath: string): void {
+    const jsonObject: unknown = this.saveToObject();
+    const jsonContent: string = JSON.stringify(jsonObject, undefined, 2);
+    fs.writeFileSync(jsonFilePath, jsonContent);
+  }
+
+  /**
+   * Writes the object state into a JSON-serializable object.
+   */
+  public saveToObject(): unknown {
+    const configJson: IConfigJson = {
+      $schema: TSDocConfigFile.CURRENT_SCHEMA_URL,
+    };
+
+    if (this.tagDefinitions.length > 0) {
+      configJson.tagDefinitions = [];
+      for (const tagDefinition of this.tagDefinitions) {
+        configJson.tagDefinitions.push(TSDocConfigFile._serializeTagDefinition(tagDefinition));
+      }
+    }
+
+    if (this.supportForTags.size > 0) {
+      configJson.supportForTags = {};
+      this.supportForTags.forEach((supported, tagName) => {
+        configJson.supportForTags![tagName] = supported;
+      });
+    }
+
+    return configJson;
+  }
+
+  private static _serializeTagDefinition(tagDefinition: TSDocTagDefinition): ITagConfigJson {
+    let syntaxKind: 'inline' | 'block' | 'modifier' | undefined;
+    switch (tagDefinition.syntaxKind) {
+      case TSDocTagSyntaxKind.InlineTag:
+        syntaxKind = 'inline';
+        break;
+      case TSDocTagSyntaxKind.BlockTag:
+        syntaxKind = 'block';
+        break;
+      case TSDocTagSyntaxKind.ModifierTag:
+        syntaxKind = 'modifier';
+        break;
+      default:
+        throw new Error('Unimplemented TSDocTagSyntaxKind');
+    }
+
+    const tagConfigJson: ITagConfigJson = {
+      tagName: tagDefinition.tagName,
+      syntaxKind,
+    };
+    if (tagDefinition.allowMultiple) {
+      tagConfigJson.allowMultiple = true;
+    }
+    return tagConfigJson;
   }
 
   /**
