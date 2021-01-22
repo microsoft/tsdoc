@@ -16,6 +16,7 @@ export class StandardTags {
    * It is intended to be used by third-party developers eventually, but has not
    * yet been released.  The tooling may trim the declaration from a public release.
    *
+   * @remarks
    * Example implementations: API Extractor
    */
   public static readonly alpha: TSDocTagDefinition = StandardTags._defineTag({
@@ -33,6 +34,7 @@ export class StandardTags {
    * change without notice.  The tooling may trim the declaration from a public release,
    * but may include it in a developer preview release.
    *
+   * @remarks
    * Example implementations: API Extractor
    *
    * Synonyms: `@experimental`
@@ -136,6 +138,7 @@ export class StandardTags {
    * Suggested meaning:  Same semantics as `@beta`, but used by tools that don't support
    * an `@alpha` release stage.
    *
+   * @remarks
    * Example implementations: Angular API documenter
    *
    * Synonyms: `@beta`
@@ -154,6 +157,7 @@ export class StandardTags {
    * to the other item, which may be an unrelated class, or even an import from a
    * separate NPM package.
    *
+   * @remarks
    * What gets copied
    *
    * The `@inheritDoc` tag does not copy the entire comment body. Only the following
@@ -183,6 +187,7 @@ export class StandardTags {
    * In some implementations, certain designated packages may be allowed to consume
    * internal API items, e.g. because the packages are components of the same product.
    *
+   * @remarks
    * Example implementations: API Extractor
    */
   public static readonly internal: TSDocTagDefinition = StandardTags._defineTag({
@@ -197,6 +202,7 @@ export class StandardTags {
    * The `{@label}` inline tag is used to label a declaration, so that it can be referenced
    * using a selector in the TSDoc declaration reference notation.
    *
+   * @remarks
    * TODO: The `{@label}` notation is still being standardized.  See this issue:
    * https://github.com/microsoft/tsdoc/issues/9
    */
@@ -213,6 +219,7 @@ export class StandardTags {
    * documentation system or general internet URLs.  In particular, it supports
    * expressions for referencing API items.
    *
+   * @remarks
    * TODO: The `{@link}` notation is still being standardized.  See this issue:
    * https://github.com/microsoft/tsdoc/issues/9
    */
@@ -231,6 +238,7 @@ export class StandardTags {
    * is overriding (i.e. redefining) the definition inherited from the base class.
    * The base class definition would normally be marked as `virtual`.
    *
+   * @remarks
    * A documentation tool may enforce that the `@virtual`, `@override`, and/or `@sealed`
    * modifiers are consistently applied, but this is not required by the TSDoc standard.
    */
@@ -289,6 +297,7 @@ export class StandardTags {
    * It has been officially released to third-party developers, and its signature is
    * guaranteed to be stable (e.g. following Semantic Versioning rules).
    *
+   * @remarks
    * Example implementations: API Extractor
    */
   public static readonly public: TSDocTagDefinition = StandardTags._defineTag({
@@ -306,6 +315,7 @@ export class StandardTags {
    * the property cannot be assigned; in this situation, the `@readonly` modifier can be
    * added so that the property is shown as read-only in the documentation.
    *
+   * @remarks
    * Example implementations: API Extractor
    */
   public static readonly readonly: TSDocTagDefinition = StandardTags._defineTag({
@@ -349,6 +359,7 @@ export class StandardTags {
    * For a member function or property, indicates that subclasses must not override
    * (i.e. redefine) the member.
    *
+   * @remarks
    * A documentation tool may enforce that the `@virtual`, `@override`, and/or `@sealed`
    * modifiers are consistently applied, but this is not required by the TSDoc standard.
    */
@@ -463,6 +474,7 @@ export class StandardTags {
    * For a member function or property, explicitly indicates that subclasses may override
    * (i.e. redefine) the member.
    *
+   * @remarks
    * A documentation tool may enforce that the `@virtual`, `@override`, and/or `@sealed`
    * modifiers are consistently applied, but this is not required by the TSDoc standard.
    */
