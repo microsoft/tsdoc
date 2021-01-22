@@ -1,6 +1,17 @@
 # Change Log - @microsoft/tsdoc-config
 
-This log was last generated on Thu, 03 Dec 2020 08:07:55 GMT and should not be manually modified.
+This log was last generated on Fri, 22 Jan 2021 18:07:19 GMT and should not be manually modified.
+
+## 0.14.0
+Fri, 22 Jan 2021 18:07:19 GMT
+
+### Minor changes
+
+- Update tsdoc.json schema to add a new field "noStandardTags"
+- TSDocConfigFile.configureParser() now clears any previous state, and it only defines standard tags if "noStandardTags" is not true.
+- Added new API TSDocConfigFile.updateParser() which preserves the previous configuration state
+- Add new "supportForTags" field to tsdoc.json schema
+- Add new APIs: TSDocConfigFile.supportForTags, .clearTagDefinitions(), .addTagDefinition(), .clearSupportForTags(), .setSupportForTag(), .loadFromParser(), .saveFile(), .saveToObject()
 
 ## 0.13.9
 Thu, 03 Dec 2020 08:07:55 GMT

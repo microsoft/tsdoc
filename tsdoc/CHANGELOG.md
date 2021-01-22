@@ -1,6 +1,19 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Thu, 03 Dec 2020 08:07:55 GMT and should not be manually modified.
+This log was last generated on Fri, 22 Jan 2021 18:07:19 GMT and should not be manually modified.
+
+## 0.13.0
+Fri, 22 Jan 2021 18:07:19 GMT
+
+### Minor changes
+
+- Update tsdoc.json schema to add a new field "noStandardTags"
+- Add new APIs: TSDocConfiguration.clear() and TSDocTagDefinition.validateTSDocTagName()
+- Add new "supportForTags" field to tsdoc.json schema
+
+### Patches
+
+- Update doc comments to fix some syntax issues
 
 ## 0.12.24
 Thu, 03 Dec 2020 08:07:55 GMT

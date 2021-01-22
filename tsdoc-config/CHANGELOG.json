@@ -2,6 +2,35 @@
   "name": "@microsoft/tsdoc-config",
   "entries": [
     {
+      "version": "0.14.0",
+      "tag": "@microsoft/tsdoc-config_v0.14.0",
+      "date": "Fri, 22 Jan 2021 18:07:19 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Update tsdoc.json schema to add a new field \"noStandardTags\""
+          },
+          {
+            "comment": "TSDocConfigFile.configureParser() now clears any previous state, and it only defines standard tags if \"noStandardTags\" is not true."
+          },
+          {
+            "comment": "Added new API TSDocConfigFile.updateParser() which preserves the previous configuration state"
+          },
+          {
+            "comment": "Add new \"supportForTags\" field to tsdoc.json schema"
+          },
+          {
+            "comment": "Add new APIs: TSDocConfigFile.supportForTags, .clearTagDefinitions(), .addTagDefinition(), .clearSupportForTags(), .setSupportForTag(), .loadFromParser(), .saveFile(), .saveToObject()"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" from `0.12.24` to `0.13.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.13.9",
       "tag": "@microsoft/tsdoc-config_v0.13.9",
       "date": "Thu, 03 Dec 2020 08:07:55 GMT",

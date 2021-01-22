@@ -2,6 +2,29 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.13.0",
+      "tag": "@microsoft/tsdoc_v0.13.0",
+      "date": "Fri, 22 Jan 2021 18:07:19 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update doc comments to fix some syntax issues"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "Update tsdoc.json schema to add a new field \"noStandardTags\""
+          },
+          {
+            "comment": "Add new APIs: TSDocConfiguration.clear() and TSDocTagDefinition.validateTSDocTagName()"
+          },
+          {
+            "comment": "Add new \"supportForTags\" field to tsdoc.json schema"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.12.24",
       "tag": "@microsoft/tsdoc_v0.12.24",
       "date": "Thu, 03 Dec 2020 08:07:55 GMT",
