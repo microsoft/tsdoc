@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "TSDocConfigFile.configureParser() now clears any previous state, and it only defines standard tags if \"noStandardTags\" is not true.",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config",
+  "email": "4673363+octogonz@users.noreply.github.com"
+}

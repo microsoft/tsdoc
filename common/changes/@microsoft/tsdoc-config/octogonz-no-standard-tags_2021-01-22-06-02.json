@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "Added new API TSDocConfigFile.updateParser() which preserves the previous configuration state",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config",
+  "email": "4673363+octogonz@users.noreply.github.com"
+}

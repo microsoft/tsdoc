@@ -21,6 +21,7 @@ expect.addSnapshotSerializer({
       fileNotFound: configFile.fileNotFound,
       extendsPaths: configFile.extendsPaths,
       extendsFiles: configFile.extendsFiles,
+      noStandardTags: configFile.noStandardTags,
       tagDefinitions: configFile.tagDefinitions,
       supportForTags: Array.from(configFile.supportForTags).map(([tagName, supported]) => ({ tagName, supported })),
       messages: configFile.log.messages,
@@ -40,6 +41,7 @@ test('Load p1', () => {
       "fileNotFound": false,
       "filePath": "assets/p1/tsdoc.json",
       "messages": Array [],
+      "noStandardTags": undefined,
       "supportForTags": Array [],
       "tagDefinitions": Array [],
       "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
@@ -68,6 +70,7 @@ test('Load p2', () => {
           "unformattedText": "File not found",
         },
       ],
+      "noStandardTags": undefined,
       "supportForTags": Array [],
       "tagDefinitions": Array [],
       "tsdocSchema": "",
@@ -85,6 +88,7 @@ test('Load p3', () => {
           "fileNotFound": false,
           "filePath": "assets/p3/base1/tsdoc-base1.json",
           "messages": Array [],
+          "noStandardTags": undefined,
           "supportForTags": Array [
             Object {
               "supported": true,
@@ -108,6 +112,7 @@ test('Load p3', () => {
           "fileNotFound": false,
           "filePath": "assets/p3/base2/tsdoc-base2.json",
           "messages": Array [],
+          "noStandardTags": undefined,
           "supportForTags": Array [
             Object {
               "supported": false,
@@ -133,6 +138,7 @@ test('Load p3', () => {
       "fileNotFound": false,
       "filePath": "assets/p3/tsdoc.json",
       "messages": Array [],
+      "noStandardTags": undefined,
       "supportForTags": Array [
         Object {
           "supported": true,
@@ -163,6 +169,7 @@ test('Load p4', () => {
           "fileNotFound": false,
           "filePath": "assets/p4/node_modules/example-lib/dist/tsdoc-example.json",
           "messages": Array [],
+          "noStandardTags": undefined,
           "supportForTags": Array [],
           "tagDefinitions": Array [
             TSDocTagDefinition {
@@ -182,6 +189,7 @@ test('Load p4', () => {
       "fileNotFound": false,
       "filePath": "assets/p4/tsdoc.json",
       "messages": Array [],
+      "noStandardTags": undefined,
       "supportForTags": Array [],
       "tagDefinitions": Array [
         TSDocTagDefinition {
@@ -197,7 +205,7 @@ test('Load p4', () => {
   `);
 });
 
-test('Re-serialize p2', () => {
+test('Re-serialize p3', () => {
   const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p3'));
   // This is the data from p3/tsdoc.json, ignoring its "extends" field.
   expect(configFile.saveToObject()).toMatchInlineSnapshot(`
@@ -216,7 +224,7 @@ test('Re-serialize p2', () => {
   `);
 });
 
-test('Re-serialize p2 without defaults', () => {
+test('Re-serialize p3 without defaults', () => {
   const parserConfiguration: TSDocConfiguration = new TSDocConfiguration();
   parserConfiguration.clear(true);
 
@@ -225,10 +233,12 @@ test('Re-serialize p2 without defaults', () => {
   expect(defaultsConfigFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "noStandardTags": true,
     }
   `);
 
   const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p3'));
+  configFile.noStandardTags = true;
   configFile.configureParser(parserConfiguration);
 
   const mergedConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(parserConfiguration);
@@ -238,6 +248,7 @@ test('Re-serialize p2 without defaults', () => {
   expect(mergedConfigFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "noStandardTags": true,
       "supportForTags": Object {
         "@base1": true,
         "@base2": true,
@@ -260,7 +271,7 @@ test('Re-serialize p2 without defaults', () => {
   `);
 });
 
-test('Re-serialize p2 with defaults', () => {
+test('Re-serialize p3 with defaults', () => {
   const parserConfiguration: TSDocConfiguration = new TSDocConfiguration();
 
   const defaultsConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(parserConfiguration);
@@ -268,6 +279,7 @@ test('Re-serialize p2 with defaults', () => {
   expect(defaultsConfigFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "noStandardTags": true,
       "tagDefinitions": Array [
         Object {
           "syntaxKind": "modifier",
@@ -389,6 +401,7 @@ test('Re-serialize p2 with defaults', () => {
   expect(mergedConfigFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "noStandardTags": true,
       "supportForTags": Object {
         "@base1": true,
         "@base2": true,
@@ -515,4 +528,24 @@ test('Re-serialize p2 with defaults', () => {
       ],
     }
   `);
+});
+
+test('Test noStandardTags for p5', () => {
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p5'));
+
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
+  configFile.configureParser(configuration);
+
+  // noStandardTags=true because tsdoc-base2.json overrides tsdoc-base1.json, and tsdoc.json is undefined
+  expect(configuration.tagDefinitions.length).toEqual(0);
+});
+
+test('Test noStandardTags for p6', () => {
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p6'));
+
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
+  configFile.configureParser(configuration);
+
+  // noStandardTags=false  because tsdoc.json  overrides tsdoc-base1.json
+  expect(configuration.tagDefinitions.length).toBeGreaterThan(0);
 });
