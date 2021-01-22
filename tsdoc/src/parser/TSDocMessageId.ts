@@ -166,7 +166,7 @@ export const enum TSDocMessageId {
   MissingTag = 'tsdoc-missing-tag',
 
   /**
-   * The "@" character looks like part of a TSDoc tag; use a backslash to escape it.
+   * The `@` character looks like part of a TSDoc tag; use a backslash to escape it.
    */
   AtSignInWord = 'tsdoc-at-sign-in-word',
 

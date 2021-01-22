@@ -121,7 +121,7 @@ export class DocHtmlStartTag extends DocNode {
   }
 
   /**
-   * If true, then the HTML tag ends with "/>" instead of ">".
+   * If true, then the HTML tag ends with `/>` instead of `>`.
    */
   public get selfClosingTag(): boolean {
     return this._selfClosingTag;
