@@ -14,7 +14,6 @@ import * as resolve from 'resolve';
 import * as path from 'path';
 import Ajv from 'ajv';
 import * as jju from 'jju';
-import { config } from 'process';
 
 const ajv: Ajv.Ajv = new Ajv({ verbose: true });
 

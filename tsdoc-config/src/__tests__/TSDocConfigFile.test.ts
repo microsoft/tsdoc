@@ -1,6 +1,5 @@
 import { TSDocConfiguration } from '@microsoft/tsdoc';
 import * as path from 'path';
-import { config } from 'process';
 
 import { TSDocConfigFile } from '../TSDocConfigFile';
 
