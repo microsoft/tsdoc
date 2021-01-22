@@ -24,7 +24,7 @@ export interface IDocInlineTagBaseParsedParameters extends IDocNodeParsedParamet
 }
 
 /**
- * The abstract base class for {@link DocInlineTag}, {@link DocLink}, and {@link DocInheritDoc}.
+ * The abstract base class for {@link DocInlineTag}, {@link DocLinkTag}, and {@link DocInheritDocTag}.
  */
 export abstract class DocInlineTagBase extends DocNode {
   private readonly _openingDelimiterExcerpt: DocExcerpt | undefined;
@@ -78,7 +78,7 @@ export abstract class DocInlineTagBase extends DocNode {
   }
 
   /**
-   * The TSDoc tag name.  TSDoc tag names start with an at-sign ("@") followed
+   * The TSDoc tag name.  TSDoc tag names start with an at-sign (`@`) followed
    * by ASCII letters using "camelCase" capitalization.
    *
    * @remarks

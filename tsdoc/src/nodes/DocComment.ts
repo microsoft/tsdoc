@@ -171,7 +171,7 @@ export class DocComment extends DocNode {
    * manually.
    *
    * This method is provided as convenience for simple use cases.  To customize the output, or if you need
-   * to render into a `StringBuilder, use the {@link TSDocEmitter} class instead.
+   * to render into a `StringBuilder`, use the {@link TSDocEmitter} class instead.
    */
   public emitAsTsdoc(): string {
     const stringBuilder: StringBuilder = new StringBuilder();

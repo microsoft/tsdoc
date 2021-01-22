@@ -44,7 +44,7 @@ export interface ITSDocTagDefinitionInternalParameters extends ITSDocTagDefiniti
  */
 export class TSDocTagDefinition {
   /**
-   * The TSDoc tag name.  TSDoc tag names start with an at-sign ("@") followed
+   * The TSDoc tag name.  TSDoc tag names start with an at-sign (`@`) followed
    * by ASCII letters using "camelCase" capitalization.
    */
   public readonly tagName: string;
