@@ -38,6 +38,7 @@ interface ITagConfigJson {
 interface IConfigJson {
   $schema: string;
   extends?: string[];
+  noStandardTags?: boolean;
   tagDefinitions?: ITagConfigJson[];
   supportForTags?: { [tagName: string]: boolean };
 }
@@ -64,6 +65,7 @@ export class TSDocConfigFile {
   private _hasErrors: boolean;
   private _tsdocSchema: string;
   private readonly _extendsPaths: string[];
+  private _noStandardTags: boolean | undefined;
   private readonly _tagDefinitions: TSDocTagDefinition[];
   private readonly _tagDefinitionNames: Set<string>;
   private readonly _supportForTags: Map<string, boolean>;
@@ -78,6 +80,7 @@ export class TSDocConfigFile {
     this._fileMTime = 0;
     this._tsdocSchema = '';
     this._extendsPaths = [];
+    this._noStandardTags = undefined;
     this._tagDefinitions = [];
     this._tagDefinitionNames = new Set();
     this._supportForTags = new Map();
@@ -131,6 +134,25 @@ export class TSDocConfigFile {
    */
   public get extendsPaths(): ReadonlyArray<string> {
     return this._extendsPaths;
+  }
+
+  /**
+   * By default, the config file loader will predefine all of the standardized TSDoc tags.  To disable this and
+   * start with a completely empty configuration, set `noStandardTags` to true.
+   *
+   * @remarks
+   * If a config file uses `"extends"` to include settings from base config files, then its setting will
+   * override any settings from the base config files.  If `"noStandardTags"` is not specified, then this
+   * property will be `undefined`.  The config files are applied in the order they are processed (a depth-first
+   * traversal of the `"extends"` references), and files processed later can override earlier files.
+   * If no config file specifies `noStandardTags` then the default value is `false`.
+   */
+  public get noStandardTags(): boolean | undefined {
+    return this._noStandardTags;
+  }
+
+  public set noStandardTags(value: boolean | undefined) {
+    this._noStandardTags = value;
   }
 
   public get tagDefinitions(): ReadonlyArray<TSDocTagDefinition> {
@@ -288,6 +310,8 @@ export class TSDocConfigFile {
       this._extendsPaths.push(...configJson.extends);
     }
 
+    this.noStandardTags = configJson.noStandardTags;
+
     for (const jsonTagDefinition of configJson.tagDefinitions || []) {
       let syntaxKind: TSDocTagSyntaxKind;
       switch (jsonTagDefinition.syntaxKind) {
@@ -444,6 +468,10 @@ export class TSDocConfigFile {
   public static loadFromParser(configuration: TSDocConfiguration): TSDocConfigFile {
     const configFile: TSDocConfigFile = new TSDocConfigFile();
 
+    // The standard tags will be mixed together with custom definitions,
+    // so set noStandardTags=true to avoid defining them twice.
+    configFile.noStandardTags = true;
+
     for (const tagDefinition of configuration.tagDefinitions) {
       configFile.addTagDefinition({
         syntaxKind: tagDefinition.syntaxKind,
@@ -475,6 +503,10 @@ export class TSDocConfigFile {
     const configJson: IConfigJson = {
       $schema: TSDocConfigFile.CURRENT_SCHEMA_URL,
     };
+
+    if (this.noStandardTags !== undefined) {
+      configJson.noStandardTags = this.noStandardTags;
+    }
 
     if (this.tagDefinitions.length > 0) {
       configJson.tagDefinitions = [];
@@ -551,9 +583,24 @@ export class TSDocConfigFile {
    * Any `extendsFile` settings will also applied.
    */
   public configureParser(configuration: TSDocConfiguration): void {
+    if (this._getNoStandardTagsWithExtends()) {
+      // Do not define standard tags
+      configuration.clear(true);
+    } else {
+      // Define standard tags (the default behavior)
+      configuration.clear(false);
+    }
+
+    this.updateParser(configuration);
+  }
+
+  /**
+   * This is the same as {@link configureParser}, but it preserves any previous state.
+   */
+  public updateParser(configuration: TSDocConfiguration): void {
     // First apply the base config files
     for (const extendsFile of this.extendsFiles) {
-      extendsFile.configureParser(configuration);
+      extendsFile.updateParser(configuration);
     }
 
     // Then apply this one
@@ -574,5 +621,27 @@ export class TSDocConfigFile {
         });
       }
     });
+  }
+
+  private _getNoStandardTagsWithExtends(): boolean {
+    if (this.noStandardTags !== undefined) {
+      return this.noStandardTags;
+    }
+
+    // This config file does not specify "noStandardTags", so consider any base files referenced using "extends"
+    let result: boolean | undefined = undefined;
+    for (const extendsFile of this.extendsFiles) {
+      const extendedValue: boolean | undefined = extendsFile._getNoStandardTagsWithExtends();
+      if (extendedValue !== undefined) {
+        result = extendedValue;
+      }
+    }
+
+    if (result === undefined) {
+      // If no config file specifies noStandardTags, then it defaults to false
+      result = false;
+    }
+
+    return result;
   }
 }

@@ -16,6 +16,11 @@
       }
     },
 
+    "noStandardTags": {
+      "description": "By default, the config file loader will predefine all of the standardized TSDoc tags.  To disable this and start with a completely empty configuration, set \"noStandardTags\"=true.",
+      "type": "boolean"
+    },
+
     "tagDefinitions": {
       "description": "Additional tags to support when parsing documentation comments with TSDoc.",
       "type": "array",
