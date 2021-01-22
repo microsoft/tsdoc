@@ -7,6 +7,7 @@ import {
   ParserMessage,
   TextRange,
   IParserMessageParameters,
+  ITSDocTagDefinitionParameters,
 } from '@microsoft/tsdoc';
 import * as fs from 'fs';
 import * as resolve from 'resolve';
@@ -36,9 +37,9 @@ interface ITagConfigJson {
 
 interface IConfigJson {
   $schema: string;
-  tsdocVersion: string;
   extends?: string[];
-  tagDefinitions: ITagConfigJson[];
+  tagDefinitions?: ITagConfigJson[];
+  supportForTags?: { [tagName: string]: boolean };
 }
 
 /**
@@ -64,6 +65,8 @@ export class TSDocConfigFile {
   private _tsdocSchema: string;
   private readonly _extendsPaths: string[];
   private readonly _tagDefinitions: TSDocTagDefinition[];
+  private readonly _tagDefinitionNames: Set<string>;
+  private readonly _supportForTags: Map<string, boolean>;
 
   private constructor() {
     this.log = new ParserMessageLog();
@@ -76,6 +79,8 @@ export class TSDocConfigFile {
     this._tsdocSchema = '';
     this._extendsPaths = [];
     this._tagDefinitions = [];
+    this._tagDefinitionNames = new Set();
+    this._supportForTags = new Map();
   }
 
   /**
@@ -130,6 +135,75 @@ export class TSDocConfigFile {
 
   public get tagDefinitions(): ReadonlyArray<TSDocTagDefinition> {
     return this._tagDefinitions;
+  }
+
+  public get supportForTags(): ReadonlyMap<string, boolean> {
+    return this._supportForTags;
+  }
+
+  /**
+   * Removes all items from the `tagDefinitions` array.
+   */
+  public clearTagDefinitions(): void {
+    this._tagDefinitions.length = 0;
+    this._tagDefinitionNames.clear();
+  }
+
+  /**
+   * Adds a new item to the `tagDefinitions` array.
+   */
+  public addTagDefinition(parameters: ITSDocTagDefinitionParameters): void {
+    // This validates the tag name
+    const tagDefinition: TSDocTagDefinition = new TSDocTagDefinition(parameters);
+
+    if (this._tagDefinitionNames.has(tagDefinition.tagNameWithUpperCase)) {
+      throw new Error(`A tag defintion was already added with the tag name "${parameters.tagName}"`);
+    }
+    this._tagDefinitionNames.add(tagDefinition.tagName);
+
+    this._tagDefinitions.push(tagDefinition);
+  }
+
+  // Similar to addTagDefinition() but reports errors using _reportError()
+  private _addTagDefinitionForLoad(parameters: ITSDocTagDefinitionParameters): void {
+    let tagDefinition: TSDocTagDefinition;
+    try {
+      // This validates the tag name
+      tagDefinition = new TSDocTagDefinition(parameters);
+    } catch (error) {
+      this._reportError({
+        messageId: TSDocMessageId.ConfigFileInvalidTagName,
+        messageText: error.message,
+        textRange: TextRange.empty,
+      });
+      return;
+    }
+
+    if (this._tagDefinitionNames.has(tagDefinition.tagNameWithUpperCase)) {
+      this._reportError({
+        messageId: TSDocMessageId.ConfigFileDuplicateTagName,
+        messageText: `The "tagDefinitions" field specifies more than one tag with the name "${parameters.tagName}"`,
+        textRange: TextRange.empty,
+      });
+    }
+    this._tagDefinitionNames.add(tagDefinition.tagName);
+
+    this._tagDefinitions.push(tagDefinition);
+  }
+
+  /**
+   * Removes all entries from the "supportForTags" map.
+   */
+  public clearSupportForTags(): void {
+    this._supportForTags.clear();
+  }
+
+  /**
+   * Sets an entry in the "supportForTags" map.
+   */
+  public setSupportForTag(tagName: string, supported: boolean): void {
+    TSDocTagDefinition.validateTSDocTagName(tagName);
+    this._supportForTags.set(tagName, supported);
   }
 
   /**
@@ -230,13 +304,20 @@ export class TSDocConfigFile {
           // The JSON schema should have caught this error
           throw new Error('Unexpected tag kind');
       }
-      this._tagDefinitions.push(
-        new TSDocTagDefinition({
-          tagName: jsonTagDefinition.tagName,
-          syntaxKind: syntaxKind,
-          allowMultiple: jsonTagDefinition.allowMultiple,
-        })
-      );
+
+      this._addTagDefinitionForLoad({
+        tagName: jsonTagDefinition.tagName,
+        syntaxKind: syntaxKind,
+        allowMultiple: jsonTagDefinition.allowMultiple,
+      });
+    }
+
+    if (configJson.supportForTags) {
+      for (const tagName of Object.keys(configJson.supportForTags)) {
+        const supported: boolean = configJson.supportForTags[tagName];
+
+        this._supportForTags.set(tagName, supported);
+      }
     }
   }
 
@@ -358,6 +439,87 @@ export class TSDocConfigFile {
   }
 
   /**
+   * Initializes a TSDocConfigFile object using the state from the provided `TSDocConfiguration` object.
+   */
+  public static loadFromParser(configuration: TSDocConfiguration): TSDocConfigFile {
+    const configFile: TSDocConfigFile = new TSDocConfigFile();
+
+    for (const tagDefinition of configuration.tagDefinitions) {
+      configFile.addTagDefinition({
+        syntaxKind: tagDefinition.syntaxKind,
+        tagName: tagDefinition.tagName,
+        allowMultiple: tagDefinition.allowMultiple,
+      });
+    }
+
+    for (const tagDefinition of configuration.supportedTagDefinitions) {
+      configFile.setSupportForTag(tagDefinition.tagName, true);
+    }
+
+    return configFile;
+  }
+
+  /**
+   * Writes the config file content to a JSON file with the specified file path.
+   */
+  public saveFile(jsonFilePath: string): void {
+    const jsonObject: unknown = this.saveToObject();
+    const jsonContent: string = JSON.stringify(jsonObject, undefined, 2);
+    fs.writeFileSync(jsonFilePath, jsonContent);
+  }
+
+  /**
+   * Writes the object state into a JSON-serializable object.
+   */
+  public saveToObject(): unknown {
+    const configJson: IConfigJson = {
+      $schema: TSDocConfigFile.CURRENT_SCHEMA_URL,
+    };
+
+    if (this.tagDefinitions.length > 0) {
+      configJson.tagDefinitions = [];
+      for (const tagDefinition of this.tagDefinitions) {
+        configJson.tagDefinitions.push(TSDocConfigFile._serializeTagDefinition(tagDefinition));
+      }
+    }
+
+    if (this.supportForTags.size > 0) {
+      configJson.supportForTags = {};
+      this.supportForTags.forEach((supported, tagName) => {
+        configJson.supportForTags![tagName] = supported;
+      });
+    }
+
+    return configJson;
+  }
+
+  private static _serializeTagDefinition(tagDefinition: TSDocTagDefinition): ITagConfigJson {
+    let syntaxKind: 'inline' | 'block' | 'modifier' | undefined;
+    switch (tagDefinition.syntaxKind) {
+      case TSDocTagSyntaxKind.InlineTag:
+        syntaxKind = 'inline';
+        break;
+      case TSDocTagSyntaxKind.BlockTag:
+        syntaxKind = 'block';
+        break;
+      case TSDocTagSyntaxKind.ModifierTag:
+        syntaxKind = 'modifier';
+        break;
+      default:
+        throw new Error('Unimplemented TSDocTagSyntaxKind');
+    }
+
+    const tagConfigJson: ITagConfigJson = {
+      tagName: tagDefinition.tagName,
+      syntaxKind,
+    };
+    if (tagDefinition.allowMultiple) {
+      tagConfigJson.allowMultiple = true;
+    }
+    return tagConfigJson;
+  }
+
+  /**
    * Returns a report of any errors that occurred while attempting to load this file or any files
    * referenced via the "extends" field.
    *
@@ -398,5 +560,19 @@ export class TSDocConfigFile {
     for (const tagDefinition of this.tagDefinitions) {
       configuration.addTagDefinition(tagDefinition);
     }
+
+    this.supportForTags.forEach((supported: boolean, tagName: string) => {
+      const tagDefinition: TSDocTagDefinition | undefined = configuration.tryGetTagDefinition(tagName);
+      if (tagDefinition) {
+        // Note that setSupportForTag() automatically enables configuration.validation.reportUnsupportedTags
+        configuration.setSupportForTag(tagDefinition, supported);
+      } else {
+        this._reportError({
+          messageId: TSDocMessageId.ConfigFileUndefinedTag,
+          messageText: `The "supportForTags" field refers to an undefined tag ${JSON.stringify(tagName)}.`,
+          textRange: TextRange.empty,
+        });
+      }
+    });
   }
 }

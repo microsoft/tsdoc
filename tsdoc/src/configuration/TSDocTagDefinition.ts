@@ -81,4 +81,11 @@ export class TSDocTagDefinition {
       (parameters as ITSDocTagDefinitionInternalParameters).standardization || Standardization.None;
     this.allowMultiple = !!parameters.allowMultiple;
   }
+
+  /**
+   * Throws an exception if `tagName` is not a valid TSDoc tag name.
+   */
+  public static validateTSDocTagName(tagName: string): void {
+    StringChecks.validateTSDocTagName(tagName);
+  }
 }

@@ -5,5 +5,8 @@
       "tagName": "@base1",
       "syntaxKind": "modifier"
     }
-  ]
+  ],
+  "supportForTags": {
+    "@base1": true
+  }
 }
