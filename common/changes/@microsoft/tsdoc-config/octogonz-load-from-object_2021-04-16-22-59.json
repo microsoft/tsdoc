@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "Add a new API TSDocConfigFile.loadFromObject()",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config",
+  "email": "4673363+octogonz@users.noreply.github.com"
+}
