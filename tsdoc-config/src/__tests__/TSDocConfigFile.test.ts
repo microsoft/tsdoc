@@ -1,4 +1,4 @@
-import { Standardization, TSDocConfiguration, TSDocTagDefinition, TSDocTagSyntaxKind } from '@microsoft/tsdoc';
+import { TSDocConfiguration, TSDocTagDefinition, TSDocTagSyntaxKind } from '@microsoft/tsdoc';
 import * as path from 'path';
 
 import { TSDocConfigFile } from '../TSDocConfigFile';
