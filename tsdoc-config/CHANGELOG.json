@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc-config",
   "entries": [
     {
+      "version": "0.15.0",
+      "tag": "@microsoft/tsdoc-config_v0.15.0",
+      "date": "Fri, 16 Apr 2021 23:22:26 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add a new API TSDocConfigFile.loadFromObject()"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.14.0",
       "tag": "@microsoft/tsdoc-config_v0.14.0",
       "date": "Fri, 22 Jan 2021 18:07:19 GMT",

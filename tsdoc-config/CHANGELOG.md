@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc-config
 
-This log was last generated on Fri, 22 Jan 2021 18:07:19 GMT and should not be manually modified.
+This log was last generated on Fri, 16 Apr 2021 23:22:26 GMT and should not be manually modified.
+
+## 0.15.0
+Fri, 16 Apr 2021 23:22:26 GMT
+
+### Minor changes
+
+- Add a new API TSDocConfigFile.loadFromObject()
 
 ## 0.14.0
 Fri, 22 Jan 2021 18:07:19 GMT
