@@ -1,4 +1,4 @@
-import { TSDocConfiguration } from '@microsoft/tsdoc';
+import { Standardization, TSDocConfiguration, TSDocTagDefinition, TSDocTagSyntaxKind } from '@microsoft/tsdoc';
 import * as path from 'path';
 
 import { TSDocConfigFile } from '../TSDocConfigFile';
@@ -207,6 +207,8 @@ test('Load p4', () => {
 
 test('Re-serialize p3', () => {
   const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p3'));
+  expect(configFile.hasErrors).toBe(false);
+
   // This is the data from p3/tsdoc.json, ignoring its "extends" field.
   expect(configFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
@@ -229,6 +231,8 @@ test('Re-serialize p3 without defaults', () => {
   parserConfiguration.clear(true);
 
   const defaultsConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(parserConfiguration);
+  expect(defaultsConfigFile.hasErrors).toBe(false);
+
   // This is the default configuration created by the TSDocConfigFile constructor.
   expect(defaultsConfigFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
@@ -238,6 +242,7 @@ test('Re-serialize p3 without defaults', () => {
   `);
 
   const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p3'));
+  expect(configFile.hasErrors).toBe(false);
   configFile.noStandardTags = true;
   configFile.configureParser(parserConfiguration);
 
@@ -275,6 +280,8 @@ test('Re-serialize p3 with defaults', () => {
   const parserConfiguration: TSDocConfiguration = new TSDocConfiguration();
 
   const defaultsConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(parserConfiguration);
+  expect(defaultsConfigFile.hasErrors).toBe(false);
+
   // This is the default configuration created by the TSDocConfigFile constructor.
   expect(defaultsConfigFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
@@ -392,6 +399,7 @@ test('Re-serialize p3 with defaults', () => {
   `);
 
   const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p3'));
+  expect(configFile.hasErrors).toBe(false);
   configFile.configureParser(parserConfiguration);
 
   const mergedConfigFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(parserConfiguration);
@@ -532,6 +540,7 @@ test('Re-serialize p3 with defaults', () => {
 
 test('Test noStandardTags for p5', () => {
   const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p5'));
+  expect(configFile.hasErrors).toBe(false);
 
   const configuration: TSDocConfiguration = new TSDocConfiguration();
   configFile.configureParser(configuration);
@@ -542,10 +551,76 @@ test('Test noStandardTags for p5', () => {
 
 test('Test noStandardTags for p6', () => {
   const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p6'));
+  expect(configFile.hasErrors).toBe(false);
 
   const configuration: TSDocConfiguration = new TSDocConfiguration();
   configFile.configureParser(configuration);
 
   // noStandardTags=false  because tsdoc.json  overrides tsdoc-base1.json
   expect(configuration.tagDefinitions.length).toBeGreaterThan(0);
+});
+
+test('Test loadFromObject()', () => {
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
+  configuration.clear(true);
+
+  configuration.addTagDefinitions([
+    new TSDocTagDefinition({ syntaxKind: TSDocTagSyntaxKind.ModifierTag, tagName: '@tag1' }),
+    new TSDocTagDefinition({ syntaxKind: TSDocTagSyntaxKind.BlockTag, tagName: '@tag2', allowMultiple: true }),
+    new TSDocTagDefinition({ syntaxKind: TSDocTagSyntaxKind.InlineTag, tagName: '@tag3', allowMultiple: true }),
+  ]);
+
+  configuration.setSupportForTag(configuration.tagDefinitions[0], true);
+
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(configuration);
+  expect(configFile.hasErrors).toBe(false);
+  const jsonObject: unknown = configFile.saveToObject();
+
+  const configFile2: TSDocConfigFile = TSDocConfigFile.loadFromObject(jsonObject);
+  expect(configFile2.hasErrors).toBe(false);
+  const jsonObject2: unknown = configFile2.saveToObject();
+
+  expect(jsonObject2).toMatchInlineSnapshot(`
+    Object {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "noStandardTags": true,
+      "supportForTags": Object {
+        "@tag1": true,
+      },
+      "tagDefinitions": Array [
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@tag1",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "block",
+          "tagName": "@tag2",
+        },
+        Object {
+          "allowMultiple": true,
+          "syntaxKind": "inline",
+          "tagName": "@tag3",
+        },
+      ],
+    }
+  `);
+
+  expect(jsonObject2).toStrictEqual(jsonObject);
+});
+
+test('Test loadFromObject() with extends', () => {
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
+  configuration.clear(true);
+
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadFromParser(configuration);
+  expect(configFile.hasErrors).toBe(false);
+  const jsonObject: unknown = configFile.saveToObject();
+
+  // eslint-disable-next-line
+  (jsonObject as any)['extends'] = ['./some-file.json'];
+
+  expect(() => {
+    TSDocConfigFile.loadFromObject(jsonObject);
+  }).toThrowError('The "extends" field cannot be used with TSDocConfigFile.loadFromObject()');
 });

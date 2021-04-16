@@ -94,7 +94,8 @@ export class TSDocConfigFile {
   }
 
   /**
-   * The full path of the file that was attempted to load.
+   * The full path of the file that was attempted to load, or an empty string if the configuration was
+   * loaded from a source that is not a file.
    */
   public get filePath(): string {
     return this._filePath;
@@ -276,12 +277,8 @@ export class TSDocConfigFile {
     this._hasErrors = true;
   }
 
-  private _loadJsonFile(): void {
-    const configJsonContent: string = fs.readFileSync(this._filePath).toString();
-    this._fileMTime = fs.statSync(this._filePath).mtimeMs;
+  private _loadJsonObject(configJson: IConfigJson): void {
     this._fileNotFound = false;
-
-    const configJson: IConfigJson = jju.parse(configJsonContent, { mode: 'cjson' });
 
     if (configJson.$schema !== TSDocConfigFile.CURRENT_SCHEMA_URL) {
       this._reportError({
@@ -381,7 +378,12 @@ export class TSDocConfigFile {
     }
     alreadyVisitedPaths.add(hashKey);
 
-    this._loadJsonFile();
+    const configJsonContent: string = fs.readFileSync(this._filePath).toString();
+    this._fileMTime = fs.statSync(this._filePath).mtimeMs;
+
+    const configJson: IConfigJson = jju.parse(configJsonContent, { mode: 'cjson' });
+
+    this._loadJsonObject(configJson);
 
     const configFileFolder: string = path.dirname(this.filePath);
 
@@ -459,6 +461,24 @@ export class TSDocConfigFile {
     const configFile: TSDocConfigFile = new TSDocConfigFile();
     const alreadyVisitedPaths: Set<string> = new Set<string>();
     configFile._loadWithExtends(tsdocJsonFilePath, undefined, alreadyVisitedPaths);
+    return configFile;
+  }
+
+  /**
+   * Loads the object state from a JSON-serializable object as produced by {@link TSDocConfigFile.saveToObject}.
+   *
+   * @remarks
+   * The serialized object has the same structure as `tsdoc.json`; however the `"extends"` field is not allowed.
+   */
+  public static loadFromObject(jsonObject: unknown): TSDocConfigFile {
+    const configFile: TSDocConfigFile = new TSDocConfigFile();
+
+    configFile._loadJsonObject(jsonObject as IConfigJson);
+
+    if (configFile.extendsPaths.length > 0) {
+      throw new Error('The "extends" field cannot be used with TSDocConfigFile.loadFromObject()');
+    }
+
     return configFile;
   }
 
@@ -563,7 +583,13 @@ export class TSDocConfigFile {
       return 'No errors.';
     }
 
-    let result: string = `Errors encountered for ${this.filePath}:\n`;
+    let result: string;
+
+    if (this.filePath) {
+      result = `Errors encountered for ${this.filePath}:\n`;
+    } else {
+      result = `Errors encountered when loading TSDoc configuration:\n`;
+    }
 
     for (const message of this.log.messages) {
       result += `  ${message.text}\n`;
