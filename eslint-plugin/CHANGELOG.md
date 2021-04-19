@@ -1,6 +1,11 @@
 # Change Log - eslint-plugin-tsdoc
 
-This log was last generated on Fri, 16 Apr 2021 23:22:26 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Apr 2021 21:22:32 GMT and should not be manually modified.
+
+## 0.2.13
+Mon, 19 Apr 2021 21:22:32 GMT
+
+_Version update only_
 
 ## 0.2.12
 Fri, 16 Apr 2021 23:22:26 GMT

@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc-config
 
-This log was last generated on Fri, 16 Apr 2021 23:22:26 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Apr 2021 21:22:32 GMT and should not be manually modified.
+
+## 0.15.1
+Mon, 19 Apr 2021 21:22:32 GMT
+
+### Patches
+
+- Improve reporting of error messages when loading tsdoc.json
 
 ## 0.15.0
 Fri, 16 Apr 2021 23:22:26 GMT

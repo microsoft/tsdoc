@@ -2,6 +2,21 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.2.13",
+      "tag": "eslint-plugin-tsdoc_v0.2.13",
+      "date": "Mon, 19 Apr 2021 21:22:32 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" from `0.13.0` to `0.13.1`"
+          },
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc-config\" from `0.15.0` to `0.15.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.12",
       "tag": "eslint-plugin-tsdoc_v0.2.12",
       "date": "Fri, 16 Apr 2021 23:22:26 GMT",

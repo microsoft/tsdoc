@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Fri, 22 Jan 2021 18:07:19 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Apr 2021 21:22:32 GMT and should not be manually modified.
+
+## 0.13.1
+Mon, 19 Apr 2021 21:22:32 GMT
+
+### Patches
+
+- Add a new TSDocMessageId definition used by @microsoft/tsdoc-config
 
 ## 0.13.0
 Fri, 22 Jan 2021 18:07:19 GMT

@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.13.1",
+      "tag": "@microsoft/tsdoc_v0.13.1",
+      "date": "Mon, 19 Apr 2021 21:22:32 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add a new TSDocMessageId definition used by @microsoft/tsdoc-config"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.13.0",
       "tag": "@microsoft/tsdoc_v0.13.0",
       "date": "Fri, 22 Jan 2021 18:07:19 GMT",
