@@ -180,7 +180,7 @@ export class TSDocConfigFile {
     const tagDefinition: TSDocTagDefinition = new TSDocTagDefinition(parameters);
 
     if (this._tagDefinitionNames.has(tagDefinition.tagNameWithUpperCase)) {
-      throw new Error(`A tag defintion was already added with the tag name "${parameters.tagName}"`);
+      throw new Error(`A tag definition was already added with the tag name "${parameters.tagName}"`);
     }
     this._tagDefinitionNames.add(tagDefinition.tagName);
 
@@ -209,7 +209,7 @@ export class TSDocConfigFile {
         textRange: TextRange.empty,
       });
     }
-    this._tagDefinitionNames.add(tagDefinition.tagName);
+    this._tagDefinitionNames.add(tagDefinition.tagNameWithUpperCase);
 
     this._tagDefinitions.push(tagDefinition);
   }
@@ -381,7 +381,19 @@ export class TSDocConfigFile {
     const configJsonContent: string = fs.readFileSync(this._filePath).toString();
     this._fileMTime = fs.statSync(this._filePath).mtimeMs;
 
-    const configJson: IConfigJson = jju.parse(configJsonContent, { mode: 'cjson' });
+    let configJson: IConfigJson;
+    try {
+      configJson = jju.parse(configJsonContent, { mode: 'cjson' });
+    } catch (e) {
+      this.log.addMessage(
+        new ParserMessage({
+          messageId: TSDocMessageId.ConfigInvalidJson,
+          messageText: 'Error parsing JSON input: ' + e.message,
+          textRange: TextRange.empty,
+        })
+      );
+      return;
+    }
 
     this._loadJsonObject(configJson);
 
@@ -446,6 +458,12 @@ export class TSDocConfigFile {
   /**
    * Calls `TSDocConfigFile.findConfigPathForFolder()` to find the relevant tsdoc.json config file, if one exists.
    * Then calls `TSDocConfigFile.findConfigPathForFolder()` to return the loaded result.
+   *
+   * @remarks
+   * This API does not report loading errors by throwing exceptions.  Instead, the caller is expected to check
+   * for errors using {@link TSDocConfigFile.hasErrors}, {@link TSDocConfigFile.log},
+   * or {@link TSDocConfigFile.getErrorSummary}.
+   *
    * @param folderPath - the path to a folder where the search should start
    */
   public static loadForFolder(folderPath: string): TSDocConfigFile {
@@ -455,6 +473,12 @@ export class TSDocConfigFile {
 
   /**
    * Loads the specified tsdoc.json and any base files that it refers to using the "extends" option.
+   *
+   * @remarks
+   * This API does not report loading errors by throwing exceptions.  Instead, the caller is expected to check
+   * for errors using {@link TSDocConfigFile.hasErrors}, {@link TSDocConfigFile.log},
+   * or {@link TSDocConfigFile.getErrorSummary}.
+   *
    * @param tsdocJsonFilePath - the path to the tsdoc.json config file
    */
   public static loadFile(tsdocJsonFilePath: string): TSDocConfigFile {
@@ -469,6 +493,10 @@ export class TSDocConfigFile {
    *
    * @remarks
    * The serialized object has the same structure as `tsdoc.json`; however the `"extends"` field is not allowed.
+   *
+   * This API does not report loading errors by throwing exceptions.  Instead, the caller is expected to check
+   * for errors using {@link TSDocConfigFile.hasErrors}, {@link TSDocConfigFile.log},
+   * or {@link TSDocConfigFile.getErrorSummary}.
    */
   public static loadFromObject(jsonObject: unknown): TSDocConfigFile {
     const configFile: TSDocConfigFile = new TSDocConfigFile();
@@ -484,6 +512,11 @@ export class TSDocConfigFile {
 
   /**
    * Initializes a TSDocConfigFile object using the state from the provided `TSDocConfiguration` object.
+   *
+   * @remarks
+   * This API does not report loading errors by throwing exceptions.  Instead, the caller is expected to check
+   * for errors using {@link TSDocConfigFile.hasErrors}, {@link TSDocConfigFile.log},
+   * or {@link TSDocConfigFile.getErrorSummary}.
    */
   public static loadFromParser(configuration: TSDocConfiguration): TSDocConfigFile {
     const configFile: TSDocConfigFile = new TSDocConfigFile();
@@ -607,6 +640,10 @@ export class TSDocConfigFile {
   /**
    * Applies the settings from this config file to a TSDoc parser configuration.
    * Any `extendsFile` settings will also applied.
+   *
+   * @remarks
+   * Additional validation is performed during this operation.  The caller is expected to check for errors
+   * using {@link TSDocConfigFile.hasErrors}, {@link TSDocConfigFile.log}, or {@link TSDocConfigFile.getErrorSummary}.
    */
   public configureParser(configuration: TSDocConfiguration): void {
     if (this._getNoStandardTagsWithExtends()) {
@@ -622,6 +659,10 @@ export class TSDocConfigFile {
 
   /**
    * This is the same as {@link configureParser}, but it preserves any previous state.
+   *
+   * @remarks
+   * Additional validation is performed during this operation.  The caller is expected to check for errors
+   * using {@link TSDocConfigFile.hasErrors}, {@link TSDocConfigFile.log}, or {@link TSDocConfigFile.getErrorSummary}.
    */
   public updateParser(configuration: TSDocConfiguration): void {
     // First apply the base config files
