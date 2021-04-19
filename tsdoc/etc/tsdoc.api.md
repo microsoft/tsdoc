@@ -1292,6 +1292,7 @@ export const enum TSDocMessageId {
     ConfigFileUndefinedTag = "tsdoc-config-undefined-tag",
     ConfigFileUnresolvedExtends = "tsdoc-config-unresolved-extends",
     ConfigFileUnsupportedSchema = "tsdoc-config-unsupported-schema",
+    ConfigInvalidJson = "tsdoc-config-invalid-json",
     EscapeGreaterThan = "tsdoc-escape-greater-than",
     EscapeRightBrace = "tsdoc-escape-right-brace",
     ExtraInheritDocTag = "tsdoc-extra-inheritdoc-tag",

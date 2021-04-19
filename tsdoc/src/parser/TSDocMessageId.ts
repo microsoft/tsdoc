@@ -18,6 +18,13 @@ export const enum TSDocMessageId {
   ConfigFileNotFound = 'tsdoc-config-file-not-found',
 
   /**
+   * Error parsing JSON input: ___
+   * @remarks
+   * Reported by the `@microsoft/tsdoc-config` package when the `tsdoc.json` file has invalid JSON syntax.
+   */
+  ConfigInvalidJson = 'tsdoc-config-invalid-json',
+
+  /**
    * Unsupported JSON "$schema" value
    * @remarks
    * Reported by the `@microsoft/tsdoc-config` package when the file format is not supported.
@@ -406,6 +413,7 @@ export const enum TSDocMessageId {
 export const allTsdocMessageIds: string[] = [
   // To make comparisons easy, keep these in the same order as the enum above:
   'tsdoc-config-file-not-found',
+  'tsdoc-config-invalid-json',
   'tsdoc-config-unsupported-schema',
   'tsdoc-config-schema-error',
   'tsdoc-config-cyclic-extends',

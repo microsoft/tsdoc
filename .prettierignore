@@ -104,3 +104,6 @@ dist-prod
 
 # We'll consider enabling this later; Prettier reformats code blocks, which affects end-user content
 *.md
+
+# Ignore .json files which may contain intentional syntax errors
+**/__tests__/assets/**/*.json
