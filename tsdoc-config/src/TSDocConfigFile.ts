@@ -75,7 +75,7 @@ export class TSDocConfigFile {
 
     this._extendsFiles = [];
     this._filePath = '';
-    this._fileNotFound = true;
+    this._fileNotFound = false;
     this._hasErrors = false;
     this._fileMTime = 0;
     this._tsdocSchema = '';
@@ -102,8 +102,11 @@ export class TSDocConfigFile {
   }
 
   /**
-   * If true, then the TSDocConfigFile object contains an empty state, because the `tsdoc.json` file could
-   * not be found by the loader.
+   * If true, then the TSDocConfigFile object contains an empty state, because the `tsdoc.json` file
+   * was not found by the loader.
+   *
+   * @remarks
+   * A missing "tsdoc.json" file is not considered an error.  It simply means that the defaults will be used.
    */
   public get fileNotFound(): boolean {
     return this._fileNotFound;
@@ -278,8 +281,6 @@ export class TSDocConfigFile {
   }
 
   private _loadJsonObject(configJson: IConfigJson): void {
-    this._fileNotFound = false;
-
     if (configJson.$schema !== TSDocConfigFile.CURRENT_SCHEMA_URL) {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileUnsupportedSchema,
@@ -347,6 +348,10 @@ export class TSDocConfigFile {
     referencingConfigFile: TSDocConfigFile | undefined,
     alreadyVisitedPaths: Set<string>
   ): void {
+    // In case an exception is thrown, start by assuming that the file was not found; we'll revise
+    // this later upon success
+    this._fileNotFound = true;
+
     if (!configFilePath) {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileNotFound,
@@ -367,6 +372,11 @@ export class TSDocConfigFile {
       return;
     }
 
+    const configJsonContent: string = fs.readFileSync(this._filePath).toString();
+    this._fileMTime = fs.statSync(this._filePath).mtimeMs;
+
+    this._fileNotFound = false;
+
     const hashKey: string = fs.realpathSync(this._filePath);
     if (referencingConfigFile && alreadyVisitedPaths.has(hashKey)) {
       this._reportError({
@@ -378,20 +388,15 @@ export class TSDocConfigFile {
     }
     alreadyVisitedPaths.add(hashKey);
 
-    const configJsonContent: string = fs.readFileSync(this._filePath).toString();
-    this._fileMTime = fs.statSync(this._filePath).mtimeMs;
-
     let configJson: IConfigJson;
     try {
       configJson = jju.parse(configJsonContent, { mode: 'cjson' });
     } catch (e) {
-      this.log.addMessage(
-        new ParserMessage({
-          messageId: TSDocMessageId.ConfigInvalidJson,
-          messageText: 'Error parsing JSON input: ' + e.message,
-          textRange: TextRange.empty,
-        })
-      );
+      this._reportError({
+        messageId: TSDocMessageId.ConfigInvalidJson,
+        messageText: 'Error parsing JSON input: ' + e.message,
+        textRange: TextRange.empty,
+      });
       return;
     }
 
@@ -616,20 +621,26 @@ export class TSDocConfigFile {
       return 'No errors.';
     }
 
-    let result: string;
+    let result: string = '';
 
-    if (this.filePath) {
-      result = `Errors encountered for ${this.filePath}:\n`;
-    } else {
-      result = `Errors encountered when loading TSDoc configuration:\n`;
-    }
+    if (this.log.messages.length > 0) {
+      const errorNoun: string = this.log.messages.length > 1 ? 'Errors' : 'Error';
+      if (this.filePath) {
+        result += `${errorNoun} encountered for ${this.filePath}:\n`;
+      } else {
+        result += `${errorNoun} encountered when loading TSDoc configuration:\n`;
+      }
 
-    for (const message of this.log.messages) {
-      result += `  ${message.text}\n`;
+      for (const message of this.log.messages) {
+        result += `  ${message.text}\n`;
+      }
     }
 
     for (const extendsFile of this.extendsFiles) {
       if (extendsFile.hasErrors) {
+        if (result !== '') {
+          result += '\n';
+        }
         result += extendsFile.getErrorSummary();
       }
     }
@@ -681,6 +692,8 @@ export class TSDocConfigFile {
         // Note that setSupportForTag() automatically enables configuration.validation.reportUnsupportedTags
         configuration.setSupportForTag(tagDefinition, supported);
       } else {
+        // Note that this validation may depend partially on the preexisting state of the TSDocConfiguration
+        // object, so it cannot be performed during the TSConfigFile.loadFile() stage.
         this._reportError({
           messageId: TSDocMessageId.ConfigFileUndefinedTag,
           messageText: `The "supportForTags" field refers to an undefined tag ${JSON.stringify(tagName)}.`,
