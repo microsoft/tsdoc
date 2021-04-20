@@ -1,7 +1,7 @@
 resources:
   - repo: self
 variables:
-  NodeVersion: 12
+  NodeVersion: 14
   FORCE_COLOR: 1
 steps:
   - checkout: self
