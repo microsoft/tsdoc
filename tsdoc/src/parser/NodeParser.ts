@@ -233,15 +233,15 @@ export class NodeParser {
         // The tag is defined, but it is used incorrectly
         if (expectingInlineTag) {
           this._parserContext.log.addMessageForTokenSequence(
-            TSDocMessageId.InlineTagMissingBraces,
-            `The TSDoc tag "${tagName}" is an inline tag; it must be enclosed in "{ }" braces`,
+            TSDocMessageId.TagShouldNotHaveBraces,
+            `The TSDoc tag "${tagName}" is not an inline tag; it must not be enclosed in "{ }" braces`,
             tokenSequenceForErrorContext,
             nodeForErrorContext
           );
         } else {
           this._parserContext.log.addMessageForTokenSequence(
-            TSDocMessageId.TagShouldNotHaveBraces,
-            `The TSDoc tag "${tagName}" is not an inline tag; it must not be enclosed in "{ }" braces`,
+            TSDocMessageId.InlineTagMissingBraces,
+            `The TSDoc tag "${tagName}" is an inline tag; it must be enclosed in "{ }" braces`,
             tokenSequenceForErrorContext,
             nodeForErrorContext
           );
