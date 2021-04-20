@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "Improve reporting of tsdoc-config-unresolved-extends",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config",
+  "email": "4673363+octogonz@users.noreply.github.com"
+}
