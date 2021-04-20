@@ -1,6 +1,14 @@
 # Change Log - @microsoft/tsdoc-config
 
-This log was last generated on Mon, 19 Apr 2021 21:22:32 GMT and should not be manually modified.
+This log was last generated on Tue, 20 Apr 2021 04:25:13 GMT and should not be manually modified.
+
+## 0.15.2
+Tue, 20 Apr 2021 04:25:13 GMT
+
+### Patches
+
+- Improve reporting of tsdoc-config-unresolved-extends
+- Fix some issues with the logic for TSDocConfigFile.hasErrors and TSDocConfigFile.fileNotFound
 
 ## 0.15.1
 Mon, 19 Apr 2021 21:22:32 GMT

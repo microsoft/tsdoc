@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Mon, 19 Apr 2021 21:22:32 GMT and should not be manually modified.
+This log was last generated on Tue, 20 Apr 2021 04:25:13 GMT and should not be manually modified.
+
+## 0.13.2
+Tue, 20 Apr 2021 04:25:13 GMT
+
+### Patches
+
+- Fix an issue where "tsdoc-inline-tag-missing-braces" and "tsdoc-tag-should-not-have-braces" were reported incorrectly
 
 ## 0.13.1
 Mon, 19 Apr 2021 21:22:32 GMT

@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.13.2",
+      "tag": "@microsoft/tsdoc_v0.13.2",
+      "date": "Tue, 20 Apr 2021 04:25:13 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix an issue where \"tsdoc-inline-tag-missing-braces\" and \"tsdoc-tag-should-not-have-braces\" were reported incorrectly"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.13.1",
       "tag": "@microsoft/tsdoc_v0.13.1",
       "date": "Mon, 19 Apr 2021 21:22:32 GMT",

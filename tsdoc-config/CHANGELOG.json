@@ -2,6 +2,26 @@
   "name": "@microsoft/tsdoc-config",
   "entries": [
     {
+      "version": "0.15.2",
+      "tag": "@microsoft/tsdoc-config_v0.15.2",
+      "date": "Tue, 20 Apr 2021 04:25:13 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Improve reporting of tsdoc-config-unresolved-extends"
+          },
+          {
+            "comment": "Fix some issues with the logic for TSDocConfigFile.hasErrors and TSDocConfigFile.fileNotFound"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" from `0.13.1` to `0.13.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.15.1",
       "tag": "@microsoft/tsdoc-config_v0.15.1",
       "date": "Mon, 19 Apr 2021 21:22:32 GMT",
