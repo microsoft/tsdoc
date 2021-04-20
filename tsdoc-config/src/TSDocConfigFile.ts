@@ -405,7 +405,18 @@ export class TSDocConfigFile {
     const configFileFolder: string = path.dirname(this.filePath);
 
     for (const extendsField of this.extendsPaths) {
-      const resolvedExtendsPath: string = resolve.sync(extendsField, { basedir: configFileFolder });
+      let resolvedExtendsPath: string;
+      try {
+        resolvedExtendsPath = resolve.sync(extendsField, { basedir: configFileFolder });
+      } catch (e) {
+        this._reportError({
+          messageId: TSDocMessageId.ConfigFileUnresolvedExtends,
+          messageText: `Unable to resolve "extends" reference to "${extendsField}": ` + e.message,
+          textRange: TextRange.empty,
+        });
+
+        return;
+      }
 
       const baseConfigFile: TSDocConfigFile = new TSDocConfigFile();
 
