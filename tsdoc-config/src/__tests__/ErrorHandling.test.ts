@@ -12,13 +12,19 @@ interface ISnapshot {
   s5_extends: ISnapshot[];
 }
 
+function replaceAll(text: string, search: string, replace: string): string {
+  return text.split(search).join(replace);
+}
+
 // To make the unit tests deterministic, we need to replace all OS-dependent absolute paths
 // with OS-independent paths that are relative to the unit test folder.
 function makeStablePath(testPath: string): string {
   if (testPath.length === 0) {
     return '';
   }
-  return '.../' + path.relative(__dirname, testPath).split('\\').join('/');
+  console.log('IN: ' + testPath);
+  console.log('OUT: ' + replaceAll(path.relative(__dirname, testPath), '\\', '/'));
+  return '.../' + replaceAll(path.relative(__dirname, testPath), '\\', '/');
 }
 
 // Build a map from absolute path --> stable path, for each TSDocConfigFile.filePath value
@@ -37,9 +43,14 @@ function buildStablePathMap(stablePathMap: Map<string, string>, configFile: TSDo
 // Search and replace all absolute paths with the corresponding stable path.
 // For example, "Found C:\A\B\C.txt in C:\A\D\E.txt" becomes "Found .../B/C.txt in .../D/E.txt".
 function convertToStablePaths(text: string, stablePathMap: Map<string, string>): string {
-  for (const pair of Array.from(stablePathMap.entries())) {
-    text = text.split(pair[0]).join(pair[1]);
+  // Sort the [key,value] pairs by key length from longest to shortest.
+  // This ensures that a shorter path does not replace a subpath of a longer path.
+  const pairs: [string, string][] = Array.from(stablePathMap.entries()).sort((x, y) => y[0].length - x[0].length);
+  for (const pair of pairs) {
+    text = replaceAll(text, pair[0], pair[1]);
   }
+  // Also convert any loose backslashes to slashes
+  //text = replaceAll(text, '\\', '/');
   return text;
 }
 
@@ -141,54 +152,54 @@ test('Load e5', () => {
       "s0_filePath": ".../assets/e5/tsdoc.json",
       "s1_fileNotFound": false,
       "s2_hasErrors": true,
-      "s3_errorSummary": "Error encountered for .../assets/e5\\\\tsdoc-a.json:
-      Circular reference encountered for \\"extends\\" field of \\".../assets/e5\\\\tsdoc-b.json\\"
+      "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-a.json:
+      Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
 
-    Error encountered for .../assets/e5\\\\tsdoc-c.json:
+    Error encountered for .../assets/e5/tsdoc-c.json:
       Error loading config file: data should NOT have additional properties
     ",
       "s4_log": Array [],
       "s5_extends": Array [
         Object {
-          "s0_filePath": ".../assets/e5\\\\tsdoc-a.json",
+          "s0_filePath": ".../assets/e5/tsdoc-a.json",
           "s1_fileNotFound": false,
           "s2_hasErrors": true,
-          "s3_errorSummary": "Error encountered for .../assets/e5\\\\tsdoc-a.json:
-      Circular reference encountered for \\"extends\\" field of \\".../assets/e5\\\\tsdoc-b.json\\"
+          "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-a.json:
+      Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
 
-    Error encountered for .../assets/e5\\\\tsdoc-c.json:
+    Error encountered for .../assets/e5/tsdoc-c.json:
       Error loading config file: data should NOT have additional properties
     ",
           "s4_log": Array [],
           "s5_extends": Array [
             Object {
-              "s0_filePath": ".../assets/e5\\\\tsdoc-b.json",
+              "s0_filePath": ".../assets/e5/tsdoc-b.json",
               "s1_fileNotFound": false,
               "s2_hasErrors": true,
-              "s3_errorSummary": "Error encountered for .../assets/e5\\\\tsdoc-a.json:
-      Circular reference encountered for \\"extends\\" field of \\".../assets/e5\\\\tsdoc-b.json\\"
+              "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-a.json:
+      Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
     ",
               "s4_log": Array [],
               "s5_extends": Array [
                 Object {
-                  "s0_filePath": ".../assets/e5\\\\tsdoc-a.json",
+                  "s0_filePath": ".../assets/e5/tsdoc-a.json",
                   "s1_fileNotFound": false,
                   "s2_hasErrors": true,
-                  "s3_errorSummary": "Error encountered for .../assets/e5\\\\tsdoc-a.json:
-      Circular reference encountered for \\"extends\\" field of \\".../assets/e5\\\\tsdoc-b.json\\"
+                  "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-a.json:
+      Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
     ",
                   "s4_log": Array [
-                    "[tsdoc-config-cyclic-extends] Circular reference encountered for \\"extends\\" field of \\".../assets/e5\\\\tsdoc-b.json\\"",
+                    "[tsdoc-config-cyclic-extends] Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"",
                   ],
                   "s5_extends": Array [],
                 },
               ],
             },
             Object {
-              "s0_filePath": ".../assets/e5\\\\tsdoc-c.json",
+              "s0_filePath": ".../assets/e5/tsdoc-c.json",
               "s1_fileNotFound": false,
               "s2_hasErrors": true,
-              "s3_errorSummary": "Error encountered for .../assets/e5\\\\tsdoc-c.json:
+              "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-c.json:
       Error loading config file: data should NOT have additional properties
     ",
               "s4_log": Array [
