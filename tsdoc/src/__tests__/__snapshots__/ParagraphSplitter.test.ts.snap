@@ -2,7 +2,7 @@
 
 exports[`01 Basic paragraph splitting 1`] = `
 Object {
-  "_00_lines": Array [
+  "s00_lines": Array [
     "",
     "This is the",
     "first paragraph.",
@@ -15,8 +15,8 @@ Object {
     "",
     "",
   ],
-  "_01_gaps": Array [],
-  "_02_summarySection": Object {
+  "s01_gaps": Array [],
+  "s02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -171,22 +171,22 @@ Object {
       },
     ],
   },
-  "_03_remarksBlock": undefined,
-  "_04_privateRemarksBlock": undefined,
-  "_05_deprecatedBlock": undefined,
-  "_06_paramBlocks": Array [],
-  "_07_typeParamBlocks": Array [],
-  "_08_returnsBlock": undefined,
-  "_09_customBlocks": Array [],
-  "_10_inheritDocTag": undefined,
-  "_11_modifierTags": Array [],
-  "_12_logMessages": Array [],
+  "s03_remarksBlock": undefined,
+  "s04_privateRemarksBlock": undefined,
+  "s05_deprecatedBlock": undefined,
+  "s06_paramBlocks": Array [],
+  "s07_typeParamBlocks": Array [],
+  "s08_returnsBlock": undefined,
+  "s09_customBlocks": Array [],
+  "s10_inheritDocTag": undefined,
+  "s11_modifierTags": Array [],
+  "s12_logMessages": Array [],
 }
 `;
 
 exports[`02 Basic paragraph splitting in blocks 1`] = `
 Object {
-  "_00_lines": Array [
+  "s00_lines": Array [
     "P1",
     "@remarks P2",
     "",
@@ -194,8 +194,8 @@ Object {
     "",
     "P5",
   ],
-  "_01_gaps": Array [],
-  "_02_summarySection": Object {
+  "s01_gaps": Array [],
+  "s02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -223,7 +223,7 @@ Object {
       },
     ],
   },
-  "_03_remarksBlock": Object {
+  "s03_remarksBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -288,8 +288,8 @@ Object {
       },
     ],
   },
-  "_04_privateRemarksBlock": undefined,
-  "_05_deprecatedBlock": Object {
+  "s04_privateRemarksBlock": undefined,
+  "s05_deprecatedBlock": Object {
     "kind": "Block",
     "nodes": Array [
       Object {
@@ -363,26 +363,26 @@ Object {
       },
     ],
   },
-  "_06_paramBlocks": Array [],
-  "_07_typeParamBlocks": Array [],
-  "_08_returnsBlock": undefined,
-  "_09_customBlocks": Array [],
-  "_10_inheritDocTag": undefined,
-  "_11_modifierTags": Array [],
-  "_12_logMessages": Array [],
+  "s06_paramBlocks": Array [],
+  "s07_typeParamBlocks": Array [],
+  "s08_returnsBlock": undefined,
+  "s09_customBlocks": Array [],
+  "s10_inheritDocTag": undefined,
+  "s11_modifierTags": Array [],
+  "s12_logMessages": Array [],
 }
 `;
 
 exports[`03 Degenerate comment framing 1`] = `
 Object {
-  "_00_lines": Array [
+  "s00_lines": Array [
     "line 1",
     "line 2",
     "",
     "  @public line 3",
   ],
-  "_01_gaps": Array [],
-  "_02_summarySection": Object {
+  "s01_gaps": Array [],
+  "s02_summarySection": Object {
     "kind": "Section",
     "nodes": Array [
       Object {
@@ -469,15 +469,15 @@ Object {
       },
     ],
   },
-  "_03_remarksBlock": undefined,
-  "_04_privateRemarksBlock": undefined,
-  "_05_deprecatedBlock": undefined,
-  "_06_paramBlocks": Array [],
-  "_07_typeParamBlocks": Array [],
-  "_08_returnsBlock": undefined,
-  "_09_customBlocks": Array [],
-  "_10_inheritDocTag": undefined,
-  "_11_modifierTags": Array [
+  "s03_remarksBlock": undefined,
+  "s04_privateRemarksBlock": undefined,
+  "s05_deprecatedBlock": undefined,
+  "s06_paramBlocks": Array [],
+  "s07_typeParamBlocks": Array [],
+  "s08_returnsBlock": undefined,
+  "s09_customBlocks": Array [],
+  "s10_inheritDocTag": undefined,
+  "s11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodes": Array [
@@ -488,7 +488,7 @@ Object {
       ],
     },
   ],
-  "_12_logMessages": Array [],
+  "s12_logMessages": Array [],
 }
 `;
 

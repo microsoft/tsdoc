@@ -112,21 +112,19 @@ export class TestHelpers {
     const docComment: DocComment = parserContext.docComment;
 
     expect({
-      /* eslint-disable @typescript-eslint/naming-convention */
-      _00_lines: parserContext.lines.map((x) => TestHelpers.getEscaped(x.toString())),
-      _01_gaps: this._getTokenCoverageGapsSnapshot(parserContext),
-      _02_summarySection: TestHelpers.getDocNodeSnapshot(docComment.summarySection),
-      _03_remarksBlock: TestHelpers.getDocNodeSnapshot(docComment.remarksBlock),
-      _04_privateRemarksBlock: TestHelpers.getDocNodeSnapshot(docComment.privateRemarks),
-      _05_deprecatedBlock: TestHelpers.getDocNodeSnapshot(docComment.deprecatedBlock),
-      _06_paramBlocks: docComment.params.blocks.map((x) => TestHelpers.getDocNodeSnapshot(x)),
-      _07_typeParamBlocks: docComment.typeParams.blocks.map((x) => TestHelpers.getDocNodeSnapshot(x)),
-      _08_returnsBlock: TestHelpers.getDocNodeSnapshot(docComment.returnsBlock),
-      _09_customBlocks: docComment.customBlocks.map((x) => TestHelpers.getDocNodeSnapshot(x)),
-      _10_inheritDocTag: TestHelpers.getDocNodeSnapshot(docComment.inheritDocTag),
-      _11_modifierTags: docComment.modifierTagSet.nodes.map((x) => TestHelpers.getDocNodeSnapshot(x)),
-      _12_logMessages: parserContext.log.messages.map((message) => message.text)
-      /* eslint-enable @typescript-eslint/naming-convention */
+      s00_lines: parserContext.lines.map((x) => TestHelpers.getEscaped(x.toString())),
+      s01_gaps: this._getTokenCoverageGapsSnapshot(parserContext),
+      s02_summarySection: TestHelpers.getDocNodeSnapshot(docComment.summarySection),
+      s03_remarksBlock: TestHelpers.getDocNodeSnapshot(docComment.remarksBlock),
+      s04_privateRemarksBlock: TestHelpers.getDocNodeSnapshot(docComment.privateRemarks),
+      s05_deprecatedBlock: TestHelpers.getDocNodeSnapshot(docComment.deprecatedBlock),
+      s06_paramBlocks: docComment.params.blocks.map((x) => TestHelpers.getDocNodeSnapshot(x)),
+      s07_typeParamBlocks: docComment.typeParams.blocks.map((x) => TestHelpers.getDocNodeSnapshot(x)),
+      s08_returnsBlock: TestHelpers.getDocNodeSnapshot(docComment.returnsBlock),
+      s09_customBlocks: docComment.customBlocks.map((x) => TestHelpers.getDocNodeSnapshot(x)),
+      s10_inheritDocTag: TestHelpers.getDocNodeSnapshot(docComment.inheritDocTag),
+      s11_modifierTags: docComment.modifierTagSet.nodes.map((x) => TestHelpers.getDocNodeSnapshot(x)),
+      s12_logMessages: parserContext.log.messages.map((message) => message.text)
     }).toMatchSnapshot();
 
     return parserContext;
