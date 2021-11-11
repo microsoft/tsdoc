@@ -70,7 +70,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
     if (docComment.summarySection) {
       outputElements.push(
         <React.Fragment key="summary">
-          <h2 className="doc-heading">Summary</h2>
+          <h1 className="doc-heading">Summary</h1>
           {this._renderContainer(docComment.summarySection)}
         </React.Fragment>
       );
@@ -91,7 +91,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
 
       outputElements.push(
         <React.Fragment key="parameters">
-          <h2 className="doc-heading">Parameters</h2>
+          <h1 className="doc-heading">Parameters</h1>
           <table className="doc-table">
             <thead>
               <tr>
@@ -109,7 +109,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
     if (docComment.returnsBlock) {
       outputElements.push(
         <React.Fragment key="returns">
-          <h2 className="doc-heading">Return Value</h2>
+          <h1 className="doc-heading">Return Value</h1>
           {this._renderContainer(docComment.returnsBlock.content)}
         </React.Fragment>
       );
@@ -118,7 +118,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
     if (docComment.remarksBlock) {
       outputElements.push(
         <React.Fragment key="remarks">
-          <h2 className="doc-heading">Remarks</h2>
+          <h1 className="doc-heading">Remarks</h1>
           {this._renderContainer(docComment.remarksBlock.content)}
         </React.Fragment>
       );
@@ -150,7 +150,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
 
       outputElements.push(
         <React.Fragment key="seeAlso">
-          <h2 className="doc-heading">See Also</h2>
+          <h1 className="doc-heading">See Also</h1>
           <ul>{listItems}</ul>
         </React.Fragment>
       );
@@ -173,7 +173,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
 
       outputElements.push(
         <React.Fragment key="modifiers">
-          <h2 className="doc-heading">Modifiers</h2>
+          <h1 className="doc-heading">Modifiers</h1>
           {modifierElements}
         </React.Fragment>
       );
