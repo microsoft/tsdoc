@@ -236,6 +236,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     return (
       <textarea
         className="playground-lines-text-editor"
+        aria-label="Playground lines text editor"
         style={{
           ...this._textAreaStyle,
           border: 'none',
