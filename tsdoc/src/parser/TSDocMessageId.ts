@@ -9,7 +9,7 @@
  *
  * @public
  */
-export const enum TSDocMessageId {
+export enum TSDocMessageId {
   /**
    * File not found
    * @remarks

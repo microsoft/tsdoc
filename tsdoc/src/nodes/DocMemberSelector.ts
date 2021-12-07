@@ -6,7 +6,7 @@ import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 /**
  * Kinds of TSDoc selectors.
  */
-export const enum SelectorKind {
+export enum SelectorKind {
   /**
    * Used in cases where the parser encounters a string that is incorrect but
    * valid enough that a DocMemberSelector node was created.

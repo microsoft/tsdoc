@@ -2,7 +2,7 @@
  * Used to group the {@link StandardTags} definitions according to the level of support
  * expected from documentation tools that implement the standard.
  */
-export const enum Standardization {
+export enum Standardization {
   /**
    * TSDoc tags in the "Core" standardization group are considered essential.
    * Their meaning is standardized, and every documentation tool is expected
