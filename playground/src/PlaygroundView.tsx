@@ -150,7 +150,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           style={editorStyle}
           value={this.state.inputText}
           onChange={this._inputTextArea_onChange}
-          language="typescript"
+          language="tsdocLanguage"
           markers={markers}
           syntaxStyles={syntaxStyles}
           theme={this.state.selectedTheme}
