@@ -1242,11 +1242,14 @@ export class TSDocConfiguration {
     constructor();
     addTagDefinition(tagDefinition: TSDocTagDefinition): void;
     addTagDefinitions(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported?: boolean | undefined): void;
+    get allowedHtmlTags(): string[];
     get allTsdocMessageIds(): ReadonlyArray<TSDocMessageId>;
     clear(noStandardTags?: boolean): void;
     get docNodeManager(): DocNodeManager;
+    isHtmlTagAllowed(htmlTag: string): boolean;
     isKnownMessageId(messageId: TSDocMessageId | string): boolean;
     isTagSupported(tagDefinition: TSDocTagDefinition): boolean;
+    setAllowedHtmlTags(htmlTags: string[]): void;
     setSupportForTag(tagDefinition: TSDocTagDefinition, supported: boolean): void;
     setSupportForTags(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported: boolean): void;
     get supportedTagDefinitions(): ReadonlyArray<TSDocTagDefinition>;
@@ -1293,6 +1296,7 @@ export const enum TSDocMessageId {
     ConfigFileUnresolvedExtends = "tsdoc-config-unresolved-extends",
     ConfigFileUnsupportedSchema = "tsdoc-config-unsupported-schema",
     ConfigInvalidJson = "tsdoc-config-invalid-json",
+    DisallowedHtmlName = "tsdoc-disallowed-html-name",
     EscapeGreaterThan = "tsdoc-escape-greater-than",
     EscapeRightBrace = "tsdoc-escape-right-brace",
     ExtraInheritDocTag = "tsdoc-extra-inheritdoc-tag",

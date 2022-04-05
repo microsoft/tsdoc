@@ -14,6 +14,7 @@ export class TSDocConfiguration {
   private readonly _supportedTagDefinitions: Set<TSDocTagDefinition>;
   private readonly _validation: TSDocValidationConfiguration;
   private readonly _docNodeManager: DocNodeManager;
+  private readonly _allowedHtmlTags: Set<string>;
 
   public constructor() {
     this._tagDefinitions = [];
@@ -21,6 +22,7 @@ export class TSDocConfiguration {
     this._supportedTagDefinitions = new Set<TSDocTagDefinition>();
     this._validation = new TSDocValidationConfiguration();
     this._docNodeManager = new DocNodeManager();
+    this._allowedHtmlTags = new Set();
 
     this.clear(false);
 
@@ -39,6 +41,7 @@ export class TSDocConfiguration {
     this._supportedTagDefinitions.clear();
     this._validation.ignoreUndefinedTags = false;
     this._validation.reportUnsupportedTags = false;
+    this._allowedHtmlTags.clear();
 
     if (!noStandardTags) {
       // Define all the standard tags
@@ -73,6 +76,14 @@ export class TSDocConfiguration {
    */
   public get validation(): TSDocValidationConfiguration {
     return this._validation;
+  }
+
+  /**
+   * The html tags that are supported in this configuration. If this array is empty,
+   * then all tags are permitted.
+   */
+  public get allowedHtmlTags(): string[] {
+    return Array.from(this._allowedHtmlTags.values());
   }
 
   /**
@@ -180,6 +191,27 @@ export class TSDocConfiguration {
     for (const tagDefinition of tagDefinitions) {
       this.setSupportForTag(tagDefinition, supported);
     }
+  }
+
+  /**
+   * Overwrite the supported HTML tags. If an empty array is specified,
+   * all tags will be allowed.
+   */
+  public setAllowedHtmlTags(htmlTags: string[]): void {
+    this._allowedHtmlTags.clear();
+    for (const htmlTag of htmlTags) {
+      this._allowedHtmlTags.add(htmlTag);
+    }
+  }
+
+  /**
+   * Returns true if the html tag is supported in this configuration.
+   */
+  public isHtmlTagAllowed(htmlTag: string): boolean {
+    if (this._allowedHtmlTags.size === 0) {
+      return true;
+    }
+    return this._allowedHtmlTags.has(htmlTag);
   }
 
   /**

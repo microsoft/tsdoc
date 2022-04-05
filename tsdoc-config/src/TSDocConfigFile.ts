@@ -41,6 +41,7 @@ interface IConfigJson {
   noStandardTags?: boolean;
   tagDefinitions?: ITagConfigJson[];
   supportForTags?: { [tagName: string]: boolean };
+  allowedHtmlTags?: string[];
 }
 
 /**
@@ -69,6 +70,8 @@ export class TSDocConfigFile {
   private readonly _tagDefinitions: TSDocTagDefinition[];
   private readonly _tagDefinitionNames: Set<string>;
   private readonly _supportForTags: Map<string, boolean>;
+  private readonly _allowedHtmlTags: Set<string>;
+  private _specifiesAllowedHtmlTags: boolean;
 
   private constructor() {
     this.log = new ParserMessageLog();
@@ -84,6 +87,8 @@ export class TSDocConfigFile {
     this._tagDefinitions = [];
     this._tagDefinitionNames = new Set();
     this._supportForTags = new Map();
+    this._allowedHtmlTags = new Set();
+    this._specifiesAllowedHtmlTags = false;
   }
 
   /**
@@ -167,6 +172,10 @@ export class TSDocConfigFile {
     return this._supportForTags;
   }
 
+  public get allowedHtmlTags(): ReadonlyArray<string> | undefined {
+    return this._specifiesAllowedHtmlTags ? Array.from(this._allowedHtmlTags) : undefined;
+  }
+
   /**
    * Removes all items from the `tagDefinitions` array.
    */
@@ -215,6 +224,23 @@ export class TSDocConfigFile {
     this._tagDefinitionNames.add(tagDefinition.tagNameWithUpperCase);
 
     this._tagDefinitions.push(tagDefinition);
+  }
+
+  /**
+   * Adds a new item to the `allowedHtmlTags` array.
+   */
+  public addAllowedHtmlTag(htmlTag: string): void {
+    this._specifiesAllowedHtmlTags = true;
+    this._allowedHtmlTags.add(htmlTag);
+  }
+
+  /**
+   * Removes the explicit list of allowed html tags. When no tags are explicitly listed,
+   * all tags will be permitted.
+   */
+  public clearAllowedHtmlTags(): void {
+    this._specifiesAllowedHtmlTags = false;
+    this._allowedHtmlTags.clear();
   }
 
   /**
@@ -332,6 +358,13 @@ export class TSDocConfigFile {
         syntaxKind: syntaxKind,
         allowMultiple: jsonTagDefinition.allowMultiple,
       });
+    }
+
+    if (configJson.allowedHtmlTags) {
+      this._specifiesAllowedHtmlTags = true;
+      for (const htmlTag of configJson.allowedHtmlTags) {
+        this._allowedHtmlTags.add(htmlTag);
+      }
     }
 
     if (configJson.supportForTags) {
@@ -553,6 +586,10 @@ export class TSDocConfigFile {
       configFile.setSupportForTag(tagDefinition.tagName, true);
     }
 
+    for (const htmlTag of configuration.allowedHtmlTags) {
+      configFile.addAllowedHtmlTag(htmlTag);
+    }
+
     return configFile;
   }
 
@@ -589,6 +626,13 @@ export class TSDocConfigFile {
       this.supportForTags.forEach((supported, tagName) => {
         configJson.supportForTags![tagName] = supported;
       });
+    }
+
+    if (this.allowedHtmlTags) {
+      configJson.allowedHtmlTags = [];
+      for (const htmlTag of this.allowedHtmlTags) {
+        configJson.allowedHtmlTags.push(htmlTag);
+      }
     }
 
     return configJson;
@@ -712,6 +756,10 @@ export class TSDocConfigFile {
         });
       }
     });
+
+    if (this.allowedHtmlTags) {
+      configuration.setAllowedHtmlTags([...this.allowedHtmlTags]);
+    }
   }
 
   private _getNoStandardTagsWithExtends(): boolean {

@@ -374,6 +374,11 @@ export const enum TSDocMessageId {
   MalformedHtmlName = 'tsdoc-malformed-html-name',
 
   /**
+   * This HTML tag is disallowed by the project's current TSDoc configuration.
+   */
+  DisallowedHtmlName = 'tsdoc-disallowed-html-name',
+
+  /**
    * The opening backtick for a code fence must appear at the start of the line.
    */
   CodeFenceOpeningIndent = 'tsdoc-code-fence-opening-indent',

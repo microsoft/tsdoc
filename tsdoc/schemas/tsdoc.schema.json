@@ -29,6 +29,15 @@
       }
     },
 
+    "allowedHtmlTags": {
+      "description": "HTML tags to permit in TSDoc comments. If not specified, all tags will be allowed.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9]+$"
+      }
+    },
+
     "supportForTags": {
       "description": "A collection of key/value pairs.  The key is a TSDoc tag name (e.g. \"@myTag\") that must be defined in this configuration.  The value is a boolean indicating whether the tag is supported.  The TSDoc parser may report warnings when unsupported tags are encountered.  If \"supportForTags\" is specified for at least one tag, then the \"reportUnsupportedTags\" validation check is enabled by default.",
       "type": "object",

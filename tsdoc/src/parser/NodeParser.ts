@@ -2136,6 +2136,15 @@ export class NodeParser {
       );
     }
 
+    if (!this._configuration.isHtmlTagAllowed(htmlName)) {
+      return this._createFailureForToken(
+        tokenReader,
+        TSDocMessageId.DisallowedHtmlName,
+        "This HTML tag is disallowed by the project's current TSDoc configuration",
+        marker
+      );
+    }
+
     return excerpt;
   }
 

@@ -1,3 +1,4 @@
+import { TSDocConfiguration } from '../../configuration/TSDocConfiguration';
 import { TestHelpers } from './TestHelpers';
 
 test('01 HTML start tags: simple, positive', () => {
@@ -98,4 +99,24 @@ test('08 Unusual HTML names, positive', () => {
 
 test('09 Unusual HTML names, negative', () => {
   TestHelpers.parseAndMatchNodeParserSnapshot(['/**', ' * <1a/>', ' * <a.a>', ' * <_a>', ' */'].join('\n'));
+});
+
+test('10 Allowed HTML names, positive', () => {
+  const config: TSDocConfiguration = new TSDocConfiguration();
+  config.setAllowedHtmlTags(['a', 'b', 'c']);
+
+  TestHelpers.parseAndMatchNodeParserSnapshot(
+    ['/**', ' * <a>', ' * <b/>', ' * </c>', ' */'].join('\n'),
+    config
+  );
+});
+
+test('11 Disallowed HTML names, negative', () => {
+  const config: TSDocConfiguration = new TSDocConfiguration();
+  config.setAllowedHtmlTags(['d']);
+
+  TestHelpers.parseAndMatchNodeParserSnapshot(
+    ['/**', ' * <a>', ' * <b>', ' * <c>', ' */'].join('\n'),
+    config
+  );
 });
