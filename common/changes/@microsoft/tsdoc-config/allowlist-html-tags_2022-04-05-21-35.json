@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "Add `allowedHtmlTags` configuration option",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config",
+  "email": "josephjunker@users.noreply.github.com"
+}
