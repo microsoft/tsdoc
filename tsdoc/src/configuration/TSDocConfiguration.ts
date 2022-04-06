@@ -79,7 +79,7 @@ export class TSDocConfiguration {
   }
 
   /**
-   * The html elements that are supported in this configuration.
+   * The HTML element names that are supported in this configuration. Used in conjunction with the `reportUnsupportedHtmlElements` setting.
    */
   public get supportedHtmlElements(): string[] {
     return Array.from(this._supportedHtmlElements.values());
