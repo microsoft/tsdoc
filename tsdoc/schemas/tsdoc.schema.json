@@ -30,7 +30,7 @@
     },
 
     "supportedHtmlElements": {
-      "description": "HTML element names to permit in TSDoc comments. If not specified, all tags will be allowed.",
+      "description": "The HTML element names that are supported in this configuration. Used in conjunction with the \"reportUnsupportedHtmlElements\" setting.",
       "type": "array",
       "items": {
         "type": "string",
