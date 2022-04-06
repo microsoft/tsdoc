@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc-config",
-      "comment": "Add `allowedHtmlTags` configuration option",
+      "comment": "Add `supportedHtmlTags` and `reportUnsupportedHtmlTags` configuration options",
       "type": "minor"
     }
   ],
