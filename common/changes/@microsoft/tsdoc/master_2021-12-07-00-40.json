@@ -2,8 +2,8 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc",
-      "comment": "remove \"const\" keyword before enums to allow use with typescript isolatedModules",
-      "type": "patch"
+      "comment": "Convert \"const enum\" APIs to be regular enums to enable compatibility with isolatedModules=true (GitHub #306)",
+      "type": "minor"
     }
   ],
   "packageName": "@microsoft/tsdoc",
