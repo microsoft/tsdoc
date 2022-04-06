@@ -8,7 +8,7 @@ import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
  * To avoid naming conflicts between projects, the enum value should be a string comprised of your full
  * NPM package name, followed by a "#" symbol, followed by the class name (without the "Doc" prefix).
  */
-export const enum DocNodeKind {
+export enum DocNodeKind {
   Block = 'Block',
   BlockTag = 'BlockTag',
   Excerpt = 'Excerpt',

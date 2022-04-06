@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "remove \"const\" keyword before enums to allow use with typescript isolatedModules",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "samisayegh@users.noreply.github.com"
+}

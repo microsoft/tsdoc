@@ -299,7 +299,7 @@ export abstract class DocNodeContainer extends DocNode {
 }
 
 // @public
-export const enum DocNodeKind {
+export enum DocNodeKind {
     // (undocumented)
     Block = "Block",
     // (undocumented)
@@ -440,7 +440,7 @@ export enum EscapeStyle {
 }
 
 // @public
-export const enum ExcerptKind {
+export enum ExcerptKind {
     // (undocumented)
     BlockTag = "BlockTag",
     // (undocumented)
@@ -1095,7 +1095,7 @@ export class PlainTextEmitter {
     }
 
 // @public
-export const enum SelectorKind {
+export enum SelectorKind {
     Error = "error",
     Index = "index",
     Label = "label",
@@ -1103,7 +1103,7 @@ export const enum SelectorKind {
 }
 
 // @public
-export const enum Standardization {
+export enum Standardization {
     Core = "Core",
     Discretionary = "Discretionary",
     Extended = "Extended",
@@ -1269,7 +1269,7 @@ export class TSDocEmitter {
     }
 
 // @public
-export const enum TSDocMessageId {
+export enum TSDocMessageId {
     AtSignInWord = "tsdoc-at-sign-in-word",
     AtSignWithoutTagName = "tsdoc-at-sign-without-tag-name",
     CharactersAfterBlockTag = "tsdoc-characters-after-block-tag",
