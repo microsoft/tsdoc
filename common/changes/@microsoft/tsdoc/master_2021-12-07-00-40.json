@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Convert \"const enum\" APIs to be regular enums to enable compatibility with isolatedModules=true (GitHub #306)",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "samisayegh@users.noreply.github.com"
+}

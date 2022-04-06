@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as monacoEditor from 'monaco-editor';
+import * as tsdoc from '@microsoft/tsdoc';
 import { FlexColDiv } from './FlexDivs';
 
 export interface ITextRange {
@@ -56,6 +57,10 @@ interface IMonacoWindow extends Window {
   MonacoEnvironment: {
     getWorkerUrl: (workerId: string, label: string) => void;
   };
+}
+
+interface IMonarchLanguageConfiguration extends monacoEditor.languages.IMonarchLanguage {
+  keywords: string[];
 }
 
 declare const MONACO_URL: string;
@@ -309,6 +314,30 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
     CodeEditor._initializeMonaco()
       .then((monaco) => {
         if (!this._editor && this._hostDivRef) {
+          const tsdocLanguage: IMonarchLanguageConfiguration = {
+            keywords: tsdoc.StandardTags.allDefinitions.map((tag: tsdoc.TSDocTagDefinition) => tag.tagName),
+            tokenizer: {
+              common: [[/\/\*\*/, 'comment', '@comment']],
+              comment: [
+                [/\*/, 'comment'],
+                [/\\* [^\n@*]*/, 'comment'],
+                [/(?:\/)[\n|*]*/, 'comment', '@pop'],
+                [
+                  /@[^ \n]*/,
+                  {
+                    cases: {
+                      '@keywords': 'keyword',
+                      '@default': 'annotation'
+                    }
+                  }
+                ]
+              ]
+            }
+          };
+
+          monaco.languages.register({ id: 'tsdocLanguage' });
+          monaco.languages.setMonarchTokensProvider('tsdocLanguage', tsdocLanguage);
+
           this._editor = monaco.editor.create(this._hostDivRef, {
             value: this.props.value || '',
             language: this.props.language,

@@ -7,7 +7,7 @@ import { TokenKind } from '../parser/Token';
 /**
  * Indicates the type of {@link DocExcerpt}.
  */
-export const enum ExcerptKind {
+export enum ExcerptKind {
   Spacing = 'Spacing',
 
   BlockTag = 'BlockTag',
