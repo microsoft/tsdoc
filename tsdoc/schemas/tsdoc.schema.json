@@ -39,7 +39,7 @@
     },
 
     "reportUnsupportedHtmlElements": {
-      "description": "Whether an error should be reported when an unsupported HTML element is encountered. Defaults to \"true\" if \"supportedHtmlElements\" is defined, \"false\" if it is not.",
+      "description": "Whether an error should be reported when an unsupported HTML element is encountered in a doc comment. Defaults to \"true\" if \"supportedHtmlElements\" contains at least one item, \"false\" if not.",
       "type": "boolean"
     },
 
