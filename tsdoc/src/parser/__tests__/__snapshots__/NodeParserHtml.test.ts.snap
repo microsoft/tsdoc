@@ -2085,11 +2085,11 @@ Object {
     "[<]c[>]",
   ],
   "logMessages": Array [
-    "(2,4): Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+    "(2,4): Invalid HTML element: The HTML element name \\"a\\" is not defined by your TSDoc configuration",
     "(2,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(3,4): Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+    "(3,4): Invalid HTML element: The HTML element name \\"b\\" is not defined by your TSDoc configuration",
     "(3,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(4,4): Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+    "(4,4): Invalid HTML element: The HTML element name \\"c\\" is not defined by your TSDoc configuration",
     "(4,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
   ],
   "nodes": Object {
@@ -2104,7 +2104,7 @@ Object {
               Object {
                 "errorLocation": "a",
                 "errorLocationPrecedingToken": "<",
-                "errorMessage": "Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+                "errorMessage": "Invalid HTML element: The HTML element name [q]a[q] is not defined by your TSDoc configuration",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -2146,7 +2146,7 @@ Object {
               Object {
                 "errorLocation": "b",
                 "errorLocationPrecedingToken": "<",
-                "errorMessage": "Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+                "errorMessage": "Invalid HTML element: The HTML element name [q]b[q] is not defined by your TSDoc configuration",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -2188,7 +2188,7 @@ Object {
               Object {
                 "errorLocation": "c",
                 "errorLocationPrecedingToken": "<",
-                "errorMessage": "Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+                "errorMessage": "Invalid HTML element: The HTML element name [q]c[q] is not defined by your TSDoc configuration",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
