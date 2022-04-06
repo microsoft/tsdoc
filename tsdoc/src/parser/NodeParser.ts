@@ -2143,7 +2143,7 @@ export class NodeParser {
       return this._createFailureForToken(
         tokenReader,
         TSDocMessageId.UnsupportedHtmlElementName,
-        'This HTML element name is not defined by your TSDoc configuration',
+        `The HTML element name ${JSON.stringify(htmlName)} is not defined by your TSDoc configuration`,
         marker
       );
     }
