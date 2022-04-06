@@ -1,4 +1,5 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
-  "allowedHtmlTags": ["span", "p"]
+  "supportedHtmlElements": ["span", "p"],
+  "reportUnsupportedHtmlElements": true
 }

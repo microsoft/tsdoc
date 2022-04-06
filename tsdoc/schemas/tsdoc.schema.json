@@ -29,13 +29,18 @@
       }
     },
 
-    "allowedHtmlTags": {
-      "description": "HTML tags to permit in TSDoc comments. If not specified, all tags will be allowed.",
+    "supportedHtmlElements": {
+      "description": "HTML element names to permit in TSDoc comments. If not specified, all tags will be allowed.",
       "type": "array",
       "items": {
         "type": "string",
         "pattern": "^[a-zA-Z0-9]+$"
       }
+    },
+
+    "reportUnsupportedHtmlElements": {
+      "description": "Whether an error should be reported when an unsupported HTML element is encountered. Defaults to \"true\" if \"supportedHtmlElements\" is defined, \"false\" if it is not.",
+      "type": "boolean"
     },
 
     "supportForTags": {

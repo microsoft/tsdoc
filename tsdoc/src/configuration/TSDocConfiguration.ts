@@ -14,7 +14,7 @@ export class TSDocConfiguration {
   private readonly _supportedTagDefinitions: Set<TSDocTagDefinition>;
   private readonly _validation: TSDocValidationConfiguration;
   private readonly _docNodeManager: DocNodeManager;
-  private readonly _allowedHtmlTags: Set<string>;
+  private readonly _supportedHtmlElements: Set<string>;
 
   public constructor() {
     this._tagDefinitions = [];
@@ -22,7 +22,7 @@ export class TSDocConfiguration {
     this._supportedTagDefinitions = new Set<TSDocTagDefinition>();
     this._validation = new TSDocValidationConfiguration();
     this._docNodeManager = new DocNodeManager();
-    this._allowedHtmlTags = new Set();
+    this._supportedHtmlElements = new Set();
 
     this.clear(false);
 
@@ -41,7 +41,7 @@ export class TSDocConfiguration {
     this._supportedTagDefinitions.clear();
     this._validation.ignoreUndefinedTags = false;
     this._validation.reportUnsupportedTags = false;
-    this._allowedHtmlTags.clear();
+    this._supportedHtmlElements.clear();
 
     if (!noStandardTags) {
       // Define all the standard tags
@@ -79,11 +79,10 @@ export class TSDocConfiguration {
   }
 
   /**
-   * The html tags that are supported in this configuration. If this array is empty,
-   * then all tags are permitted.
+   * The html tags that are supported in this configuration.
    */
-  public get allowedHtmlTags(): string[] {
-    return Array.from(this._allowedHtmlTags.values());
+  public get supportedHtmlElements(): string[] {
+    return Array.from(this._supportedHtmlElements.values());
   }
 
   /**
@@ -194,24 +193,30 @@ export class TSDocConfiguration {
   }
 
   /**
-   * Overwrite the supported HTML tags. If an empty array is specified,
-   * all tags will be allowed.
+   * Overwrite the supported HTML elements.
    */
-  public setAllowedHtmlTags(htmlTags: string[]): void {
-    this._allowedHtmlTags.clear();
+  public setSupportedHtmlElements(htmlTags: string[]): void {
+    this._supportedHtmlElements.clear();
     for (const htmlTag of htmlTags) {
-      this._allowedHtmlTags.add(htmlTag);
+      this._supportedHtmlElements.add(htmlTag);
     }
+  }
+
+  /**
+   * Overwrite the validator's existing value for `reportUnsupportedHtmlElements`.
+   */
+  public setReportUnsupportedHtmlElements(reportUnsupportedHtmlElements: boolean): void {
+    this.validation.reportUnsupportedHtmlElements = reportUnsupportedHtmlElements;
   }
 
   /**
    * Returns true if the html tag is supported in this configuration.
    */
-  public isHtmlTagAllowed(htmlTag: string): boolean {
-    if (this._allowedHtmlTags.size === 0) {
+  public isHtmlTagSupported(htmlTag: string): boolean {
+    if (this._supportedHtmlElements.size === 0) {
       return true;
     }
-    return this._allowedHtmlTags.has(htmlTag);
+    return this._supportedHtmlElements.has(htmlTag);
   }
 
   /**

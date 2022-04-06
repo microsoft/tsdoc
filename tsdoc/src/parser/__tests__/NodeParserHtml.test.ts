@@ -101,9 +101,9 @@ test('09 Unusual HTML names, negative', () => {
   TestHelpers.parseAndMatchNodeParserSnapshot(['/**', ' * <1a/>', ' * <a.a>', ' * <_a>', ' */'].join('\n'));
 });
 
-test('10 Allowed HTML names, positive', () => {
+test('10 Supported HTML elements, positive', () => {
   const config: TSDocConfiguration = new TSDocConfiguration();
-  config.setAllowedHtmlTags(['a', 'b', 'c']);
+  config.setSupportedHtmlElements(['a', 'b', 'c']);
 
   TestHelpers.parseAndMatchNodeParserSnapshot(
     ['/**', ' * <a>', ' * <b/>', ' * </c>', ' */'].join('\n'),
@@ -111,9 +111,9 @@ test('10 Allowed HTML names, positive', () => {
   );
 });
 
-test('11 Disallowed HTML names, negative', () => {
+test('11 Supported HTML elements, negative', () => {
   const config: TSDocConfiguration = new TSDocConfiguration();
-  config.setAllowedHtmlTags(['d']);
+  config.setSupportedHtmlElements(['d']);
 
   TestHelpers.parseAndMatchNodeParserSnapshot(
     ['/**', ' * <a>', ' * <b>', ' * <c>', ' */'].join('\n'),

@@ -41,7 +41,8 @@ interface IConfigJson {
   noStandardTags?: boolean;
   tagDefinitions?: ITagConfigJson[];
   supportForTags?: { [tagName: string]: boolean };
-  allowedHtmlTags?: string[];
+  supportedHtmlElements?: string[];
+  reportUnsupportedHtmlElements?: boolean;
 }
 
 /**
@@ -70,8 +71,8 @@ export class TSDocConfigFile {
   private readonly _tagDefinitions: TSDocTagDefinition[];
   private readonly _tagDefinitionNames: Set<string>;
   private readonly _supportForTags: Map<string, boolean>;
-  private readonly _allowedHtmlTags: Set<string>;
-  private _specifiesAllowedHtmlTags: boolean;
+  private _supportedHtmlElements: Set<string> | undefined;
+  private _reportUnsupportedHtmlElements: boolean | undefined;
 
   private constructor() {
     this.log = new ParserMessageLog();
@@ -87,8 +88,6 @@ export class TSDocConfigFile {
     this._tagDefinitions = [];
     this._tagDefinitionNames = new Set();
     this._supportForTags = new Map();
-    this._allowedHtmlTags = new Set();
-    this._specifiesAllowedHtmlTags = false;
   }
 
   /**
@@ -172,8 +171,12 @@ export class TSDocConfigFile {
     return this._supportForTags;
   }
 
-  public get allowedHtmlTags(): ReadonlyArray<string> | undefined {
-    return this._specifiesAllowedHtmlTags ? Array.from(this._allowedHtmlTags) : undefined;
+  public get supportedHtmlElements(): ReadonlyArray<string> | undefined {
+    return this._supportedHtmlElements && Array.from(this._supportedHtmlElements);
+  }
+
+  public get reportUnsupportedHtmlElements(): boolean | undefined {
+    return this._reportUnsupportedHtmlElements;
   }
 
   /**
@@ -227,20 +230,24 @@ export class TSDocConfigFile {
   }
 
   /**
-   * Adds a new item to the `allowedHtmlTags` array.
+   * Adds a new item to the `supportedHtmlElements` array.
    */
-  public addAllowedHtmlTag(htmlTag: string): void {
-    this._specifiesAllowedHtmlTags = true;
-    this._allowedHtmlTags.add(htmlTag);
+  public addSupportedHtmlElement(htmlElement: string): void {
+    if (!this._supportedHtmlElements) {
+      this._supportedHtmlElements = new Set();
+    }
+    this._supportedHtmlElements.add(htmlElement);
   }
 
   /**
-   * Removes the explicit list of allowed html tags. When no tags are explicitly listed,
-   * all tags will be permitted.
+   * Removes the explicit list of allowed html elements.
    */
-  public clearAllowedHtmlTags(): void {
-    this._specifiesAllowedHtmlTags = false;
-    this._allowedHtmlTags.clear();
+  public clearSupportedHtmlElements(): void {
+    this._supportedHtmlElements = undefined;
+  }
+
+  public setReportUnsupportedHtmlElements(reportUnsupportedHtmlElements: boolean): void {
+    this._reportUnsupportedHtmlElements = reportUnsupportedHtmlElements;
   }
 
   /**
@@ -360,12 +367,14 @@ export class TSDocConfigFile {
       });
     }
 
-    if (configJson.allowedHtmlTags) {
-      this._specifiesAllowedHtmlTags = true;
-      for (const htmlTag of configJson.allowedHtmlTags) {
-        this._allowedHtmlTags.add(htmlTag);
+    if (configJson.supportedHtmlElements) {
+      this._supportedHtmlElements = new Set();
+      for (const htmlElement of configJson.supportedHtmlElements) {
+        this.addSupportedHtmlElement(htmlElement);
       }
     }
+
+    this._reportUnsupportedHtmlElements = configJson.reportUnsupportedHtmlElements;
 
     if (configJson.supportForTags) {
       for (const tagName of Object.keys(configJson.supportForTags)) {
@@ -586,9 +595,11 @@ export class TSDocConfigFile {
       configFile.setSupportForTag(tagDefinition.tagName, true);
     }
 
-    for (const htmlTag of configuration.allowedHtmlTags) {
-      configFile.addAllowedHtmlTag(htmlTag);
+    for (const htmlElement of configuration.supportedHtmlElements) {
+      configFile.addSupportedHtmlElement(htmlElement);
     }
+
+    configFile.setReportUnsupportedHtmlElements(configuration.validation.reportUnsupportedHtmlElements);
 
     return configFile;
   }
@@ -628,11 +639,12 @@ export class TSDocConfigFile {
       });
     }
 
-    if (this.allowedHtmlTags) {
-      configJson.allowedHtmlTags = [];
-      for (const htmlTag of this.allowedHtmlTags) {
-        configJson.allowedHtmlTags.push(htmlTag);
-      }
+    if (this.supportedHtmlElements) {
+      configJson.supportedHtmlElements = [...this.supportedHtmlElements];
+    }
+
+    if (this._reportUnsupportedHtmlElements !== undefined) {
+      configJson.reportUnsupportedHtmlElements = this._reportUnsupportedHtmlElements;
     }
 
     return configJson;
@@ -757,8 +769,19 @@ export class TSDocConfigFile {
       }
     });
 
-    if (this.allowedHtmlTags) {
-      configuration.setAllowedHtmlTags([...this.allowedHtmlTags]);
+    if (this._reportUnsupportedHtmlElements === false) {
+      configuration.setReportUnsupportedHtmlElements(false);
+    }
+
+    if (
+      this._reportUnsupportedHtmlElements ||
+      (this._reportUnsupportedHtmlElements === undefined && this.supportedHtmlElements)
+    ) {
+      configuration.setReportUnsupportedHtmlElements(true);
+    }
+
+    if (this.supportedHtmlElements) {
+      configuration.setSupportedHtmlElements([...this.supportedHtmlElements]);
     }
   }
 

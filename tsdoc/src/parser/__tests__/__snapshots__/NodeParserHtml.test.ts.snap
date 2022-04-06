@@ -1969,7 +1969,7 @@ Object {
 }
 `;
 
-exports[`10 Allowed HTML names, positive 1`] = `
+exports[`10 Supported HTML elements, positive 1`] = `
 Object {
   "buffer": "/**[n] * [<]a[>][n] * [<]b/[>][n] * [<]/c[>][n] */",
   "gaps": Array [],
@@ -2075,7 +2075,7 @@ Object {
 }
 `;
 
-exports[`11 Disallowed HTML names, negative 1`] = `
+exports[`11 Supported HTML elements, negative 1`] = `
 Object {
   "buffer": "/**[n] * [<]a[>][n] * [<]b[>][n] * [<]c[>][n] */",
   "gaps": Array [],
@@ -2084,14 +2084,7 @@ Object {
     "[<]b[>]",
     "[<]c[>]",
   ],
-  "logMessages": Array [
-    "(2,4): Invalid HTML element: This HTML tag is disallowed by the project's current TSDoc configuration",
-    "(2,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(3,4): Invalid HTML element: This HTML tag is disallowed by the project's current TSDoc configuration",
-    "(3,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-    "(4,4): Invalid HTML element: This HTML tag is disallowed by the project's current TSDoc configuration",
-    "(4,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
-  ],
+  "logMessages": Array [],
   "nodes": Object {
     "kind": "Comment",
     "nodes": Array [
@@ -2102,34 +2095,18 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "a",
-                "errorLocationPrecedingToken": "<",
-                "errorMessage": "Invalid HTML element: This HTML tag is disallowed by the project's current TSDoc configuration",
-                "kind": "ErrorText",
+                "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
-                ],
-              },
-              Object {
-                "kind": "PlainText",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: PlainText",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "a",
                   },
-                ],
-              },
-              Object {
-                "errorLocation": "[>]",
-                "errorLocationPrecedingToken": "a",
-                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
-                "kind": "ErrorText",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
@@ -2144,34 +2121,18 @@ Object {
                 ],
               },
               Object {
-                "errorLocation": "b",
-                "errorLocationPrecedingToken": "<",
-                "errorMessage": "Invalid HTML element: This HTML tag is disallowed by the project's current TSDoc configuration",
-                "kind": "ErrorText",
+                "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
-                ],
-              },
-              Object {
-                "kind": "PlainText",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: PlainText",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "b",
                   },
-                ],
-              },
-              Object {
-                "errorLocation": "[>]",
-                "errorLocationPrecedingToken": "b",
-                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
-                "kind": "ErrorText",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
@@ -2186,34 +2147,18 @@ Object {
                 ],
               },
               Object {
-                "errorLocation": "c",
-                "errorLocationPrecedingToken": "<",
-                "errorMessage": "Invalid HTML element: This HTML tag is disallowed by the project's current TSDoc configuration",
-                "kind": "ErrorText",
+                "kind": "HtmlStartTag",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
+                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
                     "nodeExcerpt": "[<]",
                   },
-                ],
-              },
-              Object {
-                "kind": "PlainText",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: PlainText",
+                    "kind": "Excerpt: HtmlStartTag_Name",
                     "nodeExcerpt": "c",
                   },
-                ],
-              },
-              Object {
-                "errorLocation": "[>]",
-                "errorLocationPrecedingToken": "c",
-                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
-                "kind": "ErrorText",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
+                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],

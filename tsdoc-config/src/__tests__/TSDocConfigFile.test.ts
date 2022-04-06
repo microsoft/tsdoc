@@ -25,7 +25,8 @@ expect.addSnapshotSerializer({
       tagDefinitions: configFile.tagDefinitions,
       supportForTags: Array.from(configFile.supportForTags).map(([tagName, supported]) => ({ tagName, supported })),
       messages: configFile.log.messages,
-      allowedHtmlTags: configFile.allowedHtmlTags,
+      supportedHtmlElements: configFile.supportedHtmlElements,
+      reportUnsupportedHtmlElements: configFile.reportUnsupportedHtmlElements,
     });
   },
 });
@@ -37,14 +38,15 @@ function testLoadingFolder(assetPath: string): TSDocConfigFile {
 test('Load p1', () => {
   expect(testLoadingFolder('assets/p1')).toMatchInlineSnapshot(`
     Object {
-      "allowedHtmlTags": undefined,
       "extendsFiles": Array [],
       "extendsPaths": Array [],
       "fileNotFound": false,
       "filePath": "assets/p1/tsdoc.json",
       "messages": Array [],
       "noStandardTags": undefined,
+      "reportUnsupportedHtmlElements": undefined,
       "supportForTags": Array [],
+      "supportedHtmlElements": undefined,
       "tagDefinitions": Array [],
       "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
     }
@@ -54,7 +56,6 @@ test('Load p1', () => {
 test('Load p2', () => {
   expect(testLoadingFolder('assets/p2')).toMatchInlineSnapshot(`
     Object {
-      "allowedHtmlTags": undefined,
       "extendsFiles": Array [],
       "extendsPaths": Array [],
       "fileNotFound": true,
@@ -74,7 +75,9 @@ test('Load p2', () => {
         },
       ],
       "noStandardTags": undefined,
+      "reportUnsupportedHtmlElements": undefined,
       "supportForTags": Array [],
+      "supportedHtmlElements": undefined,
       "tagDefinitions": Array [],
       "tsdocSchema": "",
     }
@@ -84,22 +87,22 @@ test('Load p2', () => {
 test('Load p3', () => {
   expect(testLoadingFolder('assets/p3')).toMatchInlineSnapshot(`
     Object {
-      "allowedHtmlTags": undefined,
       "extendsFiles": Array [
         Object {
-          "allowedHtmlTags": undefined,
           "extendsFiles": Array [],
           "extendsPaths": Array [],
           "fileNotFound": false,
           "filePath": "assets/p3/base1/tsdoc-base1.json",
           "messages": Array [],
           "noStandardTags": undefined,
+          "reportUnsupportedHtmlElements": undefined,
           "supportForTags": Array [
             Object {
               "supported": true,
               "tagName": "@base1",
             },
           ],
+          "supportedHtmlElements": undefined,
           "tagDefinitions": Array [
             TSDocTagDefinition {
               "allowMultiple": false,
@@ -112,19 +115,20 @@ test('Load p3', () => {
           "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
         },
         Object {
-          "allowedHtmlTags": undefined,
           "extendsFiles": Array [],
           "extendsPaths": Array [],
           "fileNotFound": false,
           "filePath": "assets/p3/base2/tsdoc-base2.json",
           "messages": Array [],
           "noStandardTags": undefined,
+          "reportUnsupportedHtmlElements": undefined,
           "supportForTags": Array [
             Object {
               "supported": false,
               "tagName": "@base2",
             },
           ],
+          "supportedHtmlElements": undefined,
           "tagDefinitions": Array [
             TSDocTagDefinition {
               "allowMultiple": false,
@@ -145,12 +149,14 @@ test('Load p3', () => {
       "filePath": "assets/p3/tsdoc.json",
       "messages": Array [],
       "noStandardTags": undefined,
+      "reportUnsupportedHtmlElements": undefined,
       "supportForTags": Array [
         Object {
           "supported": true,
           "tagName": "@base2",
         },
       ],
+      "supportedHtmlElements": undefined,
       "tagDefinitions": Array [
         TSDocTagDefinition {
           "allowMultiple": false,
@@ -168,17 +174,17 @@ test('Load p3', () => {
 test('Load p4', () => {
   expect(testLoadingFolder('assets/p4')).toMatchInlineSnapshot(`
     Object {
-      "allowedHtmlTags": undefined,
       "extendsFiles": Array [
         Object {
-          "allowedHtmlTags": undefined,
           "extendsFiles": Array [],
           "extendsPaths": Array [],
           "fileNotFound": false,
           "filePath": "assets/p4/node_modules/example-lib/dist/tsdoc-example.json",
           "messages": Array [],
           "noStandardTags": undefined,
+          "reportUnsupportedHtmlElements": undefined,
           "supportForTags": Array [],
+          "supportedHtmlElements": undefined,
           "tagDefinitions": Array [
             TSDocTagDefinition {
               "allowMultiple": false,
@@ -198,7 +204,9 @@ test('Load p4', () => {
       "filePath": "assets/p4/tsdoc.json",
       "messages": Array [],
       "noStandardTags": undefined,
+      "reportUnsupportedHtmlElements": undefined,
       "supportForTags": Array [],
+      "supportedHtmlElements": undefined,
       "tagDefinitions": Array [
         TSDocTagDefinition {
           "allowMultiple": false,
@@ -246,6 +254,7 @@ test('Re-serialize p3 without defaults', () => {
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
       "noStandardTags": true,
+      "reportUnsupportedHtmlElements": false,
     }
   `);
 
@@ -262,6 +271,7 @@ test('Re-serialize p3 without defaults', () => {
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
       "noStandardTags": true,
+      "reportUnsupportedHtmlElements": false,
       "supportForTags": Object {
         "@base1": true,
         "@base2": true,
@@ -295,6 +305,7 @@ test('Re-serialize p3 with defaults', () => {
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
       "noStandardTags": true,
+      "reportUnsupportedHtmlElements": false,
       "tagDefinitions": Array [
         Object {
           "syntaxKind": "modifier",
@@ -418,6 +429,7 @@ test('Re-serialize p3 with defaults', () => {
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
       "noStandardTags": true,
+      "reportUnsupportedHtmlElements": false,
       "supportForTags": Object {
         "@base1": true,
         "@base2": true,
@@ -571,21 +583,29 @@ test('Test noStandardTags for p6', () => {
 test('Test load p7', () => {
   expect(testLoadingFolder('assets/p7')).toMatchInlineSnapshot(`
     Object {
-      "allowedHtmlTags": Array [
-        "b",
-        "u",
-      ],
       "extendsFiles": Array [],
       "extendsPaths": Array [],
       "fileNotFound": false,
       "filePath": "assets/p7/tsdoc.json",
       "messages": Array [],
       "noStandardTags": undefined,
+      "reportUnsupportedHtmlElements": undefined,
       "supportForTags": Array [],
+      "supportedHtmlElements": Array [
+        "b",
+        "u",
+      ],
       "tagDefinitions": Array [],
       "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
     }
   `);
+});
+
+test('p7 reportUnsupportedHtmlElements defaults to true when supportedHtmlElements is specified', () => {
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p7'));
+  const flattened = new TSDocConfiguration();
+  configFile.updateParser(flattened);
+  expect(flattened.validation.reportUnsupportedHtmlElements).toEqual(true);
 });
 
 test('Test re-serialize p7', () => {
@@ -593,7 +613,7 @@ test('Test re-serialize p7', () => {
   expect(configFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
-      "allowedHtmlTags": Array [
+      "supportedHtmlElements": Array [
         "b",
         "u",
       ],
@@ -604,20 +624,20 @@ test('Test re-serialize p7', () => {
 test('Test load p8', () => {
   expect(testLoadingFolder('assets/p8')).toMatchInlineSnapshot(`
     Object {
-      "allowedHtmlTags": Array [],
       "extendsFiles": Array [
         Object {
-          "allowedHtmlTags": Array [
-            "span",
-            "p",
-          ],
           "extendsFiles": Array [],
           "extendsPaths": Array [],
           "fileNotFound": false,
           "filePath": "assets/p8/base1/tsdoc-base1.json",
           "messages": Array [],
           "noStandardTags": undefined,
+          "reportUnsupportedHtmlElements": undefined,
           "supportForTags": Array [],
+          "supportedHtmlElements": Array [
+            "span",
+            "p",
+          ],
           "tagDefinitions": Array [],
           "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
         },
@@ -629,18 +649,20 @@ test('Test load p8', () => {
       "filePath": "assets/p8/tsdoc.json",
       "messages": Array [],
       "noStandardTags": undefined,
+      "reportUnsupportedHtmlElements": undefined,
       "supportForTags": Array [],
+      "supportedHtmlElements": Array [],
       "tagDefinitions": Array [],
       "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
     }
   `);
 });
 
-test('p8 allowedHtmlTags are not inherited when an empty array is specified', () => {
+test('p8 supportedHtmlElements are not inherited when an empty array is specified', () => {
   const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p8'));
   const flattened = new TSDocConfiguration();
   configFile.updateParser(flattened);
-  expect(flattened.allowedHtmlTags).toEqual([]);
+  expect(flattened.supportedHtmlElements).toEqual([]);
 });
 
 test('Test re-serialize p8', () => {
@@ -648,7 +670,7 @@ test('Test re-serialize p8', () => {
   expect(configFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
-      "allowedHtmlTags": Array [],
+      "supportedHtmlElements": Array [],
     }
   `);
 });
@@ -656,20 +678,20 @@ test('Test re-serialize p8', () => {
 test('Test load p9', () => {
   expect(testLoadingFolder('assets/p9')).toMatchInlineSnapshot(`
     Object {
-      "allowedHtmlTags": undefined,
       "extendsFiles": Array [
         Object {
-          "allowedHtmlTags": Array [
-            "span",
-            "p",
-          ],
           "extendsFiles": Array [],
           "extendsPaths": Array [],
           "fileNotFound": false,
           "filePath": "assets/p9/base1/tsdoc-base1.json",
           "messages": Array [],
           "noStandardTags": undefined,
+          "reportUnsupportedHtmlElements": true,
           "supportForTags": Array [],
+          "supportedHtmlElements": Array [
+            "span",
+            "p",
+          ],
           "tagDefinitions": Array [],
           "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
         },
@@ -681,18 +703,27 @@ test('Test load p9', () => {
       "filePath": "assets/p9/tsdoc.json",
       "messages": Array [],
       "noStandardTags": undefined,
+      "reportUnsupportedHtmlElements": false,
       "supportForTags": Array [],
+      "supportedHtmlElements": undefined,
       "tagDefinitions": Array [],
       "tsdocSchema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
     }
   `);
 });
 
-test('p9 allowedHtmlTags are inherited', () => {
+test('p9 supportedHtmlElements are inherited', () => {
   const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p9'));
   const flattened = new TSDocConfiguration();
   configFile.updateParser(flattened);
-  expect(flattened.allowedHtmlTags).toEqual(['span', 'p']);
+  expect(flattened.supportedHtmlElements).toEqual(['span', 'p']);
+});
+
+test('p9 reportUnsupportedHtmlElements is overridden', () => {
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p9'));
+  const flattened = new TSDocConfiguration();
+  configFile.updateParser(flattened);
+  expect(flattened.validation.reportUnsupportedHtmlElements).toEqual(false);
 });
 
 test('Test re-serialize p9', () => {
@@ -700,6 +731,7 @@ test('Test re-serialize p9', () => {
   expect(configFile.saveToObject()).toMatchInlineSnapshot(`
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "reportUnsupportedHtmlElements": false,
     }
   `);
 });
@@ -728,6 +760,7 @@ test('Test loadFromObject()', () => {
     Object {
       "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
       "noStandardTags": true,
+      "reportUnsupportedHtmlElements": false,
       "supportForTags": Object {
         "@tag1": true,
       },

@@ -2136,11 +2136,14 @@ export class NodeParser {
       );
     }
 
-    if (!this._configuration.isHtmlTagAllowed(htmlName)) {
+    if (
+      this._configuration.validation.reportUnsupportedHtmlElements &&
+      !this._configuration.isHtmlTagSupported(htmlName)
+    ) {
       return this._createFailureForToken(
         tokenReader,
-        TSDocMessageId.DisallowedHtmlName,
-        "This HTML tag is disallowed by the project's current TSDoc configuration",
+        TSDocMessageId.UnsupportedHtmlElementName,
+        'This HTML element name is not defined by your TSDoc configuration',
         marker
       );
     }

@@ -1242,16 +1242,17 @@ export class TSDocConfiguration {
     constructor();
     addTagDefinition(tagDefinition: TSDocTagDefinition): void;
     addTagDefinitions(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported?: boolean | undefined): void;
-    get allowedHtmlTags(): string[];
     get allTsdocMessageIds(): ReadonlyArray<TSDocMessageId>;
     clear(noStandardTags?: boolean): void;
     get docNodeManager(): DocNodeManager;
-    isHtmlTagAllowed(htmlTag: string): boolean;
+    isHtmlTagSupported(htmlTag: string): boolean;
     isKnownMessageId(messageId: TSDocMessageId | string): boolean;
     isTagSupported(tagDefinition: TSDocTagDefinition): boolean;
-    setAllowedHtmlTags(htmlTags: string[]): void;
+    setReportUnsupportedHtmlElements(reportUnsupportedHtmlElements: boolean): void;
+    setSupportedHtmlElements(htmlTags: string[]): void;
     setSupportForTag(tagDefinition: TSDocTagDefinition, supported: boolean): void;
     setSupportForTags(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported: boolean): void;
+    get supportedHtmlElements(): string[];
     get supportedTagDefinitions(): ReadonlyArray<TSDocTagDefinition>;
     get tagDefinitions(): ReadonlyArray<TSDocTagDefinition>;
     tryGetTagDefinition(tagName: string): TSDocTagDefinition | undefined;
@@ -1296,7 +1297,6 @@ export const enum TSDocMessageId {
     ConfigFileUnresolvedExtends = "tsdoc-config-unresolved-extends",
     ConfigFileUnsupportedSchema = "tsdoc-config-unsupported-schema",
     ConfigInvalidJson = "tsdoc-config-invalid-json",
-    DisallowedHtmlName = "tsdoc-disallowed-html-name",
     EscapeGreaterThan = "tsdoc-escape-greater-than",
     EscapeRightBrace = "tsdoc-escape-right-brace",
     ExtraInheritDocTag = "tsdoc-extra-inheritdoc-tag",
@@ -1345,6 +1345,7 @@ export const enum TSDocMessageId {
     TextAfterHtmlString = "tsdoc-text-after-html-string",
     UndefinedTag = "tsdoc-undefined-tag",
     UnnecessaryBackslash = "tsdoc-unnecessary-backslash",
+    UnsupportedHtmlElementName = "tsdoc-unsupported-html-name",
     UnsupportedTag = "tsdoc-unsupported-tag"
 }
 
@@ -1379,6 +1380,7 @@ export enum TSDocTagSyntaxKind {
 // @public
 export class TSDocValidationConfiguration {
     ignoreUndefinedTags: boolean;
+    reportUnsupportedHtmlElements: boolean;
     reportUnsupportedTags: boolean;
 }
 
