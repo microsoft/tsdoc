@@ -1245,7 +1245,7 @@ export class TSDocConfiguration {
     get allTsdocMessageIds(): ReadonlyArray<TSDocMessageId>;
     clear(noStandardTags?: boolean): void;
     get docNodeManager(): DocNodeManager;
-    isHtmlTagSupported(htmlTag: string): boolean;
+    isHtmlElementSupported(htmlTag: string): boolean;
     isKnownMessageId(messageId: TSDocMessageId | string): boolean;
     isTagSupported(tagDefinition: TSDocTagDefinition): boolean;
     setReportUnsupportedHtmlElements(reportUnsupportedHtmlElements: boolean): void;

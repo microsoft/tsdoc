@@ -2138,7 +2138,7 @@ export class NodeParser {
 
     if (
       this._configuration.validation.reportUnsupportedHtmlElements &&
-      !this._configuration.isHtmlTagSupported(htmlName)
+      !this._configuration.isHtmlElementSupported(htmlName)
     ) {
       return this._createFailureForToken(
         tokenReader,

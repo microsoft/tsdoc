@@ -2084,7 +2084,14 @@ Object {
     "[<]b[>]",
     "[<]c[>]",
   ],
-  "logMessages": Array [],
+  "logMessages": Array [
+    "(2,4): Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+    "(2,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(3,4): Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+    "(3,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,4): Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+    "(4,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
   "nodes": Object {
     "kind": "Comment",
     "nodes": Array [
@@ -2095,18 +2102,34 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "kind": "HtmlStartTag",
+                "errorLocation": "a",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
+                    "kind": "Excerpt: ErrorText",
                     "nodeExcerpt": "[<]",
                   },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: HtmlStartTag_Name",
+                    "kind": "Excerpt: PlainText",
                     "nodeExcerpt": "a",
                   },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "a",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
+                    "kind": "Excerpt: ErrorText",
                     "nodeExcerpt": "[>]",
                   },
                 ],
@@ -2121,18 +2144,34 @@ Object {
                 ],
               },
               Object {
-                "kind": "HtmlStartTag",
+                "errorLocation": "b",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
+                    "kind": "Excerpt: ErrorText",
                     "nodeExcerpt": "[<]",
                   },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: HtmlStartTag_Name",
+                    "kind": "Excerpt: PlainText",
                     "nodeExcerpt": "b",
                   },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "b",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
+                    "kind": "Excerpt: ErrorText",
                     "nodeExcerpt": "[>]",
                   },
                 ],
@@ -2147,18 +2186,34 @@ Object {
                 ],
               },
               Object {
-                "kind": "HtmlStartTag",
+                "errorLocation": "c",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid HTML element: This HTML element name is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: HtmlStartTag_OpeningDelimiter",
+                    "kind": "Excerpt: ErrorText",
                     "nodeExcerpt": "[<]",
                   },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: HtmlStartTag_Name",
+                    "kind": "Excerpt: PlainText",
                     "nodeExcerpt": "c",
                   },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "c",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: HtmlStartTag_ClosingDelimiter",
+                    "kind": "Excerpt: ErrorText",
                     "nodeExcerpt": "[>]",
                   },
                 ],

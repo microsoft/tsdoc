@@ -79,7 +79,7 @@ export class TSDocConfiguration {
   }
 
   /**
-   * The html tags that are supported in this configuration.
+   * The html elements that are supported in this configuration.
    */
   public get supportedHtmlElements(): string[] {
     return Array.from(this._supportedHtmlElements.values());
@@ -210,9 +210,9 @@ export class TSDocConfiguration {
   }
 
   /**
-   * Returns true if the html tag is supported in this configuration.
+   * Returns true if the html element is supported in this configuration.
    */
-  public isHtmlTagSupported(htmlTag: string): boolean {
+  public isHtmlElementSupported(htmlTag: string): boolean {
     if (this._supportedHtmlElements.size === 0) {
       return true;
     }
