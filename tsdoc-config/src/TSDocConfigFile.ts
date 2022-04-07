@@ -774,7 +774,9 @@ export class TSDocConfigFile {
     }
 
     if (this._reportUnsupportedHtmlElements === false) {
-      configuration.setReportUnsupportedHtmlElements(false);
+      configuration.validation.reportUnsupportedHtmlElements = false;
+    } else if (this._reportUnsupportedHtmlElements === true) {
+      configuration.validation.reportUnsupportedHtmlElements = true;
     }
   }
 

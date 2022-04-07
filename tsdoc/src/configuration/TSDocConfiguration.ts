@@ -205,13 +205,6 @@ export class TSDocConfiguration {
   }
 
   /**
-   * Overwrite the validator's existing value for `reportUnsupportedHtmlElements`.
-   */
-  public setReportUnsupportedHtmlElements(reportUnsupportedHtmlElements: boolean): void {
-    this.validation.reportUnsupportedHtmlElements = reportUnsupportedHtmlElements;
-  }
-
-  /**
    * Returns true if the html element is supported in this configuration.
    */
   public isHtmlElementSupported(htmlTag: string): boolean {

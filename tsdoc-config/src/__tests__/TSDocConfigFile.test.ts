@@ -719,7 +719,7 @@ test('p9 supportedHtmlElements are inherited', () => {
   expect(flattened.supportedHtmlElements).toEqual(['span', 'p']);
 });
 
-test('p9 reportUnsupportedHtmlElements is overridden', () => {
+test('p9 reportUnsupportedHtmlElements is overridden by "true"', () => {
   const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p9'));
   const flattened = new TSDocConfiguration();
   configFile.updateParser(flattened);
@@ -734,6 +734,13 @@ test('Test re-serialize p9', () => {
       "reportUnsupportedHtmlElements": false,
     }
   `);
+});
+
+test('p10 reportUnsupportedHtmlElements is overridden by "false"', () => {
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p10'));
+  const flattened = new TSDocConfiguration();
+  configFile.updateParser(flattened);
+  expect(flattened.validation.reportUnsupportedHtmlElements).toEqual(true);
 });
 
 test('Test loadFromObject()', () => {
