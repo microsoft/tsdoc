@@ -13,3 +13,6 @@
 function getAverage(x: number, y: number): number {
   return (x + y) / 2.0;
 }
+
+// The TypeScript function is included for illustrative purposes.
+// It is not processed by the TSDoc parser.

@@ -7,7 +7,7 @@ Thu, 07 Apr 2022 22:51:07 GMT
 
 ### Minor changes
 
-- Add `supportedHtmlTags` and `reportUnsupportedHtmlTags` options and corresponding validation
+- Add `supportedHtmlElements` and `reportUnsupportedHtmlElements` options and corresponding validation
 - Convert "const enum" APIs to be regular enums to enable compatibility with isolatedModules=true (GitHub #306)
 
 ## 0.13.2

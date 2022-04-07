@@ -8,7 +8,7 @@
       "comments": {
         "minor": [
           {
-            "comment": "Add `supportedHtmlTags` and `reportUnsupportedHtmlTags` configuration options"
+            "comment": "Add `supportedHtmlElements` and `reportUnsupportedHtmlElements` configuration options"
           }
         ],
         "dependency": [
