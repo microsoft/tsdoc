@@ -743,6 +743,20 @@ test('p10 reportUnsupportedHtmlElements is overridden by "false"', () => {
   expect(flattened.validation.reportUnsupportedHtmlElements).toEqual(true);
 });
 
+test('p11 reportUnsupportedHtmlElements is handled correctly with multiple parent configs', () => {
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p11'));
+  const flattened = new TSDocConfiguration();
+  configFile.updateParser(flattened);
+  expect(flattened.validation.reportUnsupportedHtmlElements).toEqual(true);
+});
+
+test('p12 reportUnsupportedHtmlElements can be set to false, even when "supportedHtmlElements" is present', () => {
+  const configFile: TSDocConfigFile = TSDocConfigFile.loadForFolder(path.join(__dirname, 'assets/p12'));
+  const flattened = new TSDocConfiguration();
+  configFile.updateParser(flattened);
+  expect(flattened.validation.reportUnsupportedHtmlElements).toEqual(false);
+});
+
 test('Test loadFromObject()', () => {
   const configuration: TSDocConfiguration = new TSDocConfiguration();
   configuration.clear(true);
