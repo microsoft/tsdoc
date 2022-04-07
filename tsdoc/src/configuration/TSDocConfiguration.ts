@@ -41,6 +41,7 @@ export class TSDocConfiguration {
     this._supportedTagDefinitions.clear();
     this._validation.ignoreUndefinedTags = false;
     this._validation.reportUnsupportedTags = false;
+    this._validation.reportUnsupportedHtmlElements = false;
     this._supportedHtmlElements.clear();
 
     if (!noStandardTags) {
@@ -197,6 +198,7 @@ export class TSDocConfiguration {
    */
   public setSupportedHtmlElements(htmlTags: string[]): void {
     this._supportedHtmlElements.clear();
+    this._validation.reportUnsupportedHtmlElements = true;
     for (const htmlTag of htmlTags) {
       this._supportedHtmlElements.add(htmlTag);
     }
