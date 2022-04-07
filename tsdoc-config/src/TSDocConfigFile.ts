@@ -179,6 +179,10 @@ export class TSDocConfigFile {
     return this._reportUnsupportedHtmlElements;
   }
 
+  public set reportUnsupportedHtmlElements(value: boolean | undefined) {
+    this._reportUnsupportedHtmlElements = value;
+  }
+
   /**
    * Removes all items from the `tagDefinitions` array.
    */
@@ -244,10 +248,6 @@ export class TSDocConfigFile {
    */
   public clearSupportedHtmlElements(): void {
     this._supportedHtmlElements = undefined;
-  }
-
-  public setReportUnsupportedHtmlElements(reportUnsupportedHtmlElements: boolean): void {
-    this._reportUnsupportedHtmlElements = reportUnsupportedHtmlElements;
   }
 
   /**
@@ -599,7 +599,7 @@ export class TSDocConfigFile {
       configFile.addSupportedHtmlElement(htmlElement);
     }
 
-    configFile.setReportUnsupportedHtmlElements(configuration.validation.reportUnsupportedHtmlElements);
+    configFile.reportUnsupportedHtmlElements = configuration.validation.reportUnsupportedHtmlElements;
 
     return configFile;
   }
