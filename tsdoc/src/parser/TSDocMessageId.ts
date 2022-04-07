@@ -374,6 +374,11 @@ export enum TSDocMessageId {
   MalformedHtmlName = 'tsdoc-malformed-html-name',
 
   /**
+   * This HTML element name is not defined by your TSDoc configuration.
+   */
+  UnsupportedHtmlElementName = 'tsdoc-unsupported-html-name',
+
+  /**
    * The opening backtick for a code fence must appear at the start of the line.
    */
   CodeFenceOpeningIndent = 'tsdoc-code-fence-opening-indent',

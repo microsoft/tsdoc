@@ -1,3 +1,4 @@
+import { TSDocConfiguration } from '../../configuration/TSDocConfiguration';
 import { TestHelpers } from './TestHelpers';
 
 test('01 HTML start tags: simple, positive', () => {
@@ -98,4 +99,36 @@ test('08 Unusual HTML names, positive', () => {
 
 test('09 Unusual HTML names, negative', () => {
   TestHelpers.parseAndMatchNodeParserSnapshot(['/**', ' * <1a/>', ' * <a.a>', ' * <_a>', ' */'].join('\n'));
+});
+
+test('10 Supported HTML elements, positive', () => {
+  const config: TSDocConfiguration = new TSDocConfiguration();
+  config.setSupportedHtmlElements(['a', 'b', 'c']);
+
+  TestHelpers.parseAndMatchNodeParserSnapshot(
+    ['/**', ' * <a>', ' * <b/>', ' * </c>', ' */'].join('\n'),
+    config
+  );
+});
+
+test('11 Supported HTML elements, negative', () => {
+  const config: TSDocConfiguration = new TSDocConfiguration();
+  config.setSupportedHtmlElements(['d']);
+  config.validation.reportUnsupportedHtmlElements = true;
+
+  TestHelpers.parseAndMatchNodeParserSnapshot(
+    ['/**', ' * <a>', ' * <b>', ' * <c>', ' */'].join('\n'),
+    config
+  );
+});
+
+test('12 Forbidding all HTML elements, negative', () => {
+  const config: TSDocConfiguration = new TSDocConfiguration();
+  config.setSupportedHtmlElements([]);
+  config.validation.reportUnsupportedHtmlElements = true;
+
+  TestHelpers.parseAndMatchNodeParserSnapshot(
+    ['/**', ' * <a>', ' * <b>', ' * <c>', ' */'].join('\n'),
+    config
+  );
 });

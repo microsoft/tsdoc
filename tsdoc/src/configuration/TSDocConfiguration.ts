@@ -14,6 +14,7 @@ export class TSDocConfiguration {
   private readonly _supportedTagDefinitions: Set<TSDocTagDefinition>;
   private readonly _validation: TSDocValidationConfiguration;
   private readonly _docNodeManager: DocNodeManager;
+  private readonly _supportedHtmlElements: Set<string>;
 
   public constructor() {
     this._tagDefinitions = [];
@@ -21,6 +22,7 @@ export class TSDocConfiguration {
     this._supportedTagDefinitions = new Set<TSDocTagDefinition>();
     this._validation = new TSDocValidationConfiguration();
     this._docNodeManager = new DocNodeManager();
+    this._supportedHtmlElements = new Set();
 
     this.clear(false);
 
@@ -39,6 +41,8 @@ export class TSDocConfiguration {
     this._supportedTagDefinitions.clear();
     this._validation.ignoreUndefinedTags = false;
     this._validation.reportUnsupportedTags = false;
+    this._validation.reportUnsupportedHtmlElements = false;
+    this._supportedHtmlElements.clear();
 
     if (!noStandardTags) {
       // Define all the standard tags
@@ -73,6 +77,13 @@ export class TSDocConfiguration {
    */
   public get validation(): TSDocValidationConfiguration {
     return this._validation;
+  }
+
+  /**
+   * The HTML element names that are supported in this configuration. Used in conjunction with the `reportUnsupportedHtmlElements` setting.
+   */
+  public get supportedHtmlElements(): string[] {
+    return Array.from(this._supportedHtmlElements.values());
   }
 
   /**
@@ -174,12 +185,37 @@ export class TSDocConfiguration {
   }
 
   /**
-   * Calls {@link TSDocConfiguration.setSupportForTag} for multiple tag definitions.
+   * Specifies whether the tag definition is supported in this configuration.
+   * This operation sets {@link TSDocValidationConfiguration.reportUnsupportedTags} to `true`.
+   *
+   * @remarks
+   * The parser may issue warnings for unsupported tags.
+   * If a tag is "defined" this means that the parser recognizes it and understands its syntax.
+   * Whereas if a tag is "supported", this means it is defined AND the application implements the tag.
    */
   public setSupportForTags(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported: boolean): void {
     for (const tagDefinition of tagDefinitions) {
       this.setSupportForTag(tagDefinition, supported);
     }
+  }
+
+  /**
+   * Assigns the `supportedHtmlElements` property, replacing any previous elements.
+   * This operation sets {@link TSDocValidationConfiguration.reportUnsupportedHtmlElements} to `true`.
+   */
+  public setSupportedHtmlElements(htmlTags: string[]): void {
+    this._supportedHtmlElements.clear();
+    this._validation.reportUnsupportedHtmlElements = true;
+    for (const htmlTag of htmlTags) {
+      this._supportedHtmlElements.add(htmlTag);
+    }
+  }
+
+  /**
+   * Returns true if the html element is supported in this configuration.
+   */
+  public isHtmlElementSupported(htmlTag: string): boolean {
+    return this._supportedHtmlElements.has(htmlTag);
   }
 
   /**

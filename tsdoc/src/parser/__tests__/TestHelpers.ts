@@ -80,8 +80,8 @@ export class TestHelpers {
   /**
    * Main harness for tests under `./parser/*`.
    */
-  public static parseAndMatchNodeParserSnapshot(buffer: string): void {
-    const configuration: TSDocConfiguration = new TSDocConfiguration();
+  public static parseAndMatchNodeParserSnapshot(buffer: string, config?: TSDocConfiguration): void {
+    const configuration: TSDocConfiguration = config ?? new TSDocConfiguration();
 
     // For the parser tests, we use lots of custom tags without bothering to define them
     configuration.validation.ignoreUndefinedTags = true;

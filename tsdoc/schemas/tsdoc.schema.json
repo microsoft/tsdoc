@@ -29,6 +29,20 @@
       }
     },
 
+    "supportedHtmlElements": {
+      "description": "The HTML element names that are supported in this configuration. Used in conjunction with the \"reportUnsupportedHtmlElements\" setting.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9-]+$"
+      }
+    },
+
+    "reportUnsupportedHtmlElements": {
+      "description": "Whether an error should be reported when an unsupported HTML element is encountered in a doc comment. Defaults to \"true\" if the \"supportedHtmlElements\" field is present in this file, \"false\" if not.",
+      "type": "boolean"
+    },
+
     "supportForTags": {
       "description": "A collection of key/value pairs.  The key is a TSDoc tag name (e.g. \"@myTag\") that must be defined in this configuration.  The value is a boolean indicating whether the tag is supported.  The TSDoc parser may report warnings when unsupported tags are encountered.  If \"supportForTags\" is specified for at least one tag, then the \"reportUnsupportedTags\" validation check is enabled by default.",
       "type": "object",

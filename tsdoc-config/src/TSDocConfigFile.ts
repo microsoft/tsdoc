@@ -41,6 +41,8 @@ interface IConfigJson {
   noStandardTags?: boolean;
   tagDefinitions?: ITagConfigJson[];
   supportForTags?: { [tagName: string]: boolean };
+  supportedHtmlElements?: string[];
+  reportUnsupportedHtmlElements?: boolean;
 }
 
 /**
@@ -69,6 +71,8 @@ export class TSDocConfigFile {
   private readonly _tagDefinitions: TSDocTagDefinition[];
   private readonly _tagDefinitionNames: Set<string>;
   private readonly _supportForTags: Map<string, boolean>;
+  private _supportedHtmlElements: Set<string> | undefined;
+  private _reportUnsupportedHtmlElements: boolean | undefined;
 
   private constructor() {
     this.log = new ParserMessageLog();
@@ -167,6 +171,18 @@ export class TSDocConfigFile {
     return this._supportForTags;
   }
 
+  public get supportedHtmlElements(): ReadonlyArray<string> | undefined {
+    return this._supportedHtmlElements && Array.from(this._supportedHtmlElements);
+  }
+
+  public get reportUnsupportedHtmlElements(): boolean | undefined {
+    return this._reportUnsupportedHtmlElements;
+  }
+
+  public set reportUnsupportedHtmlElements(value: boolean | undefined) {
+    this._reportUnsupportedHtmlElements = value;
+  }
+
   /**
    * Removes all items from the `tagDefinitions` array.
    */
@@ -215,6 +231,23 @@ export class TSDocConfigFile {
     this._tagDefinitionNames.add(tagDefinition.tagNameWithUpperCase);
 
     this._tagDefinitions.push(tagDefinition);
+  }
+
+  /**
+   * Adds a new item to the `supportedHtmlElements` array.
+   */
+  public addSupportedHtmlElement(htmlElement: string): void {
+    if (!this._supportedHtmlElements) {
+      this._supportedHtmlElements = new Set();
+    }
+    this._supportedHtmlElements.add(htmlElement);
+  }
+
+  /**
+   * Removes the explicit list of allowed html elements.
+   */
+  public clearSupportedHtmlElements(): void {
+    this._supportedHtmlElements = undefined;
   }
 
   /**
@@ -333,6 +366,15 @@ export class TSDocConfigFile {
         allowMultiple: jsonTagDefinition.allowMultiple,
       });
     }
+
+    if (configJson.supportedHtmlElements) {
+      this._supportedHtmlElements = new Set();
+      for (const htmlElement of configJson.supportedHtmlElements) {
+        this.addSupportedHtmlElement(htmlElement);
+      }
+    }
+
+    this._reportUnsupportedHtmlElements = configJson.reportUnsupportedHtmlElements;
 
     if (configJson.supportForTags) {
       for (const tagName of Object.keys(configJson.supportForTags)) {
@@ -553,6 +595,12 @@ export class TSDocConfigFile {
       configFile.setSupportForTag(tagDefinition.tagName, true);
     }
 
+    for (const htmlElement of configuration.supportedHtmlElements) {
+      configFile.addSupportedHtmlElement(htmlElement);
+    }
+
+    configFile.reportUnsupportedHtmlElements = configuration.validation.reportUnsupportedHtmlElements;
+
     return configFile;
   }
 
@@ -589,6 +637,14 @@ export class TSDocConfigFile {
       this.supportForTags.forEach((supported, tagName) => {
         configJson.supportForTags![tagName] = supported;
       });
+    }
+
+    if (this.supportedHtmlElements) {
+      configJson.supportedHtmlElements = [...this.supportedHtmlElements];
+    }
+
+    if (this._reportUnsupportedHtmlElements !== undefined) {
+      configJson.reportUnsupportedHtmlElements = this._reportUnsupportedHtmlElements;
     }
 
     return configJson;
@@ -712,6 +768,16 @@ export class TSDocConfigFile {
         });
       }
     });
+
+    if (this.supportedHtmlElements) {
+      configuration.setSupportedHtmlElements([...this.supportedHtmlElements]);
+    }
+
+    if (this._reportUnsupportedHtmlElements === false) {
+      configuration.validation.reportUnsupportedHtmlElements = false;
+    } else if (this._reportUnsupportedHtmlElements === true) {
+      configuration.validation.reportUnsupportedHtmlElements = true;
+    }
   }
 
   private _getNoStandardTagsWithExtends(): boolean {

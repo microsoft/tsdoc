@@ -1245,10 +1245,13 @@ export class TSDocConfiguration {
     get allTsdocMessageIds(): ReadonlyArray<TSDocMessageId>;
     clear(noStandardTags?: boolean): void;
     get docNodeManager(): DocNodeManager;
+    isHtmlElementSupported(htmlTag: string): boolean;
     isKnownMessageId(messageId: TSDocMessageId | string): boolean;
     isTagSupported(tagDefinition: TSDocTagDefinition): boolean;
+    setSupportedHtmlElements(htmlTags: string[]): void;
     setSupportForTag(tagDefinition: TSDocTagDefinition, supported: boolean): void;
     setSupportForTags(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported: boolean): void;
+    get supportedHtmlElements(): string[];
     get supportedTagDefinitions(): ReadonlyArray<TSDocTagDefinition>;
     get tagDefinitions(): ReadonlyArray<TSDocTagDefinition>;
     tryGetTagDefinition(tagName: string): TSDocTagDefinition | undefined;
@@ -1341,6 +1344,7 @@ export enum TSDocMessageId {
     TextAfterHtmlString = "tsdoc-text-after-html-string",
     UndefinedTag = "tsdoc-undefined-tag",
     UnnecessaryBackslash = "tsdoc-unnecessary-backslash",
+    UnsupportedHtmlElementName = "tsdoc-unsupported-html-name",
     UnsupportedTag = "tsdoc-unsupported-tag"
 }
 
@@ -1375,6 +1379,7 @@ export enum TSDocTagSyntaxKind {
 // @public
 export class TSDocValidationConfiguration {
     ignoreUndefinedTags: boolean;
+    reportUnsupportedHtmlElements: boolean;
     reportUnsupportedTags: boolean;
 }
 

@@ -2136,6 +2136,18 @@ export class NodeParser {
       );
     }
 
+    if (
+      this._configuration.validation.reportUnsupportedHtmlElements &&
+      !this._configuration.isHtmlElementSupported(htmlName)
+    ) {
+      return this._createFailureForToken(
+        tokenReader,
+        TSDocMessageId.UnsupportedHtmlElementName,
+        `The HTML element name ${JSON.stringify(htmlName)} is not defined by your TSDoc configuration`,
+        marker
+      );
+    }
+
     return excerpt;
   }
 
