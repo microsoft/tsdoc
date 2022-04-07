@@ -215,9 +215,6 @@ export class TSDocConfiguration {
    * Returns true if the html element is supported in this configuration.
    */
   public isHtmlElementSupported(htmlTag: string): boolean {
-    if (this._supportedHtmlElements.size === 0) {
-      return true;
-    }
     return this._supportedHtmlElements.has(htmlTag);
   }
 

@@ -121,3 +121,14 @@ test('11 Supported HTML elements, negative', () => {
     config
   );
 });
+
+test('12 Forbidding all HTML elements, negative', () => {
+  const config: TSDocConfiguration = new TSDocConfiguration();
+  config.setSupportedHtmlElements([]);
+  config.setReportUnsupportedHtmlElements(true);
+
+  TestHelpers.parseAndMatchNodeParserSnapshot(
+    ['/**', ' * <a>', ' * <b>', ' * <c>', ' */'].join('\n'),
+    config
+  );
+});

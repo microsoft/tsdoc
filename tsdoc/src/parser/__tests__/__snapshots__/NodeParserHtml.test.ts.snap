@@ -2235,3 +2235,164 @@ Object {
   },
 }
 `;
+
+exports[`12 Forbidding all HTML elements, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]a[>][n] * [<]b[>][n] * [<]c[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]a[>]",
+    "[<]b[>]",
+    "[<]c[>]",
+  ],
+  "logMessages": Array [
+    "(2,4): Invalid HTML element: The HTML element name \\"a\\" is not defined by your TSDoc configuration",
+    "(2,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(3,4): Invalid HTML element: The HTML element name \\"b\\" is not defined by your TSDoc configuration",
+    "(3,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,4): Invalid HTML element: The HTML element name \\"c\\" is not defined by your TSDoc configuration",
+    "(4,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "a",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid HTML element: The HTML element name [q]a[q] is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "a",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "a",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "b",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid HTML element: The HTML element name [q]b[q] is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "b",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "b",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "c",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid HTML element: The HTML element name [q]c[q] is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "c",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "c",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
