@@ -37,6 +37,8 @@ export class TSDocValidationConfiguration {
   /**
    * Set `reportUnsupportedHtmlElements` to true to issue a warning for HTML elements which
    * are not defined in your TSDoc configuration's `supportedHtmlElements` field.
+   *
+   * @defaultValue `false`
    */
   public reportUnsupportedHtmlElements: boolean = false;
 }
