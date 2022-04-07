@@ -156,9 +156,6 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
           {this._renderSelectSample()}
           {this._renderThemeSelector()}
         </div>
-        <div className="playground-notice-banner" style={bannerStyle}>
-          TSDoc does not parse Typescript. Typescript code used here is for illustrative purposes only.
-        </div>
         <CodeEditor
           className="playground-input-text-editor"
           style={editorStyle}
