@@ -114,7 +114,7 @@ test('10 Supported HTML elements, positive', () => {
 test('11 Supported HTML elements, negative', () => {
   const config: TSDocConfiguration = new TSDocConfiguration();
   config.setSupportedHtmlElements(['d']);
-  config.setReportUnsupportedHtmlElements(true);
+  config.validation.reportUnsupportedHtmlElements = true;
 
   TestHelpers.parseAndMatchNodeParserSnapshot(
     ['/**', ' * <a>', ' * <b>', ' * <c>', ' */'].join('\n'),
@@ -125,7 +125,7 @@ test('11 Supported HTML elements, negative', () => {
 test('12 Forbidding all HTML elements, negative', () => {
   const config: TSDocConfiguration = new TSDocConfiguration();
   config.setSupportedHtmlElements([]);
-  config.setReportUnsupportedHtmlElements(true);
+  config.validation.reportUnsupportedHtmlElements = true;
 
   TestHelpers.parseAndMatchNodeParserSnapshot(
     ['/**', ' * <a>', ' * <b>', ' * <c>', ' */'].join('\n'),

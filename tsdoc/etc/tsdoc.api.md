@@ -1248,7 +1248,6 @@ export class TSDocConfiguration {
     isHtmlElementSupported(htmlTag: string): boolean;
     isKnownMessageId(messageId: TSDocMessageId | string): boolean;
     isTagSupported(tagDefinition: TSDocTagDefinition): boolean;
-    setReportUnsupportedHtmlElements(reportUnsupportedHtmlElements: boolean): void;
     setSupportedHtmlElements(htmlTags: string[]): void;
     setSupportForTag(tagDefinition: TSDocTagDefinition, supported: boolean): void;
     setSupportForTags(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported: boolean): void;
