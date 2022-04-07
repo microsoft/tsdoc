@@ -2,6 +2,21 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.14.0",
+      "tag": "@microsoft/tsdoc_v0.14.0",
+      "date": "Thu, 07 Apr 2022 22:51:07 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add `supportedHtmlTags` and `reportUnsupportedHtmlTags` options and corresponding validation"
+          },
+          {
+            "comment": "Convert \"const enum\" APIs to be regular enums to enable compatibility with isolatedModules=true (GitHub #306)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.13.2",
       "tag": "@microsoft/tsdoc_v0.13.2",
       "date": "Tue, 20 Apr 2021 04:25:13 GMT",
