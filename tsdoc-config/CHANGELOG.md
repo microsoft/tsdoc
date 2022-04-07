@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc-config
 
-This log was last generated on Tue, 20 Apr 2021 04:25:13 GMT and should not be manually modified.
+This log was last generated on Thu, 07 Apr 2022 22:51:07 GMT and should not be manually modified.
+
+## 0.16.0
+Thu, 07 Apr 2022 22:51:07 GMT
+
+### Minor changes
+
+- Add `supportedHtmlTags` and `reportUnsupportedHtmlTags` configuration options
 
 ## 0.15.2
 Tue, 20 Apr 2021 04:25:13 GMT
