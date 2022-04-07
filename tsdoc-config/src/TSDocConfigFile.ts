@@ -769,19 +769,12 @@ export class TSDocConfigFile {
       }
     });
 
-    if (this._reportUnsupportedHtmlElements === false) {
-      configuration.setReportUnsupportedHtmlElements(false);
-    }
-
-    if (
-      this._reportUnsupportedHtmlElements ||
-      (this._reportUnsupportedHtmlElements === undefined && this.supportedHtmlElements)
-    ) {
-      configuration.setReportUnsupportedHtmlElements(true);
-    }
-
     if (this.supportedHtmlElements) {
       configuration.setSupportedHtmlElements([...this.supportedHtmlElements]);
+    }
+
+    if (this._reportUnsupportedHtmlElements === false) {
+      configuration.setReportUnsupportedHtmlElements(false);
     }
   }
 
