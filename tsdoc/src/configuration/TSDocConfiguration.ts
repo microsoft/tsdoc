@@ -185,7 +185,13 @@ export class TSDocConfiguration {
   }
 
   /**
-   * Calls {@link TSDocConfiguration.setSupportForTag} for multiple tag definitions.
+   * Specifies whether the tag definition is supported in this configuration.
+   * This operation sets {@link TSDocValidationConfiguration.reportUnsupportedTags} to `true`.
+   *
+   * @remarks
+   * The parser may issue warnings for unsupported tags.
+   * If a tag is "defined" this means that the parser recognizes it and understands its syntax.
+   * Whereas if a tag is "supported", this means it is defined AND the application implements the tag.
    */
   public setSupportForTags(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported: boolean): void {
     for (const tagDefinition of tagDefinitions) {
@@ -194,7 +200,8 @@ export class TSDocConfiguration {
   }
 
   /**
-   * Overwrite the supported HTML elements.
+   * Assigns the `supportedHtmlElements` property, replacing any previous elements.
+   * This operation sets {@link TSDocValidationConfiguration.reportUnsupportedHtmlElements} to `true`.
    */
   public setSupportedHtmlElements(htmlTags: string[]): void {
     this._supportedHtmlElements.clear();
