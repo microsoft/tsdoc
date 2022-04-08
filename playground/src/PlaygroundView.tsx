@@ -139,17 +139,6 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
       borderColor: '#c0c0c0'
     };
 
-    const bannerStyle: React.CSSProperties = {
-      width: '100%',
-      padding: '8px 16px',
-      border: '1px solid #006721',
-      borderRadius: '3px',
-      color: 'var(--white)',
-      background: '#108938',
-      marginBottom: '8px',
-      fontSize: '14px'
-    };
-
     return (
       <FlexColDiv className="playground-input-box" style={{ flex: 1 }}>
         <div className="playground-button-bar" style={{ height: '40px', boxSizing: 'border-box' }}>
