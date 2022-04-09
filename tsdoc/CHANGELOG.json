@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.14.1",
+      "tag": "@microsoft/tsdoc_v0.14.1",
+      "date": "Sat, 09 Apr 2022 02:28:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Rename the \"master\" branch to \"main.\""
+          }
+        ]
+      }
+    },
+    {
       "version": "0.14.0",
       "tag": "@microsoft/tsdoc_v0.14.0",
       "date": "Thu, 07 Apr 2022 22:51:07 GMT",

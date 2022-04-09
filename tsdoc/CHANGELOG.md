@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Thu, 07 Apr 2022 22:51:07 GMT and should not be manually modified.
+This log was last generated on Sat, 09 Apr 2022 02:28:41 GMT and should not be manually modified.
+
+## 0.14.1
+Sat, 09 Apr 2022 02:28:41 GMT
+
+### Patches
+
+- Rename the "master" branch to "main."
 
 ## 0.14.0
 Thu, 07 Apr 2022 22:51:07 GMT

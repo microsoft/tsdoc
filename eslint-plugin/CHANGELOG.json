@@ -2,6 +2,26 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.2.16",
+      "tag": "eslint-plugin-tsdoc_v0.2.16",
+      "date": "Sat, 09 Apr 2022 02:28:41 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Rename the \"master\" branch to \"main.\""
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" from `0.14.0` to `0.14.1`"
+          },
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc-config\" from `0.16.0` to `0.16.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.15",
       "tag": "eslint-plugin-tsdoc_v0.2.15",
       "date": "Thu, 07 Apr 2022 22:51:07 GMT",
