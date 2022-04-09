@@ -13,7 +13,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/microsoft/tsdoc"
+    "url": "https://github.com/microsoft/tsdoc",
+    "directory": "tsdoc-config"
   },
   "homepage": "https://tsdoc.org/",
   "main": "lib/index.js",

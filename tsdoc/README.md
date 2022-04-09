@@ -42,7 +42,7 @@ Check out the [TSDoc Playground](https://tsdoc.org/play) for a cool live demo of
 
 ## API Usage
 
-The [api-demo](https://github.com/microsoft/tsdoc/tree/master/api-demo) folder on GitHub illustrates how
+The [api-demo](https://github.com/microsoft/tsdoc/tree/main/api-demo) folder on GitHub illustrates how
 to invoke the TSDoc parser.
 
 A separate NPM package [`@microsoft/tsdoc-config`](https://www.npmjs.com/package/@microsoft/tsdoc-config)

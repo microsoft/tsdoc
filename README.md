@@ -3,7 +3,7 @@
 <p align="center"><a href="https://tsdoc.org/">https://tsdoc.org/</a></p>
 </td></tr></table>
 
-[![#tsdoc chat room](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://rushstack.zulipchat.com/#narrow/stream/266672-tsdoc) &nbsp; [![Build Status](https://dev.azure.com/RushStack/Gearbox%20GitHub%20Projects/_apis/build/status/tsdoc/TSDoc%20CI%20Build?branchName=master)](https://dev.azure.com/RushStack/Gearbox%20GitHub%20Projects/_build/latest?definitionId=5&branchName=master)
+[![#tsdoc chat room](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://rushstack.zulipchat.com/#narrow/stream/266672-tsdoc) &nbsp; [![Build Status](https://dev.azure.com/RushStack/Gearbox%20GitHub%20Projects/_apis/build/status/tsdoc/TSDoc%20CI%20Build?branchName=main)](https://dev.azure.com/RushStack/Gearbox%20GitHub%20Projects/_build/latest?definitionId=5&branchName=main)
 
 
 ## Documentation Links

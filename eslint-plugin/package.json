@@ -15,7 +15,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/microsoft/tsdoc/tree/master/eslint-plugin"
+    "url": "https://github.com/microsoft/tsdoc",
+    "directory": "eslint-plugin"
   },
   "homepage": "https://tsdoc.org/",
   "main": "lib/index.js",
