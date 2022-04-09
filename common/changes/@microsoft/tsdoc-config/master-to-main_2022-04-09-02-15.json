@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Rename the \"master\" branch to \"main.\"",
+      "type": "patch",
+      "packageName": "@microsoft/tsdoc-config"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config",
+  "email": "iclanton@users.noreply.github.com"
+}
