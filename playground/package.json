@@ -9,7 +9,7 @@
     "start": "heft start"
   },
   "dependencies": {
-    "@microsoft/tsdoc": "0.14.0",
+    "@microsoft/tsdoc": "0.14.1",
     "@types/react-dom": "16.9.3",
     "@types/react": "16.9.11",
     "monaco-editor": "~0.17.1",
