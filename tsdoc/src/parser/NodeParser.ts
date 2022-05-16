@@ -45,6 +45,7 @@ import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTa
 import { StandardTags } from '../details/StandardTags';
 import { PlainTextEmitter } from '../emitters/PlainTextEmitter';
 import { TSDocMessageId } from './TSDocMessageId';
+import { DeclarationReference } from '../beta/DeclarationReference';
 
 interface IFailure {
   // (We use "failureMessage" instead of "errorMessage" here so that DocErrorText doesn't
@@ -1251,6 +1252,53 @@ export class NodeParser {
     return !!parameters.codeDestination;
   }
 
+  private _parseBetaDeclarationReference(
+    tokenReader: TokenReader,
+    fallback: boolean
+  ): DocDeclarationReference | undefined {
+    tokenReader.assertAccumulatedSequenceIsEmpty();
+    const marker: number = tokenReader.createMarker();
+    try {
+      const declarationReference: DeclarationReference | undefined = DeclarationReference.tryParse(
+        tokenReader,
+        fallback
+      );
+      if (!tokenReader.isAccumulatedSequenceEmpty()) {
+        const declarationReferenceExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
+        return new DocDeclarationReference({
+          parsed: true,
+          configuration: this._configuration,
+          declarationReferenceExcerpt,
+          declarationReference
+        });
+      }
+    } catch {
+      // do nothing
+    }
+
+    tokenReader.backtrackToMarker(marker);
+    return undefined;
+  }
+
+  private _tryParseBetaDeclarationReferenceAtMarker(
+    tokenReader: TokenReader,
+    marker: number
+  ): DocDeclarationReference | undefined {
+    if (this._parserContext.configuration.parseBetaDeclarationReferences === true) {
+      const betaReader: TokenReader = tokenReader.clone();
+      betaReader.backtrackToMarker(marker);
+      const node: DocDeclarationReference | undefined = this._parseBetaDeclarationReference(
+        betaReader,
+        /*fallback*/ true
+      );
+      if (node) {
+        tokenReader.updateFrom(betaReader);
+        return node;
+      }
+    }
+    return undefined;
+  }
+
   private _parseDeclarationReference(
     tokenReader: TokenReader,
     tokenSequenceForErrorContext: TokenSequence,
@@ -1258,10 +1306,22 @@ export class NodeParser {
   ): DocDeclarationReference | undefined {
     tokenReader.assertAccumulatedSequenceIsEmpty();
 
+    if (this._parserContext.configuration.parseBetaDeclarationReferences === 'prefer') {
+      const node: DocDeclarationReference | undefined = this._parseBetaDeclarationReference(
+        tokenReader,
+        /*fallback*/ false
+      );
+      if (node) {
+        return node;
+      }
+    }
+
+    const marker: number = tokenReader.createMarker();
+    const logMarker: number = this._parserContext.log.createMarker();
+
     // The package name can contain characters that look like a member reference.  This means we need to scan forwards
     // to see if there is a "#".  However, we need to be careful not to match a "#" that is part of a quoted expression.
 
-    const marker: number = tokenReader.createMarker();
     let hasHash: boolean = false;
 
     // A common mistake is to forget the "#" for package name or import path.  The telltale sign
@@ -1305,6 +1365,21 @@ export class NodeParser {
           // so don't set lookingForImportCharacters = false
           tokenReader.readToken();
           break;
+        case TokenKind.OtherPunctuation:
+          if (
+            this._parserContext.configuration.parseBetaDeclarationReferences === true &&
+            tokenReader.peekToken().toString() === '!'
+          ) {
+            // '!' has no meaning in a TSDoc declaration reference. This could be a beta DeclarationReference, so try to parse one
+            const node: DocDeclarationReference | undefined = this._tryParseBetaDeclarationReferenceAtMarker(
+              tokenReader,
+              marker
+            );
+            if (node) {
+              return node;
+            }
+          }
+        // falls through
         default:
           // Once we reach something other than AsciiWord and Period, then the meaning of
           // slashes and at-signs is no longer obvious.
@@ -1317,6 +1392,16 @@ export class NodeParser {
     if (!hasHash && sawImportCharacters) {
       // We saw characters that will be a syntax error if interpreted as a member reference,
       // but would make sense as a package name or import path, but we did not find a "#"
+
+      // This could be a beta DeclarationReference, so try to parse one
+      const node: DocDeclarationReference | undefined = this._tryParseBetaDeclarationReferenceAtMarker(
+        tokenReader,
+        marker
+      );
+      if (node) {
+        return node;
+      }
+
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.ReferenceMissingHash,
         'The declaration reference appears to contain a package name or import path,' +
@@ -1428,6 +1513,15 @@ export class NodeParser {
       spacingAfterImportHashExcerpt = this._tryReadSpacingAndNewlines(tokenReader);
 
       if (packageNameExcerpt === undefined && importPathExcerpt === undefined) {
+        // This could be a beta DeclarationReference, so try to parse one
+        const node: DocDeclarationReference | undefined = this._tryParseBetaDeclarationReferenceAtMarker(
+          tokenReader,
+          marker
+        );
+        if (node) {
+          return node;
+        }
+
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.ReferenceHashSyntax,
           'The hash character must be preceded by a package name or import path',
@@ -1459,6 +1553,16 @@ export class NodeParser {
           );
 
           if (!memberReference) {
+            // This could be a beta DeclarationReference, so try to parse one
+            const node: DocDeclarationReference | undefined = this._tryParseBetaDeclarationReferenceAtMarker(
+              tokenReader,
+              marker
+            );
+            if (node) {
+              this._parserContext.log.rollbackToMarker(logMarker);
+              return node;
+            }
+
             return undefined;
           }
 
@@ -1474,6 +1578,15 @@ export class NodeParser {
       importPathExcerpt === undefined &&
       memberReferences.length === 0
     ) {
+      // This could be a beta DeclarationReference, so try to parse one
+      const node: DocDeclarationReference | undefined = this._tryParseBetaDeclarationReferenceAtMarker(
+        tokenReader,
+        marker
+      );
+      if (node) {
+        return node;
+      }
+
       // We didn't find any parts of a declaration reference
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.MissingReference,

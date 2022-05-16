@@ -69,7 +69,11 @@ export class DocComment extends DocNode {
 // @public
 export class DocDeclarationReference extends DocNode {
     // @internal
-    constructor(parameters: IDocDeclarationReferenceParameters | IDocDeclarationReferenceParsedParameters);
+    constructor(parameters: IDocDeclarationReferenceParameters | IDocDeclarationReferenceParsedParameters | IBetaDocDeclarationReferenceParameters | IBetaDocDeclarationReferenceParsedParameters);
+    // Warning: (ae-forgotten-export) The symbol "DeclarationReference" needs to be exported by the entry point index.d.ts
+    //
+    // @beta
+    get declarationReference(): DeclarationReference | undefined;
     emitAsTsdoc(): string;
     get importPath(): string | undefined;
     // @override (undocumented)
@@ -450,6 +454,8 @@ export enum ExcerptKind {
     // (undocumented)
     CodeSpan_OpeningDelimiter = "CodeSpan_OpeningDelimiter",
     // (undocumented)
+    DeclarationReference_DeclarationReference = "DeclarationReference_DeclarationReference",
+    // (undocumented)
     DeclarationReference_ImportHash = "DeclarationReference_ImportHash",
     // (undocumented)
     DeclarationReference_ImportPath = "DeclarationReference_ImportPath",
@@ -529,6 +535,20 @@ export enum ExcerptKind {
     SoftBreak = "SoftBreak",
     // (undocumented)
     Spacing = "Spacing"
+}
+
+// @beta
+export interface IBetaDocDeclarationReferenceParameters extends IDocNodeParameters {
+    // (undocumented)
+    declarationReference: DeclarationReference;
+}
+
+// @beta
+export interface IBetaDocDeclarationReferenceParsedParameters extends IDocNodeParsedParameters {
+    // (undocumented)
+    declarationReference?: DeclarationReference;
+    // (undocumented)
+    declarationReferenceExcerpt: TokenSequence;
 }
 
 // @public
@@ -1085,8 +1105,10 @@ export class ParserMessageLog {
     addMessageForDocErrorText(docErrorText: DocErrorText): void;
     addMessageForTextRange(messageId: TSDocMessageId, messageText: string, textRange: TextRange): void;
     addMessageForTokenSequence(messageId: TSDocMessageId, messageText: string, tokenSequence: TokenSequence, docNode?: DocNode): void;
+    createMarker(): number;
     get messages(): ReadonlyArray<ParserMessage>;
-    }
+    rollbackToMarker(marker: number): void;
+}
 
 // @public
 export class PlainTextEmitter {
@@ -1248,6 +1270,9 @@ export class TSDocConfiguration {
     isHtmlElementSupported(htmlTag: string): boolean;
     isKnownMessageId(messageId: TSDocMessageId | string): boolean;
     isTagSupported(tagDefinition: TSDocTagDefinition): boolean;
+    // (undocumented)
+    get parseBetaDeclarationReferences(): boolean | 'prefer';
+    set parseBetaDeclarationReferences(value: boolean | 'prefer');
     setSupportedHtmlElements(htmlTags: string[]): void;
     setSupportForTag(tagDefinition: TSDocTagDefinition, supported: boolean): void;
     setSupportForTags(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported: boolean): void;

@@ -1683,3 +1683,201 @@ Object {
   },
 }
 `;
+
+exports[`08 Parse beta declaration references (fallback) 1`] = `
+Object {
+  "buffer": "/**[n] * {@link foo!Bar:class}[n] * {@link Bar.foo}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link foo!Bar:class}",
+    "{@link Bar.foo}",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagName",
+                    "nodeExcerpt": "@link",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: DeclarationReference_DeclarationReference",
+                        "nodeExcerpt": "foo!Bar:class",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagName",
+                    "nodeExcerpt": "@link",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
+                                "nodeExcerpt": "Bar",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      Object {
+                        "kind": "MemberReference",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Excerpt: MemberReference_Dot",
+                            "nodeExcerpt": ".",
+                          },
+                          Object {
+                            "kind": "MemberIdentifier",
+                            "nodes": Array [
+                              Object {
+                                "kind": "Excerpt: MemberIdentifier_Identifier",
+                                "nodeExcerpt": "foo",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`09 Parse beta declaration references (preferred) 1`] = `
+Object {
+  "buffer": "/**[n] * {@link Bar.foo}[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "{@link Bar.foo}",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "LinkTag",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: InlineTag_OpeningDelimiter",
+                    "nodeExcerpt": "{",
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_TagName",
+                    "nodeExcerpt": "@link",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": " ",
+                  },
+                  Object {
+                    "kind": "DeclarationReference",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: DeclarationReference_DeclarationReference",
+                        "nodeExcerpt": "Bar.foo",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Excerpt: InlineTag_ClosingDelimiter",
+                    "nodeExcerpt": "}",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;

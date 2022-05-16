@@ -153,6 +153,22 @@ describe('parser', () => {
       DeclarationReference.parse('@scope/foo');
     }).toThrow();
   });
+  it.each`
+    text
+    ${'!bar..baz'}
+    ${'!bar.#baz'}
+    ${'!bar.~baz'}
+    ${'!bar#.baz'}
+    ${'!bar##baz'}
+    ${'!bar#~baz'}
+    ${'!bar~.baz'}
+    ${'!bar~#baz'}
+    ${'!bar~~baz'}
+  `('parse invalid symbol $text', ({ text }) => {
+    expect(() => {
+      DeclarationReference.parse(text);
+    }).toThrow();
+  });
 });
 
 describe('DeclarationReference', () => {
@@ -1609,6 +1625,7 @@ describe('ComponentPathBase', () => {
     });
     expect(declref.source).toBe(source);
     expect(declref.navigation).toBe(Navigation.Exports);
+    expect(declref.symbol).toBeDefined();
     expect(declref.symbol?.componentPath).toBe(component);
     expect(declref.symbol?.meaning).toBe(Meaning.Variable);
     expect(declref.symbol?.overloadIndex).toBe(0);

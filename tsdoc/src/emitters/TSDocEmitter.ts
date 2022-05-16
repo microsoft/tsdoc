@@ -144,15 +144,19 @@ export class TSDocEmitter {
 
       case DocNodeKind.DeclarationReference:
         const docDeclarationReference: DocDeclarationReference = docNode as DocDeclarationReference;
-        this._writeContent(docDeclarationReference.packageName);
-        this._writeContent(docDeclarationReference.importPath);
-        if (
-          docDeclarationReference.packageName !== undefined ||
-          docDeclarationReference.importPath !== undefined
-        ) {
-          this._writeContent('#');
+        if (docDeclarationReference.declarationReference) {
+          this._writeContent(docDeclarationReference.declarationReference.toString());
+        } else {
+          this._writeContent(docDeclarationReference.packageName);
+          this._writeContent(docDeclarationReference.importPath);
+          if (
+            docDeclarationReference.packageName !== undefined ||
+            docDeclarationReference.importPath !== undefined
+          ) {
+            this._writeContent('#');
+          }
+          this._renderNodes(docDeclarationReference.memberReferences);
         }
-        this._renderNodes(docDeclarationReference.memberReferences);
         break;
 
       case DocNodeKind.ErrorText:

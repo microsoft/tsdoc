@@ -11,7 +11,17 @@
 // NOTE: @rushstack/no-new-null is disabled for places where `null` is used as a sentinel to
 //       indicate explicit non-presence of a value (such as when removing values using `.with()`).
 
+import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
+import {
+  DocDeclarationReference,
+  DocMemberIdentifier,
+  DocMemberReference,
+  DocMemberSelector,
+  DocMemberSymbol
+} from '../nodes';
 import { StringChecks } from '../parser/StringChecks';
+import { TokenKind, Token as DocToken } from '../parser/Token';
+import { TokenReader } from '../parser/TokenReader';
 
 // #region DeclarationReference
 
@@ -61,16 +71,39 @@ export class DeclarationReference {
   /**
    * Parses a {@link DeclarationReference} from the provided text.
    */
-  public static parse(text: string): DeclarationReference {
-    const parser: Parser = new Parser(text);
+  public static parse(source: string): DeclarationReference {
+    const parser: Parser = new Parser(new TextReader(source));
     const reference: DeclarationReference = parser.parseDeclarationReference();
     if (parser.errors.length) {
-      throw new SyntaxError(`Invalid DeclarationReference '${text}':\n  ${parser.errors.join('\n  ')}`);
+      throw new SyntaxError(`Invalid DeclarationReference '${source}':\n  ${parser.errors.join('\n  ')}`);
     } else if (!parser.eof) {
-      throw new SyntaxError(`Invalid DeclarationReference '${text}'`);
-    } else {
-      return reference;
+      throw new SyntaxError(`Invalid DeclarationReference '${source}'`);
     }
+    return reference;
+  }
+
+  /**
+   * Parses a {@link DeclarationReference} from the provided text.
+   */
+  public static tryParse(source: string): DeclarationReference | undefined;
+  /**
+   * Parses a {@link DeclarationReference} from the provided text.
+   * @internal
+   */
+  public static tryParse(source: TokenReader, fallback?: boolean): DeclarationReference | undefined;
+  public static tryParse(source: string | TokenReader, fallback?: boolean): DeclarationReference | undefined {
+    const marker: number | undefined = typeof source === 'string' ? undefined : source.createMarker();
+    const reader: ICharacterReader =
+      typeof source === 'string' ? new TextReader(source) : new TokenReaderNormalizer(source);
+    const parser: Parser = new Parser(reader, fallback);
+    const reference: DeclarationReference = parser.parseDeclarationReference();
+    if (parser.errors.length || (!parser.eof && typeof source === 'string')) {
+      if (marker !== undefined && typeof source !== 'string') {
+        source.backtrackToMarker(marker);
+      }
+      return undefined;
+    }
+    return reference;
   }
 
   /**
@@ -88,7 +121,7 @@ export class DeclarationReference {
    * Determines whether the provided string is a well-formed symbol navigation component string.
    */
   public static isWellFormedComponentString(text: string): boolean {
-    const scanner: Scanner = new Scanner(text);
+    const scanner: Scanner = new Scanner(new TextReader(text));
     return scanner.scan() === Token.String
       ? scanner.scan() === Token.EofToken
       : scanner.token() === Token.Text
@@ -135,7 +168,7 @@ export class DeclarationReference {
    * have a trailing `!` character.
    */
   public static isWellFormedModuleSourceString(text: string): boolean {
-    const scanner: Scanner = new Scanner(text + '!');
+    const scanner: Scanner = new Scanner(new TextReader(text + '!'));
     return (
       scanner.rescanModuleSource() === Token.ModuleSource &&
       !scanner.stringIsUnterminated &&
@@ -179,16 +212,20 @@ export class DeclarationReference {
 
   /**
    * Returns an empty {@link DeclarationReference}.
+   *
+   * An alias for `DeclarationReference.from({ })`.
    */
   public static empty(): DeclarationReference {
-    return new DeclarationReference();
+    return DeclarationReference.from({});
   }
 
   /**
    * Creates a new {@link DeclarationReference} for the provided package.
+   *
+   * An alias for `Declaration.from({ packageName, importPath })`.
    */
   public static package(packageName: string, importPath?: string): DeclarationReference {
-    return new DeclarationReference(ModuleSource.fromPackage(packageName, importPath));
+    return DeclarationReference.from({ packageName, importPath });
   }
 
   /**
@@ -209,11 +246,13 @@ export class DeclarationReference {
    * Creates a new {@link DeclarationReference} from the provided parts.
    */
   public static from(parts: DeclarationReferenceLike</*With*/ false> | undefined): DeclarationReference {
-    const resolved: ResolvedDeclarationReferenceLike = resolveDeclarationReferenceLike(
+    const resolved: ResolvedDeclarationReferenceLike | undefined = resolveDeclarationReferenceLike(
       parts,
       /*fallbackReference*/ undefined
     );
-    if (resolved instanceof DeclarationReference) {
+    if (resolved === undefined) {
+      return new DeclarationReference();
+    } else if (resolved instanceof DeclarationReference) {
       return resolved;
     } else {
       const { source, navigation, symbol } = resolved;
@@ -238,18 +277,22 @@ export class DeclarationReference {
       this.navigation,
       this.symbol
     );
+
     const resolvedSource: Source | undefined = source === undefined ? undefined : Source.from(source);
+
     const resolvedSymbol: SymbolReference | undefined =
       symbol === undefined ? undefined : SymbolReference.from(symbol);
+
     const resolvedNavigation: SourceNavigation | undefined = resolveNavigation(
       resolvedSource,
       resolvedSymbol,
       navigation
     );
+
     if (
       Source.equals(this.source, resolvedSource) &&
-      this.navigation === resolvedNavigation &&
-      SymbolReference.equals(this.symbol, resolvedSymbol)
+      SymbolReference.equals(this.symbol, resolvedSymbol) &&
+      this.navigation === resolvedNavigation
     ) {
       return this;
     } else {
@@ -259,6 +302,9 @@ export class DeclarationReference {
 
   /**
    * Returns an {@link DeclarationReference} updated with the provided source.
+   *
+   * An alias for `declref.with({ source: source ?? null })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided source.
    */
   public withSource(source: Source | undefined): DeclarationReference {
@@ -267,6 +313,9 @@ export class DeclarationReference {
 
   /**
    * Returns an {@link DeclarationReference} updated with the provided navigation.
+   *
+   * An alias for `declref.with({ navigation: navigation ?? null })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided navigation.
    */
   public withNavigation(navigation: SourceNavigation | undefined): DeclarationReference {
@@ -275,6 +324,9 @@ export class DeclarationReference {
 
   /**
    * Returns an {@link DeclarationReference} updated with the provided symbol.
+   *
+   * An alias for `declref.with({ symbol: symbol ?? null })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided symbol.
    */
   public withSymbol(symbol: SymbolReference | undefined): DeclarationReference {
@@ -283,6 +335,9 @@ export class DeclarationReference {
 
   /**
    * Returns an {@link DeclarationReference} whose symbol has been updated with the provided component path.
+   *
+   * An alias for `declref.with({ componentPath: componentPath ?? null })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided component path.
    */
   public withComponentPath(componentPath: ComponentPath | undefined): DeclarationReference {
@@ -291,6 +346,9 @@ export class DeclarationReference {
 
   /**
    * Returns an {@link DeclarationReference} whose symbol has been updated with the provided meaning.
+   *
+   * An alias for `declref.with({ meaning: meaning ?? null })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided meaning.
    */
   public withMeaning(meaning: Meaning | undefined): DeclarationReference {
@@ -299,6 +357,9 @@ export class DeclarationReference {
 
   /**
    * Returns an {@link DeclarationReference} whose symbol has been updated with the provided overload index.
+   *
+   * An alias for `declref.with({ overloadIndex: overloadIndex ?? null })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided overload index.
    */
   public withOverloadIndex(overloadIndex: number | undefined): DeclarationReference {
@@ -333,10 +394,8 @@ export class DeclarationReference {
     left: DeclarationReference | undefined,
     right: DeclarationReference | undefined
   ): boolean {
-    if (left === undefined) {
-      return right === undefined || right.isEmpty;
-    } else if (right === undefined) {
-      return left === undefined || left.isEmpty;
+    if (left === undefined || right === undefined) {
+      return left === right;
     } else {
       return left.toString() === right.toString();
     }
@@ -361,6 +420,11 @@ export class DeclarationReference {
 // #region DeclarationReferenceParts
 
 /**
+ * A part that can be used to compose or update a {@link DeclarationReference}.
+ *
+ * @typeParam With - `true` if this part is used by `with()` (which allows `null` for some parts), `false` if this part is used
+ * by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type DeclarationReferenceSourcePart<With extends boolean> = Parts<
@@ -372,6 +436,10 @@ export type DeclarationReferenceSourcePart<With extends boolean> = Parts<
 >;
 
 /**
+ * Parts that can be used to compose or update a {@link DeclarationReference}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type DeclarationReferenceSourceParts<With extends boolean> =
@@ -379,6 +447,10 @@ export type DeclarationReferenceSourceParts<With extends boolean> =
   | SourceParts<With>;
 
 /**
+ * Parts that can be used to compose or update a {@link DeclarationReference}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type DeclarationReferenceNavigationParts<With extends boolean> = Parts<
@@ -390,6 +462,11 @@ export type DeclarationReferenceNavigationParts<With extends boolean> = Parts<
 >;
 
 /**
+ * A part that can be used to compose or update a {@link DeclarationReference}.
+ *
+ * @typeParam With - `true` if this part is used by `with()` (which allows `null` for some parts), `false` if this part is used
+ * by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type DeclarationReferenceSymbolPart<With extends boolean> = Parts<
@@ -401,6 +478,10 @@ export type DeclarationReferenceSymbolPart<With extends boolean> = Parts<
 >;
 
 /**
+ * Parts that can be used to compose or update a {@link DeclarationReference}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type DeclarationReferenceSymbolParts<With extends boolean> =
@@ -408,16 +489,24 @@ export type DeclarationReferenceSymbolParts<With extends boolean> =
   | SymbolReferenceParts<With>;
 
 /**
+ * Parts that can be used to compose or update a {@link DeclarationReference}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type DeclarationReferenceParts<With extends boolean> = DeclarationReferenceSourceParts<With> &
   DeclarationReferenceNavigationParts<With> &
   DeclarationReferenceSymbolParts<With>;
 
-function resolveDeclarationReferenceSourcePart(
+function resolveDeclarationReferenceSource(
   parts: DeclarationReferenceSourceParts</*With*/ true>,
   fallbackSource: Source | undefined
 ): SourceLike</*With*/ false> | undefined {
+  // If `source` is neither `null` or `undefined`, returns the resolved source-like.
+  // If `source` is `null`, returns `undefined` (which removes `source` from the updated DeclarationReference).
+  // If `packageName`, `scopeName`, `unscopedPackageName`, or `importPath` are present, returns the resolved `ModuleSourceParts` for those properties.
+  // If `source` is `undefined`, assumes no change and returns `fallbackSource`.
   const { source, packageName, scopeName, unscopedPackageName, importPath } = parts as AllParts<typeof parts>;
   if (source !== undefined) {
     if (packageName !== undefined) {
@@ -449,10 +538,13 @@ function resolveDeclarationReferenceSourcePart(
   }
 }
 
-function resolveDeclarationReferenceNavigationPart(
+function resolveDeclarationReferenceNavigation(
   parts: DeclarationReferenceNavigationParts</*With*/ true>,
   fallbackNavigation: SourceNavigation | undefined
 ): SourceNavigation | undefined {
+  // If `navigation` is neither `null` nor `undefined`, returns `navigation`.
+  // If `navigation` is `null`, returns `undefined` (which removes `navigation` from the updated DeclarationReference).
+  // If `navigation` is `undeifned`, returns `fallbackNavigation`.
   const { navigation } = parts;
   if (navigation !== undefined) {
     if (navigation === null) {
@@ -465,10 +557,14 @@ function resolveDeclarationReferenceNavigationPart(
   }
 }
 
-function resolveDeclarationReferenceSymbolPart(
+function resolveDeclarationReferenceSymbol(
   parts: DeclarationReferenceSymbolParts</*With*/ true>,
   fallbackSymbol: SymbolReference | undefined
 ): SymbolReferenceLike</*With*/ false> | undefined {
+  // If `symbol` is neither `null` or `undefined`, returns the resolved symbol-reference-like.
+  // If `symbol` is `null`, returns `undefined` (which removes `symbol` from the updated DeclarationReference).
+  // If `componentPath`, `meaning`, or `overloadIndex` are present, returns the resolved `SymbolReferenceParts` for those properties.
+  // If `symbol` is `undefined`, assumes no change and returns `fallbackSymbol`.
   const { symbol, componentPath, meaning, overloadIndex } = parts as AllParts<typeof parts>;
   if (symbol !== undefined) {
     if (componentPath !== undefined) {
@@ -484,12 +580,7 @@ function resolveDeclarationReferenceSymbolPart(
       return resolveSymbolReferenceLike(symbol, fallbackSymbol);
     }
   } else if (componentPath !== undefined || meaning !== undefined || overloadIndex !== undefined) {
-    return resolveSymbolReferenceParts(
-      parts as SymbolReferenceParts</*With*/ true>,
-      fallbackSymbol?.componentPath,
-      fallbackSymbol?.meaning,
-      fallbackSymbol?.overloadIndex
-    );
+    return resolveSymbolReferenceLike(parts as SymbolReferenceParts</*With*/ true>, fallbackSymbol);
   } else {
     return fallbackSymbol;
   }
@@ -506,15 +597,20 @@ function resolveDeclarationReferenceParts(
   fallbackSymbol: SymbolReference | undefined
 ): ResolvedDeclarationReferenceParts {
   return {
-    source: resolveDeclarationReferenceSourcePart(parts, fallbackSource),
-    navigation: resolveDeclarationReferenceNavigationPart(parts, fallbackNavigation),
-    symbol: resolveDeclarationReferenceSymbolPart(parts, fallbackSymbol)
+    source: resolveDeclarationReferenceSource(parts, fallbackSource),
+    navigation: resolveDeclarationReferenceNavigation(parts, fallbackNavigation),
+    symbol: resolveDeclarationReferenceSymbol(parts, fallbackSymbol)
   };
 }
 
 // #endregion DeclarationReferenceParts
 
 /**
+ * A value that can be resolved to a {@link DeclarationReference}.
+ *
+ * @typeParam With - `true` if this type is used by `with()` (which allows `null` for some parts), `false` if this value is used
+ * by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type DeclarationReferenceLike<With extends boolean> =
@@ -527,11 +623,11 @@ type ResolvedDeclarationReferenceLike = DeclarationReference | ResolvedDeclarati
 function resolveDeclarationReferenceLike(
   reference: DeclarationReferenceLike</*With*/ true> | undefined,
   fallbackReference: DeclarationReference | undefined
-): ResolvedDeclarationReferenceLike {
-  if (reference instanceof DeclarationReference) {
+): ResolvedDeclarationReferenceLike | undefined {
+  if (reference === undefined) {
+    return undefined;
+  } else if (reference instanceof DeclarationReference) {
     return reference;
-  } else if (reference === undefined) {
-    return DeclarationReference.empty();
   } else if (typeof reference === 'string') {
     return DeclarationReference.parse(reference);
   } else {
@@ -626,12 +722,18 @@ export class ModuleSource extends SourceBase {
   private _pathComponents: IParsedPackage | undefined;
   private _packageName: string | undefined;
 
+  /**
+   * @param path The module source path, including the package name.
+   * @param userEscaped If `false`, escapes `path` if needed. If `true` (default), validates `path` is already escaped.
+   */
   public constructor(path: string, userEscaped: boolean = true) {
     super();
     this._escapedPath = escapeModuleSourceIfNeeded(path, this instanceof ParsedModuleSource, userEscaped);
   }
 
-  /** A canonically escaped module source string. */
+  /**
+   * A canonically escaped module source string.
+   */
   public get escapedPath(): string {
     return this._escapedPath;
   }
@@ -664,7 +766,7 @@ export class ModuleSource extends SourceBase {
   }
 
   /**
-   * Returns the non-scope portion of a scoped package name (i.e., `package` in `@scope/package`)
+   * Returns the non-scope portion of a scoped package name (i.e., `package` in `@scope/package`, or `typescript` in `typescript`).
    */
   public get unscopedPackageName(): string {
     return this._getOrParsePathComponents().unscopedPackageName;
@@ -680,7 +782,7 @@ export class ModuleSource extends SourceBase {
   /**
    * Creates a new {@link ModuleSource} from the supplied parts.
    */
-  public static from(parts: ModuleSourceLike</*With*/ false> | string): ModuleSource {
+  public static from(parts: ModuleSourceLike</*With*/ false>): ModuleSource {
     const resolved: ResolvedModuleSourceLike = resolveModuleSourceLike(parts, /*fallbackSource*/ undefined);
     if (resolved instanceof ModuleSource) {
       return resolved;
@@ -695,6 +797,8 @@ export class ModuleSource extends SourceBase {
 
   /**
    * Creates a new {@link ModuleSource} for a scoped package.
+   *
+   * An alias for `ModuleSource.from({ scopeName, unscopedPackageName, importPath })`.
    */
   public static fromScopedPackage(
     scopeName: string | undefined,
@@ -819,7 +923,6 @@ interface IParsedPackage {
 }
 
 function parsePackageName(text: string): IParsedPackage {
-  // eslint-disable-next-line @rushstack/no-new-null
   const parsed: IParsedPackage | null = tryParsePackageName(text);
   if (!parsed) {
     throw new SyntaxError(`Invalid NPM package name: The package name ${JSON.stringify(text)} was invalid`);
@@ -839,7 +942,6 @@ function parsePackageName(text: string): IParsedPackage {
   return parsed;
 }
 
-// eslint-disable-next-line @rushstack/no-new-null
 function tryParsePackageName(text: string): IParsedPackage | null {
   const match: RegExpExecArray | null = packageNameRegExp.exec(text);
   if (!match) {
@@ -880,7 +982,10 @@ function formatModuleSource(
 }
 
 /**
- * Specifies the parts that can be used to construct or update a {@link ModuleSource}.
+ * Parts that can be used to compose or update a {@link ModuleSource}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ModuleSourceParts<With extends boolean> = Parts<
@@ -1039,6 +1144,11 @@ function resolveModuleSourceParts(
 }
 
 /**
+ * A value that can be resolved to a {@link ModuleSource}.
+ *
+ * @typeParam With - `true` if this type is used by `with()` (which allows `null` for some parts), `false` if this value is used
+ * by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ModuleSourceLike<With extends boolean> = ModuleSourceParts<With> | ModuleSource | string;
@@ -1106,6 +1216,10 @@ export namespace Source {
 }
 
 /**
+ * Parts that can be used to compose or update a {@link Source}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type SourceParts<With extends boolean> = ModuleSourceParts<With>;
@@ -1120,6 +1234,11 @@ function resolveSourceParts(
 }
 
 /**
+ * A value that can be resolved to a {@link Source}.
+ *
+ * @typeParam With - `true` if this type is used by `with()` (which allows `null` for some parts), `false` if this value is used
+ * by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type SourceLike<With extends boolean> = GlobalSource | ModuleSourceLike<With>;
@@ -1159,10 +1278,13 @@ export class SymbolReference {
     { meaning, overloadIndex }: Pick<SymbolReferenceParts</*With*/ false>, 'meaning' | 'overloadIndex'> = {}
   ) {
     this.componentPath = component;
-    this.overloadIndex = overloadIndex;
     this.meaning = meaning;
+    this.overloadIndex = overloadIndex;
   }
 
+  /**
+   * Gets whether this reference does not contain a `componentPath`, `meaning`, or `overloadIndex`.
+   */
   public get isEmpty(): boolean {
     return this.componentPath === undefined && this.overloadIndex === undefined && this.meaning === undefined;
   }
@@ -1178,7 +1300,7 @@ export class SymbolReference {
    * Parses a {@link SymbolReference} from the supplied text.
    */
   public static parse(text: string): SymbolReference {
-    const parser: Parser = new Parser(text);
+    const parser: Parser = new Parser(new TextReader(text));
     const symbol: SymbolReference | undefined = parser.tryParseSymbolReference();
     if (parser.errors.length) {
       throw new SyntaxError(`Invalid SymbolReference '${text}':\n  ${parser.errors.join('\n  ')}`);
@@ -1190,14 +1312,28 @@ export class SymbolReference {
   }
 
   /**
+   * Attempts to parse a {@link SymbolReference} from the supplied text. Returns `undefined` if parsing
+   * fails rather than throwing an error.
+   */
+  public static tryParse(text: string): SymbolReference | undefined {
+    const parser: Parser = new Parser(new TextReader(text));
+    const symbol: SymbolReference | undefined = parser.tryParseSymbolReference();
+    if (!parser.errors.length && parser.eof) {
+      return symbol;
+    }
+  }
+
+  /**
    * Creates a new {@link SymbolReference} from the provided parts.
    */
   public static from(parts: SymbolReferenceLike</*With*/ false> | undefined): SymbolReference {
-    const resolved: ResolvedSymbolReferenceLike = resolveSymbolReferenceLike(
+    const resolved: ResolvedSymbolReferenceLike | undefined = resolveSymbolReferenceLike(
       parts,
       /*fallbackSymbol*/ undefined
     );
-    if (typeof resolved === 'string') {
+    if (resolved === undefined) {
+      return new SymbolReference(/*component*/ undefined);
+    } else if (typeof resolved === 'string') {
       return SymbolReference.parse(resolved);
     } else if (resolved instanceof SymbolReference) {
       return resolved;
@@ -1238,6 +1374,9 @@ export class SymbolReference {
 
   /**
    * Gets a {@link SymbolReference} updated with the provided component path.
+   *
+   * An alias for `symbol.with({ componentPath: componentPath ?? null })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided component path.
    */
   public withComponentPath(componentPath: ComponentPath | undefined): SymbolReference {
@@ -1246,6 +1385,9 @@ export class SymbolReference {
 
   /**
    * Gets a {@link SymbolReference} updated with the provided meaning.
+   *
+   * An alias for `symbol.with({ meaning: meaning ?? null })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided meaning.
    */
   public withMeaning(meaning: Meaning | undefined): SymbolReference {
@@ -1254,18 +1396,26 @@ export class SymbolReference {
 
   /**
    * Gets a {@link SymbolReference} updated with the provided overload index.
+   *
+   * An alias for `symbol.with({ overloadIndex: overloadIndex ?? null })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided overload index.
    */
   public withOverloadIndex(overloadIndex: number | undefined): SymbolReference {
     return this.with({ overloadIndex: overloadIndex ?? null });
   }
 
+  /**
+   * Combines this {@link SymbolReference} with the provided {@link Source} to create a {@link DeclarationReference}.
+   *
+   * An alias for `symbol.toDeclarationReference({ source })`.
+   */
   public withSource(source: Source | undefined): DeclarationReference {
     return this.toDeclarationReference({ source });
   }
 
   /**
-   * Creates a new {@link SymbolReference} that navigates from this SymbolReference to the provided component.
+   * Creates a new {@link SymbolReference} that navigates from this {@link SymbolReference} to the provided {@link Component}.
    */
   public addNavigationStep(
     navigation: Navigation,
@@ -1281,10 +1431,8 @@ export class SymbolReference {
    * Tests whether two {@link SymbolReference} values are equivalent.
    */
   public static equals(left: SymbolReference | undefined, right: SymbolReference | undefined): boolean {
-    if (left === undefined) {
-      return right === undefined || right.isEmpty;
-    } else if (right === undefined) {
-      return left === undefined || left.isEmpty;
+    if (left === undefined || right === undefined) {
+      return left === right;
     } else {
       return (
         ComponentPath.equals(left.componentPath, right.componentPath) &&
@@ -1301,6 +1449,9 @@ export class SymbolReference {
     return SymbolReference.equals(this, other);
   }
 
+  /**
+   * Combines this {@link SymbolReference} with the provided parts to create a {@link DeclarationReference}.
+   */
   public toDeclarationReference(
     parts?: DeclarationReferenceSourceParts</*With*/ false> &
       DeclarationReferenceNavigationParts</*With*/ false>
@@ -1319,9 +1470,53 @@ export class SymbolReference {
     }
     return result;
   }
+
+  /**
+   * Creates an array of {@link DocMemberReference} objects from this symbol.
+   * @internal
+   */
+  public toDocMemberReferences(configuration: TSDocConfiguration): DocMemberReference[] {
+    const memberReferences: DocMemberReference[] = [];
+    if (this.componentPath) {
+      let componentRoot: ComponentPath = this.componentPath;
+      const componentPathRev: ComponentNavigation[] = [];
+      while (componentRoot instanceof ComponentNavigation) {
+        componentPathRev.push(componentRoot);
+        componentRoot = componentRoot.parent;
+      }
+
+      const selector: DocMemberSelector | undefined =
+        componentPathRev.length === 0
+          ? meaningToSelector(configuration, this.meaning, undefined, this.overloadIndex)
+          : undefined;
+
+      memberReferences.push(
+        componentToDocMemberReference(configuration, /*hasDot*/ false, componentRoot.component, selector)
+      );
+
+      for (let i: number = componentPathRev.length - 1; i >= 0; i--) {
+        const segment: ComponentNavigation = componentPathRev[i];
+
+        const selector: DocMemberSelector | undefined =
+          i === 0
+            ? meaningToSelector(configuration, this.meaning, segment.navigation, this.overloadIndex)
+            : undefined;
+
+        memberReferences.push(
+          componentToDocMemberReference(configuration, /*hasDot*/ true, segment.component, selector)
+        );
+      }
+    }
+
+    return memberReferences;
+  }
 }
 
 /**
+ * Parts used to compose or update a {@link SymbolReference}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type SymbolReferenceParts<With extends boolean> = Parts<
@@ -1358,6 +1553,11 @@ function resolveSymbolReferenceParts(
 }
 
 /**
+ * A value that can be resolved to a {@link SymbolReference}.
+ *
+ * @typeParam With - `true` if this type is used by `with()` (which allows `null` for some parts), `false` if this value is used
+ * by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type SymbolReferenceLike<With extends boolean> = string | SymbolReference | SymbolReferenceParts<With>;
@@ -1367,18 +1567,24 @@ type ResolvedSymbolReferenceLike = string | SymbolReference | SymbolReferencePar
 function resolveSymbolReferenceLike(
   symbol: SymbolReferenceLike</*With*/ true> | undefined,
   fallbackSymbol: SymbolReference | undefined
-): ResolvedSymbolReferenceLike {
-  if (symbol instanceof SymbolReference || typeof symbol === 'string') {
+): ResolvedSymbolReferenceLike | undefined {
+  if (symbol === undefined || symbol instanceof SymbolReference || typeof symbol === 'string') {
     return symbol;
-  } else if (symbol === undefined) {
-    return SymbolReference.empty();
   } else {
-    return resolveSymbolReferenceParts(
+    const resolved: SymbolReferenceParts</*With*/ false> = resolveSymbolReferenceParts(
       symbol,
       fallbackSymbol?.componentPath,
       fallbackSymbol?.meaning,
       fallbackSymbol?.overloadIndex
     );
+    if (
+      resolved.componentPath !== undefined ||
+      resolved.meaning !== undefined ||
+      resolved.overloadIndex !== undefined ||
+      fallbackSymbol !== undefined
+    ) {
+      return resolved;
+    }
   }
 }
 
@@ -1394,8 +1600,7 @@ export abstract class ComponentPathBase {
   public abstract readonly kind: string;
   public readonly component: Component;
 
-  private declare _: never; // NOTE: This makes a ComponentPath compare nominally rather than structurally
-  //       which removes its properties from completions in `ComponentPath.from({ ... })`
+  private declare _: never; // NOTE: This makes a ComponentPath compare nominally rather than structurally which removes its properties from completions in `ComponentPath.from({ ... })`
 
   public constructor(component: Component) {
     this.component = component;
@@ -1420,6 +1625,8 @@ export abstract class ComponentPathBase {
 
   /**
    * Combines this {@link ComponentPath} with a {@link Meaning} to create a new {@link SymbolReference}.
+   *
+   * An alias for `componentPath.toSymbolReference({ meaning })`.
    */
   public withMeaning(this: ComponentPath, meaning: Meaning | undefined): SymbolReference {
     return this.toSymbolReference({ meaning });
@@ -1427,6 +1634,8 @@ export abstract class ComponentPathBase {
 
   /**
    * Combines this {@link ComponentPath} with an overload index to create a new {@link SymbolReference}.
+   *
+   * An alias for `componentPath.toSymbolReference({ overloadIndex })`.
    */
   public withOverloadIndex(this: ComponentPath, overloadIndex: number | undefined): SymbolReference {
     return this.toSymbolReference({ overloadIndex });
@@ -1434,6 +1643,8 @@ export abstract class ComponentPathBase {
 
   /**
    * Combines this {@link ComponentPath} with a {@link Source} to create a new {@link DeclarationReference}.
+   *
+   * An alias for `componentPath.toDeclarationReference({ source })`.
    */
   public withSource(this: ComponentPath, source: Source | undefined): DeclarationReference {
     return this.toDeclarationReference({ source });
@@ -1549,6 +1760,9 @@ export class ComponentRoot extends ComponentPathBase {
   /**
    * Returns a {@link ComponentRoot} updated with the provided component.
    * If a part is set to `undefined`, the current value is used.
+   *
+   * An alias for `componentRoot.with({ component })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided component.
    */
   public withComponent(component: ComponentLike</*With*/ false>): ComponentRoot {
@@ -1561,6 +1775,10 @@ export class ComponentRoot extends ComponentPathBase {
 }
 
 /**
+ * Parts used to compose or update a {@link ComponentRoot}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ComponentRootParts<With extends boolean> = Parts<
@@ -1585,6 +1803,11 @@ function resolveComponentRootParts(
 }
 
 /**
+ * A value that can be resolved to a {@link ComponentRoot}.
+ *
+ * @typeParam With - `true` if this type is used by `with()` (which allows `null` for some parts), `false` if this value is used
+ * by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ComponentRootLike<With extends boolean> =
@@ -1698,6 +1921,9 @@ export class ComponentNavigation extends ComponentPathBase {
 
   /**
    * Returns a {@link ComponentNavigation} updated with the provided parent.
+   *
+   * An alias for `componentNav.with({ parent })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided parent.
    */
   public withParent(parent: ComponentPath): ComponentNavigation {
@@ -1706,6 +1932,9 @@ export class ComponentNavigation extends ComponentPathBase {
 
   /**
    * Returns a {@link ComponentNavigation} updated with the provided navigation.
+   *
+   * An alias for `componentNav.with({ navigation })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided navigation.
    */
   public withNavigation(navigation: Navigation): ComponentNavigation {
@@ -1714,6 +1943,9 @@ export class ComponentNavigation extends ComponentPathBase {
 
   /**
    * Returns a {@link ComponentNavigation} updated with the provided component.
+   *
+   * An alias for `componentNav.with({ component })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided component.
    */
   public withComponent(component: ComponentLike</*With*/ false>): ComponentNavigation {
@@ -1751,6 +1983,10 @@ export class ComponentNavigation extends ComponentPathBase {
 }
 
 /**
+ * Parts used to compose or update a {@link ComponentNavigation}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ComponentNavigationParts<With extends boolean> = Parts<
@@ -1795,6 +2031,11 @@ function resolveComponentNavigationParts(
 }
 
 /**
+ * A value that can be resolved to a {@link ComponentNavigation}.
+ *
+ * @typeParam With - `true` if this type is used by `with()` (which allows `null` for some parts), `false` if this value is used
+ * by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ComponentNavigationLike<With extends boolean> =
@@ -1835,7 +2076,7 @@ export namespace ComponentPath {
    * Parses a {@link SymbolReference} from the supplied text.
    */
   export function parse(text: string): ComponentPath {
-    const parser: Parser = new Parser(text);
+    const parser: Parser = new Parser(new TextReader(text));
     const componentPath: ComponentPath = parser.parseComponentPath();
     if (parser.errors.length) {
       throw new SyntaxError(`Invalid ComponentPath '${text}':\n  ${parser.errors.join('\n  ')}`);
@@ -1880,6 +2121,10 @@ export namespace ComponentPath {
 }
 
 /**
+ * Parts that can be used to compose or update a {@link ComponentPath}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ComponentPathParts<With extends boolean> =
@@ -1909,6 +2154,11 @@ function resolveComponentPathParts(
 }
 
 /**
+ * A value that can be resolved to a {@link ComponentPath}.
+ *
+ * @typeParam With - `true` if this type is used by `with()` (which allows `null` for some parts), `false` if this value is used
+ * by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ComponentPathLike<With extends boolean> =
@@ -1965,8 +2215,7 @@ function resolveComponentPathLike(
 export abstract class ComponentBase {
   public abstract readonly kind: string;
 
-  private declare _: never; // NOTE: This makes a Component compare nominally rather than structurally
-  //       which removes its properties from completions in `Component.from({ ... })`
+  private declare _: never; // NOTE: This makes a Component compare nominally rather than structurally which removes its properties from completions in `Component.from({ ... })`
 
   /**
    * Combines this component with the provided parts to create a new {@link Component}.
@@ -2048,6 +2297,8 @@ class ParsedComponentString extends ComponentString {
 }
 
 /**
+ * Parts that can be used to compose or update a {@link ComponentString}.
+ *
  * @beta
  */
 export type ComponentStringParts = Parts<
@@ -2059,6 +2310,7 @@ export type ComponentStringParts = Parts<
 >;
 
 /**
+ * A value that can be resolved to a {@link ComponentString}.
  * @beta
  */
 export type ComponentStringLike = ComponentStringParts | ComponentString | string;
@@ -2123,6 +2375,9 @@ export class ComponentReference extends ComponentBase {
 
   /**
    * Returns a {@link ComponentReference} updated with the provided reference.
+   *
+   * An alias for `componentRef.with({ reference })`.
+   *
    * @returns This object if there were no changes; otherwise, a new object updated with the provided reference.
    */
   public withReference(reference: DeclarationReference): ComponentReference {
@@ -2153,6 +2408,10 @@ export class ComponentReference extends ComponentBase {
 }
 
 /**
+ * Parts that can be used to compose or update a {@link ComponentReference}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ComponentReferenceParts<With extends boolean> = Parts<
@@ -2168,15 +2427,24 @@ function resolveComponentReferenceParts(
   fallbackReference: DeclarationReference | undefined
 ): ComponentReferenceParts</*With*/ false> {
   const { reference = fallbackReference } = parts;
-  if (reference === undefined) {
+  const resolvedReference: ResolvedDeclarationReferenceLike | undefined = resolveDeclarationReferenceLike(
+    reference,
+    fallbackReference
+  );
+  if (resolvedReference === undefined) {
     throw new TypeError("The property 'reference' is required");
   }
   return {
-    reference: resolveDeclarationReferenceLike(reference, fallbackReference)
+    reference: resolvedReference
   };
 }
 
 /**
+ * A value that can be resolved to a {@link ComponentReference}.
+ *
+ * @typeParam With - `true` if this type is used by `with()` (which allows `null` for some parts), `false` if this value is used
+ * by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ComponentReferenceLike<With extends boolean> =
@@ -2228,7 +2496,42 @@ export namespace Component {
   }
 }
 
+function componentToDocMemberReference(
+  configuration: TSDocConfiguration,
+  hasDot: boolean,
+  component: Component,
+  selector: DocMemberSelector | undefined
+): DocMemberReference {
+  const memberIdentifier: DocMemberIdentifier | undefined =
+    component instanceof ComponentString
+      ? new DocMemberIdentifier({ configuration, identifier: component.text })
+      : undefined;
+
+  const memberSymbol: DocMemberSymbol | undefined =
+    component instanceof ComponentReference
+      ? new DocMemberSymbol({
+          configuration,
+          symbolReference: new DocDeclarationReference({
+            configuration,
+            declarationReference: component.reference
+          })
+        })
+      : undefined;
+
+  return new DocMemberReference({
+    configuration,
+    hasDot,
+    memberIdentifier,
+    memberSymbol,
+    selector
+  });
+}
+
 /**
+ * Parts that can be used to compose a {@link Component}.
+ *
+ * @typeParam With - `true` if these parts are used by `with()` (which allows `null` for some parts), `false` if these parts are used by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ComponentParts<With extends boolean> = ComponentStringParts | ComponentReferenceParts<With>;
@@ -2257,6 +2560,11 @@ function resolveComponentParts(
 }
 
 /**
+ * A value that can be resolved to a {@link Component}.
+ *
+ * @typeParam With - `true` if this type is used by `with()` (which allows `null` for some parts), `false` if this value is used
+ * by `from()` (which does not allow `null`).
+ *
  * @beta
  */
 export type ComponentLike<With extends boolean> =
@@ -2334,6 +2642,53 @@ export const enum Meaning {
   ConstructSignature = 'new', // SymbolFlags.Signature (for __new)
   IndexSignature = 'index', // SymbolFlags.Signature (for __index)
   ComplexType = 'complex' // Any complex type
+}
+
+function meaningToSelector(
+  configuration: TSDocConfiguration,
+  meaning: Meaning | undefined,
+  navigation: Navigation | undefined,
+  overloadIndex: number | undefined
+): DocMemberSelector | undefined {
+  if (overloadIndex !== undefined) {
+    return new DocMemberSelector({
+      configuration,
+      selector: overloadIndex.toString()
+    });
+  }
+  switch (meaning) {
+    case Meaning.Class:
+    case Meaning.Interface:
+    case Meaning.Namespace:
+    case Meaning.TypeAlias:
+    case Meaning.Function:
+    case Meaning.Enum:
+    case Meaning.Constructor:
+      return new DocMemberSelector({
+        configuration,
+        selector: meaning
+      });
+    case Meaning.Variable:
+      return new DocMemberSelector({
+        configuration,
+        selector: 'variable'
+      });
+    case Meaning.Member:
+    case Meaning.Event:
+      switch (navigation) {
+        case Navigation.Exports:
+          return new DocMemberSelector({
+            configuration,
+            selector: 'static'
+          });
+        case Navigation.Members:
+          return new DocMemberSelector({
+            configuration,
+            selector: 'instance'
+          });
+      }
+      break;
+  }
 }
 
 // #endregion Meaning
@@ -2453,35 +2808,194 @@ function tokenToString(token: Token): string {
 
 // #region Scanner
 
-class Scanner {
-  private _tokenPos: number;
-  private _pos: number;
+interface ICharacterReader {
+  readonly eof: boolean;
+  mark(): number;
+  rewind(marker: number): void;
+  readChar(count?: number): string;
+  peekChar(lookahead?: number): string;
+  readFrom(marker: number): string;
+}
+
+class TextReader implements ICharacterReader {
   private _text: string;
-  private _token: Token;
-  private _stringIsUnterminated: boolean;
+  private _pos: number;
 
   public constructor(text: string) {
-    this._pos = 0;
-    this._tokenPos = 0;
-    this._stringIsUnterminated = false;
-    this._token = Token.None;
     this._text = text;
+    this._pos = 0;
+  }
+
+  public get eof(): boolean {
+    return this._pos >= this._text.length;
+  }
+
+  public mark(): number {
+    return this._pos;
+  }
+
+  public rewind(marker: number): void {
+    this._pos = marker;
+  }
+
+  public readChar(count: number = 1): string {
+    if (count < 1) throw new RangeError('Argument out of range: count');
+    let ch: string = '';
+    while (count > 0) {
+      if (this.eof) return '';
+      ch = this._text.charAt(this._pos++);
+      count--;
+    }
+    return ch;
+  }
+
+  public peekChar(lookahead: number = 1): string {
+    if (lookahead < 1) throw new RangeError('Argument out of range: lookahead');
+    const marker: number = this.mark();
+    const ch: string = this.readChar(lookahead);
+    this.rewind(marker);
+    return ch;
+  }
+
+  public readFrom(marker: number): string {
+    return this._text.substring(marker, this._pos);
+  }
+}
+
+class TokenReaderNormalizer implements ICharacterReader {
+  private _tokenReader: TokenReader;
+  private _token: DocToken | undefined;
+  private _partialTokenPos: number = 0;
+  private _startMarker: number;
+  private _markerSizes: { [marker: number]: number | undefined } = {};
+
+  public constructor(tokenReader: TokenReader) {
+    this._tokenReader = tokenReader;
+    this._startMarker = tokenReader.createMarker();
+    this._token = tokenReader.peekTokenKind() === TokenKind.EndOfInput ? undefined : tokenReader.peekToken();
+    if (this._token) {
+      this._markerSizes[this._startMarker] = this._token.range.length;
+    }
+  }
+
+  public get eof(): boolean {
+    return this._token === undefined;
+  }
+
+  public mark(): number {
+    const tokenMarker: number = this._tokenReader.createMarker();
+
+    let offset: number = 0;
+    for (let i: number = this._startMarker; i < tokenMarker; i++) {
+      const markerSize: number = this._markerSizes[i] ?? 1;
+      offset += markerSize;
+    }
+
+    offset += this._partialTokenPos;
+    return offset;
+  }
+
+  public rewind(marker: number): void {
+    let tokenMarker: number = this._startMarker;
+    let partialTokenPos: number = 0;
+
+    let offset: number = 0;
+    while (offset < marker) {
+      const markerSize: number = this._markerSizes[tokenMarker] ?? 1;
+      if (offset + markerSize < marker) {
+        offset += markerSize;
+        tokenMarker++;
+      } else {
+        partialTokenPos = marker - offset;
+        break;
+      }
+    }
+
+    this._tokenReader.backtrackToMarker(tokenMarker);
+    this._token = this._tokenReader.peekToken();
+    this._partialTokenPos = partialTokenPos;
+  }
+
+  public readChar(count: number = 1): string {
+    if (count < 1) throw new RangeError('Argument out of range: count');
+    let ch: string = '';
+    while (count > 0) {
+      if (!this._token) return '';
+      if (this._partialTokenPos === this._token.range.length) {
+        if (this._tokenReader.peekTokenKind() === TokenKind.EndOfInput) {
+          this._token = undefined;
+        } else {
+          this._tokenReader.readToken();
+          this._token = this._tokenReader.peekToken();
+        }
+
+        this._partialTokenPos = 0;
+        if (!this._token) {
+          return '';
+        } else {
+          const length: number = this._token.range.length;
+          if (length > 1) {
+            this._markerSizes[this._tokenReader.createMarker()] = length;
+          }
+        }
+      }
+      ch = this._token.toString().charAt(this._partialTokenPos++);
+      count--;
+    }
+    return ch;
+  }
+
+  public peekChar(lookahead: number = 1): string {
+    if (lookahead < 1) throw new RangeError('Argument out of range: lookahead');
+    const tokenMarker: number = this._tokenReader.createMarker();
+    const savedTokenReader: TokenReader = this._tokenReader;
+    const savedToken: DocToken | undefined = this._token;
+    const savedPartialTokenPos: number = this._partialTokenPos;
+    const ch: string = this.readChar(lookahead);
+    this._partialTokenPos = savedPartialTokenPos;
+    this._token = savedToken;
+    this._tokenReader = savedTokenReader;
+    this._tokenReader.backtrackToMarker(tokenMarker);
+    return ch;
+  }
+
+  public readFrom(marker: number): string {
+    const currentMarker: number = this.mark();
+    const savedTokenReader: TokenReader = this._tokenReader;
+    this._tokenReader = savedTokenReader.clone();
+    this.rewind(marker);
+    let text: string = '';
+    while (this.mark() < currentMarker) {
+      text += this.readChar(1);
+    }
+    this._tokenReader = savedTokenReader;
+    return text;
+  }
+}
+
+class Scanner {
+  private _reader: ICharacterReader;
+  private _token: Token;
+  private _tokenMarker: number;
+  private _stringIsUnterminated: boolean;
+
+  public constructor(reader: ICharacterReader) {
+    this._reader = reader;
+    this._tokenMarker = reader.mark();
+    this._token = Token.None;
+    this._stringIsUnterminated = false;
   }
 
   public get stringIsUnterminated(): boolean {
     return this._stringIsUnterminated;
   }
 
-  public get text(): string {
-    return this._text;
-  }
-
   public get tokenText(): string {
-    return this._text.slice(this._tokenPos, this._pos);
+    return this._reader.readFrom(this._tokenMarker);
   }
 
   public get eof(): boolean {
-    return this._pos >= this._text.length;
+    return this._reader.eof;
   }
 
   public token(): Token {
@@ -2489,9 +3003,9 @@ class Scanner {
   }
 
   public speculate<T>(cb: (accept: () => void) => T): T {
-    const tokenPos: number = this._tokenPos;
-    const pos: number = this._pos;
-    const text: string = this._text;
+    const tokenMarker: number = this._tokenMarker;
+    const marker: number = this._reader.mark();
+    const reader: ICharacterReader = this._reader;
     const token: Token = this._token;
     const stringIsUnterminated: boolean = this._stringIsUnterminated;
     let accepted: boolean = false;
@@ -2502,21 +3016,21 @@ class Scanner {
       return cb(accept);
     } finally {
       if (!accepted) {
-        this._tokenPos = tokenPos;
-        this._pos = pos;
-        this._text = text;
-        this._token = token;
         this._stringIsUnterminated = stringIsUnterminated;
+        this._token = token;
+        this._reader = reader;
+        this._reader.rewind(marker);
+        this._tokenMarker = tokenMarker;
       }
     }
   }
 
   public scan(): Token {
     if (!this.eof) {
-      this._tokenPos = this._pos;
+      this._tokenMarker = this._reader.mark();
       this._stringIsUnterminated = false;
       while (!this.eof) {
-        const ch: string = this._text.charAt(this._pos++);
+        const ch: string = this._reader.readChar();
         switch (ch) {
           case '{':
             return (this._token = Token.OpenBraceToken);
@@ -2565,11 +3079,11 @@ class Scanner {
     }
     return this.speculate((accept) => {
       if (!this.eof) {
-        this._pos = this._tokenPos;
+        this._reader.rewind(this._tokenMarker);
         this._stringIsUnterminated = false;
         let scanned: 'string' | 'other' | 'none' = 'none';
         while (!this.eof) {
-          const ch: string = this._text[this._pos];
+          const ch: string = this._reader.peekChar(1);
           if (ch === '!') {
             if (scanned === 'none') {
               return this._token;
@@ -2577,7 +3091,7 @@ class Scanner {
             accept();
             return (this._token = Token.ModuleSource);
           }
-          this._pos++;
+          this._reader.readChar();
           if (ch === '"') {
             if (scanned === 'other') {
               // strings not allowed after scanning any other characters
@@ -2650,7 +3164,7 @@ class Scanner {
 
   private scanString(): void {
     while (!this.eof) {
-      const ch: string = this._text.charAt(this._pos++);
+      const ch: string = this._reader.readChar();
       switch (ch) {
         case '"':
           return;
@@ -2673,31 +3187,23 @@ class Scanner {
       return;
     }
 
-    const ch: string = this._text.charAt(this._pos);
+    const ch: string = this._reader.peekChar(1);
 
     // EscapeSequence:: CharacterEscapeSequence
     if (isCharacterEscapeSequence(ch)) {
-      this._pos++;
+      this._reader.readChar(1);
       return;
     }
 
     // EscapeSequence:: `0` [lookahead != DecimalDigit]
-    if (
-      ch === '0' &&
-      (this._pos + 1 === this._text.length || !isDecimalDigit(this._text.charAt(this._pos + 1)))
-    ) {
-      this._pos++;
+    if (ch === '0' && !isDecimalDigit(this._reader.peekChar(2))) {
+      this._reader.readChar(1);
       return;
     }
 
     // EscapeSequence:: HexEscapeSequence
-    if (
-      ch === 'x' &&
-      this._pos + 3 <= this._text.length &&
-      isHexDigit(this._text.charAt(this._pos + 1)) &&
-      isHexDigit(this._text.charAt(this._pos + 2))
-    ) {
-      this._pos += 3;
+    if (ch === 'x' && isHexDigit(this._reader.peekChar(2)) && isHexDigit(this._reader.peekChar(3))) {
+      this._reader.readChar(3);
       return;
     }
 
@@ -2705,27 +3211,29 @@ class Scanner {
     // UnicodeEscapeSequence:: `u` Hex4Digits
     if (
       ch === 'u' &&
-      this._pos + 5 <= this._text.length &&
-      isHexDigit(this._text.charAt(this._pos + 1)) &&
-      isHexDigit(this._text.charAt(this._pos + 2)) &&
-      isHexDigit(this._text.charAt(this._pos + 3)) &&
-      isHexDigit(this._text.charAt(this._pos + 4))
+      isHexDigit(this._reader.peekChar(2)) &&
+      isHexDigit(this._reader.peekChar(3)) &&
+      isHexDigit(this._reader.peekChar(4)) &&
+      isHexDigit(this._reader.peekChar(5))
     ) {
-      this._pos += 5;
+      this._reader.readChar(5);
       return;
     }
 
     // EscapeSequence:: UnicodeEscapeSequence
     // UnicodeEscapeSequence:: `u` `{` CodePoint `}`
-    if (ch === 'u' && this._pos + 4 <= this._text.length && this._text.charAt(this._pos + 1) === '{') {
-      let hexDigits: string = this._text.charAt(this._pos + 2);
+    if (ch === 'u' && this._reader.peekChar(2) === '{') {
+      let hexDigits: string = this._reader.peekChar(3);
       if (isHexDigit(hexDigits)) {
-        for (let i: number = this._pos + 3; i < this._text.length; i++) {
-          const ch2: string = this._text.charAt(i);
+        for (
+          let i: number = 4, ch2: string = this._reader.peekChar(i);
+          ch2 !== '';
+          i++, ch2 = this._reader.peekChar(i)
+        ) {
           if (ch2 === '}') {
             const mv: number = parseInt(hexDigits, 16);
             if (mv <= 0x10ffff) {
-              this._pos = i + 1;
+              this._reader.readChar(i + 1);
               return;
             }
             break;
@@ -2741,12 +3249,12 @@ class Scanner {
   }
 
   private scanText(): void {
-    while (this._pos < this._text.length) {
-      const ch: string = this._text.charAt(this._pos);
+    while (!this._reader.eof) {
+      const ch: string = this._reader.peekChar();
       if (isPunctuator(ch) || ch === '"') {
         return;
       }
-      this._pos++;
+      this._reader.readChar();
     }
   }
 }
@@ -2863,10 +3371,12 @@ function isPunctuator(ch: string): boolean {
 class Parser {
   private _errors: string[];
   private _scanner: Scanner;
+  private _fallback: boolean;
 
-  public constructor(text: string) {
+  public constructor(reader: ICharacterReader, fallback: boolean = false) {
     this._errors = [];
-    this._scanner = new Scanner(text);
+    this._fallback = fallback;
+    this._scanner = new Scanner(reader);
     this._scanner.scan();
   }
 
@@ -2916,7 +3426,11 @@ class Parser {
       case Token.String:
         return this.parseString();
       default:
-        return this.parseComponentCharacters();
+        const text: string | undefined = this.parseComponentCharacters();
+        if (text === undefined) {
+          return this.fail('One or more characters expected', '');
+        }
+        return text;
     }
   }
 
@@ -3055,11 +3569,14 @@ class Parser {
     }
   }
 
-  private parseComponentCharacters(): string {
-    let text: string = '';
+  private parseComponentCharacters(): string | undefined {
+    let text: string | undefined;
     for (;;) {
       switch (this._scanner.token()) {
         case Token.Text:
+          if (text === undefined) {
+            text = '';
+          }
           text += this.parseText();
           break;
         default:
@@ -3082,7 +3599,11 @@ class Parser {
   }
 
   private parseText(): string {
-    return this.parseTokenString(Token.Text, 'Text');
+    const text: string = this.parseTokenString(Token.Text, 'Text');
+    if (this._fallback && StringChecks.isSystemSelector(text)) {
+      return this.fail('No system selectors in fallback parsing', text);
+    }
+    return text;
   }
 
   private parseString(): string {
@@ -3102,7 +3623,11 @@ class Parser {
     this.expectToken(Token.OpenBracketToken);
     const reference: DeclarationReference = this.parseDeclarationReference();
     this.expectToken(Token.CloseBracketToken);
-    return new ComponentReference(reference);
+    const component: ComponentReference = new ComponentReference(reference);
+    if (this._fallback && reference.isEmpty) {
+      return this.fail('No empty brackets in fallback parsing', component);
+    }
+    return component;
   }
 
   private optionalToken(token: Token): boolean {
@@ -3159,11 +3684,9 @@ function ensureScopeName(scopeName: string): string {
 }
 
 interface ObjectConstructorWithSetPrototypeOf extends ObjectConstructor {
-  // eslint-disable-next-line @rushstack/no-new-null
   setPrototypeOf?(obj: object, proto: object | null): object;
 }
 
-// eslint-disable-next-line @rushstack/no-new-null
 const setPrototypeOf:
   | ((obj: object, proto: object | null) => object)
   | undefined = (Object as ObjectConstructorWithSetPrototypeOf).setPrototypeOf;
@@ -3175,21 +3698,41 @@ function tryCast<T>(value: unknown, type: new (...args: any[]) => T): T | undefi
 
 /**
  * Describes the parts that can be used in a `from()` or `with()` call.
+ *
+ * In a `with()` call, all optional parts can also be `null`, and all non-optional parts become optional.
+ *
+ * @typeParam With - If `true, indicates these parts are used in a `with()` call.
+ *
  * @beta
  */
 export type Parts<With extends boolean, T> = [With] extends [false]
   ? T
-  : T extends unknown
+  : T extends unknown // NOTE: Distributes over `T`
   ? Partial<T>
   : never;
 
 /**
  * If a part can be removed via a `with()` call, marks that part with `| null`
+ *
+ * @typeParam With - If `true, indicates this part is used in a `with()` call.
+ *
  * @beta
  */
 export type Part<With extends boolean, T> = [With] extends [false] ? T : T | null;
 
+/**
+ * Distributes over `T` to get all possible keys of `T`.
+ */
 type AllKeysOf<T> = T extends unknown ? keyof T : never;
+
+/**
+ * Distributes over `T` to get all possible values of `T` with the key `P`.
+ */
+type AllValuesOf<T, P> = T extends unknown ? (P extends keyof T ? T[P] : undefined) : never;
+
+/**
+ * Distributes over `T` to get all possible properties of every `T`.
+ */
 type AllParts<T> = {
-  [P in AllKeysOf<T>]: T extends unknown ? (P extends keyof T ? T[P] : undefined) : never;
+  [P in AllKeysOf<T>]: AllValuesOf<T, P>;
 };
