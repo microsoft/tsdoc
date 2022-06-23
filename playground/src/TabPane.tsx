@@ -58,7 +58,7 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState> {
         };
 
         buttons.push(
-          <div key={`tab_${i}`} className="playground-tab-pane-active-tab" style={activeTabStyle}>
+          <div key={`tab_${i}`} className="playground-tab-pane-active-tab" style={activeTabStyle} role="tab">
             {tabDefinition.title}
           </div>
         );
@@ -74,6 +74,7 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState> {
               href="#"
               style={{ textDecorationLine: 'none', color: '#000000' }}
               onClick={this._onClickTabBindings[i]}
+              role="tab"
             >
               {tabDefinition.title}
             </a>
