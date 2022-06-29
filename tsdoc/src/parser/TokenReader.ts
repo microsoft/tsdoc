@@ -204,4 +204,29 @@ export class TokenReader {
       this._accumulatedStartIndex = marker;
     }
   }
+
+  /**
+   * Create a copy of the token reader at the same position.
+   */
+  public clone(): TokenReader {
+    const clone: TokenReader = new TokenReader(this._parserContext);
+    clone._readerStartIndex = this._readerStartIndex;
+    clone._readerEndIndex = this._readerEndIndex;
+    clone._currentIndex = this._currentIndex;
+    clone._accumulatedStartIndex = this._accumulatedStartIndex;
+    return clone;
+  }
+
+  /**
+   * Update this reader to match the same position as another reader with the same context.
+   */
+  public updateFrom(other: TokenReader): void {
+    if (other._parserContext !== this._parserContext) {
+      throw new Error('The other token reader must use the same parser context');
+    }
+    this._readerStartIndex = other._readerStartIndex;
+    this._readerEndIndex = other._readerEndIndex;
+    this._currentIndex = other._currentIndex;
+    this._accumulatedStartIndex = other._accumulatedStartIndex;
+  }
 }

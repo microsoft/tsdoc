@@ -3,6 +3,7 @@ import { DocMemberReference } from './DocMemberReference';
 import { TokenSequence } from '../parser/TokenSequence';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 import { StringBuilder } from '../emitters/StringBuilder';
+import { DeclarationReference, ModuleSource } from '../beta/DeclarationReference';
 
 /**
  * Constructor parameters for {@link DocDeclarationReference}.
@@ -15,6 +16,14 @@ export interface IDocDeclarationReferenceParameters extends IDocNodeParameters {
 
 /**
  * Constructor parameters for {@link DocDeclarationReference}.
+ * @beta
+ */
+export interface IBetaDocDeclarationReferenceParameters extends IDocNodeParameters {
+  declarationReference: DeclarationReference;
+}
+
+/**
+ * Constructor parameters for {@link DocDeclarationReference}.
  */
 export interface IDocDeclarationReferenceParsedParameters extends IDocNodeParsedParameters {
   packageNameExcerpt?: TokenSequence;
@@ -22,6 +31,15 @@ export interface IDocDeclarationReferenceParsedParameters extends IDocNodeParsed
   importHashExcerpt?: TokenSequence;
   spacingAfterImportHashExcerpt?: TokenSequence;
   memberReferences?: DocMemberReference[];
+}
+
+/**
+ * Constructor parameters for {@link DocDeclarationReference}.
+ * @beta
+ */
+export interface IBetaDocDeclarationReferenceParsedParameters extends IDocNodeParsedParameters {
+  declarationReferenceExcerpt: TokenSequence;
+  declarationReference?: DeclarationReference;
 }
 
 /**
@@ -41,54 +59,75 @@ export class DocDeclarationReference extends DocNode {
   private readonly _importHashExcerpt: DocExcerpt | undefined;
   private readonly _spacingAfterImportHashExcerpt: DocExcerpt | undefined;
 
-  private readonly _memberReferences: DocMemberReference[];
+  private _memberReferences: DocMemberReference[] | undefined;
+
+  private readonly _declarationReference: DeclarationReference | undefined;
+  private readonly _declarationReferenceExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
   public constructor(
-    parameters: IDocDeclarationReferenceParameters | IDocDeclarationReferenceParsedParameters
+    parameters:
+      | IDocDeclarationReferenceParameters
+      | IDocDeclarationReferenceParsedParameters
+      | IBetaDocDeclarationReferenceParameters
+      | IBetaDocDeclarationReferenceParsedParameters
   ) {
     super(parameters);
 
     if (DocNode.isParsedParameters(parameters)) {
-      if (parameters.packageNameExcerpt) {
-        this._packageNameExcerpt = new DocExcerpt({
+      if ('declarationReferenceExcerpt' in parameters) {
+        this._declarationReferenceExcerpt = new DocExcerpt({
           configuration: this.configuration,
-          excerptKind: ExcerptKind.DeclarationReference_PackageName,
-          content: parameters.packageNameExcerpt
+          excerptKind: ExcerptKind.DeclarationReference_DeclarationReference,
+          content: parameters.declarationReferenceExcerpt
         });
+        this._declarationReference =
+          parameters.declarationReference ??
+          DeclarationReference.parse(this._declarationReferenceExcerpt.content.toString());
+      } else {
+        if (parameters.packageNameExcerpt) {
+          this._packageNameExcerpt = new DocExcerpt({
+            configuration: this.configuration,
+            excerptKind: ExcerptKind.DeclarationReference_PackageName,
+            content: parameters.packageNameExcerpt
+          });
+        }
+        if (parameters.importPathExcerpt) {
+          this._importPathExcerpt = new DocExcerpt({
+            configuration: this.configuration,
+            excerptKind: ExcerptKind.DeclarationReference_ImportPath,
+            content: parameters.importPathExcerpt
+          });
+        }
+        if (parameters.importHashExcerpt) {
+          this._importHashExcerpt = new DocExcerpt({
+            configuration: this.configuration,
+            excerptKind: ExcerptKind.DeclarationReference_ImportHash,
+            content: parameters.importHashExcerpt
+          });
+        }
+        if (parameters.spacingAfterImportHashExcerpt) {
+          this._spacingAfterImportHashExcerpt = new DocExcerpt({
+            configuration: this.configuration,
+            excerptKind: ExcerptKind.Spacing,
+            content: parameters.spacingAfterImportHashExcerpt
+          });
+        }
+        if (parameters.memberReferences) {
+          this._memberReferences = parameters.memberReferences.slice();
+        }
       }
-      if (parameters.importPathExcerpt) {
-        this._importPathExcerpt = new DocExcerpt({
-          configuration: this.configuration,
-          excerptKind: ExcerptKind.DeclarationReference_ImportPath,
-          content: parameters.importPathExcerpt
-        });
-      }
-      if (parameters.importHashExcerpt) {
-        this._importHashExcerpt = new DocExcerpt({
-          configuration: this.configuration,
-          excerptKind: ExcerptKind.DeclarationReference_ImportHash,
-          content: parameters.importHashExcerpt
-        });
-      }
-      if (parameters.spacingAfterImportHashExcerpt) {
-        this._spacingAfterImportHashExcerpt = new DocExcerpt({
-          configuration: this.configuration,
-          excerptKind: ExcerptKind.Spacing,
-          content: parameters.spacingAfterImportHashExcerpt
-        });
-      }
+    } else if ('declarationReference' in parameters) {
+      this._declarationReference = parameters.declarationReference;
     } else {
       this._packageName = parameters.packageName;
       this._importPath = parameters.importPath;
-    }
-
-    this._memberReferences = [];
-    if (parameters.memberReferences) {
-      this._memberReferences.push(...parameters.memberReferences);
+      if (parameters.memberReferences) {
+        this._memberReferences = parameters.memberReferences.slice();
+      }
     }
   }
 
@@ -103,6 +142,12 @@ export class DocDeclarationReference extends DocNode {
    * Example: `"@scope/my-package"`
    */
   public get packageName(): string | undefined {
+    if (this.declarationReference) {
+      if (this.declarationReference.source instanceof ModuleSource) {
+        return this.declarationReference.source.packageName;
+      }
+      return undefined;
+    }
     if (this._packageName === undefined) {
       if (this._packageNameExcerpt !== undefined) {
         this._packageName = this._packageNameExcerpt.content.toString();
@@ -121,6 +166,11 @@ export class DocDeclarationReference extends DocNode {
    * Example: `"../path2/path2"`
    */
   public get importPath(): string | undefined {
+    if (this.declarationReference) {
+      if (this.declarationReference.source instanceof ModuleSource) {
+        return this.declarationReference.source.importPath;
+      }
+    }
     if (this._importPath === undefined) {
       if (this._importPathExcerpt !== undefined) {
         this._importPath = this._importPathExcerpt.content.toString();
@@ -135,7 +185,19 @@ export class DocDeclarationReference extends DocNode {
    * because the reference refers to a module.
    */
   public get memberReferences(): ReadonlyArray<DocMemberReference> {
+    if (!this._memberReferences) {
+      this._memberReferences =
+        this._declarationReference?.symbol?.toDocMemberReferences(this.configuration) ?? [];
+    }
     return this._memberReferences;
+  }
+
+  /**
+   * Gets the beta DeclarationReference for this reference.
+   * @beta
+   */
+  public get declarationReference(): DeclarationReference | undefined {
+    return this._declarationReference;
   }
 
   /**
@@ -151,13 +213,15 @@ export class DocDeclarationReference extends DocNode {
 
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
-    return [
-      this._packageNameExcerpt,
-      this._importPathExcerpt,
-      this._importHashExcerpt,
-      this._spacingAfterImportHashExcerpt,
-      ...this._memberReferences
-    ];
+    return this._declarationReferenceExcerpt
+      ? [this._declarationReferenceExcerpt]
+      : [
+          this._packageNameExcerpt,
+          this._importPathExcerpt,
+          this._importHashExcerpt,
+          this._spacingAfterImportHashExcerpt,
+          ...(this._memberReferences ?? [])
+        ];
   }
 }
 

@@ -1,3 +1,4 @@
+import { TSDocConfiguration } from '../../configuration/TSDocConfiguration';
 import { TestHelpers } from './TestHelpers';
 
 test('00 Link text: positive examples', () => {
@@ -93,4 +94,19 @@ test('07 Declaration reference with import path only: negative examples', () => 
   TestHelpers.parseAndMatchNodeParserSnapshot(
     ['/**', ' * {@link /path1#}', ' * {@link /path1 path2#}', ' */'].join('\n')
   );
+});
+
+test('08 Parse beta declaration references (fallback)', () => {
+  const config: TSDocConfiguration = new TSDocConfiguration();
+  config.parseBetaDeclarationReferences = true;
+  TestHelpers.parseAndMatchNodeParserSnapshot(
+    ['/**', ' * {@link foo!Bar:class}', ' * {@link Bar.foo}', ' */'].join('\n'),
+    config
+  );
+});
+
+test('09 Parse beta declaration references (preferred)', () => {
+  const config: TSDocConfiguration = new TSDocConfiguration();
+  config.parseBetaDeclarationReferences = 'prefer';
+  TestHelpers.parseAndMatchNodeParserSnapshot(['/**', ' * {@link Bar.foo}', ' */'].join('\n'), config);
 });

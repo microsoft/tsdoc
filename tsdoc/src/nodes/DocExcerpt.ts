@@ -19,6 +19,7 @@ export enum ExcerptKind {
   DeclarationReference_PackageName = 'DeclarationReference_PackageName',
   DeclarationReference_ImportPath = 'DeclarationReference_ImportPath',
   DeclarationReference_ImportHash = 'DeclarationReference_ImportHash',
+  DeclarationReference_DeclarationReference = 'DeclarationReference_DeclarationReference',
 
   /**
    * Input characters that were reported as an error and do not appear to be part of a valid expression.

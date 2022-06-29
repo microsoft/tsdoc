@@ -15,6 +15,7 @@ export class TSDocConfiguration {
   private readonly _validation: TSDocValidationConfiguration;
   private readonly _docNodeManager: DocNodeManager;
   private readonly _supportedHtmlElements: Set<string>;
+  private _parseBetaDeclarationReferences: boolean | 'prefer' = false;
 
   public constructor() {
     this._tagDefinitions = [];
@@ -253,5 +254,13 @@ export class TSDocConfiguration {
       }
     }
     throw new Error('The specified TSDocTagDefinition is not defined for this TSDocConfiguration');
+  }
+
+  public get parseBetaDeclarationReferences(): boolean | 'prefer' {
+    return this._parseBetaDeclarationReferences;
+  }
+
+  public set parseBetaDeclarationReferences(value: boolean | 'prefer') {
+    this._parseBetaDeclarationReferences = value;
   }
 }

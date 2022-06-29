@@ -83,4 +83,20 @@ export class ParserMessageLog {
       })
     );
   }
+
+  /**
+   * Returns a value that can be used to rollback the message log to a specific point in time.
+   */
+  public createMarker(): number {
+    return this._messages.length;
+  }
+
+  /**
+   * Rolls back the message log to a specific point in time.
+   */
+  public rollbackToMarker(marker: number): void {
+    if (marker >= 0 && marker < this._messages.length) {
+      this._messages.length = marker;
+    }
+  }
 }
