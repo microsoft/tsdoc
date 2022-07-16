@@ -4,6 +4,7 @@ import { StandardModifierTagSet } from '../details/StandardModifierTagSet';
 import { DocBlock } from './DocBlock';
 import { DocInheritDocTag } from './DocInheritDocTag';
 import { StringBuilder } from '../emitters/StringBuilder';
+import { TSDocEmitter } from '../emitters/TSDocEmitter';
 import { DocParamCollection } from './DocParamCollection';
 
 /**
@@ -175,12 +176,8 @@ export class DocComment extends DocNode {
    */
   public emitAsTsdoc(): string {
     const stringBuilder: StringBuilder = new StringBuilder();
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const emitter: TSDocEmitter = new TSDocEmitter();
     emitter.renderComment(stringBuilder, this);
     return stringBuilder.toString();
   }
 }
-
-// Circular reference
-import { TSDocEmitter } from '../emitters/TSDocEmitter';
