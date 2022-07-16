@@ -3,6 +3,7 @@ import { DocMemberReference } from './DocMemberReference';
 import { TokenSequence } from '../parser/TokenSequence';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 import { StringBuilder } from '../emitters/StringBuilder';
+import { TSDocEmitter } from '../emitters/TSDocEmitter';
 
 /**
  * Constructor parameters for {@link DocDeclarationReference}.
@@ -143,7 +144,6 @@ export class DocDeclarationReference extends DocNode {
    */
   public emitAsTsdoc(): string {
     const stringBuilder: StringBuilder = new StringBuilder();
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const emitter: TSDocEmitter = new TSDocEmitter();
     emitter.renderDeclarationReference(stringBuilder, this);
     return stringBuilder.toString();
@@ -160,6 +160,3 @@ export class DocDeclarationReference extends DocNode {
     ];
   }
 }
-
-// Circular reference
-import { TSDocEmitter } from '../emitters/TSDocEmitter';
