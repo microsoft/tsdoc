@@ -45,6 +45,7 @@ import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTa
 import { StandardTags } from '../details/StandardTags';
 import { PlainTextEmitter } from '../emitters/PlainTextEmitter';
 import { TSDocMessageId } from './TSDocMessageId';
+import { DocXMLElement } from '../nodes/DocXMLElement';
 
 interface IFailure {
   // (We use "failureMessage" instead of "errorMessage" here so that DocErrorText doesn't
@@ -67,6 +68,7 @@ export class NodeParser {
   private readonly _parserContext: ParserContext;
   private readonly _configuration: TSDocConfiguration;
   private _currentSection: DocSection;
+  private _currentElement: DocXMLElement | undefined;
 
   public constructor(parserContext: ParserContext) {
     this._parserContext = parserContext;
@@ -146,11 +148,12 @@ export class NodeParser {
         case TokenKind.LessThan:
           this._pushAccumulatedPlainText(tokenReader);
           // Look ahead two tokens to see if this is "<a>" or "</a>".
-          if (tokenReader.peekTokenAfterKind() === TokenKind.Slash) {
-            this._pushNode(this._parseHtmlEndTag(tokenReader));
-          } else {
-            this._pushNode(this._parseHtmlStartTag(tokenReader));
-          }
+          // if (tokenReader.peekTokenAfterKind() === TokenKind.Slash) {
+          //   this._pushNode(this._parseHtmlEndTag(tokenReader));
+          // } else {
+          //   this._pushNode(this._parseHtmlStartTag(tokenReader));
+          // }
+          this._pushNode(this._parseXmlElement(tokenReader, true));
           break;
         case TokenKind.GreaterThan:
           this._pushAccumulatedPlainText(tokenReader);
@@ -1824,6 +1827,162 @@ export class NodeParser {
     }
 
     return docMemberSelector;
+  }
+
+  private _parseXmlElement(tokenReader: TokenReader, root: boolean): DocNode {
+    tokenReader.assertAccumulatedSequenceIsEmpty();
+    const marker: number = tokenReader.createMarker();
+
+    // Read the "<" delimiter
+    const lessThanToken: Token = tokenReader.readToken();
+    if (lessThanToken.kind !== TokenKind.LessThan) {
+      // This would be a parser bug -- the caller of _parseXmlElement() should have verified this while
+      // looking ahead
+      throw new Error('Expecting an XML tag starting with "<"');
+    }
+
+    // Skip over opening "<"
+    const startTagOpeningDelimiterExcerpt = tokenReader.extractAccumulatedSequence();
+
+    // Read the element name
+    const nameExcerpt: ResultOrFailure<TokenSequence> = this._parseHtmlName(tokenReader);
+    if (isFailure(nameExcerpt)) {
+      return this._backtrackAndCreateErrorForFailure(
+        tokenReader,
+        marker,
+        'Invalid HTML element: ',
+        nameExcerpt
+      );
+    }
+
+    const spacingAfterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
+    const htmlAttributes: DocHtmlAttribute[] = [];
+
+    // Read the attributes until we see a ">" or "/>"
+    while (tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
+      // Read the attribute
+      const attributeNode: ResultOrFailure<DocHtmlAttribute> = this._parseHtmlAttribute(tokenReader);
+      if (isFailure(attributeNode)) {
+        return this._backtrackAndCreateErrorForFailure(
+          tokenReader,
+          marker,
+          'The HTML element has an invalid attribute: ',
+          attributeNode
+        );
+      }
+
+      htmlAttributes.push(attributeNode);
+    }
+
+    // If we see "<" then we can assume we've hit the end tag. Parse the end tag excerpt.
+    // Otherwise recurse into the child elements.
+
+    tokenReader.assertAccumulatedSequenceIsEmpty();
+    const startTagEndDelimeterMarker: number = tokenReader.createMarker();
+
+    let selfClosingTag: boolean = false;
+    if (tokenReader.peekTokenKind() === TokenKind.Slash) {
+      tokenReader.readToken();
+      selfClosingTag = true;
+    }
+
+    if (tokenReader.peekTokenKind() !== TokenKind.GreaterThan) {
+      const failure: IFailure = this._createFailureForTokensSince(
+        tokenReader,
+        TSDocMessageId.HtmlTagMissingGreaterThan,
+        'Expecting an attribute or ">" or "/>"',
+        startTagEndDelimeterMarker
+      );
+      return this._backtrackAndCreateErrorForFailure(
+        tokenReader,
+        marker,
+        'The XML tag has invalid syntax: ',
+        failure
+      );
+    }
+    tokenReader.readToken();
+
+    const startTagClosingDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
+
+    // Read out any whitespace between the parent and the child node.
+    this._tryReadSpacingAndNewlines(tokenReader);
+
+    // If we see a "<" without a slash, that means we've hit a nested element.
+    const childNodes: DocNode[] = [];
+    while (
+      tokenReader.peekTokenKind() === TokenKind.LessThan &&
+      tokenReader.peekTokenAfterKind() !== TokenKind.Slash
+    ) {
+      // Parse out all of the child nodes
+      childNodes.push(this._parseXmlElement(tokenReader, false));
+      this._tryReadSpacingAndNewlines(tokenReader);
+    }
+
+    // Read out any whitespace between a child and the end tag.
+    this._tryReadSpacingAndNewlines(tokenReader);
+
+    const endMarker: number = tokenReader.createMarker();
+
+    const endTagLessThanToken: Token = tokenReader.peekToken();
+    if (lessThanToken.kind !== TokenKind.LessThan) {
+      return this._backtrackAndCreateError(
+        tokenReader,
+        endMarker,
+        TSDocMessageId.MissingHtmlEndTag,
+        'Expecting an HTML tag starting with "</"'
+      );
+    }
+    tokenReader.readToken();
+
+    const slashToken: Token = tokenReader.peekToken();
+    if (slashToken.kind !== TokenKind.Slash) {
+      return this._backtrackAndCreateError(
+        tokenReader,
+        endMarker,
+        TSDocMessageId.MissingHtmlEndTag,
+        'Expecting an HTML tag starting with "</"'
+      );
+    }
+    tokenReader.readToken();
+
+    tokenReader.extractAccumulatedSequence();
+
+    const endTagNameExcerpt: ResultOrFailure<TokenSequence> = this._parseHtmlName(tokenReader);
+    if (isFailure(endTagNameExcerpt)) {
+      return this._backtrackAndCreateErrorForFailure(
+        tokenReader,
+        endMarker,
+        'Invalid HTML element: ',
+        endTagNameExcerpt
+      );
+    }
+
+    const spacingAfterEndNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
+      tokenReader
+    );
+
+    if (tokenReader.peekTokenKind() !== TokenKind.GreaterThan) {
+      const failure: IFailure = this._createFailureForToken(
+        tokenReader,
+        TSDocMessageId.HtmlTagMissingGreaterThan,
+        'Expecting a closing ">" for the HTML tag'
+      );
+      return this._backtrackAndCreateErrorForFailure(tokenReader, marker, '', failure);
+    }
+    tokenReader.readToken();
+
+    const element: DocXMLElement = new DocXMLElement({
+      parsed: true,
+      configuration: this._configuration,
+
+      nameExcerpt,
+      htmlAttributes,
+      selfClosingTag
+    });
+
+    element.appendNodes(childNodes);
+
+    return element;
   }
 
   private _parseHtmlStartTag(tokenReader: TokenReader): DocNode {

@@ -21,6 +21,7 @@ export enum DocNodeKind {
   HtmlAttribute = 'HtmlAttribute',
   HtmlEndTag = 'HtmlEndTag',
   HtmlStartTag = 'HtmlStartTag',
+  XMLElement = 'XMLElement',
   InheritDocTag = 'InheritDocTag',
   InlineTag = 'InlineTag',
   LinkTag = 'LinkTag',

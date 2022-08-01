@@ -32,14 +32,16 @@ export class BuiltInDocNodes {
       { docNodeKind: DocNodeKind.ParamCollection, constructor: nodes.DocParamCollection },
       { docNodeKind: DocNodeKind.PlainText, constructor: nodes.DocPlainText },
       { docNodeKind: DocNodeKind.Section, constructor: nodes.DocSection },
-      { docNodeKind: DocNodeKind.SoftBreak, constructor: nodes.DocSoftBreak }
+      { docNodeKind: DocNodeKind.SoftBreak, constructor: nodes.DocSoftBreak },
+      { docNodeKind: DocNodeKind.XMLElement, constructor: nodes.DocXMLElement }
     ]);
 
     docNodeManager.registerAllowableChildren(DocNodeKind.Section, [
       DocNodeKind.FencedCode,
       DocNodeKind.Paragraph,
       DocNodeKind.HtmlStartTag,
-      DocNodeKind.HtmlEndTag
+      DocNodeKind.HtmlEndTag,
+      DocNodeKind.XMLElement
     ]);
 
     docNodeManager.registerAllowableChildren(DocNodeKind.Paragraph, [
@@ -54,5 +56,7 @@ export class BuiltInDocNodes {
       DocNodeKind.PlainText,
       DocNodeKind.SoftBreak
     ]);
+
+    docNodeManager.registerAllowableChildren(DocNodeKind.XMLElement, [DocNodeKind.XMLElement]);
   }
 }

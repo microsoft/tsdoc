@@ -349,7 +349,9 @@ export enum DocNodeKind {
     // (undocumented)
     Section = "Section",
     // (undocumented)
-    SoftBreak = "SoftBreak"
+    SoftBreak = "SoftBreak",
+    // (undocumented)
+    XMLElement = "XMLElement"
 }
 
 // @public
@@ -432,6 +434,16 @@ export class DocSoftBreak extends DocNode {
     get kind(): DocNodeKind | string;
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
+    }
+
+// @public (undocumented)
+export class DocXMLElement extends DocNodeContainer {
+    // @internal
+    constructor(parameters: IDocXMLElementParameters | IDocXMLElementParsedParameters);
+    // (undocumented)
+    get htmlAttributes(): DocHtmlAttribute[];
+    // (undocumented)
+    get kind(): string;
     }
 
 // @public
@@ -992,6 +1004,38 @@ export interface IDocSoftBreakParameters extends IDocNodeParameters {
 export interface IDocSoftBreakParsedParameters extends IDocNodeParsedParameters {
     // (undocumented)
     softBreakExcerpt: TokenSequence;
+}
+
+// @public
+export interface IDocXMLElementParameters extends IDocNodeParameters {
+    // (undocumented)
+    htmlAttributes?: DocHtmlAttribute[];
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    spacingAfterName?: string;
+    // (undocumented)
+    startTagParameters: IDocXMLElementParsedParameters;
+}
+
+// @public
+export interface IDocXMLElementParsedParameters extends IDocNodeParsedParameters {
+    // (undocumented)
+    endTagClosingExcerpt?: TokenSequence;
+    // (undocumented)
+    endTagOpeningExcerpt?: TokenSequence;
+    // (undocumented)
+    htmlAttributes: DocHtmlAttribute[];
+    // (undocumented)
+    nameExcerpt: TokenSequence;
+    // (undocumented)
+    selfClosingTag: boolean;
+    // (undocumented)
+    spacingAfterNameExcerpt?: TokenSequence;
+    // (undocumented)
+    startTagClosingDelimiterExcerpt?: TokenSequence;
+    // (undocumented)
+    startTagOpeningDelimiterExcerpt?: TokenSequence;
 }
 
 // @public
