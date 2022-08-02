@@ -101,7 +101,7 @@ export enum TSDocMessageId {
   EscapeRightBrace = 'tsdoc-escape-right-brace',
 
   /**
-   * The `>` character should be escaped using a backslash to avoid confusion with an HTML tag.
+   * The `>` character should be escaped using a backslash to avoid confusion with an XML tag.
    */
   EscapeGreaterThan = 'tsdoc-escape-greater-than',
 
@@ -339,44 +339,44 @@ export enum TSDocMessageId {
   /**
    * Expecting an attribute or `>` or `/>`.
    */
-  HtmlTagMissingGreaterThan = 'tsdoc-html-tag-missing-greater-than',
+  XmlTagMissingGreaterThan = 'tsdoc-xml-tag-missing-greater-than',
 
   /**
-   * Expecting `=` after HTML attribute name.
+   * Expecting `=` after XML attribute name.
    */
-  HtmlTagMissingEquals = 'tsdoc-html-tag-missing-equals',
+  XmlTagMissingEquals = 'tsdoc-xml-tag-missing-equals',
 
   /**
-   * Expecting an HTML string starting with a single-quote or double-quote character.
+   * Expecting an XML string starting with a single-quote or double-quote character.
    */
-  HtmlTagMissingString = 'tsdoc-html-tag-missing-string',
+  XmlTagMissingString = 'tsdoc-xml-tag-missing-string',
 
   /**
-   * The HTML string is missing its closing quote.
+   * The XML string is missing its closing quote.
    */
-  HtmlStringMissingQuote = 'tsdoc-html-string-missing-quote',
+  XmlStringMissingQuote = 'tsdoc-xml-string-missing-quote',
 
   /**
    * The next character after a closing quote must be spacing or punctuation.
    */
-  TextAfterHtmlString = 'tsdoc-text-after-html-string',
+  TextAfterXmlString = 'tsdoc-text-after-xml-string',
 
   /**
-   * Expecting an HTML tag starting with `</`.
+   * Expecting an XML tag starting with `</`.
    */
-  MissingHtmlEndTag = 'tsdoc-missing-html-end-tag',
+  MissingXmlEndTag = 'tsdoc-missing-xml-end-tag',
 
   /**
    * A space is not allowed here.  OR
-   * Expecting an HTML name.  OR
-   * An HTML name must be a sequence of letters separated by hyphens.
+   * Expecting an XML name.  OR
+   * An XML name must be a sequence of letters separated by hyphens.
    */
-  MalformedHtmlName = 'tsdoc-malformed-html-name',
+  MalformedXmlName = 'tsdoc-malformed-xml-name',
 
   /**
-   * This HTML element name is not defined by your TSDoc configuration.
+   * This XML element name is not defined by your TSDoc configuration.
    */
-  UnsupportedHtmlElementName = 'tsdoc-unsupported-html-name',
+  UnsupportedXmlElementName = 'tsdoc-unsupported-xml-name',
 
   /**
    * The opening backtick for a code fence must appear at the start of the line.
@@ -411,7 +411,12 @@ export enum TSDocMessageId {
   /**
    * The code span is missing its closing backtick.
    */
-  CodeSpanMissingDelimiter = 'tsdoc-code-span-missing-delimiter'
+  CodeSpanMissingDelimiter = 'tsdoc-code-span-missing-delimiter',
+
+  /**
+   * The XML start and end tag names are not the same.
+   */
+  XmlTagNameMismatch = 'tsdoc-xml-tag-name-mismatch'
 }
 
 // Exposed via TSDocConfiguration.allTsdocMessageIds()
@@ -476,20 +481,21 @@ export const allTsdocMessageIds: string[] = [
   'tsdoc-reference-unquoted-identifier',
   'tsdoc-reference-missing-label',
   'tsdoc-reference-selector-syntax',
-  'tsdoc-html-tag-missing-greater-than',
-  'tsdoc-html-tag-missing-equals',
-  'tsdoc-html-tag-missing-string',
-  'tsdoc-html-string-missing-quote',
-  'tsdoc-text-after-html-string',
-  'tsdoc-missing-html-end-tag',
-  'tsdoc-malformed-html-name',
+  'tsdoc-xml-tag-missing-greater-than',
+  'tsdoc-xml-tag-missing-equals',
+  'tsdoc-xml-tag-missing-string',
+  'tsdoc-xml-string-missing-quote',
+  'tsdoc-text-after-xml-string',
+  'tsdoc-missing-xml-end-tag',
+  'tsdoc-malformed-xml-name',
   'tsdoc-code-fence-opening-indent',
   'tsdoc-code-fence-specifier-syntax',
   'tsdoc-code-fence-closing-indent',
   'tsdoc-code-fence-missing-delimiter',
   'tsdoc-code-fence-closing-syntax',
   'tsdoc-code-span-empty',
-  'tsdoc-code-span-missing-delimiter'
+  'tsdoc-code-span-missing-delimiter',
+  'tsdoc-xml-tag-name-mismatch'
 ];
 allTsdocMessageIds.sort();
 

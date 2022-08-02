@@ -437,9 +437,9 @@ export class DocSoftBreak extends DocNode {
     }
 
 // @public (undocumented)
-export class DocXMLElement extends DocNodeContainer {
+export class DocXmlElement extends DocNodeContainer {
     // @internal
-    constructor(parameters: IDocXMLElementParameters | IDocXMLElementParsedParameters);
+    constructor(parameters: IDocXmlElementParameters | IDocXmlElementParsedParameters);
     // (undocumented)
     get htmlAttributes(): DocHtmlAttribute[];
     // (undocumented)
@@ -1007,7 +1007,7 @@ export interface IDocSoftBreakParsedParameters extends IDocNodeParsedParameters 
 }
 
 // @public
-export interface IDocXMLElementParameters extends IDocNodeParameters {
+export interface IDocXmlElementParameters extends IDocNodeParameters {
     // (undocumented)
     htmlAttributes?: DocHtmlAttribute[];
     // (undocumented)
@@ -1015,11 +1015,13 @@ export interface IDocXMLElementParameters extends IDocNodeParameters {
     // (undocumented)
     spacingAfterName?: string;
     // (undocumented)
-    startTagParameters: IDocXMLElementParsedParameters;
+    startTagParameters: IDocXmlElementParsedParameters;
 }
 
 // @public
-export interface IDocXMLElementParsedParameters extends IDocNodeParsedParameters {
+export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters {
+    // (undocumented)
+    childNodes: DocNode[];
     // (undocumented)
     endTagClosingExcerpt?: TokenSequence;
     // (undocumented)
@@ -1389,7 +1391,8 @@ export enum TSDocMessageId {
     UndefinedTag = "tsdoc-undefined-tag",
     UnnecessaryBackslash = "tsdoc-unnecessary-backslash",
     UnsupportedHtmlElementName = "tsdoc-unsupported-html-name",
-    UnsupportedTag = "tsdoc-unsupported-tag"
+    UnsupportedTag = "tsdoc-unsupported-tag",
+    XmlTagNameMismatch = "tsdoc-xml-tag-name-mismatch"
 }
 
 // @public

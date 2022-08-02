@@ -26,4 +26,4 @@ export * from './DocParamCollection';
 export * from './DocPlainText';
 export * from './DocSection';
 export * from './DocSoftBreak';
-export * from './DocXMLElement';
+export * from './DocXmlElement';

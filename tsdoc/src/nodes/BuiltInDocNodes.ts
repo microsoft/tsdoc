@@ -33,7 +33,7 @@ export class BuiltInDocNodes {
       { docNodeKind: DocNodeKind.PlainText, constructor: nodes.DocPlainText },
       { docNodeKind: DocNodeKind.Section, constructor: nodes.DocSection },
       { docNodeKind: DocNodeKind.SoftBreak, constructor: nodes.DocSoftBreak },
-      { docNodeKind: DocNodeKind.XMLElement, constructor: nodes.DocXMLElement }
+      { docNodeKind: DocNodeKind.XMLElement, constructor: nodes.DocXmlElement }
     ]);
 
     docNodeManager.registerAllowableChildren(DocNodeKind.Section, [
@@ -57,6 +57,9 @@ export class BuiltInDocNodes {
       DocNodeKind.SoftBreak
     ]);
 
-    docNodeManager.registerAllowableChildren(DocNodeKind.XMLElement, [DocNodeKind.XMLElement]);
+    docNodeManager.registerAllowableChildren(DocNodeKind.XMLElement, [
+      DocNodeKind.XMLElement,
+      DocNodeKind.PlainText
+    ]);
   }
 }
