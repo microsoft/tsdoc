@@ -86,7 +86,7 @@ export class DocXmlElement extends DocNodeContainer {
   }
 
   public get kind(): string {
-    return DocNodeKind.XMLElement;
+    return DocNodeKind.XmlElement;
   }
 
   /**

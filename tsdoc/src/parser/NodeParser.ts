@@ -1824,7 +1824,6 @@ export class NodeParser {
   }
 
   private _parseXmlTree(tokenReader: TokenReader): DocNode {
-    console.log('_parseXmlTree');
     const root: ResultOrFailure<DocNode> = this._parseXmlElement(tokenReader);
 
     if (isFailure(root)) {
