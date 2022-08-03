@@ -24,7 +24,7 @@ import type {
   DocMemberSelector,
   DocParamBlock
 } from '../nodes';
-import { DocNodeKind } from '../nodes';
+import { DocNodeKind } from '../nodes/DocNode';
 import { IStringBuilder } from './StringBuilder';
 import { DocNodeTransforms } from '../transforms/DocNodeTransforms';
 import { StandardTags } from '../details/StandardTags';
