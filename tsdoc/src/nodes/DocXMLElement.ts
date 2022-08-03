@@ -1,3 +1,5 @@
+import { StringBuilder } from '../emitters/StringBuilder';
+import { TSDocEmitter } from '../emitters/TSDocEmitter';
 import { TokenSequence } from '../parser/TokenSequence';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 import { DocHtmlAttribute } from './DocHtmlAttribute';
@@ -12,7 +14,7 @@ export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters
   startTagClosingDelimiterExcerpt: TokenSequence;
 
   spacingAfterStartTagNameExcerpt?: TokenSequence;
-  spacingAfterEndTagNameExcerpt?: TokenSequence;
+  spacingAfterEndTagExcerpt?: TokenSequence;
 
   spacingBetweenStartTagAndChildExcerpt?: TokenSequence;
 
@@ -26,6 +28,8 @@ export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters
 
   htmlAttributes: DocHtmlAttribute[];
   selfClosingTag?: boolean;
+
+  spacingAfterElementExcerpt?: TokenSequence;
 }
 
 /**
@@ -49,7 +53,14 @@ export class DocXmlElement extends DocNodeContainer {
 
   private _spacingAfterName: string | undefined;
   private readonly _spacingAfterNameExcerpt: DocExcerpt | undefined;
+
+  private _spacingBetweenStartTagAndChildren: string | undefined;
+  private readonly _spacingBetweenStartTagAndChildrenExcerpt: DocExcerpt | undefined;
+
   private _selfClosingTag: boolean;
+
+  private _spacingAfterEndTag: string | undefined;
+  private readonly _spacingAfterEndTagExcerpt: DocExcerpt | undefined;
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -70,6 +81,20 @@ export class DocXmlElement extends DocNodeContainer {
           configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterNameExcerpt
+        });
+      }
+      if (parameters.spacingBetweenStartTagAndChildExcerpt) {
+        this._spacingBetweenStartTagAndChildrenExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingBetweenStartTagAndChildExcerpt
+        });
+      }
+      if (parameters.spacingAfterEndTagExcerpt) {
+        this._spacingAfterEndTagExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.Spacing,
+          content: parameters.spacingAfterEndTagExcerpt
         });
       }
     } else {
@@ -125,5 +150,39 @@ export class DocXmlElement extends DocNodeContainer {
     }
 
     return this._spacingAfterName;
+  }
+
+  /**
+   * The spacing between the start tag closing delimiter and the first child's opening delimiter.
+   */
+  public get spacingBetweenStartTagAndChildren(): string | undefined {
+    if (this._spacingBetweenStartTagAndChildren === undefined) {
+      if (this._spacingBetweenStartTagAndChildrenExcerpt !== undefined) {
+        this._spacingBetweenStartTagAndChildren = this._spacingBetweenStartTagAndChildrenExcerpt.content.toString();
+      }
+    }
+
+    return this._spacingBetweenStartTagAndChildren;
+  }
+
+  /**
+   * The spacing after the full XML element
+   */
+  public get spacingAfterEndTag(): string | undefined {
+    if (this._spacingAfterEndTag === undefined) {
+      if (this._spacingAfterEndTagExcerpt !== undefined) {
+        this._spacingAfterEndTag = this._spacingAfterEndTagExcerpt.content.toString();
+      }
+    }
+
+    return this._spacingAfterEndTag;
+  }
+
+  public emitAsXml(): string {
+    // NOTE: Here we're assuming that the TSDoc representation for a tag is also a valid HTML expression.
+    const stringBuilder: StringBuilder = new StringBuilder();
+    const emitter: TSDocEmitter = new TSDocEmitter();
+    emitter.renderXmlTag(stringBuilder, this);
+    return stringBuilder.toString();
   }
 }

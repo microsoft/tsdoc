@@ -150,7 +150,6 @@ export class DocHtmlAttribute extends DocNode {
 export class DocHtmlEndTag extends DocNode {
     // @internal
     constructor(parameters: IDocHtmlEndTagParameters | IDocHtmlEndTagParsedParameters);
-    emitAsHtml(): string;
     // @override (undocumented)
     get kind(): DocNodeKind | string;
     get name(): string;
@@ -162,7 +161,6 @@ export class DocHtmlEndTag extends DocNode {
 export class DocHtmlStartTag extends DocNode {
     // @internal
     constructor(parameters: IDocHtmlStartTagParameters | IDocHtmlStartTagParsedParameters);
-    emitAsHtml(): string;
     get htmlAttributes(): ReadonlyArray<DocHtmlAttribute>;
     // @override (undocumented)
     get kind(): DocNodeKind | string;
@@ -351,7 +349,7 @@ export enum DocNodeKind {
     // (undocumented)
     SoftBreak = "SoftBreak",
     // (undocumented)
-    XMLElement = "XMLElement"
+    XmlElement = "XmlElement"
 }
 
 // @public
@@ -441,9 +439,15 @@ export class DocXmlElement extends DocNodeContainer {
     // @internal
     constructor(parameters: IDocXmlElementParameters | IDocXmlElementParsedParameters);
     // (undocumented)
-    get htmlAttributes(): DocHtmlAttribute[];
+    emitAsXml(): string;
+    get htmlAttributes(): ReadonlyArray<DocHtmlAttribute>;
     // (undocumented)
     get kind(): string;
+    get name(): string;
+    get selfClosingTag(): boolean;
+    get spacingAfterEndTag(): string | undefined;
+    get spacingAfterName(): string | undefined;
+    get spacingBetweenStartTagAndChildren(): string | undefined;
     }
 
 // @public
@@ -1013,6 +1017,8 @@ export interface IDocXmlElementParameters extends IDocNodeParameters {
     // (undocumented)
     name: string;
     // (undocumented)
+    selfClosingTag?: boolean;
+    // (undocumented)
     spacingAfterName?: string;
     // (undocumented)
     startTagParameters: IDocXmlElementParsedParameters;
@@ -1031,13 +1037,21 @@ export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters
     // (undocumented)
     nameExcerpt: TokenSequence;
     // (undocumented)
-    selfClosingTag: boolean;
+    selfClosingTag?: boolean;
+    // (undocumented)
+    spacingAfterElementExcerpt?: TokenSequence;
+    // (undocumented)
+    spacingAfterEndTagExcerpt?: TokenSequence;
     // (undocumented)
     spacingAfterNameExcerpt?: TokenSequence;
     // (undocumented)
-    startTagClosingDelimiterExcerpt?: TokenSequence;
+    spacingAfterStartTagNameExcerpt?: TokenSequence;
     // (undocumented)
-    startTagOpeningDelimiterExcerpt?: TokenSequence;
+    spacingBetweenStartTagAndChildExcerpt?: TokenSequence;
+    // (undocumented)
+    startTagClosingDelimiterExcerpt: TokenSequence;
+    // (undocumented)
+    startTagOpeningDelimiterExcerpt: TokenSequence;
 }
 
 // @public
@@ -1314,7 +1328,7 @@ export class TSDocEmitter {
     // (undocumented)
     renderDeclarationReference(output: IStringBuilder, declarationReference: DocDeclarationReference): void;
     // (undocumented)
-    renderHtmlTag(output: IStringBuilder, htmlTag: DocHtmlStartTag | DocHtmlEndTag): void;
+    renderXmlTag(output: IStringBuilder, htmlTag: DocXmlElement): void;
     }
 
 // @public
@@ -1345,10 +1359,6 @@ export enum TSDocMessageId {
     EscapeGreaterThan = "tsdoc-escape-greater-than",
     EscapeRightBrace = "tsdoc-escape-right-brace",
     ExtraInheritDocTag = "tsdoc-extra-inheritdoc-tag",
-    HtmlStringMissingQuote = "tsdoc-html-string-missing-quote",
-    HtmlTagMissingEquals = "tsdoc-html-tag-missing-equals",
-    HtmlTagMissingGreaterThan = "tsdoc-html-tag-missing-greater-than",
-    HtmlTagMissingString = "tsdoc-html-tag-missing-string",
     InheritDocIncompatibleSummary = "tsdoc-inheritdoc-incompatible-summary",
     InheritDocIncompatibleTag = "tsdoc-inheritdoc-incompatible-tag",
     InheritDocTagSyntax = "tsdoc-inheritdoc-tag-syntax",
@@ -1359,13 +1369,13 @@ export enum TSDocMessageId {
     LinkTagEmpty = "tsdoc-link-tag-empty",
     LinkTagInvalidUrl = "tsdoc-link-tag-invalid-url",
     LinkTagUnescapedText = "tsdoc-link-tag-unescaped-text",
-    MalformedHtmlName = "tsdoc-malformed-html-name",
     MalformedInlineTag = "tsdoc-malformed-inline-tag",
     MalformedTagName = "tsdoc-malformed-tag-name",
+    MalformedXmlName = "tsdoc-malformed-xml-name",
     MissingDeprecationMessage = "tsdoc-missing-deprecation-message",
-    MissingHtmlEndTag = "tsdoc-missing-html-end-tag",
     MissingReference = "tsdoc-missing-reference",
     MissingTag = "tsdoc-missing-tag",
+    MissingXmlEndTag = "tsdoc-missing-xml-end-tag",
     ParamTagMissingHyphen = "tsdoc-param-tag-missing-hyphen",
     ParamTagWithInvalidName = "tsdoc-param-tag-with-invalid-name",
     ParamTagWithInvalidOptionalName = "tsdoc-param-tag-with-invalid-optional-name",
@@ -1387,11 +1397,15 @@ export enum TSDocMessageId {
     ReferenceSymbolSyntax = "tsdoc-reference-symbol-syntax",
     ReferenceUnquotedIdentifier = "tsdoc-reference-unquoted-identifier",
     TagShouldNotHaveBraces = "tsdoc-tag-should-not-have-braces",
-    TextAfterHtmlString = "tsdoc-text-after-html-string",
+    TextAfterXmlString = "tsdoc-text-after-xml-string",
     UndefinedTag = "tsdoc-undefined-tag",
     UnnecessaryBackslash = "tsdoc-unnecessary-backslash",
-    UnsupportedHtmlElementName = "tsdoc-unsupported-html-name",
     UnsupportedTag = "tsdoc-unsupported-tag",
+    UnsupportedXmlElementName = "tsdoc-unsupported-xml-name",
+    XmlStringMissingQuote = "tsdoc-xml-string-missing-quote",
+    XmlTagMissingEquals = "tsdoc-xml-tag-missing-equals",
+    XmlTagMissingGreaterThan = "tsdoc-xml-tag-missing-greater-than",
+    XmlTagMissingString = "tsdoc-xml-tag-missing-string",
     XmlTagNameMismatch = "tsdoc-xml-tag-name-mismatch"
 }
 

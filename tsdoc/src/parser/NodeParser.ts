@@ -1913,6 +1913,7 @@ export class NodeParser {
         spacingAfterStartTagNameExcerpt,
         startTagOpeningDelimiterExcerpt,
         startTagClosingDelimiterExcerpt,
+        spacingAfterElementExcerpt: this._tryReadSpacingAndNewlines(tokenReader),
         htmlAttributes,
         selfClosingTag,
         childNodes: []
@@ -1934,8 +1935,9 @@ export class NodeParser {
     ) {
       // Scenario 1: We're parsing plaintext child
       if (tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
+        tokenReader.readToken();
         // Accumulate chars until there are none left.
-        while (tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
+        while (tokenReader.peekTokenKind() !== TokenKind.LessThan) {
           tokenReader.readToken();
         }
 
@@ -1995,9 +1997,6 @@ export class NodeParser {
     }
     tokenReader.readToken();
 
-    // Consume any whitespace after the closing tag
-    tokenReader.extractAccumulatedSequence();
-
     const endTagNameExcerpt: ResultOrFailure<TokenSequence> = this._parseHtmlName(tokenReader);
     if (isFailure(endTagNameExcerpt)) {
       return endTagNameExcerpt;
@@ -2014,7 +2013,8 @@ export class NodeParser {
     }
 
     // Check for closing ">" delimiter
-    if (tokenReader.peekTokenKind() !== TokenKind.GreaterThan) {
+    const endTagGreaterThanToken: Token = tokenReader.readToken();
+    if (endTagGreaterThanToken.kind !== TokenKind.GreaterThan) {
       const failure: IFailure = this._createFailureForToken(
         tokenReader,
         TSDocMessageId.XmlTagMissingGreaterThan,
@@ -2022,11 +2022,11 @@ export class NodeParser {
       );
       return failure;
     }
-    tokenReader.readToken();
+    tokenReader.extractAccumulatedSequence();
+    tokenReader.assertAccumulatedSequenceIsEmpty();
 
-    const spacingAfterEndTagNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
-      tokenReader
-    );
+    // Consume any whitespace after the closing tag
+    const spacingAfterEndTagExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(tokenReader);
 
     const element: DocXmlElement = new DocXmlElement({
       parsed: true,
@@ -2035,7 +2035,7 @@ export class NodeParser {
       startTagClosingDelimiterExcerpt,
       spacingBetweenStartTagAndChildExcerpt,
       spacingAfterStartTagNameExcerpt,
-      spacingAfterEndTagNameExcerpt,
+      spacingAfterEndTagExcerpt,
       nameExcerpt: startTagNameExcerpt,
       htmlAttributes,
       selfClosingTag,

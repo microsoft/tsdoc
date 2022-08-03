@@ -22,7 +22,8 @@ import type {
   DocMemberReference,
   DocMemberSymbol,
   DocMemberSelector,
-  DocParamBlock
+  DocParamBlock,
+  DocXmlElement
 } from '../nodes';
 import { DocNodeKind } from '../nodes';
 import { IStringBuilder } from './StringBuilder';
@@ -63,7 +64,7 @@ export class TSDocEmitter {
     this._renderCompleteObject(output, docComment);
   }
 
-  public renderHtmlTag(output: IStringBuilder, htmlTag: DocHtmlStartTag | DocHtmlEndTag): void {
+  public renderXmlTag(output: IStringBuilder, htmlTag: DocXmlElement): void {
     this._emitCommentFraming = false;
     this._renderCompleteObject(output, htmlTag);
   }
@@ -177,6 +178,46 @@ export class TSDocEmitter {
         this._writeContent('```');
         this._writeNewline();
         this._writeNewline();
+        break;
+
+      case DocNodeKind.XmlElement:
+        // Write the start tag
+        const docXmlElement: DocXmlElement = docNode as DocXmlElement;
+        this._writeContent('<');
+        this._writeContent(docXmlElement.name);
+        this._writeContent(docXmlElement.spacingAfterName);
+
+        // Check if it's self-closing
+        if (docXmlElement.selfClosingTag) {
+          this._writeContent('/>');
+          break;
+        }
+
+        for (const attribute of docXmlElement.htmlAttributes) {
+          this._writeContent(attribute.name);
+          this._writeContent(attribute.spacingAfterName);
+          this._writeContent('=');
+          this._writeContent(attribute.spacingAfterEquals);
+          this._writeContent(attribute.value);
+          this._writeContent(attribute.spacingAfterValue);
+        }
+
+        this._writeContent('>');
+
+        this._writeContent(docXmlElement.spacingBetweenStartTagAndChildren);
+
+        // Write the child nodes
+        for (const childNode of docXmlElement.nodes) {
+          this._renderNode(childNode);
+        }
+
+        // Write the end tag
+        this._writeContent('</');
+        this._writeContent(docXmlElement.name);
+        this._writeContent('>');
+        console.log(docXmlElement.spacingAfterEndTag);
+        this._writeContent(docXmlElement.spacingAfterEndTag);
+
         break;
 
       case DocNodeKind.HtmlAttribute:

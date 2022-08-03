@@ -93,13 +93,13 @@ export class DocHtmlEndTag extends DocNode {
   /**
    * Generates the HTML for this tag.
    */
-  public emitAsHtml(): string {
-    // NOTE: Here we're assuming that the TSDoc representation for a tag is also a valid HTML expression.
-    const stringBuilder: StringBuilder = new StringBuilder();
-    const emitter: TSDocEmitter = new TSDocEmitter();
-    emitter.renderHtmlTag(stringBuilder, this);
-    return stringBuilder.toString();
-  }
+  // public emitAsHtml(): string {
+  //   // NOTE: Here we're assuming that the TSDoc representation for a tag is also a valid HTML expression.
+  //   const stringBuilder: StringBuilder = new StringBuilder();
+  //   const emitter: TSDocEmitter = new TSDocEmitter();
+  //   emitter.renderXmlTag(stringBuilder, this);
+  //   return stringBuilder.toString();
+  // }
 
   /** @override */
   protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
