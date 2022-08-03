@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Add support for XML parsing via `DocXmlElement`. Removes  `DocHtmlStartTag` and `DocHtmlEndTag` nodes.",
+      "type": "major"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "suneettipirneni@users.noreply.github.com"
+}
