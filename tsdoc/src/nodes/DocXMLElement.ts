@@ -2,7 +2,7 @@ import { StringBuilder } from '../emitters/StringBuilder';
 import { TSDocEmitter } from '../emitters/TSDocEmitter';
 import { TokenSequence } from '../parser/TokenSequence';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
-import { DocHtmlAttribute } from './DocHtmlAttribute';
+import { DocXmlAttribute } from './DocXmlAttribute';
 import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { DocNodeContainer } from './DocNodeContainer';
 
@@ -12,6 +12,9 @@ import { DocNodeContainer } from './DocNodeContainer';
 export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters {
   startTagOpeningDelimiterExcerpt: TokenSequence;
   startTagClosingDelimiterExcerpt: TokenSequence;
+
+  endTagOpeningDelimiterExcerpt?: TokenSequence;
+  endTagClosingDelimiterExcerpt?: TokenSequence;
 
   spacingAfterStartTagNameExcerpt?: TokenSequence;
   spacingAfterEndTagExcerpt?: TokenSequence;
@@ -26,7 +29,7 @@ export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters
   nameExcerpt: TokenSequence;
   spacingAfterNameExcerpt?: TokenSequence;
 
-  htmlAttributes: DocHtmlAttribute[];
+  xmlAttributes: DocXmlAttribute[];
   selfClosingTag?: boolean;
 
   spacingAfterElementExcerpt?: TokenSequence;
@@ -39,17 +42,29 @@ export interface IDocXmlElementParameters extends IDocNodeParameters {
   name: string;
   spacingAfterName?: string;
 
-  htmlAttributes?: DocHtmlAttribute[];
+  xmlAttributes?: DocXmlAttribute[];
 
   startTagParameters: IDocXmlElementParsedParameters;
   selfClosingTag?: boolean;
 }
 
 export class DocXmlElement extends DocNodeContainer {
-  private readonly _htmlAttributes: DocHtmlAttribute[] = [];
+  private readonly _xmlAttributes: DocXmlAttribute[] = [];
 
   private _name: string | undefined;
   private readonly _nameExcerpt: DocExcerpt | undefined;
+
+  private _startTagOpeningDelimiter: string | undefined;
+  private readonly _startTagOpeningDelimiterExcerpt: DocExcerpt | undefined;
+
+  private _startTagClosingDelimiter: string | undefined;
+  private readonly _startTagClosingDelimiterExcerpt: DocExcerpt | undefined;
+
+  private _endTagOpeningDelimiter: string | undefined;
+  private readonly _endTagOpeningDelimiterExcerpt: DocExcerpt | undefined;
+
+  private _endTagClosingDelimiter: string | undefined;
+  private readonly _endTagClosingDelimiterExcerpt: DocExcerpt | undefined;
 
   private _spacingAfterName: string | undefined;
   private readonly _spacingAfterNameExcerpt: DocExcerpt | undefined;
@@ -73,7 +88,7 @@ export class DocXmlElement extends DocNodeContainer {
       this.appendNodes(parameters.childNodes);
       this._nameExcerpt = new DocExcerpt({
         configuration: this.configuration,
-        excerptKind: ExcerptKind.HtmlStartTag_Name,
+        excerptKind: ExcerptKind.XmlStartTag_Name,
         content: parameters.nameExcerpt
       });
       if (parameters.spacingAfterNameExcerpt) {
@@ -81,6 +96,34 @@ export class DocXmlElement extends DocNodeContainer {
           configuration: this.configuration,
           excerptKind: ExcerptKind.Spacing,
           content: parameters.spacingAfterNameExcerpt
+        });
+      }
+      if (parameters.startTagOpeningDelimiterExcerpt) {
+        this._startTagOpeningDelimiterExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.XmlStartTag_OpeningDelimiter,
+          content: parameters.startTagOpeningDelimiterExcerpt
+        });
+      }
+      if (parameters.startTagClosingDelimiterExcerpt) {
+        this._startTagClosingDelimiterExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.XmlStartTag_ClosingDelimiter,
+          content: parameters.startTagClosingDelimiterExcerpt
+        });
+      }
+      if (parameters.endTagOpeningDelimiterExcerpt) {
+        this._endTagOpeningDelimiterExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.XmlEndTag_OpeningDelimiter,
+          content: parameters.endTagOpeningDelimiterExcerpt
+        });
+      }
+      if (parameters.endTagClosingDelimiterExcerpt) {
+        this._endTagClosingDelimiterExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.XmlEndTag_ClosingDelimiter,
+          content: parameters.endTagClosingDelimiterExcerpt
         });
       }
       if (parameters.spacingBetweenStartTagAndChildExcerpt) {
@@ -102,9 +145,9 @@ export class DocXmlElement extends DocNodeContainer {
       this._spacingAfterName = parameters.spacingAfterName;
     }
 
-    this._htmlAttributes = [];
-    if (parameters.htmlAttributes) {
-      this._htmlAttributes.push(...parameters.htmlAttributes);
+    this._xmlAttributes = [];
+    if (parameters.xmlAttributes) {
+      this._xmlAttributes.push(...parameters.xmlAttributes);
     }
 
     this._selfClosingTag = !!parameters.selfClosingTag;
@@ -127,8 +170,8 @@ export class DocXmlElement extends DocNodeContainer {
   /**
    * The XML attributes belonging to this XML element.
    */
-  public get htmlAttributes(): ReadonlyArray<DocHtmlAttribute> {
-    return this._htmlAttributes;
+  public get xmlAttributes(): ReadonlyArray<DocXmlAttribute> {
+    return this._xmlAttributes;
   }
 
   /**
@@ -178,11 +221,63 @@ export class DocXmlElement extends DocNodeContainer {
     return this._spacingAfterEndTag;
   }
 
+  /**
+   * The start tag opening delimiter.
+   */
+  public get startTagOpeningDelimiter(): string | undefined {
+    if (this._startTagOpeningDelimiter === undefined) {
+      if (this._startTagOpeningDelimiterExcerpt !== undefined) {
+        this._startTagOpeningDelimiter = this._startTagOpeningDelimiterExcerpt.content.toString();
+      }
+    }
+
+    return this._startTagOpeningDelimiter;
+  }
+
+  /**
+   * The start tag closing delimiter.
+   */
+  public get startTagClosingDelimiter(): string | undefined {
+    if (this._startTagClosingDelimiter === undefined) {
+      if (this._startTagClosingDelimiterExcerpt !== undefined) {
+        this._startTagClosingDelimiter = this._startTagClosingDelimiterExcerpt.content.toString();
+      }
+    }
+
+    return this._startTagClosingDelimiter;
+  }
+
+  /**
+   * The end tag opening delimiter. This is not present when the XML element is self-closing.
+   */
+  public get endTagOpeningDelimiter(): string | undefined {
+    if (this._endTagOpeningDelimiter === undefined) {
+      if (this._endTagOpeningDelimiterExcerpt !== undefined) {
+        this._endTagOpeningDelimiter = this._endTagOpeningDelimiterExcerpt.content.toString();
+      }
+    }
+
+    return this._endTagOpeningDelimiter;
+  }
+
+  /**
+   * The end tag closing delimiter. This is not present when the XML element is self-closing.
+   */
+  public get endTagClosingDelimiter(): string | undefined {
+    if (this._endTagClosingDelimiter === undefined) {
+      if (this._endTagClosingDelimiterExcerpt !== undefined) {
+        this._endTagClosingDelimiter = this._endTagClosingDelimiterExcerpt.content.toString();
+      }
+    }
+
+    return this._endTagClosingDelimiter;
+  }
+
   public emitAsXml(): string {
     // NOTE: Here we're assuming that the TSDoc representation for a tag is also a valid HTML expression.
     const stringBuilder: StringBuilder = new StringBuilder();
     const emitter: TSDocEmitter = new TSDocEmitter();
-    emitter.renderXmlTag(stringBuilder, this);
+    emitter.renderXmlElement(stringBuilder, this);
     return stringBuilder.toString();
   }
 }

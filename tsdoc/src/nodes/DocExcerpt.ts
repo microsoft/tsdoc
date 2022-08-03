@@ -40,17 +40,17 @@ export enum ExcerptKind {
   FencedCode_Code = 'FencedCode_Code',
   FencedCode_ClosingFence = 'FencedCode_ClosingFence',
 
-  HtmlAttribute_Name = 'HtmlAttribute_Name',
-  HtmlAttribute_Equals = 'HtmlAttribute_Equals',
-  HtmlAttribute_Value = 'HtmlAttribute_Value',
+  XmlAttribute_Name = 'XmlAttribute_Name',
+  XmlAttribute_Equals = 'XmlAttribute_Equals',
+  XmlAttribute_Value = 'XmlAttribute_Value',
 
-  HtmlEndTag_OpeningDelimiter = 'HtmlEndTag_OpeningDelimiter',
-  HtmlEndTag_Name = 'HtmlEndTag_Name',
-  HtmlEndTag_ClosingDelimiter = 'HtmlEndTag_ClosingDelimiter',
+  XmlEndTag_OpeningDelimiter = 'XmlEndTag_OpeningDelimiter',
+  XmlEndTag_Name = 'XmlEndTag_Name',
+  XmlEndTag_ClosingDelimiter = 'XmlEndTag_ClosingDelimiter',
 
-  HtmlStartTag_OpeningDelimiter = 'HtmlStartTag_OpeningDelimiter',
-  HtmlStartTag_Name = 'HtmlStartTag_Name',
-  HtmlStartTag_ClosingDelimiter = 'HtmlStartTag_ClosingDelimiter',
+  XmlStartTag_OpeningDelimiter = 'XmlStartTag_OpeningDelimiter',
+  XmlStartTag_Name = 'XmlStartTag_Name',
+  XmlStartTag_ClosingDelimiter = 'XmlStartTag_ClosingDelimiter',
 
   InlineTag_OpeningDelimiter = 'InlineTag_OpeningDelimiter',
   InlineTag_TagName = 'InlineTag_TagName',

@@ -569,9 +569,9 @@ Object {
   "logMessages": Array [
     "(2,31): Unexpected character after link destination",
     "(3,31): Unexpected character after link destination",
-    "(4,11): An @link URL must begin with a scheme comprised only of letters and numbers followed by \\"://\\". (For general URLs, use an HTML \\"<a>\\" tag instead.)",
+    "(4,11): An @link URL must begin with a scheme comprised only of letters and numbers followed by \\"://\\". (For general URLs, use an XML \\"<a>\\" tag instead.)",
     "(5,17): Syntax error in declaration reference: the member selector must be enclosed in parentheses",
-    "(6,11): An @link URL must begin with a scheme comprised only of letters and numbers followed by \\"://\\". (For general URLs, use an HTML \\"<a>\\" tag instead.)",
+    "(6,11): An @link URL must begin with a scheme comprised only of letters and numbers followed by \\"://\\". (For general URLs, use an XML \\"<a>\\" tag instead.)",
     "(7,11): An @link URL must have at least one character after \\"://\\"",
   ],
   "nodes": Object {

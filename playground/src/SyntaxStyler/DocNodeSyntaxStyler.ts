@@ -72,11 +72,11 @@ export class DocNodeSyntaxStyler {
         case 'DocMemberSymbol_RightBracket':
         case 'FencedCode_ClosingFence':
         case 'FencedCode_OpeningFence':
-        case 'HtmlAttribute_Equals':
-        case 'HtmlEndTag_ClosingDelimiter':
-        case 'HtmlEndTag_OpeningDelimiter':
-        case 'HtmlStartTag_ClosingDelimiter':
-        case 'HtmlStartTag_OpeningDelimiter':
+        case 'XmlAttribute_Equals':
+        case 'XmlEndTag_ClosingDelimiter':
+        case 'XmlEndTag_OpeningDelimiter':
+        case 'XmlStartTag_ClosingDelimiter':
+        case 'XmlStartTag_OpeningDelimiter':
         case 'InlineTag_ClosingDelimiter':
         case 'InlineTag_OpeningDelimiter':
         case 'LinkTag_Pipe':
@@ -155,8 +155,8 @@ export class DocNodeSyntaxStyler {
           break;
         }
 
-        case 'HtmlEndTag_Name':
-        case 'HtmlStartTag_Name': {
+        case 'XmlEndTag_Name':
+        case 'XmlStartTag_Name': {
           DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
             theme,
             styleTokens: [...styleTokens, 'element', 'name']
@@ -164,7 +164,7 @@ export class DocNodeSyntaxStyler {
           break;
         }
 
-        case 'HtmlAttribute_Name': {
+        case 'XmlAttribute_Name': {
           DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
             theme,
             styleTokens: [...styleTokens, 'element', 'attribute', 'name']
@@ -172,7 +172,7 @@ export class DocNodeSyntaxStyler {
           break;
         }
 
-        case 'HtmlAttribute_Value': {
+        case 'XmlAttribute_Value': {
           DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
             theme,
             styleTokens: [...styleTokens, 'element', 'attribute', 'value']

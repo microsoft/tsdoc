@@ -25,8 +25,8 @@ expect.addSnapshotSerializer({
       tagDefinitions: configFile.tagDefinitions,
       supportForTags: Array.from(configFile.supportForTags).map(([tagName, supported]) => ({ tagName, supported })),
       messages: configFile.log.messages,
-      supportedHtmlElements: configFile.supportedHtmlElements,
-      reportUnsupportedHtmlElements: configFile.reportUnsupportedHtmlElements,
+      supportedHtmlElements: configFile.supportedXmlElements,
+      reportUnsupportedHtmlElements: configFile.reportUnsupportedXmlElements,
     });
   },
 });

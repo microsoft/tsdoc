@@ -86,7 +86,7 @@ export class StringChecks {
     if (!StringChecks._urlSchemeRegExp.test(url)) {
       return (
         'An @link URL must begin with a scheme comprised only of letters and numbers followed by "://".' +
-        ' (For general URLs, use an HTML "<a>" tag instead.)'
+        ' (For general URLs, use an XML "<a>" tag instead.)'
       );
     }
     if (!StringChecks._urlSchemeAfterRegExp.test(url)) {
@@ -97,21 +97,21 @@ export class StringChecks {
   }
 
   /**
-   * Tests whether the input string is a valid HTML element or attribute name.
+   * Tests whether the input string is a valid XML element or attribute name.
    */
-  public static explainIfInvalidHtmlName(htmlName: string): string | undefined {
-    if (!StringChecks._htmlNameRegExp.test(htmlName)) {
-      return 'An HTML name must be an ASCII letter followed by zero or more letters, digits, or hyphens';
+  public static explainIfInvalidXmlName(xmlName: string): string | undefined {
+    if (!StringChecks._htmlNameRegExp.test(xmlName)) {
+      return 'An XML name must be an ASCII letter followed by zero or more letters, digits, or hyphens';
     }
 
     return undefined;
   }
 
   /**
-   * Throws an exception if the input string is a not valid HTML element or attribute name.
+   * Throws an exception if the input string is a not valid XML element or attribute name.
    */
-  public static validateHtmlName(htmlName: string): void {
-    const explanation: string | undefined = StringChecks.explainIfInvalidHtmlName(htmlName);
+  public static validateXmlName(xmlName: string): void {
+    const explanation: string | undefined = StringChecks.explainIfInvalidXmlName(xmlName);
     if (explanation) {
       throw new Error(explanation);
     }

@@ -1,0 +1,3117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`01 XML single tags, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag/[>][n] * [<]tag-a /[>][n] * [<]tag-b /[>][<]tag-c /[>][n] * [<]tag-d[n] * /[>][n] * [<]tag-e[n] *      /[>]  [n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]tag/[>]",
+    "[<]tag-a /[>]",
+    "[<]tag-b /[>][<]tag-c /[>]",
+    "[<]tag-d",
+    "/[>]",
+    "[<]tag-e",
+    "     /[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+              },
+              Object {
+                "kind": "XmlElement",
+              },
+              Object {
+                "kind": "XmlElement",
+              },
+              Object {
+                "kind": "XmlElement",
+              },
+              Object {
+                "kind": "XmlElement",
+              },
+              Object {
+                "kind": "XmlElement",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`02 HTML start tags: with attributes, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-a attr-one=[q]one[q] [>][n] * [<]tag-b[n] *   attr-two[n] *   = [q]2[q][n] * /[>][n] */",
+  "gaps": Array [
+    "<tag-a attr-one=\\"one\\" >
+<tag-b
+  attr-two
+  = \\"2\\"
+/>",
+  ],
+  "lines": Array [
+    "[<]tag-a attr-one=[q]one[q] [>]",
+    "[<]tag-b",
+    "  attr-two",
+    "  = [q]2[q]",
+    "/[>]",
+  ],
+  "logMessages": Array [
+    "(6,6): Expecting a closing tag starting with \\"</\\"",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[n]",
+                "errorLocationPrecedingToken": ">",
+                "errorMessage": "Expecting a closing tag starting with [q][<]/[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`02 HTML start tags: with attributes, positive 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-c attr-three=[q]3[q] four='4'/[>][n] * [<]tag-d[n] *   attr-five[n] *   = [q]5[q][n] *   six[n] *   = '6'[n] * /[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]tag-c attr-three=[q]3[q] four='4'/[>]",
+    "[<]tag-d",
+    "  attr-five",
+    "  = [q]5[q]",
+    "  six",
+    "  = '6'",
+    "/[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+              },
+              Object {
+                "kind": "XmlElement",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`02 HTML start tags: with attributes, positive 3`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-e attr-one=[q]one[q] two='two'/[>][n] * [<]tag-f[n] *   attr-one[n] *   = [q]one[q][n] *   two[n] *   = 'two'[n] * /[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]tag-e attr-one=[q]one[q] two='two'/[>]",
+    "[<]tag-f",
+    "  attr-one",
+    "  = [q]one[q]",
+    "  two",
+    "  = 'two'",
+    "/[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+              },
+              Object {
+                "kind": "XmlElement",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`03 XML start tags: with attributes, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-a attr -one=[q]one[q] /[>][n] * [<]tag-b attr- two=[q]two[q] /[>][n] * [<]tag-c attr-three='three[q] /[>][n] * [<]tag-d attr-four=@[q]four[q] /[>][n] * [<]tag-e attr-five@=[q]five[q] /[>][n] * [<]tag-f attr-six=[q]six[q]seven=[q]seven[q] /[>][n] */",
+  "gaps": Array [
+    "<tag-a ",
+    "<tag-b ",
+    "<tag-c ",
+    "<tag-d ",
+    "<tag-e ",
+    "<tag-f ",
+  ],
+  "lines": Array [
+    "[<]tag-a attr -one=[q]one[q] /[>]",
+    "[<]tag-b attr- two=[q]two[q] /[>]",
+    "[<]tag-c attr-three='three[q] /[>]",
+    "[<]tag-d attr-four=@[q]four[q] /[>]",
+    "[<]tag-e attr-five@=[q]five[q] /[>]",
+    "[<]tag-f attr-six=[q]six[q]seven=[q]seven[q] /[>]",
+  ],
+  "logMessages": Array [
+    "(2,11): Invalid XML attribute: Expecting \\"=\\" after XML attribute name",
+    "(2,28): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(3,11): Invalid XML attribute: Expecting \\"=\\" after XML attribute name",
+    "(3,28): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,11): Invalid XML attribute: The XML string is missing its closing quote",
+    "(4,31): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(5,11): Invalid XML attribute: Expecting an XML string starting with a single-quote or double-quote character",
+    "(5,21): The \\"@\\" character looks like part of a TSDoc tag; use a backslash to escape it",
+    "(5,30): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(6,11): Invalid XML attribute: Expecting \\"=\\" after XML attribute name",
+    "(6,20): The \\"@\\" character looks like part of a TSDoc tag; use a backslash to escape it",
+    "(6,30): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(7,11): Invalid XML attribute: The next character after a closing quote must be spacing or punctuation",
+    "(7,40): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "-",
+                "errorLocationPrecedingToken": " ",
+                "errorMessage": "Invalid XML attribute: Expecting [q]=[q] after XML attribute name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "attr",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": " -one=[q]one[q] /",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "two",
+                "errorLocationPrecedingToken": " ",
+                "errorMessage": "Invalid XML attribute: Expecting [q]=[q] after XML attribute name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "attr",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "- two=[q]two[q] /",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "'",
+                "errorLocationPrecedingToken": "=",
+                "errorMessage": "Invalid XML attribute: The XML string is missing its closing quote",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "attr",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "-three='three[q] /",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "@",
+                "errorLocationPrecedingToken": "=",
+                "errorMessage": "Invalid XML attribute: Expecting an XML string starting with a single-quote or double-quote character",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "attr",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "-four=",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "@",
+                "errorLocationPrecedingToken": "=",
+                "errorMessage": "The [q]@[q] character looks like part of a TSDoc tag; use a backslash to escape it",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "@",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "[q]four[q] /",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "@",
+                "errorLocationPrecedingToken": "five",
+                "errorMessage": "Invalid XML attribute: Expecting [q]=[q] after XML attribute name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "attr",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "-five",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "@",
+                "errorLocationPrecedingToken": "five",
+                "errorMessage": "The [q]@[q] character looks like part of a TSDoc tag; use a backslash to escape it",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "@",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "=[q]five[q] /",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "seven",
+                "errorLocationPrecedingToken": "\\"",
+                "errorMessage": "Invalid XML attribute: The next character after a closing quote must be spacing or punctuation",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "attr",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "-six=[q]six[q]seven=[q]seven[q] /",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`03 XML start tags: with attributes, negative 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-g attr=[q]multi[n] * line[q] /[>][n] */",
+  "gaps": Array [
+    "<tag-g ",
+  ],
+  "lines": Array [
+    "[<]tag-g attr=[q]multi",
+    "line[q] /[>]",
+  ],
+  "logMessages": Array [
+    "(2,11): Invalid XML attribute: The XML string is missing its closing quote",
+    "(3,11): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[q]",
+                "errorLocationPrecedingToken": "=",
+                "errorMessage": "Invalid XML attribute: The XML string is missing its closing quote",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "attr",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "=[q]multi",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "line[q] /",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`04 XML singular elements, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] */",
+  "gaps": Array [
+    "<tag>",
+  ],
+  "lines": Array [
+    "[<]tag[>]",
+  ],
+  "logMessages": Array [
+    "(2,9): Expecting a closing tag starting with \\"</\\"",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[n]",
+                "errorLocationPrecedingToken": ">",
+                "errorMessage": "Expecting a closing tag starting with [q][<]/[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`04 XML singular elements, negative 2`] = `
+Object {
+  "buffer": "/**[n] * [<]/tag[>][n] */",
+  "gaps": Array [
+    "<",
+  ],
+  "lines": Array [
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [
+    "(2,5): Invalid XML tag name: Expecting an XML name",
+    "(2,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "tag",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`04 XML singular elements, negative 3`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-b[>][n] */",
+  "gaps": Array [
+    "<tag-b>",
+  ],
+  "lines": Array [
+    "[<]tag-b[>]",
+  ],
+  "logMessages": Array [
+    "(2,11): Expecting a closing tag starting with \\"</\\"",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[n]",
+                "errorLocationPrecedingToken": ">",
+                "errorMessage": "Expecting a closing tag starting with [q][<]/[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`04 XML singular elements, negative 4`] = `
+Object {
+  "buffer": "/**[n] * [<]tag       [>][n] */",
+  "gaps": Array [
+    "<tag       >",
+  ],
+  "lines": Array [
+    "[<]tag       [>]",
+  ],
+  "logMessages": Array [
+    "(2,16): Expecting a closing tag starting with \\"</\\"",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[n]",
+                "errorLocationPrecedingToken": ">",
+                "errorMessage": "Expecting a closing tag starting with [q][<]/[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`04 XML singular elements, negative 5`] = `
+Object {
+  "buffer": "/**[n] * [<]tag-c[n] * [>][n] */",
+  "gaps": Array [
+    "<tag-c
+>",
+  ],
+  "lines": Array [
+    "[<]tag-c",
+    "[>]",
+  ],
+  "logMessages": Array [
+    "(3,5): Expecting a closing tag starting with \\"</\\"",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[n]",
+                "errorLocationPrecedingToken": ">",
+                "errorMessage": "Expecting a closing tag starting with [q][<]/[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`05 basic nested elements, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a /[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a /[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+                "nodes": Array [
+                  Object {
+                    "kind": "XmlElement",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`05 basic nested elements, positive 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a[>][<]/tag-a[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a[>][<]/tag-a[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+                "nodes": Array [
+                  Object {
+                    "kind": "XmlElement",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`06 basic nested elements, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]/tag[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [
+    "<tag>
+  </tag>
+<",
+  ],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]/tag[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [
+    "(4,5): Invalid XML tag name: Expecting an XML name",
+    "(4,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "tag",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`06 basic nested elements, negative 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<][>][<][>][n] * [<]/tag[>][n] */",
+  "gaps": Array [
+    "<tag>
+  <>",
+    "<",
+  ],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<][>][<][>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [
+    "(3,7): Invalid XML tag name: Expecting an XML name",
+    "(3,8): Expecting an XML tag starting with \\"</\\"",
+    "(3,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,5): Invalid XML tag name: Expecting an XML name",
+    "(4,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[<]",
+                "errorLocationPrecedingToken": ">",
+                "errorMessage": "Expecting an XML tag starting with [q][<]/[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "tag",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`07 Sibling nested elements, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a /[>][n] *   [<]tag-b /[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a /[>]",
+    "  [<]tag-b /[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+                "nodes": Array [
+                  Object {
+                    "kind": "XmlElement",
+                  },
+                  Object {
+                    "kind": "XmlElement",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`07 Sibling nested elements, positive 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a[>][<]/tag-a[>][n] *   [<]tag-b[>][<]/tag-b[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a[>][<]/tag-a[>]",
+    "  [<]tag-b[>][<]/tag-b[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+                "nodes": Array [
+                  Object {
+                    "kind": "XmlElement",
+                  },
+                  Object {
+                    "kind": "XmlElement",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`08 Sibling nested elements, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a /[>][n] *   [<]/tag[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [
+    "<tag>
+  <tag-a />
+  </tag>
+<",
+  ],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a /[>]",
+    "  [<]/tag[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [
+    "(5,5): Invalid XML tag name: Expecting an XML name",
+    "(5,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+                "nodes": Array [
+                  Object {
+                    "kind": "XmlElement",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "tag",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`08 Sibling nested elements, negative 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a /[>][n] *   [<]tag-b /[>][n] *   [<]/tag[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [
+    "<tag>
+  <tag-a />
+  <tag-b />
+  </tag>
+<",
+  ],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a /[>]",
+    "  [<]tag-b /[>]",
+    "  [<]/tag[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [
+    "(6,5): Invalid XML tag name: Expecting an XML name",
+    "(6,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+                "nodes": Array [
+                  Object {
+                    "kind": "XmlElement",
+                  },
+                  Object {
+                    "kind": "XmlElement",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "tag",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`09 Nested elements with attributes, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a attr=[q]value[q] /[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a attr=[q]value[q] /[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+                "nodes": Array [
+                  Object {
+                    "kind": "XmlElement",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`09 Nested elements with attributes, positive 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a attr=[q]value[q][>][<]/tag-a[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a attr=[q]value[q][>][<]/tag-a[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+                "nodes": Array [
+                  Object {
+                    "kind": "XmlElement",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`10 Nested elements with attributes, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a attr=value /[>][n] *   [<]tag-b attr=[q]value /[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [
+    "<tag>
+  <tag-a attr",
+    "<tag-b ",
+    "<",
+  ],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a attr=value /[>]",
+    "  [<]tag-b attr=[q]value /[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [
+    "(3,13): Invalid XML attribute: Expecting an XML string starting with a single-quote or double-quote character",
+    "(3,17): Expecting a closing tag starting with \\"</\\"",
+    "(3,25): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,13): Invalid XML attribute: The XML string is missing its closing quote",
+    "(4,26): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(5,5): Invalid XML tag name: Expecting an XML name",
+    "(5,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "=",
+                "errorLocationPrecedingToken": "attr",
+                "errorMessage": "Expecting a closing tag starting with [q][<]/[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "=",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "value /",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "  ",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[q]",
+                "errorLocationPrecedingToken": "=",
+                "errorMessage": "Invalid XML attribute: The XML string is missing its closing quote",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "attr",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "=[q]value /",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "tag",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`10 Nested elements with attributes, negative 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]attr=[q]value[q] /[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [
+    "<tag>
+  <attr=",
+    "<",
+  ],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]attr=[q]value[q] /[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [
+    "(3,11): Expecting an attribute or \\">\\" or \\"/>\\"",
+    "(3,12): Expecting a closing tag starting with \\"</\\"",
+    "(3,21): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,5): Invalid XML tag name: Expecting an XML name",
+    "(4,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[q]",
+                "errorLocationPrecedingToken": "=",
+                "errorMessage": "Expecting a closing tag starting with [q][<]/[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[q]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "value[q] /",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "tag",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`11 nested text elements, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   foo[n] * [<]/tag[>][n]*/",
+  "gaps": Array [
+    "<tag>
+  ",
+    "</tag>
+",
+  ],
+  "lines": Array [
+    "[<]tag[>]",
+    "  foo",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+                "nodes": Array [
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": "foo[n]",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`11 nested text elements, positive 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a[>][n] *     foo[n] *   [<]/tag-a[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [
+    "<tag>
+  <tag-a>
+    ",
+    "</tag-a>
+</tag>
+",
+  ],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a[>]",
+    "    foo",
+    "  [<]/tag-a[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+                "nodes": Array [
+                  Object {
+                    "kind": "XmlElement",
+                    "nodes": Array [
+                      Object {
+                        "kind": "PlainText",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Excerpt: PlainText",
+                            "nodeExcerpt": "foo[n]  ",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`12 nested text elements, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a[>][n] *     foo [<][n] *   [<]/tag-a[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [
+    "<tag>
+  <tag-a>
+    foo <
+  ",
+    "<",
+  ],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a[>]",
+    "    foo [<]",
+    "  [<]/tag-a[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [
+    "(4,13): Invalid XML tag name: Expecting an XML name",
+    "(5,4): Expecting a closing tag starting with \\"</\\"",
+    "(5,6): Expecting closing tag name to match opening tag name, got \\"tag-a\\" but expected \\"tag\\"",
+    "(5,13): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(6,5): Invalid XML tag name: Expecting an XML name",
+    "(6,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[<]",
+                "errorLocationPrecedingToken": "  ",
+                "errorMessage": "Expecting closing tag name to match opening tag name, got [q]tag-a[q] but expected [q]tag[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "/tag-a",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "a",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "tag",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`12 nested text elements, negative 2`] = `
+Object {
+  "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a[>][n] *     foo[<][n] *     [<]tag-b[>][n] *     [<]/tag-b[>][n] *   [<]/tag-a[>][n] * [<]/tag[>][n] */",
+  "gaps": Array [
+    "<tag>
+  <tag-a>
+    foo<
+    ",
+    "<",
+    "<",
+    "<",
+  ],
+  "lines": Array [
+    "[<]tag[>]",
+    "  [<]tag-a[>]",
+    "    foo[<]",
+    "    [<]tag-b[>]",
+    "    [<]/tag-b[>]",
+    "  [<]/tag-a[>]",
+    "[<]/tag[>]",
+  ],
+  "logMessages": Array [
+    "(4,12): Invalid XML tag name: Expecting an XML name",
+    "(5,4): Expecting a closing tag starting with \\"</\\"",
+    "(5,8): Expecting an XML tag starting with \\"</\\"",
+    "(5,14): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(6,9): Invalid XML tag name: Expecting an XML name",
+    "(6,15): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(7,7): Invalid XML tag name: Expecting an XML name",
+    "(7,13): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(8,5): Invalid XML tag name: Expecting an XML name",
+    "(8,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[<]",
+                "errorLocationPrecedingToken": "    ",
+                "errorMessage": "Expecting an XML tag starting with [q][<]/[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-b",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "b",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "    ",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-b",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "b",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "  ",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-a",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "a",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "tag",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`13 Closing tags, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]/tag-a[>][n] * [<]/tag-b  [>][n] * [<]/tag-c[n] *   [>][n] */",
+  "gaps": Array [
+    "<",
+    "<",
+    "<",
+  ],
+  "lines": Array [
+    "[<]/tag-a[>]",
+    "[<]/tag-b  [>]",
+    "[<]/tag-c",
+    "  [>]",
+  ],
+  "logMessages": Array [
+    "(2,5): Invalid XML tag name: Expecting an XML name",
+    "(2,11): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(3,5): Invalid XML tag name: Expecting an XML name",
+    "(3,13): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,5): Invalid XML tag name: Expecting an XML name",
+    "(5,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-a",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "a",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-b  ",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "  ",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-c",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "  ",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "  ",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`14 Closing tags, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]/tag-a/[>][n] * [<]/ tag-b[>][n] * [<]/tag-c[n] */",
+  "gaps": Array [
+    "<",
+    "<",
+    "<",
+  ],
+  "lines": Array [
+    "[<]/tag-a/[>]",
+    "[<]/ tag-b[>]",
+    "[<]/tag-c",
+  ],
+  "logMessages": Array [
+    "(2,5): Invalid XML tag name: Expecting an XML name",
+    "(2,12): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(3,5): Invalid XML tag name: Expecting an XML name",
+    "(3,12): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,5): Invalid XML tag name: Expecting an XML name",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-a/",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": " tag-b",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "b",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "/",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: Expecting an XML name",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "tag-c",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`15 Unusual XML names, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]a1/[>][n] * [<]a-a[>][n] * [<]a--9-[>][n] */",
+  "gaps": Array [
+    "<a1/>
+<a-a>
+<a--9->",
+  ],
+  "lines": Array [
+    "[<]a1/[>]",
+    "[<]a-a[>]",
+    "[<]a--9-[>]",
+  ],
+  "logMessages": Array [
+    "(4,11): Expecting a closing tag starting with \\"</\\"",
+    "(4,11): Expecting a closing tag starting with \\"</\\"",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "kind": "XmlElement",
+              },
+              Object {
+                "errorLocation": "[n]",
+                "errorLocationPrecedingToken": ">",
+                "errorMessage": "Expecting a closing tag starting with [q][<]/[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`16 Unusual XML names, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]1a/[>][n] * [<]a.a[>][n] * [<]_a[>][n] */",
+  "gaps": Array [
+    "<",
+    "<",
+    "<",
+  ],
+  "lines": Array [
+    "[<]1a/[>]",
+    "[<]a.a[>]",
+    "[<]_a[>]",
+  ],
+  "logMessages": Array [
+    "(2,5): Invalid XML tag name: An XML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+    "(2,8): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(3,5): Invalid XML tag name: An XML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+    "(3,8): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,5): Invalid XML tag name: An XML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+    "(4,7): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "1a",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: An XML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "1a",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "/",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "/",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "a.a",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: An XML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "a",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": ".a",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "a",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "_a",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: An XML name must be an ASCII letter followed by zero or more letters, digits, or hyphens",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "_a",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "_a",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`17 Supported XML elements, positive 1`] = `
+Object {
+  "buffer": "/**[n] * [<]a[>][n] * [<]b/[>][n] * [<]/c[>][n] */",
+  "gaps": Array [
+    "<a>
+<b/>
+",
+  ],
+  "lines": Array [
+    "[<]a[>]",
+    "[<]b/[>]",
+    "[<]/c[>]",
+  ],
+  "logMessages": Array [
+    "(4,4): Expecting closing tag name to match opening tag name, got \\"c\\" but expected \\"a\\"",
+    "(4,7): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "[<]",
+                "errorLocationPrecedingToken": "
+",
+                "errorMessage": "Expecting closing tag name to match opening tag name, got [q]c[q] but expected [q]a[q]",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[<]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "PlainText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: PlainText",
+                    "nodeExcerpt": "/c",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "c",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`18 Supported XML elements, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]a[>][n] * [<]b[>][n] * [<]c[>][n] */",
+  "gaps": Array [
+    "<",
+    "<",
+    "<",
+  ],
+  "lines": Array [
+    "[<]a[>]",
+    "[<]b[>]",
+    "[<]c[>]",
+  ],
+  "logMessages": Array [
+    "(2,5): Invalid XML tag name: The XML element name \\"a\\" is not defined by your TSDoc configuration",
+    "(2,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(3,5): Invalid XML tag name: The XML element name \\"b\\" is not defined by your TSDoc configuration",
+    "(3,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,5): Invalid XML tag name: The XML element name \\"c\\" is not defined by your TSDoc configuration",
+    "(4,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "a",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: The XML element name [q]a[q] is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "a",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "a",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "b",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: The XML element name [q]b[q] is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "b",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "b",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "c",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: The XML element name [q]c[q] is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "c",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "c",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`19 Forbidding all XML elements, negative 1`] = `
+Object {
+  "buffer": "/**[n] * [<]a[>][n] * [<]b[>][n] * [<]c[>][n] */",
+  "gaps": Array [
+    "<",
+    "<",
+    "<",
+  ],
+  "lines": Array [
+    "[<]a[>]",
+    "[<]b[>]",
+    "[<]c[>]",
+  ],
+  "logMessages": Array [
+    "(2,5): Invalid XML tag name: The XML element name \\"a\\" is not defined by your TSDoc configuration",
+    "(2,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(3,5): Invalid XML tag name: The XML element name \\"b\\" is not defined by your TSDoc configuration",
+    "(3,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(4,5): Invalid XML tag name: The XML element name \\"c\\" is not defined by your TSDoc configuration",
+    "(4,6): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+  ],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+        "nodes": Array [
+          Object {
+            "kind": "Paragraph",
+            "nodes": Array [
+              Object {
+                "errorLocation": "a",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: The XML element name [q]a[q] is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "a",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "a",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "b",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: The XML element name [q]b[q] is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "b",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "b",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "c",
+                "errorLocationPrecedingToken": "<",
+                "errorMessage": "Invalid XML tag name: The XML element name [q]c[q] is not defined by your TSDoc configuration",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "c",
+                  },
+                ],
+              },
+              Object {
+                "errorLocation": "[>]",
+                "errorLocationPrecedingToken": "c",
+                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
+                "kind": "ErrorText",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: ErrorText",
+                    "nodeExcerpt": "[>]",
+                  },
+                ],
+              },
+              Object {
+                "kind": "SoftBreak",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: SoftBreak",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;

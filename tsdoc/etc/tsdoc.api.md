@@ -132,46 +132,6 @@ export class DocFencedCode extends DocNode {
     }
 
 // @public
-export class DocHtmlAttribute extends DocNode {
-    // @internal
-    constructor(parameters: IDocHtmlAttributeParameters | IDocHtmlAttributeParsedParameters);
-    // @override (undocumented)
-    get kind(): DocNodeKind | string;
-    get name(): string;
-    // @override (undocumented)
-    protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-    get spacingAfterEquals(): string | undefined;
-    get spacingAfterName(): string | undefined;
-    get spacingAfterValue(): string | undefined;
-    get value(): string;
-    }
-
-// @public
-export class DocHtmlEndTag extends DocNode {
-    // @internal
-    constructor(parameters: IDocHtmlEndTagParameters | IDocHtmlEndTagParsedParameters);
-    // @override (undocumented)
-    get kind(): DocNodeKind | string;
-    get name(): string;
-    // @override (undocumented)
-    protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-    }
-
-// @public
-export class DocHtmlStartTag extends DocNode {
-    // @internal
-    constructor(parameters: IDocHtmlStartTagParameters | IDocHtmlStartTagParsedParameters);
-    get htmlAttributes(): ReadonlyArray<DocHtmlAttribute>;
-    // @override (undocumented)
-    get kind(): DocNodeKind | string;
-    get name(): string;
-    // @override (undocumented)
-    protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-    get selfClosingTag(): boolean;
-    get spacingAfterName(): string | undefined;
-    }
-
-// @public
 export class DocInheritDocTag extends DocInlineTagBase {
     // @internal
     constructor(parameters: IDocInheritDocTagParameters | IDocInheritDocTagParsedParameters);
@@ -317,12 +277,6 @@ export enum DocNodeKind {
     // (undocumented)
     FencedCode = "FencedCode",
     // (undocumented)
-    HtmlAttribute = "HtmlAttribute",
-    // (undocumented)
-    HtmlEndTag = "HtmlEndTag",
-    // (undocumented)
-    HtmlStartTag = "HtmlStartTag",
-    // (undocumented)
     InheritDocTag = "InheritDocTag",
     // (undocumented)
     InlineTag = "InlineTag",
@@ -348,6 +302,8 @@ export enum DocNodeKind {
     Section = "Section",
     // (undocumented)
     SoftBreak = "SoftBreak",
+    // (undocumented)
+    XmlAttribute = "XmlAttribute",
     // (undocumented)
     XmlElement = "XmlElement"
 }
@@ -434,13 +390,29 @@ export class DocSoftBreak extends DocNode {
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
     }
 
+// @public
+export class DocXmlAttribute extends DocNode {
+    // @internal
+    constructor(parameters: IDocXmlAttributeParameters | IDocXmlAttributeParsedParameters);
+    // @override (undocumented)
+    get kind(): DocNodeKind | string;
+    get name(): string;
+    // @override (undocumented)
+    protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
+    get spacingAfterEquals(): string | undefined;
+    get spacingAfterName(): string | undefined;
+    get spacingAfterValue(): string | undefined;
+    get value(): string;
+    }
+
 // @public (undocumented)
 export class DocXmlElement extends DocNodeContainer {
     // @internal
     constructor(parameters: IDocXmlElementParameters | IDocXmlElementParsedParameters);
     // (undocumented)
     emitAsXml(): string;
-    get htmlAttributes(): ReadonlyArray<DocHtmlAttribute>;
+    get endTagClosingDelimiter(): string | undefined;
+    get endTagOpeningDelimiter(): string | undefined;
     // (undocumented)
     get kind(): string;
     get name(): string;
@@ -448,6 +420,9 @@ export class DocXmlElement extends DocNodeContainer {
     get spacingAfterEndTag(): string | undefined;
     get spacingAfterName(): string | undefined;
     get spacingBetweenStartTagAndChildren(): string | undefined;
+    get startTagClosingDelimiter(): string | undefined;
+    get startTagOpeningDelimiter(): string | undefined;
+    get xmlAttributes(): ReadonlyArray<DocXmlAttribute>;
     }
 
 // @public
@@ -486,24 +461,6 @@ export enum ExcerptKind {
     FencedCode_Language = "FencedCode_Language",
     // (undocumented)
     FencedCode_OpeningFence = "FencedCode_OpeningFence",
-    // (undocumented)
-    HtmlAttribute_Equals = "HtmlAttribute_Equals",
-    // (undocumented)
-    HtmlAttribute_Name = "HtmlAttribute_Name",
-    // (undocumented)
-    HtmlAttribute_Value = "HtmlAttribute_Value",
-    // (undocumented)
-    HtmlEndTag_ClosingDelimiter = "HtmlEndTag_ClosingDelimiter",
-    // (undocumented)
-    HtmlEndTag_Name = "HtmlEndTag_Name",
-    // (undocumented)
-    HtmlEndTag_OpeningDelimiter = "HtmlEndTag_OpeningDelimiter",
-    // (undocumented)
-    HtmlStartTag_ClosingDelimiter = "HtmlStartTag_ClosingDelimiter",
-    // (undocumented)
-    HtmlStartTag_Name = "HtmlStartTag_Name",
-    // (undocumented)
-    HtmlStartTag_OpeningDelimiter = "HtmlStartTag_OpeningDelimiter",
     // (undocumented)
     InlineTag_ClosingDelimiter = "InlineTag_ClosingDelimiter",
     // (undocumented)
@@ -544,7 +501,25 @@ export enum ExcerptKind {
     // (undocumented)
     SoftBreak = "SoftBreak",
     // (undocumented)
-    Spacing = "Spacing"
+    Spacing = "Spacing",
+    // (undocumented)
+    XmlAttribute_Equals = "XmlAttribute_Equals",
+    // (undocumented)
+    XmlAttribute_Name = "XmlAttribute_Name",
+    // (undocumented)
+    XmlAttribute_Value = "XmlAttribute_Value",
+    // (undocumented)
+    XmlEndTag_ClosingDelimiter = "XmlEndTag_ClosingDelimiter",
+    // (undocumented)
+    XmlEndTag_Name = "XmlEndTag_Name",
+    // (undocumented)
+    XmlEndTag_OpeningDelimiter = "XmlEndTag_OpeningDelimiter",
+    // (undocumented)
+    XmlStartTag_ClosingDelimiter = "XmlStartTag_ClosingDelimiter",
+    // (undocumented)
+    XmlStartTag_Name = "XmlStartTag_Name",
+    // (undocumented)
+    XmlStartTag_OpeningDelimiter = "XmlStartTag_OpeningDelimiter"
 }
 
 // @public
@@ -673,82 +648,6 @@ export interface IDocFencedCodeParsedParameters extends IDocNodeParsedParameters
     spacingAfterOpeningFenceExcerpt?: TokenSequence;
     // (undocumented)
     spacingBeforeClosingFenceExcerpt?: TokenSequence;
-}
-
-// @public
-export interface IDocHtmlAttributeParameters extends IDocNodeParameters {
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    spacingAfterEquals?: string;
-    // (undocumented)
-    spacingAfterName?: string;
-    // (undocumented)
-    spacingAfterValue?: string;
-    // (undocumented)
-    value: string;
-}
-
-// @public
-export interface IDocHtmlAttributeParsedParameters extends IDocNodeParsedParameters {
-    // (undocumented)
-    equalsExcerpt: TokenSequence;
-    // (undocumented)
-    nameExcerpt: TokenSequence;
-    // (undocumented)
-    spacingAfterEqualsExcerpt?: TokenSequence;
-    // (undocumented)
-    spacingAfterNameExcerpt?: TokenSequence;
-    // (undocumented)
-    spacingAfterValueExcerpt?: TokenSequence;
-    // (undocumented)
-    valueExcerpt: TokenSequence;
-}
-
-// @public
-export interface IDocHtmlEndTagParameters extends IDocNodeParameters {
-    // (undocumented)
-    name: string;
-}
-
-// @public
-export interface IDocHtmlEndTagParsedParameters extends IDocNodeParsedParameters {
-    // (undocumented)
-    closingDelimiterExcerpt: TokenSequence;
-    // (undocumented)
-    nameExcerpt: TokenSequence;
-    // (undocumented)
-    openingDelimiterExcerpt: TokenSequence;
-    // (undocumented)
-    spacingAfterNameExcerpt?: TokenSequence;
-}
-
-// @public
-export interface IDocHtmlStartTagParameters extends IDocNodeParameters {
-    // (undocumented)
-    htmlAttributes?: DocHtmlAttribute[];
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    selfClosingTag?: boolean;
-    // (undocumented)
-    spacingAfterName?: string;
-}
-
-// @public
-export interface IDocHtmlStartTagParsedParameters extends IDocNodeParsedParameters {
-    // (undocumented)
-    closingDelimiterExcerpt: TokenSequence;
-    // (undocumented)
-    htmlAttributes: DocHtmlAttribute[];
-    // (undocumented)
-    nameExcerpt: TokenSequence;
-    // (undocumented)
-    openingDelimiterExcerpt: TokenSequence;
-    // (undocumented)
-    selfClosingTag: boolean;
-    // (undocumented)
-    spacingAfterNameExcerpt?: TokenSequence;
 }
 
 // @public
@@ -1011,9 +910,37 @@ export interface IDocSoftBreakParsedParameters extends IDocNodeParsedParameters 
 }
 
 // @public
-export interface IDocXmlElementParameters extends IDocNodeParameters {
+export interface IDocXmlAttributeParameters extends IDocNodeParameters {
     // (undocumented)
-    htmlAttributes?: DocHtmlAttribute[];
+    name: string;
+    // (undocumented)
+    spacingAfterEquals?: string;
+    // (undocumented)
+    spacingAfterName?: string;
+    // (undocumented)
+    spacingAfterValue?: string;
+    // (undocumented)
+    value: string;
+}
+
+// @public
+export interface IDocXmlAttributeParsedParameters extends IDocNodeParsedParameters {
+    // (undocumented)
+    equalsExcerpt: TokenSequence;
+    // (undocumented)
+    nameExcerpt: TokenSequence;
+    // (undocumented)
+    spacingAfterEqualsExcerpt?: TokenSequence;
+    // (undocumented)
+    spacingAfterNameExcerpt?: TokenSequence;
+    // (undocumented)
+    spacingAfterValueExcerpt?: TokenSequence;
+    // (undocumented)
+    valueExcerpt: TokenSequence;
+}
+
+// @public
+export interface IDocXmlElementParameters extends IDocNodeParameters {
     // (undocumented)
     name: string;
     // (undocumented)
@@ -1022,6 +949,8 @@ export interface IDocXmlElementParameters extends IDocNodeParameters {
     spacingAfterName?: string;
     // (undocumented)
     startTagParameters: IDocXmlElementParsedParameters;
+    // (undocumented)
+    xmlAttributes?: DocXmlAttribute[];
 }
 
 // @public
@@ -1029,11 +958,13 @@ export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters
     // (undocumented)
     childNodes: DocNode[];
     // (undocumented)
+    endTagClosingDelimiterExcerpt?: TokenSequence;
+    // (undocumented)
     endTagClosingExcerpt?: TokenSequence;
     // (undocumented)
-    endTagOpeningExcerpt?: TokenSequence;
+    endTagOpeningDelimiterExcerpt?: TokenSequence;
     // (undocumented)
-    htmlAttributes: DocHtmlAttribute[];
+    endTagOpeningExcerpt?: TokenSequence;
     // (undocumented)
     nameExcerpt: TokenSequence;
     // (undocumented)
@@ -1052,6 +983,8 @@ export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters
     startTagClosingDelimiterExcerpt: TokenSequence;
     // (undocumented)
     startTagOpeningDelimiterExcerpt: TokenSequence;
+    // (undocumented)
+    xmlAttributes: DocXmlAttribute[];
 }
 
 // @public
@@ -1305,14 +1238,14 @@ export class TSDocConfiguration {
     get allTsdocMessageIds(): ReadonlyArray<TSDocMessageId>;
     clear(noStandardTags?: boolean): void;
     get docNodeManager(): DocNodeManager;
-    isHtmlElementSupported(htmlTag: string): boolean;
     isKnownMessageId(messageId: TSDocMessageId | string): boolean;
     isTagSupported(tagDefinition: TSDocTagDefinition): boolean;
-    setSupportedHtmlElements(htmlTags: string[]): void;
+    isXmlElementSupported(xmlTag: string): boolean;
+    setSupportedXmlElements(xmlTags: string[]): void;
     setSupportForTag(tagDefinition: TSDocTagDefinition, supported: boolean): void;
     setSupportForTags(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported: boolean): void;
-    get supportedHtmlElements(): string[];
     get supportedTagDefinitions(): ReadonlyArray<TSDocTagDefinition>;
+    get supportedXmlElements(): string[];
     get tagDefinitions(): ReadonlyArray<TSDocTagDefinition>;
     tryGetTagDefinition(tagName: string): TSDocTagDefinition | undefined;
     tryGetTagDefinitionWithUpperCase(alreadyUpperCaseTagName: string): TSDocTagDefinition | undefined;
@@ -1328,7 +1261,7 @@ export class TSDocEmitter {
     // (undocumented)
     renderDeclarationReference(output: IStringBuilder, declarationReference: DocDeclarationReference): void;
     // (undocumented)
-    renderXmlTag(output: IStringBuilder, htmlTag: DocXmlElement): void;
+    renderXmlElement(output: IStringBuilder, xmlElement: DocXmlElement): void;
     }
 
 // @public
@@ -1440,8 +1373,8 @@ export enum TSDocTagSyntaxKind {
 // @public
 export class TSDocValidationConfiguration {
     ignoreUndefinedTags: boolean;
-    reportUnsupportedHtmlElements: boolean;
     reportUnsupportedTags: boolean;
+    reportUnsupportedXmlElements: boolean;
 }
 
 

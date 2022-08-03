@@ -14,7 +14,7 @@ export class TSDocConfiguration {
   private readonly _supportedTagDefinitions: Set<TSDocTagDefinition>;
   private readonly _validation: TSDocValidationConfiguration;
   private readonly _docNodeManager: DocNodeManager;
-  private readonly _supportedHtmlElements: Set<string>;
+  private readonly _supportedXmlElements: Set<string>;
 
   public constructor() {
     this._tagDefinitions = [];
@@ -22,7 +22,7 @@ export class TSDocConfiguration {
     this._supportedTagDefinitions = new Set<TSDocTagDefinition>();
     this._validation = new TSDocValidationConfiguration();
     this._docNodeManager = new DocNodeManager();
-    this._supportedHtmlElements = new Set();
+    this._supportedXmlElements = new Set();
 
     this.clear(false);
 
@@ -41,8 +41,8 @@ export class TSDocConfiguration {
     this._supportedTagDefinitions.clear();
     this._validation.ignoreUndefinedTags = false;
     this._validation.reportUnsupportedTags = false;
-    this._validation.reportUnsupportedHtmlElements = false;
-    this._supportedHtmlElements.clear();
+    this._validation.reportUnsupportedXmlElements = false;
+    this._supportedXmlElements.clear();
 
     if (!noStandardTags) {
       // Define all the standard tags
@@ -80,10 +80,10 @@ export class TSDocConfiguration {
   }
 
   /**
-   * The HTML element names that are supported in this configuration. Used in conjunction with the `reportUnsupportedHtmlElements` setting.
+   * The XML element names that are supported in this configuration. Used in conjunction with the `reportUnsupportedXmlElements` setting.
    */
-  public get supportedHtmlElements(): string[] {
-    return Array.from(this._supportedHtmlElements.values());
+  public get supportedXmlElements(): string[] {
+    return Array.from(this._supportedXmlElements.values());
   }
 
   /**
@@ -200,22 +200,22 @@ export class TSDocConfiguration {
   }
 
   /**
-   * Assigns the `supportedHtmlElements` property, replacing any previous elements.
-   * This operation sets {@link TSDocValidationConfiguration.reportUnsupportedHtmlElements} to `true`.
+   * Assigns the `supportedXmlElements` property, replacing any previous elements.
+   * This operation sets {@link TSDocValidationConfiguration.reportUnsupportedXmlElements} to `true`.
    */
-  public setSupportedHtmlElements(htmlTags: string[]): void {
-    this._supportedHtmlElements.clear();
-    this._validation.reportUnsupportedHtmlElements = true;
-    for (const htmlTag of htmlTags) {
-      this._supportedHtmlElements.add(htmlTag);
+  public setSupportedXmlElements(xmlTags: string[]): void {
+    this._supportedXmlElements.clear();
+    this._validation.reportUnsupportedXmlElements = true;
+    for (const xmlTag of xmlTags) {
+      this._supportedXmlElements.add(xmlTag);
     }
   }
 
   /**
-   * Returns true if the html element is supported in this configuration.
+   * Returns true if the xml element is supported in this configuration.
    */
-  public isHtmlElementSupported(htmlTag: string): boolean {
-    return this._supportedHtmlElements.has(htmlTag);
+  public isXmlElementSupported(xmlTag: string): boolean {
+    return this._supportedXmlElements.has(xmlTag);
   }
 
   /**
