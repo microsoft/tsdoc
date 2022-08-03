@@ -128,7 +128,10 @@ function _generateBaseWebpackConfiguration(isProduction) {
         'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'dev'),
         MONACO_URL: JSON.stringify(monacoUrl)
       })
-    ]
+    ],
+    performance: {
+      hints: false
+    }
   };
 
   return configuration;
