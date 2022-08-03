@@ -350,6 +350,15 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
             wordWrap: this.props.wordWrap ? 'on' : 'off'
           });
 
+          this._editor.addAction({
+            id: 'escapeAction',
+            label: 'Accessability Escape',
+            keybindings: [monacoEditor.KeyCode.Escape],
+            run: () => {
+              (document.activeElement as HTMLElement | undefined)?.blur?.();
+            }
+          });
+
           this._getEditorModel().onDidChangeContent((e) => {
             if (this._editor) {
               this._safeOnChange(this._editor.getValue());
