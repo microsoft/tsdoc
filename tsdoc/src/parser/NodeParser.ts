@@ -1898,6 +1898,7 @@ export class NodeParser {
         parsed: true,
         configuration: this._configuration,
         nameExcerpt: startTagNameExcerpt,
+        spacingAfterNameExcerpt: spacingAfterStartTagNameExcerpt,
         spacingAfterStartTagNameExcerpt,
         startTagOpeningDelimiterExcerpt,
         startTagClosingDelimiterExcerpt,
@@ -2025,6 +2026,7 @@ export class NodeParser {
     const element: DocXmlElement = new DocXmlElement({
       parsed: true,
       configuration: this._configuration,
+      spacingAfterNameExcerpt: spacingAfterStartTagNameExcerpt,
       startTagOpeningDelimiterExcerpt,
       startTagClosingDelimiterExcerpt,
       spacingBetweenStartTagAndChildExcerpt,

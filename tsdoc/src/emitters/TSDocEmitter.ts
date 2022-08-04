@@ -185,12 +185,6 @@ export class TSDocEmitter {
         this._writeContent(docXmlElement.name);
         this._writeContent(docXmlElement.spacingAfterName);
 
-        // Check if it's self-closing
-        if (docXmlElement.selfClosingTag) {
-          this._writeContent('/>');
-          break;
-        }
-
         for (const attribute of docXmlElement.xmlAttributes) {
           this._writeContent(attribute.name);
           this._writeContent(attribute.spacingAfterName);
@@ -198,6 +192,12 @@ export class TSDocEmitter {
           this._writeContent(attribute.spacingAfterEquals);
           this._writeContent(attribute.value);
           this._writeContent(attribute.spacingAfterValue);
+        }
+
+        // Check if it's self-closing
+        if (docXmlElement.selfClosingTag) {
+          this._writeContent('/>');
+          break;
         }
 
         this._writeContent('>');
