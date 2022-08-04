@@ -23,7 +23,7 @@ import type {
   DocParamBlock,
   DocXmlElement
 } from '../nodes';
-import { DocNodeKind } from '../nodes';
+import { DocNodeKind } from '../nodes/DocNode';
 import { IStringBuilder } from './StringBuilder';
 import { DocNodeTransforms } from '../transforms/DocNodeTransforms';
 import { StandardTags } from '../details/StandardTags';
