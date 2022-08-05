@@ -213,7 +213,6 @@ export class TSDocEmitter {
         this._writeContent('</');
         this._writeContent(docXmlElement.name);
         this._writeContent('>');
-        console.log(docXmlElement.spacingAfterEndTag);
         this._writeContent(docXmlElement.spacingAfterEndTag);
 
         break;

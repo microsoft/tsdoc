@@ -1936,17 +1936,21 @@ export class NodeParser {
           return childNode;
         }
 
-        // Parse out all of the child nodes
+        // Add the child node to the list of child nodes.
         childNodes.push(childNode);
         continue;
       }
 
-      // Begin parsing text nodes.
+      // We've hit an XML text node.
 
       while (tokenReader.peekTokenKind() !== TokenKind.LessThan) {
         // Technically any non-conflicting tokens are valid as XML text nodes.
         // This means we could end up consuming all available input if we're erroneously
         // given *only* a start tag (ie <tag> ...) .
+
+        // In other words, an unterminated XML element has a good chance of hitting EOI;
+        // Let's handle that case here.
+
         if (tokenReader.peekTokenAfterKind() === TokenKind.EndOfInput) {
           return this._backtrackAndCreateErrorRange(
             tokenReader,
@@ -2008,7 +2012,9 @@ export class NodeParser {
 
     const endTagOpeningDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
+    const endTagNameStartMarker: number = tokenReader.createMarker();
     const endTagNameExcerpt: ResultOrFailure<TokenSequence> = this._parseXmlName(tokenReader);
+    const endTagnameEndMarker: number = tokenReader.createMarker();
     if (isFailure(endTagNameExcerpt)) {
       return this._backtrackAndCreateErrorForFailure(
         tokenReader,
@@ -2020,9 +2026,10 @@ export class NodeParser {
 
     // Verify that the tag names are matching, if they aren't create a failure.
     if (endTagNameExcerpt.toString() !== startTagNameExcerpt.toString()) {
-      return this._backtrackAndCreateError(
+      return this._backtrackAndCreateErrorRange(
         tokenReader,
-        endMarker,
+        endTagNameStartMarker,
+        endTagnameEndMarker,
         TSDocMessageId.XmlTagNameMismatch,
         `Expecting closing tag name to match opening tag name, got "${endTagNameExcerpt.toString()}" but expected "${startTagNameExcerpt.toString()}"`
       );
