@@ -1823,6 +1823,7 @@ export class NodeParser {
 
   private _parseXmlElement(tokenReader: TokenReader): DocNode {
     tokenReader.assertAccumulatedSequenceIsEmpty();
+    const startMarker: number = tokenReader.createMarker();
 
     // Read the "<" delimiter
     const startTagLessThanToken: Token = tokenReader.readToken();
@@ -1870,6 +1871,7 @@ export class NodeParser {
     }
 
     tokenReader.assertAccumulatedSequenceIsEmpty();
+    const startTagClosingDelimiterMarker: number = tokenReader.createMarker();
     const startTagEndDelimiterMarker: number = tokenReader.createMarker();
 
     let selfClosingTag: boolean = false;
@@ -1917,42 +1919,61 @@ export class NodeParser {
     const childNodes: DocNode[] = [];
 
     // Loop through elements until we hit the closing tag.
-    while (
-      (tokenReader.peekTokenKind() === TokenKind.LessThan &&
-        tokenReader.peekTokenAfterKind() !== TokenKind.Slash) ||
-      tokenReader.peekTokenKind() === TokenKind.AsciiWord
-    ) {
-      // Scenario 1: We're parsing plaintext child
-      if (tokenReader.peekTokenKind() === TokenKind.AsciiWord) {
-        tokenReader.readToken();
-        // Accumulate chars until there are none left.
-        while (tokenReader.peekTokenKind() !== TokenKind.LessThan) {
-          tokenReader.readToken();
+    for (;;) {
+      if (tokenReader.peekTokenKind() === TokenKind.LessThan) {
+        // We've hit the closing tag.
+        if (tokenReader.peekTokenAfterKind() === TokenKind.Slash) {
+          break;
         }
 
-        const textExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
-        childNodes.push(
-          new DocPlainText({
-            parsed: true,
-            configuration: this._configuration,
-            textExcerpt
-          })
-        );
-        // Consume spacing between child nodes
-        this._tryReadSpacingAndNewlines(tokenReader);
-      } else {
-        // Scenario 2: We're parsing and XML element child
+        // We've hit a nested XML element.
 
         // Recurse into the child element to generate all nested child nodes.
         const childNode: DocNode = this._parseXmlElement(tokenReader);
 
+        // Stop at the first error.
         if (childNode.kind === DocNodeKind.ErrorText) {
-          break;
+          return childNode;
         }
 
         // Parse out all of the child nodes
         childNodes.push(childNode);
+        continue;
       }
+
+      // Begin parsing text nodes.
+
+      while (tokenReader.peekTokenKind() !== TokenKind.LessThan) {
+        // Technically any non-conflicting tokens are valid as XML text nodes.
+        // This means we could end up consuming all available input if we're erroneously
+        // given *only* a start tag (ie <tag> ...) .
+        if (tokenReader.peekTokenAfterKind() === TokenKind.EndOfInput) {
+          return this._backtrackAndCreateErrorRange(
+            tokenReader,
+            startMarker,
+            startTagClosingDelimiterMarker,
+            TSDocMessageId.UnterminatedXmlElement,
+            `The XML element "${startTagNameExcerpt.toString()}" is unterminated.`
+          );
+        }
+
+        // Read out all of the text until we hit the next XML tag.
+        tokenReader.readToken();
+      }
+
+      const plainText: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+
+      if (!plainText) {
+        continue;
+      }
+
+      childNodes.push(
+        new DocPlainText({
+          parsed: true,
+          configuration: this._configuration,
+          textExcerpt: plainText
+        })
+      );
     }
 
     const endMarker: number = tokenReader.createMarker();

@@ -367,6 +367,11 @@ export enum TSDocMessageId {
   MissingXmlEndTag = 'tsdoc-missing-xml-end-tag',
 
   /**
+   * XML element tag is unterminated.
+   */
+  UnterminatedXmlElement = 'tsdoc-unterminated-xml-element',
+
+  /**
    * A space is not allowed here.  OR
    * Expecting an XML name.  OR
    * An XML name must be a sequence of letters separated by hyphens.
