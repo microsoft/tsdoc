@@ -44,6 +44,8 @@ export enum ExcerptKind {
   XmlAttribute_Equals = 'XmlAttribute_Equals',
   XmlAttribute_Value = 'XmlAttribute_Value',
 
+  XmlElement_Name = 'XmlElement_Name',
+
   XmlEndTag_OpeningDelimiter = 'XmlEndTag_OpeningDelimiter',
   XmlEndTag_Name = 'XmlEndTag_Name',
   XmlEndTag_ClosingDelimiter = 'XmlEndTag_ClosingDelimiter',

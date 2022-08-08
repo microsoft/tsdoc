@@ -29,6 +29,9 @@ export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters
   nameExcerpt: TokenSequence;
   spacingAfterNameExcerpt?: TokenSequence;
 
+  startTagNameExcerpt?: TokenSequence;
+  endTagNameExcerpt?: TokenSequence;
+
   xmlAttributes: DocXmlAttribute[];
   selfClosingTag?: boolean;
 
@@ -53,6 +56,9 @@ export class DocXmlElement extends DocNodeContainer {
 
   private _name: string | undefined;
   private readonly _nameExcerpt: DocExcerpt | undefined;
+
+  private readonly _startTagNameExcerpt: DocExcerpt | undefined;
+  private readonly _endTagNameExcerpt: DocExcerpt | undefined;
 
   private _startTagOpeningDelimiter: string | undefined;
   private readonly _startTagOpeningDelimiterExcerpt: DocExcerpt | undefined;
@@ -88,9 +94,23 @@ export class DocXmlElement extends DocNodeContainer {
       this.appendNodes(parameters.childNodes);
       this._nameExcerpt = new DocExcerpt({
         configuration: this.configuration,
-        excerptKind: ExcerptKind.XmlStartTag_Name,
+        excerptKind: ExcerptKind.XmlElement_Name,
         content: parameters.nameExcerpt
       });
+      if (parameters.startTagNameExcerpt) {
+        this._startTagNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.XmlStartTag_Name,
+          content: parameters.startTagNameExcerpt
+        });
+      }
+      if (parameters.endTagNameExcerpt) {
+        this._endTagNameExcerpt = new DocExcerpt({
+          configuration: this.configuration,
+          excerptKind: ExcerptKind.XmlEndTag_Name,
+          content: parameters.endTagNameExcerpt
+        });
+      }
       if (parameters.spacingAfterNameExcerpt) {
         this._spacingAfterNameExcerpt = new DocExcerpt({
           configuration: this.configuration,
@@ -274,10 +294,25 @@ export class DocXmlElement extends DocNodeContainer {
   }
 
   public emitAsXml(): string {
-    // NOTE: Here we're assuming that the TSDoc representation for a tag is also a valid HTML expression.
+    // NOTE: Here we're assuming that the TSDoc representation for a tag is also a valid XML expression.
     const stringBuilder: StringBuilder = new StringBuilder();
     const emitter: TSDocEmitter = new TSDocEmitter();
     emitter.renderXmlElement(stringBuilder, this);
     return stringBuilder.toString();
+  }
+
+  /** @override */
+  protected onGetChildNodes(): ReadonlyArray<DocNode | undefined> {
+    return [
+      this._startTagOpeningDelimiterExcerpt,
+      this._nameExcerpt,
+      this._spacingAfterNameExcerpt,
+      this._startTagClosingDelimiterExcerpt,
+      ...this._xmlAttributes,
+      ...this.nodes,
+      this._endTagOpeningDelimiterExcerpt,
+      this._endTagNameExcerpt,
+      this._endTagClosingDelimiterExcerpt
+    ];
   }
 }

@@ -416,6 +416,8 @@ export class DocXmlElement extends DocNodeContainer {
     // (undocumented)
     get kind(): string;
     get name(): string;
+    // @override (undocumented)
+    protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
     get selfClosingTag(): boolean;
     get spacingAfterEndTag(): string | undefined;
     get spacingAfterName(): string | undefined;
@@ -508,6 +510,8 @@ export enum ExcerptKind {
     XmlAttribute_Name = "XmlAttribute_Name",
     // (undocumented)
     XmlAttribute_Value = "XmlAttribute_Value",
+    // (undocumented)
+    XmlElement_Name = "XmlElement_Name",
     // (undocumented)
     XmlEndTag_ClosingDelimiter = "XmlEndTag_ClosingDelimiter",
     // (undocumented)
@@ -962,6 +966,8 @@ export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters
     // (undocumented)
     endTagClosingExcerpt?: TokenSequence;
     // (undocumented)
+    endTagNameExcerpt?: TokenSequence;
+    // (undocumented)
     endTagOpeningDelimiterExcerpt?: TokenSequence;
     // (undocumented)
     endTagOpeningExcerpt?: TokenSequence;
@@ -981,6 +987,8 @@ export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters
     spacingBetweenStartTagAndChildExcerpt?: TokenSequence;
     // (undocumented)
     startTagClosingDelimiterExcerpt: TokenSequence;
+    // (undocumented)
+    startTagNameExcerpt?: TokenSequence;
     // (undocumented)
     startTagOpeningDelimiterExcerpt: TokenSequence;
     // (undocumented)
@@ -1335,6 +1343,7 @@ export enum TSDocMessageId {
     UnnecessaryBackslash = "tsdoc-unnecessary-backslash",
     UnsupportedTag = "tsdoc-unsupported-tag",
     UnsupportedXmlElementName = "tsdoc-unsupported-xml-name",
+    UnterminatedXmlElement = "tsdoc-unterminated-xml-element",
     XmlStringMissingQuote = "tsdoc-xml-string-missing-quote",
     XmlTagMissingEquals = "tsdoc-xml-tag-missing-equals",
     XmlTagMissingGreaterThan = "tsdoc-xml-tag-missing-greater-than",

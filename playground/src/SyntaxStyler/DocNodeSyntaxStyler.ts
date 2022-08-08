@@ -155,8 +155,10 @@ export class DocNodeSyntaxStyler {
           break;
         }
 
+        case 'XmlElement_Name':
         case 'XmlEndTag_Name':
         case 'XmlStartTag_Name': {
+          console.log('test');
           DocNodeSyntaxStyler._addTokenStyles(styles, docNode.content, {
             theme,
             styleTokens: [...styleTokens, 'element', 'name']

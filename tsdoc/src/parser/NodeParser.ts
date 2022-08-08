@@ -1905,6 +1905,7 @@ export class NodeParser {
         startTagOpeningDelimiterExcerpt,
         startTagClosingDelimiterExcerpt,
         spacingAfterElementExcerpt: this._tryReadSpacingAndNewlines(tokenReader),
+        startTagNameExcerpt,
         xmlAttributes,
         selfClosingTag,
         childNodes: []
@@ -1943,41 +1944,19 @@ export class NodeParser {
 
       // We've hit an XML text node.
 
-      while (tokenReader.peekTokenKind() !== TokenKind.LessThan) {
-        // Technically any non-conflicting tokens are valid as XML text nodes.
-        // This means we could end up consuming all available input if we're erroneously
-        // given *only* a start tag (ie <tag> ...) .
+      const childNode: ResultOrFailure<DocNode> = this._parseXmlInnerText(tokenReader);
 
-        // In other words, an unterminated XML element has a good chance of hitting EOI;
-        // Let's handle that case here.
-
-        if (tokenReader.peekTokenAfterKind() === TokenKind.EndOfInput) {
-          return this._backtrackAndCreateErrorRange(
-            tokenReader,
-            startMarker,
-            startTagClosingDelimiterMarker,
-            TSDocMessageId.UnterminatedXmlElement,
-            `The XML element "${startTagNameExcerpt.toString()}" is unterminated.`
-          );
-        }
-
-        // Read out all of the text until we hit the next XML tag.
-        tokenReader.readToken();
+      if (isFailure(childNode)) {
+        return this._backtrackAndCreateErrorRangeForFailure(
+          tokenReader,
+          startMarker,
+          startTagClosingDelimiterMarker,
+          'Invalid XML element: ',
+          childNode
+        );
       }
 
-      const plainText: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
-
-      if (!plainText) {
-        continue;
-      }
-
-      childNodes.push(
-        new DocPlainText({
-          parsed: true,
-          configuration: this._configuration,
-          textExcerpt: plainText
-        })
-      );
+      childNodes.push(childNode);
     }
 
     const endMarker: number = tokenReader.createMarker();
@@ -1986,11 +1965,7 @@ export class NodeParser {
     if (endTagLessThanToken.kind !== TokenKind.LessThan) {
       return this._backtrackAndCreateError(
         tokenReader,
-        // Note there's an edge case here that can cause the parser to fail
-        // The input `<a><b/>` causes the next token to be EOI since it considers
-        // `<b/>` to be a valid child element. After the child is parsed we will then
-        // find out the the next token isn't a "<" and and try to backtrack to and read an EOI token.
-        endTagLessThanToken.kind === TokenKind.EndOfInput ? endMarker - 1 : endMarker,
+        endMarker,
         TSDocMessageId.MissingXmlEndTag,
         'Expecting a closing tag starting with "</"'
       );
@@ -2031,7 +2006,7 @@ export class NodeParser {
         endTagNameStartMarker,
         endTagnameEndMarker,
         TSDocMessageId.XmlTagNameMismatch,
-        `Expecting closing tag name to match opening tag name, got "${endTagNameExcerpt.toString()}" but expected "${startTagNameExcerpt.toString()}"`
+        `Expecting closing tag name "${endTagNameExcerpt.toString()}" to match opening tag name "${startTagNameExcerpt.toString()}"`
       );
     }
 
@@ -2062,6 +2037,8 @@ export class NodeParser {
       spacingAfterEndTagExcerpt,
       endTagOpeningDelimiterExcerpt,
       endTagClosingDelimiterExcerpt,
+      startTagNameExcerpt,
+      endTagNameExcerpt,
       nameExcerpt: startTagNameExcerpt,
       xmlAttributes: xmlAttributes,
       selfClosingTag,
@@ -2069,6 +2046,36 @@ export class NodeParser {
     });
 
     return element;
+  }
+
+  private _parseXmlInnerText(tokenReader: TokenReader): ResultOrFailure<DocNode> {
+    while (tokenReader.peekTokenKind() !== TokenKind.LessThan) {
+      // Technically any non-conflicting tokens are valid as XML text nodes.
+      // This means we could end up consuming all available input if we're erroneously
+      // given *only* a start tag (ie <tag> ...) .
+
+      // In other words, an unterminated XML element has a good chance of hitting EOI;
+      // Let's handle that case here.
+
+      if (tokenReader.peekTokenAfterKind() === TokenKind.EndOfInput) {
+        return this._createFailureForToken(
+          tokenReader,
+          TSDocMessageId.UnterminatedXmlElement,
+          `The XML element is unterminated.`
+        );
+      }
+
+      // Read out all of the text until we hit the next XML tag.
+      tokenReader.readToken();
+    }
+
+    const plainText: TokenSequence | undefined = tokenReader.extractAccumulatedSequence();
+
+    return new DocPlainText({
+      parsed: true,
+      configuration: this._configuration,
+      textExcerpt: plainText
+    });
   }
 
   private _parseXmlAttribute(tokenReader: TokenReader): ResultOrFailure<DocXmlAttribute> {
