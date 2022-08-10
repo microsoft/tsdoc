@@ -423,7 +423,7 @@ export enum TSDocMessageId {
   CodeSpanMissingDelimiter = 'tsdoc-code-span-missing-delimiter',
 
   /**
-   * The XML start and end tag names are not the same.
+   * Expecting closing tag name to match opening tag name.
    */
   XmlTagNameMismatch = 'tsdoc-xml-tag-name-mismatch'
 }
