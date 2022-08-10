@@ -3,7 +3,7 @@
     {
       "packageName": "@microsoft/tsdoc",
       "comment": "Add support for XML parsing via `DocXmlElement`. Removes  `DocHtmlStartTag` and `DocHtmlEndTag` nodes.",
-      "type": "major"
+      "type": "minor"
     }
   ],
   "packageName": "@microsoft/tsdoc",

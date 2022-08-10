@@ -3,7 +3,7 @@
     {
       "packageName": "@microsoft/tsdoc-config",
       "comment": "Rename various properties to from HTML to XML.",
-      "type": "major"
+      "type": "minor"
     }
   ],
   "packageName": "@microsoft/tsdoc-config",
