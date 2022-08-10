@@ -340,7 +340,6 @@ export enum TSDocMessageId {
    * Expecting an attribute or `>` or `/>`.
    */
   XmlTagMissingGreaterThan = 'tsdoc-xml-tag-missing-greater-than',
-
   /**
    * Expecting `=` after XML attribute name.
    */
@@ -355,6 +354,11 @@ export enum TSDocMessageId {
    * The XML string is missing its closing quote.
    */
   XmlStringMissingQuote = 'tsdoc-xml-string-missing-quote',
+
+  /**
+   * The XML attribute is duplicated.
+   */
+  XmlDuplicateAttribute = 'tsdoc-xml-duplicate-attribute',
 
   /**
    * The next character after a closing quote must be spacing or punctuation.

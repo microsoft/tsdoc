@@ -1851,6 +1851,8 @@ export class NodeParser {
     const spacingAfterStartTagNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
       tokenReader
     );
+
+    const xmlAttributeNames: Set<string> = new Set();
     const xmlAttributes: DocXmlAttribute[] = [];
 
     // Read the attributes until we see a ">" or "/>"
@@ -1867,6 +1869,16 @@ export class NodeParser {
         );
       }
 
+      if (xmlAttributeNames.has(attributeNode.name)) {
+        return this._backtrackAndCreateError(
+          tokenReader,
+          attributeMarker,
+          TSDocMessageId.XmlDuplicateAttribute,
+          `Duplicate XML attribute: "${attributeNode.name}"`
+        );
+      }
+
+      xmlAttributeNames.add(attributeNode.name);
       xmlAttributes.push(attributeNode);
     }
 
