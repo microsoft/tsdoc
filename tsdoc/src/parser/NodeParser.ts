@@ -1956,22 +1956,22 @@ export class NodeParser {
 
       // We've hit an XML text node.
 
-      const childNode: ResultOrFailure<DocNode> = this._parseXmlInnerText(
+      const textChildNodes: ResultOrFailure<DocNode[]> = this._parseXmlInnerText(
         tokenReader,
         startTagNameExcerpt.toString()
       );
 
-      if (isFailure(childNode)) {
+      if (isFailure(textChildNodes)) {
         return this._backtrackAndCreateErrorRangeForFailure(
           tokenReader,
           startMarker,
           startTagClosingDelimiterMarker,
           'Invalid XML element: ',
-          childNode
+          textChildNodes
         );
       }
 
-      childNodes.push(childNode);
+      childNodes.push(...textChildNodes);
     }
 
     const endMarker: number = tokenReader.createMarker();
@@ -2063,7 +2063,8 @@ export class NodeParser {
     return element;
   }
 
-  private _parseXmlInnerText(tokenReader: TokenReader, elementName: string): ResultOrFailure<DocNode> {
+  private _parseXmlInnerText(tokenReader: TokenReader, elementName: string): ResultOrFailure<DocNode[]> {
+    const nodes: DocNode[] = [];
     while (tokenReader.peekTokenKind() !== TokenKind.LessThan) {
       // Technically any non-conflicting tokens are valid as XML text nodes.
       // This means we could end up consuming all available input if we're erroneously
@@ -2080,17 +2081,54 @@ export class NodeParser {
         );
       }
 
+      if (tokenReader.peekTokenKind() === TokenKind.Newline) {
+        // We need to make sure to capture any plain text that
+        // occurred before the newline.
+        const plainText: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+
+        if (plainText) {
+          nodes.push(
+            new DocPlainText({
+              parsed: true,
+              configuration: this._configuration,
+              textExcerpt: plainText
+            })
+          );
+        }
+
+        tokenReader.readToken();
+
+        nodes.push(
+          new DocSoftBreak({
+            configuration: this._configuration,
+            parsed: true,
+            softBreakExcerpt: tokenReader.extractAccumulatedSequence()
+          })
+        );
+        continue;
+      }
+
       // Read out all of the text until we hit the next XML tag.
       tokenReader.readToken();
     }
 
-    const plainText: TokenSequence | undefined = tokenReader.extractAccumulatedSequence();
+    const plainText: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
 
-    return new DocPlainText({
-      parsed: true,
-      configuration: this._configuration,
-      textExcerpt: plainText
-    });
+    console.log(`Found plain text: ${plainText?.toString()}`);
+
+    if (!plainText) {
+      return nodes;
+    }
+
+    nodes.push(
+      new DocPlainText({
+        parsed: true,
+        configuration: this._configuration,
+        textExcerpt: plainText
+      })
+    );
+
+    return nodes;
   }
 
   private _parseXmlAttribute(tokenReader: TokenReader): ResultOrFailure<DocXmlAttribute> {

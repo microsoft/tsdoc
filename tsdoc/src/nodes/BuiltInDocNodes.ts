@@ -54,7 +54,8 @@ export class BuiltInDocNodes {
 
     docNodeManager.registerAllowableChildren(DocNodeKind.XmlElement, [
       DocNodeKind.XmlElement,
-      DocNodeKind.PlainText
+      DocNodeKind.PlainText,
+      DocNodeKind.SoftBreak
     ]);
   }
 }
