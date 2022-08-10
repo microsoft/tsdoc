@@ -1344,6 +1344,7 @@ export enum TSDocMessageId {
     UnsupportedTag = "tsdoc-unsupported-tag",
     UnsupportedXmlElementName = "tsdoc-unsupported-xml-name",
     UnterminatedXmlElement = "tsdoc-unterminated-xml-element",
+    XmlDuplicateAttribute = "tsdoc-xml-duplicate-attribute",
     XmlStringMissingQuote = "tsdoc-xml-string-missing-quote",
     XmlTagMissingEquals = "tsdoc-xml-tag-missing-equals",
     XmlTagMissingGreaterThan = "tsdoc-xml-tag-missing-greater-than",

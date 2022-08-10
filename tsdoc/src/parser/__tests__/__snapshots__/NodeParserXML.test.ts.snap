@@ -180,7 +180,7 @@ Object {
     "/[>]",
   ],
   "logMessages": Array [
-    "(2,4): Invalid XML element: The XML element is unterminated.",
+    "(2,4): Invalid XML element: The corresponding XML end tag \\"</tag-a>\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -195,7 +195,7 @@ Object {
                 "errorLocation": "",
                 "errorLocationPrecedingToken": "
 ",
-                "errorMessage": "Invalid XML element: The XML element is unterminated.",
+                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/tag-a[>][q] is missing.",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -1069,7 +1069,7 @@ Object {
     "[<]tag[>]",
   ],
   "logMessages": Array [
-    "(2,4): Invalid XML element: The XML element is unterminated.",
+    "(2,4): Invalid XML element: The corresponding XML end tag \\"</tag>\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -1084,7 +1084,7 @@ Object {
                 "errorLocation": "",
                 "errorLocationPrecedingToken": "
 ",
-                "errorMessage": "Invalid XML element: The XML element is unterminated.",
+                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/tag[>][q] is missing.",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -1192,7 +1192,7 @@ Object {
     "[<]tag-b[>]",
   ],
   "logMessages": Array [
-    "(2,4): Invalid XML element: The XML element is unterminated.",
+    "(2,4): Invalid XML element: The corresponding XML end tag \\"</tag-b>\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -1207,7 +1207,7 @@ Object {
                 "errorLocation": "",
                 "errorLocationPrecedingToken": "
 ",
-                "errorMessage": "Invalid XML element: The XML element is unterminated.",
+                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/tag-b[>][q] is missing.",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -1242,7 +1242,7 @@ Object {
     "[<]tag       [>]",
   ],
   "logMessages": Array [
-    "(2,4): Invalid XML element: The XML element is unterminated.",
+    "(2,4): Invalid XML element: The corresponding XML end tag \\"</tag>\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -1257,7 +1257,7 @@ Object {
                 "errorLocation": "",
                 "errorLocationPrecedingToken": "
 ",
-                "errorMessage": "Invalid XML element: The XML element is unterminated.",
+                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/tag[>][q] is missing.",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -1293,7 +1293,7 @@ Object {
     "[>]",
   ],
   "logMessages": Array [
-    "(2,4): Invalid XML element: The XML element is unterminated.",
+    "(2,4): Invalid XML element: The corresponding XML end tag \\"</tag-c>\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -1308,7 +1308,7 @@ Object {
                 "errorLocation": "",
                 "errorLocationPrecedingToken": "
 ",
-                "errorMessage": "Invalid XML element: The XML element is unterminated.",
+                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/tag-c[>][q] is missing.",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
@@ -2814,7 +2814,16 @@ Object {
                     "nodes": Array [
                       Object {
                         "kind": "Excerpt: PlainText",
-                        "nodeExcerpt": "foo[n]",
+                        "nodeExcerpt": "foo",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
                       },
                     ],
                   },
@@ -2906,7 +2915,25 @@ Object {
                         "nodes": Array [
                           Object {
                             "kind": "Excerpt: PlainText",
-                            "nodeExcerpt": "foo[n]  ",
+                            "nodeExcerpt": "foo",
+                          },
+                        ],
+                      },
+                      Object {
+                        "kind": "SoftBreak",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Excerpt: SoftBreak",
+                            "nodeExcerpt": "[n]",
+                          },
+                        ],
+                      },
+                      Object {
+                        "kind": "PlainText",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Excerpt: PlainText",
+                            "nodeExcerpt": "  ",
                           },
                         ],
                       },
@@ -3625,7 +3652,7 @@ Object {
     "[<]a--9-[>]",
   ],
   "logMessages": Array [
-    "(4,4): Invalid XML element: The XML element is unterminated.",
+    "(4,4): Invalid XML element: The corresponding XML end tag \\"</a--9->\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -3657,7 +3684,7 @@ Object {
                 "errorLocation": "",
                 "errorLocationPrecedingToken": "
 ",
-                "errorMessage": "Invalid XML element: The XML element is unterminated.",
+                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/a--9-[>][q] is missing.",
                 "kind": "ErrorText",
                 "nodes": Array [
                   Object {
