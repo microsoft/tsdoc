@@ -1956,7 +1956,10 @@ export class NodeParser {
 
       // We've hit an XML text node.
 
-      const childNode: ResultOrFailure<DocNode> = this._parseXmlInnerText(tokenReader);
+      const childNode: ResultOrFailure<DocNode> = this._parseXmlInnerText(
+        tokenReader,
+        startTagNameExcerpt.toString()
+      );
 
       if (isFailure(childNode)) {
         return this._backtrackAndCreateErrorRangeForFailure(
@@ -2060,7 +2063,7 @@ export class NodeParser {
     return element;
   }
 
-  private _parseXmlInnerText(tokenReader: TokenReader): ResultOrFailure<DocNode> {
+  private _parseXmlInnerText(tokenReader: TokenReader, elementName: string): ResultOrFailure<DocNode> {
     while (tokenReader.peekTokenKind() !== TokenKind.LessThan) {
       // Technically any non-conflicting tokens are valid as XML text nodes.
       // This means we could end up consuming all available input if we're erroneously
@@ -2073,7 +2076,7 @@ export class NodeParser {
         return this._createFailureForToken(
           tokenReader,
           TSDocMessageId.UnterminatedXmlElement,
-          `The XML element is unterminated.`
+          `The corresponding XML end tag "</${elementName}>" is missing.`
         );
       }
 
