@@ -424,6 +424,7 @@ export class DocXmlElement extends DocNodeContainer {
     get spacingBetweenStartTagAndChildren(): string | undefined;
     get startTagClosingDelimiter(): string | undefined;
     get startTagOpeningDelimiter(): string | undefined;
+    tryGetXmlAttribute(name: string): DocXmlAttribute | undefined;
     get xmlAttributes(): ReadonlyArray<DocXmlAttribute>;
     }
 

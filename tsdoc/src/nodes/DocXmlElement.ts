@@ -53,6 +53,7 @@ export interface IDocXmlElementParameters extends IDocNodeParameters {
 
 export class DocXmlElement extends DocNodeContainer {
   private readonly _xmlAttributes: DocXmlAttribute[] = [];
+  private readonly _xmlAttributesByName: Map<string, DocXmlAttribute> = new Map();
 
   private _name: string | undefined;
   private readonly _nameExcerpt: DocExcerpt | undefined;
@@ -165,9 +166,9 @@ export class DocXmlElement extends DocNodeContainer {
       this._spacingAfterName = parameters.spacingAfterName;
     }
 
-    this._xmlAttributes = [];
-    if (parameters.xmlAttributes) {
-      this._xmlAttributes.push(...parameters.xmlAttributes);
+    for (const xmlAttribute of parameters.xmlAttributes ?? []) {
+      this._xmlAttributes.push(xmlAttribute);
+      this._xmlAttributesByName.set(xmlAttribute.name, xmlAttribute);
     }
 
     this._selfClosingTag = !!parameters.selfClosingTag;
@@ -192,6 +193,23 @@ export class DocXmlElement extends DocNodeContainer {
    */
   public get xmlAttributes(): ReadonlyArray<DocXmlAttribute> {
     return this._xmlAttributes;
+  }
+
+  /**
+   * Attempts to find an XML attribute with the specified name.
+   * @param name The name of the XML attribute to get.
+   * @returns The XML attribute with the specified name, or `undefined` if no such attribute with the given name exists.
+   */
+  public tryGetXmlAttribute(name: string): DocXmlAttribute | undefined {
+    if (!DocXmlElement._isValidXmlName(name)) {
+      throw new Error(`'${name}' is not a valid XML attribute name.`);
+    }
+
+    return this._xmlAttributesByName.get(name);
+  }
+
+  private static _isValidXmlName(name: string): boolean {
+    return /^[a-zA-Z_][a-zA-Z0-9_.-]*$/.test(name);
   }
 
   /**
@@ -308,7 +326,7 @@ export class DocXmlElement extends DocNodeContainer {
       this._nameExcerpt,
       this._spacingAfterNameExcerpt,
       this._startTagClosingDelimiterExcerpt,
-      ...this._xmlAttributes,
+      ...this.xmlAttributes,
       ...this.nodes,
       this._endTagOpeningDelimiterExcerpt,
       this._endTagNameExcerpt,
