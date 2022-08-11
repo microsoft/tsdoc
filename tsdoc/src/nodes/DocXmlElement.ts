@@ -197,7 +197,7 @@ export class DocXmlElement extends DocNodeContainer {
 
   /**
    * Attempts to find an XML attribute with the specified name.
-   * @param name The name of the XML attribute to get.
+   * @param name - The name of the XML attribute to get.
    * @returns The XML attribute with the specified name, or `undefined` if no such attribute with the given name exists.
    */
   public tryGetXmlAttribute(name: string): DocXmlAttribute | undefined {
