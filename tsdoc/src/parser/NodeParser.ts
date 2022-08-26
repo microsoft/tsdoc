@@ -2044,7 +2044,7 @@ export class NodeParser {
     if (endTagNameExcerpt.toString() !== startTagNameExcerpt.toString()) {
       this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.XmlTagNameMismatch,
-        `Expected closing tag "</${startTagNameExcerpt.toString()}>" but received "<${endTagNameExcerpt.toString()}/>" instead.`,
+        `Expected closing tag "<${startTagNameExcerpt.toString()}/>" but received "<${endTagNameExcerpt.toString()}/>" instead.`,
         startTagNameExcerpt
       );
     }
