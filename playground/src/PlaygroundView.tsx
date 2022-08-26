@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+/* eslint-disable @typescript-eslint/member-ordering */
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
+import Media from 'react-media';
 
 import { TabPane } from './TabPane';
 import { FlexRowDiv, FlexColDiv } from './FlexDivs';
@@ -66,22 +69,41 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     }
   }
 
+  mainRowStyle: React.CSSProperties = {
+    alignItems: 'stretch',
+    flex: 1
+  };
+  mainRowStyleZoomed: React.CSSProperties = {
+    alignItems: 'stretch',
+    flex: 1,
+    flexDirection: 'column'
+  };
+  errorsPaneStyle: React.CSSProperties = {
+    height: '130px',
+    marginTop: '20px'
+  };
+
   public render(): React.ReactNode {
-    const mainRowStyle: React.CSSProperties = {
-      alignItems: 'stretch',
-      flex: 1
-    };
+    return (
+      <div>
+        <Media query="(min-width: 700px)">
+          {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (matches: any) =>
+              matches
+                ? this._renderLargeScreenPlayground() // For example: Laptops
+                : this._renderSmallScreenPlayground() // For example: iPhones/iPads
+          }
+        </Media>
+      </div>
+    );
+  }
 
-    const errorsPaneStyle: React.CSSProperties = {
-      height: '130px',
-      marginTop: '20px'
-    };
-
+  private _renderLargeScreenPlayground(): React.ReactNode {
     return (
       <FlexColDiv className="playground-content-area" style={{ margin: '4px', flex: 1 }}>
-        <FlexRowDiv className="playground-main-row" style={mainRowStyle}>
+        <FlexRowDiv className="playground-main-row" style={this.mainRowStyle}>
           {this._renderInputBox()}
-
           <TabPane
             style={{ flex: 1, marginLeft: '4px' }}
             buttonRowStyle={{ height: '40px', boxSizing: 'border-box' }}
@@ -94,13 +116,36 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
             ]}
           />
         </FlexRowDiv>
-        <FlexColDiv className="playground-errors-pane" style={errorsPaneStyle}>
+        <FlexColDiv className="playground-errors-pane" style={this.errorsPaneStyle}>
           {this._renderErrorList()}
         </FlexColDiv>
       </FlexColDiv>
     );
   }
 
+  private _renderSmallScreenPlayground(): React.ReactNode {
+    return (
+      <FlexColDiv className="playground-content-area" style={{ margin: '4px', flex: 1 }}>
+        <FlexRowDiv className="playground-main-row" style={this.mainRowStyleZoomed}>
+          {this._renderInputBox()}
+          <TabPane
+            style={{ flex: 1, marginLeft: '4px' }}
+            buttonRowStyle={{ height: '40px', boxSizing: 'border-box' }}
+            tabs={[
+              { title: 'HTML', render: this._renderHtml.bind(this) },
+              { title: 'DOM', render: this._renderDom.bind(this) },
+              { title: 'Lines', render: this._renderLines.bind(this) },
+              { title: 'AST', render: this._renderAst.bind(this) },
+              { title: 'Emitter', render: this._renderEmitter.bind(this) }
+            ]}
+          />
+        </FlexRowDiv>
+        <FlexColDiv className="playground-errors-pane" style={this.errorsPaneStyle}>
+          {this._renderErrorList()}
+        </FlexColDiv>
+      </FlexColDiv>
+    );
+  }
   private _renderInputBox(): React.ReactNode {
     const markers: ISyntaxMarker[] = [];
     const syntaxStyles: IStyledRange[] = [];
@@ -140,7 +185,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     };
 
     return (
-      <FlexColDiv className="playground-input-box" style={{ flex: 1 }}>
+      <FlexColDiv className="playground-input-box" style={{ flex: 1, marginTop: '10px' }}>
         <div className="playground-button-bar" style={{ height: '40px', boxSizing: 'border-box' }}>
           {this._renderSelectSample()}
           {this._renderThemeSelector()}
@@ -178,6 +223,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   private _renderThemeSelector(): React.ReactNode {
     return (
       <select
+        style={{ width: '195px', marginLeft: '5px' }}
         className="playground-select-theme"
         value={this.state.selectedTheme}
         aria-label="Select an editor theme"
