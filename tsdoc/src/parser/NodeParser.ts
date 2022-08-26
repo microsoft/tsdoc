@@ -1860,17 +1860,12 @@ export class NodeParser {
       // Read the attribute
       const attributeNode: ResultOrFailure<DocXmlAttribute> = this._parseXmlAttribute(tokenReader);
       if (isFailure(attributeNode)) {
-        this._parserContext.log.addMessageForTokenSequence(
-          attributeNode.failureMessageId,
-          attributeNode.failureMessage,
-          startTagOpeningDelimiterExcerpt
+        return this._backtrackAndCreateErrorForFailure(
+          tokenReader,
+          attributeMarker,
+          'Invalid XML attribute: ',
+          attributeNode
         );
-
-        return new DocPlainText({
-          parsed: true,
-          configuration: this._configuration,
-          text: '<'
-        });
       }
 
       if (xmlAttributeNames.has(attributeNode.name)) {
