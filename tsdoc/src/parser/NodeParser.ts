@@ -1823,7 +1823,6 @@ export class NodeParser {
 
   private _parseXmlElement(tokenReader: TokenReader): DocNode {
     tokenReader.assertAccumulatedSequenceIsEmpty();
-    const startMarker: number = tokenReader.createMarker();
 
     // Read the "<" delimiter
     const startTagLessThanToken: Token = tokenReader.readToken();
@@ -1861,12 +1860,17 @@ export class NodeParser {
       // Read the attribute
       const attributeNode: ResultOrFailure<DocXmlAttribute> = this._parseXmlAttribute(tokenReader);
       if (isFailure(attributeNode)) {
-        return this._backtrackAndCreateErrorForFailure(
-          tokenReader,
-          attributeMarker,
-          'Invalid XML attribute: ',
-          attributeNode
+        this._parserContext.log.addMessageForTokenSequence(
+          attributeNode.failureMessageId,
+          attributeNode.failureMessage,
+          startTagOpeningDelimiterExcerpt
         );
+
+        return new DocPlainText({
+          parsed: true,
+          configuration: this._configuration,
+          text: '<'
+        });
       }
 
       if (xmlAttributeNames.has(attributeNode.name)) {
@@ -1883,7 +1887,6 @@ export class NodeParser {
     }
 
     tokenReader.assertAccumulatedSequenceIsEmpty();
-    const startTagClosingDelimiterMarker: number = tokenReader.createMarker();
     const startTagEndDelimiterMarker: number = tokenReader.createMarker();
 
     let selfClosingTag: boolean = false;
@@ -1946,7 +1949,16 @@ export class NodeParser {
 
         // Stop at the first error.
         if (childNode.kind === DocNodeKind.ErrorText) {
-          return childNode;
+          // We'll just return the parsed XML children.
+          return new DocXmlElement({
+            parsed: true,
+            configuration: this._configuration,
+            nameExcerpt: startTagNameExcerpt,
+            startTagOpeningDelimiterExcerpt,
+            startTagClosingDelimiterExcerpt,
+            childNodes,
+            xmlAttributes
+          });
         }
 
         // Add the child node to the list of child nodes.
@@ -1958,20 +1970,28 @@ export class NodeParser {
 
       const textChildNodes: ResultOrFailure<DocNode[]> = this._parseXmlInnerText(
         tokenReader,
-        startTagNameExcerpt.toString()
+        startTagNameExcerpt.toString(),
+        tokenReader.createMarker()
       );
 
       if (isFailure(textChildNodes)) {
-        return this._backtrackAndCreateErrorRangeForFailure(
-          tokenReader,
-          startMarker,
-          startTagClosingDelimiterMarker,
-          'Invalid XML element: ',
-          textChildNodes
+        this._parserContext.log.addMessageForTokenSequence(
+          TSDocMessageId.MalformedXmlName,
+          textChildNodes.failureMessage,
+          startTagNameExcerpt
         );
+        return new DocXmlElement({
+          parsed: true,
+          configuration: this._configuration,
+          nameExcerpt: startTagNameExcerpt,
+          startTagOpeningDelimiterExcerpt,
+          startTagClosingDelimiterExcerpt,
+          childNodes,
+          xmlAttributes
+        });
+      } else {
+        childNodes.push(...textChildNodes);
       }
-
-      childNodes.push(...textChildNodes);
     }
 
     const endMarker: number = tokenReader.createMarker();
@@ -2002,38 +2022,53 @@ export class NodeParser {
 
     const endTagOpeningDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    const endTagNameStartMarker: number = tokenReader.createMarker();
     const endTagNameExcerpt: ResultOrFailure<TokenSequence> = this._parseXmlName(tokenReader);
-    const endTagnameEndMarker: number = tokenReader.createMarker();
     if (isFailure(endTagNameExcerpt)) {
-      return this._backtrackAndCreateErrorForFailure(
-        tokenReader,
-        endMarker,
-        'Invalid XML end tag name: ',
-        endTagNameExcerpt
+      this._parserContext.log.addMessageForTokenSequence(
+        endTagNameExcerpt.failureMessageId,
+        endTagNameExcerpt.failureMessage,
+        endTagNameExcerpt.failureLocation
       );
+      return new DocXmlElement({
+        parsed: true,
+        configuration: this._configuration,
+        nameExcerpt: startTagNameExcerpt,
+        startTagOpeningDelimiterExcerpt,
+        startTagClosingDelimiterExcerpt,
+        childNodes,
+        xmlAttributes
+      });
     }
 
     // Verify that the tag names are matching, if they aren't create a failure.
     if (endTagNameExcerpt.toString() !== startTagNameExcerpt.toString()) {
-      return this._backtrackAndCreateErrorRange(
-        tokenReader,
-        endTagNameStartMarker,
-        endTagnameEndMarker,
+      this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.XmlTagNameMismatch,
-        `Expecting closing tag name "${endTagNameExcerpt.toString()}" to match opening tag name "${startTagNameExcerpt.toString()}"`
+        `Expected closing tag "</${startTagNameExcerpt.toString()}>" but received "<${endTagNameExcerpt.toString()}/>" instead.`,
+        startTagNameExcerpt
       );
     }
 
     // Check for closing ">" delimiter
     const endTagGreaterThanToken: Token = tokenReader.readToken();
     if (endTagGreaterThanToken.kind !== TokenKind.GreaterThan) {
-      return this._backtrackAndCreateError(
-        tokenReader,
-        endMarker,
+      this._parserContext.log.addMessageForTokenSequence(
         TSDocMessageId.XmlTagMissingGreaterThan,
-        'Expecting a closing ">" delimiter for the end tag'
+        'Expecting a closing ">" delimiter for the closing tag.',
+        tokenReader.extractAccumulatedSequence()
       );
+
+      return new DocXmlElement({
+        parsed: true,
+        configuration: this._configuration,
+        nameExcerpt: startTagNameExcerpt,
+        startTagOpeningDelimiterExcerpt,
+        startTagClosingDelimiterExcerpt,
+        endTagOpeningDelimiterExcerpt,
+        endTagNameExcerpt,
+        childNodes,
+        xmlAttributes
+      });
     }
 
     const endTagClosingDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
@@ -2063,7 +2098,11 @@ export class NodeParser {
     return element;
   }
 
-  private _parseXmlInnerText(tokenReader: TokenReader, elementName: string): ResultOrFailure<DocNode[]> {
+  private _parseXmlInnerText(
+    tokenReader: TokenReader,
+    elementName: string,
+    startTagEndMarker: number
+  ): ResultOrFailure<DocNode[]> {
     const nodes: DocNode[] = [];
     while (tokenReader.peekTokenKind() !== TokenKind.LessThan) {
       // Technically any non-conflicting tokens are valid as XML text nodes.
@@ -2074,6 +2113,11 @@ export class NodeParser {
       // Let's handle that case here.
 
       if (tokenReader.peekTokenAfterKind() === TokenKind.EndOfInput) {
+        // Since all of the input has been consumed, we have exhausted the rest
+        // of the content that may be valid tsdoc.
+        // Let's rewind and report the error in order to preserve tsdoc input occurring after
+        // this invalid XML element.
+        tokenReader.backtrackToMarker(startTagEndMarker);
         return this._createFailureForToken(
           tokenReader,
           TSDocMessageId.UnterminatedXmlElement,
@@ -2081,6 +2125,7 @@ export class NodeParser {
         );
       }
 
+      // Parse out any newlines within the inner XML text.
       if (tokenReader.peekTokenKind() === TokenKind.Newline) {
         // We need to make sure to capture any plain text that
         // occurred before the newline.
@@ -2113,8 +2158,6 @@ export class NodeParser {
     }
 
     const plainText: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
-
-    console.log(`Found plain text: ${plainText?.toString()}`);
 
     if (!plainText) {
       return nodes;
