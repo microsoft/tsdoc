@@ -169,6 +169,9 @@ exports[`02 HTML start tags: with attributes, positive 1`] = `
 Object {
   "buffer": "/**[n] * [<]tag-a attr-one=[q]one[q] [>][n] * [<]tag-b[n] *   attr-two[n] *   = [q]2[q][n] * /[>][n] */",
   "gaps": Array [
+    " ",
+    "
+",
     "
 ",
   ],
@@ -180,7 +183,7 @@ Object {
     "/[>]",
   ],
   "logMessages": Array [
-    "(2,4): Invalid XML element: The corresponding XML end tag \\"</tag-a>\\" is missing.",
+    "(2,5): The corresponding XML end tag \\"</tag-a>\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -192,28 +195,6 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "",
-                "errorLocationPrecedingToken": "
-",
-                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/tag-a[>][q] is missing.",
-                "kind": "ErrorText",
-                "nodes": Array [
-                  Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "[<]tag-a attr-one=[q]one[q] [>]",
-                  },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
-                  Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
-                  },
-                ],
-              },
-              Object {
                 "kind": "XmlElement",
                 "nodes": Array [
                   Object {
@@ -222,42 +203,80 @@ Object {
                   },
                   Object {
                     "kind": "Excerpt: XmlElement_Name",
-                    "nodeExcerpt": "tag-b",
-                  },
-                  Object {
-                    "kind": "Excerpt: Spacing",
-                    "nodeExcerpt": "[n]  ",
+                    "nodeExcerpt": "tag-a",
                   },
                   Object {
                     "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
-                    "nodeExcerpt": "/[>]",
+                    "nodeExcerpt": "[>]",
                   },
                   Object {
                     "kind": "XmlAttribute",
                     "nodes": Array [
                       Object {
                         "kind": "Excerpt: XmlAttribute_Name",
-                        "nodeExcerpt": "attr-two",
-                      },
-                      Object {
-                        "kind": "Excerpt: Spacing",
-                        "nodeExcerpt": "[n]  ",
+                        "nodeExcerpt": "attr-one",
                       },
                       Object {
                         "kind": "Excerpt: XmlAttribute_Equals",
                         "nodeExcerpt": "=",
                       },
                       Object {
+                        "kind": "Excerpt: XmlAttribute_Value",
+                        "nodeExcerpt": "[q]one[q]",
+                      },
+                      Object {
                         "kind": "Excerpt: Spacing",
                         "nodeExcerpt": " ",
                       },
+                    ],
+                  },
+                  Object {
+                    "kind": "XmlElement",
+                    "nodes": Array [
                       Object {
-                        "kind": "Excerpt: XmlAttribute_Value",
-                        "nodeExcerpt": "[q]2[q]",
+                        "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                        "nodeExcerpt": "[<]",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlElement_Name",
+                        "nodeExcerpt": "tag-b",
                       },
                       Object {
                         "kind": "Excerpt: Spacing",
-                        "nodeExcerpt": "[n]",
+                        "nodeExcerpt": "[n]  ",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                        "nodeExcerpt": "/[>]",
+                      },
+                      Object {
+                        "kind": "XmlAttribute",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Excerpt: XmlAttribute_Name",
+                            "nodeExcerpt": "attr-two",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": "[n]  ",
+                          },
+                          Object {
+                            "kind": "Excerpt: XmlAttribute_Equals",
+                            "nodeExcerpt": "=",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": " ",
+                          },
+                          Object {
+                            "kind": "Excerpt: XmlAttribute_Value",
+                            "nodeExcerpt": "[q]2[q]",
+                          },
+                          Object {
+                            "kind": "Excerpt: Spacing",
+                            "nodeExcerpt": "[n]",
+                          },
+                        ],
                       },
                     ],
                   },
@@ -1064,12 +1083,15 @@ Object {
 exports[`04 XML singular elements, negative 1`] = `
 Object {
   "buffer": "/**[n] * [<]tag[>][n] */",
-  "gaps": Array [],
+  "gaps": Array [
+    "
+",
+  ],
   "lines": Array [
     "[<]tag[>]",
   ],
   "logMessages": Array [
-    "(2,4): Invalid XML element: The corresponding XML end tag \\"</tag>\\" is missing.",
+    "(2,5): The corresponding XML end tag \\"</tag>\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -1081,24 +1103,19 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "",
-                "errorLocationPrecedingToken": "
-",
-                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/tag[>][q] is missing.",
-                "kind": "ErrorText",
+                "kind": "XmlElement",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "[<]tag[>]",
+                    "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
                   },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "Excerpt: XmlElement_Name",
+                    "nodeExcerpt": "tag",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
                   },
                 ],
               },
@@ -1187,12 +1204,15 @@ Object {
 exports[`04 XML singular elements, negative 3`] = `
 Object {
   "buffer": "/**[n] * [<]tag-b[>][n] */",
-  "gaps": Array [],
+  "gaps": Array [
+    "
+",
+  ],
   "lines": Array [
     "[<]tag-b[>]",
   ],
   "logMessages": Array [
-    "(2,4): Invalid XML element: The corresponding XML end tag \\"</tag-b>\\" is missing.",
+    "(2,5): The corresponding XML end tag \\"</tag-b>\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -1204,24 +1224,19 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "",
-                "errorLocationPrecedingToken": "
-",
-                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/tag-b[>][q] is missing.",
-                "kind": "ErrorText",
+                "kind": "XmlElement",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "[<]tag-b[>]",
+                    "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
                   },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "Excerpt: XmlElement_Name",
+                    "nodeExcerpt": "tag-b",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
                   },
                 ],
               },
@@ -1237,12 +1252,16 @@ Object {
 exports[`04 XML singular elements, negative 4`] = `
 Object {
   "buffer": "/**[n] * [<]tag       [>][n] */",
-  "gaps": Array [],
+  "gaps": Array [
+    "       ",
+    "
+",
+  ],
   "lines": Array [
     "[<]tag       [>]",
   ],
   "logMessages": Array [
-    "(2,4): Invalid XML element: The corresponding XML end tag \\"</tag>\\" is missing.",
+    "(2,5): The corresponding XML end tag \\"</tag>\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -1254,24 +1273,19 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "",
-                "errorLocationPrecedingToken": "
-",
-                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/tag[>][q] is missing.",
-                "kind": "ErrorText",
+                "kind": "XmlElement",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "[<]tag       [>]",
+                    "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
                   },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "Excerpt: XmlElement_Name",
+                    "nodeExcerpt": "tag",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
                   },
                 ],
               },
@@ -1287,13 +1301,18 @@ Object {
 exports[`04 XML singular elements, negative 5`] = `
 Object {
   "buffer": "/**[n] * [<]tag-c[n] * [>][n] */",
-  "gaps": Array [],
+  "gaps": Array [
+    "
+",
+    "
+",
+  ],
   "lines": Array [
     "[<]tag-c",
     "[>]",
   ],
   "logMessages": Array [
-    "(2,4): Invalid XML element: The corresponding XML end tag \\"</tag-c>\\" is missing.",
+    "(2,5): The corresponding XML end tag \\"</tag-c>\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -1305,24 +1324,19 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "",
-                "errorLocationPrecedingToken": "
-",
-                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/tag-c[>][q] is missing.",
-                "kind": "ErrorText",
+                "kind": "XmlElement",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "[<]tag-c[n][>]",
+                    "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
                   },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "Excerpt: XmlElement_Name",
+                    "nodeExcerpt": "tag-c",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
                   },
                 ],
               },
@@ -1624,9 +1638,8 @@ exports[`06 basic nested elements, negative 2`] = `
 Object {
   "buffer": "/**[n] * [<]tag[>][n] *   [<][>][<][>][n] * [<]/tag[>][n] */",
   "gaps": Array [
-    "<tag>
-  <",
-    "<",
+    "
+  <><",
     "<",
   ],
   "lines": Array [
@@ -1650,13 +1663,18 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "[>]",
-                "errorLocationPrecedingToken": "<",
-                "errorMessage": "Invalid XML tag name: Expecting an XML name",
-                "kind": "ErrorText",
+                "kind": "XmlElement",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
+                    "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlElement_Name",
+                    "nodeExcerpt": "tag",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
                 ],
@@ -2477,8 +2495,8 @@ exports[`10 Nested elements with attributes, negative 1`] = `
 Object {
   "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a attr=value /[>][n] *   [<]tag-b attr=[q]value /[>][n] * [<]/tag[>][n] */",
   "gaps": Array [
-    "<tag>
-  <tag-a ",
+    "
+  <tag-a attr",
     "<tag-b ",
     "<",
   ],
@@ -2506,14 +2524,19 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "value",
-                "errorLocationPrecedingToken": "=",
-                "errorMessage": "Invalid XML attribute: Expecting an XML string starting with a single-quote or double-quote character",
-                "kind": "ErrorText",
+                "kind": "XmlElement",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "attr",
+                    "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlElement_Name",
+                    "nodeExcerpt": "tag",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
                   },
                 ],
               },
@@ -2653,8 +2676,8 @@ exports[`10 Nested elements with attributes, negative 2`] = `
 Object {
   "buffer": "/**[n] * [<]tag[>][n] *   [<]attr=[q]value[q] /[>][n] * [<]/tag[>][n] */",
   "gaps": Array [
-    "<tag>
-  <attr",
+    "
+  <attr=",
     "<",
   ],
   "lines": Array [
@@ -2678,14 +2701,19 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "=",
-                "errorLocationPrecedingToken": "attr",
-                "errorMessage": "Expecting an attribute or [q][>][q] or [q]/[>][q]",
-                "kind": "ErrorText",
+                "kind": "XmlElement",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "=",
+                    "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlElement_Name",
+                    "nodeExcerpt": "tag",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
                   },
                 ],
               },
@@ -2978,11 +3006,14 @@ exports[`12 nested text elements, negative 1`] = `
 Object {
   "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a[>][n] *     foo [<][n] *   [<]/tag-a[>][n] * [<]/tag[>][n] */",
   "gaps": Array [
-    "<tag>
-  <tag-a>
-    foo <",
-    "<",
-    "<",
+    "
+  ",
+    "
+    ",
+    "<
+",
+    "
+<",
   ],
   "lines": Array [
     "[<]tag[>]",
@@ -2993,8 +3024,7 @@ Object {
   ],
   "logMessages": Array [
     "(4,13): Invalid XML tag name: Expecting an XML name",
-    "(5,7): Invalid XML tag name: Expecting an XML name",
-    "(5,13): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(2,5): Expected closing tag \\"</tag>\\" but received \\"</tag-a>\\" instead.",
     "(6,5): Invalid XML tag name: Expecting an XML name",
     "(6,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
   ],
@@ -3008,65 +3038,66 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "[n]",
-                "errorLocationPrecedingToken": "<",
-                "errorMessage": "Invalid XML tag name: Expecting an XML name",
-                "kind": "ErrorText",
+                "kind": "XmlElement",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "[n]",
+                    "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
                   },
-                ],
-              },
-              Object {
-                "kind": "PlainText",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: PlainText",
-                    "nodeExcerpt": "  ",
+                    "kind": "Excerpt: XmlElement_Name",
+                    "nodeExcerpt": "tag",
                   },
-                ],
-              },
-              Object {
-                "errorLocation": "/",
-                "errorLocationPrecedingToken": "<",
-                "errorMessage": "Invalid XML tag name: Expecting an XML name",
-                "kind": "ErrorText",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "/",
-                  },
-                ],
-              },
-              Object {
-                "kind": "PlainText",
-                "nodes": Array [
-                  Object {
-                    "kind": "Excerpt: PlainText",
-                    "nodeExcerpt": "tag-a",
-                  },
-                ],
-              },
-              Object {
-                "errorLocation": "[>]",
-                "errorLocationPrecedingToken": "a",
-                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
-                "kind": "ErrorText",
-                "nodes": Array [
-                  Object {
-                    "kind": "Excerpt: ErrorText",
+                    "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
                   },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "XmlElement",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                        "nodeExcerpt": "[<]",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlElement_Name",
+                        "nodeExcerpt": "tag-a",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                        "nodeExcerpt": "[>]",
+                      },
+                      Object {
+                        "kind": "PlainText",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Excerpt: PlainText",
+                            "nodeExcerpt": "foo ",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": "  ",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlEndTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]/",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlEndTag_Name",
+                    "nodeExcerpt": "tag-a",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlEndTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
                   },
                 ],
               },
@@ -3125,14 +3156,18 @@ exports[`12 nested text elements, negative 2`] = `
 Object {
   "buffer": "/**[n] * [<]tag[>][n] *   [<]tag-a[>][n] *     foo[<][n] *     [<]tag-b[>][n] *     [<]/tag-b[>][n] *   [<]/tag-a[>][n] * [<]/tag[>][n] */",
   "gaps": Array [
-    "<tag>
-  <tag-a>
-    foo<",
+    "
+  ",
+    "
+    ",
+    "<
+",
     "
     ",
     "
-  <",
-    "<",
+  ",
+    "
+<",
   ],
   "lines": Array [
     "[<]tag[>]",
@@ -3145,8 +3180,7 @@ Object {
   ],
   "logMessages": Array [
     "(4,12): Invalid XML tag name: Expecting an XML name",
-    "(7,7): Invalid XML tag name: Expecting an XML name",
-    "(7,13): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
+    "(2,5): Expected closing tag \\"</tag>\\" but received \\"</tag-a>\\" instead.",
     "(8,5): Invalid XML tag name: Expecting an XML name",
     "(8,9): The \\">\\" character should be escaped using a backslash to avoid confusion with an HTML tag",
   ],
@@ -3160,27 +3194,6 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "[n]",
-                "errorLocationPrecedingToken": "<",
-                "errorMessage": "Invalid XML tag name: Expecting an XML name",
-                "kind": "ErrorText",
-                "nodes": Array [
-                  Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "[n]",
-                  },
-                ],
-              },
-              Object {
-                "kind": "PlainText",
-                "nodes": Array [
-                  Object {
-                    "kind": "Excerpt: PlainText",
-                    "nodeExcerpt": "    ",
-                  },
-                ],
-              },
-              Object {
                 "kind": "XmlElement",
                 "nodes": Array [
                   Object {
@@ -3189,11 +3202,75 @@ Object {
                   },
                   Object {
                     "kind": "Excerpt: XmlElement_Name",
-                    "nodeExcerpt": "tag-b",
+                    "nodeExcerpt": "tag",
                   },
                   Object {
                     "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
+                  },
+                  Object {
+                    "kind": "XmlElement",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                        "nodeExcerpt": "[<]",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlElement_Name",
+                        "nodeExcerpt": "tag-a",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                        "nodeExcerpt": "[>]",
+                      },
+                      Object {
+                        "kind": "PlainText",
+                        "nodes": Array [
+                          Object {
+                            "kind": "Excerpt: PlainText",
+                            "nodeExcerpt": "foo",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": "    ",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "XmlElement",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                        "nodeExcerpt": "[<]",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlElement_Name",
+                        "nodeExcerpt": "tag-b",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                        "nodeExcerpt": "[>]",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlEndTag_OpeningDelimiter",
+                        "nodeExcerpt": "[<]/",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlEndTag_Name",
+                        "nodeExcerpt": "tag-b",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlEndTag_ClosingDelimiter",
+                        "nodeExcerpt": "[>]",
+                      },
+                    ],
                   },
                   Object {
                     "kind": "Excerpt: XmlEndTag_OpeningDelimiter",
@@ -3201,53 +3278,11 @@ Object {
                   },
                   Object {
                     "kind": "Excerpt: XmlEndTag_Name",
-                    "nodeExcerpt": "tag-b",
+                    "nodeExcerpt": "tag-a",
                   },
                   Object {
                     "kind": "Excerpt: XmlEndTag_ClosingDelimiter",
                     "nodeExcerpt": "[>]",
-                  },
-                ],
-              },
-              Object {
-                "errorLocation": "/",
-                "errorLocationPrecedingToken": "<",
-                "errorMessage": "Invalid XML tag name: Expecting an XML name",
-                "kind": "ErrorText",
-                "nodes": Array [
-                  Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "/",
-                  },
-                ],
-              },
-              Object {
-                "kind": "PlainText",
-                "nodes": Array [
-                  Object {
-                    "kind": "Excerpt: PlainText",
-                    "nodeExcerpt": "tag-a",
-                  },
-                ],
-              },
-              Object {
-                "errorLocation": "[>]",
-                "errorLocationPrecedingToken": "a",
-                "errorMessage": "The [q][>][q] character should be escaped using a backslash to avoid confusion with an HTML tag",
-                "kind": "ErrorText",
-                "nodes": Array [
-                  Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "[>]",
-                  },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
-                  Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
                   },
                 ],
               },
@@ -3643,7 +3678,10 @@ Object {
   "buffer": "/**[n] * [<]a1/[>][n] * [<]a-a[>][n] * [<]a--9-[>][n] */",
   "gaps": Array [
     "
-<a-a>
+",
+    "
+",
+    "
 ",
   ],
   "lines": Array [
@@ -3652,7 +3690,8 @@ Object {
     "[<]a--9-[>]",
   ],
   "logMessages": Array [
-    "(4,4): Invalid XML element: The corresponding XML end tag \\"</a--9->\\" is missing.",
+    "(4,5): The corresponding XML end tag \\"</a--9->\\" is missing.",
+    "(3,5): The corresponding XML end tag \\"</a-a>\\" is missing.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -3681,24 +3720,36 @@ Object {
                 ],
               },
               Object {
-                "errorLocation": "",
-                "errorLocationPrecedingToken": "
-",
-                "errorMessage": "Invalid XML element: The corresponding XML end tag [q][<]/a--9-[>][q] is missing.",
-                "kind": "ErrorText",
+                "kind": "XmlElement",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "[<]a--9-[>]",
+                    "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
                   },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "Excerpt: XmlElement_Name",
+                    "nodeExcerpt": "a-a",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
+                  },
+                  Object {
+                    "kind": "XmlElement",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                        "nodeExcerpt": "[<]",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlElement_Name",
+                        "nodeExcerpt": "a--9-",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                        "nodeExcerpt": "[>]",
+                      },
+                    ],
                   },
                 ],
               },
@@ -3871,9 +3922,12 @@ exports[`17 Supported XML elements, positive 1`] = `
 Object {
   "buffer": "/**[n] * [<]a[>][n] * [<]b/[>][n] * [<]/c[>][n] */",
   "gaps": Array [
-    "<a>
-<b/>
-</",
+    "
+",
+    "
+",
+    "
+",
   ],
   "lines": Array [
     "[<]a[>]",
@@ -3881,7 +3935,7 @@ Object {
     "[<]/c[>]",
   ],
   "logMessages": Array [
-    "(4,6): Expecting closing tag name \\"c\\" to match opening tag name \\"a\\"",
+    "(2,5): Expected closing tag \\"</a>\\" but received \\"</c>\\" instead.",
   ],
   "nodes": Object {
     "kind": "Comment",
@@ -3893,23 +3947,48 @@ Object {
             "kind": "Paragraph",
             "nodes": Array [
               Object {
-                "errorLocation": "c[>]",
-                "errorLocationPrecedingToken": "/",
-                "errorMessage": "Expecting closing tag name [q]c[q] to match opening tag name [q]a[q]",
-                "kind": "ErrorText",
+                "kind": "XmlElement",
                 "nodes": Array [
                   Object {
-                    "kind": "Excerpt: ErrorText",
-                    "nodeExcerpt": "c[>]",
+                    "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]",
                   },
-                ],
-              },
-              Object {
-                "kind": "SoftBreak",
-                "nodes": Array [
                   Object {
-                    "kind": "Excerpt: SoftBreak",
-                    "nodeExcerpt": "[n]",
+                    "kind": "Excerpt: XmlElement_Name",
+                    "nodeExcerpt": "a",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
+                  },
+                  Object {
+                    "kind": "XmlElement",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: XmlStartTag_OpeningDelimiter",
+                        "nodeExcerpt": "[<]",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlElement_Name",
+                        "nodeExcerpt": "b",
+                      },
+                      Object {
+                        "kind": "Excerpt: XmlStartTag_ClosingDelimiter",
+                        "nodeExcerpt": "/[>]",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlEndTag_OpeningDelimiter",
+                    "nodeExcerpt": "[<]/",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlEndTag_Name",
+                    "nodeExcerpt": "c",
+                  },
+                  Object {
+                    "kind": "Excerpt: XmlEndTag_ClosingDelimiter",
+                    "nodeExcerpt": "[>]",
                   },
                 ],
               },
