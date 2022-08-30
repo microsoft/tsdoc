@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
-/* eslint-disable @typescript-eslint/member-ordering */
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
 import Media from 'react-media';
@@ -26,6 +24,20 @@ export interface IPlaygroundViewState {
   selectSampleValue: string | undefined;
   selectedTheme: string;
 }
+
+const mainRowStyle: React.CSSProperties = {
+  alignItems: 'stretch',
+  flex: 1
+};
+const mainRowStyleZoomed: React.CSSProperties = {
+  alignItems: 'stretch',
+  flex: 1,
+  flexDirection: 'column'
+};
+const errorsPaneStyle: React.CSSProperties = {
+  height: '130px',
+  marginTop: '20px'
+};
 
 export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlaygroundViewState> {
   private readonly _textAreaStyle: React.CSSProperties = {
@@ -69,20 +81,6 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     }
   }
 
-  mainRowStyle: React.CSSProperties = {
-    alignItems: 'stretch',
-    flex: 1
-  };
-  mainRowStyleZoomed: React.CSSProperties = {
-    alignItems: 'stretch',
-    flex: 1,
-    flexDirection: 'column'
-  };
-  errorsPaneStyle: React.CSSProperties = {
-    height: '130px',
-    marginTop: '20px'
-  };
-
   public render(): React.ReactNode {
     return (
       <div>
@@ -102,7 +100,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   private _renderLargeScreenPlayground(): React.ReactNode {
     return (
       <FlexColDiv className="playground-content-area" style={{ margin: '4px', flex: 1 }}>
-        <FlexRowDiv className="playground-main-row" style={this.mainRowStyle}>
+        <FlexRowDiv className="playground-main-row" style={mainRowStyle}>
           {this._renderInputBox()}
           <TabPane
             style={{ flex: 1, marginLeft: '4px' }}
@@ -116,7 +114,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
             ]}
           />
         </FlexRowDiv>
-        <FlexColDiv className="playground-errors-pane" style={this.errorsPaneStyle}>
+        <FlexColDiv className="playground-errors-pane" style={errorsPaneStyle}>
           {this._renderErrorList()}
         </FlexColDiv>
       </FlexColDiv>
@@ -126,7 +124,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   private _renderSmallScreenPlayground(): React.ReactNode {
     return (
       <FlexColDiv className="playground-content-area" style={{ margin: '4px', flex: 1 }}>
-        <FlexRowDiv className="playground-main-row" style={this.mainRowStyleZoomed}>
+        <FlexRowDiv className="playground-main-row" style={mainRowStyleZoomed}>
           {this._renderInputBox()}
           <TabPane
             style={{ flex: 1, marginLeft: '4px' }}
@@ -140,7 +138,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
             ]}
           />
         </FlexRowDiv>
-        <FlexColDiv className="playground-errors-pane" style={this.errorsPaneStyle}>
+        <FlexColDiv className="playground-errors-pane" style={errorsPaneStyle}>
           {this._renderErrorList()}
         </FlexColDiv>
       </FlexColDiv>
