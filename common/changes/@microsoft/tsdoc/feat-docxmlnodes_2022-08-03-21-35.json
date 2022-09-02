@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc",
-      "comment": "(BREAKING API CHANGE) Replace AST nodes `DocHtmlStartTag` and `DocHtmlEndTag` with a new node `DocXmlElement` that represents a hierarchical DOM tree",
+      "comment": "(BREAKING SYNTAX CHANGE) Improve the parser to report syntax errors if opening/closing XML tags are not correctly matched",
       "type": "minor"
     }
   ],
