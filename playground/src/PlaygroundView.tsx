@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
-import Media from 'react-media';
+import './PlaygroundView.css';
 
 import { TabPane } from './TabPane';
 import { FlexRowDiv, FlexColDiv } from './FlexDivs';
@@ -25,15 +25,6 @@ export interface IPlaygroundViewState {
   selectedTheme: string;
 }
 
-const mainRowStyle: React.CSSProperties = {
-  alignItems: 'stretch',
-  flex: 1
-};
-const mainRowStyleZoomed: React.CSSProperties = {
-  alignItems: 'stretch',
-  flex: 1,
-  flexDirection: 'column'
-};
 const errorsPaneStyle: React.CSSProperties = {
   height: '130px',
   marginTop: '20px'
@@ -83,24 +74,8 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
 
   public render(): React.ReactNode {
     return (
-      <div>
-        <Media query="(min-width: 700px)">
-          {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (matches: any) =>
-              matches
-                ? this._renderLargeScreenPlayground() // For example: Laptops
-                : this._renderSmallScreenPlayground() // For example: iPhones/iPads
-          }
-        </Media>
-      </div>
-    );
-  }
-
-  private _renderLargeScreenPlayground(): React.ReactNode {
-    return (
       <FlexColDiv className="playground-content-area" style={{ margin: '4px', flex: 1 }}>
-        <FlexRowDiv className="playground-main-row" style={mainRowStyle}>
+        <FlexRowDiv className="playground-main-row">
           {this._renderInputBox()}
           <TabPane
             style={{ flex: 1, marginLeft: '4px' }}
@@ -121,29 +96,6 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     );
   }
 
-  private _renderSmallScreenPlayground(): React.ReactNode {
-    return (
-      <FlexColDiv className="playground-content-area" style={{ margin: '4px', flex: 1 }}>
-        <FlexRowDiv className="playground-main-row" style={mainRowStyleZoomed}>
-          {this._renderInputBox()}
-          <TabPane
-            style={{ flex: 1, marginLeft: '4px' }}
-            buttonRowStyle={{ height: '40px', boxSizing: 'border-box' }}
-            tabs={[
-              { title: 'HTML', render: this._renderHtml.bind(this) },
-              { title: 'DOM', render: this._renderDom.bind(this) },
-              { title: 'Lines', render: this._renderLines.bind(this) },
-              { title: 'AST', render: this._renderAst.bind(this) },
-              { title: 'Emitter', render: this._renderEmitter.bind(this) }
-            ]}
-          />
-        </FlexRowDiv>
-        <FlexColDiv className="playground-errors-pane" style={errorsPaneStyle}>
-          {this._renderErrorList()}
-        </FlexColDiv>
-      </FlexColDiv>
-    );
-  }
   private _renderInputBox(): React.ReactNode {
     const markers: ISyntaxMarker[] = [];
     const syntaxStyles: IStyledRange[] = [];

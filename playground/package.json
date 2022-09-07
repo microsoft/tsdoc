@@ -15,8 +15,7 @@
     "react": "18.2.0",
     "monaco-editor": "~0.17.1",
     "promise": "~8.0.3",
-    "tslib": "~1.10.0",
-    "react-media": "~1.10.0"
+    "tslib": "~1.10.0"
   },
   "devDependencies": {
     "@rushstack/eslint-config": "~2.3.1",
