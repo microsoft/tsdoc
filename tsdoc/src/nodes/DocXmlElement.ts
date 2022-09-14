@@ -5,6 +5,7 @@ import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 import { DocXmlAttribute } from './DocXmlAttribute';
 import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
 import { DocNodeContainer } from './DocNodeContainer';
+import { StringChecks } from '../parser/StringChecks';
 
 /**
  * Constructor parameters for {@link DocXmlElement}.
@@ -201,15 +202,12 @@ export class DocXmlElement extends DocNodeContainer {
    * @returns The XML attribute with the specified name, or `undefined` if no such attribute with the given name exists.
    */
   public tryGetXmlAttribute(name: string): DocXmlAttribute | undefined {
-    if (!DocXmlElement._isValidXmlName(name)) {
-      throw new Error(`'${name}' is not a valid XML attribute name.`);
+    const explanation: string | undefined = StringChecks.explainIfInvalidXmlName(name);
+    if (explanation) {
+      throw new Error(`${JSON.stringify(name)} is not a valid name: ${explanation}`);
     }
 
     return this._xmlAttributesByName.get(name);
-  }
-
-  private static _isValidXmlName(name: string): boolean {
-    return /^[a-zA-Z_][a-zA-Z0-9_.-]*$/.test(name);
   }
 
   /**

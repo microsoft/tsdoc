@@ -12,9 +12,9 @@ export class StringChecks {
   // https://www.w3.org/TR/html5/syntax.html#tag-name
   // https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
   //
-  // We use the CommonMark spec:
+  // We use the more conservative definition of the CommonMark spec:
   // "A tag name consists of an ASCII letter followed by zero or more ASCII letters, digits, or hyphens (-)."
-  private static readonly _htmlNameRegExp: RegExp = /^[a-z][a-z0-9\-]*$/i;
+  private static readonly _xmlNameRegExp: RegExp = /^[a-z][a-z0-9\-]*$/i;
 
   // Note: In addition to letters, numbers, underscores, and dollar signs, modern ECMAScript
   // also allows Unicode categories such as letters, combining marks, digits, and connector punctuation.
@@ -100,7 +100,7 @@ export class StringChecks {
    * Tests whether the input string is a valid XML element or attribute name.
    */
   public static explainIfInvalidXmlName(xmlName: string): string | undefined {
-    if (!StringChecks._htmlNameRegExp.test(xmlName)) {
+    if (!StringChecks._xmlNameRegExp.test(xmlName)) {
       return 'An XML name must be an ASCII letter followed by zero or more letters, digits, or hyphens';
     }
 
