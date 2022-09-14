@@ -14,7 +14,7 @@ export class StringChecks {
   //
   // We use the CommonMark spec:
   // "A tag name consists of an ASCII letter followed by zero or more ASCII letters, digits, or hyphens (-)."
-  private static readonly _htmlNameRegExp: RegExp = /^[a-z]+[a-z0-9\-]*$/i;
+  private static readonly _htmlNameRegExp: RegExp = /^[a-z][a-z0-9\-]*$/i;
 
   // Note: In addition to letters, numbers, underscores, and dollar signs, modern ECMAScript
   // also allows Unicode categories such as letters, combining marks, digits, and connector punctuation.
