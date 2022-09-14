@@ -1884,10 +1884,10 @@ export class NodeParser {
     tokenReader.assertAccumulatedSequenceIsEmpty();
     const startTagEndDelimiterMarker: number = tokenReader.createMarker();
 
-    let selfClosingTag: boolean = false;
+    let emptyElementTag: boolean = false;
     if (tokenReader.peekTokenKind() === TokenKind.Slash) {
       tokenReader.readToken();
-      selfClosingTag = true;
+      emptyElementTag = true;
     }
 
     if (tokenReader.peekTokenKind() !== TokenKind.GreaterThan) {
@@ -1903,7 +1903,7 @@ export class NodeParser {
     // Capture start closing delimiter
     const startTagClosingDelimiterExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    if (selfClosingTag) {
+    if (emptyElementTag) {
       // We're finished parsing the element here since self closing tags don't have
       // any children or a dedicated closing tag.
       return new DocXmlElement({
@@ -1917,7 +1917,7 @@ export class NodeParser {
         spacingAfterElementExcerpt: this._tryReadSpacingAndNewlines(tokenReader),
         startTagNameExcerpt,
         xmlAttributes,
-        selfClosingTag,
+        isEmptyElement: emptyElementTag,
         childNodes: []
       });
     }
@@ -2086,7 +2086,7 @@ export class NodeParser {
       endTagNameExcerpt,
       nameExcerpt: startTagNameExcerpt,
       xmlAttributes: xmlAttributes,
-      selfClosingTag,
+      isEmptyElement: emptyElementTag,
       childNodes
     });
 

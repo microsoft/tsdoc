@@ -194,8 +194,7 @@ export class TSDocEmitter {
           this._writeContent(attribute.spacingAfterValue);
         }
 
-        // Check if it's self-closing
-        if (docXmlElement.selfClosingTag) {
+        if (docXmlElement.isEmptyElement) {
           this._writeContent('/>');
           break;
         }

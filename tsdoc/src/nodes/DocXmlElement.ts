@@ -33,7 +33,7 @@ export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters
   endTagNameExcerpt?: TokenSequence;
 
   xmlAttributes: DocXmlAttribute[];
-  selfClosingTag?: boolean;
+  isEmptyElement?: boolean;
 
   spacingAfterElementExcerpt?: TokenSequence;
 }
@@ -48,7 +48,7 @@ export interface IDocXmlElementParameters extends IDocNodeParameters {
   xmlAttributes?: DocXmlAttribute[];
 
   startTagParameters: IDocXmlElementParsedParameters;
-  selfClosingTag?: boolean;
+  isEmptyElement?: boolean;
 }
 
 export class DocXmlElement extends DocNodeContainer {
@@ -79,7 +79,7 @@ export class DocXmlElement extends DocNodeContainer {
   private _spacingBetweenStartTagAndChildren: string | undefined;
   private readonly _spacingBetweenStartTagAndChildrenExcerpt: DocExcerpt | undefined;
 
-  private _selfClosingTag: boolean;
+  private _isEmptyElement: boolean;
 
   private _spacingAfterEndTag: string | undefined;
   private readonly _spacingAfterEndTagExcerpt: DocExcerpt | undefined;
@@ -171,7 +171,7 @@ export class DocXmlElement extends DocNodeContainer {
       this._xmlAttributesByName.set(xmlAttribute.name, xmlAttribute);
     }
 
-    this._selfClosingTag = !!parameters.selfClosingTag;
+    this._isEmptyElement = !!parameters.isEmptyElement;
   }
 
   public get kind(): string {
@@ -213,10 +213,17 @@ export class DocXmlElement extends DocNodeContainer {
   }
 
   /**
-   * If true, then the XML start tag ends with `/>` instead of `>`.
+   * If true, then the XML start tag ends with `/>` instead of `>`,
+   * and there is no end tag.
+   *
+   * @remarks
+   * The XML spec refers to `<example/>` as an "empty-element tag".  The CommonMark spec
+   * considers it to be a start tag that denotes an "empty element."  HTML5 uses the term "void elements",
+   * but this tends to refer to standard tags such as `<br/>` which must always be empty elements
+   * according to the spec.
    */
-  public get selfClosingTag(): boolean {
-    return this._selfClosingTag;
+  public get isEmptyElement(): boolean {
+    return this._isEmptyElement;
   }
 
   /**

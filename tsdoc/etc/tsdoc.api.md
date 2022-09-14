@@ -413,12 +413,12 @@ export class DocXmlElement extends DocNodeContainer {
     emitAsXml(): string;
     get endTagClosingDelimiter(): string | undefined;
     get endTagOpeningDelimiter(): string | undefined;
+    get isEmptyElement(): boolean;
     // (undocumented)
     get kind(): string;
     get name(): string;
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-    get selfClosingTag(): boolean;
     get spacingAfterEndTag(): string | undefined;
     get spacingAfterName(): string | undefined;
     get spacingBetweenStartTagAndChildren(): string | undefined;
@@ -947,9 +947,9 @@ export interface IDocXmlAttributeParsedParameters extends IDocNodeParsedParamete
 // @public
 export interface IDocXmlElementParameters extends IDocNodeParameters {
     // (undocumented)
-    name: string;
+    isEmptyElement?: boolean;
     // (undocumented)
-    selfClosingTag?: boolean;
+    name: string;
     // (undocumented)
     spacingAfterName?: string;
     // (undocumented)
@@ -973,9 +973,9 @@ export interface IDocXmlElementParsedParameters extends IDocNodeParsedParameters
     // (undocumented)
     endTagOpeningExcerpt?: TokenSequence;
     // (undocumented)
-    nameExcerpt: TokenSequence;
+    isEmptyElement?: boolean;
     // (undocumented)
-    selfClosingTag?: boolean;
+    nameExcerpt: TokenSequence;
     // (undocumented)
     spacingAfterElementExcerpt?: TokenSequence;
     // (undocumented)
