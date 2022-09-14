@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc",
-      "comment": "Fix circular reference by type import",
+      "comment": "Update an internal type import to avoid a circular reference (GitHub #327 and #328)",
       "type": "patch"
     }
   ],
