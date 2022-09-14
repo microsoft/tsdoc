@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Sat, 09 Apr 2022 02:28:41 GMT and should not be manually modified.
+This log was last generated on Wed, 14 Sep 2022 02:55:06 GMT and should not be manually modified.
+
+## 0.14.2
+Wed, 14 Sep 2022 02:55:06 GMT
+
+### Patches
+
+- Update an internal type import to avoid a circular reference (GitHub #327 and #328)
 
 ## 0.14.1
 Sat, 09 Apr 2022 02:28:41 GMT

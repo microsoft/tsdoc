@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.14.2",
+      "tag": "@microsoft/tsdoc_v0.14.2",
+      "date": "Wed, 14 Sep 2022 02:55:06 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update an internal type import to avoid a circular reference (GitHub #327 and #328)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.14.1",
       "tag": "@microsoft/tsdoc_v0.14.1",
       "date": "Sat, 09 Apr 2022 02:28:41 GMT",
