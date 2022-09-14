@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc-config",
-      "comment": "Rename various properties to from HTML to XML.",
+      "comment": "(BREAKING SCHEMA CHANGE) Rename tsdoc.json fields: \"supportedHtmlElements\" renamed to \"supportedXmlElements\"; \"reportUnsupportedHtmlElements\" renamed to \"reportUnsupportedXmlElements\"",
       "type": "minor"
     }
   ],
