@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
-import './PlaygroundView.css';
+import './PlaygroundView.module.scss';
 
 import { TabPane } from './TabPane';
 import { FlexRowDiv, FlexColDiv } from './FlexDivs';
@@ -25,7 +25,7 @@ export interface IPlaygroundViewState {
   selectedTheme: string;
 }
 
-const errorsPaneStyle: React.CSSProperties = {
+const ERRORS_PANE_STYLE: React.CSSProperties = {
   height: '130px',
   marginTop: '20px'
 };
@@ -75,7 +75,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   public render(): React.ReactNode {
     return (
       <FlexColDiv className="playground-content-area" style={{ margin: '4px', flex: 1 }}>
-        <FlexRowDiv className="playground-main-row">
+        <FlexRowDiv className="playgroundMainRow">
           {this._renderInputBox()}
           <TabPane
             style={{ flex: 1, marginLeft: '4px' }}
@@ -89,7 +89,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
             ]}
           />
         </FlexRowDiv>
-        <FlexColDiv className="playground-errors-pane" style={errorsPaneStyle}>
+        <FlexColDiv className="playground-errors-pane" style={ERRORS_PANE_STYLE}>
           {this._renderErrorList()}
         </FlexColDiv>
       </FlexColDiv>

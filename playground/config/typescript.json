@@ -7,7 +7,7 @@
   "extends": "@rushstack/heft-web-rig/profiles/library/config/typescript.json",
 
   "staticAssetsToCopy": {
-    "fileExtensions": [".json", ".css"],
+    "fileExtensions": [".json", ".css", ".scss"],
     "includeGlobs": ["samples/*.ts"]
   }
 }

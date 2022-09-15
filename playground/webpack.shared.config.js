@@ -23,10 +23,6 @@ const MONACO_URL = {
   dev: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/',
   production: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/'
 };
-const REACT_MEDIA_URL = {
-  dev: 'https://cdnjs.cloudflare.com/ajax/libs/react-media/1.10.0/umd/react-media.development.js',
-  production: 'https://cdnjs.cloudflare.com/ajax/libs/react-media/1.10.0/umd/react-media.production.min.js'
-};
 
 module.exports.generateBuildWebpackConfiguration = function (env) {
   return _generateBaseWebpackConfiguration((env || {}).production);
