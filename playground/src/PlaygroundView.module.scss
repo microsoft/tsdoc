@@ -1,0 +1,12 @@
+.playgroundMainRow {
+  align-items: stretch;
+  flex: 1;
+}
+
+@media screen and (max-width: 700px) {
+  .playgroundMainRow {
+    align-items: stretch;
+    flex: 1;
+    flex-direction: column !important;
+  }
+}

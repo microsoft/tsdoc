@@ -1,6 +1,9 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
 
+// TODO: Fix this to be complied as .module.scss
+import './PlaygroundView.module.scss';
+
 import { TabPane } from './TabPane';
 import { FlexRowDiv, FlexColDiv } from './FlexDivs';
 import { DocHtmlView } from './DocHtmlView';
@@ -23,6 +26,11 @@ export interface IPlaygroundViewState {
   selectSampleValue: string | undefined;
   selectedTheme: string;
 }
+
+const ERRORS_PANE_STYLE: React.CSSProperties = {
+  height: '130px',
+  marginTop: '20px'
+};
 
 export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlaygroundViewState> {
   private readonly _textAreaStyle: React.CSSProperties = {
@@ -67,21 +75,10 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   }
 
   public render(): React.ReactNode {
-    const mainRowStyle: React.CSSProperties = {
-      alignItems: 'stretch',
-      flex: 1
-    };
-
-    const errorsPaneStyle: React.CSSProperties = {
-      height: '130px',
-      marginTop: '20px'
-    };
-
     return (
       <FlexColDiv className="playground-content-area" style={{ margin: '4px', flex: 1 }}>
-        <FlexRowDiv className="playground-main-row" style={mainRowStyle}>
+        <FlexRowDiv className="playgroundMainRow">
           {this._renderInputBox()}
-
           <TabPane
             style={{ flex: 1, marginLeft: '4px' }}
             buttonRowStyle={{ height: '40px', boxSizing: 'border-box' }}
@@ -94,7 +91,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
             ]}
           />
         </FlexRowDiv>
-        <FlexColDiv className="playground-errors-pane" style={errorsPaneStyle}>
+        <FlexColDiv className="playground-errors-pane" style={ERRORS_PANE_STYLE}>
           {this._renderErrorList()}
         </FlexColDiv>
       </FlexColDiv>
@@ -140,7 +137,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
     };
 
     return (
-      <FlexColDiv className="playground-input-box" style={{ flex: 1 }}>
+      <FlexColDiv className="playground-input-box" style={{ flex: 1, marginTop: '10px' }}>
         <div className="playground-button-bar" style={{ height: '40px', boxSizing: 'border-box' }}>
           {this._renderSelectSample()}
           {this._renderThemeSelector()}
@@ -178,6 +175,7 @@ export class PlaygroundView extends React.Component<IPlaygroundViewProps, IPlayg
   private _renderThemeSelector(): React.ReactNode {
     return (
       <select
+        style={{ width: '195px', marginLeft: '5px' }}
         className="playground-select-theme"
         value={this.state.selectedTheme}
         aria-label="Select an editor theme"

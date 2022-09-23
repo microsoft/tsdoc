@@ -32,6 +32,8 @@ dependencies:
   node-sass: 4.14.1
   promise: 8.0.3
   raw-loader: 0.5.1
+  react: 18.2.0
+  react-media: 1.10.0_react@18.2.0
   resolve: 1.19.0
   sass-loader: 7.1.0_webpack@4.44.2
   source-map-loader: 1.1.3_webpack@4.44.2
@@ -294,6 +296,14 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-KoK9ErH1MBlCPxV0VANkXW2/dw4vlbGDrFgz8bmUsBGYkFRcbRwMh6cIJubdPrkxRwuGdtCk0v/wPTKbQgBjkg==
+  /@babel/runtime/7.18.9:
+    dependencies:
+      regenerator-runtime: 0.13.9
+    dev: false
+    engines:
+      node: '>=6.9.0'
+    resolution:
+      integrity: sha512-lkqXDcvlFT5rvEjiu6+QYO+1GXrEHRo2LOtS7E4GtX5ESIZOgepqsZBVIj6Pv+a6zqsya9VCgiK1KAK4BvJDAw==
   /@babel/template/7.12.13:
     dependencies:
       '@babel/code-frame': 7.12.13
@@ -4543,6 +4553,12 @@ packages:
       node: '>= 0.4'
     resolution:
       integrity: sha512-O0DB1JC/sPyZl7cIo78n5dR7eUSwwpYPiXRhTzNxZVAMUuB8vlnRFyLxdrVToks6XPLVnFfbzaVd5WLjhgg+vA==
+  /invariant/2.2.4:
+    dependencies:
+      loose-envify: 1.4.0
+    dev: false
+    resolution:
+      integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
   /ip-regex/2.1.0:
     dev: false
     engines:
@@ -5460,6 +5476,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
+  /json2mq/0.2.0:
+    dependencies:
+      string-convert: 0.2.1
+    dev: false
+    resolution:
+      integrity: sha512-SzoRg7ux5DWTII9J2qkrZrqV1gt+rTaoufMxEzXbS26Uid0NwaJd123HcoB80TgubEppxxIGdNxCx50fEoEWQA==
   /json3/3.3.3:
     dev: false
     resolution:
@@ -7073,6 +7095,26 @@ packages:
     dev: false
     resolution:
       integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+  /react-media/1.10.0_react@18.2.0:
+    dependencies:
+      '@babel/runtime': 7.18.9
+      invariant: 2.2.4
+      json2mq: 0.2.0
+      prop-types: 15.7.2
+      react: 18.2.0
+    dev: false
+    peerDependencies:
+      react: '>=15 || ^0.14.7'
+    resolution:
+      integrity: sha512-FjgYmFoaPTImST06jqotuu0Mk8LOXiGYS/fIyiXuLnf20l3DPniBwtrxi604/HxxjqvmHS3oz5rAwnqdvosV4A==
+  /react/18.2.0:
+    dependencies:
+      loose-envify: 1.4.0
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
   /read-pkg-up/1.0.1:
     dependencies:
       find-up: 1.1.2
@@ -7168,6 +7210,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-z5Fqsf1fHxbfsggi3W7H9zDCr94=
+  /regenerator-runtime/0.13.9:
+    dev: false
+    resolution:
+      integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==
   /regex-not/1.0.2:
     dependencies:
       extend-shallow: 3.0.2
@@ -7981,6 +8027,10 @@ packages:
       node: '>=0.6.19'
     resolution:
       integrity: sha512-a1uQGz7IyVy9YwhqjZIZu1c8JO8dNIe20xBmSS6qu9kv++k3JGzCVmprbNN5Kn+BgzD5E7YYwg1CcjuJMRNsvg==
+  /string-convert/0.2.1:
+    dev: false
+    resolution:
+      integrity: sha512-u/1tdPl4yQnPBjnVrmdLo9gtuLvELKsAoRapekWggdiQNvvvum+jYF329d84NAa660KQw7pB2n36KrIKVoXa3A==
   /string-hash/1.1.3:
     dev: false
     resolution:
@@ -9148,7 +9198,7 @@ packages:
     dev: false
     name: '@rush-temp/api-demo'
     resolution:
-      integrity: sha512-u6SAX1WgN522qeHPOGYCp0KEE2djUZsH8Mzdsus7WkkXcc4k4Xxfl0Gbm5xEHU/5Kns4uPDQw9qzeQ4A9yMoqw==
+      integrity: sha512-3VguJO/a6GREC+4wBkbBkI6RR/3HIlB8od/A/5mlUTH/4S73kPlV3kGjbYuYVrlgB01wLwQpSXJDwwJPm4ZC9A==
       tarball: file:projects/api-demo.tgz
     version: 0.0.0
   file:projects/eslint-plugin-tsdoc.tgz_typescript@3.9.9:
@@ -9167,7 +9217,7 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-gQxmeFQhoPooSI2YzOeku5SZpm01+RYuD5WLhpo181sWTv7e7wKYYuzto4dCJNK8aETFGa0a6b+1dcRq85GAmQ==
+      integrity: sha512-oFr15lUaBM1JSKzAb+lRo2Fz+x6yXmz1g79mVcH3UMPvIhyKb0wr1xZE6Tozz56Q0EreBT9+Rsn0Ev7FWOq9qw==
       tarball: file:projects/eslint-plugin-tsdoc.tgz
     version: 0.0.0
   file:projects/tsdoc-config.tgz_typescript@3.9.9:
@@ -9189,7 +9239,7 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-dujF1yhMeFtTbOTcdw291tIPuUzsfy/Sgyi8ciaAGSrMVWMB0i1tPAohQrzFHC54T8rm+o03Cjx+cvAo1iwgWg==
+      integrity: sha512-xU+XaICKo55+hTdUbUDCogxR829LA9ji/UQTlhl3KNHNZ9x4BOokvCglIz9bsH2QcqFFXrUg9tS9XKKJU+Rc9Q==
       tarball: file:projects/tsdoc-config.tgz
     version: 0.0.0
   file:projects/tsdoc-playground.tgz:
@@ -9212,6 +9262,8 @@ packages:
       node-sass: 4.14.1
       promise: 8.0.3
       raw-loader: 0.5.1
+      react: 18.2.0
+      react-media: 1.10.0_react@18.2.0
       sass-loader: 7.1.0_webpack@4.44.2
       source-map-loader: 1.1.3_webpack@4.44.2
       style-loader: 0.23.1
@@ -9222,7 +9274,7 @@ packages:
     dev: false
     name: '@rush-temp/tsdoc-playground'
     resolution:
-      integrity: sha512-3dq2AJePP1vVMrWVb7mJoBeNicvGIZnePFAuKSczRmtuK33T7uNS+OcbeP5tYAZzOyrsblZyXSHW97Is/Edy6A==
+      integrity: sha512-5D+RIruxNIBzBgo8aydJAgE9YtljG1tU+V2fWOeuqtJ+OlIy2S2BeFlO4jqCi0W1fGF9xZ4uUTNVvScaw5e1mg==
       tarball: file:projects/tsdoc-playground.tgz
     version: 0.0.0
   file:projects/tsdoc.tgz_typescript@3.9.9:
@@ -9241,6 +9293,7 @@ packages:
       integrity: sha512-lQ8d20HPdZKkFSejWMVPxe9OOaUkl6Kl8ToIQtLYamNDVHs3Cgr+Wk9Z1xsg/cq1jIsKbc0TYig9WfhP5M3WTA==
       tarball: file:projects/tsdoc.tgz
     version: 0.0.0
+registry: ''
 specifiers:
   '@rush-temp/api-demo': file:./projects/api-demo.tgz
   '@rush-temp/eslint-plugin-tsdoc': file:./projects/eslint-plugin-tsdoc.tgz
@@ -9275,6 +9328,8 @@ specifiers:
   node-sass: ~4.14.1
   promise: ~8.0.3
   raw-loader: ~0.5.1
+  react: 18.2.0
+  react-media: ~1.10.0
   resolve: ~1.19.0
   sass-loader: ~7.1.0
   source-map-loader: ~1.1.2

@@ -200,7 +200,6 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
           lineNumbers: this.props.disableLineNumbers ? 'off' : 'on'
         });
       }
-
       this._applySyntaxStyling(this.props.syntaxStyles || []);
     }
   }
@@ -221,7 +220,15 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
         <div
           className="playground-monaco-placeholder"
           ref={this._onRefPlaceholder}
-          style={{ display: 'flex', flexDirection: 'column', flex: 1, ...this.props.style }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            height: '1000px',
+            minHeight: '400px',
+            marginTop: '10px',
+            ...this.props.style
+          }}
         >
           <div
             className="playground-monaco-host"
