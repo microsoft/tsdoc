@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
+
+// TODO: Fix this to be complied as .module.scss
 import './PlaygroundView.module.scss';
 
 import { TabPane } from './TabPane';
