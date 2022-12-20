@@ -133,7 +133,7 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
       const heading: string = exampleBlocks.length > 1 ? `Example ${exampleNumber}` : 'Example';
 
       outputElements.push(
-        <React.Fragment key="seeAlso">
+        <React.Fragment key="example">
           <h2 className="doc-heading">{heading}</h2>
           {this._renderContainer(exampleBlock.content)}
         </React.Fragment>
