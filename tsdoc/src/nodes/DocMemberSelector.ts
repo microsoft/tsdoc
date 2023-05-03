@@ -57,7 +57,7 @@ export interface IDocMemberSelectorParsedParameters extends IDocNodeParsedParame
 export class DocMemberSelector extends DocNode {
   private static readonly _likeIndexSelectorRegExp: RegExp = /^[0-9]/;
 
-  private static readonly _indexSelectorRegExp: RegExp = /^(0|[1-9][0-9]*)$/;
+  private static readonly _indexSelectorRegExp: RegExp = /^[1-9][0-9]*$/;
 
   private static readonly _likeLabelSelectorRegExp: RegExp = /^[A-Z_]/u;
 
