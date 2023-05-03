@@ -128,11 +128,13 @@ export namespace B1.B2.B3 {
 }
 
 //---------------------------------------------------------
-// Function overloads using indexes (NOT RECOMMENDED)
+// Function overloads using  positive integer indexes (NOT RECOMMENDED)
 //
 // Generally we recommend to define labels, as shown with functionD1() below.
 // Numeric indexes should only be used e.g. if you are consuming a library that
 // doesn't define labels, and you cannot easily fix that library.
+// Note that overload indexes count from 1 (like documentation list items),
+// not 0 (like arrays).
 
 /**
  * Shortest name:  {@link (functionC1:1)}

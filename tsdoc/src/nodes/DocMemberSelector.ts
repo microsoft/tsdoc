@@ -19,14 +19,17 @@ export enum SelectorKind {
   System = 'system',
 
   /**
-   * Index selectors are integer numbers.  They provide an alternative way of referencing
-   * overloaded functions, based on the order in which the declarations appear in
+   * Index selectors are positive integer numbers.  They provide an alternative way of
+   * referencing overloaded functions, based on the order in which the declarations appear in
    * a source file.
    *
    * @remarks
    * Warning:  Index selectors are not recommended; they are intended to provide a temporary
    * workaround for situations where an external library neglected to declare a `{@label}` tag
    * and cannot be easily fixed.
+   *
+   * The number of an overloaded function is called its "overload index".  Note that
+   * overload indexes count from 1 (like documentation list items) not 0 (like arrays).
    */
   Index = 'index',
 
@@ -142,7 +145,7 @@ export class DocMemberSelector extends DocNode {
    * @remarks
    * For system selectors, it will be a predefined lower case name.
    * For label selectors, it will be an upper case name defined using the `{@label}` tag.
-   * For index selectors, it will be a positive integer.
+   * For index selectors, it will be an overload index which is a positive integer.
    */
   public get selector(): string {
     return this._selector;

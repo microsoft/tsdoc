@@ -1224,6 +1224,9 @@ class Parser {
   private tryParseOverloadIndex(hasMeaning: boolean): number | undefined {
     if (this.optionalToken(Token.OpenParenToken)) {
       const overloadIndex: number = this.parseDecimalDigits();
+      if (overloadIndex < 1) {
+        return this.fail('The overload index must not be less than 1', overloadIndex);
+      }
       this.expectToken(Token.CloseParenToken);
       return overloadIndex;
     } else if (!hasMeaning) {
