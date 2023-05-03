@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Improve the docs to clarify that overload indexes count from 1 not 0",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "4673363+octogonz@users.noreply.github.com"
+}
