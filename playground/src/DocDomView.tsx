@@ -16,94 +16,92 @@ export interface IDocDomViewProps {
   theme?: string;
 }
 
-export class DocDomView extends React.Component<IDocDomViewProps> {
-  public render(): React.ReactNode {
-    const parserContext: tsdoc.ParserContext | undefined = this.props.parserContext;
-    let code: string = '';
+export function DocDomView(props: IDocDomViewProps): JSX.Element {
+  const parserContext: tsdoc.ParserContext | undefined = props.parserContext;
+  let code: string = '';
 
-    if (parserContext && parserContext.docComment) {
-      const unindentedCode: string = ReactDomServer.renderToStaticMarkup(
-        <DocHtmlView docComment={parserContext.docComment} />
-      );
-      code = this._indentHtml(unindentedCode);
-    }
-
-    return (
-      <CodeEditor
-        className="playground-dom-text-editor"
-        readOnly={true}
-        value={code}
-        language="html"
-        disableLineNumbers={true}
-        theme={this.props.theme}
-      />
+  if (parserContext && parserContext.docComment) {
+    const unindentedCode: string = ReactDomServer.renderToStaticMarkup(
+      <DocHtmlView docComment={parserContext.docComment} />
     );
+    code = _indentHtml(unindentedCode);
   }
 
-  // Given a string containing perfectly systematic HTML (like what React generates),
-  // this adds appropriate indentation
-  private _indentHtml(html: string): string {
-    const tagRegExp: RegExp = /\<\/|\<|\>/g;
-    const output: string[] = [];
+  return (
+    <CodeEditor
+      className="playground-dom-text-editor"
+      readOnly={true}
+      value={code}
+      language="html"
+      disableLineNumbers={true}
+      theme={props.theme}
+    />
+  );
+}
 
-    const indentCharacters: string = '  ';
+// Given a string containing perfectly systematic HTML (like what React generates),
+// this adds appropriate indentation
+function _indentHtml(html: string): string {
+  const tagRegExp: RegExp = /\<\/|\<|\>/g;
+  const output: string[] = [];
 
-    let match: RegExpExecArray | null;
-    let lastIndex: number = 0;
-    let indentLevel: number = 0;
-    let lastTag: string = '';
+  const indentCharacters: string = '  ';
 
-    for (;;) {
-      match = tagRegExp.exec(html);
+  let match: RegExpExecArray | null;
+  let lastIndex: number = 0;
+  let indentLevel: number = 0;
+  let lastTag: string = '';
 
-      if (!match) {
+  for (;;) {
+    match = tagRegExp.exec(html);
+
+    if (!match) {
+      break;
+    }
+
+    const matchIndex: number = match.index;
+
+    const textBeforeMatch: string = html.substring(lastIndex, matchIndex);
+    if (textBeforeMatch.length > 0) {
+      output.push(textBeforeMatch);
+    }
+
+    switch (match[0]) {
+      case '<':
+        // Matched opening tag
+        if (output.length > 0) {
+          output.push('\n');
+        }
+        for (let i: number = 0; i < indentLevel; ++i) {
+          output.push(indentCharacters);
+        }
+
+        ++indentLevel;
+
+        lastTag = '<';
         break;
-      }
+      case '</':
+        // Matched closing tag
+        --indentLevel;
 
-      const matchIndex: number = match.index;
-
-      const textBeforeMatch: string = html.substring(lastIndex, matchIndex);
-      if (textBeforeMatch.length > 0) {
-        output.push(textBeforeMatch);
-      }
-
-      switch (match[0]) {
-        case '<':
-          // Matched opening tag
-          if (output.length > 0) {
-            output.push('\n');
-          }
+        if (lastTag !== '<') {
+          output.push('\n');
           for (let i: number = 0; i < indentLevel; ++i) {
             output.push(indentCharacters);
           }
+        }
 
-          ++indentLevel;
-
-          lastTag = '<';
-          break;
-        case '</':
-          // Matched closing tag
-          --indentLevel;
-
-          if (lastTag !== '<') {
-            output.push('\n');
-            for (let i: number = 0; i < indentLevel; ++i) {
-              output.push(indentCharacters);
-            }
-          }
-
-          lastTag = '</';
-          break;
-        case '>':
-          break;
-      }
-
-      lastIndex = matchIndex;
+        lastTag = '</';
+        break;
+      case '>':
+        break;
     }
 
-    const endingText: string = html.substring(lastIndex);
-    output.push(endingText + '\n');
-
-    return output.join('');
+    lastIndex = matchIndex;
   }
+
+  const endingText: string = html.substring(lastIndex);
+  output.push(endingText + '\n');
+
+  return output.join('');
 }

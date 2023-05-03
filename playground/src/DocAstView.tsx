@@ -8,38 +8,36 @@ export interface IDocAstViewProps {
   theme?: string;
 }
 
-export class DocAstView extends React.Component<IDocAstViewProps> {
-  public render(): React.ReactNode {
-    const parserContext: tsdoc.ParserContext | undefined = this.props.parserContext;
-    const outputLines: string[] = [];
+export function DocAstView(props: IDocAstViewProps): JSX.Element {
+  const parserContext: tsdoc.ParserContext | undefined = props.parserContext;
+  const outputLines: string[] = [];
 
-    if (parserContext && parserContext.docComment) {
-      this._dumpTSDocTree(outputLines, parserContext.docComment);
-    }
-
-    return (
-      <CodeEditor
-        className="playground-ast-text-editor"
-        readOnly={true}
-        value={outputLines.join('\n')}
-        disableLineNumbers={true}
-        theme={this.props.theme}
-      />
-    );
+  if (parserContext && parserContext.docComment) {
+    _dumpTSDocTree(outputLines, parserContext.docComment);
   }
 
-  private _dumpTSDocTree(outputLines: string[], docNode: tsdoc.DocNode, indent: string = ''): void {
-    let dumpText: string = '';
-    if (docNode instanceof tsdoc.DocExcerpt) {
-      const content: string = docNode.content.toString();
-      dumpText += `${indent}* ${docNode.excerptKind}=` + JSON.stringify(content);
-    } else {
-      dumpText += `${indent}- ${docNode.kind}`;
-    }
-    outputLines.push(dumpText);
+  return (
+    <CodeEditor
+      className="playground-ast-text-editor"
+      readOnly={true}
+      value={outputLines.join('\n')}
+      disableLineNumbers={true}
+      theme={props.theme}
+    />
+  );
+}
 
-    for (const child of docNode.getChildNodes()) {
-      this._dumpTSDocTree(outputLines, child, indent + '  ');
-    }
+function _dumpTSDocTree(outputLines: string[], docNode: tsdoc.DocNode, indent: string = ''): void {
+  let dumpText: string = '';
+  if (docNode instanceof tsdoc.DocExcerpt) {
+    const content: string = docNode.content.toString();
+    dumpText += `${indent}* ${docNode.excerptKind}=` + JSON.stringify(content);
+  } else {
+    dumpText += `${indent}- ${docNode.kind}`;
+  }
+  outputLines.push(dumpText);
+
+  for (const child of docNode.getChildNodes()) {
+    _dumpTSDocTree(outputLines, child, indent + '  ');
   }
 }
