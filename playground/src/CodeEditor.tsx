@@ -224,7 +224,6 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
             display: 'flex',
             flexDirection: 'column',
             flex: 1,
-            height: '1000px',
             minHeight: '400px',
             marginTop: '10px',
             ...this.props.style

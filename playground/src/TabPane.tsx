@@ -93,7 +93,6 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState> {
 
     const tabPaneStyle: React.CSSProperties = {
       ...this.props.style,
-      height: '1000px',
       minWidth: 0,
       minHeight: '400px',
       marginTop: '20px'
