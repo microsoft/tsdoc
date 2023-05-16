@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/heft/heft.schema.json",
+
+  "extends": "@rushstack/heft-web-rig/profiles/library/config/heft.json",
+
+  "eventActions": [
+    {
+      "actionId": "copyLicenseToDistFolder",
+      "actionKind": "copyFiles",
+      "heftEvent": "post-build",
+      "copyOperations": [
+        {
+          "destinationFolders": ["./dist"],
+          "sourceFolder": "..",
+          "includeGlobs": ["LICENSE"]
+        }
+      ]
+    }
+  ]
+}
