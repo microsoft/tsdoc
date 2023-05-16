@@ -29,6 +29,8 @@ jobs:
     steps:
       - checkout: pagesBranch
         persistCredentials: true
+      - script: git checkout gh-pages
+        displayName: 'Checkout gh-pages Branch'
 
       - script: rm -r $(Build.SourcesDirectory)/*
         displayName: 'Clean Pages Branch'
