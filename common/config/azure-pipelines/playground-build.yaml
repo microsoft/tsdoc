@@ -1,13 +1,54 @@
+pool:
+  vmImage: 'ubuntu-latest'
 resources:
-  - repo: self
+  repositories:
+    - repository: pagesBranch
+      endpoint: 'GitHub (Rushbot)'
+      type: github
+      name: microsoft/tsdoc
+      ref: refs/heads/gh-pages
+      trigger: none
 variables:
   NodeVersion: 14
   FORCE_COLOR: 1
-steps:
-  - checkout: self
-  - template: templates/build.yaml
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Playground Artifacts'
-    inputs:
-      PathtoPublish: playground/dist
-      ArtifactName: playground
+jobs:
+  - job: build
+    displayName: Build
+    steps:
+      - checkout: self
+
+      - template: ./templates/build.yaml
+
+      - publish: playground/dist
+        artifact: 'playground'
+        displayName: 'Publish Playground Artifacts'
+
+  - job: publish
+    displayName: Publish
+    dependsOn: build
+    steps:
+      - checkout: pagesBranch
+        persistCredentials: true
+
+      - script: rm -r $(Build.SourcesDirectory)/*
+        displayName: 'Clean Pages Branch'
+
+      - task: DownloadPipelineArtifact@2
+        displayName: 'Download Playground Artifacts'
+        inputs:
+          artifact: playground
+          targetPath: $(Build.SourcesDirectory)
+
+      - template: ./templates/configure-git.yaml
+
+      - script: |
+          git add -A
+          if [ -n "$(git diff --name-only --staged HEAD --)" ]
+          then
+            echo "Committing changes"
+            git commit -m "Update playground artifacts"
+            git push
+          else
+            echo "No changes"
+          fi
+        displayName: 'Commit and push playground artifacts'
