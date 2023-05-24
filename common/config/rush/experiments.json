@@ -6,15 +6,6 @@
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/experiments.schema.json"
 
   /**
-   * Rush 5.14.0 improved incremental builds to ignore spurious changes in the pnpm-lock.json file.
-   * This optimization is enabled by default. If you encounter a problem where "rush build" is neglecting
-   * to build some projects, please open a GitHub issue. As a workaround you can uncomment this line
-   * to temporarily restore the old behavior where everything must be rebuilt whenever pnpm-lock.json
-   * is modified.
-   */
-  // "legacyIncrementalBuildDependencyDetection": true,
-
-  /**
    * By default, 'rush install' passes --no-prefer-frozen-lockfile to 'pnpm install'.
    * Set this option to true to pass '--frozen-lockfile' instead for faster installs.
    */
@@ -40,10 +31,30 @@
   // "noChmodFieldInTarHeaderNormalization": true,
 
   /**
-   * If true, the build cache feature is enabled. To use this feature, a common/config/rush/build-cache.json
-   * file must be created with configuration options.
-   *
-   * See https://github.com/microsoft/rushstack/issues/2393 for details about this experimental feature.
+   * If true, build caching will respect the allowWarningsInSuccessfulBuild flag and cache builds with warnings.
+   * This will not replay warnings from the cached build.
    */
-  // "buildCache": true
+  // "buildCacheWithAllowWarningsInSuccessfulBuild": true,
+
+  /**
+   * If true, the phased commands feature is enabled. To use this feature, create a "phased" command
+   * in common/config/rush/command-line.json.
+   */
+  // "phasedCommands": true,
+
+  /**
+   * If true, perform a clean install after when running `rush install` or `rush update` if the
+   * `.npmrc` file has changed since the last install.
+   */
+  // "cleanInstallAfterNpmrcChanges": true,
+
+  /**
+   * If true, print the outputs of shell commands defined in event hooks to the console.
+   */
+  // "printEventHooksOutputToConsole": true,
+
+  /**
+   * If true, Rush will not allow node_modules in the repo folder or in parent folders.
+   */
+  // "forbidPhantomResolvableNodeModulesFolders": true
 }
