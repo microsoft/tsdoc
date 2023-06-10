@@ -50,8 +50,7 @@
         "@[a-zA-Z][a-zA-Z0-9]*$": {
           "type": "boolean"
         }
-      },
-      "additionalItems": false
+      }
     }
   },
   "required": ["$schema"],

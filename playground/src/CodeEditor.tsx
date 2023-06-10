@@ -54,7 +54,7 @@ interface IMonacoWindow extends Window {
     (paths: string[], callback: (monaco: typeof monacoEditor) => void): void;
     config: (options: { paths: { [name: string]: string } }) => void;
   };
-  MonacoEnvironment: {
+  MonacoEnvironment?: monacoEditor.Environment & {
     getWorkerUrl: (workerId: string, label: string) => void;
   };
 }
@@ -114,16 +114,18 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
           const monacoWindow: IMonacoWindow = (window as unknown) as IMonacoWindow;
           monacoWindow.require.config({ paths: { vs: `${MONACO_BASE_URL}vs/` } });
 
-          monacoWindow.MonacoEnvironment = {
-            getWorkerUrl: (workerId, label) => {
+          if (monacoWindow.MonacoEnvironment) {
+            monacoWindow.MonacoEnvironment.getWorkerUrl = (workerId, label) => {
               return `data:text/javascript;charset=utf-8,${encodeURIComponent(
                 'self.MonacoEnvironment = {' +
                   `baseUrl: '${MONACO_BASE_URL}'` +
                   '};' +
                   `importScripts('${MONACO_BASE_URL}vs/base/worker/workerMain.js');`
               )}`;
-            }
-          };
+            };
+          } else {
+            throw new Error('monacoWindow.MonacoEnvironment is not initialized');
+          }
 
           monacoWindow.require(['vs/editor/editor.main'], (monaco) => {
             if (monaco) {
