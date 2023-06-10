@@ -25,8 +25,8 @@
     "build": "heft test --clean"
   },
   "dependencies": {
-    "@microsoft/tsdoc": "0.14.2",
-    "@microsoft/tsdoc-config": "0.16.2"
+    "@microsoft/tsdoc": "workspace:*",
+    "@microsoft/tsdoc-config": "workspace:*"
   },
   "devDependencies": {
     "@rushstack/eslint-config": "~3.3.1",
@@ -36,6 +36,7 @@
     "@types/estree": "1.0.1",
     "@types/heft-jest": "1.0.3",
     "@types/node": "14.18.36",
-    "eslint": "~8.42.0"
+    "eslint": "~8.42.0",
+    "typescript": "~5.0.4"
   }
 }

@@ -26,7 +26,8 @@
     "@rushstack/heft-web-rig": "0.18.5",
     "@rushstack/heft": "^0.53.1",
     "@types/heft-jest": "1.0.3",
-    "eslint": "~8.42.0"
+    "eslint": "~8.42.0",
+    "typescript": "~5.0.4"
   },
   "scripts": {
     "build": "heft test --clean",

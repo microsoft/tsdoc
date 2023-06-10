@@ -17,7 +17,7 @@
    *
    * This option is strongly recommended. The default value is false.
    */
-  "useWorkspaces": false,
+  "useWorkspaces": true,
 
   /**
    * If true, then Rush will add the `--strict-peer-dependencies` command-line parameter when

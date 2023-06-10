@@ -5,9 +5,9 @@
   "description": "A code sample that illustrates usage of the API for @microsoft/tsdoc",
   "license": "MIT",
   "dependencies": {
-    "@microsoft/tsdoc": "0.14.2",
+    "@microsoft/tsdoc": "workspace:*",
     "colors": "~1.4.0",
-    "typescript": "~5.1.3"
+    "typescript": "~5.0.4"
   },
   "devDependencies": {
     "@rushstack/eslint-config": "~3.3.1",
