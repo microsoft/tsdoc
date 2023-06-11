@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as monacoEditor from 'monaco-editor';
+import type * as monacoEditor from 'monaco-editor';
 import * as tsdoc from '@microsoft/tsdoc';
 import { FlexColDiv } from './FlexDivs';
 
@@ -114,18 +114,16 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
           const monacoWindow: IMonacoWindow = (window as unknown) as IMonacoWindow;
           monacoWindow.require.config({ paths: { vs: `${MONACO_BASE_URL}vs/` } });
 
-          if (monacoWindow.MonacoEnvironment) {
-            monacoWindow.MonacoEnvironment.getWorkerUrl = (workerId, label) => {
+          monacoWindow.MonacoEnvironment = {
+            getWorkerUrl: (workerId, label) => {
               return `data:text/javascript;charset=utf-8,${encodeURIComponent(
                 'self.MonacoEnvironment = {' +
                   `baseUrl: '${MONACO_BASE_URL}'` +
                   '};' +
                   `importScripts('${MONACO_BASE_URL}vs/base/worker/workerMain.js');`
               )}`;
-            };
-          } else {
-            throw new Error('monacoWindow.MonacoEnvironment is not initialized');
-          }
+            }
+          };
 
           monacoWindow.require(['vs/editor/editor.main'], (monaco) => {
             if (monaco) {
@@ -361,7 +359,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
           this._editor.addAction({
             id: 'escapeAction',
             label: 'Accessability Escape',
-            keybindings: [monacoEditor.KeyCode.Escape],
+            keybindings: [monaco.KeyCode.Escape],
             run: () => {
               (document.activeElement as HTMLElement | undefined)?.blur?.();
             }

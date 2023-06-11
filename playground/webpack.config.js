@@ -14,6 +14,7 @@ function requireRelativeTo(importPath, otherPackage) {
 
 const createWebpackConfig = require('@rushstack/heft-web-rig/profiles/app/webpack-base.config');
 
+const webpack = requireRelativeTo('webpack', '@rushstack/heft-web-rig');
 const HtmlWebpackPlugin = requireRelativeTo('html-webpack-plugin', '@rushstack/heft-web-rig');
 
 const REACT_URL = {
@@ -49,6 +50,15 @@ module.exports = function createConfig(env, argv) {
         'react-dom': 'ReactDOM',
         'react-dom/server': 'ReactDOMServer'
       },
+      module: {
+        rules: [
+          {
+            // For the lib/samples files which are imported as source code
+            test: /\.ts$/,
+            type: 'asset/source'
+          }
+        ]
+      },
       plugins: [
         new HtmlWebpackPlugin({
           inject: true,
@@ -65,6 +75,7 @@ module.exports = function createConfig(env, argv) {
         }),
         new webpack.optimize.ModuleConcatenationPlugin(),
         new webpack.DefinePlugin({
+          COMMIT_ID: `'${process.env['BUILD_SOURCEVERSION'] || 'COMMIT_SHA'}'`,
           MONACO_URL: JSON.stringify(monacoUrl)
         })
       ]
