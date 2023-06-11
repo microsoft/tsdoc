@@ -12,7 +12,7 @@
     "@microsoft/tsdoc": "workspace:*",
     "@types/react-dom": "16.9.3",
     "@types/react": "16.9.11",
-    "monaco-editor": "~0.39.0",
+    "monaco-editor": "~0.38.0",
     "promise": "~8.0.3",
     "tslib": "~2.5.3"
   },
@@ -22,6 +22,8 @@
     "@rushstack/heft": "^0.53.1",
     "@types/webpack-env": "1.18.0",
     "eslint": "~8.42.0",
-    "typescript": "~5.0.4"
+    "typescript": "~5.0.4",
+    "handlebars-loader": "~1.7.3",
+    "handlebars": "~4.7.7"
   }
 }
