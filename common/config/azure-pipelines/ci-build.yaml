@@ -4,12 +4,14 @@ jobs:
   - job: PRBuild
     condition: succeeded()
     strategy:
-      maxParallel: 2
+      maxParallel: 3
       matrix:
-        'NodeJs 12':
-          NodeVersion: 12
         'NodeJs 14':
           NodeVersion: 14
+        'NodeJs 16':
+          NodeVersion: 16
+        'NodeJs 18':
+          NodeVersion: 18
     steps:
       - checkout: self
       - template: templates/build.yaml

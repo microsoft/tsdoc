@@ -9,7 +9,7 @@ resources:
       ref: refs/heads/gh-pages
       trigger: none
 variables:
-  NodeVersion: 14
+  NodeVersion: 16
   FORCE_COLOR: 1
 jobs:
   - job: build
