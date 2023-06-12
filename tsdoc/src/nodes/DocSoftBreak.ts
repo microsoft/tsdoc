@@ -38,10 +38,14 @@ export class DocSoftBreak extends DocNode {
     super(parameters);
 
     if (DocNode.isParsedParameters(parameters)) {
+      // The type is IDocNodeParsedParameters, which is a base of IDocSoftBreakParsedParameters
+      // but not a base of IDocSoftBreakParameters. Therefore the type must be IDocSoftBreakParsedParameters.
+      // TypeScript 4 could infer this, but for some reason TypeScript 5 cannot.
+      const parsedParameters: IDocSoftBreakParsedParameters = parameters as IDocSoftBreakParsedParameters;
       this._softBreakExcerpt = new DocExcerpt({
         configuration: this.configuration,
         excerptKind: ExcerptKind.SoftBreak,
-        content: parameters.softBreakExcerpt
+        content: parsedParameters.softBreakExcerpt
       });
     }
   }

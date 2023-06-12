@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as monacoEditor from 'monaco-editor';
+import type * as monacoEditor from 'monaco-editor';
 import * as tsdoc from '@microsoft/tsdoc';
 import { FlexColDiv } from './FlexDivs';
 
@@ -54,7 +54,7 @@ interface IMonacoWindow extends Window {
     (paths: string[], callback: (monaco: typeof monacoEditor) => void): void;
     config: (options: { paths: { [name: string]: string } }) => void;
   };
-  MonacoEnvironment: {
+  MonacoEnvironment?: monacoEditor.Environment & {
     getWorkerUrl: (workerId: string, label: string) => void;
   };
 }
@@ -359,7 +359,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
           this._editor.addAction({
             id: 'escapeAction',
             label: 'Accessability Escape',
-            keybindings: [monacoEditor.KeyCode.Escape],
+            keybindings: [monaco.KeyCode.Escape],
             run: () => {
               (document.activeElement as HTMLElement | undefined)?.blur?.();
             }

@@ -9,33 +9,21 @@
     "start": "heft start"
   },
   "dependencies": {
-    "@microsoft/tsdoc": "0.14.2",
+    "@microsoft/tsdoc": "workspace:*",
     "@types/react-dom": "16.9.3",
     "@types/react": "16.9.11",
-    "monaco-editor": "~0.17.1",
+    "monaco-editor": "~0.38.0",
     "promise": "~8.0.3",
-    "tslib": "~1.10.0"
+    "tslib": "~2.5.3"
   },
   "devDependencies": {
-    "@rushstack/eslint-config": "~2.3.1",
-    "@rushstack/heft-web-rig": "0.1.28",
-    "@rushstack/heft": "^0.22.3",
-    "@rushstack/set-webpack-public-path-plugin": "~3.1.16",
-    "@types/webpack-env": "~1.14.0",
-    "@types/webpack": "4.41.24",
-    "css-loader": "~3.1.0",
-    "eslint": "~7.12.1",
-    "file-loader": "~4.1.0",
-    "handlebars-loader": "~1.7.1",
-    "handlebars": "~4.7.3",
-    "html-webpack-plugin": "~3.2.0",
-    "node-sass": "~4.14.1",
-    "raw-loader": "~0.5.1",
-    "sass-loader": "~7.1.0",
-    "source-map-loader": "~1.1.2",
-    "style-loader": "~0.23.1",
-    "typescript": "~3.9.7",
-    "webpack-bundle-analyzer": "~3.4.1",
-    "webpack": "~4.44.2"
+    "@rushstack/eslint-config": "~3.3.1",
+    "@rushstack/heft-web-rig": "0.18.5",
+    "@rushstack/heft": "^0.53.1",
+    "@types/webpack-env": "1.18.0",
+    "eslint": "~8.42.0",
+    "typescript": "~5.0.4",
+    "handlebars-loader": "~1.7.3",
+    "handlebars": "~4.7.7"
   }
 }

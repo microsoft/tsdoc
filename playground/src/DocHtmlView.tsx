@@ -210,7 +210,6 @@ export class DocHtmlView extends React.Component<IDocHtmlViewProps> {
             <code key={key}>{docFencedCode.code}</code>
           </pre>
         );
-        break;
       case 'LinkTag':
         const linkTag: tsdoc.DocLinkTag = node as tsdoc.DocLinkTag;
         if (linkTag.urlDestination) {

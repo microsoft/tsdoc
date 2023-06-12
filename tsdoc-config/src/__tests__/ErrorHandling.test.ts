@@ -76,19 +76,19 @@ function testLoadingFolder(assetPath: string): ISnapshot {
 
 test('Load e1', () => {
   expect(testLoadingFolder('assets/e1')).toMatchInlineSnapshot(`
-    Object {
-      "s0_filePath": ".../assets/e1/tsdoc.json",
-      "s1_fileNotFound": false,
-      "s2_hasErrors": true,
-      "s3_errorSummary": "Error encountered for .../assets/e1/tsdoc.json:
-      Error loading config file: data should NOT have additional properties
-    ",
-      "s4_log": Array [
-        "[tsdoc-config-schema-error] Error loading config file: data should NOT have additional properties",
-      ],
-      "s5_extends": Array [],
-    }
-  `);
+Object {
+  "s0_filePath": ".../assets/e1/tsdoc.json",
+  "s1_fileNotFound": false,
+  "s2_hasErrors": true,
+  "s3_errorSummary": "Error encountered for .../assets/e1/tsdoc.json:
+  Error loading config file: data must NOT have additional properties
+",
+  "s4_log": Array [
+    "[tsdoc-config-schema-error] Error loading config file: data must NOT have additional properties",
+  ],
+  "s5_extends": Array [],
+}
+`);
 });
 
 test('Load e2', () => {
@@ -148,70 +148,70 @@ test('Load e4', () => {
 
 test('Load e5', () => {
   expect(testLoadingFolder('assets/e5')).toMatchInlineSnapshot(`
+Object {
+  "s0_filePath": ".../assets/e5/tsdoc.json",
+  "s1_fileNotFound": false,
+  "s2_hasErrors": true,
+  "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-a.json:
+  Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
+
+Error encountered for .../assets/e5/tsdoc-c.json:
+  Error loading config file: data must NOT have additional properties
+",
+  "s4_log": Array [],
+  "s5_extends": Array [
     Object {
-      "s0_filePath": ".../assets/e5/tsdoc.json",
+      "s0_filePath": ".../assets/e5/tsdoc-a.json",
       "s1_fileNotFound": false,
       "s2_hasErrors": true,
       "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-a.json:
-      Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
+  Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
 
-    Error encountered for .../assets/e5/tsdoc-c.json:
-      Error loading config file: data should NOT have additional properties
-    ",
+Error encountered for .../assets/e5/tsdoc-c.json:
+  Error loading config file: data must NOT have additional properties
+",
       "s4_log": Array [],
       "s5_extends": Array [
         Object {
-          "s0_filePath": ".../assets/e5/tsdoc-a.json",
+          "s0_filePath": ".../assets/e5/tsdoc-b.json",
           "s1_fileNotFound": false,
           "s2_hasErrors": true,
           "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-a.json:
-      Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
-
-    Error encountered for .../assets/e5/tsdoc-c.json:
-      Error loading config file: data should NOT have additional properties
-    ",
+  Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
+",
           "s4_log": Array [],
           "s5_extends": Array [
             Object {
-              "s0_filePath": ".../assets/e5/tsdoc-b.json",
+              "s0_filePath": ".../assets/e5/tsdoc-a.json",
               "s1_fileNotFound": false,
               "s2_hasErrors": true,
               "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-a.json:
-      Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
-    ",
-              "s4_log": Array [],
-              "s5_extends": Array [
-                Object {
-                  "s0_filePath": ".../assets/e5/tsdoc-a.json",
-                  "s1_fileNotFound": false,
-                  "s2_hasErrors": true,
-                  "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-a.json:
-      Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
-    ",
-                  "s4_log": Array [
-                    "[tsdoc-config-cyclic-extends] Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"",
-                  ],
-                  "s5_extends": Array [],
-                },
-              ],
-            },
-            Object {
-              "s0_filePath": ".../assets/e5/tsdoc-c.json",
-              "s1_fileNotFound": false,
-              "s2_hasErrors": true,
-              "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-c.json:
-      Error loading config file: data should NOT have additional properties
-    ",
+  Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"
+",
               "s4_log": Array [
-                "[tsdoc-config-schema-error] Error loading config file: data should NOT have additional properties",
+                "[tsdoc-config-cyclic-extends] Circular reference encountered for \\"extends\\" field of \\".../assets/e5/tsdoc-b.json\\"",
               ],
               "s5_extends": Array [],
             },
           ],
         },
+        Object {
+          "s0_filePath": ".../assets/e5/tsdoc-c.json",
+          "s1_fileNotFound": false,
+          "s2_hasErrors": true,
+          "s3_errorSummary": "Error encountered for .../assets/e5/tsdoc-c.json:
+  Error loading config file: data must NOT have additional properties
+",
+          "s4_log": Array [
+            "[tsdoc-config-schema-error] Error loading config file: data must NOT have additional properties",
+          ],
+          "s5_extends": Array [],
+        },
       ],
-    }
-  `);
+    },
+  ],
+}
+`);
 });
 
 test('Load e6', () => {

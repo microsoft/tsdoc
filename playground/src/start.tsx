@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './App';
-import './index.css';
+import './start.css';
 
 // Ensure that this file changes each time it builds so deployment always works
 declare const COMMIT_ID: string;

@@ -1,23 +1,30 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/heft/heft.schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/heft/v0/heft.schema.json",
 
   "extends": "@rushstack/heft-web-rig/profiles/library/config/heft.json",
 
-  "eventActions": [
-    {
-      "actionKind": "copyFiles",
+  "phasesByName": {
+    "build": {
+      "tasksByName": {
+        "post-compile-copy": {
+          // The "post-compile-copy" task should not run until after "typescript" completes
+          "taskDependencies": ["typescript"],
 
-      "heftEvent": "bundle",
-
-      "actionId": "add-dts-file",
-
-      "copyOperations": [
-        {
-          "sourceFolder": "lib/beta",
-          "destinationFolders": ["lib-commonjs/beta"],
-          "fileExtensions": [".d.ts"]
+          "taskPlugin": {
+            "pluginName": "copy-files-plugin",
+            "pluginPackage": "@rushstack/heft",
+            "options": {
+              "copyOperations": [
+                {
+                  "sourcePath": "lib/beta",
+                  "destinationFolders": ["lib-commonjs/beta"],
+                  "fileExtensions": [".d.ts"]
+                }
+              ]
+            }
+          }
         }
-      ]
+      }
     }
-  ]
+  }
 }

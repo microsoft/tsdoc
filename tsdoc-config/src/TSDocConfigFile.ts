@@ -12,12 +12,13 @@ import {
 import * as fs from 'fs';
 import * as resolve from 'resolve';
 import * as path from 'path';
+import type * as AjvTypes from 'ajv';
 import Ajv from 'ajv';
 import * as jju from 'jju';
 
-const ajv: Ajv.Ajv = new Ajv({ verbose: true });
+const ajv: Ajv = new Ajv({ verbose: true });
 
-function initializeSchemaValidator(): Ajv.ValidateFunction {
+function initializeSchemaValidator(): AjvTypes.ValidateFunction {
   const jsonSchemaPath: string = resolve.sync('@microsoft/tsdoc/schemas/tsdoc.schema.json', { basedir: __dirname });
   const jsonSchemaContent: string = fs.readFileSync(jsonSchemaPath).toString();
   const jsonSchema: object = jju.parse(jsonSchemaContent, { mode: 'cjson' });
@@ -27,7 +28,7 @@ function initializeSchemaValidator(): Ajv.ValidateFunction {
 // Warning: AJV has a fairly strange API.  Each time this function is called, the function  object's
 // properties get overwritten with the results of the latest validation.  Thus we need to be careful
 // to read the properties before a subsequent call may occur.
-const tsdocSchemaValidator: Ajv.ValidateFunction = initializeSchemaValidator();
+const tsdocSchemaValidator: AjvTypes.ValidateFunction = initializeSchemaValidator();
 
 interface ITagConfigJson {
   tagName: string;

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "Upgrade dev toolchain (Heft, Webpack, TypeScript)",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config"
+}
