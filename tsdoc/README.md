@@ -3,7 +3,7 @@
 <div>
   <br />
   <a href="https://tsdoc.org/">
-    <img width="200" src="https://tsdoc.org/images/tsdoc.svg">
+    <img width="200" src="https://tsdoc.org/images/site/tsdoc.svg">
   </a>
   <p />
 </div>
