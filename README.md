@@ -1,5 +1,5 @@
 <table><tr><td>
-<a href="https://tsdoc.org"><img src="https://tsdoc.org/images/tsdoc-open.svg" width="300px" /></a>
+<a href="https://tsdoc.org"><img src="https://tsdoc.org/images/site/tsdoc-open.svg" width="300px" /></a>
 <p align="center"><a href="https://tsdoc.org/">https://tsdoc.org/</a></p>
 </td></tr></table>
 
