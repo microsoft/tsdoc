@@ -17,9 +17,7 @@ export class BuiltInDocNodes {
       { docNodeKind: DocNodeKind.EscapedText, constructor: nodes.DocEscapedText },
       { docNodeKind: DocNodeKind.Excerpt, constructor: nodes.DocExcerpt },
       { docNodeKind: DocNodeKind.FencedCode, constructor: nodes.DocFencedCode },
-      { docNodeKind: DocNodeKind.HtmlAttribute, constructor: nodes.DocHtmlAttribute },
-      { docNodeKind: DocNodeKind.HtmlEndTag, constructor: nodes.DocHtmlEndTag },
-      { docNodeKind: DocNodeKind.HtmlStartTag, constructor: nodes.DocHtmlStartTag },
+      { docNodeKind: DocNodeKind.XmlAttribute, constructor: nodes.DocXmlAttribute },
       { docNodeKind: DocNodeKind.InheritDocTag, constructor: nodes.DocInheritDocTag },
       { docNodeKind: DocNodeKind.InlineTag, constructor: nodes.DocInlineTag },
       { docNodeKind: DocNodeKind.LinkTag, constructor: nodes.DocLinkTag },
@@ -32,14 +30,14 @@ export class BuiltInDocNodes {
       { docNodeKind: DocNodeKind.ParamCollection, constructor: nodes.DocParamCollection },
       { docNodeKind: DocNodeKind.PlainText, constructor: nodes.DocPlainText },
       { docNodeKind: DocNodeKind.Section, constructor: nodes.DocSection },
-      { docNodeKind: DocNodeKind.SoftBreak, constructor: nodes.DocSoftBreak }
+      { docNodeKind: DocNodeKind.SoftBreak, constructor: nodes.DocSoftBreak },
+      { docNodeKind: DocNodeKind.XmlElement, constructor: nodes.DocXmlElement }
     ]);
 
     docNodeManager.registerAllowableChildren(DocNodeKind.Section, [
       DocNodeKind.FencedCode,
       DocNodeKind.Paragraph,
-      DocNodeKind.HtmlStartTag,
-      DocNodeKind.HtmlEndTag
+      DocNodeKind.XmlElement
     ]);
 
     docNodeManager.registerAllowableChildren(DocNodeKind.Paragraph, [
@@ -47,10 +45,15 @@ export class BuiltInDocNodes {
       DocNodeKind.CodeSpan,
       DocNodeKind.ErrorText,
       DocNodeKind.EscapedText,
-      DocNodeKind.HtmlStartTag,
-      DocNodeKind.HtmlEndTag,
+      DocNodeKind.XmlElement,
       DocNodeKind.InlineTag,
       DocNodeKind.LinkTag,
+      DocNodeKind.PlainText,
+      DocNodeKind.SoftBreak
+    ]);
+
+    docNodeManager.registerAllowableChildren(DocNodeKind.XmlElement, [
+      DocNodeKind.XmlElement,
       DocNodeKind.PlainText,
       DocNodeKind.SoftBreak
     ]);

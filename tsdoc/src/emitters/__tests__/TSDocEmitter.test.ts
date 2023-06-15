@@ -1,8 +1,6 @@
 import {
   TSDocParser,
   ParserContext,
-  DocHtmlStartTag,
-  DocHtmlAttribute,
   DocDeclarationReference,
   DocMemberReference,
   DocMemberIdentifier,
@@ -118,17 +116,17 @@ Object {
 `);
 });
 
-test('03 TSDocEmitter.renderHtmlTag()', () => {
-  const configuration: TSDocConfiguration = new TSDocConfiguration();
-  const htmlTag: DocHtmlStartTag = new DocHtmlStartTag({
-    configuration,
-    name: 'img',
-    htmlAttributes: [new DocHtmlAttribute({ configuration, name: 'src', value: '"http://example.com"' })]
-  });
-  expect(htmlTag.emitAsHtml()).toMatchInlineSnapshot(`"<img src=\\"http://example.com\\">"`);
-});
+// test('03 TSDocEmitter.renderHtmlTag()', () => {
+//   const configuration: TSDocConfiguration = new TSDocConfiguration();
+//   const htmlTag: DocHtmlStartTag = new DocHtmlStartTag({
+//     configuration,
+//     name: 'img',
+//     htmlAttributes: [new DocHtmlAttribute({ configuration, name: 'src', value: '"http://example.com"' })]
+//   });
+//   expect(htmlTag.emitAsHtml()).toMatchInlineSnapshot(`"<img src=\\"http://example.com\\">"`);
+// });
 
-test('04 TSDocEmitter.renderDeclarationReference()', () => {
+test('03 TSDocEmitter.renderDeclarationReference()', () => {
   const configuration: TSDocConfiguration = new TSDocConfiguration();
   const htmlTag: DocDeclarationReference = new DocDeclarationReference({
     configuration,

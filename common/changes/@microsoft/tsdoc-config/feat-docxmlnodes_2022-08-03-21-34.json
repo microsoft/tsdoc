@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "(BREAKING SCHEMA CHANGE) Rename tsdoc.json fields: \"supportedHtmlElements\" renamed to \"supportedXmlElements\"; \"reportUnsupportedHtmlElements\" renamed to \"reportUnsupportedXmlElements\"",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config",
+  "email": "suneettipirneni@users.noreply.github.com"
+}

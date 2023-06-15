@@ -11,9 +11,7 @@ import type {
   DocDeclarationReference,
   DocErrorText,
   DocEscapedText,
-  DocHtmlEndTag,
-  DocHtmlStartTag,
-  DocHtmlAttribute,
+  DocXmlAttribute,
   DocInheritDocTag,
   DocInlineTagBase,
   DocInlineTag,
@@ -22,7 +20,8 @@ import type {
   DocMemberReference,
   DocMemberSymbol,
   DocMemberSelector,
-  DocParamBlock
+  DocParamBlock,
+  DocXmlElement
 } from '../nodes';
 import { DocNodeKind } from '../nodes/DocNode';
 import { IStringBuilder } from './StringBuilder';
@@ -63,9 +62,9 @@ export class TSDocEmitter {
     this._renderCompleteObject(output, docComment);
   }
 
-  public renderHtmlTag(output: IStringBuilder, htmlTag: DocHtmlStartTag | DocHtmlEndTag): void {
+  public renderXmlElement(output: IStringBuilder, xmlElement: DocXmlElement): void {
     this._emitCommentFraming = false;
-    this._renderCompleteObject(output, htmlTag);
+    this._renderCompleteObject(output, xmlElement);
   }
 
   public renderDeclarationReference(
@@ -179,40 +178,52 @@ export class TSDocEmitter {
         this._writeNewline();
         break;
 
-      case DocNodeKind.HtmlAttribute:
-        const docHtmlAttribute: DocHtmlAttribute = docNode as DocHtmlAttribute;
-        this._writeContent(docHtmlAttribute.name);
-        this._writeContent(docHtmlAttribute.spacingAfterName);
-        this._writeContent('=');
-        this._writeContent(docHtmlAttribute.spacingAfterEquals);
-        this._writeContent(docHtmlAttribute.value);
-        this._writeContent(docHtmlAttribute.spacingAfterValue);
-        break;
-
-      case DocNodeKind.HtmlEndTag:
-        const docHtmlEndTag: DocHtmlEndTag = docNode as DocHtmlEndTag;
-        this._writeContent('</');
-        this._writeContent(docHtmlEndTag.name);
-        this._writeContent('>');
-        break;
-
-      case DocNodeKind.HtmlStartTag:
-        const docHtmlStartTag: DocHtmlStartTag = docNode as DocHtmlStartTag;
+      case DocNodeKind.XmlElement:
+        // Write the start tag
+        const docXmlElement: DocXmlElement = docNode as DocXmlElement;
         this._writeContent('<');
-        this._writeContent(docHtmlStartTag.name);
-        this._writeContent(docHtmlStartTag.spacingAfterName);
+        this._writeContent(docXmlElement.name);
+        this._writeContent(docXmlElement.spacingAfterName);
 
-        let needsSpace: boolean =
-          docHtmlStartTag.spacingAfterName === undefined || docHtmlStartTag.spacingAfterName.length === 0;
-
-        for (const attribute of docHtmlStartTag.htmlAttributes) {
-          if (needsSpace) {
-            this._writeContent(' ');
-          }
-          this._renderNode(attribute);
-          needsSpace = attribute.spacingAfterValue === undefined || attribute.spacingAfterValue.length === 0;
+        for (const attribute of docXmlElement.xmlAttributes) {
+          this._writeContent(attribute.name);
+          this._writeContent(attribute.spacingAfterName);
+          this._writeContent('=');
+          this._writeContent(attribute.spacingAfterEquals);
+          this._writeContent(attribute.value);
+          this._writeContent(attribute.spacingAfterValue);
         }
-        this._writeContent(docHtmlStartTag.selfClosingTag ? '/>' : '>');
+
+        if (docXmlElement.isEmptyElement) {
+          this._writeContent('/>');
+          break;
+        }
+
+        this._writeContent('>');
+
+        this._writeContent(docXmlElement.spacingBetweenStartTagAndChildren);
+
+        // Write the child nodes
+        for (const childNode of docXmlElement.nodes) {
+          this._renderNode(childNode);
+        }
+
+        // Write the end tag
+        this._writeContent('</');
+        this._writeContent(docXmlElement.name);
+        this._writeContent('>');
+        this._writeContent(docXmlElement.spacingAfterEndTag);
+
+        break;
+
+      case DocNodeKind.XmlAttribute:
+        const docXmlAttribute: DocXmlAttribute = docNode as DocXmlAttribute;
+        this._writeContent(docXmlAttribute.name);
+        this._writeContent(docXmlAttribute.spacingAfterName);
+        this._writeContent('=');
+        this._writeContent(docXmlAttribute.spacingAfterEquals);
+        this._writeContent(docXmlAttribute.value);
+        this._writeContent(docXmlAttribute.spacingAfterValue);
         break;
 
       case DocNodeKind.InheritDocTag:
