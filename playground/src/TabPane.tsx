@@ -17,6 +17,12 @@ export interface ITabPaneState {
   selectedTabIndex: number;
 }
 
+const TAB_STYLE: React.CSSProperties = {
+  padding: '8px',
+  marginLeft: '1px',
+  marginRight: '1px'
+};
+
 export class TabPane extends React.Component<ITabPaneProps, ITabPaneState> {
   // Saved bindings of _onClickTab() with a tabIndex parameter, to avoid the react/jsx-no-bind issue
   private _onClickTabBindings: React.MouseEventHandler<HTMLAnchorElement>[] = [];
@@ -38,17 +44,12 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState> {
     for (let i: number = 0; i < this.props.tabs.length; ++i) {
       const tabDefinition: ITabDefinition = this.props.tabs[i];
 
-      const style: React.CSSProperties = {
-        padding: '8px',
-        marginLeft: '1px',
-        marginRight: '1px'
-      };
-
+      let tabStyleToUse: React.CSSProperties;
       if (i === this.state.selectedTabIndex) {
         selectedTabDefinition = tabDefinition;
 
-        const activeTabStyle: React.CSSProperties = {
-          ...style,
+        tabStyleToUse = {
+          ...TAB_STYLE,
           borderStyle: 'solid',
           borderWidth: '2px',
           borderColor: '#c0c0c0',
@@ -56,31 +57,26 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState> {
           borderTopLeftRadius: '4px',
           borderTopRightRadius: '4px'
         };
-
-        buttons.push(
-          <div key={`tab_${i}`} className="playground-tab-pane-active-tab" style={activeTabStyle} role="tab">
-            {tabDefinition.title}
-          </div>
-        );
       } else {
-        if (!this._onClickTabBindings[i]) {
-          // Bind _onClickTab() with i as the tabIndex parameter
-          this._onClickTabBindings[i] = this._onClickTab.bind(this, i);
-        }
-
-        buttons.push(
-          <div key={`tab_${i}`} className="playground-tab-pane-inactive-tab" style={style}>
-            <a
-              href="#"
-              style={{ textDecorationLine: 'none', color: '#000000' }}
-              onClick={this._onClickTabBindings[i]}
-              role="tab"
-            >
-              {tabDefinition.title}
-            </a>
-          </div>
-        );
+        tabStyleToUse = TAB_STYLE;
       }
+
+      if (!this._onClickTabBindings[i]) {
+        // Bind _onClickTab() with i as the tabIndex parameter
+        this._onClickTabBindings[i] = this._onClickTab.bind(this, i);
+      }
+      buttons.push(
+        <div key={`tab_${i}`} className="playground-tab-pane-inactive-tab" style={tabStyleToUse}>
+          <a
+            href="#"
+            style={{ textDecorationLine: 'none', color: '#000000' }}
+            onClick={this._onClickTabBindings[i]}
+            role="tab"
+          >
+            {tabDefinition.title}
+          </a>
+        </div>
+      );
     }
 
     const contentDivStyle: React.CSSProperties = {
