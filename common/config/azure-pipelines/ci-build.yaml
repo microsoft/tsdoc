@@ -4,10 +4,7 @@ jobs:
   - job: PRBuild
     condition: succeeded()
     strategy:
-      maxParallel: 3
       matrix:
-        'NodeJs 14':
-          NodeVersion: 14
         'NodeJs 16':
           NodeVersion: 16
         'NodeJs 18':
