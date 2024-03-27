@@ -44,9 +44,11 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState> {
     for (let i: number = 0; i < this.props.tabs.length; ++i) {
       const tabDefinition: ITabDefinition = this.props.tabs[i];
 
+      let ariaSelected: boolean = false;
       let tabStyleToUse: React.CSSProperties;
       if (i === this.state.selectedTabIndex) {
         selectedTabDefinition = tabDefinition;
+        ariaSelected = true;
 
         tabStyleToUse = {
           ...TAB_STYLE,
@@ -72,6 +74,7 @@ export class TabPane extends React.Component<ITabPaneProps, ITabPaneState> {
             style={{ textDecorationLine: 'none', color: '#000000' }}
             onClick={this._onClickTabBindings[i]}
             role="tab"
+            aria-selected={ariaSelected}
           >
             {tabDefinition.title}
           </a>
