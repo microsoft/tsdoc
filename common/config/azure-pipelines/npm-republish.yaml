@@ -1,7 +1,7 @@
 pool:
   vmImage: 'ubuntu-latest'
 variables:
-  NodeVersion: 16
+  NodeVersion: 18
   FORCE_COLOR: 1
 steps:
   - checkout: self
