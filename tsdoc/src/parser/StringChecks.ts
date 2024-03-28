@@ -133,6 +133,44 @@ export class StringChecks {
   }
 
   /**
+   * Tests whether the input string is a valid scope portion of a scoped NPM package name.
+   */
+  public static explainIfInvalidPackageScope(scopeName: string): string | undefined {
+    if (scopeName.length === 0) {
+      return 'An package scope cannot be an empty string';
+    }
+
+    if (scopeName.charAt(0) !== '@') {
+      return `An package scope must start with '@'`;
+    }
+
+    if (!StringChecks._validPackageNameRegExp.test(`${scopeName}/package`)) {
+      return `The name ${JSON.stringify(scopeName)} is not a valid package scope`;
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Tests whether the input string is a valid non-scope portion of a scoped NPM package name.
+   */
+  public static explainIfInvalidUnscopedPackageName(unscopedPackageName: string): string | undefined {
+    if (unscopedPackageName.length === 0) {
+      return 'An unscoped package name cannot be an empty string';
+    }
+
+    if (unscopedPackageName.charAt(0) === '@') {
+      return `An unscoped package name cannot start with '@'`;
+    }
+
+    if (!StringChecks._validPackageNameRegExp.test(`@scope/${unscopedPackageName}`)) {
+      return `The name ${JSON.stringify(unscopedPackageName)} is not a valid unscoped package name`;
+    }
+
+    return undefined;
+  }
+
+  /**
    * Tests whether the input string is a valid declaration reference import path.
    */
   public static explainIfInvalidImportPath(

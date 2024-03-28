@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "add utility methods to DeclarationReference components",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "ron.buckton@microsoft.com"
+}
