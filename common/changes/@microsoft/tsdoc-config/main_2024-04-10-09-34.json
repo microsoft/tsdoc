@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc-config",
-      "comment": "Adding support for '@since' and '@version' tags",
+      "comment": "Adding support for `@since` and `@version` tags",
       "type": "minor"
     }
   ],
