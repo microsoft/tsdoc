@@ -418,6 +418,32 @@ export class StandardTags {
   /**
    * (Extended)
    *
+   * Used to document the version number of the API since which the item has been created.
+   *
+   * @remarks
+   *
+   * Even if this tag is a block, so it can contain as much text as you want, it is recommended to use only the version number.
+   *
+   * For example:
+   * ```ts
+   * /**
+   *  * Fetches a book by its ISBN code.
+   *  * @since 1.0.0
+   *  &#42;/
+   * function fetchBookByIsbn(isbnCode: string): Book;
+   * ```
+   *
+   * This function has been created since version 1.0.0. This tag mustn't be changed in the future, even if the function is updated. In this case the `@version` tag should be used/updated instead.
+   */
+  public static readonly since: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@since',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Extended)
+   *
    * Used to document an exception type that may be thrown by a function or property.
    *
    * @remarks
@@ -470,6 +496,32 @@ export class StandardTags {
   /**
    * (Extended)
    *
+   * Used to document the version number of the API item.
+   *
+   * @remarks
+   *
+   * Even if this tag is a block, so it can contain as much text as you want, it is recommended to use only the version number.
+   *
+   * For example:
+   * ```ts
+   * /**
+   * * Fetches a book by its ISBN code.
+   * * @version 1.0.0
+   * &#42;/
+   * function fetchBookByIsbn(isbnCode: string): Book;
+   * ```
+   *
+   * This function version is currently 1.0.0. This tag must be updated every time the function is updated. If you want to document the version of the API since which the item has been created, the `@since` tag should be used instead.
+   */
+  public static readonly version: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@version',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Extended)
+   *
    * This modifier has similar semantics to the `virtual` keyword in C# or Java.
    * For a member function or property, explicitly indicates that subclasses may override
    * (i.e. redefine) the member.
@@ -510,8 +562,10 @@ export class StandardTags {
     StandardTags.returns,
     StandardTags.sealed,
     StandardTags.see,
+    StandardTags.since,
     StandardTags.throws,
     StandardTags.typeParam,
+    StandardTags.version,
     StandardTags.virtual
   ];
 
