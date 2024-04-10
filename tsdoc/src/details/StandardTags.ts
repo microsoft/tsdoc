@@ -418,11 +418,11 @@ export class StandardTags {
   /**
    * (Extended)
    *
-   * Used to document the version number of the API since which the item has been created.
+   * Used to document the version number of the API on which the item was created.
    *
    * @remarks
    *
-   * Even if this tag is a block, so it can contain as much text as you want, it is recommended to use only the version number.
+   * Even if this tag is a block, it can contain as much text as you want, however it is recommended to use only the version number.
    *
    * For example:
    * ```ts
@@ -433,7 +433,8 @@ export class StandardTags {
    * function fetchBookByIsbn(isbnCode: string): Book;
    * ```
    *
-   * This function has been created since version 1.0.0. This tag mustn't be changed in the future, even if the function is updated. In this case the `@version` tag should be used/updated instead.
+   * This function has been created on version 1.0.0. This tag must not be changed in the future, even if the function is updated.
+   * In this case the `@version` tag should be used/updated instead.
    */
   public static readonly since: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@since',
@@ -500,7 +501,7 @@ export class StandardTags {
    *
    * @remarks
    *
-   * Even if this tag is a block, so it can contain as much text as you want, it is recommended to use only the version number.
+   * Even if this tag is a block, it can contain as much text as you want, however it is recommended to use only the version number.
    *
    * For example:
    * ```ts
@@ -511,7 +512,8 @@ export class StandardTags {
    * function fetchBookByIsbn(isbnCode: string): Book;
    * ```
    *
-   * This function version is currently 1.0.0. This tag must be updated every time the function is updated. If you want to document the version of the API since which the item has been created, the `@since` tag should be used instead.
+   * This function version is currently 1.0.0. This tag must be updated every time the function is updated.
+   * If you want to document the version of the API on which the item was created, the `@since` tag should be used instead.
    */
   public static readonly version: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@version',
