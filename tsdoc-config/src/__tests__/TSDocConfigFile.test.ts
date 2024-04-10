@@ -401,7 +401,7 @@ test('Re-serialize p3 with defaults', () => {
         },
         Object {
           "syntaxKind": "block",
-          "tagName": "@since"
+          "tagName": "@since",
         },
         Object {
           "allowMultiple": true,
@@ -414,12 +414,12 @@ test('Re-serialize p3 with defaults', () => {
           "tagName": "@typeParam",
         },
         Object {
-          "syntaxKind": "modifier",
-          "tagName": "@virtual",
-        },
-        Object {
           "syntaxKind": "block",
           "tagName": "@version",
+        },
+        Object {
+          "syntaxKind": "modifier",
+          "tagName": "@virtual",
         },
       ],
     }
@@ -536,8 +536,8 @@ test('Re-serialize p3 with defaults', () => {
           "tagName": "@see",
         },
         Object {
-          syntaxKind: "block",
-          tagName: "@since",
+          "syntaxKind": "block",
+          "tagName": "@since",
         },
         Object {
           "allowMultiple": true,
@@ -550,8 +550,8 @@ test('Re-serialize p3 with defaults', () => {
           "tagName": "@typeParam",
         },
         Object {
-          syntaxKind: "block",
-          tagName: "@version",
+          "syntaxKind": "block",
+          "tagName": "@version",
         },
         Object {
           "syntaxKind": "modifier",
