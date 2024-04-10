@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Adding support for '@since' and '@version' tags",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc"
+}
