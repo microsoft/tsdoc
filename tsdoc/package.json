@@ -19,6 +19,14 @@
   "homepage": "https://tsdoc.org/",
   "main": "lib-commonjs/index.js",
   "module": "lib/index.js",
+  "files": [
+    "lib-commonjs/*.js",
+    "lib-commonjs/*.js.map",
+    "lib-commonjs/**/*.d.ts",
+    "lib/*.js",
+    "lib/*.js.map",
+    "lib/**/*.d.ts"
+  ],
   "typings": "lib/index.d.ts",
   "license": "MIT",
   "devDependencies": {
