@@ -1,0 +1,49 @@
+name: CI
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - NodeVersion: 16.20.x
+            NodeVersionDisplayName: 16
+            OS: ubuntu-latest
+          - NodeVersion: 18.18.x
+            NodeVersionDisplayName: 18
+            OS: ubuntu-latest
+          - NodeVersion: 20.9.x
+            NodeVersionDisplayName: 20
+            OS: ubuntu-latest
+          - NodeVersion: 18.18.x
+            NodeVersionDisplayName: 18
+            OS: windows-latest
+    name: Node.js v${{ matrix.NodeVersionDisplayName }} (${{ matrix.OS }})
+    runs-on: ${{ matrix.OS }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Git config user
+        run: |
+          git config --local user.name "Rushbot"
+          git config --local user.email "rushbot@users.noreply.github.com"
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.NodeVersion }}
+
+      - name: Verify Change Logs
+        run: node common/scripts/install-run-rush.js change --verify
+
+      - name: Rush Install
+        run: node common/scripts/install-run-rush.js install
+
+      - name: Rush retest
+        run: node common/scripts/install-run-rush.js retest --verbose --production
