@@ -111,7 +111,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
     if (!CodeEditor._initializePromise) {
       CodeEditor._initializePromise = new Promise(
         (resolve: (monaco: typeof monacoEditor) => void, reject: (error: Error) => void) => {
-          const monacoWindow: IMonacoWindow = (window as unknown) as IMonacoWindow;
+          const monacoWindow: IMonacoWindow = window as unknown as IMonacoWindow;
           monacoWindow.require.config({ paths: { vs: `${MONACO_BASE_URL}vs/` } });
 
           monacoWindow.MonacoEnvironment = {

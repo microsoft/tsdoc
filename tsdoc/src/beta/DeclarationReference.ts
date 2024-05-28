@@ -82,8 +82,8 @@ export class DeclarationReference {
     return scanner.scan() === Token.String
       ? scanner.scan() === Token.EofToken
       : scanner.token() === Token.Text
-      ? scanner.scan() === Token.EofToken
-      : scanner.token() === Token.EofToken;
+        ? scanner.scan() === Token.EofToken
+        : scanner.token() === Token.EofToken;
   }
 
   /**

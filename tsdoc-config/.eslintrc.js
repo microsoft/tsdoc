@@ -6,7 +6,7 @@ require('@rushstack/heft-node-rig/profiles/default/includes/eslint/patch/custom-
 module.exports = {
   extends: [
     '@rushstack/heft-node-rig/profiles/default/includes/eslint/profile/node',
-    '@rushstack/heft-node-rig/profiles/default/includes/eslint/mixins/friendly-locals',
+    '@rushstack/heft-node-rig/profiles/default/includes/eslint/mixins/friendly-locals'
   ],
   parserOptions: { tsconfigRootDir: __dirname },
 
@@ -19,7 +19,7 @@ module.exports = {
         // only used as types prevents the import from being emitted in the compiled output.
         '@typescript-eslint/consistent-type-imports': [
           'warn',
-          { prefer: 'type-imports', disallowTypeAnnotations: false, fixStyle: 'inline-type-imports' },
+          { prefer: 'type-imports', disallowTypeAnnotations: false, fixStyle: 'inline-type-imports' }
         ],
 
         // Rationale: If all imports in an import statement are only used as types,
@@ -31,10 +31,10 @@ module.exports = {
           'line',
           [
             ' Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.',
-            ' See LICENSE in the project root for license information.',
-          ],
-        ],
-      },
-    },
-  ],
+            ' See LICENSE in the project root for license information.'
+          ]
+        ]
+      }
+    }
+  ]
 };

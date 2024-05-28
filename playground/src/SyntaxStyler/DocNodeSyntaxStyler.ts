@@ -96,9 +96,8 @@ export class DocNodeSyntaxStyler {
 
         case 'InlineTag_TagName':
         case 'BlockTag': {
-          const tagDefinition:
-            | tsdoc.TSDocTagDefinition
-            | undefined = parserContext.configuration.tryGetTagDefinition(docNode.content.toString());
+          const tagDefinition: tsdoc.TSDocTagDefinition | undefined =
+            parserContext.configuration.tryGetTagDefinition(docNode.content.toString());
           DocNodeSyntaxStyler._addStylesForTag(styles, docNode.content, tagDefinition, {
             theme,
             styleTokens: [...styleTokens, 'tag']

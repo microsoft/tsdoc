@@ -161,9 +161,8 @@ export class TestHelpers {
       if (docNode.errorLocation.startIndex > 0) {
         // Show the preceding token to provide some context (e.g. is this the opening quote
         // or closing quote?)
-        item.errorLocationPrecedingToken = docNode.errorLocation.parserContext.tokens[
-          docNode.errorLocation.startIndex - 1
-        ].toString();
+        item.errorLocationPrecedingToken =
+          docNode.errorLocation.parserContext.tokens[docNode.errorLocation.startIndex - 1].toString();
       }
     }
 

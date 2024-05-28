@@ -34,10 +34,8 @@ export class DocNodeManager {
     string,
     IRegisteredDocNodeDefinition
   >();
-  private readonly _docNodeDefinitionsByConstructor: Map<
-    DocNodeConstructor,
-    IRegisteredDocNodeDefinition
-  > = new Map<DocNodeConstructor, IRegisteredDocNodeDefinition>();
+  private readonly _docNodeDefinitionsByConstructor: Map<DocNodeConstructor, IRegisteredDocNodeDefinition> =
+    new Map<DocNodeConstructor, IRegisteredDocNodeDefinition>();
 
   /**
    * Registers a list of {@link IDocNodeDefinition} objects to be used with the associated
@@ -124,9 +122,8 @@ export class DocNodeManager {
   }
 
   private _getDefinition(docNodeKind: string): IRegisteredDocNodeDefinition {
-    const definition: IRegisteredDocNodeDefinition | undefined = this._docNodeDefinitionsByKind.get(
-      docNodeKind
-    );
+    const definition: IRegisteredDocNodeDefinition | undefined =
+      this._docNodeDefinitionsByKind.get(docNodeKind);
     if (definition === undefined) {
       throw new Error(`The DocNode kind "${docNodeKind}" was not registered with this TSDocConfiguration`);
     }
