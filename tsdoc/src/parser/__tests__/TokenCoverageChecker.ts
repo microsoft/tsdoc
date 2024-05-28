@@ -1,7 +1,10 @@
-import { DocNode, DocExcerpt } from '../../nodes';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { type DocNode, DocExcerpt } from '../../nodes';
 import { TokenSequence } from '../TokenSequence';
-import { ParserContext } from '../ParserContext';
-import { TokenKind, Token } from '../Token';
+import type { ParserContext } from '../ParserContext';
+import { TokenKind, type Token } from '../Token';
 
 interface ITokenAssociation {
   docNode: DocNode;

@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import { StandardTags } from '../details/StandardTags';
-import { TSDocTagDefinition } from './TSDocTagDefinition';
+import type { TSDocTagDefinition } from './TSDocTagDefinition';
 import { TSDocValidationConfiguration } from './TSDocValidationConfiguration';
 import { DocNodeManager } from './DocNodeManager';
 import { BuiltInDocNodes } from '../nodes/BuiltInDocNodes';
-import { TSDocMessageId, allTsdocMessageIds, allTsdocMessageIdsSet } from '../parser/TSDocMessageId';
+import { type TSDocMessageId, allTsdocMessageIds, allTsdocMessageIdsSet } from '../parser/TSDocMessageId';
 
 /**
  * Configuration for the TSDocParser.

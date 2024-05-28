@@ -1,4 +1,7 @@
-import { DocSection, DocNode, DocNodeKind, DocParagraph, DocPlainText } from '../nodes';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { DocSection, type DocNode, DocNodeKind, DocParagraph, type DocPlainText } from '../nodes';
 
 /**
  * The ParagraphSplitter is a secondary stage that runs after the NodeParser has constructed
@@ -53,7 +56,7 @@ export class ParagraphSplitter {
     let currentParagraph: DocParagraph = new DocParagraph({ configuration: oldParagraph.configuration });
     outputNodes.push(currentParagraph);
 
-    const enum SplitterState {
+    enum SplitterState {
       Start,
       AwaitingTrailer,
       ReadingTrailer

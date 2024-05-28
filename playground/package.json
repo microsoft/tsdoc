@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "build": "heft build --clean",
-    "start": "heft start"
+    "start": "heft start",
+    "_phase:build": "heft run --only build -- --clean"
   },
   "dependencies": {
     "@microsoft/tsdoc": "workspace:*",
@@ -17,12 +18,11 @@
     "tslib": "~2.5.3"
   },
   "devDependencies": {
-    "@rushstack/eslint-config": "~3.3.1",
-    "@rushstack/heft-web-rig": "0.18.5",
-    "@rushstack/heft": "^0.53.1",
+    "@rushstack/heft-web-rig": "~0.24.11",
+    "@rushstack/heft": "^0.66.13",
     "@types/webpack-env": "1.18.0",
-    "eslint": "~8.42.0",
-    "typescript": "~5.0.4",
+    "eslint": "~8.57.0",
+    "eslint-plugin-header": "~3.1.1",
     "handlebars-loader": "~1.7.3",
     "handlebars": "~4.7.7"
   }

@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import {
   TSDocTagDefinition,
   TSDocTagSyntaxKind,
-  ITSDocTagDefinitionInternalParameters
+  type ITSDocTagDefinitionInternalParameters
 } from '../configuration/TSDocTagDefinition';
 import { Standardization } from './Standardization';
 

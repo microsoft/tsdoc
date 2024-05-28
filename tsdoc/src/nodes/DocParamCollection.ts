@@ -1,5 +1,8 @@
-import { DocNodeKind, DocNode, IDocNodeParameters } from './DocNode';
-import { DocParamBlock } from './DocParamBlock';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { DocNodeKind, DocNode, type IDocNodeParameters } from './DocNode';
+import type { DocParamBlock } from './DocParamBlock';
 
 /**
  * Constructor parameters for {@link DocParamCollection}.

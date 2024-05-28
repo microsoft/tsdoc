@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import type {
   DocNode,
   DocComment,
@@ -25,10 +28,10 @@ import type {
   DocParamBlock
 } from '../nodes';
 import { DocNodeKind } from '../nodes/DocNode';
-import { IStringBuilder } from './StringBuilder';
+import type { IStringBuilder } from './StringBuilder';
 import { DocNodeTransforms } from '../transforms/DocNodeTransforms';
 import { StandardTags } from '../details/StandardTags';
-import { DocParamCollection } from '../nodes/DocParamCollection';
+import type { DocParamCollection } from '../nodes/DocParamCollection';
 
 enum LineState {
   Closed,

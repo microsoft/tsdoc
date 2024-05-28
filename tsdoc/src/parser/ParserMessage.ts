@@ -1,7 +1,10 @@
-import { TextRange, ITextLocation } from './TextRange';
-import { TokenSequence } from './TokenSequence';
-import { DocNode } from '../nodes/DocNode';
-import { TSDocMessageId } from './TSDocMessageId';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import type { TextRange, ITextLocation } from './TextRange';
+import type { TokenSequence } from './TokenSequence';
+import type { DocNode } from '../nodes/DocNode';
+import type { TSDocMessageId } from './TSDocMessageId';
 
 /**
  * Constructor parameters for {@link ParserMessage}.

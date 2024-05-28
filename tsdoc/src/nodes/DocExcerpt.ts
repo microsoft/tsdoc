@@ -1,5 +1,8 @@
-import { DocNode, IDocNodeParameters, DocNodeKind } from './DocNode';
-import { TokenSequence } from '../parser/TokenSequence';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { DocNode, type IDocNodeParameters, DocNodeKind } from './DocNode';
+import type { TokenSequence } from '../parser/TokenSequence';
 import { TokenKind } from '../parser/Token';
 
 /* eslint-disable @typescript-eslint/naming-convention */

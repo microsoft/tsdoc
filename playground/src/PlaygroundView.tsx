@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import * as React from 'react';
 import * as tsdoc from '@microsoft/tsdoc';
 
@@ -9,11 +12,11 @@ import { FlexRowDiv, FlexColDiv } from './FlexDivs';
 import { DocHtmlView } from './DocHtmlView';
 import { DocDomView } from './DocDomView';
 import { DocAstView } from './DocAstView';
-import { CodeEditor, ISyntaxMarker, IStyledRange } from './CodeEditor';
+import { CodeEditor, type ISyntaxMarker, type IStyledRange } from './CodeEditor';
 import { DocNodeSyntaxStyler } from './SyntaxStyler/DocNodeSyntaxStyler';
 import { SampleInputs } from './samples/SampleInputs';
 
-export const enum Theme {
+export enum Theme {
   vs = 'vs'
 }
 

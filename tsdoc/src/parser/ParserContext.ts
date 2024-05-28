@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import { TextRange } from './TextRange';
-import { Token } from './Token';
+import type { Token } from './Token';
 import { DocComment } from '../nodes';
-import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
+import type { TSDocConfiguration } from '../configuration/TSDocConfiguration';
 import { ParserMessageLog } from './ParserMessageLog';
 
 /**

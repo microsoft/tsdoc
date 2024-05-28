@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import * as React from 'react';
 import type * as monacoEditor from 'monaco-editor';
 import * as tsdoc from '@microsoft/tsdoc';
@@ -111,7 +114,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
     if (!CodeEditor._initializePromise) {
       CodeEditor._initializePromise = new Promise(
         (resolve: (monaco: typeof monacoEditor) => void, reject: (error: Error) => void) => {
-          const monacoWindow: IMonacoWindow = (window as unknown) as IMonacoWindow;
+          const monacoWindow: IMonacoWindow = window as unknown as IMonacoWindow;
           monacoWindow.require.config({ paths: { vs: `${MONACO_BASE_URL}vs/` } });
 
           monacoWindow.MonacoEnvironment = {

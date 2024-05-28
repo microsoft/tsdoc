@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import { TestHelpers } from '../parser/__tests__/TestHelpers';
 import { ParagraphSplitter } from '../parser/ParagraphSplitter';
 import { DocSection, DocPlainText, DocSoftBreak, DocParagraph, DocBlockTag } from '../index';

@@ -1,13 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import {
   TSDocTagDefinition,
   TSDocTagSyntaxKind,
-  TSDocConfiguration,
+  type TSDocConfiguration,
   ParserMessageLog,
   TSDocMessageId,
   ParserMessage,
   TextRange,
-  IParserMessageParameters,
-  ITSDocTagDefinitionParameters,
+  type IParserMessageParameters,
+  type ITSDocTagDefinitionParameters
 } from '@microsoft/tsdoc';
 import * as fs from 'fs';
 import * as resolve from 'resolve';
@@ -19,7 +22,9 @@ import * as jju from 'jju';
 const ajv: Ajv = new Ajv({ verbose: true });
 
 function initializeSchemaValidator(): AjvTypes.ValidateFunction {
-  const jsonSchemaPath: string = resolve.sync('@microsoft/tsdoc/schemas/tsdoc.schema.json', { basedir: __dirname });
+  const jsonSchemaPath: string = resolve.sync('@microsoft/tsdoc/schemas/tsdoc.schema.json', {
+    basedir: __dirname
+  });
   const jsonSchemaContent: string = fs.readFileSync(jsonSchemaPath).toString();
   const jsonSchema: object = jju.parse(jsonSchemaContent, { mode: 'cjson' });
   return ajv.compile(jsonSchema);
@@ -217,7 +222,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileInvalidTagName,
         messageText: error.message,
-        textRange: TextRange.empty,
+        textRange: TextRange.empty
       });
       return;
     }
@@ -226,7 +231,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileDuplicateTagName,
         messageText: `The "tagDefinitions" field specifies more than one tag with the name "${parameters.tagName}"`,
-        textRange: TextRange.empty,
+        textRange: TextRange.empty
       });
     }
     this._tagDefinitionNames.add(tagDefinition.tagNameWithUpperCase);
@@ -319,7 +324,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileUnsupportedSchema,
         messageText: `Unsupported JSON "$schema" value; expecting "${TSDocConfigFile.CURRENT_SCHEMA_URL}"`,
-        textRange: TextRange.empty,
+        textRange: TextRange.empty
       });
       return;
     }
@@ -332,7 +337,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileSchemaError,
         messageText: 'Error loading config file: ' + description,
-        textRange: TextRange.empty,
+        textRange: TextRange.empty
       });
       return;
     }
@@ -364,7 +369,7 @@ export class TSDocConfigFile {
       this._addTagDefinitionForLoad({
         tagName: jsonTagDefinition.tagName,
         syntaxKind: syntaxKind,
-        allowMultiple: jsonTagDefinition.allowMultiple,
+        allowMultiple: jsonTagDefinition.allowMultiple
       });
     }
 
@@ -399,7 +404,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileNotFound,
         messageText: 'File not found',
-        textRange: TextRange.empty,
+        textRange: TextRange.empty
       });
       return;
     }
@@ -410,7 +415,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileNotFound,
         messageText: 'File not found',
-        textRange: TextRange.empty,
+        textRange: TextRange.empty
       });
       return;
     }
@@ -425,7 +430,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigFileCyclicExtends,
         messageText: `Circular reference encountered for "extends" field of "${referencingConfigFile.filePath}"`,
-        textRange: TextRange.empty,
+        textRange: TextRange.empty
       });
       return;
     }
@@ -438,7 +443,7 @@ export class TSDocConfigFile {
       this._reportError({
         messageId: TSDocMessageId.ConfigInvalidJson,
         messageText: 'Error parsing JSON input: ' + e.message,
-        textRange: TextRange.empty,
+        textRange: TextRange.empty
       });
       return;
     }
@@ -455,7 +460,7 @@ export class TSDocConfigFile {
         this._reportError({
           messageId: TSDocMessageId.ConfigFileUnresolvedExtends,
           messageText: `Unable to resolve "extends" reference to "${extendsField}": ` + e.message,
-          textRange: TextRange.empty,
+          textRange: TextRange.empty
         });
 
         return;
@@ -469,7 +474,7 @@ export class TSDocConfigFile {
         this._reportError({
           messageId: TSDocMessageId.ConfigFileUnresolvedExtends,
           messageText: `Unable to resolve "extends" reference to "${extendsField}"`,
-          textRange: TextRange.empty,
+          textRange: TextRange.empty
         });
       }
 
@@ -588,7 +593,7 @@ export class TSDocConfigFile {
       configFile.addTagDefinition({
         syntaxKind: tagDefinition.syntaxKind,
         tagName: tagDefinition.tagName,
-        allowMultiple: tagDefinition.allowMultiple,
+        allowMultiple: tagDefinition.allowMultiple
       });
     }
 
@@ -619,7 +624,7 @@ export class TSDocConfigFile {
    */
   public saveToObject(): unknown {
     const configJson: IConfigJson = {
-      $schema: TSDocConfigFile.CURRENT_SCHEMA_URL,
+      $schema: TSDocConfigFile.CURRENT_SCHEMA_URL
     };
 
     if (this.noStandardTags !== undefined) {
@@ -669,7 +674,7 @@ export class TSDocConfigFile {
 
     const tagConfigJson: ITagConfigJson = {
       tagName: tagDefinition.tagName,
-      syntaxKind,
+      syntaxKind
     };
     if (tagDefinition.allowMultiple) {
       tagConfigJson.allowMultiple = true;
@@ -765,7 +770,7 @@ export class TSDocConfigFile {
         this._reportError({
           messageId: TSDocMessageId.ConfigFileUndefinedTag,
           messageText: `The "supportForTags" field refers to an undefined tag ${JSON.stringify(tagName)}.`,
-          textRange: TextRange.empty,
+          textRange: TextRange.empty
         });
       }
     });

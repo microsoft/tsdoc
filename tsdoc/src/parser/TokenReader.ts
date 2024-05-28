@@ -1,6 +1,9 @@
-import { Token, TokenKind } from './Token';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { type Token, TokenKind } from './Token';
 import { TokenSequence } from './TokenSequence';
-import { ParserContext } from './ParserContext';
+import type { ParserContext } from './ParserContext';
 
 /**
  * Manages a stream of tokens that are read by the parser.

@@ -7,19 +7,21 @@
   "dependencies": {
     "@microsoft/tsdoc": "workspace:*",
     "colors": "~1.4.0",
-    "typescript": "~5.0.4"
+    "typescript": "~5.4.2"
   },
   "devDependencies": {
-    "@rushstack/eslint-config": "~3.3.1",
-    "@rushstack/heft-node-rig": "2.2.5",
-    "@rushstack/heft": "^0.53.1",
+    "@rushstack/heft-node-rig": "~2.6.11",
+    "@rushstack/heft": "^0.66.13",
     "@types/heft-jest": "1.0.3",
     "@types/node": "14.18.36",
-    "eslint": "~8.42.0"
+    "eslint": "~8.57.0",
+    "eslint-plugin-header": "~3.1.1"
   },
   "scripts": {
     "build": "heft test --clean",
     "simple": "node ./lib/start.js simple",
-    "advanced": "node ./lib/start.js advanced"
+    "advanced": "node ./lib/start.js advanced",
+    "_phase:build": "heft run --only build -- --clean",
+    "_phase:test": "heft run --only test -- --clean"
   }
 }

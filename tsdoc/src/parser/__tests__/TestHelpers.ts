@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import { TSDocParser } from '../TSDocParser';
-import { TextRange } from '../TextRange';
-import { DocErrorText, DocNode, DocComment, DocPlainText, DocExcerpt } from '../../nodes';
-import { ParserContext } from '../ParserContext';
+import type { TextRange } from '../TextRange';
+import { DocErrorText, type DocNode, type DocComment, DocPlainText, DocExcerpt } from '../../nodes';
+import type { ParserContext } from '../ParserContext';
 import { TSDocConfiguration } from '../../configuration/TSDocConfiguration';
 import { TokenCoverageChecker } from './TokenCoverageChecker';
 
@@ -161,9 +164,8 @@ export class TestHelpers {
       if (docNode.errorLocation.startIndex > 0) {
         // Show the preceding token to provide some context (e.g. is this the opening quote
         // or closing quote?)
-        item.errorLocationPrecedingToken = docNode.errorLocation.parserContext.tokens[
-          docNode.errorLocation.startIndex - 1
-        ].toString();
+        item.errorLocationPrecedingToken =
+          docNode.errorLocation.parserContext.tokens[docNode.errorLocation.startIndex - 1].toString();
       }
     }
 

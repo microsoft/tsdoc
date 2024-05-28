@@ -22,15 +22,16 @@
   "typings": "lib/index.d.ts",
   "license": "MIT",
   "devDependencies": {
-    "@rushstack/eslint-config": "~3.3.1",
-    "@rushstack/heft-web-rig": "0.18.5",
-    "@rushstack/heft": "^0.53.1",
+    "@rushstack/heft-web-rig": "~0.24.11",
+    "@rushstack/heft": "^0.66.13",
     "@types/heft-jest": "1.0.3",
-    "eslint": "~8.42.0",
-    "typescript": "~5.0.4"
+    "eslint": "~8.57.0",
+    "eslint-plugin-header": "~3.1.1"
   },
   "scripts": {
     "build": "heft test --clean",
-    "watch": "heft test --clean --watch"
+    "watch": "heft test --clean --watch",
+    "_phase:build": "heft run --only build -- --clean",
+    "_phase:test": "heft run --only test -- --clean"
   }
 }

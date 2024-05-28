@@ -1,5 +1,8 @@
-import { TextRange } from './TextRange';
-import { ParserContext } from './ParserContext';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import type { TextRange } from './TextRange';
+import type { ParserContext } from './ParserContext';
 import { TSDocMessageId } from './TSDocMessageId';
 
 // Internal parser state

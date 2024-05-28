@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import { TSDocConfiguration, TSDocTagDefinition, TSDocTagSyntaxKind } from '@microsoft/tsdoc';
 import * as path from 'path';
 
@@ -23,12 +26,15 @@ expect.addSnapshotSerializer({
       extendsFiles: configFile.extendsFiles,
       noStandardTags: configFile.noStandardTags,
       tagDefinitions: configFile.tagDefinitions,
-      supportForTags: Array.from(configFile.supportForTags).map(([tagName, supported]) => ({ tagName, supported })),
+      supportForTags: Array.from(configFile.supportForTags).map(([tagName, supported]) => ({
+        tagName,
+        supported
+      })),
       messages: configFile.log.messages,
       supportedHtmlElements: configFile.supportedHtmlElements,
-      reportUnsupportedHtmlElements: configFile.reportUnsupportedHtmlElements,
+      reportUnsupportedHtmlElements: configFile.reportUnsupportedHtmlElements
     });
-  },
+  }
 });
 
 function testLoadingFolder(assetPath: string): TSDocConfigFile {
@@ -763,8 +769,16 @@ test('Test loadFromObject()', () => {
 
   configuration.addTagDefinitions([
     new TSDocTagDefinition({ syntaxKind: TSDocTagSyntaxKind.ModifierTag, tagName: '@tag1' }),
-    new TSDocTagDefinition({ syntaxKind: TSDocTagSyntaxKind.BlockTag, tagName: '@tag2', allowMultiple: true }),
-    new TSDocTagDefinition({ syntaxKind: TSDocTagSyntaxKind.InlineTag, tagName: '@tag3', allowMultiple: true }),
+    new TSDocTagDefinition({
+      syntaxKind: TSDocTagSyntaxKind.BlockTag,
+      tagName: '@tag2',
+      allowMultiple: true
+    }),
+    new TSDocTagDefinition({
+      syntaxKind: TSDocTagSyntaxKind.InlineTag,
+      tagName: '@tag3',
+      allowMultiple: true
+    })
   ]);
 
   configuration.setSupportForTag(configuration.tagDefinitions[0], true);

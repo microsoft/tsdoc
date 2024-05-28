@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import { TSDocConfiguration } from '@microsoft/tsdoc';
 import * as path from 'path';
 
@@ -45,7 +48,9 @@ function buildStablePathMap(stablePathMap: Map<string, string>, configFile: TSDo
 function convertToStablePaths(text: string, stablePathMap: Map<string, string>): string {
   // Sort the [key,value] pairs by key length from longest to shortest.
   // This ensures that a shorter path does not replace a subpath of a longer path.
-  const pairs: [string, string][] = Array.from(stablePathMap.entries()).sort((x, y) => y[0].length - x[0].length);
+  const pairs: [string, string][] = Array.from(stablePathMap.entries()).sort(
+    (x, y) => y[0].length - x[0].length
+  );
   for (const pair of pairs) {
     text = replaceAll(text, pair[0], pair[1]);
   }
@@ -59,9 +64,11 @@ function createSnapshot(configFile: TSDocConfigFile, pathFixupMap: Map<string, s
     s0_filePath: convertToStablePaths(configFile.filePath, pathFixupMap),
     s1_fileNotFound: configFile.fileNotFound,
     s2_hasErrors: configFile.hasErrors,
-    s4_log: configFile.log.messages.map((x) => `[${x.messageId}] ${convertToStablePaths(x.text, pathFixupMap)}`),
+    s4_log: configFile.log.messages.map(
+      (x) => `[${x.messageId}] ${convertToStablePaths(x.text, pathFixupMap)}`
+    ),
     s5_extends: configFile.extendsFiles.map((x) => createSnapshot(x, pathFixupMap)),
-    s3_errorSummary: convertToStablePaths(configFile.getErrorSummary(), pathFixupMap),
+    s3_errorSummary: convertToStablePaths(configFile.getErrorSummary(), pathFixupMap)
   };
 }
 

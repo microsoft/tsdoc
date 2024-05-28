@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 /* eslint-disable max-lines */
 
-import { ParserContext } from './ParserContext';
-import { Token, TokenKind } from './Token';
+import type { ParserContext } from './ParserContext';
+import { type Token, TokenKind } from './Token';
 import { Tokenizer } from './Tokenizer';
 import {
   DocBlockTag,
@@ -12,36 +15,36 @@ import {
   DocHtmlEndTag,
   DocHtmlStartTag,
   DocInlineTag,
-  DocNode,
+  type DocNode,
   DocPlainText,
   DocSoftBreak,
   EscapeStyle,
-  DocComment,
+  type DocComment,
   DocBlock,
   DocNodeKind,
-  DocSection,
+  type DocSection,
   DocParamBlock,
   DocFencedCode,
   DocLinkTag,
-  IDocLinkTagParameters,
+  type IDocLinkTagParameters,
   DocMemberReference,
   DocDeclarationReference,
   DocMemberSymbol,
   DocMemberIdentifier,
   DocMemberSelector,
   DocInheritDocTag,
-  IDocInheritDocTagParameters,
-  IDocInlineTagParsedParameters,
-  DocInlineTagBase,
-  IDocLinkTagParsedParameters,
-  IDocMemberReferenceParsedParameters
+  type IDocInheritDocTagParameters,
+  type IDocInlineTagParsedParameters,
+  type DocInlineTagBase,
+  type IDocLinkTagParsedParameters,
+  type IDocMemberReferenceParsedParameters
 } from '../nodes';
 import { TokenSequence } from './TokenSequence';
 import { TokenReader } from './TokenReader';
 import { StringChecks } from './StringChecks';
-import { ModifierTagSet } from '../details/ModifierTagSet';
-import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
-import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTagDefinition';
+import type { ModifierTagSet } from '../details/ModifierTagSet';
+import type { TSDocConfiguration } from '../configuration/TSDocConfiguration';
+import { type TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTagDefinition';
 import { StandardTags } from '../details/StandardTags';
 import { PlainTextEmitter } from '../emitters/PlainTextEmitter';
 import { TSDocMessageId } from './TSDocMessageId';
@@ -472,9 +475,8 @@ export class NodeParser {
         docBlockTag
       );
 
-      const spacingAfterJsdocTypeExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
-        tokenReader
-      );
+      const spacingAfterJsdocTypeExcerpt: TokenSequence | undefined =
+        this._tryReadSpacingAndNewlines(tokenReader);
       if (spacingAfterJsdocTypeExcerpt) {
         jsdocTypeExcerpt = jsdocTypeExcerpt.getNewSequence(
           jsdocTypeExcerpt.startIndex,
@@ -510,14 +512,12 @@ export class NodeParser {
   ): DocParamBlock {
     const startMarker: number = tokenReader.createMarker();
 
-    const spacingBeforeParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
-      tokenReader
-    );
+    const spacingBeforeParameterNameExcerpt: TokenSequence | undefined =
+      this._tryReadSpacingAndNewlines(tokenReader);
 
     // Skip past a JSDoc type (i.e., '@param {type} paramName') if found, and report a warning.
-    const unsupportedJsdocTypeBeforeParameterNameExcerpt:
-      | TokenSequence
-      | undefined = this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
+    const unsupportedJsdocTypeBeforeParameterNameExcerpt: TokenSequence | undefined =
+      this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
 
     // Parse opening of invalid JSDoc optional parameter name (e.g., '[')
     let unsupportedJsdocOptionalNameOpenBracketExcerpt: TokenSequence | undefined;
@@ -593,14 +593,12 @@ export class NodeParser {
       );
     }
 
-    const spacingAfterParameterNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
-      tokenReader
-    );
+    const spacingAfterParameterNameExcerpt: TokenSequence | undefined =
+      this._tryReadSpacingAndNewlines(tokenReader);
 
     // Skip past a trailing JSDoc type (i.e., '@param paramName {type}') if found, and report a warning.
-    const unsupportedJsdocTypeAfterParameterNameExcerpt:
-      | TokenSequence
-      | undefined = this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
+    const unsupportedJsdocTypeAfterParameterNameExcerpt: TokenSequence | undefined =
+      this._tryParseUnsupportedJSDocType(tokenReader, docBlockTag, tagName);
 
     // TODO: Warn if there is no space before or after the hyphen
     let hyphenExcerpt: TokenSequence | undefined;
@@ -848,9 +846,8 @@ export class NodeParser {
 
     const tagNameExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    const spacingAfterTagNameExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
-      tokenReader
-    );
+    const spacingAfterTagNameExcerpt: TokenSequence | undefined =
+      this._tryReadSpacingAndNewlines(tokenReader);
 
     if (spacingAfterTagNameExcerpt === undefined) {
       // If there were no spaces at all, that's an error unless it's the degenerate "{@tag}" case
@@ -963,9 +960,8 @@ export class NodeParser {
     }
 
     // Validate the tag
-    const tagDefinition:
-      | TSDocTagDefinition
-      | undefined = this._parserContext.configuration.tryGetTagDefinitionWithUpperCase(tagNameWithUpperCase);
+    const tagDefinition: TSDocTagDefinition | undefined =
+      this._parserContext.configuration.tryGetTagDefinitionWithUpperCase(tagNameWithUpperCase);
 
     this._validateTagDefinition(
       tagDefinition,
@@ -1149,9 +1145,8 @@ export class NodeParser {
         }
       }
 
-      const linkTextAndSpacing:
-        | TokenSequence
-        | undefined = embeddedTokenReader.tryExtractAccumulatedSequence();
+      const linkTextAndSpacing: TokenSequence | undefined =
+        embeddedTokenReader.tryExtractAccumulatedSequence();
       if (linkTextAndSpacing) {
         if (spacingAfterLinkTextMarker === undefined) {
           // We never found any non-spacing characters, so everything is trailing spacing
@@ -1632,9 +1627,8 @@ export class NodeParser {
     tokenReader.readToken();
     const leftBracketExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
 
-    const spacingAfterLeftBracketExcerpt: TokenSequence | undefined = this._tryReadSpacingAndNewlines(
-      tokenReader
-    );
+    const spacingAfterLeftBracketExcerpt: TokenSequence | undefined =
+      this._tryReadSpacingAndNewlines(tokenReader);
 
     // Read the declaration reference
     const declarationReference: DocDeclarationReference | undefined = this._parseDeclarationReference(
@@ -1764,9 +1758,8 @@ export class NodeParser {
       const identifierExcerpt: TokenSequence = tokenReader.extractAccumulatedSequence();
       const identifier: string = identifierExcerpt.toString();
 
-      const explanation: string | undefined = StringChecks.explainIfInvalidUnquotedMemberIdentifier(
-        identifier
-      );
+      const explanation: string | undefined =
+        StringChecks.explainIfInvalidUnquotedMemberIdentifier(identifier);
       if (explanation) {
         this._parserContext.log.addMessageForTokenSequence(
           TSDocMessageId.ReferenceUnquotedIdentifier,
@@ -2192,9 +2185,8 @@ export class NodeParser {
       tokenReader.readToken();
     }
 
-    const spacingAfterOpeningFenceExcerpt:
-      | TokenSequence
-      | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterOpeningFenceExcerpt: TokenSequence | undefined =
+      tokenReader.tryExtractAccumulatedSequence();
 
     // Read the language specifier (if present) and newline
     let done: boolean = false;
@@ -2332,9 +2324,8 @@ export class NodeParser {
     );
 
     // Example: "  "
-    const spacingBeforeClosingFenceExcerpt:
-      | TokenSequence
-      | undefined = codeAndDelimiterExcerpt.getNewSequence(codeEndMarker, closingFenceStartMarker);
+    const spacingBeforeClosingFenceExcerpt: TokenSequence | undefined =
+      codeAndDelimiterExcerpt.getNewSequence(codeEndMarker, closingFenceStartMarker);
 
     // Example: "```"
     const closingFenceExcerpt: TokenSequence = codeAndDelimiterExcerpt.getNewSequence(
@@ -2368,9 +2359,8 @@ export class NodeParser {
     }
 
     // Example: "   \n"
-    const spacingAfterClosingFenceExcerpt:
-      | TokenSequence
-      | undefined = tokenReader.tryExtractAccumulatedSequence();
+    const spacingAfterClosingFenceExcerpt: TokenSequence | undefined =
+      tokenReader.tryExtractAccumulatedSequence();
 
     return new DocFencedCode({
       parsed: true,
