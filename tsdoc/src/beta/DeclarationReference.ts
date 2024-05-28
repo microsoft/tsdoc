@@ -5,67 +5,77 @@
 /* eslint-disable no-inner-declarations */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @rushstack/no-new-null */
 
 // NOTE: See DeclarationReference.grammarkdown for information on the underlying grammar.
+// NOTE: @rushstack/no-new-null is disabled for places where `null` is used as a sentinel to
+//       indicate explicit non-presence of a value (such as when removing values using `.with()`).
 
 import { StringChecks } from '../parser/StringChecks';
+
+// #region DeclarationReference
 
 /**
  * Represents a reference to a declaration.
  * @beta
  */
 export class DeclarationReference {
-  private _source: ModuleSource | GlobalSource | undefined;
-  private _navigation: Navigation.Locals | Navigation.Exports | undefined;
+  private _source: Source | undefined;
+  private _navigation: SourceNavigation | undefined;
   private _symbol: SymbolReference | undefined;
 
-  public constructor(
-    source?: ModuleSource | GlobalSource,
-    navigation?: Navigation.Locals | Navigation.Exports,
-    symbol?: SymbolReference
-  ) {
+  public constructor(source?: Source, navigation?: SourceNavigation, symbol?: SymbolReference) {
     this._source = source;
     this._navigation = navigation;
     this._symbol = symbol;
   }
 
-  public get source(): ModuleSource | GlobalSource | undefined {
+  /**
+   * Gets the source for the declaration.
+   */
+  public get source(): Source | undefined {
     return this._source;
   }
 
-  public get navigation(): Navigation.Locals | Navigation.Exports | undefined {
-    if (!this._source || !this._symbol) {
-      return undefined;
-    }
-    if (this._source === GlobalSource.instance) {
-      return Navigation.Locals;
-    }
-    if (this._navigation === undefined) {
-      return Navigation.Exports;
-    }
-    return this._navigation;
+  /**
+   * Gets whether the symbol for the declaration is a local or exported symbol of the source.
+   */
+  public get navigation(): SourceNavigation | undefined {
+    return resolveNavigation(this._source, this._symbol, this._navigation);
   }
 
+  /**
+   * Gets the symbol reference for the declaration.
+   */
   public get symbol(): SymbolReference | undefined {
     return this._symbol;
   }
 
+  /**
+   * Gets a value indicating whether this {@link DeclarationReference} is empty.
+   */
   public get isEmpty(): boolean {
     return this.source === undefined && this.symbol === undefined;
   }
 
+  /**
+   * Parses a {@link DeclarationReference} from the provided text.
+   */
   public static parse(text: string): DeclarationReference {
     const parser: Parser = new Parser(text);
     const reference: DeclarationReference = parser.parseDeclarationReference();
     if (parser.errors.length) {
       throw new SyntaxError(`Invalid DeclarationReference '${text}':\n  ${parser.errors.join('\n  ')}`);
-    }
-    if (!parser.eof) {
+    } else if (!parser.eof) {
       throw new SyntaxError(`Invalid DeclarationReference '${text}'`);
+    } else {
+      return reference;
     }
-    return reference;
   }
 
+  /**
+   * Parses a {@link Component} from the provided text.
+   */
   public static parseComponent(text: string): Component {
     if (text[0] === '[') {
       return ComponentReference.parse(text);
@@ -93,12 +103,14 @@ export class DeclarationReference {
   public static escapeComponentString(text: string): string {
     if (text.length === 0) {
       return '""';
+    } else {
+      const ch: string = text.charAt(0);
+      if (ch === '[' || ch === '"' || !this.isWellFormedComponentString(text)) {
+        return JSON.stringify(text);
+      } else {
+        return text;
+      }
     }
-    const ch: string = text.charAt(0);
-    if (ch === '[' || ch === '"' || !this.isWellFormedComponentString(text)) {
-      return JSON.stringify(text);
-    }
-    return text;
   }
 
   /**
@@ -111,11 +123,11 @@ export class DeclarationReference {
       } catch {
         throw new SyntaxError(`Invalid Component '${text}'`);
       }
-    }
-    if (!this.isWellFormedComponentString(text)) {
+    } else if (!this.isWellFormedComponentString(text)) {
       throw new SyntaxError(`Invalid Component '${text}'`);
+    } else {
+      return text;
     }
-    return text;
   }
 
   /**
@@ -138,12 +150,14 @@ export class DeclarationReference {
   public static escapeModuleSourceString(text: string): string {
     if (text.length === 0) {
       return '""';
+    } else {
+      const ch: string = text.charAt(0);
+      if (ch === '"' || !this.isWellFormedModuleSourceString(text)) {
+        return JSON.stringify(text);
+      } else {
+        return text;
+      }
     }
-    const ch: string = text.charAt(0);
-    if (ch === '"' || !this.isWellFormedModuleSourceString(text)) {
-      return JSON.stringify(text);
-    }
-    return text;
   }
 
   /**
@@ -156,84 +170,183 @@ export class DeclarationReference {
       } catch {
         throw new SyntaxError(`Invalid Module source '${text}'`);
       }
-    }
-    if (!this.isWellFormedModuleSourceString(text)) {
+    } else if (!this.isWellFormedModuleSourceString(text)) {
       throw new SyntaxError(`Invalid Module source '${text}'`);
+    } else {
+      return text;
     }
-    return text;
   }
 
+  /**
+   * Returns an empty {@link DeclarationReference}.
+   */
   public static empty(): DeclarationReference {
     return new DeclarationReference();
   }
 
+  /**
+   * Creates a new {@link DeclarationReference} for the provided package.
+   */
   public static package(packageName: string, importPath?: string): DeclarationReference {
     return new DeclarationReference(ModuleSource.fromPackage(packageName, importPath));
   }
 
+  /**
+   * Creates a new {@link DeclarationReference} for the provided module path.
+   */
   public static module(path: string, userEscaped?: boolean): DeclarationReference {
     return new DeclarationReference(new ModuleSource(path, userEscaped));
   }
 
+  /**
+   * Creates a new {@link DeclarationReference} for the global scope.
+   */
   public static global(): DeclarationReference {
     return new DeclarationReference(GlobalSource.instance);
   }
 
-  public static from(base: DeclarationReference | undefined): DeclarationReference {
-    return base || this.empty();
-  }
-
-  public withSource(source: ModuleSource | GlobalSource | undefined): DeclarationReference {
-    return this._source === source ? this : new DeclarationReference(source, this._navigation, this._symbol);
-  }
-
-  public withNavigation(
-    navigation: Navigation.Locals | Navigation.Exports | undefined
-  ): DeclarationReference {
-    return this._navigation === navigation
-      ? this
-      : new DeclarationReference(this._source, navigation, this._symbol);
-  }
-
-  public withSymbol(symbol: SymbolReference | undefined): DeclarationReference {
-    return this._symbol === symbol ? this : new DeclarationReference(this._source, this._navigation, symbol);
-  }
-
-  public withComponentPath(componentPath: ComponentPath): DeclarationReference {
-    return this.withSymbol(
-      this.symbol ? this.symbol.withComponentPath(componentPath) : new SymbolReference(componentPath)
+  /**
+   * Creates a new {@link DeclarationReference} from the provided parts.
+   */
+  public static from(parts: DeclarationReferenceLike</*With*/ false> | undefined): DeclarationReference {
+    const resolved: ResolvedDeclarationReferenceLike = resolveDeclarationReferenceLike(
+      parts,
+      /*fallbackReference*/ undefined
     );
+    if (resolved instanceof DeclarationReference) {
+      return resolved;
+    } else {
+      const { source, navigation, symbol } = resolved;
+      return new DeclarationReference(
+        source === undefined ? undefined : Source.from(source),
+        navigation,
+        symbol === undefined ? undefined : SymbolReference.from(symbol)
+      );
+    }
   }
 
+  /**
+   * Returns a {@link DeclarationReference} updated with the provided parts.
+   * If a part is set to `undefined`, the current value is used.
+   * If a part is set to `null`, the part will be removed in the result.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided parts.
+   */
+  public with(parts: DeclarationReferenceParts</*With*/ true>): DeclarationReference {
+    const { source, navigation, symbol } = resolveDeclarationReferenceParts(
+      parts,
+      this.source,
+      this.navigation,
+      this.symbol
+    );
+    const resolvedSource: Source | undefined = source === undefined ? undefined : Source.from(source);
+    const resolvedSymbol: SymbolReference | undefined =
+      symbol === undefined ? undefined : SymbolReference.from(symbol);
+    const resolvedNavigation: SourceNavigation | undefined = resolveNavigation(
+      resolvedSource,
+      resolvedSymbol,
+      navigation
+    );
+    if (
+      Source.equals(this.source, resolvedSource) &&
+      this.navigation === resolvedNavigation &&
+      SymbolReference.equals(this.symbol, resolvedSymbol)
+    ) {
+      return this;
+    } else {
+      return new DeclarationReference(resolvedSource, navigation, resolvedSymbol);
+    }
+  }
+
+  /**
+   * Returns an {@link DeclarationReference} updated with the provided source.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided source.
+   */
+  public withSource(source: Source | undefined): DeclarationReference {
+    return this.with({ source: source ?? null });
+  }
+
+  /**
+   * Returns an {@link DeclarationReference} updated with the provided navigation.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided navigation.
+   */
+  public withNavigation(navigation: SourceNavigation | undefined): DeclarationReference {
+    return this.with({ navigation: navigation ?? null });
+  }
+
+  /**
+   * Returns an {@link DeclarationReference} updated with the provided symbol.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided symbol.
+   */
+  public withSymbol(symbol: SymbolReference | undefined): DeclarationReference {
+    return this.with({ symbol: symbol ?? null });
+  }
+
+  /**
+   * Returns an {@link DeclarationReference} whose symbol has been updated with the provided component path.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided component path.
+   */
+  public withComponentPath(componentPath: ComponentPath | undefined): DeclarationReference {
+    return this.with({ componentPath: componentPath ?? null });
+  }
+
+  /**
+   * Returns an {@link DeclarationReference} whose symbol has been updated with the provided meaning.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided meaning.
+   */
   public withMeaning(meaning: Meaning | undefined): DeclarationReference {
-    if (!this.symbol) {
-      if (meaning === undefined) {
-        return this;
-      }
-      return this.withSymbol(SymbolReference.empty().withMeaning(meaning));
-    }
-    return this.withSymbol(this.symbol.withMeaning(meaning));
+    return this.with({ meaning: meaning ?? null });
   }
 
+  /**
+   * Returns an {@link DeclarationReference} whose symbol has been updated with the provided overload index.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided overload index.
+   */
   public withOverloadIndex(overloadIndex: number | undefined): DeclarationReference {
-    if (!this.symbol) {
-      if (overloadIndex === undefined) {
-        return this;
-      }
-      return this.withSymbol(SymbolReference.empty().withOverloadIndex(overloadIndex));
-    }
-    return this.withSymbol(this.symbol.withOverloadIndex(overloadIndex));
+    return this.with({ overloadIndex: overloadIndex ?? null });
   }
 
-  public addNavigationStep(navigation: Navigation, component: ComponentLike): DeclarationReference {
+  /**
+   * Returns a new {@link DeclarationReference} whose symbol has been updated to include the provided navigation step in its component path.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided navigation step.
+   */
+  public addNavigationStep(
+    navigation: Navigation,
+    component: ComponentLike</*With*/ false>
+  ): DeclarationReference {
     if (this.symbol) {
       return this.withSymbol(this.symbol.addNavigationStep(navigation, component));
+    } else {
+      if (navigation === Navigation.Members) {
+        navigation = Navigation.Exports;
+      }
+      return this.with({
+        navigation,
+        symbol: SymbolReference.from({ componentPath: ComponentRoot.from({ component }) })
+      });
     }
-    if (navigation === Navigation.Members) {
-      navigation = Navigation.Exports;
+  }
+
+  /**
+   * Tests whether two {@link DeclarationReference} objects are equivalent.
+   */
+  public static equals(
+    left: DeclarationReference | undefined,
+    right: DeclarationReference | undefined
+  ): boolean {
+    if (left === undefined) {
+      return right === undefined || right.isEmpty;
+    } else if (right === undefined) {
+      return left === undefined || left.isEmpty;
+    } else {
+      return left.toString() === right.toString();
     }
-    const symbol: SymbolReference = new SymbolReference(new ComponentRoot(Component.from(component)));
-    return new DeclarationReference(this.source, navigation, symbol);
+  }
+
+  /**
+   * Tests whether this object is equivalent to `other`.
+   */
+  public equals(other: DeclarationReference): boolean {
+    return DeclarationReference.equals(this, other);
   }
 
   public toString(): string {
@@ -244,6 +357,1932 @@ export class DeclarationReference {
     return `${this.source || ''}${navigation}${this.symbol || ''}`;
   }
 }
+
+// #region DeclarationReferenceParts
+
+/**
+ * @beta
+ */
+export type DeclarationReferenceSourcePart<With extends boolean> = Parts<
+  With,
+  {
+    /** The module or global source for a symbol. */
+    source?: Part<With, SourceLike<With>>;
+  }
+>;
+
+/**
+ * @beta
+ */
+export type DeclarationReferenceSourceParts<With extends boolean> =
+  | DeclarationReferenceSourcePart<With>
+  | SourceParts<With>;
+
+/**
+ * @beta
+ */
+export type DeclarationReferenceNavigationParts<With extends boolean> = Parts<
+  With,
+  {
+    /** Indicates whether the symbol is exported or local to the source. */
+    navigation?: Part<With, SourceNavigation>;
+  }
+>;
+
+/**
+ * @beta
+ */
+export type DeclarationReferenceSymbolPart<With extends boolean> = Parts<
+  With,
+  {
+    /** The referenced symbol. */
+    symbol?: Part<With, SymbolReferenceLike<With>>;
+  }
+>;
+
+/**
+ * @beta
+ */
+export type DeclarationReferenceSymbolParts<With extends boolean> =
+  | DeclarationReferenceSymbolPart<With>
+  | SymbolReferenceParts<With>;
+
+/**
+ * @beta
+ */
+export type DeclarationReferenceParts<With extends boolean> = DeclarationReferenceSourceParts<With> &
+  DeclarationReferenceNavigationParts<With> &
+  DeclarationReferenceSymbolParts<With>;
+
+function resolveDeclarationReferenceSourcePart(
+  parts: DeclarationReferenceSourceParts</*With*/ true>,
+  fallbackSource: Source | undefined
+): SourceLike</*With*/ false> | undefined {
+  const { source, packageName, scopeName, unscopedPackageName, importPath } = parts as AllParts<typeof parts>;
+  if (source !== undefined) {
+    if (packageName !== undefined) {
+      throw new TypeError(`Cannot specify both 'source' and 'packageName'`);
+    } else if (scopeName !== undefined) {
+      throw new TypeError(`Cannot specify both 'source' and 'scopeName'`);
+    } else if (unscopedPackageName !== undefined) {
+      throw new TypeError(`Cannot specify both 'source' and 'unscopedPackageName'`);
+    } else if (importPath !== undefined) {
+      throw new TypeError(`Cannot specify both 'source' and 'importPath'`);
+    }
+    if (source === null) {
+      return undefined;
+    } else {
+      return resolveSourceLike(source, fallbackSource);
+    }
+  } else if (
+    packageName !== undefined ||
+    scopeName !== undefined ||
+    unscopedPackageName !== undefined ||
+    importPath !== undefined
+  ) {
+    return resolveModuleSourceParts(
+      parts as ModuleSourceParts</*With*/ true>,
+      tryCast(fallbackSource, ModuleSource)?.['_getOrParsePathComponents']()
+    );
+  } else {
+    return fallbackSource;
+  }
+}
+
+function resolveDeclarationReferenceNavigationPart(
+  parts: DeclarationReferenceNavigationParts</*With*/ true>,
+  fallbackNavigation: SourceNavigation | undefined
+): SourceNavigation | undefined {
+  const { navigation } = parts;
+  if (navigation !== undefined) {
+    if (navigation === null) {
+      return undefined;
+    } else {
+      return navigation;
+    }
+  } else {
+    return fallbackNavigation;
+  }
+}
+
+function resolveDeclarationReferenceSymbolPart(
+  parts: DeclarationReferenceSymbolParts</*With*/ true>,
+  fallbackSymbol: SymbolReference | undefined
+): SymbolReferenceLike</*With*/ false> | undefined {
+  const { symbol, componentPath, meaning, overloadIndex } = parts as AllParts<typeof parts>;
+  if (symbol !== undefined) {
+    if (componentPath !== undefined) {
+      throw new TypeError(`Cannot specify both 'symbol' and 'componentPath'`);
+    } else if (meaning !== undefined) {
+      throw new TypeError(`Cannot specify both 'symbol' and 'meaning'`);
+    } else if (overloadIndex !== undefined) {
+      throw new TypeError(`Cannot specify both 'symbol' and 'overloadIndex'`);
+    }
+    if (symbol === null) {
+      return undefined;
+    } else {
+      return resolveSymbolReferenceLike(symbol, fallbackSymbol);
+    }
+  } else if (componentPath !== undefined || meaning !== undefined || overloadIndex !== undefined) {
+    return resolveSymbolReferenceParts(
+      parts as SymbolReferenceParts</*With*/ true>,
+      fallbackSymbol?.componentPath,
+      fallbackSymbol?.meaning,
+      fallbackSymbol?.overloadIndex
+    );
+  } else {
+    return fallbackSymbol;
+  }
+}
+
+type ResolvedDeclarationReferenceParts = DeclarationReferenceSourcePart</*With*/ false> &
+  DeclarationReferenceNavigationParts</*With*/ false> &
+  DeclarationReferenceSymbolPart</*With*/ false>;
+
+function resolveDeclarationReferenceParts(
+  parts: DeclarationReferenceParts</*With*/ true>,
+  fallbackSource: Source | undefined,
+  fallbackNavigation: Navigation.Exports | Navigation.Locals | undefined,
+  fallbackSymbol: SymbolReference | undefined
+): ResolvedDeclarationReferenceParts {
+  return {
+    source: resolveDeclarationReferenceSourcePart(parts, fallbackSource),
+    navigation: resolveDeclarationReferenceNavigationPart(parts, fallbackNavigation),
+    symbol: resolveDeclarationReferenceSymbolPart(parts, fallbackSymbol)
+  };
+}
+
+// #endregion DeclarationReferenceParts
+
+/**
+ * @beta
+ */
+export type DeclarationReferenceLike<With extends boolean> =
+  | DeclarationReference
+  | DeclarationReferenceParts<With>
+  | string;
+
+type ResolvedDeclarationReferenceLike = DeclarationReference | ResolvedDeclarationReferenceParts;
+
+function resolveDeclarationReferenceLike(
+  reference: DeclarationReferenceLike</*With*/ true> | undefined,
+  fallbackReference: DeclarationReference | undefined
+): ResolvedDeclarationReferenceLike {
+  if (reference instanceof DeclarationReference) {
+    return reference;
+  } else if (reference === undefined) {
+    return DeclarationReference.empty();
+  } else if (typeof reference === 'string') {
+    return DeclarationReference.parse(reference);
+  } else {
+    return resolveDeclarationReferenceParts(
+      reference,
+      fallbackReference?.source,
+      fallbackReference?.navigation,
+      fallbackReference?.symbol
+    );
+  }
+}
+
+function resolveNavigation(
+  source: Source | undefined,
+  symbol: SymbolReference | undefined,
+  navigation: SourceNavigation | undefined
+): SourceNavigation | undefined {
+  if (!source || !symbol) {
+    return undefined;
+  } else if (source === GlobalSource.instance) {
+    return Navigation.Locals;
+  } else if (navigation === undefined) {
+    return Navigation.Exports;
+  } else {
+    return navigation;
+  }
+}
+
+// #endregion DeclarationReference
+
+// #region SourceBase
+
+/**
+ * Abstract base class for the source of a {@link DeclarationReference}.
+ * @beta
+ */
+export abstract class SourceBase {
+  public abstract readonly kind: string;
+
+  /**
+   * Combines this source with the provided parts to create a new {@link DeclarationReference}.
+   */
+  public toDeclarationReference(
+    this: Source,
+    parts?: DeclarationReferenceNavigationParts</*With*/ false> &
+      DeclarationReferenceSymbolParts</*With*/ false>
+  ): DeclarationReference {
+    return DeclarationReference.from({ ...parts, source: this });
+  }
+
+  public abstract toString(): string;
+}
+
+// #endregion SourceBase
+
+// #region GlobalSource
+
+/**
+ * Represents the global scope.
+ * @beta
+ */
+export class GlobalSource extends SourceBase {
+  /**
+   * A singleton instance of {@link GlobalSource}.
+   */
+  public static readonly instance: GlobalSource = new GlobalSource();
+
+  public readonly kind: 'global-source' = 'global-source';
+
+  private constructor() {
+    super();
+  }
+
+  public toString(): string {
+    return '!';
+  }
+}
+
+// #endregion GlobalSource
+
+// #region ModuleSource
+
+/**
+ * Represents a module source.
+ * @beta
+ */
+export class ModuleSource extends SourceBase {
+  public readonly kind: 'module-source' = 'module-source';
+
+  private _escapedPath: string;
+  private _path: string | undefined;
+  private _pathComponents: IParsedPackage | undefined;
+  private _packageName: string | undefined;
+
+  public constructor(path: string, userEscaped: boolean = true) {
+    super();
+    this._escapedPath = escapeModuleSourceIfNeeded(path, this instanceof ParsedModuleSource, userEscaped);
+  }
+
+  /** A canonically escaped module source string. */
+  public get escapedPath(): string {
+    return this._escapedPath;
+  }
+
+  /**
+   * An unescaped module source string.
+   */
+  public get path(): string {
+    return this._path !== undefined
+      ? this._path
+      : (this._path = DeclarationReference.unescapeModuleSourceString(this.escapedPath));
+  }
+
+  /**
+   * The full name of the module's package, such as `typescript` or `@microsoft/api-extractor`.
+   */
+  public get packageName(): string {
+    if (this._packageName === undefined) {
+      const parsed: IParsedPackage = this._getOrParsePathComponents();
+      this._packageName = formatPackageName(parsed.scopeName, parsed.unscopedPackageName);
+    }
+    return this._packageName;
+  }
+
+  /**
+   * Returns the scope portion of a scoped package name (i.e., `@scope` in `@scope/package`).
+   */
+  public get scopeName(): string {
+    return this._getOrParsePathComponents().scopeName ?? '';
+  }
+
+  /**
+   * Returns the non-scope portion of a scoped package name (i.e., `package` in `@scope/package`)
+   */
+  public get unscopedPackageName(): string {
+    return this._getOrParsePathComponents().unscopedPackageName;
+  }
+
+  /**
+   * Returns the package-relative import path of a module source (i.e., `path/to/file` in `packageName/path/to/file`).
+   */
+  public get importPath(): string {
+    return this._getOrParsePathComponents().importPath ?? '';
+  }
+
+  /**
+   * Creates a new {@link ModuleSource} from the supplied parts.
+   */
+  public static from(parts: ModuleSourceLike</*With*/ false> | string): ModuleSource {
+    const resolved: ResolvedModuleSourceLike = resolveModuleSourceLike(parts, /*fallbackSource*/ undefined);
+    if (resolved instanceof ModuleSource) {
+      return resolved;
+    } else {
+      const source: ModuleSource = new ModuleSource(
+        formatModuleSource(resolved.scopeName, resolved.unscopedPackageName, resolved.importPath)
+      );
+      source._pathComponents = resolved;
+      return source;
+    }
+  }
+
+  /**
+   * Creates a new {@link ModuleSource} for a scoped package.
+   */
+  public static fromScopedPackage(
+    scopeName: string | undefined,
+    unscopedPackageName: string,
+    importPath?: string
+  ): ModuleSource {
+    return ModuleSource.from({ scopeName, unscopedPackageName, importPath });
+  }
+
+  /**
+   * Creates a new {@link ModuleSource} for package.
+   */
+  public static fromPackage(packageName: string, importPath?: string): ModuleSource {
+    return ModuleSource.from({ packageName, importPath });
+  }
+
+  /**
+   * Gets a {@link ModuleSource} updated with the provided parts.
+   * If a part is set to `undefined`, the current value is used.
+   * If a part is set to `null`, the part will be removed in the result.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided parts.
+   */
+  public with(parts: ModuleSourceParts</*With*/ true>): ModuleSource {
+    const current: IParsedPackage = this._getOrParsePathComponents();
+    const parsed: IParsedPackage = resolveModuleSourceParts(parts, current);
+    if (
+      parsed.scopeName === current.scopeName &&
+      parsed.unscopedPackageName === current.unscopedPackageName &&
+      parsed.importPath === current.importPath
+    ) {
+      return this;
+    } else {
+      const source: ModuleSource = new ModuleSource(
+        formatModuleSource(parsed.scopeName, parsed.unscopedPackageName, parsed.importPath)
+      );
+      source._pathComponents = parsed;
+      return source;
+    }
+  }
+
+  /**
+   * Tests whether two {@link ModuleSource} values are equivalent.
+   */
+  public static equals(left: ModuleSource | undefined, right: ModuleSource | undefined): boolean {
+    if (left === undefined || right === undefined) {
+      return left === right;
+    } else {
+      return left.packageName === right.packageName && left.importPath === right.importPath;
+    }
+  }
+
+  /**
+   * Tests whether this object is equivalent to `other`.
+   */
+  public equals(other: ModuleSource): boolean {
+    return ModuleSource.equals(this, other);
+  }
+
+  public toString(): string {
+    return `${this.escapedPath}!`;
+  }
+
+  private _getOrParsePathComponents(): IParsedPackage {
+    if (!this._pathComponents) {
+      const path: string = this.path;
+      const parsed: IParsedPackage | null = tryParsePackageName(path);
+      if (
+        parsed &&
+        !StringChecks.explainIfInvalidPackageName(
+          formatPackageName(parsed.scopeName, parsed.unscopedPackageName)
+        )
+      ) {
+        this._pathComponents = parsed;
+      } else {
+        this._pathComponents = {
+          scopeName: undefined,
+          unscopedPackageName: '',
+          importPath: path
+        };
+      }
+    }
+    return this._pathComponents;
+  }
+}
+
+class ParsedModuleSource extends ModuleSource {
+  public constructor(text: string, userEscaped?: boolean) {
+    super(text, userEscaped);
+    try {
+      setPrototypeOf?.(this, ModuleSource.prototype);
+    } catch {
+      // ignored
+    }
+  }
+}
+
+// matches the following:
+//   'foo'            -> ["foo", undefined, "foo", undefined]
+//   'foo/bar'        -> ["foo/bar", undefined, "foo", "bar"]
+//   '@scope/foo'     -> ["@scope/foo", "scope", "foo", undefined]
+//   '@scope/foo/bar' -> ["@scope/foo/bar", "scope", "foo", "bar"]
+// does not match:
+//   '/'
+//   '@/'
+//   '@scope/'
+// capture groups:
+//   1. The scope name (including the leading '@')
+//   2. The unscoped package name
+//   3. The package-relative import path
+const packageNameRegExp: RegExp = /^(?:(@[^/]+?)\/)?([^/]+?)(?:\/(.+))?$/;
+
+// no leading './' or '.\'
+// no leading '../' or '..\'
+// no leading '/' or '\'
+// not '.' or '..'
+const invalidImportPathRegExp: RegExp = /^(\.\.?([\\/]|$)|[\\/])/;
+
+interface IParsedPackage {
+  scopeName: string | undefined;
+  unscopedPackageName: string;
+  importPath: string | undefined;
+}
+
+function parsePackageName(text: string): IParsedPackage {
+  // eslint-disable-next-line @rushstack/no-new-null
+  const parsed: IParsedPackage | null = tryParsePackageName(text);
+  if (!parsed) {
+    throw new SyntaxError(`Invalid NPM package name: The package name ${JSON.stringify(text)} was invalid`);
+  }
+
+  const packageNameError: string | undefined = StringChecks.explainIfInvalidPackageName(
+    formatPackageName(parsed.scopeName, parsed.unscopedPackageName)
+  );
+  if (packageNameError !== undefined) {
+    throw new SyntaxError(packageNameError);
+  }
+
+  if (parsed.importPath && invalidImportPathRegExp.test(parsed.importPath)) {
+    throw new SyntaxError(`Invalid import path ${JSON.stringify(parsed.importPath)}`);
+  }
+
+  return parsed;
+}
+
+// eslint-disable-next-line @rushstack/no-new-null
+function tryParsePackageName(text: string): IParsedPackage | null {
+  const match: RegExpExecArray | null = packageNameRegExp.exec(text);
+  if (!match) {
+    return match;
+  }
+  const [, scopeName, unscopedPackageName = '', importPath]: RegExpExecArray = match;
+  return { scopeName, unscopedPackageName, importPath };
+}
+
+function formatPackageName(scopeName: string | undefined, unscopedPackageName: string | undefined): string {
+  let packageName: string = '';
+  if (unscopedPackageName) {
+    packageName = unscopedPackageName;
+    if (scopeName) {
+      packageName = `${scopeName}/${packageName}`;
+    }
+  }
+  return packageName;
+}
+
+function parseModuleSource(text: string): IParsedPackage {
+  if (text.slice(-1) === '!') {
+    text = text.slice(0, -1);
+  }
+  return parsePackageName(text);
+}
+
+function formatModuleSource(
+  scopeName: string | undefined,
+  unscopedPackageName: string | undefined,
+  importPath: string | undefined
+): string {
+  let path: string = formatPackageName(scopeName, unscopedPackageName);
+  if (importPath) {
+    path += '/' + importPath;
+  }
+  return path;
+}
+
+/**
+ * Specifies the parts that can be used to construct or update a {@link ModuleSource}.
+ * @beta
+ */
+export type ModuleSourceParts<With extends boolean> = Parts<
+  With,
+  | {
+      /** The full name of the package. */
+      packageName: string;
+
+      /** A package relative import path. */
+      importPath?: Part<With, string>;
+    }
+  | {
+      /** The scope name for a scoped package. */
+      scopeName?: Part<With, string>;
+
+      /** The unscoped package name for a scoped package, or a package name that must not contain a scope. */
+      unscopedPackageName: string;
+
+      /** A package relative import path. */
+      importPath?: Part<With, string>;
+    }
+  | {
+      /** A package relative import path. */
+      importPath: string;
+    }
+>;
+
+function resolveModuleSourceParts(
+  parts: ModuleSourceParts</*With*/ true>,
+  fallback: IParsedPackage | undefined
+): IParsedPackage {
+  const { scopeName, unscopedPackageName, packageName, importPath } = parts as AllParts<typeof parts>;
+  if (scopeName !== undefined) {
+    // If we reach this branch, we're defining a scoped package
+
+    // verify parts aren't incompatible
+    if (packageName !== undefined) {
+      throw new TypeError("Cannot specify 'packageName' with 'scopeName', use 'unscopedPackageName' instead");
+    }
+
+    // validate `scopeName`
+    const newScopeName: string | undefined = scopeName ? ensureScopeName(scopeName) : undefined;
+    if (newScopeName !== undefined) {
+      const scopeNameError: string | undefined = StringChecks.explainIfInvalidPackageScope(newScopeName);
+      if (scopeNameError !== undefined) {
+        throw new SyntaxError(`Invalid NPM package name: ${scopeNameError}`);
+      }
+    }
+
+    const newUnscopedPackageName: string | undefined = unscopedPackageName ?? fallback?.unscopedPackageName;
+    if (newUnscopedPackageName === undefined) {
+      throw new TypeError(
+        "If either 'scopeName' or 'unscopedPackageName' are specified, both must be present"
+      );
+    }
+
+    const unscopedPackageNameError: string | undefined = StringChecks.explainIfInvalidUnscopedPackageName(
+      newUnscopedPackageName
+    );
+    if (unscopedPackageNameError !== undefined) {
+      throw new SyntaxError(`Invalid NPM package name: ${unscopedPackageNameError}`);
+    }
+
+    if (typeof importPath === 'string' && invalidImportPathRegExp.test(importPath)) {
+      throw new SyntaxError(`Invalid import path ${JSON.stringify(importPath)}`);
+    }
+
+    const newImportPath: string | undefined =
+      typeof importPath === 'string'
+        ? importPath
+        : importPath === undefined
+        ? fallback?.importPath
+        : undefined;
+
+    return {
+      scopeName: newScopeName,
+      unscopedPackageName: newUnscopedPackageName,
+      importPath: newImportPath
+    };
+  } else if (unscopedPackageName !== undefined) {
+    // If we reach this branch, we're either:
+    // - creating an unscoped package
+    // - updating the non-scoped part of a scoped package
+    // - updating the package name of a non-scoped package
+
+    // verify parts aren't incompatible
+    if (packageName !== undefined) {
+      throw new TypeError("Cannot specify both 'packageName' and 'unscopedPackageName'");
+    }
+
+    const unscopedPackageNameError: string | undefined = StringChecks.explainIfInvalidUnscopedPackageName(
+      unscopedPackageName
+    );
+    if (unscopedPackageNameError !== undefined) {
+      throw new SyntaxError(`Invalid NPM package name: ${unscopedPackageNameError}`);
+    }
+
+    if (typeof importPath === 'string' && invalidImportPathRegExp.test(importPath)) {
+      throw new SyntaxError(`Invalid import path ${JSON.stringify(importPath)}`);
+    }
+
+    const newScopeName: string | undefined = fallback?.scopeName;
+
+    const newImportPath: string | undefined =
+      typeof importPath === 'string'
+        ? importPath
+        : importPath === undefined
+        ? fallback?.importPath
+        : undefined;
+
+    return {
+      scopeName: newScopeName,
+      unscopedPackageName,
+      importPath: newImportPath
+    };
+  } else if (packageName !== undefined) {
+    // If we reach this branch, we're creating a possibly scoped or unscoped package
+
+    // parse and verify package
+    const parsed: IParsedPackage = parsePackageName(packageName);
+    if (importPath !== undefined) {
+      // verify parts aren't incompatible.
+      if (parsed.importPath !== undefined) {
+        throw new TypeError("Cannot specify 'importPath' if 'packageName' contains a path");
+      }
+      // validate `importPath`
+      if (typeof importPath === 'string' && invalidImportPathRegExp.test(importPath)) {
+        throw new SyntaxError(`Invalid import path ${JSON.stringify(importPath)}`);
+      }
+      parsed.importPath = importPath ?? undefined;
+    } else if (parsed.importPath === undefined) {
+      parsed.importPath = fallback?.importPath;
+    }
+    return parsed;
+  } else if (importPath !== undefined) {
+    // If we reach this branch, we're creating a path without a package scope
+
+    if (fallback?.unscopedPackageName) {
+      if (typeof importPath === 'string' && invalidImportPathRegExp.test(importPath)) {
+        throw new SyntaxError(`Invalid import path ${JSON.stringify(importPath)}`);
+      }
+    }
+
+    return {
+      scopeName: fallback?.scopeName,
+      unscopedPackageName: fallback?.unscopedPackageName ?? '',
+      importPath: importPath ?? undefined
+    };
+  } else if (fallback !== undefined) {
+    return fallback;
+  } else {
+    throw new TypeError(
+      "You must specify either 'packageName', 'importPath', or both 'scopeName' and 'unscopedPackageName'"
+    );
+  }
+}
+
+/**
+ * @beta
+ */
+export type ModuleSourceLike<With extends boolean> = ModuleSourceParts<With> | ModuleSource | string;
+
+type ResolvedModuleSourceLike = ModuleSource | IParsedPackage;
+
+function resolveModuleSourceLike(
+  source: ModuleSourceLike</*With*/ true>,
+  fallbackSource: ModuleSource | undefined
+): ResolvedModuleSourceLike {
+  if (source instanceof ModuleSource) {
+    return source;
+  } else if (typeof source === 'string') {
+    return parseModuleSource(source);
+  } else {
+    return resolveModuleSourceParts(source, fallbackSource);
+  }
+}
+
+// #endregion ModuleSource
+
+// #region Source
+
+/**
+ * A valid source in a {@link DeclarationReference}.
+ * @beta
+ */
+export type Source = GlobalSource | ModuleSource;
+
+/**
+ * @beta
+ */
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Source {
+  /**
+   * Creates a {@link Source} from the provided parts.
+   */
+  export function from(parts: SourceLike</*With*/ false>): Source {
+    const resolved: ResolvedSourceLike = resolveSourceLike(parts, /*fallbackSource*/ undefined);
+    if (resolved instanceof GlobalSource || resolved instanceof ModuleSource) {
+      return resolved;
+    } else {
+      const source: ModuleSource = new ModuleSource(
+        formatModuleSource(resolved.scopeName, resolved.unscopedPackageName, resolved.importPath)
+      );
+      source['_pathComponents'] = resolved;
+      return source;
+    }
+  }
+
+  /**
+   * Tests whether two {@link Source} objects are equivalent.
+   */
+  export function equals(left: Source | undefined, right: Source | undefined): boolean {
+    if (left === undefined || right === undefined) {
+      return left === right;
+    } else if (left instanceof GlobalSource) {
+      return right instanceof GlobalSource;
+    } else if (right instanceof GlobalSource) {
+      return left instanceof GlobalSource;
+    } else {
+      return ModuleSource.equals(left, right);
+    }
+  }
+}
+
+/**
+ * @beta
+ */
+export type SourceParts<With extends boolean> = ModuleSourceParts<With>;
+
+type ResolvedSourceParts = IParsedPackage;
+
+function resolveSourceParts(
+  parts: SourceParts</*With*/ true>,
+  fallbackSource: Source | undefined
+): ResolvedSourceParts {
+  return resolveModuleSourceParts(parts, tryCast(fallbackSource, ModuleSource));
+}
+
+/**
+ * @beta
+ */
+export type SourceLike<With extends boolean> = GlobalSource | ModuleSourceLike<With>;
+
+type ResolvedSourceLike = Source | ResolvedSourceParts;
+
+function resolveSourceLike(
+  source: SourceLike</*With*/ true>,
+  fallbackSource: Source | undefined
+): ResolvedSourceLike {
+  if (source instanceof ModuleSource || source instanceof GlobalSource) {
+    return source;
+  } else if (source === '!') {
+    return GlobalSource.instance;
+  } else if (typeof source === 'string') {
+    return parseModuleSource(source);
+  } else {
+    return resolveSourceParts(source, fallbackSource);
+  }
+}
+
+// #endregion Source
+
+// #region SymbolReference
+
+/**
+ * Represents a reference to a TypeScript symbol.
+ * @beta
+ */
+export class SymbolReference {
+  public readonly componentPath: ComponentPath | undefined;
+  public readonly meaning: Meaning | undefined;
+  public readonly overloadIndex: number | undefined;
+
+  public constructor(
+    component: ComponentPath | undefined,
+    { meaning, overloadIndex }: Pick<SymbolReferenceParts</*With*/ false>, 'meaning' | 'overloadIndex'> = {}
+  ) {
+    this.componentPath = component;
+    this.overloadIndex = overloadIndex;
+    this.meaning = meaning;
+  }
+
+  public get isEmpty(): boolean {
+    return this.componentPath === undefined && this.overloadIndex === undefined && this.meaning === undefined;
+  }
+
+  /**
+   * Creates an empty {@link SymbolReference}.
+   */
+  public static empty(): SymbolReference {
+    return new SymbolReference(/*component*/ undefined);
+  }
+
+  /**
+   * Parses a {@link SymbolReference} from the supplied text.
+   */
+  public static parse(text: string): SymbolReference {
+    const parser: Parser = new Parser(text);
+    const symbol: SymbolReference | undefined = parser.tryParseSymbolReference();
+    if (parser.errors.length) {
+      throw new SyntaxError(`Invalid SymbolReference '${text}':\n  ${parser.errors.join('\n  ')}`);
+    } else if (!parser.eof || symbol === undefined) {
+      throw new SyntaxError(`Invalid SymbolReference '${text}'`);
+    } else {
+      return symbol;
+    }
+  }
+
+  /**
+   * Creates a new {@link SymbolReference} from the provided parts.
+   */
+  public static from(parts: SymbolReferenceLike</*With*/ false> | undefined): SymbolReference {
+    const resolved: ResolvedSymbolReferenceLike = resolveSymbolReferenceLike(
+      parts,
+      /*fallbackSymbol*/ undefined
+    );
+    if (typeof resolved === 'string') {
+      return SymbolReference.parse(resolved);
+    } else if (resolved instanceof SymbolReference) {
+      return resolved;
+    } else {
+      const { componentPath, meaning, overloadIndex } = resolved;
+      return new SymbolReference(
+        componentPath === undefined ? undefined : ComponentPath.from(componentPath),
+        { meaning, overloadIndex }
+      );
+    }
+  }
+
+  /**
+   * Returns a {@link SymbolReference} updated with the provided parts.
+   * If a part is set to `undefined`, the current value is used.
+   * If a part is set to `null`, the part will be removed in the result.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided parts.
+   */
+  public with(parts: SymbolReferenceParts</*With*/ true>): SymbolReference {
+    const { componentPath, meaning, overloadIndex } = resolveSymbolReferenceParts(
+      parts,
+      this.componentPath,
+      this.meaning,
+      this.overloadIndex
+    );
+    const resolvedComponentPath: ComponentPath | undefined =
+      componentPath === undefined ? undefined : ComponentPath.from(componentPath);
+    if (
+      ComponentPath.equals(this.componentPath, resolvedComponentPath) &&
+      this.meaning === meaning &&
+      this.overloadIndex === overloadIndex
+    ) {
+      return this;
+    } else {
+      return new SymbolReference(resolvedComponentPath, { meaning, overloadIndex });
+    }
+  }
+
+  /**
+   * Gets a {@link SymbolReference} updated with the provided component path.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided component path.
+   */
+  public withComponentPath(componentPath: ComponentPath | undefined): SymbolReference {
+    return this.with({ componentPath: componentPath ?? null });
+  }
+
+  /**
+   * Gets a {@link SymbolReference} updated with the provided meaning.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided meaning.
+   */
+  public withMeaning(meaning: Meaning | undefined): SymbolReference {
+    return this.with({ meaning: meaning ?? null });
+  }
+
+  /**
+   * Gets a {@link SymbolReference} updated with the provided overload index.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided overload index.
+   */
+  public withOverloadIndex(overloadIndex: number | undefined): SymbolReference {
+    return this.with({ overloadIndex: overloadIndex ?? null });
+  }
+
+  public withSource(source: Source | undefined): DeclarationReference {
+    return this.toDeclarationReference({ source });
+  }
+
+  /**
+   * Creates a new {@link SymbolReference} that navigates from this SymbolReference to the provided component.
+   */
+  public addNavigationStep(
+    navigation: Navigation,
+    component: ComponentLike</*With*/ false>
+  ): SymbolReference {
+    if (!this.componentPath) {
+      throw new Error('Cannot add a navigation step to an empty symbol reference.');
+    }
+    return new SymbolReference(this.componentPath.addNavigationStep(navigation, component));
+  }
+
+  /**
+   * Tests whether two {@link SymbolReference} values are equivalent.
+   */
+  public static equals(left: SymbolReference | undefined, right: SymbolReference | undefined): boolean {
+    if (left === undefined) {
+      return right === undefined || right.isEmpty;
+    } else if (right === undefined) {
+      return left === undefined || left.isEmpty;
+    } else {
+      return (
+        ComponentPath.equals(left.componentPath, right.componentPath) &&
+        left.meaning === right.meaning &&
+        left.overloadIndex === right.overloadIndex
+      );
+    }
+  }
+
+  /**
+   * Tests whether this object is equivalent to `other`.
+   */
+  public equals(other: SymbolReference): boolean {
+    return SymbolReference.equals(this, other);
+  }
+
+  public toDeclarationReference(
+    parts?: DeclarationReferenceSourceParts</*With*/ false> &
+      DeclarationReferenceNavigationParts</*With*/ false>
+  ): DeclarationReference {
+    return DeclarationReference.from({ ...parts, symbol: this });
+  }
+
+  public toString(): string {
+    let result: string = `${this.componentPath || ''}`;
+    if (this.meaning && this.overloadIndex !== undefined) {
+      result += `:${this.meaning}(${this.overloadIndex})`;
+    } else if (this.meaning) {
+      result += `:${this.meaning}`;
+    } else if (this.overloadIndex !== undefined) {
+      result += `:${this.overloadIndex}`;
+    }
+    return result;
+  }
+}
+
+/**
+ * @beta
+ */
+export type SymbolReferenceParts<With extends boolean> = Parts<
+  With,
+  {
+    /** The component path for the symbol */
+    componentPath?: Part<With, ComponentPathLike<With>>;
+
+    /** The meaning of the symbol */
+    meaning?: Part<With, Meaning>;
+
+    /** The overload index of the symbol */
+    overloadIndex?: Part<With, number>;
+  }
+>;
+
+function resolveSymbolReferenceParts(
+  parts: SymbolReferenceParts</*With*/ true>,
+  fallbackComponentPath: ComponentPath | undefined,
+  fallbackMeaning: Meaning | undefined,
+  fallbackOverloadIndex: number | undefined
+): SymbolReferenceParts</*With*/ false> {
+  const { componentPath, meaning = fallbackMeaning, overloadIndex = fallbackOverloadIndex } = parts;
+  return {
+    componentPath:
+      componentPath === null
+        ? undefined
+        : componentPath === undefined
+        ? fallbackComponentPath
+        : resolveComponentPathLike(componentPath, fallbackComponentPath),
+    meaning: meaning ?? undefined,
+    overloadIndex: overloadIndex ?? undefined
+  };
+}
+
+/**
+ * @beta
+ */
+export type SymbolReferenceLike<With extends boolean> = string | SymbolReference | SymbolReferenceParts<With>;
+
+type ResolvedSymbolReferenceLike = string | SymbolReference | SymbolReferenceParts</*With*/ false>;
+
+function resolveSymbolReferenceLike(
+  symbol: SymbolReferenceLike</*With*/ true> | undefined,
+  fallbackSymbol: SymbolReference | undefined
+): ResolvedSymbolReferenceLike {
+  if (symbol instanceof SymbolReference || typeof symbol === 'string') {
+    return symbol;
+  } else if (symbol === undefined) {
+    return SymbolReference.empty();
+  } else {
+    return resolveSymbolReferenceParts(
+      symbol,
+      fallbackSymbol?.componentPath,
+      fallbackSymbol?.meaning,
+      fallbackSymbol?.overloadIndex
+    );
+  }
+}
+
+// #endregion SymbolReference
+
+// #region ComponentPathBase
+
+/**
+ * Abstract base class for a part of {@link ComponentPath}.
+ * @beta
+ */
+export abstract class ComponentPathBase {
+  public abstract readonly kind: string;
+  public readonly component: Component;
+
+  private declare _: never; // NOTE: This makes a ComponentPath compare nominally rather than structurally
+  //       which removes its properties from completions in `ComponentPath.from({ ... })`
+
+  public constructor(component: Component) {
+    this.component = component;
+  }
+
+  /**
+   * Gets the {@link ComponentRoot} at the root of the component path.
+   */
+  public abstract get root(): ComponentRoot;
+
+  /**
+   * Creates a new {@link ComponentNavigation} step that navigates from this {@link ComponentPath} to the provided component.
+   */
+  public addNavigationStep(
+    this: ComponentPath,
+    navigation: Navigation,
+    component: ComponentLike</*With*/ false>
+  ): ComponentNavigation {
+    // tslint:disable-next-line:no-use-before-declare
+    return new ComponentNavigation(this, navigation, Component.from(component));
+  }
+
+  /**
+   * Combines this {@link ComponentPath} with a {@link Meaning} to create a new {@link SymbolReference}.
+   */
+  public withMeaning(this: ComponentPath, meaning: Meaning | undefined): SymbolReference {
+    return this.toSymbolReference({ meaning });
+  }
+
+  /**
+   * Combines this {@link ComponentPath} with an overload index to create a new {@link SymbolReference}.
+   */
+  public withOverloadIndex(this: ComponentPath, overloadIndex: number | undefined): SymbolReference {
+    return this.toSymbolReference({ overloadIndex });
+  }
+
+  /**
+   * Combines this {@link ComponentPath} with a {@link Source} to create a new {@link DeclarationReference}.
+   */
+  public withSource(this: ComponentPath, source: Source | undefined): DeclarationReference {
+    return this.toDeclarationReference({ source });
+  }
+
+  /**
+   * Combines this {@link ComponentPath} with the provided parts to create a new {@link SymbolReference}.
+   */
+  public toSymbolReference(
+    this: ComponentPath,
+    parts?: Omit<SymbolReferenceParts</*With*/ false>, 'componentPath' | 'component'>
+  ): SymbolReference {
+    return SymbolReference.from({ ...parts, componentPath: this });
+  }
+
+  /**
+   * Combines this {@link ComponentPath} with the provided parts to create a new {@link DeclarationReference}.
+   */
+  public toDeclarationReference(
+    this: ComponentPath,
+    parts?: DeclarationReferenceSourceParts</*With*/ false> &
+      DeclarationReferenceNavigationParts</*With*/ false> &
+      Omit<SymbolReferenceParts</*With*/ false>, 'componentPath' | 'component'>
+  ): DeclarationReference {
+    return DeclarationReference.from({ ...parts, componentPath: this });
+  }
+
+  /**
+   * Starting with this path segment, yields each parent path segment.
+   */
+  public *ancestors(this: ComponentPath, includeSelf?: boolean): IterableIterator<ComponentPath> {
+    let ancestor: ComponentPath | undefined = this;
+    while (ancestor) {
+      if (!includeSelf) {
+        includeSelf = true;
+      } else {
+        yield ancestor;
+      }
+      ancestor = ancestor instanceof ComponentNavigation ? ancestor.parent : undefined;
+    }
+  }
+
+  public abstract toString(): string;
+}
+
+// #endregion ComponentPathBase
+
+// #region ComponentRoot
+
+/**
+ * Represents the root of a {@link ComponentPath}.
+ * @beta
+ */
+export class ComponentRoot extends ComponentPathBase {
+  public readonly kind: 'component-root' = 'component-root';
+
+  /**
+   * Gets the {@link ComponentRoot} at the root of the component path.
+   */
+  public get root(): ComponentRoot {
+    return this;
+  }
+
+  /**
+   * Creates a new {@link ComponentRoot} from the provided parts.
+   */
+  public static from(parts: ComponentRootLike</*With*/ false>): ComponentRoot {
+    const resolved: ResolvedComponentRootLike = resolveComponentRootLike(
+      parts,
+      /*fallbackComponent*/ undefined
+    );
+    if (resolved instanceof ComponentRoot) {
+      return resolved;
+    } else {
+      const { component } = resolved;
+      return new ComponentRoot(Component.from(component));
+    }
+  }
+
+  /**
+   * Returns a {@link ComponentRoot} updated with the provided parts.
+   * If a part is set to `undefined`, the current value is used.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided parts.
+   */
+  public with(parts: ComponentRootParts</*With*/ true>): ComponentRoot {
+    const { component } = resolveComponentRootParts(parts, this.component);
+    const resolvedComponent: Component = Component.from(component);
+    if (Component.equals(this.component, resolvedComponent)) {
+      return this;
+    } else {
+      return new ComponentRoot(resolvedComponent);
+    }
+  }
+
+  /**
+   * Tests whether two {@link ComponentRoot} values are equivalent.
+   */
+  public static equals(left: ComponentRoot | undefined, right: ComponentRoot | undefined): boolean {
+    if (left === undefined || right === undefined) {
+      return left === right;
+    } else {
+      return Component.equals(left.component, right.component);
+    }
+  }
+
+  /**
+   * Tests whether this object is equivalent to `other`.
+   */
+  public equals(other: ComponentRoot): boolean {
+    return ComponentRoot.equals(this, other);
+  }
+
+  /**
+   * Returns a {@link ComponentRoot} updated with the provided component.
+   * If a part is set to `undefined`, the current value is used.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided component.
+   */
+  public withComponent(component: ComponentLike</*With*/ false>): ComponentRoot {
+    return this.with({ component });
+  }
+
+  public toString(): string {
+    return this.component.toString();
+  }
+}
+
+/**
+ * @beta
+ */
+export type ComponentRootParts<With extends boolean> = Parts<
+  With,
+  {
+    /** The component for the {@link ComponentRoot} */
+    component: ComponentLike<With>;
+  }
+>;
+
+function resolveComponentRootParts(
+  parts: ComponentRootParts</*With*/ true>,
+  fallbackComponent: Component | undefined
+): ComponentRootParts</*With*/ false> {
+  const { component = fallbackComponent } = parts;
+  if (component === undefined) {
+    throw new TypeError("The property 'component' is required.");
+  }
+  return {
+    component: resolveComponentLike(component, fallbackComponent)
+  };
+}
+
+/**
+ * @beta
+ */
+export type ComponentRootLike<With extends boolean> =
+  | ComponentRoot
+  | ComponentRootParts<With>
+  | ComponentLike<With>;
+
+type ResolvedComponentRootLike = ComponentRoot | ComponentRootParts</*With*/ false>;
+
+function resolveComponentRootLike(
+  componentRoot: ComponentRootLike</*With*/ true>,
+  fallbackComponent: Component | undefined
+): ResolvedComponentRootLike {
+  if (componentRoot instanceof ComponentRoot) {
+    return componentRoot;
+  } else if (
+    componentRoot instanceof ComponentString ||
+    componentRoot instanceof ComponentReference ||
+    componentRoot instanceof DeclarationReference ||
+    typeof componentRoot === 'string'
+  ) {
+    return resolveComponentRootParts({ component: componentRoot }, fallbackComponent);
+  }
+  const { component, text, reference } = componentRoot as AllParts<typeof componentRoot>;
+  if (component !== undefined) {
+    if (text !== undefined) {
+      throw new TypeError(`Cannot specify both 'component' and 'text'`);
+    } else if (reference !== undefined) {
+      throw new TypeError(`Cannot specify both 'component' and 'reference'`);
+    }
+    return resolveComponentRootParts({ component }, fallbackComponent);
+  } else if (text !== undefined || reference !== undefined) {
+    return resolveComponentRootParts({ component: { text, reference } }, fallbackComponent);
+  } else {
+    return resolveComponentRootParts({}, fallbackComponent);
+  }
+}
+
+// #endregion ComponentRoot
+
+// #region ComponentNavigation
+
+/**
+ * Represents a navigation step in a {@link ComponentPath}.
+ * @beta
+ */
+export class ComponentNavigation extends ComponentPathBase {
+  public readonly kind: 'component-navigation' = 'component-navigation';
+  public readonly parent: ComponentPath;
+  public readonly navigation: Navigation;
+
+  public constructor(parent: ComponentPath, navigation: Navigation, component: Component) {
+    super(component);
+    this.parent = parent;
+    this.navigation = navigation;
+  }
+
+  /**
+   * Gets the {@link ComponentRoot} at the root of the component path.
+   */
+  public get root(): ComponentRoot {
+    let parent: ComponentPath = this.parent;
+    while (!(parent instanceof ComponentRoot)) {
+      parent = parent.parent;
+    }
+    return parent;
+  }
+
+  /**
+   * Creates a new {@link ComponentNavigation} from the provided parts.
+   */
+  public static from(parts: ComponentNavigationLike</*With*/ false>): ComponentNavigation {
+    const resolved: ResolvedComponentNavigationLike = resolveComponentNavigationLike(
+      parts,
+      /*fallbackParent*/ undefined,
+      /*fallbackNavigation*/ undefined,
+      /*fallbackComponent*/ undefined
+    );
+    if (resolved instanceof ComponentNavigation) {
+      return resolved;
+    } else {
+      const { parent, navigation, component } = resolved;
+      return new ComponentNavigation(ComponentPath.from(parent), navigation, Component.from(component));
+    }
+  }
+
+  /**
+   * Returns a {@link ComponentNavigation} updated with the provided parts.
+   * If a part is set to `undefined`, the current value is used.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided parts.
+   */
+  public with(parts: ComponentNavigationParts</*With*/ true>): ComponentNavigation {
+    const { parent, navigation, component } = resolveComponentNavigationParts(
+      parts,
+      this.parent,
+      this.navigation,
+      this.component
+    );
+    const resolvedParent: ComponentPath = ComponentPath.from(parent);
+    const resolvedComponent: Component = Component.from(component);
+    if (
+      ComponentPath.equals(this.parent, resolvedParent) &&
+      this.navigation === navigation &&
+      Component.equals(this.component, resolvedComponent)
+    ) {
+      return this;
+    } else {
+      return new ComponentNavigation(resolvedParent, navigation, resolvedComponent);
+    }
+  }
+
+  /**
+   * Returns a {@link ComponentNavigation} updated with the provided parent.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided parent.
+   */
+  public withParent(parent: ComponentPath): ComponentNavigation {
+    return this.with({ parent });
+  }
+
+  /**
+   * Returns a {@link ComponentNavigation} updated with the provided navigation.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided navigation.
+   */
+  public withNavigation(navigation: Navigation): ComponentNavigation {
+    return this.with({ navigation });
+  }
+
+  /**
+   * Returns a {@link ComponentNavigation} updated with the provided component.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided component.
+   */
+  public withComponent(component: ComponentLike</*With*/ false>): ComponentNavigation {
+    return this.with({ component });
+  }
+
+  /**
+   * Tests whether two {@link ComponentNavigation} values are equivalent.
+   */
+  public static equals(
+    left: ComponentNavigation | undefined,
+    right: ComponentNavigation | undefined
+  ): boolean {
+    if (left === undefined || right === undefined) {
+      return left === right;
+    } else {
+      return (
+        ComponentPath.equals(left.parent, right.parent) &&
+        left.navigation === right.navigation &&
+        Component.equals(left.component, right.component)
+      );
+    }
+  }
+
+  /**
+   * Tests whether this object is equivalent to `other`.
+   */
+  public equals(other: ComponentNavigation): boolean {
+    return ComponentNavigation.equals(this, other);
+  }
+
+  public toString(): string {
+    return `${this.parent}${formatNavigation(this.navigation)}${this.component}`;
+  }
+}
+
+/**
+ * @beta
+ */
+export type ComponentNavigationParts<With extends boolean> = Parts<
+  With,
+  {
+    /** The parent {@link ComponentPath} segment for this navigation step. */
+    parent: ComponentPathLike<With>;
+
+    /** The kind of navigation for this navigation step. */
+    navigation: Navigation;
+
+    /** The component for this navigation step. */
+    component: ComponentLike<With>;
+  }
+>;
+
+function resolveComponentNavigationParts(
+  parts: ComponentNavigationParts</*With*/ true>,
+  fallbackParent: ComponentPath | undefined,
+  fallbackNavigation: Navigation | undefined,
+  fallbackComponent: Component | undefined
+): ComponentNavigationParts</*With*/ false> {
+  const {
+    parent = fallbackParent,
+    navigation = fallbackNavigation,
+    component = fallbackComponent
+  } = parts as AllParts<typeof parts>;
+  if (parent === undefined) {
+    throw new TypeError("The 'parent' property is required");
+  }
+  if (navigation === undefined) {
+    throw new TypeError("The 'navigation' property is required");
+  }
+  if (component === undefined) {
+    throw new TypeError("The 'component' property is required");
+  }
+  return {
+    parent: resolveComponentPathLike(parent, fallbackParent),
+    navigation,
+    component: resolveComponentLike(component, fallbackComponent)
+  };
+}
+
+/**
+ * @beta
+ */
+export type ComponentNavigationLike<With extends boolean> =
+  | ComponentNavigation
+  | ComponentNavigationParts<With>;
+
+type ResolvedComponentNavigationLike = ComponentNavigation | ComponentNavigationParts</*With*/ false>;
+
+function resolveComponentNavigationLike(
+  value: ComponentNavigationLike</*With*/ true>,
+  fallbackParent: ComponentPath | undefined,
+  fallbackNavigation: Navigation | undefined,
+  fallbackComponent: Component | undefined
+): ResolvedComponentNavigationLike {
+  if (value instanceof ComponentNavigation) {
+    return value;
+  } else {
+    return resolveComponentNavigationParts(value, fallbackParent, fallbackNavigation, fallbackComponent);
+  }
+}
+
+// #endregion ComponentNavigation
+
+// #region ComponentPath
+
+/**
+ * The path used to traverse a root symbol to a specific declaration.
+ * @beta
+ */
+export type ComponentPath = ComponentRoot | ComponentNavigation;
+
+/**
+ * @beta
+ */
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace ComponentPath {
+  /**
+   * Parses a {@link SymbolReference} from the supplied text.
+   */
+  export function parse(text: string): ComponentPath {
+    const parser: Parser = new Parser(text);
+    const componentPath: ComponentPath = parser.parseComponentPath();
+    if (parser.errors.length) {
+      throw new SyntaxError(`Invalid ComponentPath '${text}':\n  ${parser.errors.join('\n  ')}`);
+    } else if (!parser.eof || componentPath === undefined) {
+      throw new SyntaxError(`Invalid ComponentPath '${text}'`);
+    } else {
+      return componentPath;
+    }
+  }
+
+  /**
+   * Creates a new {@link ComponentPath} from the provided parts.
+   */
+  export function from(parts: ComponentPathLike</*With*/ false>): ComponentPath {
+    const resolved: ResolvedComponentPathLike = resolveComponentPathLike(
+      parts,
+      /*fallbackComponentPath*/ undefined
+    );
+    if (resolved instanceof ComponentRoot || resolved instanceof ComponentNavigation) {
+      return resolved;
+    } else if (typeof resolved === 'string') {
+      return parse(resolved);
+    } else if ('navigation' in resolved) {
+      return ComponentNavigation.from(resolved);
+    } else {
+      return ComponentRoot.from(resolved);
+    }
+  }
+
+  /**
+   * Tests whether two {@link ComponentPath} values are equivalent.
+   */
+  export function equals(left: ComponentPath | undefined, right: ComponentPath | undefined): boolean {
+    if (left === undefined || right === undefined) {
+      return left === right;
+    } else if (left instanceof ComponentRoot) {
+      return right instanceof ComponentRoot && ComponentRoot.equals(left, right);
+    } else {
+      return right instanceof ComponentNavigation && ComponentNavigation.equals(left, right);
+    }
+  }
+}
+
+/**
+ * @beta
+ */
+export type ComponentPathParts<With extends boolean> =
+  | ComponentRootParts<With>
+  | ComponentNavigationParts<With>;
+
+function resolveComponentPathParts(
+  parts: ComponentPathParts</*With*/ true>,
+  fallbackComponentPath: ComponentPath | undefined
+): ComponentPathParts</*With*/ false> {
+  const { component, navigation, parent } = parts as AllParts<typeof parts>;
+  if (navigation !== undefined || parent !== undefined) {
+    const fallbackComponent: ComponentNavigation | undefined = tryCast(
+      fallbackComponentPath,
+      ComponentNavigation
+    );
+    return resolveComponentNavigationParts(
+      { component, navigation, parent },
+      fallbackComponent?.parent,
+      fallbackComponent?.navigation,
+      fallbackComponent?.component
+    );
+  } else {
+    const fallbackComponent: ComponentRoot | undefined = tryCast(fallbackComponentPath, ComponentRoot);
+    return resolveComponentRootParts({ component }, fallbackComponent?.component);
+  }
+}
+
+/**
+ * @beta
+ */
+export type ComponentPathLike<With extends boolean> =
+  | Exclude<ComponentRootLike<With>, string>
+  | ComponentNavigationLike<With>
+  | string;
+
+type ResolvedComponentPathLike =
+  | ComponentPath
+  | ComponentRootParts</*With*/ false>
+  | ComponentNavigationParts</*With*/ false>
+  | string;
+
+function resolveComponentPathLike(
+  value: ComponentPathLike</*With*/ true>,
+  fallbackComponentPath: ComponentPath | undefined
+): ResolvedComponentPathLike {
+  if (value instanceof ComponentRoot || value instanceof ComponentNavigation) {
+    return value;
+  } else if (value instanceof ComponentString || value instanceof ComponentReference) {
+    return resolveComponentPathParts({ component: value }, fallbackComponentPath);
+  } else if (value instanceof DeclarationReference) {
+    return resolveComponentPathParts({ component: { reference: value } }, fallbackComponentPath);
+  } else if (typeof value === 'string') {
+    return value;
+  }
+  const { component, navigation, parent, text, reference } = value as AllParts<typeof value>;
+  if (component !== undefined || navigation !== undefined || parent !== undefined) {
+    if (text !== undefined || reference !== undefined) {
+      const first: string =
+        component !== undefined ? 'component' : navigation !== undefined ? 'navigation' : 'parent';
+      if (text !== undefined) {
+        throw new TypeError(`Cannot specify both '${first}' and 'text'`);
+      } else {
+        throw new TypeError(`Cannot specify both '${first}' and 'reference'`);
+      }
+    }
+    return resolveComponentPathParts({ component, navigation, parent }, fallbackComponentPath);
+  } else if (text !== undefined || reference !== undefined) {
+    return resolveComponentPathParts({ component: { text, reference } }, fallbackComponentPath);
+  } else {
+    return resolveComponentPathParts({}, fallbackComponentPath);
+  }
+}
+
+// #endregion ComponentPath
+
+// #region ComponentBase
+
+/**
+ * Abstract base class for a {@link Component}.
+ * @beta
+ */
+export abstract class ComponentBase {
+  public abstract readonly kind: string;
+
+  private declare _: never; // NOTE: This makes a Component compare nominally rather than structurally
+  //       which removes its properties from completions in `Component.from({ ... })`
+
+  /**
+   * Combines this component with the provided parts to create a new {@link Component}.
+   * @param parts - The parts for the component path segment. If `undefined` or an empty object, then the
+   * result is a {@link ComponentRoot}. Otherwise, the result is a {@link ComponentNavigation}.
+   */
+  public toComponentPath(
+    this: Component,
+    parts?: Omit<ComponentNavigationParts</*With*/ false>, 'component'>
+  ): ComponentPath {
+    return ComponentPath.from({ ...parts, component: this });
+  }
+
+  public abstract toString(): string;
+}
+
+// #endregion ComponentBase
+
+// #region ComponentString
+
+/**
+ * A {@link Component} in a component path that refers to a property name.
+ * @beta
+ */
+export class ComponentString extends ComponentBase {
+  public readonly kind: 'component-string' = 'component-string';
+  public readonly text: string;
+
+  public constructor(text: string, userEscaped?: boolean) {
+    super();
+    this.text = this instanceof ParsedComponentString ? text : escapeComponentIfNeeded(text, userEscaped);
+  }
+
+  /**
+   * Creates a new {@link ComponentString} from the provided parts.
+   */
+  public static from(parts: ComponentStringLike): ComponentString {
+    if (parts instanceof ComponentString) {
+      return parts;
+    } else if (typeof parts === 'string') {
+      return new ComponentString(parts);
+    } else {
+      return new ComponentString(parts.text);
+    }
+  }
+
+  /**
+   * Tests whether two {@link ComponentString} values are equivalent.
+   */
+  public static equals(left: ComponentString | undefined, right: ComponentString | undefined): boolean {
+    if (left === undefined || right === undefined) {
+      return left === right;
+    } else {
+      return left.text === right.text;
+    }
+  }
+
+  /**
+   * Tests whether this component is equivalent to `other`.
+   */
+  public equals(other: ComponentString): boolean {
+    return ComponentString.equals(this, other);
+  }
+
+  public toString(): string {
+    return this.text;
+  }
+}
+
+class ParsedComponentString extends ComponentString {
+  public constructor(text: string, userEscaped?: boolean) {
+    super(text, userEscaped);
+    try {
+      setPrototypeOf?.(this, ComponentString.prototype);
+    } catch {
+      // ignored
+    }
+  }
+}
+
+/**
+ * @beta
+ */
+export type ComponentStringParts = Parts<
+  /*With*/ false,
+  {
+    /** The text for a {@link ComponentString}. */
+    text: string;
+  }
+>;
+
+/**
+ * @beta
+ */
+export type ComponentStringLike = ComponentStringParts | ComponentString | string;
+
+// #endregion ComponentString
+
+// #region ComponentReference
+
+/**
+ * A {@link Component} in a component path that refers to a unique symbol declared on another declaration, such as `Symbol.iterator`.
+ * @beta
+ */
+export class ComponentReference extends ComponentBase {
+  public readonly kind: 'component-reference' = 'component-reference';
+  public readonly reference: DeclarationReference;
+
+  public constructor(reference: DeclarationReference) {
+    super();
+    this.reference = reference;
+  }
+
+  /**
+   * Parses a string into a standalone {@link ComponentReference}.
+   */
+  public static parse(text: string): ComponentReference {
+    if (isBracketed(text)) {
+      return new ComponentReference(DeclarationReference.parse(text.slice(1, -1)));
+    }
+    throw new SyntaxError(`Invalid component reference: '${text}'`);
+  }
+
+  /**
+   * Creates a new {@link ComponentReference} from the provided parts.
+   */
+  public static from(parts: ComponentReferenceLike</*With*/ false>): ComponentReference {
+    if (parts instanceof ComponentReference) {
+      return parts;
+    } else if (typeof parts === 'string') {
+      return ComponentReference.parse(parts);
+    } else if (parts instanceof DeclarationReference) {
+      return new ComponentReference(parts);
+    } else {
+      const { reference } = resolveComponentReferenceParts(parts, /*fallbackReference*/ undefined);
+      return new ComponentReference(DeclarationReference.from(reference));
+    }
+  }
+
+  /**
+   * Returns a {@link ComponentReference} updated with the provided parts.
+   * If a part is set to `undefined`, the current value is used.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided parts.
+   */
+  public with(parts: ComponentReferenceParts</*With*/ true>): ComponentReference {
+    const { reference } = resolveComponentReferenceParts(parts, this.reference);
+    const resolvedReference: DeclarationReference = DeclarationReference.from(reference);
+    if (DeclarationReference.equals(this.reference, resolvedReference)) {
+      return this;
+    } else {
+      return new ComponentReference(resolvedReference);
+    }
+  }
+
+  /**
+   * Returns a {@link ComponentReference} updated with the provided reference.
+   * @returns This object if there were no changes; otherwise, a new object updated with the provided reference.
+   */
+  public withReference(reference: DeclarationReference): ComponentReference {
+    return this.with({ reference });
+  }
+
+  /**
+   * Tests whether two {@link ComponentReference} values are equivalent.
+   */
+  public static equals(left: ComponentReference | undefined, right: ComponentReference | undefined): boolean {
+    if (left === undefined || right === undefined) {
+      return left === right;
+    } else {
+      return DeclarationReference.equals(left.reference, right.reference);
+    }
+  }
+
+  /**
+   * Tests whether this component is equivalent to `other`.
+   */
+  public equals(other: ComponentReference): boolean {
+    return ComponentReference.equals(this, other);
+  }
+
+  public toString(): string {
+    return `[${this.reference}]`;
+  }
+}
+
+/**
+ * @beta
+ */
+export type ComponentReferenceParts<With extends boolean> = Parts<
+  With,
+  {
+    /** The reference for a {@link ComponentReference}. */
+    reference: DeclarationReferenceLike<With>;
+  }
+>;
+
+function resolveComponentReferenceParts(
+  parts: ComponentReferenceParts</*With*/ true>,
+  fallbackReference: DeclarationReference | undefined
+): ComponentReferenceParts</*With*/ false> {
+  const { reference = fallbackReference } = parts;
+  if (reference === undefined) {
+    throw new TypeError("The property 'reference' is required");
+  }
+  return {
+    reference: resolveDeclarationReferenceLike(reference, fallbackReference)
+  };
+}
+
+/**
+ * @beta
+ */
+export type ComponentReferenceLike<With extends boolean> =
+  | ComponentReference
+  | ComponentReferenceParts<With>
+  | DeclarationReference
+  | string;
+
+// #endregion ComponentReference
+
+// #region Component
+
+/**
+ * A component in a {@link ComponentPath}.
+ * @beta
+ */
+export type Component = ComponentString | ComponentReference;
+
+/**
+ * @beta
+ */
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Component {
+  /**
+   * Creates a new {@link Component} from the provided parts.
+   */
+  export function from(parts: ComponentLike</*With*/ false>): Component {
+    const resolved: ResolvedComponentLike = resolveComponentLike(parts, /*fallbackComponent*/ undefined);
+    if (resolved instanceof ComponentString || resolved instanceof ComponentReference) {
+      return resolved;
+    } else if ('text' in resolved) {
+      return ComponentString.from(resolved);
+    } else {
+      return ComponentReference.from(resolved);
+    }
+  }
+
+  /**
+   * Tests whether two {@link Component} values are equivalent.
+   */
+  export function equals(left: Component | undefined, right: Component | undefined): boolean {
+    if (left === undefined || right === undefined) {
+      return left === right;
+    } else if (left instanceof ComponentString) {
+      return right instanceof ComponentString && ComponentString.equals(left, right);
+    } else {
+      return right instanceof ComponentReference && ComponentReference.equals(left, right);
+    }
+  }
+}
+
+/**
+ * @beta
+ */
+export type ComponentParts<With extends boolean> = ComponentStringParts | ComponentReferenceParts<With>;
+
+function resolveComponentParts(
+  parts: ComponentParts</*With*/ true>,
+  fallbackComponent: Component | undefined
+): ComponentParts</*With*/ false> {
+  const { text, reference } = parts as AllParts<typeof parts>;
+  if (text !== undefined) {
+    if (reference !== undefined) {
+      throw new TypeError("Cannot specify both 'text' and 'reference'");
+    }
+    return { text };
+  } else if (reference !== undefined) {
+    return resolveComponentReferenceParts(
+      { reference },
+      tryCast(fallbackComponent, ComponentReference)?.reference
+    );
+  } else {
+    if (fallbackComponent === undefined) {
+      throw new TypeError("One of properties 'text' or 'reference' is required");
+    }
+    return fallbackComponent;
+  }
+}
+
+/**
+ * @beta
+ */
+export type ComponentLike<With extends boolean> =
+  | ComponentStringLike
+  | Exclude<ComponentReferenceLike<With>, string>;
+
+type ResolvedComponentLike = Component | ComponentStringParts | ComponentReferenceParts</*With*/ false>;
+
+function resolveComponentLike(
+  value: ComponentLike</*With*/ true>,
+  fallbackComponent: Component | undefined
+): ResolvedComponentLike {
+  if (value instanceof ComponentString || value instanceof ComponentReference) {
+    return value;
+  } else if (value instanceof DeclarationReference) {
+    return resolveComponentParts({ reference: value }, fallbackComponent);
+  } else if (typeof value === 'string') {
+    return resolveComponentParts({ text: value }, fallbackComponent);
+  } else {
+    return resolveComponentParts(value, fallbackComponent);
+  }
+}
+
+// #endregion Component
+
+// #region Navigation
 
 /**
  * Indicates the symbol table from which to resolve the next symbol component.
@@ -256,310 +2295,26 @@ export const enum Navigation {
 }
 
 /**
- * Represents a module.
  * @beta
  */
-export class ModuleSource {
-  public readonly escapedPath: string;
-  private _path: string | undefined;
+export type SourceNavigation = Navigation.Exports | Navigation.Locals;
 
-  private _pathComponents: IParsedPackage | undefined;
-
-  public constructor(path: string, userEscaped: boolean = true) {
-    this.escapedPath =
-      this instanceof ParsedModuleSource ? path : escapeModuleSourceIfNeeded(path, userEscaped);
-  }
-
-  public get path(): string {
-    return this._path || (this._path = DeclarationReference.unescapeModuleSourceString(this.escapedPath));
-  }
-
-  public get packageName(): string {
-    return this._getOrParsePathComponents().packageName;
-  }
-
-  public get scopeName(): string {
-    const scopeName: string = this._getOrParsePathComponents().scopeName;
-    return scopeName ? '@' + scopeName : '';
-  }
-
-  public get unscopedPackageName(): string {
-    return this._getOrParsePathComponents().unscopedPackageName;
-  }
-
-  public get importPath(): string {
-    return this._getOrParsePathComponents().importPath || '';
-  }
-
-  public static fromScopedPackage(
-    scopeName: string | undefined,
-    unscopedPackageName: string,
-    importPath?: string
-  ): ModuleSource {
-    let packageName: string = unscopedPackageName;
-    if (scopeName) {
-      if (scopeName.charAt(0) === '@') {
-        scopeName = scopeName.slice(1);
-      }
-      packageName = `@${scopeName}/${unscopedPackageName}`;
-    }
-
-    const parsed: IParsedPackage = { packageName, scopeName: scopeName || '', unscopedPackageName };
-    return this._fromPackageName(parsed, packageName, importPath);
-  }
-
-  public static fromPackage(packageName: string, importPath?: string): ModuleSource {
-    return this._fromPackageName(parsePackageName(packageName), packageName, importPath);
-  }
-
-  private static _fromPackageName(
-    parsed: IParsedPackage | null,
-    packageName: string,
-    importPath?: string
-  ): ModuleSource {
-    if (!parsed) {
-      throw new Error('Parsed package must be provided.');
-    }
-
-    const packageNameError: string | undefined = StringChecks.explainIfInvalidPackageName(packageName);
-    if (packageNameError) {
-      throw new SyntaxError(`Invalid NPM package name: ${packageNameError}`);
-    }
-
-    let path: string = packageName;
-    if (importPath) {
-      if (invalidImportPathRegExp.test(importPath)) {
-        throw new SyntaxError(`Invalid import path '${importPath}`);
-      }
-      path += '/' + importPath;
-      parsed.importPath = importPath;
-    }
-
-    const source: ModuleSource = new ModuleSource(path);
-    source._pathComponents = parsed;
-    return source;
-  }
-
-  public toString(): string {
-    return `${this.escapedPath}!`;
-  }
-
-  private _getOrParsePathComponents(): IParsedPackage {
-    if (!this._pathComponents) {
-      const path: string = this.path;
-      const parsed: IParsedPackage | null = parsePackageName(path);
-      if (parsed && !StringChecks.explainIfInvalidPackageName(parsed.packageName)) {
-        this._pathComponents = parsed;
-      } else {
-        this._pathComponents = {
-          packageName: '',
-          scopeName: '',
-          unscopedPackageName: '',
-          importPath: path
-        };
-      }
-    }
-    return this._pathComponents;
+function formatNavigation(navigation: Navigation | undefined): string {
+  switch (navigation) {
+    case Navigation.Exports:
+      return '.';
+    case Navigation.Members:
+      return '#';
+    case Navigation.Locals:
+      return '~';
+    default:
+      return '';
   }
 }
 
-class ParsedModuleSource extends ModuleSource {}
+// #endregion Navigation
 
-// matches the following:
-//   'foo'            -> ["foo", "foo", undefined, "foo", undefined]
-//   'foo/bar'        -> ["foo/bar", "foo", undefined, "foo", "bar"]
-//   '@scope/foo'     -> ["@scope/foo", "@scope/foo", "scope", "foo", undefined]
-//   '@scope/foo/bar' -> ["@scope/foo/bar", "@scope/foo", "scope", "foo", "bar"]
-// does not match:
-//   '/'
-//   '@/'
-//   '@scope/'
-// capture groups:
-//   1. The package name (including scope)
-//   2. The scope name (excluding the leading '@')
-//   3. The unscoped package name
-//   4. The package-relative import path
-const packageNameRegExp: RegExp = /^((?:@([^/]+?)\/)?([^/]+?))(?:\/(.+))?$/;
-
-// no leading './' or '.\'
-// no leading '../' or '..\'
-// no leading '/' or '\'
-// not '.' or '..'
-const invalidImportPathRegExp: RegExp = /^(\.\.?([\\/]|$)|[\\/])/;
-
-interface IParsedPackage {
-  packageName: string;
-  scopeName: string;
-  unscopedPackageName: string;
-  importPath?: string;
-}
-
-// eslint-disable-next-line @rushstack/no-new-null
-function parsePackageName(text: string): IParsedPackage | null {
-  const match: RegExpExecArray | null = packageNameRegExp.exec(text);
-  if (!match) {
-    return match;
-  }
-  const [, packageName = '', scopeName = '', unscopedPackageName = '', importPath]: RegExpExecArray = match;
-  return { packageName, scopeName, unscopedPackageName, importPath };
-}
-
-/**
- * Represents the global scope.
- * @beta
- */
-export class GlobalSource {
-  public static readonly instance: GlobalSource = new GlobalSource();
-
-  private constructor() {}
-
-  public toString(): string {
-    return '!';
-  }
-}
-
-/**
- * @beta
- */
-export type Component = ComponentString | ComponentReference;
-
-/**
- * @beta
- */
-// eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace Component {
-  export function from(value: ComponentLike): Component {
-    if (typeof value === 'string') {
-      return new ComponentString(value);
-    }
-    if (value instanceof DeclarationReference) {
-      return new ComponentReference(value);
-    }
-    return value;
-  }
-}
-
-/**
- * @beta
- */
-export type ComponentLike = Component | DeclarationReference | string;
-
-/**
- * @beta
- */
-export class ComponentString {
-  public readonly text: string;
-
-  public constructor(text: string, userEscaped?: boolean) {
-    this.text = this instanceof ParsedComponentString ? text : escapeComponentIfNeeded(text, userEscaped);
-  }
-
-  public toString(): string {
-    return this.text;
-  }
-}
-
-class ParsedComponentString extends ComponentString {}
-
-/**
- * @beta
- */
-export class ComponentReference {
-  public readonly reference: DeclarationReference;
-
-  public constructor(reference: DeclarationReference) {
-    this.reference = reference;
-  }
-
-  public static parse(text: string): ComponentReference {
-    if (text.length > 2 && text.charAt(0) === '[' && text.charAt(text.length - 1) === ']') {
-      return new ComponentReference(DeclarationReference.parse(text.slice(1, -1)));
-    }
-    throw new SyntaxError(`Invalid component reference: '${text}'`);
-  }
-
-  public withReference(reference: DeclarationReference): ComponentReference {
-    return this.reference === reference ? this : new ComponentReference(reference);
-  }
-
-  public toString(): string {
-    return `[${this.reference}]`;
-  }
-}
-
-/**
- * @beta
- */
-export type ComponentPath = ComponentRoot | ComponentNavigation;
-
-/**
- * @beta
- */
-export abstract class ComponentPathBase {
-  public readonly component: Component;
-
-  public constructor(component: Component) {
-    this.component = component;
-  }
-
-  public addNavigationStep(
-    this: ComponentPath,
-    navigation: Navigation,
-    component: ComponentLike
-  ): ComponentPath {
-    // tslint:disable-next-line:no-use-before-declare
-    return new ComponentNavigation(this, navigation, Component.from(component));
-  }
-
-  public abstract toString(): string;
-}
-
-/**
- * @beta
- */
-export class ComponentRoot extends ComponentPathBase {
-  public withComponent(component: ComponentLike): ComponentRoot {
-    return this.component === component ? this : new ComponentRoot(Component.from(component));
-  }
-
-  public toString(): string {
-    return this.component.toString();
-  }
-}
-
-/**
- * @beta
- */
-export class ComponentNavigation extends ComponentPathBase {
-  public readonly parent: ComponentPath;
-  public readonly navigation: Navigation;
-
-  public constructor(parent: ComponentPath, navigation: Navigation, component: Component) {
-    super(component);
-    this.parent = parent;
-    this.navigation = navigation;
-  }
-
-  public withParent(parent: ComponentPath): ComponentNavigation {
-    return this.parent === parent ? this : new ComponentNavigation(parent, this.navigation, this.component);
-  }
-
-  public withNavigation(navigation: Navigation): ComponentNavigation {
-    return this.navigation === navigation
-      ? this
-      : new ComponentNavigation(this.parent, navigation, this.component);
-  }
-
-  public withComponent(component: ComponentLike): ComponentNavigation {
-    return this.component === component
-      ? this
-      : new ComponentNavigation(this.parent, this.navigation, Component.from(component));
-  }
-
-  public toString(): string {
-    return `${this.parent}${formatNavigation(this.navigation)}${this.component}`;
-  }
-}
+// #region Meaning
 
 /**
  * @beta
@@ -581,82 +2336,9 @@ export const enum Meaning {
   ComplexType = 'complex' // Any complex type
 }
 
-/**
- * @beta
- */
-export interface ISymbolReferenceOptions {
-  meaning?: Meaning;
-  overloadIndex?: number;
-}
+// #endregion Meaning
 
-/**
- * Represents a reference to a TypeScript symbol.
- * @beta
- */
-export class SymbolReference {
-  public readonly componentPath: ComponentPath | undefined;
-  public readonly meaning: Meaning | undefined;
-  public readonly overloadIndex: number | undefined;
-
-  public constructor(
-    component: ComponentPath | undefined,
-    { meaning, overloadIndex }: ISymbolReferenceOptions = {}
-  ) {
-    this.componentPath = component;
-    this.overloadIndex = overloadIndex;
-    this.meaning = meaning;
-  }
-
-  public static empty(): SymbolReference {
-    return new SymbolReference(/*component*/ undefined);
-  }
-
-  public withComponentPath(componentPath: ComponentPath | undefined): SymbolReference {
-    return this.componentPath === componentPath
-      ? this
-      : new SymbolReference(componentPath, {
-          meaning: this.meaning,
-          overloadIndex: this.overloadIndex
-        });
-  }
-
-  public withMeaning(meaning: Meaning | undefined): SymbolReference {
-    return this.meaning === meaning
-      ? this
-      : new SymbolReference(this.componentPath, {
-          meaning,
-          overloadIndex: this.overloadIndex
-        });
-  }
-
-  public withOverloadIndex(overloadIndex: number | undefined): SymbolReference {
-    return this.overloadIndex === overloadIndex
-      ? this
-      : new SymbolReference(this.componentPath, {
-          meaning: this.meaning,
-          overloadIndex
-        });
-  }
-
-  public addNavigationStep(navigation: Navigation, component: ComponentLike): SymbolReference {
-    if (!this.componentPath) {
-      throw new Error('Cannot add a navigation step to an empty symbol reference.');
-    }
-    return new SymbolReference(this.componentPath.addNavigationStep(navigation, component));
-  }
-
-  public toString(): string {
-    let result: string = `${this.componentPath || ''}`;
-    if (this.meaning && this.overloadIndex !== undefined) {
-      result += `:${this.meaning}(${this.overloadIndex})`;
-    } else if (this.meaning) {
-      result += `:${this.meaning}`;
-    } else if (this.overloadIndex !== undefined) {
-      result += `:${this.overloadIndex}`;
-    }
-    return result;
-  }
-}
+// #region Token
 
 const enum Token {
   None,
@@ -766,6 +2448,10 @@ function tokenToString(token: Token): string {
       return '<module source>';
   }
 }
+
+// #endregion Token
+
+// #region Scanner
 
 class Scanner {
   private _tokenPos: number;
@@ -1065,6 +2751,115 @@ class Scanner {
   }
 }
 
+function isHexDigit(ch: string): boolean {
+  switch (ch) {
+    case 'a':
+    case 'b':
+    case 'c':
+    case 'd':
+    case 'e':
+    case 'f':
+    case 'A':
+    case 'B':
+    case 'C':
+    case 'D':
+    case 'E':
+    case 'F':
+      return true;
+    default:
+      return isDecimalDigit(ch);
+  }
+}
+
+function isDecimalDigit(ch: string): boolean {
+  switch (ch) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+      return true;
+    default:
+      return false;
+  }
+}
+
+function isCharacterEscapeSequence(ch: string): boolean {
+  return isSingleEscapeCharacter(ch) || isNonEscapeCharacter(ch);
+}
+
+function isNonEscapeCharacter(ch: string): boolean {
+  return !isEscapeCharacter(ch) && !isLineTerminator(ch);
+}
+
+function isEscapeCharacter(ch: string): boolean {
+  switch (ch) {
+    case 'x':
+    case 'u':
+      return true;
+    default:
+      return isSingleEscapeCharacter(ch) || isDecimalDigit(ch);
+  }
+}
+
+function isSingleEscapeCharacter(ch: string): boolean {
+  switch (ch) {
+    case "'":
+    case '"':
+    case '\\':
+    case 'b':
+    case 'f':
+    case 'n':
+    case 'r':
+    case 't':
+    case 'v':
+      return true;
+    default:
+      return false;
+  }
+}
+
+function isLineTerminator(ch: string): boolean {
+  switch (ch) {
+    case '\r':
+    case '\n':
+      // TODO: <LS>, <PS>
+      return true;
+    default:
+      return false;
+  }
+}
+
+function isPunctuator(ch: string): boolean {
+  switch (ch) {
+    case '{':
+    case '}':
+    case '(':
+    case ')':
+    case '[':
+    case ']':
+    case '!':
+    case '.':
+    case '#':
+    case '~':
+    case ':':
+    case ',':
+    case '@':
+      return true;
+    default:
+      return false;
+  }
+}
+
+// #endregion Scanner
+
+// #region Parser
+
 class Parser {
   private _errors: string[];
   private _scanner: Scanner;
@@ -1084,9 +2879,8 @@ class Parser {
   }
 
   public parseDeclarationReference(): DeclarationReference {
-    let source: ModuleSource | GlobalSource | undefined;
+    let source: Source | undefined;
     let navigation: Navigation.Locals | undefined;
-    let symbol: SymbolReference | undefined;
     if (this.optionalToken(Token.ExclamationToken)) {
       // Reference to global symbol
       source = GlobalSource.instance;
@@ -1097,17 +2891,24 @@ class Parser {
         navigation = Navigation.Locals;
       }
     }
-    if (this.isStartOfComponent()) {
-      symbol = this.parseSymbol();
-    } else if (this.token() === Token.ColonToken) {
-      symbol = this.parseSymbolRest(new ComponentRoot(new ComponentString('', /*userEscaped*/ true)));
-    }
-    return new DeclarationReference(source, navigation, symbol);
+    return new DeclarationReference(source, navigation, this.tryParseSymbolReference());
   }
 
   public parseModuleSourceString(): string {
     this._scanner.rescanModuleSource();
     return this.parseTokenString(Token.ModuleSource, 'Module source');
+  }
+
+  public parseComponentPath(): ComponentPath {
+    return this.parseComponentRest(this.parseRootComponent());
+  }
+
+  public tryParseSymbolReference(): SymbolReference | undefined {
+    if (this.isStartOfComponent()) {
+      return this.parseSymbol();
+    } else if (this.token() === Token.ColonToken) {
+      return this.parseSymbolRest(new ComponentRoot(new ComponentString('', /*userEscaped*/ true)));
+    }
   }
 
   public parseComponentString(): string {
@@ -1130,7 +2931,7 @@ class Parser {
   }
 
   private parseSymbol(): SymbolReference {
-    const component: ComponentPath = this.parseComponentRest(this.parseRootComponent());
+    const component: ComponentPath = this.parseComponentPath();
     return this.parseSymbolRest(component);
   }
 
@@ -1327,123 +3128,7 @@ class Parser {
   }
 }
 
-function formatNavigation(navigation: Navigation | undefined): string {
-  switch (navigation) {
-    case Navigation.Exports:
-      return '.';
-    case Navigation.Members:
-      return '#';
-    case Navigation.Locals:
-      return '~';
-    default:
-      return '';
-  }
-}
-
-function isCharacterEscapeSequence(ch: string): boolean {
-  return isSingleEscapeCharacter(ch) || isNonEscapeCharacter(ch);
-}
-
-function isSingleEscapeCharacter(ch: string): boolean {
-  switch (ch) {
-    case "'":
-    case '"':
-    case '\\':
-    case 'b':
-    case 'f':
-    case 'n':
-    case 'r':
-    case 't':
-    case 'v':
-      return true;
-    default:
-      return false;
-  }
-}
-
-function isNonEscapeCharacter(ch: string): boolean {
-  return !isEscapeCharacter(ch) && !isLineTerminator(ch);
-}
-
-function isEscapeCharacter(ch: string): boolean {
-  switch (ch) {
-    case 'x':
-    case 'u':
-      return true;
-    default:
-      return isSingleEscapeCharacter(ch) || isDecimalDigit(ch);
-  }
-}
-
-function isLineTerminator(ch: string): boolean {
-  switch (ch) {
-    case '\r':
-    case '\n':
-      // TODO: <LS>, <PS>
-      return true;
-    default:
-      return false;
-  }
-}
-
-function isDecimalDigit(ch: string): boolean {
-  switch (ch) {
-    case '0':
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9':
-      return true;
-    default:
-      return false;
-  }
-}
-
-function isHexDigit(ch: string): boolean {
-  switch (ch) {
-    case 'a':
-    case 'b':
-    case 'c':
-    case 'd':
-    case 'e':
-    case 'f':
-    case 'A':
-    case 'B':
-    case 'C':
-    case 'D':
-    case 'E':
-    case 'F':
-      return true;
-    default:
-      return isDecimalDigit(ch);
-  }
-}
-
-function isPunctuator(ch: string): boolean {
-  switch (ch) {
-    case '{':
-    case '}':
-    case '(':
-    case ')':
-    case '[':
-    case ']':
-    case '!':
-    case '.':
-    case '#':
-    case '~':
-    case ':':
-    case ',':
-    case '@':
-      return true;
-    default:
-      return false;
-  }
-}
+// #endregion Parser
 
 function escapeComponentIfNeeded(text: string, userEscaped?: boolean): string {
   if (userEscaped) {
@@ -1455,12 +3140,56 @@ function escapeComponentIfNeeded(text: string, userEscaped?: boolean): string {
   return DeclarationReference.escapeComponentString(text);
 }
 
-function escapeModuleSourceIfNeeded(text: string, userEscaped?: boolean): string {
+function escapeModuleSourceIfNeeded(text: string, parsed: boolean, userEscaped: boolean): string {
   if (userEscaped) {
-    if (!DeclarationReference.isWellFormedModuleSourceString(text)) {
+    if (!parsed && !DeclarationReference.isWellFormedModuleSourceString(text)) {
       throw new SyntaxError(`Invalid Module source '${text}'`);
     }
     return text;
   }
   return DeclarationReference.escapeModuleSourceString(text);
 }
+
+function isBracketed(value: string): boolean {
+  return value.length > 2 && value.charAt(0) === '[' && value.charAt(value.length - 1) === ']';
+}
+
+function ensureScopeName(scopeName: string): string {
+  return scopeName.length && scopeName.charAt(0) !== '@' ? `@${scopeName}` : scopeName;
+}
+
+interface ObjectConstructorWithSetPrototypeOf extends ObjectConstructor {
+  // eslint-disable-next-line @rushstack/no-new-null
+  setPrototypeOf?(obj: object, proto: object | null): object;
+}
+
+// eslint-disable-next-line @rushstack/no-new-null
+const setPrototypeOf:
+  | ((obj: object, proto: object | null) => object)
+  | undefined = (Object as ObjectConstructorWithSetPrototypeOf).setPrototypeOf;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function tryCast<T>(value: unknown, type: new (...args: any[]) => T): T | undefined {
+  return value instanceof type ? value : undefined;
+}
+
+/**
+ * Describes the parts that can be used in a `from()` or `with()` call.
+ * @beta
+ */
+export type Parts<With extends boolean, T> = [With] extends [false]
+  ? T
+  : T extends unknown
+  ? Partial<T>
+  : never;
+
+/**
+ * If a part can be removed via a `with()` call, marks that part with `| null`
+ * @beta
+ */
+export type Part<With extends boolean, T> = [With] extends [false] ? T : T | null;
+
+type AllKeysOf<T> = T extends unknown ? keyof T : never;
+type AllParts<T> = {
+  [P in AllKeysOf<T>]: T extends unknown ? (P extends keyof T ? T[P] : undefined) : never;
+};
