@@ -2,6 +2,28 @@
   "name": "@microsoft/tsdoc-config",
   "entries": [
     {
+      "version": "0.17.0",
+      "tag": "@microsoft/tsdoc-config_v0.17.0",
+      "date": "Tue, 28 May 2024 21:34:19 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Minor package cleanup."
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Upgrade dev toolchain (Heft, Webpack, TypeScript)"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" to `0.15.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.16.2",
       "tag": "@microsoft/tsdoc-config_v0.16.2",
       "date": "Wed, 14 Sep 2022 02:55:06 GMT",

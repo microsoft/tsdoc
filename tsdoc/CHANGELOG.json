@@ -2,6 +2,29 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.15.0",
+      "tag": "@microsoft/tsdoc_v0.15.0",
+      "date": "Tue, 28 May 2024 21:34:19 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Minor package cleanup."
+          },
+          {
+            "comment": "Eliminate remaining const enums."
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Update an image URL in the README.md file"
+          },
+          {
+            "comment": "Upgrade dev toolchain (Heft, Webpack, TypeScript)"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.14.2",
       "tag": "@microsoft/tsdoc_v0.14.2",
       "date": "Wed, 14 Sep 2022 02:55:06 GMT",

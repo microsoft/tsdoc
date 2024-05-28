@@ -1,6 +1,19 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Wed, 14 Sep 2022 02:55:06 GMT and should not be manually modified.
+This log was last generated on Tue, 28 May 2024 21:34:19 GMT and should not be manually modified.
+
+## 0.15.0
+Tue, 28 May 2024 21:34:19 GMT
+
+### Minor changes
+
+- Minor package cleanup.
+- Eliminate remaining const enums.
+
+### Patches
+
+- Update an image URL in the README.md file
+- Upgrade dev toolchain (Heft, Webpack, TypeScript)
 
 ## 0.14.2
 Wed, 14 Sep 2022 02:55:06 GMT

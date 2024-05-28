@@ -2,6 +2,31 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.3.0",
+      "tag": "eslint-plugin-tsdoc_v0.3.0",
+      "date": "Tue, 28 May 2024 21:34:19 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Minor package cleanup."
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Upgrade dev toolchain (Heft, Webpack, TypeScript, ESLint)"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" to `0.15.0`"
+          },
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc-config\" to `0.17.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.2.17",
       "tag": "eslint-plugin-tsdoc_v0.2.17",
       "date": "Wed, 14 Sep 2022 02:55:06 GMT",

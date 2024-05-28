@@ -1,6 +1,17 @@
 # Change Log - eslint-plugin-tsdoc
 
-This log was last generated on Wed, 14 Sep 2022 02:55:06 GMT and should not be manually modified.
+This log was last generated on Tue, 28 May 2024 21:34:19 GMT and should not be manually modified.
+
+## 0.3.0
+Tue, 28 May 2024 21:34:19 GMT
+
+### Minor changes
+
+- Minor package cleanup.
+
+### Patches
+
+- Upgrade dev toolchain (Heft, Webpack, TypeScript, ESLint)
 
 ## 0.2.17
 Wed, 14 Sep 2022 02:55:06 GMT
