@@ -17,7 +17,9 @@ jobs:
     steps:
       - checkout: self
 
-      - template: ./templates/build.yaml
+      - template: /common/config/azure-pipelines/templates/install-node.yaml@self
+
+      - template: /common/config/azure-pipelines/templates/build.yaml@self
 
       - publish: playground/dist
         artifact: 'playground'

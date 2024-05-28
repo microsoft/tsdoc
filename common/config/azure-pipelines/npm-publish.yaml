@@ -1,13 +1,41 @@
-pool:
-  vmImage: 'ubuntu-latest'
-variables:
-  NodeVersion: 18
-  FORCE_COLOR: 1
-steps:
-  - checkout: self
-    persistCredentials: true
-  - template: templates/build.yaml
-  - script: 'node common/scripts/install-run-rush.js version --bump --version-policy BOGUS --target-branch $(Build.SourceBranchName)'
-    displayName: 'Rush Version'
-  - script: 'node common/scripts/install-run-rush.js publish --apply --publish --include-all --npm-auth-token $(npmToken)'
-    displayName: 'Rush Publish'
+resources:
+  repositories:
+    - repository: RushstackMainRepo
+      type: github
+      name: Microsoft/rushstack
+      endpoint: 'GitHub (Rushbot)'
+    - repository: 1esPipelines
+      type: git
+      name: 1ESPipelineTemplates/1ESPipelineTemplates
+      ref: refs/tags/release
+
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1esPipelines
+  parameters:
+    pool:
+      name: Azure-Pipelines-1ESPT-ExDShared
+      os: windows
+    stages:
+      - stage:
+        jobs:
+          - job:
+            pool:
+              name: publish-rushstack
+              os: linux
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)/published-versions
+                  artifactName: published-versions
+            steps:
+              - checkout: self
+                persistCredentials: true
+                path: tsdoc
+
+              - template: /common/config/azure-pipelines/templates/install-node.yaml@self
+
+              - template: /common/config/azure-pipelines/templates/build.yaml@self
+
+              - template: /common/config/azure-pipelines/templates/publish.yaml@self
+
+              - template: /common/config/azure-pipelines/templates/record-published-versions.yaml@self
