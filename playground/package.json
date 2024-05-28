@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "build": "heft build --clean",
-    "start": "heft start"
+    "start": "heft start",
+    "_phase:build": "heft run --only build -- --clean"
   },
   "dependencies": {
     "@microsoft/tsdoc": "workspace:*",

@@ -21,6 +21,8 @@
   "scripts": {
     "build": "heft test --clean",
     "simple": "node ./lib/start.js simple",
-    "advanced": "node ./lib/start.js advanced"
+    "advanced": "node ./lib/start.js advanced",
+    "_phase:build": "heft run --only build -- --clean",
+    "_phase:test": "heft run --only test -- --clean"
   }
 }

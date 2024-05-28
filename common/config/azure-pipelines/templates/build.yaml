@@ -11,8 +11,8 @@ steps:
     displayName: 'Rush Check'
   - script: 'node common/scripts/install-run-rush.js install'
     displayName: 'Rush Install'
-  - script: 'node common/scripts/install-run-rush.js rebuild --verbose --production'
-    displayName: 'Rush Rebuild'
+  - script: 'node common/scripts/install-run-rush.js retest --verbose --production'
+    displayName: 'Rush retest'
     env:
       # Prevent time-based browserslist update warning
       # See https://github.com/microsoft/rushstack/issues/2981
