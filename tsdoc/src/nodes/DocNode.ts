@@ -7,7 +7,7 @@ import type { TSDocConfiguration } from '../configuration/TSDocConfiguration';
  * Indicates the type of {@link DocNode}.
  *
  * @remarks
- * When creating custom subclasses of `DocNode`, it's recommended to create your own const enum to identify them.
+ * When creating custom subclasses of `DocNode`, it's recommended to create your own enum to identify them.
  * To avoid naming conflicts between projects, the enum value should be a string comprised of your full
  * NPM package name, followed by a "#" symbol, followed by the class name (without the "Doc" prefix).
  */

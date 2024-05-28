@@ -16,7 +16,7 @@ import { CodeEditor, type ISyntaxMarker, type IStyledRange } from './CodeEditor'
 import { DocNodeSyntaxStyler } from './SyntaxStyler/DocNodeSyntaxStyler';
 import { SampleInputs } from './samples/SampleInputs';
 
-export const enum Theme {
+export enum Theme {
   vs = 'vs'
 }
 

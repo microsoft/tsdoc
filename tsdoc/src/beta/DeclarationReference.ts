@@ -252,7 +252,7 @@ export class DeclarationReference {
  * Indicates the symbol table from which to resolve the next symbol component.
  * @beta
  */
-export const enum Navigation {
+export enum Navigation {
   Exports = '.',
   Members = '#',
   Locals = '~'
@@ -567,7 +567,7 @@ export class ComponentNavigation extends ComponentPathBase {
 /**
  * @beta
  */
-export const enum Meaning {
+export enum Meaning {
   Class = 'class', // SymbolFlags.Class
   Interface = 'interface', // SymbolFlags.Interface
   TypeAlias = 'type', // SymbolFlags.TypeAlias

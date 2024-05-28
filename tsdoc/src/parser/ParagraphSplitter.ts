@@ -56,7 +56,7 @@ export class ParagraphSplitter {
     let currentParagraph: DocParagraph = new DocParagraph({ configuration: oldParagraph.configuration });
     outputNodes.push(currentParagraph);
 
-    const enum SplitterState {
+    enum SplitterState {
       Start,
       AwaitingTrailer,
       ReadingTrailer
