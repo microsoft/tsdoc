@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 /* eslint-disable max-lines */
 
-import { ParserContext } from './ParserContext';
-import { Token, TokenKind } from './Token';
+import type { ParserContext } from './ParserContext';
+import { type Token, TokenKind } from './Token';
 import { Tokenizer } from './Tokenizer';
 import {
   DocBlockTag,
@@ -12,36 +15,36 @@ import {
   DocHtmlEndTag,
   DocHtmlStartTag,
   DocInlineTag,
-  DocNode,
+  type DocNode,
   DocPlainText,
   DocSoftBreak,
   EscapeStyle,
-  DocComment,
+  type DocComment,
   DocBlock,
   DocNodeKind,
-  DocSection,
+  type DocSection,
   DocParamBlock,
   DocFencedCode,
   DocLinkTag,
-  IDocLinkTagParameters,
+  type IDocLinkTagParameters,
   DocMemberReference,
   DocDeclarationReference,
   DocMemberSymbol,
   DocMemberIdentifier,
   DocMemberSelector,
   DocInheritDocTag,
-  IDocInheritDocTagParameters,
-  IDocInlineTagParsedParameters,
-  DocInlineTagBase,
-  IDocLinkTagParsedParameters,
-  IDocMemberReferenceParsedParameters
+  type IDocInheritDocTagParameters,
+  type IDocInlineTagParsedParameters,
+  type DocInlineTagBase,
+  type IDocLinkTagParsedParameters,
+  type IDocMemberReferenceParsedParameters
 } from '../nodes';
 import { TokenSequence } from './TokenSequence';
 import { TokenReader } from './TokenReader';
 import { StringChecks } from './StringChecks';
-import { ModifierTagSet } from '../details/ModifierTagSet';
-import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
-import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTagDefinition';
+import type { ModifierTagSet } from '../details/ModifierTagSet';
+import type { TSDocConfiguration } from '../configuration/TSDocConfiguration';
+import { type TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTagDefinition';
 import { StandardTags } from '../details/StandardTags';
 import { PlainTextEmitter } from '../emitters/PlainTextEmitter';
 import { TSDocMessageId } from './TSDocMessageId';

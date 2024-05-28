@@ -1,8 +1,11 @@
-import { DocNode, DocNodeKind, IDocNodeParameters } from './DocNode';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { DocNode, DocNodeKind, type IDocNodeParameters } from './DocNode';
 import { DocSection } from './DocSection';
 import { StandardModifierTagSet } from '../details/StandardModifierTagSet';
-import { DocBlock } from './DocBlock';
-import { DocInheritDocTag } from './DocInheritDocTag';
+import type { DocBlock } from './DocBlock';
+import type { DocInheritDocTag } from './DocInheritDocTag';
 import { StringBuilder } from '../emitters/StringBuilder';
 import { TSDocEmitter } from '../emitters/TSDocEmitter';
 import { DocParamCollection } from './DocParamCollection';

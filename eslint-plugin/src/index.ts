@@ -1,7 +1,10 @@
-import * as eslint from 'eslint';
-import * as ESTree from 'estree';
-import { TSDocParser, TextRange, TSDocConfiguration, ParserContext } from '@microsoft/tsdoc';
-import { TSDocConfigFile } from '@microsoft/tsdoc-config';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import type * as eslint from 'eslint';
+import type * as ESTree from 'estree';
+import { TSDocParser, TextRange, TSDocConfiguration, type ParserContext } from '@microsoft/tsdoc';
+import type { TSDocConfigFile } from '@microsoft/tsdoc-config';
 
 import { Debug } from './Debug';
 import { ConfigCache } from './ConfigCache';

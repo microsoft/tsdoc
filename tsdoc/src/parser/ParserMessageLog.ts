@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import { ParserMessage } from './ParserMessage';
-import { TextRange } from './TextRange';
-import { TokenSequence } from './TokenSequence';
-import { DocNode } from '../nodes/DocNode';
-import { DocErrorText } from '../nodes/DocErrorText';
-import { TSDocMessageId } from './TSDocMessageId';
+import type { TextRange } from './TextRange';
+import type { TokenSequence } from './TokenSequence';
+import type { DocNode } from '../nodes/DocNode';
+import type { DocErrorText } from '../nodes/DocErrorText';
+import type { TSDocMessageId } from './TSDocMessageId';
 
 /**
  * Used to report errors and warnings that occurred during parsing.

@@ -1,4 +1,7 @@
-import { DocParagraph, DocNode, DocNodeKind, DocPlainText } from '../nodes';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { DocParagraph, type DocNode, DocNodeKind, DocPlainText } from '../nodes';
 
 /**
  * Implementation of DocNodeTransforms.trimSpacesInParagraphNodes()

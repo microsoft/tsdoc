@@ -1,4 +1,7 @@
-import { DocNode } from '../nodes/DocNode';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import type { DocNode } from '../nodes/DocNode';
 import { StringChecks } from '../parser/StringChecks';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

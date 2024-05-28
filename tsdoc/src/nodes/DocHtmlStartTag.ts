@@ -1,6 +1,9 @@
-import { DocNode, DocNodeKind, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
-import { DocHtmlAttribute } from './DocHtmlAttribute';
-import { TokenSequence } from '../parser/TokenSequence';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { DocNode, DocNodeKind, type IDocNodeParameters, type IDocNodeParsedParameters } from './DocNode';
+import type { DocHtmlAttribute } from './DocHtmlAttribute';
+import type { TokenSequence } from '../parser/TokenSequence';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 import { StringBuilder } from '../emitters/StringBuilder';
 import { TSDocEmitter } from '../emitters/TSDocEmitter';

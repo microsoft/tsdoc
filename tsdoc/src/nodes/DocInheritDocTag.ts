@@ -1,9 +1,12 @@
-import { DocNodeKind, DocNode } from './DocNode';
-import { DocDeclarationReference } from './DocDeclarationReference';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { DocNodeKind, type DocNode } from './DocNode';
+import type { DocDeclarationReference } from './DocDeclarationReference';
 import {
   DocInlineTagBase,
-  IDocInlineTagBaseParsedParameters,
-  IDocInlineTagBaseParameters
+  type IDocInlineTagBaseParsedParameters,
+  type IDocInlineTagBaseParameters
 } from './DocInlineTagBase';
 
 /**

@@ -1,6 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import { DocNodeKind, DocNode } from './DocNode';
-import { DocBlock, IDocBlockParameters, IDocBlockParsedParameters } from './DocBlock';
-import { TokenSequence } from '../parser/TokenSequence';
+import { DocBlock, type IDocBlockParameters, type IDocBlockParsedParameters } from './DocBlock';
+import type { TokenSequence } from '../parser/TokenSequence';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**

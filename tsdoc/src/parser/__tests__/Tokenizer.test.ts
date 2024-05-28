@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import { TSDocParser } from '../TSDocParser';
 import { Tokenizer } from '../Tokenizer';
-import { Token, TokenKind } from '../Token';
+import { type Token, TokenKind } from '../Token';
 import { TestHelpers } from './TestHelpers';
-import { ParserContext } from '../ParserContext';
+import type { ParserContext } from '../ParserContext';
 
 interface ISnapshotItem {
   indexOfLine: number;

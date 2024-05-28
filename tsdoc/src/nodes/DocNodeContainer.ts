@@ -1,4 +1,7 @@
-import { DocNode, IDocNodeParameters, IDocNodeParsedParameters } from './DocNode';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { DocNode, type IDocNodeParameters, type IDocNodeParsedParameters } from './DocNode';
 
 /**
  * Constructor parameters for {@link DocNodeContainer}.

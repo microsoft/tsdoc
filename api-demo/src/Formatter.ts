@@ -1,4 +1,7 @@
-import { DocNode, DocExcerpt } from '@microsoft/tsdoc';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { type DocNode, DocExcerpt } from '@microsoft/tsdoc';
 
 /**
  * This is a simplistic solution until we implement proper DocNode rendering APIs.

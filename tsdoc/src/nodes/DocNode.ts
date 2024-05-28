@@ -1,4 +1,7 @@
-import { TSDocConfiguration } from '../configuration/TSDocConfiguration';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import type { TSDocConfiguration } from '../configuration/TSDocConfiguration';
 
 /**
  * Indicates the type of {@link DocNode}.

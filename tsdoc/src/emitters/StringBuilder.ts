@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 /**
  * An interface for a builder object that allows a large text string to be constructed incrementally by appending
  * small chunks.

@@ -1,5 +1,8 @@
-import { DocBlockTag } from '../nodes/DocBlockTag';
-import { TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTagDefinition';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import type { DocBlockTag } from '../nodes/DocBlockTag';
+import { type TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TSDocTagDefinition';
 
 /**
  * Represents a set of modifier tags that were extracted from a doc comment.

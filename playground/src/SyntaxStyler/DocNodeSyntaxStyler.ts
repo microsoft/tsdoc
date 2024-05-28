@@ -1,7 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import * as tsdoc from '@microsoft/tsdoc';
 
-import { MonacoTSDocTheme, IDocNodeSyntaxStylerTheme, IThemeRule } from './DocNodeSyntaxStylerTheme';
-import { IStyledRange } from './../CodeEditor';
+import {
+  MonacoTSDocTheme,
+  type IDocNodeSyntaxStylerTheme,
+  type IThemeRule
+} from './DocNodeSyntaxStylerTheme';
+import type { IStyledRange } from './../CodeEditor';
 
 import './syntaxStyles.css';
 

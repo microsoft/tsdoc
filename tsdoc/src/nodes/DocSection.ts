@@ -1,9 +1,12 @@
-import { DocNode, DocNodeKind } from './DocNode';
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
+import { type DocNode, DocNodeKind } from './DocNode';
 import { DocParagraph } from './DocParagraph';
 import {
   DocNodeContainer,
-  IDocNodeContainerParameters,
-  IDocNodeContainerParsedParameters
+  type IDocNodeContainerParameters,
+  type IDocNodeContainerParsedParameters
 } from './DocNodeContainer';
 
 /**
