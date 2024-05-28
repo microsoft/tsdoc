@@ -16,6 +16,7 @@ jobs:
     displayName: Build
     steps:
       - checkout: self
+        path: tsdoc
 
       - template: /common/config/azure-pipelines/templates/install-node.yaml@self
 
@@ -31,6 +32,7 @@ jobs:
     steps:
       - checkout: pagesBranch
         persistCredentials: true
+
       - script: git checkout gh-pages
         displayName: 'Checkout gh-pages Branch'
 
