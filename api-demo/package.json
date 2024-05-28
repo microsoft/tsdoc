@@ -7,10 +7,9 @@
   "dependencies": {
     "@microsoft/tsdoc": "workspace:*",
     "colors": "~1.4.0",
-    "typescript": "~5.0.4"
+    "typescript": "~5.4.2"
   },
   "devDependencies": {
-    "@rushstack/eslint-config": "~3.6.10",
     "@rushstack/heft-node-rig": "~2.6.11",
     "@rushstack/heft": "^0.66.13",
     "@types/heft-jest": "1.0.3",
