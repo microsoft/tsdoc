@@ -43,7 +43,7 @@ jobs:
           artifact: playground
           targetPath: $(Build.SourcesDirectory)
 
-      - template: ./templates/configure-git.yaml
+      - template: /common/config/azure-pipelines/templates/configure-git.yaml@self
 
       - script: |
           git add -A
