@@ -10,7 +10,7 @@
    *
    * See https://rushjs.io/pages/maintainer/build_cache/ for details about this experimental feature.
    */
-  "buildCacheEnabled": false,
+  "buildCacheEnabled": true,
 
   /**
    * (Required) Choose where project build outputs will be cached.
@@ -24,13 +24,15 @@
    * a [hash] token.
    *
    * Other available tokens:
-   *  - [projectName]
-   *  - [projectName:normalize]
-   *  - [phaseName]
-   *  - [phaseName:normalize]
-   *  - [phaseName:trimPrefix]
+   *  - [projectName]             Example: "@my-scope/my-project"
+   *  - [projectName:normalize]   Example: "my-scope+my-project"
+   *  - [phaseName]               Example: "_phase:test/api"
+   *  - [phaseName:normalize]     Example: "_phase:test+api"
+   *  - [phaseName:trimPrefix]    Example: "test/api"
+   *  - [os]                      Example: "win32"
+   *  - [arch]                    Example: "x64"
    */
-  // "cacheEntryNamePattern": "[projectName:normalize]-[phaseName:normalize]-[hash]"
+  "cacheEntryNamePattern": "[projectName:normalize]-[phaseName:normalize]-[hash]",
 
   /**
    * Use this configuration with "cacheProvider"="azure-blob-storage"

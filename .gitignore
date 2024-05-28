@@ -31,8 +31,8 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
-jspm_packages/
+node_modules
+jspm_packages
 
 # Optional npm cache directory
 .npm
@@ -58,11 +58,21 @@ jspm_packages/
 # OS X temporary files
 .DS_Store
 
+# IntelliJ IDEA project files; if you want to commit IntelliJ settings, this recipe may be helpful:
+# https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+.idea/
+*.iml
+
 # Rush temporary files
 common/deploy/
 common/temp/
 common/autoinstallers/*/.npmrc
 **/.rush/temp/
+*.lock
+
+# Heft temporary files
+.cache
+.heft
 
 # Common toolchain intermediate files
 temp
@@ -77,7 +87,3 @@ dist
 
 # Visual Studio Code
 .vscode
-
-# Heft
-*/.heft/build-cache/**
-*/.heft/temp/**

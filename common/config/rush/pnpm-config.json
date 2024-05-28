@@ -20,6 +20,49 @@
   "useWorkspaces": true,
 
   /**
+   * This setting determines how PNPM chooses version numbers during `rush update`.
+   * For example, suppose `lib-x@3.0.0` depends on `"lib-y": "^1.2.3"` whose latest major
+   * releases are `1.8.9` and `2.3.4`.  The resolution mode `lowest-direct` might choose
+   * `lib-y@1.2.3`, wheres `highest` will choose 1.8.9, and `time-based` will pick the
+   * highest compatible version at the time when `lib-x@3.0.0` itself was published (ensuring
+   * that the version could have been tested by the maintainer of "lib-x").  For local workspace
+   * projects, `time-based` instead works like `lowest-direct`, avoiding upgrades unless
+   * they are explicitly requested. Although `time-based` is the most robust option, it may be
+   * slightly slower with registries such as npmjs.com that have not implemented an optimization.
+   *
+   * IMPORTANT: Be aware that PNPM 8.0.0 initially defaulted to `lowest-direct` instead of
+   * `highest`, but PNPM reverted this decision in 8.6.12 because it caused confusion for users.
+   * Rush version 5.106.0 and newer avoids this confusion by consistently defaulting to
+   * `highest` when `resolutionMode` is not explicitly set in pnpm-config.json or .npmrc,
+   * regardless of your PNPM version.
+   *
+   * PNPM documentation: https://pnpm.io/npmrc#resolution-mode
+   *
+   * Possible values are: `highest`, `time-based`, and `lowest-direct`.
+   * The default is `highest`.
+   */
+  // "resolutionMode": "time-based",
+
+  /**
+   * This setting determines whether PNPM will automatically install (non-optional)
+   * missing peer dependencies instead of reporting an error.  Doing so conveniently
+   * avoids the need to specify peer versions in package.json, but in a large monorepo
+   * this often creates worse problems.  The reason is that peer dependency behavior
+   * is inherently complicated, and it is easier to troubleshoot consequences of an explicit
+   * version than an invisible heuristic.  The original NPM RFC discussion pointed out
+   * some other problems with this feature: https://github.com/npm/rfcs/pull/43
+
+   * IMPORTANT: Without Rush, the setting defaults to true for PNPM 8 and newer; however,
+   * as of Rush version 5.109.0 the default is always false unless `autoInstallPeers`
+   * is specified in pnpm-config.json or .npmrc, regardless of your PNPM version.
+
+   * PNPM documentation: https://pnpm.io/npmrc#auto-install-peers
+
+   * The default value is false.
+   */
+  // "autoInstallPeers": false,
+
+  /**
    * If true, then Rush will add the `--strict-peer-dependencies` command-line parameter when
    * invoking PNPM.  This causes `rush update` to fail if there are unsatisfied peer dependencies,
    * which is an invalid state that can cause build failures or incompatible dependency versions.
@@ -75,6 +118,68 @@
    * The default value is false.
    */
   // "preventManualShrinkwrapChanges": true,
+
+  /**
+   * When a project uses `workspace:` to depend on another Rush project, PNPM normally installs
+   * it by creating a symlink under `node_modules`.  This generally works well, but in certain
+   * cases such as differing `peerDependencies` versions, symlinking may cause trouble
+   * such as incorrectly satisfied versions.  For such cases, the dependency can be declared
+   * as "injected", causing PNPM to copy its built output into `node_modules` like a real
+   * install from a registry.  Details here: https://rushjs.io/pages/advanced/injected_deps/
+   *
+   * When using Rush subspaces, these sorts of versioning problems are much more likely if
+   * `workspace:` refers to a project from a different subspace.  This is because the symlink
+   * would point to a separate `node_modules` tree installed by a different PNPM lockfile.
+   * A comprehensive solution is to enable `alwaysInjectDependenciesFromOtherSubspaces`,
+   * which automatically treats all projects from other subspaces as injected dependencies
+   * without having to manually configure them.
+   *
+   * NOTE: Use carefully -- excessive file copying can slow down the `rush install` and
+   * `pnpm-sync` operations if too many dependencies become injected.
+   *
+   * The default value is false.
+   */
+  // "alwaysInjectDependenciesFromOtherSubspaces": false,
+
+  /**
+   * Defines the policies to be checked for the `pnpm-lock.yaml` file.
+   */
+  "pnpmLockfilePolicies": {
+    /**
+     * This policy will cause "rush update" to report an error if `pnpm-lock.yaml` contains
+     * any SHA1 integrity hashes.
+     *
+     * For each NPM dependency, `pnpm-lock.yaml` normally stores an `integrity` hash.  Although
+     * its main purpose is to detect corrupted or truncated network requests, this hash can also
+     * serve as a security fingerprint to protect against attacks that would substitute a
+     * malicious tarball, for example if a misconfigured .npmrc caused a machine to accidentally
+     * download a matching package name+version from npmjs.com instead of the private NPM registry.
+     * NPM originally used a SHA1 hash; this was insecure because an attacker can too easily craft
+     * a tarball with a matching fingerprint.  For this reason, NPM later deprecated SHA1 and
+     * instead adopted a cryptographically strong SHA512 hash.  Nonetheless, SHA1 hashes can
+     * occasionally reappear during "rush update", for example due to missing metadata fallbacks
+     * (https://github.com/orgs/pnpm/discussions/6194) or an incompletely migrated private registry.
+     * The `disallowInsecureSha1` policy prevents this, avoiding potential security/compliance alerts.
+     */
+    // "disallowInsecureSha1": {
+    //   /**
+    //    * Enables the "disallowInsecureSha1" policy.  The default value is false.
+    //    */
+    //   "enabled": true,
+    //
+    //   /**
+    //    * In rare cases, a private NPM registry may continue to serve SHA1 hashes for very old
+    //    * package versions, perhaps due to a caching issue or database migration glitch.  To avoid
+    //    * having to disable the "disallowInsecureSha1" policy for the entire monorepo, the problematic
+    //    * package versions can be individually ignored.  The "exemptPackageVersions" key is the
+    //    * package name, and the array value lists exact version numbers to be ignored.
+    //    */
+    //   "exemptPackageVersions": {
+    //     "example1": ["1.0.0"],
+    //     "example2": ["2.0.0", "2.0.1"]
+    //   }
+    // }
+  },
 
   /**
    * The "globalOverrides" setting provides a simple mechanism for overriding version selections
