@@ -87,8 +87,8 @@ export class DocErrorText extends DocNode {
    * somewhat farther ahead in the input stream from the DocErrorText node itself.
    *
    * @remarks
-   * For example, for the malformed HTML tag `<a href="123" @ /a>`, the DocErrorText node
-   * will correspond to the `<` character that looked like an HTML tag, whereas the
+   * For example, for the malformed XML tag `<a href="123" @ /a>`, the DocErrorText node
+   * will correspond to the `<` character that looked like an XML tag, whereas the
    * error location might be the `@` character that caused the trouble.
    */
   public get errorLocation(): TokenSequence {

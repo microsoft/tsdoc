@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "(BREAKING SYNTAX CHANGE) Improve the parser to report syntax errors if opening/closing XML tags are not correctly matched",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc",
+  "email": "suneettipirneni@users.noreply.github.com"
+}

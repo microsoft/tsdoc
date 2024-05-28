@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "(BREAKING API CHANGE) Rename several APIs to use the name \"Xml\" instead of \"Html\". For example, TSDocConfigFile.addSupportedHtmlElement() was renamed to TSDocConfigFile.addSupportedXmlElement().",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config",
+  "email": "suneettipirneni@users.noreply.github.com"
+}

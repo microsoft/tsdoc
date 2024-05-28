@@ -3,9 +3,9 @@ import { TokenSequence } from '../parser/TokenSequence';
 import { DocExcerpt, ExcerptKind } from './DocExcerpt';
 
 /**
- * Constructor parameters for {@link DocHtmlAttribute}.
+ * Constructor parameters for {@link DocXmlAttribute}.
  */
-export interface IDocHtmlAttributeParameters extends IDocNodeParameters {
+export interface IDocXmlAttributeParameters extends IDocNodeParameters {
   name: string;
   spacingAfterName?: string;
   spacingAfterEquals?: string;
@@ -14,9 +14,9 @@ export interface IDocHtmlAttributeParameters extends IDocNodeParameters {
 }
 
 /**
- * Constructor parameters for {@link DocHtmlAttribute}.
+ * Constructor parameters for {@link DocXmlAttribute}.
  */
-export interface IDocHtmlAttributeParsedParameters extends IDocNodeParsedParameters {
+export interface IDocXmlAttributeParsedParameters extends IDocNodeParsedParameters {
   nameExcerpt: TokenSequence;
   spacingAfterNameExcerpt?: TokenSequence;
 
@@ -32,7 +32,7 @@ export interface IDocHtmlAttributeParsedParameters extends IDocNodeParsedParamet
  *
  * Example: `href="#"` inside `<a href="#" />`
  */
-export class DocHtmlAttribute extends DocNode {
+export class DocXmlAttribute extends DocNode {
   // The attribute name
   private _name: string | undefined;
   private readonly _nameExcerpt: DocExcerpt | undefined;
@@ -57,13 +57,13 @@ export class DocHtmlAttribute extends DocNode {
    * Don't call this directly.  Instead use {@link TSDocParser}
    * @internal
    */
-  public constructor(parameters: IDocHtmlAttributeParameters | IDocHtmlAttributeParsedParameters) {
+  public constructor(parameters: IDocXmlAttributeParameters | IDocXmlAttributeParsedParameters) {
     super(parameters);
 
     if (DocNode.isParsedParameters(parameters)) {
       this._nameExcerpt = new DocExcerpt({
         configuration: this.configuration,
-        excerptKind: ExcerptKind.HtmlAttribute_Name,
+        excerptKind: ExcerptKind.XmlAttribute_Name,
         content: parameters.nameExcerpt
       });
       if (parameters.spacingAfterNameExcerpt) {
@@ -76,7 +76,7 @@ export class DocHtmlAttribute extends DocNode {
 
       this._equalsExcerpt = new DocExcerpt({
         configuration: this.configuration,
-        excerptKind: ExcerptKind.HtmlAttribute_Equals,
+        excerptKind: ExcerptKind.XmlAttribute_Equals,
         content: parameters.equalsExcerpt
       });
       if (parameters.spacingAfterEqualsExcerpt) {
@@ -89,7 +89,7 @@ export class DocHtmlAttribute extends DocNode {
 
       this._valueExcerpt = new DocExcerpt({
         configuration: this.configuration,
-        excerptKind: ExcerptKind.HtmlAttribute_Value,
+        excerptKind: ExcerptKind.XmlAttribute_Value,
         content: parameters.valueExcerpt
       });
       if (parameters.spacingAfterValueExcerpt) {
@@ -112,7 +112,7 @@ export class DocHtmlAttribute extends DocNode {
 
   /** @override */
   public get kind(): DocNodeKind | string {
-    return DocNodeKind.HtmlAttribute;
+    return DocNodeKind.XmlAttribute;
   }
 
   /**

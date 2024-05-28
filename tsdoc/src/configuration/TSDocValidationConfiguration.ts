@@ -35,10 +35,10 @@ export class TSDocValidationConfiguration {
   public reportUnsupportedTags: boolean = false;
 
   /**
-   * Set `reportUnsupportedHtmlElements` to true to issue a warning for HTML elements which
-   * are not defined in your TSDoc configuration's `supportedHtmlElements` field.
+   * Set `reportUnsupportedXmlElements` to true to issue a warning for XML elements which
+   * are not defined in your TSDoc configuration's `supportedXmlElements` field.
    *
    * @defaultValue `false`
    */
-  public reportUnsupportedHtmlElements: boolean = false;
+  public reportUnsupportedXmlElements: boolean = false;
 }
