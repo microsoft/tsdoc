@@ -32,18 +32,21 @@ jobs:
     steps:
       - checkout: pagesBranch
         persistCredentials: true
+        path: tsdoc
 
       - script: git checkout gh-pages
         displayName: 'Checkout gh-pages Branch'
+        workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
 
       - script: rm -r $(Build.SourcesDirectory)/*
         displayName: 'Clean Pages Branch'
+        workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
 
       - task: DownloadPipelineArtifact@2
         displayName: 'Download Playground Artifacts'
         inputs:
           artifact: playground
-          targetPath: $(Build.SourcesDirectory)
+          targetPath: $(Agent.BuildDirectory)/tsdoc
 
       - template: /common/config/azure-pipelines/templates/configure-git.yaml@self
 
@@ -58,3 +61,4 @@ jobs:
             echo "No changes"
           fi
         displayName: 'Commit and push playground artifacts'
+        workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
