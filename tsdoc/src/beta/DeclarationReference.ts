@@ -1,11 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
 // See LICENSE in the project root for license information.
 
-/* eslint-disable max-lines */
-/* eslint-disable @typescript-eslint/array-type */
-/* eslint-disable no-return-assign */
-/* eslint-disable no-sequences */
-/* eslint-disable no-inner-declarations */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/naming-convention */
 
@@ -1178,49 +1173,98 @@ class Parser {
 
   private parseNavigation(): Navigation {
     switch (this._scanner.token()) {
-      case Token.DotToken:
-        return this._scanner.scan(), Navigation.Exports;
-      case Token.HashToken:
-        return this._scanner.scan(), Navigation.Members;
-      case Token.TildeToken:
-        return this._scanner.scan(), Navigation.Locals;
-      default:
+      case Token.DotToken: {
+        this._scanner.scan();
+        return Navigation.Exports;
+      }
+
+      case Token.HashToken: {
+        this._scanner.scan();
+        return Navigation.Members;
+      }
+
+      case Token.TildeToken: {
+        this._scanner.scan();
+        return Navigation.Locals;
+      }
+
+      default: {
         return this.fail("Expected '.', '#', or '~'", Navigation.Exports);
+      }
     }
   }
 
   private tryParseMeaning(): Meaning | undefined {
     switch (this._scanner.rescanMeaning()) {
-      case Token.ClassKeyword:
-        return this._scanner.scan(), Meaning.Class;
-      case Token.InterfaceKeyword:
-        return this._scanner.scan(), Meaning.Interface;
-      case Token.TypeKeyword:
-        return this._scanner.scan(), Meaning.TypeAlias;
-      case Token.EnumKeyword:
-        return this._scanner.scan(), Meaning.Enum;
-      case Token.NamespaceKeyword:
-        return this._scanner.scan(), Meaning.Namespace;
-      case Token.FunctionKeyword:
-        return this._scanner.scan(), Meaning.Function;
-      case Token.VarKeyword:
-        return this._scanner.scan(), Meaning.Variable;
-      case Token.ConstructorKeyword:
-        return this._scanner.scan(), Meaning.Constructor;
-      case Token.MemberKeyword:
-        return this._scanner.scan(), Meaning.Member;
-      case Token.EventKeyword:
-        return this._scanner.scan(), Meaning.Event;
-      case Token.CallKeyword:
-        return this._scanner.scan(), Meaning.CallSignature;
-      case Token.NewKeyword:
-        return this._scanner.scan(), Meaning.ConstructSignature;
-      case Token.IndexKeyword:
-        return this._scanner.scan(), Meaning.IndexSignature;
-      case Token.ComplexKeyword:
-        return this._scanner.scan(), Meaning.ComplexType;
-      default:
-        return undefined;
+      case Token.ClassKeyword: {
+        this._scanner.scan();
+        return Meaning.Class;
+      }
+
+      case Token.InterfaceKeyword: {
+        this._scanner.scan();
+        return Meaning.Interface;
+      }
+
+      case Token.TypeKeyword: {
+        this._scanner.scan();
+        return Meaning.TypeAlias;
+      }
+
+      case Token.EnumKeyword: {
+        this._scanner.scan();
+        return Meaning.Enum;
+      }
+
+      case Token.NamespaceKeyword: {
+        this._scanner.scan();
+        return Meaning.Namespace;
+      }
+
+      case Token.FunctionKeyword: {
+        this._scanner.scan();
+        return Meaning.Function;
+      }
+
+      case Token.VarKeyword: {
+        this._scanner.scan();
+        return Meaning.Variable;
+      }
+
+      case Token.ConstructorKeyword: {
+        this._scanner.scan();
+        return Meaning.Constructor;
+      }
+
+      case Token.MemberKeyword: {
+        this._scanner.scan();
+        return Meaning.Member;
+      }
+
+      case Token.EventKeyword: {
+        this._scanner.scan();
+        return Meaning.Event;
+      }
+
+      case Token.CallKeyword: {
+        this._scanner.scan();
+        return Meaning.CallSignature;
+      }
+
+      case Token.NewKeyword: {
+        this._scanner.scan();
+        return Meaning.ConstructSignature;
+      }
+
+      case Token.IndexKeyword: {
+        this._scanner.scan();
+        return Meaning.IndexSignature;
+      }
+
+      case Token.ComplexKeyword: {
+        this._scanner.scan();
+        return Meaning.ComplexType;
+      }
     }
   }
 
