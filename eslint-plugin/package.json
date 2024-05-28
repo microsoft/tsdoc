@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-tsdoc",
-  "version": "0.2.17",
+  "version": "0.3.0",
   "description": "An ESLint plugin that validates TypeScript doc comments",
   "keywords": [
     "TypeScript",
