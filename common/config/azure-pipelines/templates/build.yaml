@@ -1,11 +1,5 @@
 steps:
-  - script: 'git config --local user.email rushbot@users.noreply.github.com'
-    displayName: 'git config email'
-    workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
-
-  - script: 'git config --local user.name Rushbot'
-    displayName: 'git config name'
-    workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
+  - template: /common/config/azure-pipelines/templates/configure-git.yaml@self
 
   - script: 'node common/scripts/install-run-rush.js change --verify'
     displayName: 'Verify Change Logs'
