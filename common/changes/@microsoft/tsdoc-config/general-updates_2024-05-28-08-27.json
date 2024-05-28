@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Minor package cleanup.",
+      "type": "minor",
+      "packageName": "@microsoft/tsdoc-config"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config",
+  "email": "iclanton@users.noreply.github.com"
+}

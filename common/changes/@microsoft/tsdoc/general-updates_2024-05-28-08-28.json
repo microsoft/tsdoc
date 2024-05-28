@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Eliminate remaining const enums.",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc"
+}

@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Minor package cleanup.",
+      "type": "minor",
+      "packageName": "eslint-plugin-tsdoc"
+    }
+  ],
+  "packageName": "eslint-plugin-tsdoc",
+  "email": "iclanton@users.noreply.github.com"
+}
