@@ -20,7 +20,6 @@
   "main": "lib/index.js",
   "files": [
     "lib/*.js",
-    "lib/*.js.map",
     "lib/**/*.d.ts"
   ],
   "typings": "lib/index.d.ts",
