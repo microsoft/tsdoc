@@ -11,19 +11,23 @@
   },
   "dependencies": {
     "@microsoft/tsdoc": "workspace:*",
-    "@types/react-dom": "16.9.3",
     "@types/react": "16.9.11",
-    "monaco-editor": "~0.38.0",
+    "@types/react-dom": "16.9.3",
+    "monaco-editor": "~0.50.0",
     "promise": "~8.0.3",
+    "react": "~16.14.0",
+    "react-dom": "~16.14.0",
     "tslib": "~2.5.3"
   },
   "devDependencies": {
-    "@rushstack/heft-web-rig": "~0.24.11",
     "@rushstack/heft": "^0.66.13",
+    "@rushstack/heft-web-rig": "~0.24.11",
     "@types/webpack-env": "1.18.0",
     "eslint": "~8.57.0",
     "eslint-plugin-header": "~3.1.1",
+    "handlebars": "~4.7.7",
     "handlebars-loader": "~1.7.3",
-    "handlebars": "~4.7.7"
+    "monaco-editor-webpack-plugin": "~7.1.0",
+    "webpack": "~5.92.1"
   }
 }
