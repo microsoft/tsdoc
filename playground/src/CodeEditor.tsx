@@ -2,8 +2,9 @@
 // See LICENSE in the project root for license information.
 
 import * as React from 'react';
-import type * as monacoEditor from 'monaco-editor';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as tsdoc from '@microsoft/tsdoc';
+
 import { FlexColDiv } from './FlexDivs';
 
 export interface ITextRange {
@@ -48,36 +49,19 @@ export interface ICodeEditorProps {
 }
 
 export interface ICodeEditorState {
-  monaco?: typeof monacoEditor;
   monacoErrorMessage?: string;
 }
 
-interface IMonacoWindow extends Window {
-  require: {
-    (paths: string[], callback: (monaco: typeof monacoEditor) => void): void;
-    config: (options: { paths: { [name: string]: string } }) => void;
-  };
-  MonacoEnvironment?: monacoEditor.Environment & {
-    getWorkerUrl: (workerId: string, label: string) => void;
-  };
-}
-
-interface IMonarchLanguageConfiguration extends monacoEditor.languages.IMonarchLanguage {
+interface IMonarchLanguageConfiguration extends monaco.languages.IMonarchLanguage {
   keywords: string[];
 }
 
-declare const MONACO_URL: string;
-const MONACO_BASE_URL: string = MONACO_URL;
-
 export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorState> {
-  private static _initializePromise: Promise<typeof monacoEditor>;
   private static _editorIdCounter: number = 0;
-  private static _monaco: typeof monacoEditor;
 
   private _existingSyntaxStyles: { [hash: string]: string } = {};
   private _editorId: string;
-  private _isMounted: boolean = false;
-  private _editor: monacoEditor.editor.IStandaloneCodeEditor | undefined;
+  private _editor: monaco.editor.IStandaloneCodeEditor | undefined;
 
   private _placeholderDivRef: HTMLDivElement | undefined;
   private _hostDivRef: HTMLDivElement | undefined;
@@ -100,9 +84,9 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
     }
   }
 
-  private _getEditorModel(): monacoEditor.editor.ITextModel {
+  private _getEditorModel(): monaco.editor.ITextModel {
     if (this._editor) {
-      const model: monacoEditor.editor.ITextModel | null = this._editor.getModel();
+      const model: monaco.editor.ITextModel | null = this._editor.getModel();
       if (model) {
         return model;
       }
@@ -110,57 +94,13 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
     throw new Error('Invalid access to MonacoEditor.getModel()');
   }
 
-  private static _initializeMonaco(): Promise<typeof monacoEditor> {
-    if (!CodeEditor._initializePromise) {
-      CodeEditor._initializePromise = new Promise(
-        (resolve: (monaco: typeof monacoEditor) => void, reject: (error: Error) => void) => {
-          const monacoWindow: IMonacoWindow = window as unknown as IMonacoWindow;
-          monacoWindow.require.config({ paths: { vs: `${MONACO_BASE_URL}vs/` } });
-
-          monacoWindow.MonacoEnvironment = {
-            getWorkerUrl: (workerId, label) => {
-              return `data:text/javascript;charset=utf-8,${encodeURIComponent(
-                'self.MonacoEnvironment = {' +
-                  `baseUrl: '${MONACO_BASE_URL}'` +
-                  '};' +
-                  `importScripts('${MONACO_BASE_URL}vs/base/worker/workerMain.js');`
-              )}`;
-            }
-          };
-
-          monacoWindow.require(['vs/editor/editor.main'], (monaco) => {
-            if (monaco) {
-              resolve(monaco);
-            } else {
-              reject(new Error('Unable to load Monaco editor'));
-            }
-          });
-        }
-      ).then((monaco) => {
-        CodeEditor._monaco = monaco;
-        return monaco;
-      });
-    }
-
-    return CodeEditor._initializePromise;
-  }
-
   public componentDidMount(): void {
-    this._isMounted = true;
-    CodeEditor._initializeMonaco()
-      .then((monaco) => {
-        this.setState({ monaco });
-        if (this._isMounted) {
-          window.addEventListener('resize', this._onWindowResize);
-        }
-      })
-      .catch((error) => {
-        this.setState({ monacoErrorMessage: `Error loading Monaco editor: ${error}` });
-      });
+    window.addEventListener('resize', this._onWindowResize);
+
+    this._createEditor();
   }
 
   public componentWillUnmount(): void {
-    this._isMounted = false;
     this._editor = undefined;
 
     this._placeholderDivRef = undefined;
@@ -175,27 +115,25 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
         this._editor.setValue(this.props.value || '');
       }
 
-      if (CodeEditor._monaco) {
-        CodeEditor._monaco.editor.setModelMarkers(
-          this._getEditorModel(),
-          this._editorId,
-          (this.props.markers || []).map((marker) => {
-            const startPos: monacoEditor.Position = this._getEditorModel().getPositionAt(marker.pos);
-            const endPos: monacoEditor.Position = this._getEditorModel().getPositionAt(marker.end);
-            return {
-              startLineNumber: startPos.lineNumber,
-              startColumn: startPos.column,
-              endLineNumber: endPos.lineNumber,
-              endColumn: endPos.column,
-              severity: CodeEditor._monaco.MarkerSeverity.Error,
-              message: marker.message
-            };
-          })
-        );
+      monaco.editor.setModelMarkers(
+        this._getEditorModel(),
+        this._editorId,
+        (this.props.markers || []).map((marker) => {
+          const startPos: monaco.Position = this._getEditorModel().getPositionAt(marker.pos);
+          const endPos: monaco.Position = this._getEditorModel().getPositionAt(marker.end);
+          return {
+            startLineNumber: startPos.lineNumber,
+            startColumn: startPos.column,
+            endLineNumber: endPos.lineNumber,
+            endColumn: endPos.column,
+            severity: monaco.MarkerSeverity.Error,
+            message: marker.message
+          };
+        })
+      );
 
-        if (this.props.theme !== prevProps.theme) {
-          CodeEditor._monaco.editor.setTheme(this.props.theme || 'vs');
-        }
+      if (this.props.theme !== prevProps.theme) {
+        monaco.editor.setTheme(this.props.theme || 'vs');
       }
 
       if (this.props.disableLineNumbers !== prevProps.disableLineNumbers) {
@@ -248,7 +186,6 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
 
   private _onRefHost(element: HTMLDivElement): void {
     this._hostDivRef = element;
-    this._createEditor();
   }
 
   private _applySyntaxStyling(newSyntaxStyles: IStyledRange[]): void {
@@ -282,18 +219,13 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
       const decorationIds: string[] = this._getEditorModel().deltaDecorations(
         [],
         decorationsToAdd.map((decoration) => {
-          const startPos: monacoEditor.Position = this._getEditorModel().getPositionAt(decoration.pos);
-          const endPos: monacoEditor.Position = this._getEditorModel().getPositionAt(decoration.end);
+          const startPos: monaco.Position = this._getEditorModel().getPositionAt(decoration.pos);
+          const endPos: monaco.Position = this._getEditorModel().getPositionAt(decoration.end);
 
           return {
-            range: new CodeEditor._monaco.Range(
-              startPos.lineNumber,
-              startPos.column,
-              endPos.lineNumber,
-              endPos.column
-            ),
+            range: new monaco.Range(startPos.lineNumber, startPos.column, endPos.lineNumber, endPos.column),
             options: {
-              stickiness: CodeEditor._monaco.editor.TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges,
+              stickiness: monaco.editor.TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges,
               isWholeLine: false,
               inlineClassName: decoration.className
             }
@@ -320,66 +252,60 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
   }
 
   private _createEditor(): void {
-    CodeEditor._initializeMonaco()
-      .then((monaco) => {
-        if (!this._editor && this._hostDivRef) {
-          const tsdocLanguage: IMonarchLanguageConfiguration = {
-            keywords: tsdoc.StandardTags.allDefinitions.map((tag: tsdoc.TSDocTagDefinition) => tag.tagName),
-            tokenizer: {
-              common: [[/\/\*\*/, 'comment', '@comment']],
-              comment: [
-                [/\*/, 'comment'],
-                [/\\* [^\n@*]*/, 'comment'],
-                [/(?:\/)[\n|*]*/, 'comment', '@pop'],
-                [
-                  /@[^ \n]*/,
-                  {
-                    cases: {
-                      '@keywords': 'keyword',
-                      '@default': 'annotation'
-                    }
-                  }
-                ]
-              ]
-            }
-          };
-
-          monaco.languages.register({ id: 'tsdocLanguage' });
-          monaco.languages.setMonarchTokensProvider('tsdocLanguage', tsdocLanguage);
-
-          this._editor = monaco.editor.create(this._hostDivRef, {
-            value: this.props.value || '',
-            language: this.props.language,
-            readOnly: this.props.readOnly,
-            minimap: {
-              enabled: false
-            },
-            lineNumbers: this.props.disableLineNumbers ? 'off' : 'on',
-            theme: this.props.theme,
-            wordWrap: this.props.wordWrap ? 'on' : 'off'
-          });
-
-          this._editor.addAction({
-            id: 'escapeAction',
-            label: 'Accessability Escape',
-            keybindings: [monaco.KeyCode.Escape],
-            run: () => {
-              (document.activeElement as HTMLElement | undefined)?.blur?.();
-            }
-          });
-
-          this._getEditorModel().onDidChangeContent((e) => {
-            if (this._editor) {
-              this._safeOnChange(this._editor.getValue());
-            }
-          });
-
-          this._onWindowResize();
+    if (!this._editor && this._hostDivRef) {
+      const tsdocLanguage: IMonarchLanguageConfiguration = {
+        keywords: tsdoc.StandardTags.allDefinitions.map((tag: tsdoc.TSDocTagDefinition) => tag.tagName),
+        tokenizer: {
+          common: [[/\/\*\*/, 'comment', '@comment']],
+          comment: [
+            [/\*/, 'comment'],
+            [/\\* [^\n@*]*/, 'comment'],
+            [/(?:\/)[\n|*]*/, 'comment', '@pop'],
+            [
+              /@[^ \n]*/,
+              {
+                cases: {
+                  '@keywords': 'keyword',
+                  '@default': 'annotation'
+                }
+              }
+            ]
+          ]
         }
-      })
-      .catch((e) => {
-        console.error('CodeEditor._createEditor() failed: ' + e.toString());
+      };
+
+      monaco.languages.register({ id: 'tsdocLanguage' });
+      monaco.languages.setMonarchTokensProvider('tsdocLanguage', tsdocLanguage);
+
+      this._editor = monaco.editor.create(this._hostDivRef, {
+        value: this.props.value || '',
+        language: this.props.language,
+        readOnly: this.props.readOnly,
+        minimap: {
+          enabled: false
+        },
+        lineNumbers: this.props.disableLineNumbers ? 'off' : 'on',
+        theme: this.props.theme,
+        wordWrap: this.props.wordWrap ? 'on' : 'off'
       });
+
+      this._editor.addAction({
+        id: 'escapeAction',
+        label: 'Accessability Escape',
+        keybindings: [monaco.KeyCode.Escape],
+        run: () => {
+          (document.activeElement as HTMLElement | undefined)?.blur?.();
+        }
+      });
+
+      this._getEditorModel().onDidChangeContent((e) => {
+        if (this._editor) {
+          this._safeOnChange(this._editor.getValue());
+        }
+      });
+
+      this._onWindowResize();
+    }
   }
 
   private _onWindowResize(): void {

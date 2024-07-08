@@ -1,84 +1,75 @@
 'use strict';
 
 const path = require('path');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+
+const RIG_BASE_PATH = path.dirname(require.resolve('@rushstack/heft-web-rig/package.json'));
+
+/**
+ * require.resolve() an importPath using another NPM package's folder as
+ * the base directory for module resolution
+ */
+function getPackagePathRelativeToRig(importPath) {
+  const targetPath = require.resolve(importPath, { paths: [RIG_BASE_PATH] });
+  return targetPath;
+}
 
 /**
  * require() an importPath using another NPM package's folder as
  * the base directory for module resolution
  */
-function requireRelativeTo(importPath, otherPackage) {
-  const baseFolder = path.dirname(require.resolve(`${otherPackage}/package.json`));
-  const targetPath = require.resolve(importPath, { paths: [baseFolder] });
+function requireRelativeToRig(importPath) {
+  const targetPath = getPackagePathRelativeToRig(importPath);
   return require(targetPath);
 }
 
 const createWebpackConfig = require('@rushstack/heft-web-rig/profiles/app/webpack-base.config');
 
-const webpack = requireRelativeTo('webpack', '@rushstack/heft-web-rig');
-const HtmlWebpackPlugin = requireRelativeTo('html-webpack-plugin', '@rushstack/heft-web-rig');
-
-const REACT_URL = {
-  dev: 'https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.development.js',
-  production: 'https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.production.min.js'
-};
-const REACT_DOM_URL = {
-  dev: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.development.js',
-  production: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.production.min.js'
-};
-const REACT_DOM_SERVER_URL = {
-  dev: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.5.1/umd/react-dom-server.browser.development.js',
-  production:
-    'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.5.1/umd/react-dom-server.browser.production.min.js'
-};
-const MONACO_URL = {
-  dev: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/',
-  production: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.14.3/min/'
-};
+const webpack = requireRelativeToRig('webpack');
+const HtmlWebpackPlugin = requireRelativeToRig('html-webpack-plugin');
 
 module.exports = function createConfig(env, argv) {
-  const isProduction = env.production;
-  console.log(`isProduction=${isProduction}`);
-  const monacoUrl = isProduction ? MONACO_URL.production : MONACO_URL.dev;
   return createWebpackConfig({
     env: env,
     argv: argv,
     projectRoot: __dirname,
     // Documentation: https://webpack.js.org/configuration/
     configOverride: {
-      externals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
-        'react-dom/server': 'ReactDOMServer'
-      },
       module: {
         rules: [
           {
             // For the lib/samples files which are imported as source code
             test: /\.ts$/,
             type: 'asset/source'
+          },
+          // The following rules are needed to support the Monaco Editor
+          {
+            test: /\.css$/,
+            use: [getPackagePathRelativeToRig('style-loader'), getPackagePathRelativeToRig('css-loader')],
+            include: /node_modules[\/\\]monaco-editor/
+          },
+          {
+            test: /\.ttf$/,
+            type: 'asset/resource',
+            include: /node_modules[\/\\]monaco-editor/
           }
         ]
       },
       plugins: [
         new HtmlWebpackPlugin({
           inject: true,
-          template: `handlebars-loader!${path.join(__dirname, 'public', 'index.hbs')}`,
-          chunks: {},
-          templateParameters: {
-            scriptsToInclude: [
-              { url: isProduction ? REACT_URL.production : REACT_URL.dev },
-              { url: isProduction ? REACT_DOM_URL.production : REACT_DOM_URL.dev },
-              { url: isProduction ? REACT_DOM_SERVER_URL.production : REACT_DOM_SERVER_URL.dev },
-              { url: `${monacoUrl}vs/loader.js` }
-            ]
-          }
+          template: `handlebars-loader!${__dirname}/public/index.hbs`,
+          chunks: {}
         }),
         new webpack.optimize.ModuleConcatenationPlugin(),
         new webpack.DefinePlugin({
-          COMMIT_ID: `'${process.env['BUILD_SOURCEVERSION'] || 'COMMIT_SHA'}'`,
-          MONACO_URL: JSON.stringify(monacoUrl)
-        })
-      ]
+          COMMIT_ID: `'${process.env['BUILD_SOURCEVERSION'] || 'COMMIT_SHA'}'`
+        }),
+        new MonacoWebpackPlugin()
+      ],
+      performance: {
+        hints: false
+      }
     }
   });
 };
