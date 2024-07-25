@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "Include CHANGELOG.md in published releases again",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config"
+}
