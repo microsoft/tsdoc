@@ -55,8 +55,8 @@ importers:
         specifier: ~2.6.11
         version: 2.6.11(@rushstack/heft@0.66.13)(@types/node@14.18.36)
       '@types/eslint':
-        specifier: 8.40.1
-        version: 8.40.1
+        specifier: 8.56.10
+        version: 8.56.10
       '@types/estree':
         specifier: 1.0.1
         version: 1.0.1
@@ -1445,12 +1445,12 @@ packages:
   /@types/eslint-scope@3.7.4:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
-      '@types/eslint': 8.40.1
+      '@types/eslint': 8.56.10
       '@types/estree': 1.0.1
     dev: true
 
-  /@types/eslint@8.40.1:
-    resolution: {integrity: sha512-vRb792M4mF1FBT+eoLecmkpLXwxsBHvWWRGJjzbYANBM6DtiJc6yETyv4rqDA6QNjF1pkj1U7LMA6dGb3VYlHw==}
+  /@types/eslint@8.56.10:
+    resolution: {integrity: sha512-Shavhk87gCtY2fhXDctcfS3e6FdxWkCx1iUZ9eEUbh7rTqlZT0/IzOkCOVt0fCjcFuZ9FPYfuezTBImfHCDBGQ==}
     dependencies:
       '@types/estree': 1.0.1
       '@types/json-schema': 7.0.12
