@@ -1,15 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
 // See LICENSE in the project root for license information.
 
-import { RuleTester } from 'eslint';
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import * as plugin from '../index';
 
 const ruleTester: RuleTester = new RuleTester({
-  env: {
-    es6: true
+  languageOptions: {
+    ecmaVersion: 6
   }
 });
-ruleTester.run('"tsdoc/syntax" rule', plugin.rules.syntax, {
+
+ruleTester.run('syntax', plugin.rules.syntax, {
   valid: [
     '/**\nA great function!\n */\nfunction foobar() {}\n',
     '/**\nA great class!\n */\nclass FooBar {}\n'
