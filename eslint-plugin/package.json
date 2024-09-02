@@ -30,7 +30,13 @@
     "@microsoft/tsdoc": "workspace:*",
     "@microsoft/tsdoc-config": "workspace:*"
   },
+  "peerDependencies": {
+    "@typescript-eslint/parser": "^8",
+    "eslint": "^8"
+  },
   "devDependencies": {
+    "@typescript-eslint/rule-tester": "~8.3.0",
+    "@typescript-eslint/utils": "~8.3.0",
     "@rushstack/heft-node-rig": "~2.6.11",
     "@rushstack/heft": "^0.66.13",
     "@types/eslint": "8.40.1",
@@ -38,6 +44,7 @@
     "@types/heft-jest": "1.0.3",
     "@types/node": "14.18.36",
     "eslint": "~8.57.0",
-    "eslint-plugin-header": "~3.1.1"
+    "eslint-plugin-header": "~3.1.1",
+    "typescript": "~5.4.2"
   }
 }
