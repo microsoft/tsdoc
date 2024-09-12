@@ -102,7 +102,10 @@ export class TSDocEmitter {
         this._ensureLineSkipped();
         this._renderNode(docBlock.blockTag);
 
-        if (docBlock.blockTag.tagNameWithUpperCase === StandardTags.returns.tagNameWithUpperCase) {
+        if (
+          docBlock.blockTag.tagNameWithUpperCase === StandardTags.returns.tagNameWithUpperCase ||
+          docBlock.blockTag.tagNameWithUpperCase === StandardTags.defaultValue.tagNameWithUpperCase
+        ) {
           this._writeContent(' ');
           this._hangingParagraph = true;
         }

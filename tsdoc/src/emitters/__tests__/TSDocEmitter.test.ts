@@ -84,6 +84,7 @@ test('02 Emit a basic comment', () => {
  * line1
  * line2
  * \`\`\`
+ * @defaultValue value
  *
  * @public @readonly
  */
@@ -113,6 +114,8 @@ Object {
  * line1
  * line2
  * \`\`\`
+ *
+ * @defaultValue value
  *
  * @public @readonly
  */
