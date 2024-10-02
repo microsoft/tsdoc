@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc",
-      "comment": "Make the TSDocEmitter do not emit a newline for the text after @defaultValue.",
+      "comment": "Ensure TSDocEmitter does not emit a newline for the text after `@defaultValue` tags.",
       "type": "patch"
     }
   ],
