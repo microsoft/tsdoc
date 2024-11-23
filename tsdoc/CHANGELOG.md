@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Tue, 28 May 2024 21:34:19 GMT and should not be manually modified.
+This log was last generated on Sat, 23 Nov 2024 00:23:35 GMT and should not be manually modified.
+
+## 0.15.1
+Sat, 23 Nov 2024 00:23:35 GMT
+
+### Patches
+
+- Include CHANGELOG.md in published releases again
 
 ## 0.15.0
 Tue, 28 May 2024 21:34:19 GMT
