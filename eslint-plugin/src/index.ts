@@ -41,13 +41,16 @@ const plugin: IPlugin = {
         }
       },
       create: (context: eslint.Rule.RuleContext) => {
-        const sourceFilePath: string = context.getFilename();
+        const sourceFilePath: string = context.filename;
+        // If eslint is configured with @typescript-eslint/parser, there is a parser option
+        // to explicitly specify where the tsconfig file is. Use that if available.
+        const tsConfigDir: string | undefined = context.parserOptions.tsconfigRootDir;
         Debug.log(`Linting: "${sourceFilePath}"`);
 
         const tsdocConfiguration: TSDocConfiguration = new TSDocConfiguration();
 
         try {
-          const tsdocConfigFile: TSDocConfigFile = ConfigCache.getForSourceFile(sourceFilePath);
+          const tsdocConfigFile: TSDocConfigFile = ConfigCache.getForSourceFile(sourceFilePath, tsConfigDir);
           if (!tsdocConfigFile.fileNotFound) {
             if (tsdocConfigFile.hasErrors) {
               context.report({

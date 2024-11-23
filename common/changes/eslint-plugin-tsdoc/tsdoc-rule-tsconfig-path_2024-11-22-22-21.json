@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "eslint-plugin-tsdoc",
+      "comment": "Leverage `parserOptions.tsConfigRootDir` to reduce file system probing. This field is commonly used when eslint is configured with `@typescript-eslint/parser`.",
+      "type": "minor"
+    }
+  ],
+  "packageName": "eslint-plugin-tsdoc"
+}
