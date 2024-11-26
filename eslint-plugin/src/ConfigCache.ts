@@ -26,6 +26,7 @@ const CACHE_MAX_SIZE: number = 100;
 export class ConfigCache {
   // findConfigPathForFolder() result --> loaded tsdoc.json configuration
   private static _cachedConfigs: Map<string, ICachedConfig> = new Map<string, ICachedConfig>();
+  private static _cachedPaths: Map<string, string> = new Map();
 
   /**
    * Node.js equivalent of performance.now().
@@ -35,11 +36,17 @@ export class ConfigCache {
     return seconds * 1000 + nanoseconds / 1000000;
   }
 
-  public static getForSourceFile(sourceFilePath: string): TSDocConfigFile {
+  public static getForSourceFile(
+    sourceFilePath: string,
+    tsConfigRootDir?: string | undefined
+  ): TSDocConfigFile {
     const sourceFileFolder: string = path.dirname(path.resolve(sourceFilePath));
 
     // First, determine the file to be loaded. If not found, the configFilePath will be an empty string.
-    const configFilePath: string = TSDocConfigFile.findConfigPathForFolder(sourceFileFolder);
+    // If the eslint config has specified where the tsconfig file is, use that path directly without probing the filesystem.
+    const configFilePath: string = tsConfigRootDir
+      ? path.join(tsConfigRootDir, TSDocConfigFile.FILENAME)
+      : TSDocConfigFile.findConfigPathForFolder(sourceFileFolder);
 
     // If configFilePath is an empty string, then we'll use the folder of sourceFilePath as our cache key
     // (instead of an empty string)

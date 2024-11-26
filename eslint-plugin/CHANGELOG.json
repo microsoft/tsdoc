@@ -2,6 +2,31 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.4.0",
+      "tag": "eslint-plugin-tsdoc_v0.4.0",
+      "date": "Sat, 23 Nov 2024 00:23:35 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Include CHANGELOG.md in published releases again"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "Leverage `parserOptions.tsConfigRootDir` to reduce file system probing. This field is commonly used when eslint is configured with `@typescript-eslint/parser`."
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" to `0.15.1`"
+          },
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc-config\" to `0.17.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.3.0",
       "tag": "eslint-plugin-tsdoc_v0.3.0",
       "date": "Tue, 28 May 2024 21:34:19 GMT",
