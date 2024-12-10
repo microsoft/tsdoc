@@ -10,8 +10,8 @@
     "typescript": "~5.4.2"
   },
   "devDependencies": {
-    "@rushstack/heft-node-rig": "~2.6.11",
-    "@rushstack/heft": "^0.66.13",
+    "@rushstack/heft-node-rig": "~2.6.45",
+    "@rushstack/heft": "^0.68.10",
     "@types/heft-jest": "1.0.3",
     "@types/node": "14.18.36",
     "eslint": "~8.57.0",

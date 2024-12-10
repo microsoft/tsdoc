@@ -31,8 +31,8 @@
     "@microsoft/tsdoc-config": "workspace:*"
   },
   "devDependencies": {
-    "@rushstack/heft-node-rig": "~2.6.11",
-    "@rushstack/heft": "^0.66.13",
+    "@rushstack/heft-node-rig": "~2.6.45",
+    "@rushstack/heft": "^0.68.10",
     "@types/eslint": "8.40.1",
     "@types/estree": "1.0.1",
     "@types/heft-jest": "1.0.3",
