@@ -22,8 +22,8 @@
   "typings": "lib/index.d.ts",
   "license": "MIT",
   "devDependencies": {
-    "@rushstack/heft-web-rig": "~0.24.11",
-    "@rushstack/heft": "^0.66.13",
+    "@rushstack/heft-web-rig": "~0.25.12",
+    "@rushstack/heft": "^0.68.10",
     "@types/heft-jest": "1.0.3",
     "eslint": "~8.57.0",
     "eslint-plugin-header": "~3.1.1"
