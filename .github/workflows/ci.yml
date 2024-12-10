@@ -11,18 +11,12 @@ jobs:
     strategy:
       matrix:
         include:
-          - NodeVersion: 16.20.x
-            NodeVersionDisplayName: 16
-            OS: ubuntu-latest
           - NodeVersion: 18.20.x
             NodeVersionDisplayName: 18
             OS: ubuntu-latest
           - NodeVersion: 20.18.x
             NodeVersionDisplayName: 20
             OS: ubuntu-latest
-          - NodeVersion: 18.18.x
-            NodeVersionDisplayName: 18
-            OS: windows-latest
           - NodeVersion: 22.12.x
             NodeVersionDisplayName: 22
             OS: ubuntu-latest
