@@ -1150,8 +1150,10 @@ export class StandardTags {
     static readonly returns: TSDocTagDefinition;
     static readonly sealed: TSDocTagDefinition;
     static readonly see: TSDocTagDefinition;
+    static readonly since: TSDocTagDefinition;
     static readonly throws: TSDocTagDefinition;
     static readonly typeParam: TSDocTagDefinition;
+    static readonly version: TSDocTagDefinition;
     static readonly virtual: TSDocTagDefinition;
 }
 
