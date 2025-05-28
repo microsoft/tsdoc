@@ -1,6 +1,11 @@
 # Change Log - @microsoft/tsdoc-config
 
-This log was last generated on Sat, 23 Nov 2024 00:23:35 GMT and should not be manually modified.
+This log was last generated on Wed, 28 May 2025 23:40:37 GMT and should not be manually modified.
+
+## 0.17.2
+Wed, 28 May 2025 23:40:37 GMT
+
+_Version update only_
 
 ## 0.17.1
 Sat, 23 Nov 2024 00:23:35 GMT
