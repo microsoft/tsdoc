@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.15.2",
+      "tag": "@microsoft/tsdoc_v0.15.2",
+      "date": "Tue, 03 Jun 2025 08:05:44 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Ensure TSDocEmitter does not emit a newline for the text after `@defaultValue` tags."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.15.1",
       "tag": "@microsoft/tsdoc_v0.15.1",
       "date": "Sat, 23 Nov 2024 00:23:35 GMT",
