@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc-config",
   "entries": [
     {
+      "version": "0.17.2",
+      "tag": "@microsoft/tsdoc-config_v0.17.2",
+      "date": "Fri, 06 Jun 2025 08:05:37 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" to `0.15.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.17.1",
       "tag": "@microsoft/tsdoc-config_v0.17.1",
       "date": "Sat, 23 Nov 2024 00:23:35 GMT",
