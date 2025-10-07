@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc",
-      "comment": "Update parser to not replace soft line breaks in parsed comments",
+      "comment": "Update emitter to not replace line breaks",
       "type": "major"
     }
   ],
