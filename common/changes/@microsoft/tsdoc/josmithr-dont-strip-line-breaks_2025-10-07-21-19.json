@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Update parser to not replace soft line breaks in parsed comments",
+      "type": "major"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc"
+}
