@@ -6,7 +6,21 @@ Object {
   "nodes": Array [
     Object {
       "kind": "PlainText",
-      "nodePlainText": "This is the first ",
+      "nodePlainText": "",
+    },
+    Object {
+      "kind": "SoftBreak",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodePlainText": "This is the",
+    },
+    Object {
+      "kind": "SoftBreak",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodePlainText": " first ",
     },
     Object {
       "kind": "InlineTag",
@@ -27,7 +41,28 @@ Object {
     },
     Object {
       "kind": "PlainText",
-      "nodePlainText": "sentence. This is another sentence.",
+      "nodePlainText": "sentence.",
+    },
+    Object {
+      "kind": "SoftBreak",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodePlainText": " This is another",
+    },
+    Object {
+      "kind": "SoftBreak",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodePlainText": " sentence.",
+    },
+    Object {
+      "kind": "SoftBreak",
+    },
+    Object {
+      "kind": "PlainText",
+      "nodePlainText": "",
     },
   ],
 }
