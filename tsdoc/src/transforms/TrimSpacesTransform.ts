@@ -25,16 +25,18 @@ export class TrimSpacesTransform {
       const lines: string[] = accumulatedTextChunks.join('').split('\n');
       for (let i: number = 0; i < lines.length; i++) {
         const line: string = lines[i];
-        transformedNodes.push(
-          new DocPlainText({
-            configuration: docParagraph.configuration,
-            text: line
-          })
-        );
-        if (i < lines.length - 1) {
+        if (line.length !== 0) {
+          if (i !== 0) {
+            transformedNodes.push(
+              new DocSoftBreak({
+                configuration: docParagraph.configuration
+              })
+            );
+          }
           transformedNodes.push(
-            new DocSoftBreak({
-              configuration: docParagraph.configuration
+            new DocPlainText({
+              configuration: docParagraph.configuration,
+              text: line
             })
           );
         }
@@ -75,9 +77,6 @@ export class TrimSpacesTransform {
           }
           break;
         case DocNodeKind.SoftBreak:
-          if (finishedSkippingLeadingSpaces) {
-            pendingSpace = true;
-          }
           accumulatedTextChunks.push('\n');
           accumulatedNodes.push(node);
           break;

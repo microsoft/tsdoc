@@ -37,7 +37,6 @@ Object {
   "output": "
 /**
  * x
- *
  */
 ",
 }
@@ -48,7 +47,6 @@ Object {
   "output": "
 /**
  * x
- *
  */
 ",
 }
@@ -65,7 +63,6 @@ Object {
   "output": "
 /**
  * x
- *
  */
 ",
 }
@@ -113,8 +110,6 @@ Object {
  * blah
  *
  * @example
- *
- *
  * \`\`\`ts
  * line1
  * line2

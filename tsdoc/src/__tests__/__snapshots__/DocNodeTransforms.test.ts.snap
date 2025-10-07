@@ -5,10 +5,6 @@ Object {
   "kind": "Paragraph",
   "nodes": Array [
     Object {
-      "kind": "PlainText",
-      "nodePlainText": "",
-    },
-    Object {
       "kind": "SoftBreak",
     },
     Object {
@@ -20,7 +16,7 @@ Object {
     },
     Object {
       "kind": "PlainText",
-      "nodePlainText": " first ",
+      "nodePlainText": "first ",
     },
     Object {
       "kind": "InlineTag",
@@ -55,14 +51,7 @@ Object {
     },
     Object {
       "kind": "PlainText",
-      "nodePlainText": " sentence.",
-    },
-    Object {
-      "kind": "SoftBreak",
-    },
-    Object {
-      "kind": "PlainText",
-      "nodePlainText": "",
+      "nodePlainText": "sentence.",
     },
   ],
 }
