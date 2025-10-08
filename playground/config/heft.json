@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/heft/v0/heft.schema.json",
 
-  "extends": "@rushstack/heft-web-rig/profiles/library/config/heft.json",
+  "extends": "tsdoc-build-rig/profiles/web/config/heft.json",
 
   "phasesByName": {
     "build": {

@@ -432,6 +432,10 @@
       "shouldPublish": true
     },
     {
+      "packageName": "tsdoc-build-rig",
+      "projectFolder": "tsdoc-build-rig"
+    },
+    {
       "packageName": "eslint-plugin-tsdoc",
       "projectFolder": "eslint-plugin",
       "shouldPublish": true

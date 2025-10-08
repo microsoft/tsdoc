@@ -7,15 +7,12 @@
   "dependencies": {
     "@microsoft/tsdoc": "0.15.1",
     "colors": "~1.4.0",
-    "typescript": "~5.4.2"
+    "typescript": "~5.8.2"
   },
   "devDependencies": {
-    "@rushstack/heft-node-rig": "2.10.2",
+    "tsdoc-build-rig": "workspace:*",
     "@rushstack/heft": "1.1.1",
-    "@types/heft-jest": "1.0.3",
-    "@types/node": "14.18.36",
-    "eslint": "~8.57.0",
-    "eslint-plugin-header": "~3.1.1"
+    "eslint": "~9.25.1"
   },
   "scripts": {
     "build": "heft test --clean",

@@ -7,12 +7,12 @@
    * (Required) The name of the rig package to inherit from.
    * It should be an NPM package name with the "-rig" suffix.
    */
-  "rigPackageName": "@rushstack/heft-web-rig",
+  "rigPackageName": "tsdoc-build-rig",
 
   /**
    * (Optional) Selects a config profile from the rig package.  The name must consist of
    * lowercase alphanumeric words separated by hyphens, for example "sample-profile".
    * If omitted, then the "default" profile will be used."
    */
-  "rigProfile": "library"
+  "rigProfile": "web"
 }
