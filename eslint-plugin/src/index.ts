@@ -2,8 +2,8 @@
 // See LICENSE in the project root for license information.
 
 import { ESLintUtils, type TSESLint } from '@typescript-eslint/utils';
-
 import type * as eslint from 'eslint';
+
 import { TSDocParser, TextRange, TSDocConfiguration, type ParserContext } from '@microsoft/tsdoc';
 import type { TSDocConfigFile } from '@microsoft/tsdoc-config';
 
