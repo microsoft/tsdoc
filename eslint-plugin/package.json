@@ -27,8 +27,9 @@
     "_phase:test": "heft run --only test -- --clean"
   },
   "dependencies": {
+    "@microsoft/tsdoc-config": "0.17.1",
     "@microsoft/tsdoc": "0.15.1",
-    "@microsoft/tsdoc-config": "0.17.1"
+    "@typescript-eslint/utils": "~8.46.0"
   },
   "devDependencies": {
     "tsdoc-build-rig": "workspace:*",
