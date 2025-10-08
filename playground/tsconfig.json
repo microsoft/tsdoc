@@ -1,8 +1,4 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
-  "extends": "./node_modules/tsdoc-build-rig/profiles/web/tsconfig-base.json",
-  "compilerOptions": {
-    "isolatedModules": true,
-    "types": ["webpack-env"]
-  }
+  "extends": "./node_modules/tsdoc-build-rig/profiles/web/tsconfig-base.json"
 }

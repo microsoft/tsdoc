@@ -11,7 +11,7 @@
     "outDir": "../../../../lib",
     "rootDir": "../../../../src",
 
-    "types": ["heft-jest", "node"],
+    "types": ["heft-jest", "webpack-env"],
     "typeRoots": ["../../../../node_modules/@types", "../../node_modules/@types"]
   },
   "include": ["../../../../src/**/*.ts", "../../../../src/**/*.tsx"]

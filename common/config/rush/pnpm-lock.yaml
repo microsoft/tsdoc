@@ -144,6 +144,9 @@ importers:
       '@types/node':
         specifier: 20.17.19
         version: 20.17.19
+      '@types/webpack-env':
+        specifier: ~1.18.8
+        version: 1.18.8
       '@typescript-eslint/eslint-plugin':
         specifier: ~8.31.0
         version: 8.31.1(@typescript-eslint/parser@8.31.1(eslint@9.25.1)(typescript@5.8.3))(eslint@9.25.1)(typescript@5.8.3)
@@ -908,6 +911,9 @@ packages:
 
   '@types/tough-cookie@4.0.2':
     resolution: {integrity: sha512-Q5vtl1W5ue16D+nIaW8JWebSSraJVlK+EthKn7e7UcD4KWsaSJ8BqGPXNaPghgtcn/fhvrN17Tv8ksUsQpiplw==}
+
+  '@types/webpack-env@1.18.8':
+    resolution: {integrity: sha512-G9eAoJRMLjcvN4I08wB5I7YofOb/kaJNd5uoCMX+LbKXTPCF+ZIHuqTnFaK9Jz1rgs035f9JUPUhNFtqgucy/A==}
 
   '@types/ws@8.5.13':
     resolution: {integrity: sha512-osM/gWBTPKgHV8XkTunnegTRIsvF6owmf5w+JtAfOw472dptdm0dlGv4xCt6GwQRcC2XVOvvRE/0bAoQcL2QkA==}
@@ -5262,6 +5268,8 @@ snapshots:
   '@types/tapable@1.0.6': {}
 
   '@types/tough-cookie@4.0.2': {}
+
+  '@types/webpack-env@1.18.8': {}
 
   '@types/ws@8.5.13':
     dependencies:
