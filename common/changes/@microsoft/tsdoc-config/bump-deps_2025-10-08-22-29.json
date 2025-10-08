@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Normalize builtin imports.",
+      "type": "minor",
+      "packageName": "@microsoft/tsdoc-config"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config",
+  "email": "iclanton@users.noreply.github.com"
+}
