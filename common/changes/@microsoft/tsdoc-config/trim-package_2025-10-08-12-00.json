@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc-config",
-      "comment": "Do not ship test files or typescript declaration mappings",
+      "comment": "Remove test files from the published package.",
       "type": "patch"
     }
   ],
