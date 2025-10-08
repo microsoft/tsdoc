@@ -27,12 +27,12 @@
     "_phase:test": "heft run --only test -- --clean"
   },
   "dependencies": {
-    "@microsoft/tsdoc": "workspace:*",
-    "@microsoft/tsdoc-config": "workspace:*"
+    "@microsoft/tsdoc": "0.15.1",
+    "@microsoft/tsdoc-config": "0.17.1"
   },
   "devDependencies": {
-    "@rushstack/heft-node-rig": "~2.6.45",
-    "@rushstack/heft": "^0.68.10",
+    "@rushstack/heft-node-rig": "2.10.2",
+    "@rushstack/heft": "1.1.1",
     "@types/eslint": "8.40.1",
     "@types/estree": "1.0.1",
     "@types/heft-jest": "1.0.3",

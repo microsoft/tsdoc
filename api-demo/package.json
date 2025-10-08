@@ -5,13 +5,13 @@
   "description": "A code sample that illustrates usage of the API for @microsoft/tsdoc",
   "license": "MIT",
   "dependencies": {
-    "@microsoft/tsdoc": "workspace:*",
+    "@microsoft/tsdoc": "0.15.1",
     "colors": "~1.4.0",
     "typescript": "~5.4.2"
   },
   "devDependencies": {
-    "@rushstack/heft-node-rig": "~2.6.45",
-    "@rushstack/heft": "^0.68.10",
+    "@rushstack/heft-node-rig": "2.10.2",
+    "@rushstack/heft": "1.1.1",
     "@types/heft-jest": "1.0.3",
     "@types/node": "14.18.36",
     "eslint": "~8.57.0",

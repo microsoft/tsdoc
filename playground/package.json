@@ -10,7 +10,7 @@
     "_phase:build": "heft run --only build -- --clean"
   },
   "dependencies": {
-    "@microsoft/tsdoc": "workspace:*",
+    "@microsoft/tsdoc": "0.15.1",
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.3",
     "monaco-editor": "~0.50.0",
@@ -20,8 +20,8 @@
     "tslib": "~2.5.3"
   },
   "devDependencies": {
-    "@rushstack/heft": "^0.68.10",
-    "@rushstack/heft-web-rig": "~0.25.12",
+    "@rushstack/heft": "1.1.1",
+    "@rushstack/heft-web-rig": "1.0.2",
     "@types/webpack-env": "1.18.0",
     "eslint": "~8.57.0",
     "eslint-plugin-header": "~3.1.1",
