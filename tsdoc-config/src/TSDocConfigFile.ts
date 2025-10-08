@@ -1,6 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
 // See LICENSE in the project root for license information.
 
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+
+import * as resolve from 'resolve';
+import type * as AjvTypes from 'ajv';
+import Ajv from 'ajv';
+import * as jju from 'jju';
+
 import {
   TSDocTagDefinition,
   TSDocTagSyntaxKind,
@@ -12,12 +20,6 @@ import {
   type IParserMessageParameters,
   type ITSDocTagDefinitionParameters
 } from '@microsoft/tsdoc';
-import * as fs from 'fs';
-import * as resolve from 'resolve';
-import * as path from 'path';
-import type * as AjvTypes from 'ajv';
-import Ajv from 'ajv';
-import * as jju from 'jju';
 
 const ajv: Ajv = new Ajv({ verbose: true });
 

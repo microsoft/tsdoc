@@ -8,7 +8,7 @@ import {
   type IDocNodeSyntaxStylerTheme,
   type IThemeRule
 } from './DocNodeSyntaxStylerTheme';
-import type { IStyledRange } from './../CodeEditor';
+import type { IStyledRange } from '../CodeEditor';
 
 import './syntaxStyles.css';
 
