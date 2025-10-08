@@ -87,6 +87,9 @@ importers:
       '@rushstack/heft':
         specifier: 1.1.1
         version: 1.1.1(@types/node@20.17.19)
+      '@rushstack/heft-web-rig':
+        specifier: 1.0.2
+        version: 1.0.2(@rushstack/heft@1.1.1(@types/node@20.17.19))(@types/node@20.17.19)(jest-environment-node@29.5.0)
       eslint:
         specifier: ~9.25.1
         version: 9.25.1
