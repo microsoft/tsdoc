@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "Do not ship test files or typescript declaration mappings",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config"
+}
