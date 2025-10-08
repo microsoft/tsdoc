@@ -5,6 +5,9 @@ module.exports = [
   ...webAppProfile,
   ...friendlyLocalsMixin,
   {
+    ignores: ['src/samples/']
+  },
+  {
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parserOptions: {
