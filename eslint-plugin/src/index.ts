@@ -25,7 +25,9 @@ function getRootDirectoryFromContext(context: TSESLint.RuleContext<string, unkno
   let rootDirectory: string | undefined;
   try {
     // First attempt to get the root directory from the tsconfig baseUrl, then the program current directory
-    const program = (context.sourceCode?.parserServices ?? ESLintUtils.getParserServices(context)).program;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const program: any = (context.sourceCode?.parserServices ?? ESLintUtils.getParserServices(context))
+      .program;
     rootDirectory = program?.getCompilerOptions().baseUrl ?? program?.getCurrentDirectory();
   } catch {
     // Ignore the error if we cannot retrieve a TS program
@@ -108,7 +110,7 @@ const plugin: IPlugin = {
         const tsdocParser: TSDocParser = new TSDocParser(tsdocConfiguration);
 
         const sourceCode: eslint.SourceCode = context.getSourceCode();
-        const checkCommentBlocks: () => void = function () {
+        function checkCommentBlocks(): void {
           for (const comment of sourceCode.getAllComments()) {
             if (comment.type !== 'Block') {
               continue;
@@ -146,7 +148,7 @@ const plugin: IPlugin = {
               });
             }
           }
-        };
+        }
 
         return {
           Program: checkCommentBlocks
