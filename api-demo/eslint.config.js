@@ -10,6 +10,9 @@ module.exports = [
       parserOptions: {
         tsconfigRootDir: __dirname
       }
+    },
+    rules: {
+      'no-console': 'off'
     }
   }
 ];

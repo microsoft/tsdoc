@@ -8,6 +8,7 @@ import './start.css';
 
 // Ensure that this file changes each time it builds so deployment always works
 declare const COMMIT_ID: string;
+// eslint-disable-next-line no-console
 console.log(COMMIT_ID);
 
 const rootDiv: HTMLElement = document.getElementById('root') as HTMLElement;

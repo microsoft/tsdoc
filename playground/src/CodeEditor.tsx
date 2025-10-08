@@ -246,6 +246,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
       try {
         this.props.onChange(newValue);
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(`Error in onChange callback: ${e}`);
       }
     }
