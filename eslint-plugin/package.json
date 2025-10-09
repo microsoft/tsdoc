@@ -27,17 +27,15 @@
     "_phase:test": "heft run --only test -- --clean"
   },
   "dependencies": {
+    "@microsoft/tsdoc-config": "workspace:*",
     "@microsoft/tsdoc": "workspace:*",
-    "@microsoft/tsdoc-config": "workspace:*"
+    "@typescript-eslint/utils": "~8.46.0"
   },
   "devDependencies": {
-    "@rushstack/heft-node-rig": "~2.6.45",
-    "@rushstack/heft": "^0.68.10",
+    "tsdoc-build-rig": "workspace:*",
+    "@rushstack/heft": "1.1.1",
     "@types/eslint": "8.40.1",
     "@types/estree": "1.0.1",
-    "@types/heft-jest": "1.0.3",
-    "@types/node": "14.18.36",
-    "eslint": "~8.57.0",
-    "eslint-plugin-header": "~3.1.1"
+    "eslint": "~9.25.1"
   }
 }

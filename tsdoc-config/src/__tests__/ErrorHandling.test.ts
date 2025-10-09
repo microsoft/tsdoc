@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
 // See LICENSE in the project root for license information.
 
+/* eslint-disable no-console */
+
 import { TSDocConfiguration } from '@microsoft/tsdoc';
-import * as path from 'path';
+import * as path from 'node:path';
 
 import { TSDocConfigFile } from '../TSDocConfigFile';
 

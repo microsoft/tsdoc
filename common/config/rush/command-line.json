@@ -238,7 +238,7 @@
       "dependencies": {
         "upstream": ["_phase:build"]
       },
-      "ignoreMissingScript": true,
+      "missingScriptBehavior": "log",
       "allowWarningsOnSuccess": false
     },
     {
@@ -246,7 +246,7 @@
       "dependencies": {
         "self": ["_phase:build"]
       },
-      "ignoreMissingScript": true,
+      "missingScriptBehavior": "silent",
       "allowWarningsOnSuccess": false
     }
   ],
@@ -470,10 +470,24 @@
     //   ]
     // }
     {
+      "longName": "--update-snapshots",
+      "parameterKind": "flag",
+      "description": "Update Jest snapshots",
+      "associatedPhases": ["_phase:test"],
+      "associatedCommands": ["test", "retest"]
+    },
+    {
       "longName": "--production",
       "parameterKind": "flag",
-      "description": "Perform a production build, including minification optimizations",
+      "description": "Perform a production build, including minification",
       "associatedPhases": ["_phase:build", "_phase:test"],
+      "associatedCommands": ["build", "rebuild", "test", "retest"]
+    },
+    {
+      "longName": "--fix",
+      "parameterKind": "flag",
+      "description": "Automatically fix problems encountered while linting",
+      "associatedPhases": ["_phase:build"],
       "associatedCommands": ["build", "rebuild", "test", "retest"]
     }
   ]

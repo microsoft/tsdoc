@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
 // See LICENSE in the project root for license information.
 
+import { ESLintUtils, type TSESLint } from '@typescript-eslint/utils';
 import type * as eslint from 'eslint';
-import type * as ESTree from 'estree';
+
 import { TSDocParser, TextRange, TSDocConfiguration, type ParserContext } from '@microsoft/tsdoc';
 import type { TSDocConfigFile } from '@microsoft/tsdoc-config';
 
@@ -18,6 +19,26 @@ defaultTSDocConfiguration.allTsdocMessageIds.forEach((messageId: string) => {
 
 interface IPlugin {
   rules: { [x: string]: eslint.Rule.RuleModule };
+}
+
+function getRootDirectoryFromContext(context: TSESLint.RuleContext<string, unknown[]>): string | undefined {
+  let rootDirectory: string | undefined;
+  try {
+    // First attempt to get the root directory from the tsconfig baseUrl, then the program current directory
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const program: any = (context.sourceCode?.parserServices ?? ESLintUtils.getParserServices(context))
+      .program;
+    rootDirectory = program?.getCompilerOptions().baseUrl ?? program?.getCurrentDirectory();
+  } catch {
+    // Ignore the error if we cannot retrieve a TS program
+  }
+
+  // Fall back to the parserOptions.tsconfigRootDir if available, otherwise the eslint working directory
+  if (!rootDirectory) {
+    rootDirectory = context.parserOptions?.tsconfigRootDir ?? context.getCwd?.();
+  }
+
+  return rootDirectory;
 }
 
 const plugin: IPlugin = {
@@ -44,7 +65,9 @@ const plugin: IPlugin = {
         const sourceFilePath: string = context.filename;
         // If eslint is configured with @typescript-eslint/parser, there is a parser option
         // to explicitly specify where the tsconfig file is. Use that if available.
-        const tsConfigDir: string | undefined = context.parserOptions.tsconfigRootDir;
+        const tsConfigDir: string | undefined = getRootDirectoryFromContext(
+          context as unknown as TSESLint.RuleContext<string, unknown[]>
+        );
         Debug.log(`Linting: "${sourceFilePath}"`);
 
         const tsdocConfiguration: TSDocConfiguration = new TSDocConfiguration();
@@ -87,7 +110,7 @@ const plugin: IPlugin = {
         const tsdocParser: TSDocParser = new TSDocParser(tsdocConfiguration);
 
         const sourceCode: eslint.SourceCode = context.getSourceCode();
-        const checkCommentBlocks: (node: ESTree.Node) => void = function (node: ESTree.Node) {
+        function checkCommentBlocks(): void {
           for (const comment of sourceCode.getAllComments()) {
             if (comment.type !== 'Block') {
               continue;
@@ -125,7 +148,7 @@ const plugin: IPlugin = {
               });
             }
           }
-        };
+        }
 
         return {
           Program: checkCommentBlocks

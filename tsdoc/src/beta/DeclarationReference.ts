@@ -424,7 +424,7 @@ export type Component = ComponentString | ComponentReference;
 /**
  * @beta
  */
-// eslint-disable-next-line @typescript-eslint/no-namespace
+// eslint-disable-next-line @typescript-eslint/no-namespace,@typescript-eslint/no-redeclare
 export namespace Component {
   export function from(value: ComponentLike): Component {
     if (typeof value === 'string') {
@@ -676,6 +676,7 @@ const enum Token {
   DecimalDigits, // '12345'
   String, // '"abc"'
   Text, // 'abc'
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   ModuleSource, // 'abc/def!' (excludes '!')
   // Keywords
   ClassKeyword, // 'class'
