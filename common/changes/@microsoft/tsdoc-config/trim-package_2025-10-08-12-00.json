@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc-config",
-      "comment": "Remove test files from the published package.",
+      "comment": "Remove test files and declaration maps from the published package.",
       "type": "patch"
     }
   ],
