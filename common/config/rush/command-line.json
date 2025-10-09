@@ -4,7 +4,6 @@
  */
 {
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/command-line.schema.json",
-
   /**
    * Custom "commands" introduce new verbs for the command-line.  To see the help for these
    * example commands, try "rush --help", "rush my-bulk-command --help", or
@@ -16,7 +15,6 @@
       "name": "build",
       "phases": ["_phase:build"]
     },
-
     {
       "commandKind": "phased",
       "name": "test",
@@ -25,7 +23,6 @@
       "enableParallelism": true,
       "incremental": true
     },
-
     {
       "commandKind": "phased",
       "name": "retest",
@@ -34,14 +31,12 @@
       "enableParallelism": true,
       "incremental": false
     },
-
     {
       "commandKind": "phased",
       "name": "start",
       "summary": "Build all projects, then watch for changes, build and test.",
       "description": "Build all projects, then watches for changes and builds and runs tests for affected projects.",
       "safeForSimultaneousRushProcesses": false,
-
       "enableParallelism": true,
       "incremental": true,
       // Initial execution only uses the build phase so that all dependencies of watch phases have been built
@@ -217,21 +212,16 @@
     //    */
     //   // "autoinstallerName": "my-task"
     // }
-
     {
       "name": "prettier",
       "commandKind": "global",
       "summary": "Used by the pre-commit Git hook. This command invokes Prettier to reformat staged changes.",
-
       "autoinstallerName": "rush-prettier",
-
       // This will invoke common/autoinstall/rush-prettier/node_modules/.bin/pretty-quick
       "shellCommand": "pretty-quick --staged",
-
       "safeForSimultaneousRushProcesses": true
     }
   ],
-
   "phases": [
     {
       "name": "_phase:build",
@@ -250,7 +240,6 @@
       "allowWarningsOnSuccess": false
     }
   ],
-
   /**
    * Custom "parameters" introduce new parameters for specified Rush command-line commands.
    * For example, you might define a "--production" parameter for the "rush build" command.
@@ -475,6 +464,13 @@
       "description": "Perform a production build, including minification optimizations",
       "associatedPhases": ["_phase:build", "_phase:test"],
       "associatedCommands": ["build", "rebuild", "test", "retest"]
+    },
+    {
+      "longName": "--update-snapshots",
+      "parameterKind": "flag",
+      "description": "Update unit test snapshots for all projects",
+      "associatedCommands": ["test", "retest"],
+      "associatedPhases": ["_phase:test"]
     }
   ]
 }
