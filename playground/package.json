@@ -10,7 +10,7 @@
     "_phase:build": "heft run --only build -- --clean"
   },
   "dependencies": {
-    "@microsoft/tsdoc": "0.15.1",
+    "@microsoft/tsdoc": "workspace:*",
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.3",
     "monaco-editor": "~0.50.0",
