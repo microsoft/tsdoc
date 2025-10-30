@@ -34,5 +34,11 @@ export enum Standardization {
   /**
    * The tag is not part of the TSDoc standard.  All used-defined tags are assigned to this group.
    */
-  None = 'None'
+  None = 'None',
+
+  /**
+   * This is a directive that is defined by TypeScript itself, outside of TSDoc, and is
+   * therefore ignored by TSDoc parsers.
+   */
+  TSBuiltInDirective = 'TSBuiltInDirective'
 }

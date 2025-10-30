@@ -92,6 +92,7 @@ export class DocComment extends DocNode {
 
   private _seeBlocks: DocBlock[];
   private _customBlocks: DocBlock[];
+  private _tsBuiltInDirectiveBlocks: DocBlock[];
 
   /**
    * Don't call this directly.  Instead use {@link TSDocParser}
@@ -112,6 +113,7 @@ export class DocComment extends DocNode {
 
     this._seeBlocks = [];
     this._customBlocks = [];
+    this._tsBuiltInDirectiveBlocks = [];
   }
 
   /** @override */
@@ -134,11 +136,26 @@ export class DocComment extends DocNode {
   }
 
   /**
+   * The collection of all TypeScript built-in directive blocks belonging to this doc comment.
+   */
+  public get tsBuiltInDirectiveBlocks(): ReadonlyArray<DocBlock> {
+    return this._tsBuiltInDirectiveBlocks;
+  }
+
+  /**
    * Append an item to the seeBlocks collection.
    * @internal
    */
   public _appendSeeBlock(block: DocBlock): void {
     this._seeBlocks.push(block);
+  }
+
+  /**
+   * Append an item to the tsBuiltInDirectiveBlocks collection.
+   * @internal
+   */
+  public _appendTSBuiltInDirectiveBlock(block: DocBlock): void {
+    this._tsBuiltInDirectiveBlocks.push(block);
   }
 
   /**

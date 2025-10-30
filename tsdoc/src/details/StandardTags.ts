@@ -488,6 +488,52 @@ export class StandardTags {
   });
 
   /**
+   * (TSDoc Built-in Directive)
+   */
+  public static readonly tsBuiltInJsx: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@jsx',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.TSBuiltInDirective
+  });
+
+  /**
+   * (TSDoc Built-in Directive)
+   */
+  public static readonly tsBuiltInJsxRuntime: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@jsxRuntime',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.TSBuiltInDirective
+  });
+
+  /**
+   * (TSDoc Built-in Directive)
+   */
+  public static readonly tsBuiltInJsxFrag: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@jsxFrag',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.TSBuiltInDirective
+  });
+
+  /**
+   * (TSDoc Built-in Directive)
+   */
+  public static readonly tsBuiltInJsxImportSource: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@jsxImportSource',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.TSBuiltInDirective
+  });
+
+  /**
+   * Returns the full list of all TSDoc built-in directives.
+   */
+  public static readonly allTSBuiltInDirectives: ReadonlyArray<TSDocTagDefinition> = [
+    StandardTags.tsBuiltInJsx,
+    StandardTags.tsBuiltInJsxRuntime,
+    StandardTags.tsBuiltInJsxFrag,
+    StandardTags.tsBuiltInJsxImportSource
+  ];
+
+  /**
    * Returns the full list of all core tags.
    */
   public static allDefinitions: ReadonlyArray<TSDocTagDefinition> = [

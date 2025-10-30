@@ -90,8 +90,9 @@ Object {
   "s07_typeParamBlocks": Array [],
   "s08_returnsBlock": undefined,
   "s09_customBlocks": Array [],
-  "s10_inheritDocTag": undefined,
-  "s11_modifierTags": Array [
+  "s10_tsBuiltInDirectiveBlocks": Array [],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodes": Array [
@@ -111,7 +112,7 @@ Object {
       ],
     },
   ],
-  "s12_logMessages": Array [
+  "s13_logMessages": Array [
     "(3,4): The TSDoc tag \\"@unknownTag\\" is not defined in this configuration",
   ],
 }
@@ -617,8 +618,9 @@ Object {
       ],
     },
   ],
-  "s10_inheritDocTag": undefined,
-  "s11_modifierTags": Array [
+  "s10_tsBuiltInDirectiveBlocks": Array [],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodes": Array [
@@ -638,7 +640,7 @@ Object {
       ],
     },
   ],
-  "s12_logMessages": Array [
+  "s13_logMessages": Array [
     "(8,41): The TSDoc tag \\"@undefinedBlockTag\\" is not defined in this configuration",
   ],
 }
@@ -843,9 +845,10 @@ Object {
     ],
   },
   "s09_customBlocks": Array [],
-  "s10_inheritDocTag": undefined,
-  "s11_modifierTags": Array [],
-  "s12_logMessages": Array [
+  "s10_tsBuiltInDirectiveBlocks": Array [],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [],
+  "s13_logMessages": Array [
     "(2,4): The @param block should be followed by a parameter name",
     "(3,4): The @param block should be followed by a parameter name and then a hyphen",
   ],
@@ -1292,8 +1295,9 @@ Object {
       ],
     },
   ],
-  "s10_inheritDocTag": undefined,
-  "s11_modifierTags": Array [
+  "s10_tsBuiltInDirectiveBlocks": Array [],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodes": Array [
@@ -1313,7 +1317,7 @@ Object {
       ],
     },
   ],
-  "s12_logMessages": Array [
+  "s13_logMessages": Array [
     "(8,41): The TSDoc tag \\"@undefinedBlockTag\\" is not defined in this configuration",
   ],
 }
@@ -1603,9 +1607,10 @@ Object {
     ],
   },
   "s09_customBlocks": Array [],
-  "s10_inheritDocTag": undefined,
-  "s11_modifierTags": Array [],
-  "s12_logMessages": Array [],
+  "s10_tsBuiltInDirectiveBlocks": Array [],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [],
+  "s13_logMessages": Array [],
 }
 `;
 
@@ -2650,9 +2655,10 @@ Object {
   "s07_typeParamBlocks": Array [],
   "s08_returnsBlock": undefined,
   "s09_customBlocks": Array [],
-  "s10_inheritDocTag": undefined,
-  "s11_modifierTags": Array [],
-  "s12_logMessages": Array [
+  "s10_tsBuiltInDirectiveBlocks": Array [],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [],
+  "s13_logMessages": Array [
     "(2,11): The @param block should not include a JSDoc-style '{type}'",
     "(3,11): The @param block should not include a JSDoc-style '{type}'",
     "(4,11): The @param block should not include a JSDoc-style '{type}'",
@@ -2830,8 +2836,9 @@ Object {
   "s07_typeParamBlocks": Array [],
   "s08_returnsBlock": undefined,
   "s09_customBlocks": Array [],
-  "s10_inheritDocTag": undefined,
-  "s11_modifierTags": Array [
+  "s10_tsBuiltInDirectiveBlocks": Array [],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodes": Array [
@@ -2842,7 +2849,7 @@ Object {
       ],
     },
   ],
-  "s12_logMessages": Array [
+  "s13_logMessages": Array [
     "(4,11): The @param should not include a JSDoc-style optional name; it must not be enclosed in '[ ]' brackets.",
   ],
 }
@@ -2984,8 +2991,9 @@ Object {
   "s07_typeParamBlocks": Array [],
   "s08_returnsBlock": undefined,
   "s09_customBlocks": Array [],
-  "s10_inheritDocTag": undefined,
-  "s11_modifierTags": Array [
+  "s10_tsBuiltInDirectiveBlocks": Array [],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodes": Array [
@@ -2996,9 +3004,273 @@ Object {
       ],
     },
   ],
-  "s12_logMessages": Array [
+  "s13_logMessages": Array [
     "(4,4): The @param block should be followed by a parameter name",
     "(4,11): Expecting a TSDoc tag starting with \\"{@\\"",
   ],
+}
+`;
+
+exports[`08 JSX directive: /** @jsx foo */ 1`] = `
+Object {
+  "s00_lines": Array [
+    "@jsx foo",
+  ],
+  "s01_gaps": Array [],
+  "s02_summarySection": Object {
+    "kind": "Section",
+  },
+  "s03_remarksBlock": undefined,
+  "s04_privateRemarksBlock": undefined,
+  "s05_deprecatedBlock": undefined,
+  "s06_paramBlocks": Array [],
+  "s07_typeParamBlocks": Array [],
+  "s08_returnsBlock": undefined,
+  "s09_customBlocks": Array [],
+  "s10_tsBuiltInDirectiveBlocks": Array [
+    Object {
+      "kind": "Block",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@jsx",
+            },
+          ],
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": " foo",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [],
+  "s13_logMessages": Array [],
+}
+`;
+
+exports[`08 JSX directive: /** @jsxFrag Fragment */ 1`] = `
+Object {
+  "s00_lines": Array [
+    "@jsxFrag Fragment",
+  ],
+  "s01_gaps": Array [],
+  "s02_summarySection": Object {
+    "kind": "Section",
+  },
+  "s03_remarksBlock": undefined,
+  "s04_privateRemarksBlock": undefined,
+  "s05_deprecatedBlock": undefined,
+  "s06_paramBlocks": Array [],
+  "s07_typeParamBlocks": Array [],
+  "s08_returnsBlock": undefined,
+  "s09_customBlocks": Array [],
+  "s10_tsBuiltInDirectiveBlocks": Array [
+    Object {
+      "kind": "Block",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@jsxFrag",
+            },
+          ],
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": " Fragment",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [],
+  "s13_logMessages": Array [],
+}
+`;
+
+exports[`08 JSX directive: /** @jsxImportSource preact */ 1`] = `
+Object {
+  "s00_lines": Array [
+    "@jsxImportSource preact",
+  ],
+  "s01_gaps": Array [],
+  "s02_summarySection": Object {
+    "kind": "Section",
+  },
+  "s03_remarksBlock": undefined,
+  "s04_privateRemarksBlock": undefined,
+  "s05_deprecatedBlock": undefined,
+  "s06_paramBlocks": Array [],
+  "s07_typeParamBlocks": Array [],
+  "s08_returnsBlock": undefined,
+  "s09_customBlocks": Array [],
+  "s10_tsBuiltInDirectiveBlocks": Array [
+    Object {
+      "kind": "Block",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@jsxImportSource",
+            },
+          ],
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": " preact",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [],
+  "s13_logMessages": Array [],
+}
+`;
+
+exports[`08 JSX directive: /** @jsxRuntime classic */ 1`] = `
+Object {
+  "s00_lines": Array [
+    "@jsxRuntime classic",
+  ],
+  "s01_gaps": Array [],
+  "s02_summarySection": Object {
+    "kind": "Section",
+  },
+  "s03_remarksBlock": undefined,
+  "s04_privateRemarksBlock": undefined,
+  "s05_deprecatedBlock": undefined,
+  "s06_paramBlocks": Array [],
+  "s07_typeParamBlocks": Array [],
+  "s08_returnsBlock": undefined,
+  "s09_customBlocks": Array [],
+  "s10_tsBuiltInDirectiveBlocks": Array [
+    Object {
+      "kind": "Block",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@jsxRuntime",
+            },
+          ],
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": " classic",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "s11_inheritDocTag": undefined,
+  "s12_modifierTags": Array [],
+  "s13_logMessages": Array [],
 }
 `;

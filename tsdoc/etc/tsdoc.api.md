@@ -28,7 +28,7 @@ export class DocBlockTag extends DocNode {
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
     get tagName(): string;
     get tagNameWithUpperCase(): string;
-    }
+}
 
 // @public
 export class DocCodeSpan extends DocNode {
@@ -39,7 +39,7 @@ export class DocCodeSpan extends DocNode {
     get kind(): DocNodeKind | string;
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-    }
+}
 
 // @public
 export class DocComment extends DocNode {
@@ -48,6 +48,8 @@ export class DocComment extends DocNode {
     appendCustomBlock(block: DocBlock): void;
     // @internal
     _appendSeeBlock(block: DocBlock): void;
+    // @internal
+    _appendTSBuiltInDirectiveBlock(block: DocBlock): void;
     get customBlocks(): ReadonlyArray<DocBlock>;
     deprecatedBlock: DocBlock | undefined;
     emitAsTsdoc(): string;
@@ -63,6 +65,7 @@ export class DocComment extends DocNode {
     returnsBlock: DocBlock | undefined;
     get seeBlocks(): ReadonlyArray<DocBlock>;
     summarySection: DocSection;
+    get tsBuiltInDirectiveBlocks(): ReadonlyArray<DocBlock>;
     readonly typeParams: DocParamCollection;
 }
 
@@ -78,7 +81,7 @@ export class DocDeclarationReference extends DocNode {
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
     get packageName(): string | undefined;
-    }
+}
 
 // @public
 export class DocErrorText extends DocNode {
@@ -94,7 +97,7 @@ export class DocErrorText extends DocNode {
     get text(): string;
     // (undocumented)
     get textExcerpt(): TokenSequence | undefined;
-    }
+}
 
 // @public
 export class DocEscapedText extends DocNode {
@@ -129,7 +132,7 @@ export class DocFencedCode extends DocNode {
     get language(): string | 'ts' | '';
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-    }
+}
 
 // @public
 export class DocHtmlAttribute extends DocNode {
@@ -144,7 +147,7 @@ export class DocHtmlAttribute extends DocNode {
     get spacingAfterName(): string | undefined;
     get spacingAfterValue(): string | undefined;
     get value(): string;
-    }
+}
 
 // @public
 export class DocHtmlEndTag extends DocNode {
@@ -156,7 +159,7 @@ export class DocHtmlEndTag extends DocNode {
     get name(): string;
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-    }
+}
 
 // @public
 export class DocHtmlStartTag extends DocNode {
@@ -171,7 +174,7 @@ export class DocHtmlStartTag extends DocNode {
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
     get selfClosingTag(): boolean;
     get spacingAfterName(): string | undefined;
-    }
+}
 
 // @public
 export class DocInheritDocTag extends DocInlineTagBase {
@@ -193,7 +196,7 @@ export class DocInlineTag extends DocInlineTagBase {
     // @override (undocumented)
     get kind(): DocNodeKind | string;
     get tagContent(): string;
-    }
+}
 
 // @public
 export abstract class DocInlineTagBase extends DocNode {
@@ -205,7 +208,7 @@ export abstract class DocInlineTagBase extends DocNode {
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
     get tagName(): string;
     get tagNameWithUpperCase(): string;
-    }
+}
 
 // @public
 export class DocLinkTag extends DocInlineTagBase {
@@ -218,7 +221,7 @@ export class DocLinkTag extends DocInlineTagBase {
     get kind(): DocNodeKind | string;
     get linkText(): string | undefined;
     get urlDestination(): string | undefined;
-    }
+}
 
 // @public
 export class DocMemberIdentifier extends DocNode {
@@ -231,7 +234,7 @@ export class DocMemberIdentifier extends DocNode {
     get kind(): DocNodeKind | string;
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-    }
+}
 
 // @public
 export class DocMemberReference extends DocNode {
@@ -245,7 +248,7 @@ export class DocMemberReference extends DocNode {
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
     get selector(): DocMemberSelector | undefined;
-    }
+}
 
 // @public (undocumented)
 export class DocMemberSelector extends DocNode {
@@ -258,7 +261,7 @@ export class DocMemberSelector extends DocNode {
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
     get selector(): string;
     get selectorKind(): SelectorKind;
-    }
+}
 
 // @public
 export class DocMemberSymbol extends DocNode {
@@ -269,7 +272,7 @@ export class DocMemberSymbol extends DocNode {
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
     get symbolReference(): DocDeclarationReference;
-    }
+}
 
 // @public
 export abstract class DocNode {
@@ -382,7 +385,7 @@ export class DocParamBlock extends DocBlock {
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
     get parameterName(): string;
-    }
+}
 
 // @public
 export class DocParamCollection extends DocNode {
@@ -411,7 +414,7 @@ export class DocPlainText extends DocNode {
     get text(): string;
     // (undocumented)
     get textExcerpt(): TokenSequence | undefined;
-    }
+}
 
 // @public
 export class DocSection extends DocNodeContainer {
@@ -432,7 +435,7 @@ export class DocSoftBreak extends DocNode {
     get kind(): DocNodeKind | string;
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-    }
+}
 
 // @public
 export enum EscapeStyle {
@@ -1086,13 +1089,13 @@ export class ParserMessageLog {
     addMessageForTextRange(messageId: TSDocMessageId, messageText: string, textRange: TextRange): void;
     addMessageForTokenSequence(messageId: TSDocMessageId, messageText: string, tokenSequence: TokenSequence, docNode?: DocNode): void;
     get messages(): ReadonlyArray<ParserMessage>;
-    }
+}
 
 // @public
 export class PlainTextEmitter {
     static hasAnyTextContent(node: DocNode, requiredCharacters?: number): boolean;
     static hasAnyTextContent(nodes: ReadonlyArray<DocNode>, requiredCharacters?: number): boolean;
-    }
+}
 
 // @public
 export enum SelectorKind {
@@ -1107,7 +1110,8 @@ export enum Standardization {
     Core = "Core",
     Discretionary = "Discretionary",
     Extended = "Extended",
-    None = "None"
+    None = "None",
+    TSBuiltInDirective = "TSBuiltInDirective"
 }
 
 // @public
@@ -1128,6 +1132,7 @@ export class StandardModifierTagSet extends ModifierTagSet {
 // @public
 export class StandardTags {
     static allDefinitions: ReadonlyArray<TSDocTagDefinition>;
+    static readonly allTSBuiltInDirectives: ReadonlyArray<TSDocTagDefinition>;
     static readonly alpha: TSDocTagDefinition;
     static readonly beta: TSDocTagDefinition;
     static readonly decorator: TSDocTagDefinition;
@@ -1151,6 +1156,10 @@ export class StandardTags {
     static readonly sealed: TSDocTagDefinition;
     static readonly see: TSDocTagDefinition;
     static readonly throws: TSDocTagDefinition;
+    static readonly tsBuiltInJsx: TSDocTagDefinition;
+    static readonly tsBuiltInJsxFrag: TSDocTagDefinition;
+    static readonly tsBuiltInJsxImportSource: TSDocTagDefinition;
+    static readonly tsBuiltInJsxRuntime: TSDocTagDefinition;
     static readonly typeParam: TSDocTagDefinition;
     static readonly virtual: TSDocTagDefinition;
 }
@@ -1176,7 +1185,7 @@ export class TextRange {
     get length(): number;
     readonly pos: number;
     toString(): string;
-    }
+}
 
 // @public
 export class Token {
@@ -1235,7 +1244,7 @@ export class TokenSequence {
     // (undocumented)
     get tokens(): ReadonlyArray<Token>;
     toString(): string;
-    }
+}
 
 // @public
 export class TSDocConfiguration {
@@ -1257,7 +1266,7 @@ export class TSDocConfiguration {
     tryGetTagDefinition(tagName: string): TSDocTagDefinition | undefined;
     tryGetTagDefinitionWithUpperCase(alreadyUpperCaseTagName: string): TSDocTagDefinition | undefined;
     get validation(): TSDocValidationConfiguration;
-    }
+}
 
 // @public
 export class TSDocEmitter {
@@ -1269,7 +1278,7 @@ export class TSDocEmitter {
     renderDeclarationReference(output: IStringBuilder, declarationReference: DocDeclarationReference): void;
     // (undocumented)
     renderHtmlTag(output: IStringBuilder, htmlTag: DocHtmlStartTag | DocHtmlEndTag): void;
-    }
+}
 
 // @public
 export enum TSDocMessageId {
@@ -1382,7 +1391,6 @@ export class TSDocValidationConfiguration {
     reportUnsupportedHtmlElements: boolean;
     reportUnsupportedTags: boolean;
 }
-
 
 // (No @packageDocumentation comment for this package)
 

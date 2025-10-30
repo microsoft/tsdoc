@@ -380,7 +380,19 @@ export class NodeParser {
         docComment._appendSeeBlock(block);
         break;
       default:
-        docComment.appendCustomBlock(block);
+        let isTSBuiltInDirective: boolean = false;
+        for (const { tagNameWithUpperCase } of StandardTags.allTSBuiltInDirectives) {
+          if (block.blockTag.tagNameWithUpperCase === tagNameWithUpperCase) {
+            isTSBuiltInDirective = true;
+            break;
+          }
+        }
+
+        if (isTSBuiltInDirective) {
+          docComment._appendTSBuiltInDirectiveBlock(block);
+        } else {
+          docComment.appendCustomBlock(block);
+        }
     }
   }
 
