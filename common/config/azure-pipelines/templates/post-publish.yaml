@@ -24,3 +24,5 @@ steps:
 
   - script: 'node repo-scripts/repo-toolbox/lib/start.js collect-json-schemas --output-path $(Build.ArtifactStagingDirectory)/json-schemas'
     displayName: 'Collect JSON Schemas'
+    workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
+
