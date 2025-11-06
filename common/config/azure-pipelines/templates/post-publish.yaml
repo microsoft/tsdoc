@@ -22,7 +22,7 @@ steps:
     displayName: 'Record Published Versions'
     workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
 
-  # Published by the 1ES template
-  # - publish: $(Build.ArtifactStagingDirectory)/published-versions
-  #   artifact: published-versions
-  #   displayName: 'Publish Artifact: published-versions'
+  - script: 'node repo-scripts/repo-toolbox/lib/start.js collect-json-schemas --output-path $(Build.ArtifactStagingDirectory)/json-schemas'
+    displayName: 'Collect JSON Schemas'
+    workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
+

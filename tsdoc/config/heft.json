@@ -23,6 +23,23 @@
               ]
             }
           }
+        },
+
+        "copy-json-schemas": {
+          "taskPlugin": {
+            "pluginPackage": "@rushstack/heft",
+            "pluginName": "copy-files-plugin",
+            "options": {
+              "copyOperations": [
+                {
+                  "sourcePath": "src/schemas/v0",
+                  "destinationFolders": ["temp/json-schemas/tsdoc"],
+                  "fileExtensions": [".schema.json"],
+                  "hardlink": true
+                }
+              ]
+            }
+          }
         }
       }
     }
