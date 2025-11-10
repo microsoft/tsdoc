@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc",
-      "comment": "Handle the TS built-in @jsx* directives isntead of reporting an issue when they are used.",
+      "comment": "Standardize TypeScript's `@jsx`, `@jsxRuntime`, `@jsxFrag`, `@jsxImportSource` tags.",
       "type": "minor"
     }
   ],
