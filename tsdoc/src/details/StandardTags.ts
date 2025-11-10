@@ -492,7 +492,10 @@ export class StandardTags {
    *
    * Used to specify the JSX factory function to use when compiling JSX syntax.
    *
-   * See https://www.typescriptlang.org/tsconfig/#jsxFactory
+   * @remarks
+   * The TypeScript compiler recognizes this tag and specifies its behavior:
+   *
+   * @see https://www.typescriptlang.org/tsconfig/#jsxFactory
    */
   public static readonly jsx: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsx',
@@ -505,7 +508,10 @@ export class StandardTags {
    *
    * Used to specify the JSX runtime to use when compiling JSX syntax.
    *
-   * See https://www.typescriptlang.org/tsconfig/#jsx
+   * @remarks
+   * The TypeScript compiler recognizes this tag and specifies its behavior:
+   *
+   * @see https://www.typescriptlang.org/tsconfig/#jsx
    */
   public static readonly jsxRuntime: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxRuntime',
@@ -518,7 +524,10 @@ export class StandardTags {
    *
    * Used to specify the JSX fragment factory to use when compiling JSX syntax.
    *
-   * See https://www.typescriptlang.org/tsconfig/#jsxFragmentFactory
+   * @remarks
+   * The TypeScript compiler recognizes this tag and specifies its behavior:
+   *
+   * @see https://www.typescriptlang.org/tsconfig/#jsxFragmentFactory
    */
   public static readonly jsxFrag: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxFrag',
@@ -531,7 +540,10 @@ export class StandardTags {
    *
    * Used to specify the JSX import source when compiling JSX syntax.
    *
-   * See https://www.typescriptlang.org/tsconfig#jsxImportSource
+   * @remarks
+   * The TypeScript compiler recognizes this tag and specifies its behavior:
+   *
+   * @see https://www.typescriptlang.org/tsconfig#jsxImportSource
    */
   public static readonly jsxImportSource: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxImportSource',
