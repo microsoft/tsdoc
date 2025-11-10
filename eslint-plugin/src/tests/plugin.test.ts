@@ -8,7 +8,8 @@ const ruleTester: RuleTester = new RuleTester();
 ruleTester.run('"tsdoc/syntax" rule', plugin.rules.syntax, {
   valid: [
     '/**\nA great function!\n */\nfunction foobar() {}\n',
-    '/**\nA great class!\n */\nclass FooBar {}\n'
+    '/**\nA great class!\n */\nclass FooBar {}\n',
+    '/** @jsx h */'
   ],
   invalid: [
     {
