@@ -488,36 +488,52 @@ export class StandardTags {
   });
 
   /**
-   * (TSDoc Built-in Directive)
+   * (Extended)
+   *
+   * Used to specify the JSX factory function to use when compiling JSX syntax.
+   *
+   * See https://www.typescriptlang.org/tsconfig/#jsxFactory
    */
-  public static readonly tsBuiltInJsx: TSDocTagDefinition = StandardTags._defineTag({
+  public static readonly jsx: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsx',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     standardization: Standardization.Extended
   });
 
   /**
-   * (TSDoc Built-in Directive)
+   * (Extended)
+   *
+   * Used to specify the JSX runtime to use when compiling JSX syntax.
+   *
+   * See https://www.typescriptlang.org/tsconfig/#jsx
    */
-  public static readonly tsBuiltInJsxRuntime: TSDocTagDefinition = StandardTags._defineTag({
+  public static readonly jsxRuntime: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxRuntime',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     standardization: Standardization.Extended
   });
 
   /**
-   * (TSDoc Built-in Directive)
+   * (Extended)
+   *
+   * Used to specify the JSX fragment factory to use when compiling JSX syntax.
+   *
+   * See https://www.typescriptlang.org/tsconfig/#jsxFragmentFactory
    */
-  public static readonly tsBuiltInJsxFrag: TSDocTagDefinition = StandardTags._defineTag({
+  public static readonly jsxFrag: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxFrag',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     standardization: Standardization.Extended
   });
 
   /**
-   * (TSDoc Built-in Directive)
+   * (Extended)
+   *
+   * Used to specify the JSX import source when compiling JSX syntax.
+   *
+   * See https://www.typescriptlang.org/tsconfig#jsxImportSource
    */
-  public static readonly tsBuiltInJsxImportSource: TSDocTagDefinition = StandardTags._defineTag({
+  public static readonly jsxImportSource: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxImportSource',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
     standardization: Standardization.Extended
@@ -552,10 +568,10 @@ export class StandardTags {
     StandardTags.throws,
     StandardTags.typeParam,
     StandardTags.virtual,
-    StandardTags.tsBuiltInJsx,
-    StandardTags.tsBuiltInJsxRuntime,
-    StandardTags.tsBuiltInJsxFrag,
-    StandardTags.tsBuiltInJsxImportSource
+    StandardTags.jsx,
+    StandardTags.jsxRuntime,
+    StandardTags.jsxFrag,
+    StandardTags.jsxImportSource
   ];
 
   private static _defineTag(parameters: ITSDocTagDefinitionInternalParameters): TSDocTagDefinition {

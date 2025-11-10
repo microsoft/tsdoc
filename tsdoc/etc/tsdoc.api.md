@@ -1138,6 +1138,10 @@ export class StandardTags {
     static readonly experimental: TSDocTagDefinition;
     static readonly inheritDoc: TSDocTagDefinition;
     static readonly internal: TSDocTagDefinition;
+    static readonly jsx: TSDocTagDefinition;
+    static readonly jsxFrag: TSDocTagDefinition;
+    static readonly jsxImportSource: TSDocTagDefinition;
+    static readonly jsxRuntime: TSDocTagDefinition;
     static readonly label: TSDocTagDefinition;
     static readonly link: TSDocTagDefinition;
     static readonly override: TSDocTagDefinition;
@@ -1151,10 +1155,6 @@ export class StandardTags {
     static readonly sealed: TSDocTagDefinition;
     static readonly see: TSDocTagDefinition;
     static readonly throws: TSDocTagDefinition;
-    static readonly tsBuiltInJsx: TSDocTagDefinition;
-    static readonly tsBuiltInJsxFrag: TSDocTagDefinition;
-    static readonly tsBuiltInJsxImportSource: TSDocTagDefinition;
-    static readonly tsBuiltInJsxRuntime: TSDocTagDefinition;
     static readonly typeParam: TSDocTagDefinition;
     static readonly virtual: TSDocTagDefinition;
 }
