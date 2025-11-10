@@ -165,3 +165,12 @@ test('07 Invalid JSDoc type', () => {
     ['/**', ' * Example 1', ' *', ' * @param { test', ' *', ' * @public', ' */'].join('\n')
   );
 });
+
+test.each([
+  '/** @jsx foo */',
+  '/** @jsxRuntime classic */',
+  '/** @jsxFrag Fragment */',
+  '/** @jsxImportSource preact */'
+])('08 JSX directive: %s', (source) => {
+  TestHelpers.parseAndMatchDocCommentSnapshot(source);
+});

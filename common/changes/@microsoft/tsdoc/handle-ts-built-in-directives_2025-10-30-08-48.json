@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Standardize TypeScript's `@jsx`, `@jsxRuntime`, `@jsxFrag`, `@jsxImportSource` tags.",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc"
+}

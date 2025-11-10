@@ -488,6 +488,70 @@ export class StandardTags {
   });
 
   /**
+   * (Extended)
+   *
+   * Used to specify the JSX factory function to use when compiling JSX syntax.
+   *
+   * @remarks
+   * The TypeScript compiler recognizes this tag and specifies its behavior:
+   *
+   * @see {@link https://www.typescriptlang.org/tsconfig/#jsx}
+   */
+  public static readonly jsx: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@jsx',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Extended)
+   *
+   * Used to specify the JSX runtime to use when compiling JSX syntax.
+   *
+   * @remarks
+   * The TypeScript compiler recognizes this tag and specifies its behavior:
+   *
+   * @see {@link https://www.typescriptlang.org/tsconfig/#jsx}
+   */
+  public static readonly jsxRuntime: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@jsxRuntime',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Extended)
+   *
+   * Used to specify the JSX fragment factory to use when compiling JSX syntax.
+   *
+   * @remarks
+   * The TypeScript compiler recognizes this tag and specifies its behavior:
+   *
+   * @see {@link https://www.typescriptlang.org/tsconfig/#jsx}
+   */
+  public static readonly jsxFrag: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@jsxFrag',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Extended
+  });
+
+  /**
+   * (Extended)
+   *
+   * Used to specify the JSX import source when compiling JSX syntax.
+   *
+   * @remarks
+   * The TypeScript compiler recognizes this tag and specifies its behavior:
+   *
+   * @see {@link https://www.typescriptlang.org/tsconfig/#jsx}
+   */
+  public static readonly jsxImportSource: TSDocTagDefinition = StandardTags._defineTag({
+    tagName: '@jsxImportSource',
+    syntaxKind: TSDocTagSyntaxKind.BlockTag,
+    standardization: Standardization.Extended
+  });
+
+  /**
    * Returns the full list of all core tags.
    */
   public static allDefinitions: ReadonlyArray<TSDocTagDefinition> = [
@@ -515,7 +579,11 @@ export class StandardTags {
     StandardTags.see,
     StandardTags.throws,
     StandardTags.typeParam,
-    StandardTags.virtual
+    StandardTags.virtual,
+    StandardTags.jsx,
+    StandardTags.jsxRuntime,
+    StandardTags.jsxFrag,
+    StandardTags.jsxImportSource
   ];
 
   private static _defineTag(parameters: ITSDocTagDefinitionInternalParameters): TSDocTagDefinition {
