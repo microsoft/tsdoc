@@ -495,7 +495,7 @@ export class StandardTags {
    * @remarks
    * The TypeScript compiler recognizes this tag and specifies its behavior:
    *
-   * @see https://www.typescriptlang.org/tsconfig/#jsxFactory
+   * @see {@link https://www.typescriptlang.org/tsconfig/#jsx}
    */
   public static readonly jsx: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsx',
@@ -511,7 +511,7 @@ export class StandardTags {
    * @remarks
    * The TypeScript compiler recognizes this tag and specifies its behavior:
    *
-   * @see https://www.typescriptlang.org/tsconfig/#jsx
+   * @see {@link https://www.typescriptlang.org/tsconfig/#jsx}
    */
   public static readonly jsxRuntime: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxRuntime',
@@ -527,7 +527,7 @@ export class StandardTags {
    * @remarks
    * The TypeScript compiler recognizes this tag and specifies its behavior:
    *
-   * @see https://www.typescriptlang.org/tsconfig/#jsxFragmentFactory
+   * @see {@link https://www.typescriptlang.org/tsconfig/#jsx}
    */
   public static readonly jsxFrag: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxFrag',
@@ -543,7 +543,7 @@ export class StandardTags {
    * @remarks
    * The TypeScript compiler recognizes this tag and specifies its behavior:
    *
-   * @see https://www.typescriptlang.org/tsconfig#jsxImportSource
+   * @see {@link https://www.typescriptlang.org/tsconfig/#jsx}
    */
   public static readonly jsxImportSource: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxImportSource',
