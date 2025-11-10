@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "eslint-plugin-tsdoc",
+      "comment": "",
+      "type": "none"
+    }
+  ],
+  "packageName": "eslint-plugin-tsdoc"
+}
