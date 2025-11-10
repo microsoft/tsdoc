@@ -51,8 +51,6 @@ export class TSDocConfiguration {
       // Define all the standard tags
       this.addTagDefinitions(StandardTags.allDefinitions);
     }
-
-    this.addTagDefinitions(StandardTags.allTSBuiltInDirectives);
   }
 
   /**

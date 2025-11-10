@@ -178,10 +178,9 @@ Object {
   "s07_typeParamBlocks": Array [],
   "s08_returnsBlock": undefined,
   "s09_customBlocks": Array [],
-  "s10_tsBuiltInDirectiveBlocks": Array [],
-  "s11_inheritDocTag": undefined,
-  "s12_modifierTags": Array [],
-  "s13_logMessages": Array [],
+  "s10_inheritDocTag": undefined,
+  "s11_modifierTags": Array [],
+  "s12_logMessages": Array [],
 }
 `;
 
@@ -368,10 +367,9 @@ Object {
   "s07_typeParamBlocks": Array [],
   "s08_returnsBlock": undefined,
   "s09_customBlocks": Array [],
-  "s10_tsBuiltInDirectiveBlocks": Array [],
-  "s11_inheritDocTag": undefined,
-  "s12_modifierTags": Array [],
-  "s13_logMessages": Array [],
+  "s10_inheritDocTag": undefined,
+  "s11_modifierTags": Array [],
+  "s12_logMessages": Array [],
 }
 `;
 
@@ -478,9 +476,8 @@ Object {
   "s07_typeParamBlocks": Array [],
   "s08_returnsBlock": undefined,
   "s09_customBlocks": Array [],
-  "s10_tsBuiltInDirectiveBlocks": Array [],
-  "s11_inheritDocTag": undefined,
-  "s12_modifierTags": Array [
+  "s10_inheritDocTag": undefined,
+  "s11_modifierTags": Array [
     Object {
       "kind": "BlockTag",
       "nodes": Array [
@@ -491,7 +488,7 @@ Object {
       ],
     },
   ],
-  "s13_logMessages": Array [],
+  "s12_logMessages": Array [],
 }
 `;
 

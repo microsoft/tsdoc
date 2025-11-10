@@ -493,7 +493,7 @@ export class StandardTags {
   public static readonly tsBuiltInJsx: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsx',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
-    standardization: Standardization.TSBuiltInDirective
+    standardization: Standardization.Extended
   });
 
   /**
@@ -502,7 +502,7 @@ export class StandardTags {
   public static readonly tsBuiltInJsxRuntime: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxRuntime',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
-    standardization: Standardization.TSBuiltInDirective
+    standardization: Standardization.Extended
   });
 
   /**
@@ -511,7 +511,7 @@ export class StandardTags {
   public static readonly tsBuiltInJsxFrag: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxFrag',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
-    standardization: Standardization.TSBuiltInDirective
+    standardization: Standardization.Extended
   });
 
   /**
@@ -520,18 +520,8 @@ export class StandardTags {
   public static readonly tsBuiltInJsxImportSource: TSDocTagDefinition = StandardTags._defineTag({
     tagName: '@jsxImportSource',
     syntaxKind: TSDocTagSyntaxKind.BlockTag,
-    standardization: Standardization.TSBuiltInDirective
+    standardization: Standardization.Extended
   });
-
-  /**
-   * Returns the full list of all TSDoc built-in directives.
-   */
-  public static readonly allTSBuiltInDirectives: ReadonlyArray<TSDocTagDefinition> = [
-    StandardTags.tsBuiltInJsx,
-    StandardTags.tsBuiltInJsxRuntime,
-    StandardTags.tsBuiltInJsxFrag,
-    StandardTags.tsBuiltInJsxImportSource
-  ];
 
   /**
    * Returns the full list of all core tags.
@@ -561,7 +551,11 @@ export class StandardTags {
     StandardTags.see,
     StandardTags.throws,
     StandardTags.typeParam,
-    StandardTags.virtual
+    StandardTags.virtual,
+    StandardTags.tsBuiltInJsx,
+    StandardTags.tsBuiltInJsxRuntime,
+    StandardTags.tsBuiltInJsxFrag,
+    StandardTags.tsBuiltInJsxImportSource
   ];
 
   private static _defineTag(parameters: ITSDocTagDefinitionInternalParameters): TSDocTagDefinition {

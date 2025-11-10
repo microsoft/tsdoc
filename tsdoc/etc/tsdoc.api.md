@@ -48,8 +48,6 @@ export class DocComment extends DocNode {
     appendCustomBlock(block: DocBlock): void;
     // @internal
     _appendSeeBlock(block: DocBlock): void;
-    // @internal
-    _appendTSBuiltInDirectiveBlock(block: DocBlock): void;
     get customBlocks(): ReadonlyArray<DocBlock>;
     deprecatedBlock: DocBlock | undefined;
     emitAsTsdoc(): string;
@@ -65,7 +63,6 @@ export class DocComment extends DocNode {
     returnsBlock: DocBlock | undefined;
     get seeBlocks(): ReadonlyArray<DocBlock>;
     summarySection: DocSection;
-    get tsBuiltInDirectiveBlocks(): ReadonlyArray<DocBlock>;
     readonly typeParams: DocParamCollection;
 }
 
@@ -1110,8 +1107,7 @@ export enum Standardization {
     Core = "Core",
     Discretionary = "Discretionary",
     Extended = "Extended",
-    None = "None",
-    TSBuiltInDirective = "TSBuiltInDirective"
+    None = "None"
 }
 
 // @public
@@ -1132,7 +1128,6 @@ export class StandardModifierTagSet extends ModifierTagSet {
 // @public
 export class StandardTags {
     static allDefinitions: ReadonlyArray<TSDocTagDefinition>;
-    static readonly allTSBuiltInDirectives: ReadonlyArray<TSDocTagDefinition>;
     static readonly alpha: TSDocTagDefinition;
     static readonly beta: TSDocTagDefinition;
     static readonly decorator: TSDocTagDefinition;

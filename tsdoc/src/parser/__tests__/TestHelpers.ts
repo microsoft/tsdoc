@@ -125,12 +125,9 @@ export class TestHelpers {
       s07_typeParamBlocks: docComment.typeParams.blocks.map((x) => TestHelpers.getDocNodeSnapshot(x)),
       s08_returnsBlock: TestHelpers.getDocNodeSnapshot(docComment.returnsBlock),
       s09_customBlocks: docComment.customBlocks.map((x) => TestHelpers.getDocNodeSnapshot(x)),
-      s10_tsBuiltInDirectiveBlocks: docComment.tsBuiltInDirectiveBlocks.map((x) =>
-        TestHelpers.getDocNodeSnapshot(x)
-      ),
-      s11_inheritDocTag: TestHelpers.getDocNodeSnapshot(docComment.inheritDocTag),
-      s12_modifierTags: docComment.modifierTagSet.nodes.map((x) => TestHelpers.getDocNodeSnapshot(x)),
-      s13_logMessages: parserContext.log.messages.map((message) => message.text)
+      s10_inheritDocTag: TestHelpers.getDocNodeSnapshot(docComment.inheritDocTag),
+      s11_modifierTags: docComment.modifierTagSet.nodes.map((x) => TestHelpers.getDocNodeSnapshot(x)),
+      s12_logMessages: parserContext.log.messages.map((message) => message.text)
     }).toMatchSnapshot();
 
     return parserContext;
