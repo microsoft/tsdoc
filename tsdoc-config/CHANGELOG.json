@@ -2,6 +2,28 @@
   "name": "@microsoft/tsdoc-config",
   "entries": [
     {
+      "version": "0.18.0",
+      "tag": "@microsoft/tsdoc-config_v0.18.0",
+      "date": "Mon, 10 Nov 2025 11:44:53 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Normalize builtin imports."
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Remove test files and declaration maps from the published package."
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" to `0.16.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.17.1",
       "tag": "@microsoft/tsdoc-config_v0.17.1",
       "date": "Sat, 23 Nov 2024 00:23:35 GMT",
