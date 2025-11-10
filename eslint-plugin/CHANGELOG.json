@@ -2,6 +2,29 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.5.0",
+      "tag": "eslint-plugin-tsdoc_v0.5.0",
+      "date": "Mon, 10 Nov 2025 11:36:57 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Normalize builtin imports."
+          },
+          {
+            "comment": "Use a more robust method to find the project root."
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc-config\" to `0.18.0`"
+          },
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" to `0.16.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.4.0",
       "tag": "eslint-plugin-tsdoc_v0.4.0",
       "date": "Sat, 23 Nov 2024 00:23:35 GMT",

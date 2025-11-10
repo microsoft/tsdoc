@@ -1,6 +1,19 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Sat, 23 Nov 2024 00:23:35 GMT and should not be manually modified.
+This log was last generated on Mon, 10 Nov 2025 11:36:57 GMT and should not be manually modified.
+
+## 0.16.0
+Mon, 10 Nov 2025 11:36:57 GMT
+
+### Minor changes
+
+- Normalize builtin imports.
+- Standardize TypeScript's `@jsx`, `@jsxRuntime`, `@jsxFrag`, `@jsxImportSource` tags.
+
+### Patches
+
+- Ensure TSDocEmitter does not emit a newline for the text after `@defaultValue` tags.
+- Remove test files and declaration maps from the published package.
 
 ## 0.15.1
 Sat, 23 Nov 2024 00:23:35 GMT
