@@ -1,6 +1,14 @@
 # Change Log - eslint-plugin-tsdoc
 
-This log was last generated on Sat, 23 Nov 2024 00:23:35 GMT and should not be manually modified.
+This log was last generated on Tue, 11 Nov 2025 00:51:42 GMT and should not be manually modified.
+
+## 0.5.0
+Tue, 11 Nov 2025 00:51:42 GMT
+
+### Minor changes
+
+- Normalize builtin imports.
+- Use a more robust method to find the project root.
 
 ## 0.4.0
 Sat, 23 Nov 2024 00:23:35 GMT
