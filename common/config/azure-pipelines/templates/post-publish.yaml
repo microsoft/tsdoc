@@ -22,7 +22,6 @@ steps:
     displayName: 'Record Published Versions'
     workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
 
-  - script: 'node repo-scripts/repo-toolbox/lib/start.js collect-json-schemas --output-path $(Build.ArtifactStagingDirectory)/json-schemas'
+  - script: 'node $(Agent.BuildDirectory)/rushstack/repo-scripts/repo-toolbox/lib/start.js collect-json-schemas --output-path $(Build.ArtifactStagingDirectory)/json-schemas'
     displayName: 'Collect JSON Schemas'
     workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
-
