@@ -3,7 +3,7 @@
     {
       "packageName": "@microsoft/tsdoc",
       "comment": "Update emitter to not replace line breaks",
-      "type": "major"
+      "type": "minor"
     }
   ],
   "packageName": "@microsoft/tsdoc"
