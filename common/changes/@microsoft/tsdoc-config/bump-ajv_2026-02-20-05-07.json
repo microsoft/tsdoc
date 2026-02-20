@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc-config",
+      "comment": "bump ajv to v8.18.0",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc-config"
+}
