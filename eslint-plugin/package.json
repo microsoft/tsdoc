@@ -29,7 +29,7 @@
   "dependencies": {
     "@microsoft/tsdoc-config": "workspace:*",
     "@microsoft/tsdoc": "workspace:*",
-    "@typescript-eslint/utils": "~8.46.0"
+    "@typescript-eslint/utils": "~8.56.0"
   },
   "devDependencies": {
     "tsdoc-build-rig": "workspace:*",
