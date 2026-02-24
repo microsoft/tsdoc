@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "eslint-plugin-tsdoc",
-      "comment": "Update the `minimatch` dependency to `~8.56.0` to address CVE-2026-26996.",
+      "comment": "Update the `@typescript-eslint/utils` dependency to `~8.56.0` to address CVE-2026-26996.",
       "type": "patch"
     }
   ],
