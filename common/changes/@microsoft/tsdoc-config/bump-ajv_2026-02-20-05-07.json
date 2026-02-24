@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc-config",
-      "comment": "bump ajv to v8.18.0",
+      "comment": "Bump ajv to `~8.18.0` to address CVE-2025-69873.",
       "type": "patch"
     }
   ],
