@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc-config",
   "entries": [
     {
+      "version": "0.18.1",
+      "tag": "@microsoft/tsdoc-config_v0.18.1",
+      "date": "Wed, 25 Feb 2026 02:06:43 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update the `ajv` dependency to `~8.18.0` to address CVE-2025-69873."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.18.0",
       "tag": "@microsoft/tsdoc-config_v0.18.0",
       "date": "Tue, 11 Nov 2025 00:51:42 GMT",
