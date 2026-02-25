@@ -1,6 +1,13 @@
 # Change Log - eslint-plugin-tsdoc
 
-This log was last generated on Wed, 25 Feb 2026 02:06:43 GMT and should not be manually modified.
+This log was last generated on Wed, 25 Feb 2026 21:34:35 GMT and should not be manually modified.
+
+## 0.5.2
+Wed, 25 Feb 2026 21:34:35 GMT
+
+### Patches
+
+- Replace deprecated `context.getSourceCode()` and `context.getCwd()` with `context.sourceCode` and `context.cwd` for ESLint 10 compatibility, with fallback for older versions.
 
 ## 0.5.1
 Wed, 25 Feb 2026 02:06:43 GMT

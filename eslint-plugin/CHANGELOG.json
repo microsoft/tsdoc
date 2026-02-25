@@ -2,6 +2,18 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.5.2",
+      "tag": "eslint-plugin-tsdoc_v0.5.2",
+      "date": "Wed, 25 Feb 2026 21:34:35 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Replace deprecated `context.getSourceCode()` and `context.getCwd()` with `context.sourceCode` and `context.cwd` for ESLint 10 compatibility, with fallback for older versions."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.5.1",
       "tag": "eslint-plugin-tsdoc_v0.5.1",
       "date": "Wed, 25 Feb 2026 02:06:43 GMT",
