@@ -35,7 +35,7 @@ function getRootDirectoryFromContext(context: TSESLint.RuleContext<string, unkno
 
   // Fall back to the parserOptions.tsconfigRootDir if available, otherwise the eslint working directory
   if (!rootDirectory) {
-    rootDirectory = context.parserOptions?.tsconfigRootDir ?? context.getCwd?.();
+    rootDirectory = context.parserOptions?.tsconfigRootDir ?? context.cwd ?? context.getCwd?.();
   }
 
   return rootDirectory;
@@ -109,7 +109,7 @@ const plugin: IPlugin = {
 
         const tsdocParser: TSDocParser = new TSDocParser(tsdocConfiguration);
 
-        const sourceCode: eslint.SourceCode = context.getSourceCode();
+        const sourceCode: eslint.SourceCode = context.sourceCode ?? context.getSourceCode();
         function checkCommentBlocks(): void {
           for (const comment of sourceCode.getAllComments()) {
             if (comment.type !== 'Block') {
