@@ -22,5 +22,5 @@
     ]
   ],
 
-  "resolver": "@rushstack/heft-jest-plugin/lib/exports/jest-node-modules-symlink-resolver.js"
+  "resolver": "@rushstack/heft-jest-plugin/lib-commonjs/exports/jest-node-modules-symlink-resolver.js"
 }
