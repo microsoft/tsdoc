@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/tsdoc-config",
-  "version": "0.18.0",
+  "version": "0.18.1",
   "description": "A loader for the tsdoc.json file",
   "keywords": [
     "TypeScript",
