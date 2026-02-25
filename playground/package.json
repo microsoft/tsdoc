@@ -20,12 +20,12 @@
     "tslib": "~2.5.3"
   },
   "devDependencies": {
-    "@rushstack/heft": "1.1.1",
+    "@rushstack/heft": "1.2.5",
     "tsdoc-build-rig": "workspace:*",
     "eslint": "~9.25.1",
     "handlebars": "~4.7.7",
     "handlebars-loader": "~1.7.3",
     "monaco-editor-webpack-plugin": "~7.1.0",
-    "@rushstack/heft-web-rig": "1.0.2"
+    "@rushstack/heft-web-rig": "1.4.1"
   }
 }
