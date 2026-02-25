@@ -22,7 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "@microsoft/tsdoc": "workspace:*",
-    "ajv": "~8.12.0",
+    "ajv": "~8.18.0",
     "jju": "~1.4.0",
     "resolve": "~1.22.2"
   },
