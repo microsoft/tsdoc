@@ -16,31 +16,44 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 176760:
-/*!****************************!*\
-  !*** external "node:path" ***!
-  \****************************/
-/***/ ((module) => {
+/***/ 953844
+/*!**************************************************************!*\
+  !*** ./lib-intermediate-esm/utilities/executionUtilities.js ***!
+  \**************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
-module.exports = require("node:path");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   IS_WINDOWS: () => (/* binding */ IS_WINDOWS),
+/* harmony export */   escapeArgumentIfNeeded: () => (/* binding */ escapeArgumentIfNeeded)
+/* harmony export */ });
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+const IS_WINDOWS = process.platform === 'win32';
+function escapeArgumentIfNeeded(command, isWindows = IS_WINDOWS) {
+    if (command.includes(' ')) {
+        if (isWindows) {
+            // Windows: use double quotes and escape internal double quotes
+            return `"${command.replace(/"/g, '""')}"`;
+        }
+        else {
+            // Unix: use JSON.stringify for proper escaping
+            return JSON.stringify(command);
+        }
+    }
+    else {
+        return command;
+    }
+}
+//# sourceMappingURL=executionUtilities.js.map
 
-/***/ }),
+/***/ },
 
-/***/ 731421:
-/*!*************************************!*\
-  !*** external "node:child_process" ***!
-  \*************************************/
-/***/ ((module) => {
-
-module.exports = require("node:child_process");
-
-/***/ }),
-
-/***/ 832286:
-/*!************************************************!*\
-  !*** ./lib-esnext/utilities/npmrcUtilities.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ 359480
+/*!**********************************************************!*\
+  !*** ./lib-intermediate-esm/utilities/npmrcUtilities.js ***!
+  \**********************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -64,14 +77,8 @@ __webpack_require__.r(__webpack_exports__);
  * @returns
  * The text of the the .npmrc.
  */
-// create a global _combinedNpmrc for cache purpose
-const _combinedNpmrcMap = new Map();
 function _trimNpmrcFile(options) {
-    const { sourceNpmrcPath, linesToPrepend, linesToAppend, supportEnvVarFallbackSyntax } = options;
-    const combinedNpmrcFromCache = _combinedNpmrcMap.get(sourceNpmrcPath);
-    if (combinedNpmrcFromCache !== undefined) {
-        return combinedNpmrcFromCache;
-    }
+    const { sourceNpmrcPath, linesToPrepend, linesToAppend, supportEnvVarFallbackSyntax, filterNpmIncompatibleProperties, env = process.env } = options;
     let npmrcFileLines = [];
     if (linesToPrepend) {
         npmrcFileLines.push(...linesToPrepend);
@@ -83,21 +90,61 @@ function _trimNpmrcFile(options) {
         npmrcFileLines.push(...linesToAppend);
     }
     npmrcFileLines = npmrcFileLines.map((line) => (line || '').trim());
-    const resultLines = trimNpmrcFileLines(npmrcFileLines, process.env, supportEnvVarFallbackSyntax);
+    const resultLines = trimNpmrcFileLines(npmrcFileLines, env, supportEnvVarFallbackSyntax, filterNpmIncompatibleProperties);
     const combinedNpmrc = resultLines.join('\n');
-    //save the cache
-    _combinedNpmrcMap.set(sourceNpmrcPath, combinedNpmrc);
     return combinedNpmrc;
 }
+/**
+ * List of npmrc properties that are not supported by npm but may be present in the config.
+ * These include pnpm-specific properties and deprecated npm properties.
+ */
+const NPM_INCOMPATIBLE_PROPERTIES = new Set([
+    // pnpm-specific hoisting configuration
+    'hoist',
+    'hoist-pattern',
+    'public-hoist-pattern',
+    'shamefully-hoist',
+    // Deprecated or unknown npm properties that cause warnings
+    'email',
+    'publish-branch'
+]);
+/**
+ * List of registry-scoped npmrc property suffixes that are pnpm-specific.
+ * These are properties like "//registry.example.com/:tokenHelper" where "tokenHelper"
+ * is the suffix after the last colon.
+ */
+const NPM_INCOMPATIBLE_REGISTRY_SCOPED_PROPERTIES = new Set([
+    // pnpm-specific token helper properties
+    'tokenHelper',
+    'urlTokenHelper'
+]);
+/**
+ * Regular expression to extract property names from .npmrc lines.
+ * Matches everything before '=', '[', or whitespace to capture the property name.
+ * Note: The 'g' flag is intentionally omitted since we only need the first match.
+ * Examples:
+ *   "registry=https://..." -> matches "registry"
+ *   "hoist-pattern[]=..." -> matches "hoist-pattern"
+ */
+const PROPERTY_NAME_REGEX = /^([^=\[\s]+)/;
+/**
+ * Regular expression to extract environment variable names and optional fallback values.
+ * Matches patterns like:
+ *   nameString                 -> group 1: nameString,    group 2: undefined
+ *   nameString-fallbackString  -> group 1: nameString,    group 2: fallbackString
+ *   nameString:-fallbackString -> group 1: nameString,    group 2: fallbackString
+ */
+const ENV_VAR_WITH_FALLBACK_REGEX = /^(?<name>[^:-]+)(?::?-(?<fallback>.+))?$/;
 /**
  *
  * @param npmrcFileLines The npmrc file's lines
  * @param env The environment variables object
  * @param supportEnvVarFallbackSyntax Whether to support fallback values in the form of `${VAR_NAME:-fallback}`
- * @returns
+ * @param filterNpmIncompatibleProperties Whether to filter out properties that npm doesn't understand
+ * @returns An array of processed npmrc file lines with undefined environment variables and npm-incompatible properties commented out
  */
-function trimNpmrcFileLines(npmrcFileLines, env, supportEnvVarFallbackSyntax) {
-    var _a;
+function trimNpmrcFileLines(npmrcFileLines, env, supportEnvVarFallbackSyntax, filterNpmIncompatibleProperties = false) {
+    var _a, _b, _c;
     const resultLines = [];
     // This finds environment variable tokens that look like "${VAR_NAME}"
     const expansionRegExp = /\$\{([^\}]+)\}/g;
@@ -106,6 +153,7 @@ function trimNpmrcFileLines(npmrcFileLines, env, supportEnvVarFallbackSyntax) {
     // Trim out lines that reference environment variables that aren't defined
     for (let line of npmrcFileLines) {
         let lineShouldBeTrimmed = false;
+        let trimReason = '';
         //remove spaces before or after key and value
         line = line
             .split('=')
@@ -113,49 +161,89 @@ function trimNpmrcFileLines(npmrcFileLines, env, supportEnvVarFallbackSyntax) {
             .join('=');
         // Ignore comment lines
         if (!commentRegExp.test(line)) {
-            const environmentVariables = line.match(expansionRegExp);
-            if (environmentVariables) {
-                for (const token of environmentVariables) {
-                    /**
-                     * Remove the leading "${" and the trailing "}" from the token
-                     *
-                     * ${nameString}                  -> nameString
-                     * ${nameString-fallbackString}   -> name-fallbackString
-                     * ${nameString:-fallbackString}  -> name:-fallbackString
-                     */
-                    const nameWithFallback = token.substring(2, token.length - 1);
-                    let environmentVariableName;
-                    let fallback;
-                    if (supportEnvVarFallbackSyntax) {
-                        /**
-                         * Get the environment variable name and fallback value.
-                         *
-                         *                                name          fallback
-                         * nameString                 ->  nameString    undefined
-                         * nameString-fallbackString  ->  nameString    fallbackString
-                         * nameString:-fallbackString ->  nameString    fallbackString
-                         */
-                        const matched = nameWithFallback.match(/^([^:-]+)(?:\:?-(.+))?$/);
-                        // matched: [originStr, variableName, fallback]
-                        environmentVariableName = (_a = matched === null || matched === void 0 ? void 0 : matched[1]) !== null && _a !== void 0 ? _a : nameWithFallback;
-                        fallback = matched === null || matched === void 0 ? void 0 : matched[2];
+            // Check if this is a property that npm doesn't understand
+            if (filterNpmIncompatibleProperties) {
+                // Extract the property name (everything before the '=' or '[')
+                const match = line.match(PROPERTY_NAME_REGEX);
+                if (match) {
+                    const propertyName = match[1];
+                    // Check if this is a registry-scoped property (starts with "//" like "//registry.npmjs.org/:_authToken")
+                    const isRegistryScoped = propertyName.startsWith('//');
+                    if (isRegistryScoped) {
+                        // For registry-scoped properties, check if the suffix (after the last colon) is npm-incompatible
+                        // Example: "//registry.example.com/:tokenHelper" -> suffix is "tokenHelper"
+                        const lastColonIndex = propertyName.lastIndexOf(':');
+                        if (lastColonIndex !== -1) {
+                            const registryPropertySuffix = propertyName.substring(lastColonIndex + 1);
+                            if (NPM_INCOMPATIBLE_REGISTRY_SCOPED_PROPERTIES.has(registryPropertySuffix)) {
+                                lineShouldBeTrimmed = true;
+                                trimReason = 'NPM_INCOMPATIBLE_PROPERTY';
+                            }
+                        }
                     }
                     else {
-                        environmentVariableName = nameWithFallback;
+                        // For non-registry-scoped properties, check the full property name
+                        if (NPM_INCOMPATIBLE_PROPERTIES.has(propertyName)) {
+                            lineShouldBeTrimmed = true;
+                            trimReason = 'NPM_INCOMPATIBLE_PROPERTY';
+                        }
                     }
-                    // Is the environment variable and fallback value defined.
-                    if (!env[environmentVariableName] && !fallback) {
-                        // No, so trim this line
-                        lineShouldBeTrimmed = true;
-                        break;
+                }
+            }
+            // Check for undefined environment variables
+            if (!lineShouldBeTrimmed) {
+                const environmentVariables = line.match(expansionRegExp);
+                if (environmentVariables) {
+                    for (const token of environmentVariables) {
+                        /**
+                         * Remove the leading "${" and the trailing "}" from the token
+                         *
+                         * ${nameString}                  -> nameString
+                         * ${nameString-fallbackString}   -> name-fallbackString
+                         * ${nameString:-fallbackString}  -> name:-fallbackString
+                         */
+                        const nameWithFallback = token.slice(2, -1);
+                        let environmentVariableName;
+                        let fallback;
+                        if (supportEnvVarFallbackSyntax) {
+                            /**
+                             * Get the environment variable name and fallback value.
+                             *
+                             *                                name          fallback
+                             * nameString                 ->  nameString    undefined
+                             * nameString-fallbackString  ->  nameString    fallbackString
+                             * nameString:-fallbackString ->  nameString    fallbackString
+                             */
+                            const matched = nameWithFallback.match(ENV_VAR_WITH_FALLBACK_REGEX);
+                            environmentVariableName = (_b = (_a = matched === null || matched === void 0 ? void 0 : matched.groups) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : nameWithFallback;
+                            fallback = (_c = matched === null || matched === void 0 ? void 0 : matched.groups) === null || _c === void 0 ? void 0 : _c.fallback;
+                        }
+                        else {
+                            environmentVariableName = nameWithFallback;
+                        }
+                        // Is the environment variable and fallback value defined.
+                        if (!env[environmentVariableName] && !fallback) {
+                            // No, so trim this line
+                            lineShouldBeTrimmed = true;
+                            trimReason = 'MISSING_ENVIRONMENT_VARIABLE';
+                            break;
+                        }
                     }
                 }
             }
         }
         if (lineShouldBeTrimmed) {
-            // Example output:
-            // "; MISSING ENVIRONMENT VARIABLE: //my-registry.com/npm/:_authToken=${MY_AUTH_TOKEN}"
-            resultLines.push('; MISSING ENVIRONMENT VARIABLE: ' + line);
+            // Comment out the line with appropriate reason
+            if (trimReason === 'NPM_INCOMPATIBLE_PROPERTY') {
+                // Example output:
+                // "; UNSUPPORTED BY NPM: email=test@example.com"
+                resultLines.push('; UNSUPPORTED BY NPM: ' + line);
+            }
+            else {
+                // Example output:
+                // "; MISSING ENVIRONMENT VARIABLE: //my-registry.com/npm/:_authToken=${MY_AUTH_TOKEN}"
+                resultLines.push('; MISSING ENVIRONMENT VARIABLE: ' + line);
+            }
         }
         else {
             resultLines.push(line);
@@ -209,33 +297,57 @@ function isVariableSetInNpmrcFile(sourceNpmrcFolder, variableKey, supportEnvVarF
     if (!node_fs__WEBPACK_IMPORTED_MODULE_0__.existsSync(sourceNpmrcPath)) {
         return false;
     }
-    const trimmedNpmrcFile = _trimNpmrcFile({ sourceNpmrcPath, supportEnvVarFallbackSyntax });
+    const trimmedNpmrcFile = _trimNpmrcFile({
+        sourceNpmrcPath,
+        supportEnvVarFallbackSyntax,
+        filterNpmIncompatibleProperties: false
+    });
     const variableKeyRegExp = new RegExp(`^${variableKey}=`, 'm');
     return trimmedNpmrcFile.match(variableKeyRegExp) !== null;
 }
 //# sourceMappingURL=npmrcUtilities.js.map
 
-/***/ }),
+/***/ },
 
-/***/ 848161:
-/*!**************************!*\
-  !*** external "node:os" ***!
-  \**************************/
-/***/ ((module) => {
+/***/ 731421
+/*!*************************************!*\
+  !*** external "node:child_process" ***!
+  \*************************************/
+(module) {
 
-module.exports = require("node:os");
+module.exports = require("node:child_process");
 
-/***/ }),
+/***/ },
 
-/***/ 973024:
+/***/ 973024
 /*!**************************!*\
   !*** external "node:fs" ***!
   \**************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = require("node:fs");
 
-/***/ })
+/***/ },
+
+/***/ 848161
+/*!**************************!*\
+  !*** external "node:os" ***!
+  \**************************/
+(module) {
+
+module.exports = require("node:os");
+
+/***/ },
+
+/***/ 176760
+/*!****************************!*\
+  !*** external "node:path" ***!
+  \****************************/
+(module) {
+
+module.exports = require("node:path");
+
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -248,6 +360,12 @@ module.exports = require("node:fs");
 /******/ 		var cachedModule = __webpack_module_cache__[moduleId];
 /******/ 		if (cachedModule !== undefined) {
 /******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Check if module exists (development only)
+/******/ 		if (__webpack_modules__[moduleId] === undefined) {
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -308,9 +426,9 @@ module.exports = require("node:fs");
 var __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
 (() => {
-/*!*******************************************!*\
-  !*** ./lib-esnext/scripts/install-run.js ***!
-  \*******************************************/
+/*!*****************************************************!*\
+  !*** ./lib-intermediate-esm/scripts/install-run.js ***!
+  \*****************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   RUSH_JSON_FILENAME: () => (/* binding */ RUSH_JSON_FILENAME),
@@ -327,10 +445,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var node_os__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(node_os__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! node:path */ 176760);
 /* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(node_path__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _utilities_npmrcUtilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utilities/npmrcUtilities */ 832286);
+/* harmony import */ var _utilities_npmrcUtilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utilities/npmrcUtilities */ 359480);
+/* harmony import */ var _utilities_executionUtilities__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utilities/executionUtilities */ 953844);
 // Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
 // See LICENSE in the project root for license information.
 /* eslint-disable no-console */
+
 
 
 
@@ -374,7 +494,7 @@ let _npmPath = undefined;
 function getNpmPath() {
     if (!_npmPath) {
         try {
-            if (_isWindows()) {
+            if (_utilities_executionUtilities__WEBPACK_IMPORTED_MODULE_5__.IS_WINDOWS) {
                 // We're on Windows
                 const whereOutput = node_child_process__WEBPACK_IMPORTED_MODULE_0__.execSync('where npm', { stdio: [] }).toString();
                 const lines = whereOutput.split(node_os__WEBPACK_IMPORTED_MODULE_2__.EOL).filter((line) => !!line);
@@ -474,9 +594,11 @@ function _resolvePackageVersion(logger, rushCommonFolder, { name, version }) {
                 sourceNpmrcFolder,
                 targetNpmrcFolder: rushTempFolder,
                 logger,
-                supportEnvVarFallbackSyntax: false
+                supportEnvVarFallbackSyntax: false,
+                // Always filter npm-incompatible properties in install-run scripts.
+                // Any warnings will be shown when running Rush commands directly.
+                filterNpmIncompatibleProperties: true
             });
-            const npmPath = getNpmPath();
             // This returns something that looks like:
             // ```
             // [
@@ -494,16 +616,11 @@ function _resolvePackageVersion(logger, rushCommonFolder, { name, version }) {
             // ```
             //
             // if only a single version matches.
-            const spawnSyncOptions = {
+            const npmVersionSpawnResult = _runNpmConfirmSuccess(['view', `${name}@${version}`, 'version', '--no-update-notifier', '--json'], {
                 cwd: rushTempFolder,
                 stdio: [],
-                shell: _isWindows()
-            };
-            const platformNpmPath = _getPlatformPath(npmPath);
-            const npmVersionSpawnResult = node_child_process__WEBPACK_IMPORTED_MODULE_0__.spawnSync(platformNpmPath, ['view', `${name}@${version}`, 'version', '--no-update-notifier', '--json'], spawnSyncOptions);
-            if (npmVersionSpawnResult.status !== 0) {
-                throw new Error(`"npm view" returned error code ${npmVersionSpawnResult.status}`);
-            }
+                env: process.env
+            }, 'npm view');
             const npmViewVersionOutput = npmVersionSpawnResult.stdout.toString();
             const parsedVersionOutput = JSON.parse(npmViewVersionOutput);
             const versions = Array.isArray(parsedVersionOutput)
@@ -629,20 +746,14 @@ function _createPackageJson(packageInstallFolder, name, version) {
 /**
  * Run "npm install" in the package install folder.
  */
-function _installPackage(logger, packageInstallFolder, name, version, command) {
+function _installPackage(logger, packageInstallFolder, name, version, npmCommand) {
     try {
         logger.info(`Installing ${name}...`);
-        const npmPath = getNpmPath();
-        const platformNpmPath = _getPlatformPath(npmPath);
-        const result = node_child_process__WEBPACK_IMPORTED_MODULE_0__.spawnSync(platformNpmPath, [command], {
+        _runNpmConfirmSuccess([npmCommand], {
             stdio: 'inherit',
             cwd: packageInstallFolder,
-            env: process.env,
-            shell: _isWindows()
-        });
-        if (result.status !== 0) {
-            throw new Error(`"npm ${command}" encountered an error`);
-        }
+            env: process.env
+        }, `npm ${npmCommand}`);
         logger.info(`Successfully installed ${name}@${version}`);
     }
     catch (e) {
@@ -654,17 +765,13 @@ function _installPackage(logger, packageInstallFolder, name, version, command) {
  */
 function _getBinPath(packageInstallFolder, binName) {
     const binFolderPath = node_path__WEBPACK_IMPORTED_MODULE_3__.resolve(packageInstallFolder, NODE_MODULES_FOLDER_NAME, '.bin');
-    const resolvedBinName = _isWindows() ? `${binName}.cmd` : binName;
+    const resolvedBinName = _utilities_executionUtilities__WEBPACK_IMPORTED_MODULE_5__.IS_WINDOWS ? `${binName}.cmd` : binName;
     return node_path__WEBPACK_IMPORTED_MODULE_3__.resolve(binFolderPath, resolvedBinName);
 }
-/**
- * Returns a cross-platform path - windows must enclose any path containing spaces within double quotes.
- */
-function _getPlatformPath(platformPath) {
-    return _isWindows() && platformPath.includes(' ') ? `"${platformPath}"` : platformPath;
-}
-function _isWindows() {
-    return node_os__WEBPACK_IMPORTED_MODULE_2__.platform() === 'win32';
+function _buildShellCommand(command, args) {
+    const escapedCommand = (0,_utilities_executionUtilities__WEBPACK_IMPORTED_MODULE_5__.escapeArgumentIfNeeded)(command);
+    const escapedArgs = args.map((arg) => (0,_utilities_executionUtilities__WEBPACK_IMPORTED_MODULE_5__.escapeArgumentIfNeeded)(arg));
+    return [escapedCommand, ...escapedArgs].join(' ');
 }
 /**
  * Write a flag file to the package's install directory, signifying that the install was successful.
@@ -677,6 +784,41 @@ function _writeFlagFile(packageInstallFolder) {
     catch (e) {
         throw new Error(`Unable to create installed.flag file in ${packageInstallFolder}`);
     }
+}
+/**
+ * Run npm under the platform's shell and throw if it didn't succeed.
+ */
+function _runNpmConfirmSuccess(args, options, commandNameForLogging) {
+    const command = getNpmPath();
+    let result;
+    if (_utilities_executionUtilities__WEBPACK_IMPORTED_MODULE_5__.IS_WINDOWS) {
+        result = node_child_process__WEBPACK_IMPORTED_MODULE_0__.spawnSync(_buildShellCommand(command, args), {
+            ...options,
+            shell: true,
+            windowsVerbatimArguments: false
+        });
+    }
+    else {
+        result = node_child_process__WEBPACK_IMPORTED_MODULE_0__.spawnSync(command, args, options);
+    }
+    if (result.status !== 0) {
+        if (!result.status) {
+            // Is status null or undefined?
+            if (result.error) {
+                throw new Error(`"${commandNameForLogging}" failed: ${result.error.message.toString()}`);
+            }
+            else if (result.signal) {
+                throw new Error(`"${commandNameForLogging}" was terminated by signal: ${result.signal}`);
+            }
+            else {
+                throw new Error(`"${commandNameForLogging}" failed for an unknown reason`);
+            }
+        }
+        else {
+            throw new Error(`"${commandNameForLogging}" returned error code ${result.status}`);
+        }
+    }
+    return result;
 }
 function installAndRun(logger, packageName, packageVersion, packageBinName, packageBinArgs, lockFilePath = process.env[INSTALL_RUN_LOCKFILE_PATH_VARIABLE]) {
     const rushJsonFolder = findRushJsonFolder();
@@ -691,11 +833,14 @@ function installAndRun(logger, packageName, packageVersion, packageBinName, pack
             sourceNpmrcFolder,
             targetNpmrcFolder: packageInstallFolder,
             logger,
-            supportEnvVarFallbackSyntax: false
+            supportEnvVarFallbackSyntax: false,
+            // Always filter npm-incompatible properties in install-run scripts.
+            // Any warnings will be shown when running Rush commands directly.
+            filterNpmIncompatibleProperties: true
         });
         _createPackageJson(packageInstallFolder, packageName, packageVersion);
-        const command = lockFilePath ? 'ci' : 'install';
-        _installPackage(logger, packageInstallFolder, packageName, packageVersion, command);
+        const installCommand = lockFilePath ? 'ci' : 'install';
+        _installPackage(logger, packageInstallFolder, packageName, packageVersion, installCommand);
         _writeFlagFile(packageInstallFolder);
     }
     const statusMessage = `Invoking "${packageBinName} ${packageBinArgs.join(' ')}"`;
@@ -708,17 +853,24 @@ function installAndRun(logger, packageName, packageVersion, packageBinName, pack
     const originalEnvPath = process.env.PATH || '';
     let result;
     try {
-        // `npm` bin stubs on Windows are `.cmd` files
-        // Node.js will not directly invoke a `.cmd` file unless `shell` is set to `true`
-        const platformBinPath = _getPlatformPath(binPath);
         process.env.PATH = [binFolderPath, originalEnvPath].join(node_path__WEBPACK_IMPORTED_MODULE_3__.delimiter);
-        result = node_child_process__WEBPACK_IMPORTED_MODULE_0__.spawnSync(platformBinPath, packageBinArgs, {
+        const spawnOptions = {
             stdio: 'inherit',
-            windowsVerbatimArguments: false,
-            shell: _isWindows(),
             cwd: process.cwd(),
             env: process.env
-        });
+        };
+        if (_utilities_executionUtilities__WEBPACK_IMPORTED_MODULE_5__.IS_WINDOWS) {
+            result = node_child_process__WEBPACK_IMPORTED_MODULE_0__.spawnSync(_buildShellCommand(binPath, packageBinArgs), {
+                ...spawnOptions,
+                windowsVerbatimArguments: false,
+                // `npm` bin stubs on Windows are `.cmd` files
+                // Node.js will not directly invoke a `.cmd` file unless `shell` is set to `true`
+                shell: true
+            });
+        }
+        else {
+            result = node_child_process__WEBPACK_IMPORTED_MODULE_0__.spawnSync(binPath, packageBinArgs, spawnOptions);
+        }
     }
     finally {
         process.env.PATH = originalEnvPath;
@@ -743,9 +895,10 @@ function runWithErrorAndStatusCode(logger, fn) {
 function _run() {
     const [nodePath /* Ex: /bin/node */, scriptPath /* /repo/common/scripts/install-run-rush.js */, rawPackageSpecifier /* qrcode@^1.2.0 */, packageBinName /* qrcode */, ...packageBinArgs /* [-f, myproject/lib] */] = process.argv;
     if (!nodePath) {
-        throw new Error('Unexpected exception: could not detect node path');
+        throw new Error('Could not detect node path');
     }
-    if (node_path__WEBPACK_IMPORTED_MODULE_3__.basename(scriptPath).toLowerCase() !== 'install-run.js') {
+    const scriptFileName = node_path__WEBPACK_IMPORTED_MODULE_3__.basename(scriptPath).toLowerCase();
+    if (scriptFileName !== 'install-run.js' && scriptFileName !== 'install-run') {
         // If install-run.js wasn't directly invoked, don't execute the rest of this function. Return control
         // to the script that (presumably) imported this file
         return;

@@ -7,7 +7,6 @@
 // Also use this profile if you are creating a library that can be consumed by both Node.js
 // and web applications.
 
-const typescriptEslintPlugin = require('@typescript-eslint/eslint-plugin');
 const webAppProfile = require('@rushstack/eslint-config/flat/profile/web-app');
 
 const { localCommonConfig } = require('./_common');
@@ -16,10 +15,6 @@ module.exports = [
   ...webAppProfile,
   ...localCommonConfig,
   {
-    files: ['**/*.ts', '**/*.tsx'],
-    plugins: {
-      '@typescript-eslint': typescriptEslintPlugin
-    },
     rules: {
       // Rationale: Importing a module with `require` cannot be optimized by webpack as effectively as
       // `import` statements.
