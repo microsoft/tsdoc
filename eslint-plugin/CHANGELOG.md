@@ -1,6 +1,13 @@
 # Change Log - eslint-plugin-tsdoc
 
-This log was last generated on Tue, 11 Nov 2025 00:51:42 GMT and should not be manually modified.
+This log was last generated on Wed, 25 Feb 2026 01:44:36 GMT and should not be manually modified.
+
+## 0.5.1
+Wed, 25 Feb 2026 01:44:36 GMT
+
+### Patches
+
+- Update the `@typescript-eslint/utils` dependency to `~8.56.0` to address CVE-2026-26996.
 
 ## 0.5.0
 Tue, 11 Nov 2025 00:51:42 GMT
