@@ -1,4 +1,8 @@
 steps:
+  - script: 'rush record-published-versions --output-path $(Build.ArtifactStagingDirectory)/published-versions/published-versions.json'
+    displayName: 'Record Published Versions'
+    workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
+
   - checkout: RushstackMainRepo
     path: rushstack
 
@@ -18,11 +22,6 @@ steps:
     displayName: 'Rush Rebuild (rushstack)'
     workingDirectory: '$(Agent.BuildDirectory)/rushstack'
 
-  - script: 'node $(Agent.BuildDirectory)/rushstack/repo-scripts/repo-toolbox/lib-commonjs/start.js record-versions --out-file $(Build.ArtifactStagingDirectory)/published-versions/published-versions.json'
-    displayName: 'Record Published Versions'
-    workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
-
   - script: 'node $(Agent.BuildDirectory)/rushstack/repo-scripts/repo-toolbox/lib-commonjs/start.js collect-project-files --subfolder temp/json-schemas --output-path $(Build.ArtifactStagingDirectory)/json-schemas'
     displayName: 'Collect JSON Schemas'
     workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
-
