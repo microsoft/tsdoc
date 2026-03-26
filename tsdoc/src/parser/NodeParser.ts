@@ -78,6 +78,20 @@ export class NodeParser {
     this._currentSection = parserContext.docComment.summarySection;
   }
 
+  private _isConfiguredLinkUrlDestination(linkDestination: string): boolean {
+    const colonIndex: number = linkDestination.indexOf(':');
+    if (colonIndex <= 0) {
+      return false;
+    }
+
+    if (linkDestination.indexOf('://') > 0) {
+      return false;
+    }
+
+    const prefix: string = linkDestination.substring(0, colonIndex);
+    return this._configuration.isLinkUrlPrefixAllowed(prefix);
+  }
+
   public parse(): void {
     const tokenReader: TokenReader = new TokenReader(this._parserContext);
 

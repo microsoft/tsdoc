@@ -18,6 +18,7 @@ export class TSDocConfiguration {
   private readonly _validation: TSDocValidationConfiguration;
   private readonly _docNodeManager: DocNodeManager;
   private readonly _supportedHtmlElements: Set<string>;
+  private readonly _linkUrlPrefixes: Set<string>;
 
   public constructor() {
     this._tagDefinitions = [];
@@ -26,6 +27,7 @@ export class TSDocConfiguration {
     this._validation = new TSDocValidationConfiguration();
     this._docNodeManager = new DocNodeManager();
     this._supportedHtmlElements = new Set();
+    this._linkUrlPrefixes = new Set();
 
     this.clear(false);
 
@@ -46,6 +48,7 @@ export class TSDocConfiguration {
     this._validation.reportUnsupportedTags = false;
     this._validation.reportUnsupportedHtmlElements = false;
     this._supportedHtmlElements.clear();
+    this._linkUrlPrefixes.clear();
 
     if (!noStandardTags) {
       // Define all the standard tags
@@ -87,6 +90,29 @@ export class TSDocConfiguration {
    */
   public get supportedHtmlElements(): string[] {
     return Array.from(this._supportedHtmlElements.values());
+  }
+
+  /**
+   * URI-style prefixes that should be treated as URL destinations in `{@link ...}` tags.
+   */
+  public get linkUrlPrefixes(): string[] {
+    return Array.from(this._linkUrlPrefixes.values());
+  }
+
+  public addLinkUrlPrefix(prefix: string): void {
+    if (!/^[A-Za-z][A-Za-z0-9+.-]*$/.test(prefix)) {
+      throw new Error(`Invalid link URL prefix: "${prefix}"`);
+    }
+
+    this._linkUrlPrefixes.add(prefix.toLowerCase());
+  }
+
+  public clearLinkUrlPrefixes(): void {
+    this._linkUrlPrefixes.clear();
+  }
+
+  public isLinkUrlPrefixAllowed(prefix: string): boolean {
+    return this._linkUrlPrefixes.has(prefix.toLowerCase());
   }
 
   /**

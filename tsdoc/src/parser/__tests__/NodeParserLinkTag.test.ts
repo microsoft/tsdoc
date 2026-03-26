@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
 // See LICENSE in the project root for license information.
 
+import { TSDocConfiguration } from '../../configuration/TSDocConfiguration';
 import { TestHelpers } from './TestHelpers';
 
 test('00 Link text: positive examples', () => {
@@ -51,6 +52,22 @@ test('03 URL destination: negative examples', () => {
       ' * {@link http://}',
       ' */'
     ].join('\n')
+  );
+});
+
+test('03b URL destination: configured URI prefixes', () => {
+  const configuration: TSDocConfiguration = new TSDocConfiguration();
+  configuration.addLinkUrlPrefix('mailto');
+  configuration.addLinkUrlPrefix('xref');
+
+  TestHelpers.parseAndMatchNodeParserSnapshot(
+    [
+      '/**',
+      ' * {@link mailto:bob@example.com}',
+      ' * {@link xref:MyNamespace.MySymbol|link text}',
+      ' */'
+    ].join('\n'),
+    configuration
   );
 });
 
