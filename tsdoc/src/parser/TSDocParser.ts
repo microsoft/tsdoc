@@ -26,6 +26,24 @@ export class TSDocParser {
     }
   }
 
+  /**
+   * Creates a TSDocParser instance that supports the beta declaration reference format.
+   * This format uses double curly braces `{{...}}` to enclose the reference, and a `!` character
+   * as a separator for package names.
+   *
+   * @remarks
+   * This is an opt-in feature. By default, the TSDocParser does not support this beta syntax.
+   * The returned parser instance will have its {@link TSDocParser.configuration}
+   * pre-configured to recognize the beta declaration reference syntax.
+   */
+  public static createWithBetaDeclarationReferences(): TSDocParser {
+    const configuration: TSDocConfiguration = new TSDocConfiguration();
+    // This method (assumed to exist in TSDocConfiguration) would internally modify
+    // the parsing rules for declaration references to recognize the beta syntax.
+    configuration.configureForBetaDeclarationReferences();
+    return new TSDocParser(configuration);
+  }
+
   public parseString(text: string): ParserContext {
     return this.parseRange(TextRange.fromString(text));
   }
