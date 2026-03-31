@@ -4,15 +4,12 @@
 import { RuleTester } from 'eslint';
 import * as plugin from '../index';
 
-const ruleTester: RuleTester = new RuleTester({
-  env: {
-    es6: true
-  }
-});
+const ruleTester: RuleTester = new RuleTester();
 ruleTester.run('"tsdoc/syntax" rule', plugin.rules.syntax, {
   valid: [
     '/**\nA great function!\n */\nfunction foobar() {}\n',
-    '/**\nA great class!\n */\nclass FooBar {}\n'
+    '/**\nA great class!\n */\nclass FooBar {}\n',
+    '/** @jsx h */'
   ],
   invalid: [
     {

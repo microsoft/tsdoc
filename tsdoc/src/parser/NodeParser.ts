@@ -381,6 +381,7 @@ export class NodeParser {
         break;
       default:
         docComment.appendCustomBlock(block);
+        break;
     }
   }
 

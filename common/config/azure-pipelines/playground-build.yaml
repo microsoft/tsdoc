@@ -8,9 +8,6 @@ resources:
       name: microsoft/tsdoc
       ref: refs/heads/gh-pages
       trigger: none
-variables:
-  NodeVersion: 18
-  FORCE_COLOR: 1
 jobs:
   - job: build
     displayName: Build

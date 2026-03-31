@@ -3,14 +3,14 @@
 const path = require('path');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
-const RIG_BASE_PATH = path.dirname(require.resolve('@rushstack/heft-web-rig/package.json'));
+const WEB_RIG_BASE_PATH = path.dirname(require.resolve('@rushstack/heft-web-rig/package.json'));
 
 /**
  * require.resolve() an importPath using another NPM package's folder as
  * the base directory for module resolution
  */
 function getPackagePathRelativeToRig(importPath) {
-  const targetPath = require.resolve(importPath, { paths: [RIG_BASE_PATH] });
+  const targetPath = require.resolve(importPath, { paths: [WEB_RIG_BASE_PATH] });
   return targetPath;
 }
 

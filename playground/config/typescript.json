@@ -4,7 +4,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/heft/v0/typescript.schema.json",
 
-  "extends": "@rushstack/heft-web-rig/profiles/library/config/typescript.json",
+  "extends": "tsdoc-build-rig/profiles/web/config/typescript.json",
 
   "staticAssetsToCopy": {
     "fileExtensions": [".json", ".css", ".scss"],

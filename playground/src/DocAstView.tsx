@@ -2,7 +2,9 @@
 // See LICENSE in the project root for license information.
 
 import * as React from 'react';
+
 import * as tsdoc from '@microsoft/tsdoc';
+
 import { CodeEditor } from './CodeEditor';
 
 export interface IDocAstViewProps {

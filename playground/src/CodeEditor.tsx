@@ -3,6 +3,7 @@
 
 import * as React from 'react';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+
 import * as tsdoc from '@microsoft/tsdoc';
 
 import { FlexColDiv } from './FlexDivs';
@@ -246,6 +247,7 @@ export class CodeEditor extends React.Component<ICodeEditorProps, ICodeEditorSta
       try {
         this.props.onChange(newValue);
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(`Error in onChange callback: ${e}`);
       }
     }

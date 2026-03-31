@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/heft/v0/heft.schema.json",
 
-  "extends": "@rushstack/heft-web-rig/profiles/library/config/heft.json",
+  "extends": "tsdoc-build-rig/profiles/web/config/heft.json",
 
   "phasesByName": {
     "build": {
@@ -19,6 +19,23 @@
                   "sourcePath": "lib/beta",
                   "destinationFolders": ["lib-commonjs/beta"],
                   "fileExtensions": [".d.ts"]
+                }
+              ]
+            }
+          }
+        },
+
+        "copy-json-schemas": {
+          "taskPlugin": {
+            "pluginPackage": "@rushstack/heft",
+            "pluginName": "copy-files-plugin",
+            "options": {
+              "copyOperations": [
+                {
+                  "sourcePath": "src/schemas/v0",
+                  "destinationFolders": ["temp/json-schemas/tsdoc"],
+                  "fileExtensions": [".schema.json"],
+                  "hardlink": true
                 }
               ]
             }

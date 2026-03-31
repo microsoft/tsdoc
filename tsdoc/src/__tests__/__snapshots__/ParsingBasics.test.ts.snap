@@ -3002,3 +3002,263 @@ Object {
   ],
 }
 `;
+
+exports[`08 JSX directive: /** @jsx foo */ 1`] = `
+Object {
+  "s00_lines": Array [
+    "@jsx foo",
+  ],
+  "s01_gaps": Array [],
+  "s02_summarySection": Object {
+    "kind": "Section",
+  },
+  "s03_remarksBlock": undefined,
+  "s04_privateRemarksBlock": undefined,
+  "s05_deprecatedBlock": undefined,
+  "s06_paramBlocks": Array [],
+  "s07_typeParamBlocks": Array [],
+  "s08_returnsBlock": undefined,
+  "s09_customBlocks": Array [
+    Object {
+      "kind": "Block",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@jsx",
+            },
+          ],
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": " foo",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "s10_inheritDocTag": undefined,
+  "s11_modifierTags": Array [],
+  "s12_logMessages": Array [],
+}
+`;
+
+exports[`08 JSX directive: /** @jsxFrag Fragment */ 1`] = `
+Object {
+  "s00_lines": Array [
+    "@jsxFrag Fragment",
+  ],
+  "s01_gaps": Array [],
+  "s02_summarySection": Object {
+    "kind": "Section",
+  },
+  "s03_remarksBlock": undefined,
+  "s04_privateRemarksBlock": undefined,
+  "s05_deprecatedBlock": undefined,
+  "s06_paramBlocks": Array [],
+  "s07_typeParamBlocks": Array [],
+  "s08_returnsBlock": undefined,
+  "s09_customBlocks": Array [
+    Object {
+      "kind": "Block",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@jsxFrag",
+            },
+          ],
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": " Fragment",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "s10_inheritDocTag": undefined,
+  "s11_modifierTags": Array [],
+  "s12_logMessages": Array [],
+}
+`;
+
+exports[`08 JSX directive: /** @jsxImportSource preact */ 1`] = `
+Object {
+  "s00_lines": Array [
+    "@jsxImportSource preact",
+  ],
+  "s01_gaps": Array [],
+  "s02_summarySection": Object {
+    "kind": "Section",
+  },
+  "s03_remarksBlock": undefined,
+  "s04_privateRemarksBlock": undefined,
+  "s05_deprecatedBlock": undefined,
+  "s06_paramBlocks": Array [],
+  "s07_typeParamBlocks": Array [],
+  "s08_returnsBlock": undefined,
+  "s09_customBlocks": Array [
+    Object {
+      "kind": "Block",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@jsxImportSource",
+            },
+          ],
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": " preact",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "s10_inheritDocTag": undefined,
+  "s11_modifierTags": Array [],
+  "s12_logMessages": Array [],
+}
+`;
+
+exports[`08 JSX directive: /** @jsxRuntime classic */ 1`] = `
+Object {
+  "s00_lines": Array [
+    "@jsxRuntime classic",
+  ],
+  "s01_gaps": Array [],
+  "s02_summarySection": Object {
+    "kind": "Section",
+  },
+  "s03_remarksBlock": undefined,
+  "s04_privateRemarksBlock": undefined,
+  "s05_deprecatedBlock": undefined,
+  "s06_paramBlocks": Array [],
+  "s07_typeParamBlocks": Array [],
+  "s08_returnsBlock": undefined,
+  "s09_customBlocks": Array [
+    Object {
+      "kind": "Block",
+      "nodes": Array [
+        Object {
+          "kind": "BlockTag",
+          "nodes": Array [
+            Object {
+              "kind": "Excerpt: BlockTag",
+              "nodeExcerpt": "@jsxRuntime",
+            },
+          ],
+        },
+        Object {
+          "kind": "Section",
+          "nodes": Array [
+            Object {
+              "kind": "Paragraph",
+              "nodes": Array [
+                Object {
+                  "kind": "PlainText",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: PlainText",
+                      "nodeExcerpt": " classic",
+                    },
+                  ],
+                },
+                Object {
+                  "kind": "SoftBreak",
+                  "nodes": Array [
+                    Object {
+                      "kind": "Excerpt: SoftBreak",
+                      "nodeExcerpt": "[n]",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  "s10_inheritDocTag": undefined,
+  "s11_modifierTags": Array [],
+  "s12_logMessages": Array [],
+}
+`;

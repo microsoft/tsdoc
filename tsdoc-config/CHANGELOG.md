@@ -1,6 +1,24 @@
 # Change Log - @microsoft/tsdoc-config
 
-This log was last generated on Sat, 23 Nov 2024 00:23:35 GMT and should not be manually modified.
+This log was last generated on Wed, 25 Feb 2026 02:06:43 GMT and should not be manually modified.
+
+## 0.18.1
+Wed, 25 Feb 2026 02:06:43 GMT
+
+### Patches
+
+- Update the `ajv` dependency to `~8.18.0` to address CVE-2025-69873.
+
+## 0.18.0
+Tue, 11 Nov 2025 00:51:42 GMT
+
+### Minor changes
+
+- Normalize builtin imports.
+
+### Patches
+
+- Remove test files and declaration maps from the published package.
 
 ## 0.17.1
 Sat, 23 Nov 2024 00:23:35 GMT

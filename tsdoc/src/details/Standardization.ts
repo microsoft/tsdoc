@@ -32,7 +32,7 @@ export enum Standardization {
   Discretionary = 'Discretionary',
 
   /**
-   * The tag is not part of the TSDoc standard.  All used-defined tags are assigned to this group.
+   * The tag is not part of the TSDoc standard.  All user-defined tags are assigned to this group.
    */
   None = 'None'
 }

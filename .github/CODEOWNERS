@@ -1,4 +1,4 @@
-.github/CODEOWNERS @iclanton @octogonz @apostolisms @D4N14L @dmichon-msft @patmill
-common/config/**/* @iclanton @octogonz @apostolisms @D4N14L @dmichon-msft @patmill
+.github/CODEOWNERS @iclanton @octogonz @apostolisms @dmichon-msft @jxanthony @bmiddha
+common/config/**/* @iclanton @octogonz @apostolisms @dmichon-msft @jxanthony @bmiddha
 
-**/* @iclanton @octogonz @apostolisms @D4N14L @dmichon-msft @patmill
+**/* @iclanton @octogonz @apostolisms @dmichon-msft @jxanthony @bmiddha

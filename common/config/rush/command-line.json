@@ -114,6 +114,14 @@
     //   "enableParallelism": false,
     //
     //   /**
+    //    * Controls whether weighted operations can start when the total weight would exceed the limit
+    //    * but is currently below the limit. This setting only applies when "enableParallelism" is true
+    //    * and operations have a "weight" property configured in their rush-project.json "operationSettings".
+    //    * Choose true (the default) to favor parallelism.  Choose false to strictly stay under the limit.
+    //    */
+    //   "allowOversubscription": false,
+    //
+    //   /**
     //    * Normally projects will be processed according to their dependency order: a given project will not start
     //    * processing the command until all of its dependencies have completed.  This restriction doesn't apply for
     //    * certain operations, for example a "clean" task that deletes output files.  In this case
@@ -228,7 +236,7 @@
       "dependencies": {
         "upstream": ["_phase:build"]
       },
-      "ignoreMissingScript": true,
+      "missingScriptBehavior": "log",
       "allowWarningsOnSuccess": false
     },
     {
@@ -236,7 +244,7 @@
       "dependencies": {
         "self": ["_phase:build"]
       },
-      "ignoreMissingScript": true,
+      "missingScriptBehavior": "silent",
       "allowWarningsOnSuccess": false
     }
   ],
@@ -459,18 +467,25 @@
     //   ]
     // }
     {
+      "longName": "--update-snapshots",
+      "parameterKind": "flag",
+      "description": "Update Jest snapshots",
+      "associatedPhases": ["_phase:test"],
+      "associatedCommands": ["test", "retest"]
+    },
+    {
       "longName": "--production",
       "parameterKind": "flag",
-      "description": "Perform a production build, including minification optimizations",
+      "description": "Perform a production build, including minification",
       "associatedPhases": ["_phase:build", "_phase:test"],
       "associatedCommands": ["build", "rebuild", "test", "retest"]
     },
     {
-      "longName": "--update-snapshots",
+      "longName": "--fix",
       "parameterKind": "flag",
-      "description": "Update unit test snapshots for all projects",
-      "associatedCommands": ["test", "retest"],
-      "associatedPhases": ["_phase:test"]
+      "description": "Automatically fix problems encountered while linting",
+      "associatedPhases": ["_phase:build"],
+      "associatedCommands": ["build", "rebuild", "test", "retest"]
     }
   ]
 }

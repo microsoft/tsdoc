@@ -1,0 +1,33 @@
+{
+  "name": "tsdoc-build-rig",
+  "version": "1.0.0",
+  "description": "A rig package for building projects in the TSDoc repo.",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "",
+    "_phase:build": ""
+  },
+  "dependencies": {
+    "@microsoft/api-extractor": "7.57.7",
+    "@rushstack/eslint-config": "4.6.4",
+    "@rushstack/eslint-patch": "1.16.1",
+    "@rushstack/eslint-plugin": "0.23.2",
+    "@rushstack/heft-node-rig": "2.11.27",
+    "@rushstack/heft-web-rig": "1.4.3",
+    "@rushstack/heft": "1.2.7",
+    "@types/heft-jest": "1.0.3",
+    "@types/node": "20.17.19",
+    "@types/webpack-env": "~1.18.8",
+    "eslint-import-resolver-node": "0.3.9",
+    "eslint-plugin-header": "~3.1.1",
+    "eslint-plugin-headers": "~1.2.1",
+    "eslint-plugin-import": "2.32.0",
+    "eslint-plugin-jsdoc": "50.6.11",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "eslint": "~9.25.1",
+    "jest-junit": "12.3.0",
+    "typescript": "~5.8.2",
+    "webpack": "~5.102.1"
+  }
+}
