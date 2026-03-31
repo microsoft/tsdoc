@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
 // See LICENSE in the project root for license information.
 
-import { DocParagraph, type DocNode, DocNodeKind, DocPlainText } from '../nodes';
+import { DocParagraph, type DocNode, DocNodeKind, DocPlainText, DocSoftBreak } from '../nodes';
 
 /**
  * Implementation of DocNodeTransforms.trimSpacesInParagraphNodes()
@@ -20,6 +20,30 @@ export class TrimSpacesTransform {
     // We always trim leading whitespace for a paragraph.  This flag gets set to true
     // as soon as nonempty content is encountered.
     let finishedSkippingLeadingSpaces: boolean = false;
+
+    function pushAccumulatedText(): void {
+      const lines: string[] = accumulatedTextChunks.join('').split('\n');
+      for (let i: number = 0; i < lines.length; i++) {
+        const line: string = lines[i];
+        if (line.length !== 0) {
+          if (i !== 0) {
+            transformedNodes.push(
+              new DocSoftBreak({
+                configuration: docParagraph.configuration
+              })
+            );
+          }
+          transformedNodes.push(
+            new DocPlainText({
+              configuration: docParagraph.configuration,
+              text: line
+            })
+          );
+        }
+      }
+      accumulatedTextChunks.length = 0;
+      accumulatedNodes.length = 0;
+    }
 
     for (const node of docParagraph.nodes) {
       switch (node.kind) {
@@ -53,9 +77,7 @@ export class TrimSpacesTransform {
           }
           break;
         case DocNodeKind.SoftBreak:
-          if (finishedSkippingLeadingSpaces) {
-            pendingSpace = true;
-          }
+          accumulatedTextChunks.push('\n');
           accumulatedNodes.push(node);
           break;
         default:
@@ -68,14 +90,7 @@ export class TrimSpacesTransform {
           if (accumulatedTextChunks.length > 0) {
             // TODO: We should probably track the accumulatedNodes somehow, e.g. so we can map them back to the
             // original excerpts.  But we need a developer scenario before we can design this API.
-            transformedNodes.push(
-              new DocPlainText({
-                configuration: docParagraph.configuration,
-                text: accumulatedTextChunks.join('')
-              })
-            );
-            accumulatedTextChunks.length = 0;
-            accumulatedNodes.length = 0;
+            pushAccumulatedText();
           }
 
           transformedNodes.push(node);
@@ -85,14 +100,7 @@ export class TrimSpacesTransform {
 
     // Push the accumulated text
     if (accumulatedTextChunks.length > 0) {
-      transformedNodes.push(
-        new DocPlainText({
-          configuration: docParagraph.configuration,
-          text: accumulatedTextChunks.join('')
-        })
-      );
-      accumulatedTextChunks.length = 0;
-      accumulatedNodes.length = 0;
+      pushAccumulatedText();
     }
 
     const transformedParagraph: DocParagraph = new DocParagraph({

@@ -35,15 +35,14 @@ export class DocNodeTransforms {
    *
    * ```
    * nodes: [
-   *   { kind: PlainText, text: "Here are some " },
-   *   { kind: PlainText, text: "words " },
+   *   { kind: PlainText, text: "Here are some" },
+   *   { kind: SoftBreak }
+   *   { kind: PlainText, text: "words" },
+   *   { kind: SoftBreak }
    *   { kind: InlineTag, text: "{\@inheritDoc}" },
    *   { kind: PlainText, text: "to process." }
    * ]
    * ```
-   *
-   * Note that in this example, `"words "` is not merged with the preceding node because
-   * its DocPlainText.excerpt cannot span multiple lines.
    *
    * @param docParagraph - a DocParagraph containing nodes to be transformed
    * @returns The transformed child nodes.

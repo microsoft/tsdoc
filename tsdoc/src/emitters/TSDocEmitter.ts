@@ -313,6 +313,10 @@ export class TSDocEmitter {
         this._renderNodes(docSection.nodes);
         break;
 
+      case DocNodeKind.SoftBreak:
+        this._ensureAtStartOfLine();
+        break;
+
       case DocNodeKind.Paragraph:
         const trimmedParagraph: DocParagraph = DocNodeTransforms.trimSpacesInParagraph(
           docNode as DocParagraph
