@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "eslint-plugin-tsdoc",
+      "comment": "upgrade eslint and @typescript-eslint/utils versions",
+      "type": "patch"
+    }
+  ],
+  "packageName": "eslint-plugin-tsdoc"
+}

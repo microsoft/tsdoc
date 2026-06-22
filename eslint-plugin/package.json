@@ -29,13 +29,13 @@
   "dependencies": {
     "@microsoft/tsdoc-config": "workspace:*",
     "@microsoft/tsdoc": "workspace:*",
-    "@typescript-eslint/utils": "~8.56.0"
+    "@typescript-eslint/utils": "~8.61.1"
   },
   "devDependencies": {
     "tsdoc-build-rig": "workspace:*",
     "@rushstack/heft": "1.2.7",
     "@types/eslint": "8.40.1",
     "@types/estree": "1.0.1",
-    "eslint": "~9.25.1"
+    "eslint": "~9.39.4"
   }
 }

@@ -25,7 +25,7 @@
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsdoc": "50.6.11",
     "eslint-plugin-react-hooks": "5.2.0",
-    "eslint": "~9.25.1",
+    "eslint": "~9.39.4",
     "jest-junit": "12.3.0",
     "typescript": "~5.8.2",
     "webpack": "~5.102.1"
