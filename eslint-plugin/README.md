@@ -55,14 +55,23 @@ This ESLint plugin provides a rule for validating that TypeScript doc comments c
         sourceType: "module"
       },
       rules: {
-       "tsdoc/syntax": ["warn", { "forbidOverrideTag": true }]
+       "tsdoc/syntax": "warn"
       }
     };
     ```
  
-The `tsdoc/syntax` rule also supports an opt-in `forbidOverrideTag` option. When enabled, it reports
-`@override` TSDoc tags on class members and offers an autofix that removes the tag from the doc comment
-and inserts the TypeScript `override` modifier into the declaration.
+To enable the opt-in override-tag check, configure the rule with the `forbidOverrideTag` option:
+ 
+```js
+{
+  rules: {
+    "tsdoc/syntax": ["warn", { "forbidOverrideTag": true }]
+  }
+}
+```
+ 
+When enabled, the rule reports `@override` TSDoc tags on class members and offers an autofix that removes
+the tag from the doc comment and inserts the TypeScript `override` modifier into the declaration.
  
 This package is maintained by the TSDoc project.  If you have questions or feedback, please
 [let us know](https://tsdoc.org/pages/resources/help)!
