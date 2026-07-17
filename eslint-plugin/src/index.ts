@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
 // See LICENSE in the project root for license information.
 
-import { ESLintUtils, type TSESLint } from '@typescript-eslint/utils';
+import { ESLintUtils, type TSESLint, type TSESTree } from '@typescript-eslint/utils';
 import type * as eslint from 'eslint';
 
 import { TSDocParser, TextRange, TSDocConfiguration, type ParserContext } from '@microsoft/tsdoc';
@@ -16,6 +16,10 @@ const defaultTSDocConfiguration: TSDocConfiguration = new TSDocConfiguration();
 defaultTSDocConfiguration.allTsdocMessageIds.forEach((messageId: string) => {
   tsdocMessageIds[messageId] = `${messageId}: {{unformattedText}}`;
 });
+
+interface ISyntaxRuleOptions {
+  forbidOverrideTag?: boolean;
+}
 
 interface IPlugin {
   rules: { [x: string]: eslint.Rule.RuleModule };
@@ -41,17 +45,80 @@ function getRootDirectoryFromContext(context: TSESLint.RuleContext<string, unkno
   return rootDirectory;
 }
 
+function isSupportedOverrideNode(
+  node: TSESTree.Node
+): node is TSESTree.MethodDefinition | TSESTree.PropertyDefinition {
+  return node.type === 'MethodDefinition' || node.type === 'PropertyDefinition';
+}
+
+function getLeadingDocComment(
+  node: TSESTree.Node,
+  sourceCode: eslint.SourceCode
+): eslint.Comment | undefined {
+  const comments: eslint.Comment[] = sourceCode.getCommentsBefore(node as never);
+  for (let i: number = comments.length - 1; i >= 0; --i) {
+    const comment: eslint.Comment = comments[i];
+    if (comment.type !== 'Block') {
+      continue;
+    }
+
+    const commentText: string = sourceCode.text.slice(comment.range[0], comment.range[1]);
+    if (commentText.startsWith('/**')) {
+      return comment;
+    }
+  }
+
+  return undefined;
+}
+
+function hasOverrideTag(commentText: string): boolean {
+  return /@override\b/.test(commentText);
+}
+
+function hasOverrideKeyword(
+  node: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
+  sourceCode: eslint.SourceCode
+): boolean {
+  const nodeText: string = sourceCode.text.slice(node.range[0], node.range[1]);
+  const keyText: string = sourceCode.text.slice(node.key.range[0], node.key.range[1]);
+  const keyIndex: number = nodeText.indexOf(keyText);
+
+  if (keyIndex < 0) {
+    return false;
+  }
+
+  return /\boverride\b/.test(nodeText.slice(0, keyIndex));
+}
+
+function removeOverrideTag(commentText: string): string {
+  return commentText.replace(/@override\b/g, '');
+}
+
 const plugin: IPlugin = {
   rules: {
     // NOTE: The actual ESLint rule name will be "tsdoc/syntax".  It is calculated by deleting "eslint-plugin-"
     // from the NPM package name, and then appending this string.
     syntax: {
       meta: {
+        schema: [
+          {
+            type: 'object',
+            properties: {
+              forbidOverrideTag: {
+                type: 'boolean'
+              }
+            },
+            additionalProperties: false
+          }
+        ],
         messages: {
           'error-loading-config-file': 'Error loading TSDoc config file:\n{{details}}',
           'error-applying-config': 'Error applying TSDoc configuration: {{details}}',
+          'override-tag-not-allowed':
+            'Do not use the @override TSDoc tag; use the TypeScript override keyword instead.',
           ...tsdocMessageIds
         },
+        fixable: 'code',
         type: 'problem',
         docs: {
           description: 'Validates that TypeScript documentation comments conform to the TSDoc standard',
@@ -62,6 +129,8 @@ const plugin: IPlugin = {
         }
       },
       create: (context: eslint.Rule.RuleContext) => {
+        const options: ISyntaxRuleOptions | undefined = context.options[0] as ISyntaxRuleOptions | undefined;
+        const forbidOverrideTag: boolean = options?.forbidOverrideTag ?? false;
         const sourceFilePath: string = context.filename;
         // If eslint is configured with @typescript-eslint/parser, there is a parser option
         // to explicitly specify where the tsconfig file is. Use that if available.
@@ -150,8 +219,39 @@ const plugin: IPlugin = {
           }
         }
 
+        function checkOverrideTags(node: TSESTree.Node): void {
+          if (!forbidOverrideTag || !isSupportedOverrideNode(node)) {
+            return;
+          }
+
+          const docComment: eslint.Comment | undefined = getLeadingDocComment(node, sourceCode);
+          if (!docComment) {
+            return;
+          }
+
+          const commentText: string = sourceCode.text.slice(docComment.range[0], docComment.range[1]);
+          if (!hasOverrideTag(commentText)) {
+            return;
+          }
+
+          if (hasOverrideKeyword(node, sourceCode)) {
+            return;
+          }
+
+          context.report({
+            node,
+            messageId: 'override-tag-not-allowed',
+            fix: (fixer: TSESLint.RuleFixer) => [
+              fixer.replaceTextRange(docComment.range, removeOverrideTag(commentText)),
+              fixer.insertTextBefore(node.key, 'override ')
+            ]
+          });
+        }
+
         return {
-          Program: checkCommentBlocks
+          Program: checkCommentBlocks,
+          MethodDefinition: checkOverrideTags,
+          PropertyDefinition: checkOverrideTags
         };
       }
     }
