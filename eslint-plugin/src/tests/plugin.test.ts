@@ -4,7 +4,7 @@
 import { RuleTester } from 'eslint';
 import * as plugin from '../index';
 
-const parser = require('@typescript-eslint/parser');
+import * as parser from '@typescript-eslint/parser';
 
 const ruleTester: RuleTester = new RuleTester({
   languageOptions: {
@@ -46,7 +46,7 @@ ruleTester.run('"tsdoc/syntax" rule', plugin.rules.syntax, {
     {
       code: '/**\n * @override\n */\nclass FooBar {\n  foo(): void {}\n}\n',
       options: [{ forbidOverrideTag: true }],
-      output: '/**\n * \n */\nclass FooBar {\n  override foo(): void {}\n}\n',
+      output: '/**\n\n */\nclass FooBar {\n  override foo(): void {}\n}\n',
       errors: [
         {
           messageId: 'override-tag-not-allowed'
@@ -56,7 +56,17 @@ ruleTester.run('"tsdoc/syntax" rule', plugin.rules.syntax, {
     {
       code: '/**\n * @override\n */\nclass FooBar {\n  public foo: string;\n}\n',
       options: [{ forbidOverrideTag: true }],
-      output: '/**\n * \n */\nclass FooBar {\n  public override foo: string;\n}\n',
+      output: '/**\n\n */\nclass FooBar {\n  public override foo: string;\n}\n',
+      errors: [
+        {
+          messageId: 'override-tag-not-allowed'
+        }
+      ]
+    },
+    {
+      code: '/**\n * @override\n */\nclass FooBar {\n  static foo: string;\n}\n',
+      options: [{ forbidOverrideTag: true }],
+      output: '/**\n\n */\nclass FooBar {\n  static override foo: string;\n}\n',
       errors: [
         {
           messageId: 'override-tag-not-allowed'

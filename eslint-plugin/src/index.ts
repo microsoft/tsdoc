@@ -84,28 +84,71 @@ function getLeadingDocComment(node: unknown, sourceCode: eslint.SourceCode): ICo
 }
 
 function hasOverrideTag(commentText: string): boolean {
-  return /@override\b/.test(commentText);
+  return /(^|\n)\s*\*?\s*@override\b/m.test(commentText);
 }
 
-function hasOverrideKeyword(node: unknown, sourceCode: eslint.SourceCode): boolean {
+function hasOverrideKeyword(node: unknown): boolean {
+  return (
+    typeof node === 'object' &&
+    node !== null &&
+    'override' in node &&
+    Boolean((node as { override?: boolean }).override)
+  );
+}
+
+function getOverrideInsertionOffset(node: unknown, sourceCode: eslint.SourceCode): number {
   if (typeof node !== 'object' || node === null || !('range' in node) || !('key' in node)) {
-    return false;
+    return -1;
   }
 
   const nodeWithKey: INodeWithKey = node as INodeWithKey;
   const nodeText: string = sourceCode.text.slice(nodeWithKey.range[0], nodeWithKey.range[1]);
-  const keyText: string = sourceCode.text.slice(nodeWithKey.key.range[0], nodeWithKey.key.range[1]);
-  const keyIndex: number = nodeText.indexOf(keyText);
+  const keyStart: number = nodeWithKey.key.range[0] - nodeWithKey.range[0];
+  const prefixText: string = nodeText.slice(0, keyStart);
+  const nodeData: { accessibility?: string; static?: boolean } = node as {
+    accessibility?: string;
+    static?: boolean;
+  };
 
-  if (keyIndex < 0) {
-    return false;
+  if (nodeData.static) {
+    const staticMatch: RegExpMatchArray | null = prefixText.match(/\bstatic\b/);
+    if (staticMatch && staticMatch.index !== undefined) {
+      const offsetAfterStatic: number = staticMatch.index + 'static'.length;
+      const whitespaceMatch: RegExpMatchArray | null = prefixText.slice(offsetAfterStatic).match(/^\s*/);
+      const whitespaceLength: number = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      return nodeWithKey.range[0] + offsetAfterStatic + whitespaceLength;
+    }
   }
 
-  return /\boverride\b/.test(nodeText.slice(0, keyIndex));
+  if (nodeData.accessibility) {
+    const accessibilityText: string = nodeData.accessibility;
+    const accessibilityIndex: number = prefixText.lastIndexOf(accessibilityText);
+    if (accessibilityIndex >= 0) {
+      const offsetAfterAccessibility: number = accessibilityIndex + accessibilityText.length;
+      const whitespaceMatch: RegExpMatchArray | null = prefixText
+        .slice(offsetAfterAccessibility)
+        .match(/^\s*/);
+      const whitespaceLength: number = whitespaceMatch ? whitespaceMatch[0].length : 0;
+      return nodeWithKey.range[0] + offsetAfterAccessibility + whitespaceLength;
+    }
+  }
+
+  return nodeWithKey.key.range[0];
 }
 
 function removeOverrideTag(commentText: string): string {
-  return commentText.replace(/@override\b/g, '');
+  return commentText
+    .split(/\r?\n/)
+    .map((line: string) => {
+      const updatedLine: string = line.replace(/@override\b/g, '');
+      if (updatedLine.trim().length > 0) {
+        return updatedLine;
+      }
+
+      const commentPrefixMatch: RegExpMatchArray | null = line.match(/^(\s*\*)(.*)$/);
+      return commentPrefixMatch ? commentPrefixMatch[1] : '';
+    })
+    .join('\n');
 }
 
 const plugin: IPlugin = {
@@ -249,7 +292,12 @@ const plugin: IPlugin = {
             return;
           }
 
-          if (hasOverrideKeyword(node, sourceCode)) {
+          if (hasOverrideKeyword(node)) {
+            return;
+          }
+
+          const overrideInsertionOffset: number = getOverrideInsertionOffset(node, sourceCode);
+          if (overrideInsertionOffset < 0) {
             return;
           }
 
@@ -260,7 +308,7 @@ const plugin: IPlugin = {
               const commentRange: [number, number] = [docComment.range[0], docComment.range[1]];
               return [
                 fixer.replaceTextRange(commentRange, removeOverrideTag(commentText)),
-                fixer.insertTextBefore(node.key, 'override ')
+                fixer.insertTextAfterRange([overrideInsertionOffset, overrideInsertionOffset], 'override ')
               ];
             }
           });
