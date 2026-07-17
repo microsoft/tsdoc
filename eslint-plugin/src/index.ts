@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
 // See LICENSE in the project root for license information.
 
-import { ESLintUtils, type TSESLint, type TSESTree } from '@typescript-eslint/utils';
+import { ESLintUtils, type TSESLint } from '@typescript-eslint/utils';
 import type * as eslint from 'eslint';
 
 import { TSDocParser, TextRange, TSDocConfiguration, type ParserContext } from '@microsoft/tsdoc';
@@ -45,19 +45,31 @@ function getRootDirectoryFromContext(context: TSESLint.RuleContext<string, unkno
   return rootDirectory;
 }
 
-function isSupportedOverrideNode(
-  node: TSESTree.Node
-): node is TSESTree.MethodDefinition | TSESTree.PropertyDefinition {
-  return node.type === 'MethodDefinition' || node.type === 'PropertyDefinition';
+interface ICommentLike {
+  type: string;
+  range: [number, number];
 }
 
-function getLeadingDocComment(
-  node: TSESTree.Node,
-  sourceCode: eslint.SourceCode
-): eslint.Comment | undefined {
-  const comments: eslint.Comment[] = sourceCode.getCommentsBefore(node as never);
+interface INodeWithKey {
+  range: [number, number];
+  key: {
+    range: [number, number];
+  };
+}
+
+function isSupportedOverrideNode(node: unknown): boolean {
+  return (
+    typeof node === 'object' &&
+    node !== null &&
+    'type' in node &&
+    (node.type === 'MethodDefinition' || node.type === 'PropertyDefinition')
+  );
+}
+
+function getLeadingDocComment(node: unknown, sourceCode: eslint.SourceCode): ICommentLike | undefined {
+  const comments: ICommentLike[] = sourceCode.getCommentsBefore(node as never) as ICommentLike[];
   for (let i: number = comments.length - 1; i >= 0; --i) {
-    const comment: eslint.Comment = comments[i];
+    const comment: ICommentLike = comments[i];
     if (comment.type !== 'Block') {
       continue;
     }
@@ -75,12 +87,14 @@ function hasOverrideTag(commentText: string): boolean {
   return /@override\b/.test(commentText);
 }
 
-function hasOverrideKeyword(
-  node: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
-  sourceCode: eslint.SourceCode
-): boolean {
-  const nodeText: string = sourceCode.text.slice(node.range[0], node.range[1]);
-  const keyText: string = sourceCode.text.slice(node.key.range[0], node.key.range[1]);
+function hasOverrideKeyword(node: unknown, sourceCode: eslint.SourceCode): boolean {
+  if (typeof node !== 'object' || node === null || !('range' in node) || !('key' in node)) {
+    return false;
+  }
+
+  const nodeWithKey: INodeWithKey = node as INodeWithKey;
+  const nodeText: string = sourceCode.text.slice(nodeWithKey.range[0], nodeWithKey.range[1]);
+  const keyText: string = sourceCode.text.slice(nodeWithKey.key.range[0], nodeWithKey.key.range[1]);
   const keyIndex: number = nodeText.indexOf(keyText);
 
   if (keyIndex < 0) {
@@ -219,12 +233,13 @@ const plugin: IPlugin = {
           }
         }
 
-        function checkOverrideTags(node: TSESTree.Node): void {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        function checkOverrideTags(node: any): void {
           if (!forbidOverrideTag || !isSupportedOverrideNode(node)) {
             return;
           }
 
-          const docComment: eslint.Comment | undefined = getLeadingDocComment(node, sourceCode);
+          const docComment: ICommentLike | undefined = getLeadingDocComment(node, sourceCode);
           if (!docComment) {
             return;
           }
@@ -241,10 +256,13 @@ const plugin: IPlugin = {
           context.report({
             node,
             messageId: 'override-tag-not-allowed',
-            fix: (fixer: TSESLint.RuleFixer) => [
-              fixer.replaceTextRange(docComment.range, removeOverrideTag(commentText)),
-              fixer.insertTextBefore(node.key, 'override ')
-            ]
+            fix: (fixer: eslint.Rule.RuleFixer) => {
+              const commentRange: [number, number] = [docComment.range[0], docComment.range[1]];
+              return [
+                fixer.replaceTextRange(commentRange, removeOverrideTag(commentText)),
+                fixer.insertTextBefore(node.key, 'override ')
+              ];
+            }
           });
         }
 
@@ -252,7 +270,7 @@ const plugin: IPlugin = {
           Program: checkCommentBlocks,
           MethodDefinition: checkOverrideTags,
           PropertyDefinition: checkOverrideTags
-        };
+        } as unknown as eslint.Rule.RuleListener;
       }
     }
   }
