@@ -55,7 +55,7 @@ This ESLint plugin provides a rule for validating that TypeScript doc comments c
         sourceType: "module"
       },
       rules: {
-       "tsdoc/syntax": "warn"
+        "tsdoc/syntax": "warn"
       }
     };
     ```
