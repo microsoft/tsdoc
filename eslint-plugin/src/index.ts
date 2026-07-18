@@ -83,10 +83,6 @@ function getLeadingDocComment(node: unknown, sourceCode: eslint.SourceCode): ICo
   return undefined;
 }
 
-function hasOverrideTag(commentText: string): boolean {
-  return /(^|\n)\s*\*?\s*@override\b/m.test(commentText);
-}
-
 function hasOverrideKeyword(node: unknown): boolean {
   return (
     typeof node === 'object' &&
@@ -288,7 +284,13 @@ const plugin: IPlugin = {
           }
 
           const commentText: string = sourceCode.text.slice(docComment.range[0], docComment.range[1]);
-          if (!hasOverrideTag(commentText)) {
+          const textRange: TextRange = TextRange.fromStringRange(
+            sourceCode.text,
+            docComment.range[0],
+            docComment.range[1]
+          );
+          const parserContext: ParserContext = tsdocParser.parseRange(textRange);
+          if (!parserContext.docComment.modifierTagSet.isOverride()) {
             return;
           }
 
@@ -314,11 +316,13 @@ const plugin: IPlugin = {
           });
         }
 
-        return {
+        const listener: eslint.Rule.RuleListener = {
           Program: checkCommentBlocks,
           MethodDefinition: checkOverrideTags,
           PropertyDefinition: checkOverrideTags
-        } as unknown as eslint.Rule.RuleListener;
+        };
+
+        return listener;
       }
     }
   }
