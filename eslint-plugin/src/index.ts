@@ -272,8 +272,7 @@ const plugin: IPlugin = {
           }
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        function checkOverrideTags(node: any): void {
+        function checkOverrideTags(node: unknown): void {
           if (!forbidOverrideTag || !isSupportedOverrideNode(node)) {
             return;
           }
@@ -304,7 +303,7 @@ const plugin: IPlugin = {
           }
 
           context.report({
-            node,
+            node: node as never,
             messageId: 'override-tag-not-allowed',
             fix: (fixer: eslint.Rule.RuleFixer) => {
               const commentRange: [number, number] = [docComment.range[0], docComment.range[1]];
