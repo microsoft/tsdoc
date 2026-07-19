@@ -21,10 +21,13 @@ ruleTester.run('"tsdoc/syntax" rule', plugin.rules.syntax, {
     '/**\nA great function!\n */\nfunction foobar() {}\n',
     '/**\nA great class!\n */\nclass FooBar {}\n',
     '/** @jsx h */',
+    // A member that already uses the `override` keyword and no `@override` tag is fine.
     {
-      code: '/**\n * A great method.\n */\nclass FooBar {\n  public override foo(): void {}\n}\n',
+      code: 'class FooBar {\n  /**\n   * A great method.\n   */\n  public override foo(): void {}\n}\n',
       options: [{ forbidOverrideTag: true }]
-    }
+    },
+    // Without the option enabled, `@override` tags are not reported.
+    'class FooBar {\n  /**\n   * @override\n   */\n  foo(): void {}\n}\n'
   ],
   invalid: [
     {
@@ -43,30 +46,55 @@ ruleTester.run('"tsdoc/syntax" rule', plugin.rules.syntax, {
         }
       ]
     },
+    // `@override` on a method: remove the tag and add the `override` keyword.
     {
-      code: '/**\n * @override\n */\nclass FooBar {\n  foo(): void {}\n}\n',
+      code: 'class FooBar {\n  /**\n   * @override\n   */\n  foo(): void {}\n}\n',
       options: [{ forbidOverrideTag: true }],
-      output: '/**\n\n */\nclass FooBar {\n  override foo(): void {}\n}\n',
+      output: 'class FooBar {\n  /**\n\n   */\n  override foo(): void {}\n}\n',
       errors: [
         {
           messageId: 'override-tag-not-allowed'
         }
       ]
     },
+    // `@override` on a property with an accessibility modifier.
     {
-      code: '/**\n * @override\n */\nclass FooBar {\n  public foo: string;\n}\n',
+      code: 'class FooBar {\n  /**\n   * @override\n   */\n  public foo: string;\n}\n',
       options: [{ forbidOverrideTag: true }],
-      output: '/**\n\n */\nclass FooBar {\n  public override foo: string;\n}\n',
+      output: 'class FooBar {\n  /**\n\n   */\n  public override foo: string;\n}\n',
       errors: [
         {
           messageId: 'override-tag-not-allowed'
         }
       ]
     },
+    // `@override` on a static property.
     {
-      code: '/**\n * @override\n */\nclass FooBar {\n  static foo: string;\n}\n',
+      code: 'class FooBar {\n  /**\n   * @override\n   */\n  static foo: string;\n}\n',
       options: [{ forbidOverrideTag: true }],
-      output: '/**\n\n */\nclass FooBar {\n  static override foo: string;\n}\n',
+      output: 'class FooBar {\n  /**\n\n   */\n  static override foo: string;\n}\n',
+      errors: [
+        {
+          messageId: 'override-tag-not-allowed'
+        }
+      ]
+    },
+    // `override` must precede `readonly`, so it is inserted before it.
+    {
+      code: 'class FooBar {\n  /**\n   * @override\n   */\n  protected readonly foo: string;\n}\n',
+      options: [{ forbidOverrideTag: true }],
+      output: 'class FooBar {\n  /**\n\n   */\n  protected override readonly foo: string;\n}\n',
+      errors: [
+        {
+          messageId: 'override-tag-not-allowed'
+        }
+      ]
+    },
+    // A redundant `@override` tag next to an existing `override` keyword: only remove the tag.
+    {
+      code: 'class FooBar {\n  /**\n   * @override\n   */\n  override foo(): void {}\n}\n',
+      options: [{ forbidOverrideTag: true }],
+      output: 'class FooBar {\n  /**\n\n   */\n  override foo(): void {}\n}\n',
       errors: [
         {
           messageId: 'override-tag-not-allowed'

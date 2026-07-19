@@ -45,106 +45,50 @@ function getRootDirectoryFromContext(context: TSESLint.RuleContext<string, unkno
   return rootDirectory;
 }
 
-interface ICommentLike {
-  type: string;
-  range: [number, number];
+// The comment token type produced by `SourceCode.getAllComments()`.  Derived from the ESLint
+// types so it stays consistent with the `@types/estree` version they were built against.
+type TDocComment = ReturnType<eslint.SourceCode['getAllComments']>[number];
+
+// A class member (method or property) that may carry an `@override` doc tag and/or a
+// TypeScript `override` modifier.  The `override` field is a TypeScript-ESTree extension.
+interface IClassMemberNode {
+  type: 'MethodDefinition' | 'PropertyDefinition';
+  key: eslint.Rule.Node;
+  parent: eslint.Rule.Node;
+  override?: boolean;
 }
 
-interface INodeWithKey {
-  range: [number, number];
-  key: {
-    range: [number, number];
-  };
-}
-
-function isSupportedOverrideNode(node: unknown): boolean {
-  return (
-    typeof node === 'object' &&
-    node !== null &&
-    'type' in node &&
-    (node.type === 'MethodDefinition' || node.type === 'PropertyDefinition')
-  );
-}
-
-function getLeadingDocComment(node: unknown, sourceCode: eslint.SourceCode): ICommentLike | undefined {
-  const comments: ICommentLike[] = sourceCode.getCommentsBefore(node as never) as ICommentLike[];
-  for (let i: number = comments.length - 1; i >= 0; --i) {
-    const comment: ICommentLike = comments[i];
-    if (comment.type !== 'Block') {
-      continue;
-    }
-
-    const commentText: string = sourceCode.text.slice(comment.range[0], comment.range[1]);
-    if (commentText.startsWith('/**')) {
-      return comment;
-    }
-  }
-
-  return undefined;
-}
-
-function hasOverrideKeyword(node: unknown): boolean {
-  return (
-    typeof node === 'object' &&
-    node !== null &&
-    'override' in node &&
-    Boolean((node as { override?: boolean }).override)
-  );
-}
-
-function getOverrideInsertionOffset(node: unknown, sourceCode: eslint.SourceCode): number {
-  if (typeof node !== 'object' || node === null || !('range' in node) || !('key' in node)) {
-    return -1;
-  }
-
-  const nodeWithKey: INodeWithKey = node as INodeWithKey;
-  const nodeText: string = sourceCode.text.slice(nodeWithKey.range[0], nodeWithKey.range[1]);
-  const keyStart: number = nodeWithKey.key.range[0] - nodeWithKey.range[0];
-  const prefixText: string = nodeText.slice(0, keyStart);
-  const nodeData: { accessibility?: string; static?: boolean } = node as {
-    accessibility?: string;
-    static?: boolean;
-  };
-
-  if (nodeData.static) {
-    const staticMatch: RegExpMatchArray | null = prefixText.match(/\bstatic\b/);
-    if (staticMatch && staticMatch.index !== undefined) {
-      const offsetAfterStatic: number = staticMatch.index + 'static'.length;
-      const whitespaceMatch: RegExpMatchArray | null = prefixText.slice(offsetAfterStatic).match(/^\s*/);
-      const whitespaceLength: number = whitespaceMatch ? whitespaceMatch[0].length : 0;
-      return nodeWithKey.range[0] + offsetAfterStatic + whitespaceLength;
-    }
-  }
-
-  if (nodeData.accessibility) {
-    const accessibilityText: string = nodeData.accessibility;
-    const accessibilityIndex: number = prefixText.lastIndexOf(accessibilityText);
-    if (accessibilityIndex >= 0) {
-      const offsetAfterAccessibility: number = accessibilityIndex + accessibilityText.length;
-      const whitespaceMatch: RegExpMatchArray | null = prefixText
-        .slice(offsetAfterAccessibility)
-        .match(/^\s*/);
-      const whitespaceLength: number = whitespaceMatch ? whitespaceMatch[0].length : 0;
-      return nodeWithKey.range[0] + offsetAfterAccessibility + whitespaceLength;
-    }
-  }
-
-  return nodeWithKey.key.range[0];
-}
-
+// Removes the `@override` modifier tag from a doc comment's source text.  A line whose only
+// remaining content is the comment framing is collapsed to an empty line.
 function removeOverrideTag(commentText: string): string {
   return commentText
     .split(/\r?\n/)
     .map((line: string) => {
-      const updatedLine: string = line.replace(/@override\b/g, '');
-      if (updatedLine.trim().length > 0) {
-        return updatedLine;
+      if (!/@override\b/.test(line)) {
+        return line;
       }
 
-      const commentPrefixMatch: RegExpMatchArray | null = line.match(/^(\s*\*)(.*)$/);
-      return commentPrefixMatch ? commentPrefixMatch[1] : '';
+      const withoutTag: string = line.replace(/@override\b/g, '').replace(/\s+$/, '');
+      return /^\s*\*?\s*$/.test(withoutTag) ? '' : withoutTag;
     })
     .join('\n');
+}
+
+// Returns the node or token that the TypeScript `override` keyword should be inserted before.
+// `override` must follow accessibility (e.g. `public`) and `static` modifiers, but precede
+// `readonly`/`abstract`, so we walk backwards past those starting from the member's key.
+function getOverrideInsertionTarget(
+  node: IClassMemberNode,
+  sourceCode: eslint.SourceCode
+): eslint.Rule.Node | eslint.AST.Token {
+  let target: eslint.Rule.Node | eslint.AST.Token = node.key;
+  let token: eslint.AST.Token | null = sourceCode.getTokenBefore(target);
+  while (token && (token.value === 'readonly' || token.value === 'abstract')) {
+    target = token;
+    token = sourceCode.getTokenBefore(token);
+  }
+
+  return target;
 }
 
 const plugin: IPlugin = {
@@ -232,6 +176,51 @@ const plugin: IPlugin = {
         const tsdocParser: TSDocParser = new TSDocParser(tsdocConfiguration);
 
         const sourceCode: eslint.SourceCode = context.sourceCode ?? context.getSourceCode();
+
+        // Finds the class member (method or property) documented by a doc comment, or undefined
+        // if the comment does not immediately precede a supported member.
+        function getDocumentedClassMember(comment: TDocComment): IClassMemberNode | undefined {
+          const tokenAfter: eslint.AST.Token | null = sourceCode.getTokenAfter(comment);
+          if (!tokenAfter) {
+            return undefined;
+          }
+
+          let node: eslint.Rule.Node | null = sourceCode.getNodeByRangeIndex(
+            tokenAfter.range[0]
+          ) as eslint.Rule.Node | null;
+          while (node) {
+            if (node.type === 'MethodDefinition' || node.type === 'PropertyDefinition') {
+              return node as unknown as IClassMemberNode;
+            }
+            node = node.parent as eslint.Rule.Node | null;
+          }
+
+          return undefined;
+        }
+
+        function reportOverrideTag(comment: TDocComment): void {
+          const node: IClassMemberNode | undefined = getDocumentedClassMember(comment);
+          if (!node || !comment.range) {
+            return;
+          }
+
+          const commentRange: [number, number] = [comment.range[0], comment.range[1]];
+          context.report({
+            node: node as unknown as eslint.Rule.Node,
+            messageId: 'override-tag-not-allowed',
+            fix: (fixer: eslint.Rule.RuleFixer) => {
+              const commentText: string = sourceCode.text.slice(commentRange[0], commentRange[1]);
+              const fixes: eslint.Rule.Fix[] = [
+                fixer.replaceTextRange(commentRange, removeOverrideTag(commentText))
+              ];
+              if (!node.override) {
+                fixes.push(fixer.insertTextBefore(getOverrideInsertionTarget(node, sourceCode), 'override '));
+              }
+              return fixes;
+            }
+          });
+        }
+
         function checkCommentBlocks(): void {
           for (const comment of sourceCode.getAllComments()) {
             if (comment.type !== 'Block') {
@@ -256,6 +245,8 @@ const plugin: IPlugin = {
               continue;
             }
 
+            // Parse the comment once and reuse the result for both syntax validation and the
+            // optional `@override` modifier check.
             const parserContext: ParserContext = tsdocParser.parseRange(textRange);
             for (const message of parserContext.log.messages) {
               context.report({
@@ -269,59 +260,16 @@ const plugin: IPlugin = {
                 }
               });
             }
-          }
-        }
 
-        function checkOverrideTags(node: unknown): void {
-          if (!forbidOverrideTag || !isSupportedOverrideNode(node)) {
-            return;
-          }
-
-          const docComment: ICommentLike | undefined = getLeadingDocComment(node, sourceCode);
-          if (!docComment) {
-            return;
-          }
-
-          const commentText: string = sourceCode.text.slice(docComment.range[0], docComment.range[1]);
-          const textRange: TextRange = TextRange.fromStringRange(
-            sourceCode.text,
-            docComment.range[0],
-            docComment.range[1]
-          );
-          const parserContext: ParserContext = tsdocParser.parseRange(textRange);
-          if (!parserContext.docComment.modifierTagSet.isOverride()) {
-            return;
-          }
-
-          if (hasOverrideKeyword(node)) {
-            return;
-          }
-
-          const overrideInsertionOffset: number = getOverrideInsertionOffset(node, sourceCode);
-          if (overrideInsertionOffset < 0) {
-            return;
-          }
-
-          context.report({
-            node: node as never,
-            messageId: 'override-tag-not-allowed',
-            fix: (fixer: eslint.Rule.RuleFixer) => {
-              const commentRange: [number, number] = [docComment.range[0], docComment.range[1]];
-              return [
-                fixer.replaceTextRange(commentRange, removeOverrideTag(commentText)),
-                fixer.insertTextAfterRange([overrideInsertionOffset, overrideInsertionOffset], 'override ')
-              ];
+            if (forbidOverrideTag && parserContext.docComment.modifierTagSet.isOverride()) {
+              reportOverrideTag(comment);
             }
-          });
+          }
         }
 
-        const listener: eslint.Rule.RuleListener = {
-          Program: checkCommentBlocks,
-          MethodDefinition: checkOverrideTags,
-          PropertyDefinition: checkOverrideTags
+        return {
+          Program: checkCommentBlocks
         };
-
-        return listener;
       }
     }
   }
