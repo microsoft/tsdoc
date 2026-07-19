@@ -17,10 +17,6 @@ defaultTSDocConfiguration.allTsdocMessageIds.forEach((messageId: string) => {
   tsdocMessageIds[messageId] = `${messageId}: {{unformattedText}}`;
 });
 
-interface ISyntaxRuleOptions {
-  forbidOverrideTag?: boolean;
-}
-
 interface IPlugin {
   rules: { [x: string]: eslint.Rule.RuleModule };
 }
@@ -126,9 +122,11 @@ const plugin: IPlugin = {
         }
       },
       create: (context: eslint.Rule.RuleContext) => {
-        const options: ISyntaxRuleOptions | undefined = context.options[0] as ISyntaxRuleOptions | undefined;
-        const forbidOverrideTag: boolean = options?.forbidOverrideTag ?? false;
-        const sourceFilePath: string = context.filename;
+        const {
+          options: [{ forbidOverrideTag = false } = {}],
+          filename: sourceFilePath
+        } = context;
+
         // If eslint is configured with @typescript-eslint/parser, there is a parser option
         // to explicitly specify where the tsconfig file is. Use that if available.
         const tsConfigDir: string | undefined = getRootDirectoryFromContext(
@@ -192,7 +190,8 @@ const plugin: IPlugin = {
             if (node.type === 'MethodDefinition' || node.type === 'PropertyDefinition') {
               return node as unknown as IClassMemberNode;
             }
-            node = node.parent as eslint.Rule.Node | null;
+
+            node = node.parent;
           }
 
           return undefined;
@@ -216,6 +215,7 @@ const plugin: IPlugin = {
               if (!node.override) {
                 fixes.push(fixer.insertTextBefore(getOverrideInsertionTarget(node, sourceCode), 'override '));
               }
+
               return fixes;
             }
           });
