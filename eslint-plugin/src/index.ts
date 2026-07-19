@@ -4,7 +4,14 @@
 import { ESLintUtils, type TSESLint } from '@typescript-eslint/utils';
 import type * as eslint from 'eslint';
 
-import { TSDocParser, TextRange, TSDocConfiguration, type ParserContext } from '@microsoft/tsdoc';
+import {
+  TSDocParser,
+  TextRange,
+  TSDocConfiguration,
+  StandardTags,
+  type ParserContext,
+  type DocBlockTag
+} from '@microsoft/tsdoc';
 import type { TSDocConfigFile } from '@microsoft/tsdoc-config';
 
 import { Debug } from './Debug';
@@ -45,39 +52,60 @@ function getRootDirectoryFromContext(context: TSESLint.RuleContext<string, unkno
 // types so it stays consistent with the `@types/estree` version they were built against.
 type TDocComment = ReturnType<eslint.SourceCode['getAllComments']>[number];
 
-// A class member (method or property) that may carry an `@override` doc tag and/or a
-// TypeScript `override` modifier.  The `override` field is a TypeScript-ESTree extension.
-interface IClassMemberNode {
-  type: 'MethodDefinition' | 'PropertyDefinition';
-  key: eslint.Rule.Node;
-  parent: eslint.Rule.Node;
-  override?: boolean;
-}
+// A class member (method or property) that may carry an `@override` doc tag and/or a TypeScript
+// `override` modifier.  `override` is a TypeScript-ESTree extension not present in the ESTree types.
+type TClassMemberNode = (
+  | (eslint.Rule.Node & { type: 'MethodDefinition' })
+  | (eslint.Rule.Node & { type: 'PropertyDefinition' })
+) & { override?: boolean };
 
-// Removes the `@override` modifier tag from a doc comment's source text.  A line whose only
-// remaining content is the comment framing is collapsed to an empty line.
-function removeOverrideTag(commentText: string): string {
-  return commentText
-    .split(/\r?\n/)
-    .map((line: string) => {
-      if (!/@override\b/.test(line)) {
-        return line;
-      }
+// Rewrites a doc comment's source text with the `@override` modifier tag removed.  Returns the new
+// comment text, or `undefined` when the comment would be left with nothing but its framing (in which
+// case the caller should remove the entire comment).  The tag range is relative to `commentText`.
+function rewriteCommentWithoutOverrideTag(
+  commentText: string,
+  tagStart: number,
+  tagEnd: number
+): string | undefined {
+  // Drop the tag along with any horizontal whitespace immediately surrounding it, so we don't leave
+  // a dangling space (e.g. `* @override` becomes `*`).
+  let start: number = tagStart;
+  let end: number = tagEnd;
+  while (start > 0 && (commentText[start - 1] === ' ' || commentText[start - 1] === '\t')) {
+    --start;
+  }
 
-      const withoutTag: string = line.replace(/@override\b/g, '').replace(/\s+$/, '');
-      return /^\s*\*?\s*$/.test(withoutTag) ? '' : withoutTag;
-    })
-    .join('\n');
+  while (end < commentText.length && (commentText[end] === ' ' || commentText[end] === '\t')) {
+    ++end;
+  }
+
+  const lines: string[] = (commentText.slice(0, start) + commentText.slice(end)).split('\n');
+
+  // Drop now-empty comment lines (whitespace and an optional `*`) that trail before the closing `*/`.
+  while (lines.length > 1 && /^\s*\*?\s*$/.test(lines[lines.length - 2])) {
+    lines.splice(lines.length - 2, 1);
+  }
+
+  const cleaned: string = lines.join('\n');
+
+  // If only the `/**` ... `*/` framing remains, signal that the whole comment should be removed.
+  const remainingContent: string = cleaned
+    .replace(/^\/\*\*?/, '')
+    .replace(/\*\/\s*$/, '')
+    .replace(/^[ \t]*\*/gm, '')
+    .trim();
+
+  return remainingContent.length === 0 ? undefined : cleaned;
 }
 
 // Returns the node or token that the TypeScript `override` keyword should be inserted before.
 // `override` must follow accessibility (e.g. `public`) and `static` modifiers, but precede
 // `readonly`/`abstract`, so we walk backwards past those starting from the member's key.
 function getOverrideInsertionTarget(
-  node: IClassMemberNode,
+  node: TClassMemberNode,
   sourceCode: eslint.SourceCode
-): eslint.Rule.Node | eslint.AST.Token {
-  let target: eslint.Rule.Node | eslint.AST.Token = node.key;
+): TClassMemberNode['key'] | eslint.AST.Token {
+  let target: TClassMemberNode['key'] | eslint.AST.Token = node.key;
   let token: eslint.AST.Token | null = sourceCode.getTokenBefore(target);
   while (token && (token.value === 'readonly' || token.value === 'abstract')) {
     target = token;
@@ -177,18 +205,20 @@ const plugin: IPlugin = {
 
         // Finds the class member (method or property) documented by a doc comment, or undefined
         // if the comment does not immediately precede a supported member.
-        function getDocumentedClassMember(comment: TDocComment): IClassMemberNode | undefined {
+        function getDocumentedClassMember(comment: TDocComment): TClassMemberNode | undefined {
           const tokenAfter: eslint.AST.Token | null = sourceCode.getTokenAfter(comment);
           if (!tokenAfter) {
             return undefined;
           }
 
+          // `getNodeByRangeIndex` is typed as returning a bare ESTree node, but at runtime the
+          // parent links are populated, so we treat the result as a Rule.Node for the walk.
           let node: eslint.Rule.Node | null = sourceCode.getNodeByRangeIndex(
             tokenAfter.range[0]
           ) as eslint.Rule.Node | null;
           while (node) {
             if (node.type === 'MethodDefinition' || node.type === 'PropertyDefinition') {
-              return node as unknown as IClassMemberNode;
+              return node;
             }
 
             node = node.parent;
@@ -197,21 +227,43 @@ const plugin: IPlugin = {
           return undefined;
         }
 
-        function reportOverrideTag(comment: TDocComment): void {
-          const node: IClassMemberNode | undefined = getDocumentedClassMember(comment);
+        function reportOverrideTag(comment: TDocComment, parserContext: ParserContext): void {
+          const node: TClassMemberNode | undefined = getDocumentedClassMember(comment);
           if (!node || !comment.range) {
             return;
           }
 
-          const commentRange: [number, number] = [comment.range[0], comment.range[1]];
+          const overrideTag: DocBlockTag | undefined = parserContext.docComment.modifierTagSet.tryGetTag(
+            StandardTags.override
+          );
+          if (!overrideTag) {
+            return;
+          }
+
+          const [commentStart, commentEnd] = comment.range;
+          const { pos, end } = overrideTag.getTokenSequence().getContainingTextRange();
+          const newCommentText: string | undefined = rewriteCommentWithoutOverrideTag(
+            sourceCode.text.slice(commentStart, commentEnd),
+            pos - commentStart,
+            end - commentStart
+          );
+
           context.report({
-            node: node as unknown as eslint.Rule.Node,
+            node,
             messageId: 'override-tag-not-allowed',
             fix: (fixer: eslint.Rule.RuleFixer) => {
-              const commentText: string = sourceCode.text.slice(commentRange[0], commentRange[1]);
-              const fixes: eslint.Rule.Fix[] = [
-                fixer.replaceTextRange(commentRange, removeOverrideTag(commentText))
-              ];
+              const fixes: eslint.Rule.Fix[] = [];
+              if (newCommentText === undefined) {
+                // The comment held nothing but `@override`, so remove it along with the whitespace
+                // up to the member declaration.
+                const memberToken: eslint.AST.Token | null = sourceCode.getTokenAfter(comment);
+                fixes.push(
+                  fixer.removeRange([commentStart, memberToken ? memberToken.range[0] : commentEnd])
+                );
+              } else {
+                fixes.push(fixer.replaceTextRange([commentStart, commentEnd], newCommentText));
+              }
+
               if (!node.override) {
                 fixes.push(fixer.insertTextBefore(getOverrideInsertionTarget(node, sourceCode), 'override '));
               }
@@ -262,7 +314,7 @@ const plugin: IPlugin = {
             }
 
             if (forbidOverrideTag && parserContext.docComment.modifierTagSet.isOverride()) {
-              reportOverrideTag(comment);
+              reportOverrideTag(comment, parserContext);
             }
           }
         }
