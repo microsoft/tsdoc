@@ -36,6 +36,7 @@
     "@rushstack/heft": "1.2.7",
     "@types/eslint": "8.40.1",
     "@types/estree": "1.0.1",
+    "@typescript-eslint/parser": "~8.56.0",
     "eslint": "~9.25.1"
   }
 }

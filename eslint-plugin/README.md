@@ -59,9 +59,9 @@ This ESLint plugin provides a rule for validating that TypeScript doc comments c
       }
     };
     ```
- 
+
 To enable the opt-in override-tag check, configure the rule with the `forbidOverrideTag` option:
- 
+
 ```js
 {
   rules: {
@@ -69,9 +69,9 @@ To enable the opt-in override-tag check, configure the rule with the `forbidOver
   }
 }
 ```
- 
+
 When enabled, the rule reports `@override` TSDoc tags on class members and offers an autofix that removes
 the tag from the doc comment and inserts the TypeScript `override` modifier into the declaration.
- 
+
 This package is maintained by the TSDoc project.  If you have questions or feedback, please
 [let us know](https://tsdoc.org/pages/resources/help)!
