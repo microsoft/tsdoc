@@ -14,6 +14,7 @@ import type {
   DocDeclarationReference,
   DocErrorText,
   DocEscapedText,
+  DocExampleBlock,
   DocHtmlEndTag,
   DocHtmlStartTag,
   DocHtmlAttribute,
@@ -169,6 +170,17 @@ export class TSDocEmitter {
       case DocNodeKind.EscapedText:
         const docEscapedText: DocEscapedText = docNode as DocEscapedText;
         this._writeContent(docEscapedText.encodedText);
+        break;
+
+      case DocNodeKind.ExampleBlock:
+        const docExampleBlock: DocExampleBlock = docNode as DocExampleBlock;
+        this._ensureLineSkipped();
+        this._renderNode(docExampleBlock.blockTag);
+        if (docExampleBlock.title.length > 0) {
+          this._writeContent(' ');
+          this._writeContent(docExampleBlock.title);
+        }
+        this._renderNode(docExampleBlock.content);
         break;
 
       case DocNodeKind.FencedCode:

@@ -24,6 +24,7 @@ import {
   DocNodeKind,
   type DocSection,
   DocParamBlock,
+  DocExampleBlock,
   DocFencedCode,
   DocLinkTag,
   type IDocLinkTagParameters,
@@ -336,6 +337,13 @@ export class NodeParser {
             this._parserContext.docComment.typeParams.add(docParamBlock);
 
             this._currentSection = docParamBlock.content;
+            return;
+          } else if (docBlockTag.tagNameWithUpperCase === StandardTags.example.tagNameWithUpperCase) {
+            const docExampleBlock: DocExampleBlock = this._parseExampleBlock(tokenReader, docBlockTag);
+
+            this._addBlockToDocComment(docExampleBlock);
+
+            this._currentSection = docExampleBlock.content;
             return;
           } else {
             const newBlock: DocBlock = new DocBlock({
@@ -651,6 +659,42 @@ export class NodeParser {
       spacingAfterHyphenExcerpt,
 
       unsupportedJsdocTypeAfterHyphenExcerpt
+    });
+  }
+
+  private _parseExampleBlock(tokenReader: TokenReader, docBlockTag: DocBlockTag): DocExampleBlock {
+    // Read any spacing that appears between the "@example" tag and the title text.
+    while (tokenReader.peekTokenKind() === TokenKind.Spacing) {
+      tokenReader.readToken();
+    }
+    const spacingAfterTagExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+
+    // Everything else on the same line as the "@example" tag is interpreted as the title.
+    let title: string = '';
+    let done: boolean = false;
+    while (!done) {
+      switch (tokenReader.peekTokenKind()) {
+        case TokenKind.Newline:
+        case TokenKind.EndOfInput:
+          done = true;
+          break;
+        default:
+          title += tokenReader.readToken().toString();
+          break;
+      }
+    }
+    const titleExcerpt: TokenSequence | undefined = tokenReader.tryExtractAccumulatedSequence();
+
+    return new DocExampleBlock({
+      parsed: true,
+      configuration: this._configuration,
+
+      blockTag: docBlockTag,
+
+      spacingAfterTagExcerpt,
+
+      titleExcerpt,
+      title: title.trim()
     });
   }
 

@@ -124,6 +124,41 @@ Object {
 `);
 });
 
+test('02b Round-trip @example titles', () => {
+  const input: string = `
+/**
+ * Summary.
+ *
+ * @example Adding two numbers
+ * \`\`\`ts
+ * add(1, 2);
+ * \`\`\`
+ * @example
+ * An example without a title.
+ */
+`;
+
+  expect(createSnapshot(input)).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+/**
+ * Summary.
+ *
+ * @example Adding two numbers
+ * \`\`\`ts
+ * add(1, 2);
+ * \`\`\`
+ *
+ * @example
+ *
+ * An example without a title.
+ */
+",
+}
+`);
+});
+
 test('03 TSDocEmitter.renderHtmlTag()', () => {
   const configuration: TSDocConfiguration = new TSDocConfiguration();
   const htmlTag: DocHtmlStartTag = new DocHtmlStartTag({

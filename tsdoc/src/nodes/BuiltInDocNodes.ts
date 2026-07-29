@@ -18,6 +18,7 @@ export class BuiltInDocNodes {
       { docNodeKind: DocNodeKind.DeclarationReference, constructor: nodes.DocDeclarationReference },
       { docNodeKind: DocNodeKind.ErrorText, constructor: nodes.DocErrorText },
       { docNodeKind: DocNodeKind.EscapedText, constructor: nodes.DocEscapedText },
+      { docNodeKind: DocNodeKind.ExampleBlock, constructor: nodes.DocExampleBlock },
       { docNodeKind: DocNodeKind.Excerpt, constructor: nodes.DocExcerpt },
       { docNodeKind: DocNodeKind.FencedCode, constructor: nodes.DocFencedCode },
       { docNodeKind: DocNodeKind.HtmlAttribute, constructor: nodes.DocHtmlAttribute },

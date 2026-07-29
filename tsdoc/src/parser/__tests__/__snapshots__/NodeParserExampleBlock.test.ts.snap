@@ -1,0 +1,458 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`00 Example block: no title 1`] = `
+Object {
+  "buffer": "/**[n] * @example[n] * Some example content.[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "@example",
+    "Some example content.",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+      },
+      Object {
+        "kind": "ExampleBlock",
+        "nodes": Array [
+          Object {
+            "kind": "BlockTag",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: BlockTag",
+                "nodeExcerpt": "@example",
+              },
+            ],
+          },
+          Object {
+            "kind": "Section",
+            "nodes": Array [
+              Object {
+                "kind": "Paragraph",
+                "nodes": Array [
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": "Some example content.",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`01 Example block: with title 1`] = `
+Object {
+  "buffer": "/**[n] * @example Adding two numbers[n] * Some example content.[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "@example Adding two numbers",
+    "Some example content.",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+      },
+      Object {
+        "kind": "ExampleBlock",
+        "nodes": Array [
+          Object {
+            "kind": "BlockTag",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: BlockTag",
+                "nodeExcerpt": "@example",
+              },
+            ],
+          },
+          Object {
+            "kind": "Excerpt: Spacing",
+            "nodeExcerpt": " ",
+          },
+          Object {
+            "kind": "Excerpt: ExampleBlock_Title",
+            "nodeExcerpt": "Adding two numbers",
+          },
+          Object {
+            "kind": "Section",
+            "nodes": Array [
+              Object {
+                "kind": "Paragraph",
+                "nodes": Array [
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": "Some example content.",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`02 Example block: title with a code sample 1`] = `
+Object {
+  "buffer": "/**[n] * @example Basic usage[n] * [c][c][c]ts[n] * add(1, 2);[n] * [c][c][c][n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "@example Basic usage",
+    "[c][c][c]ts",
+    "add(1, 2);",
+    "[c][c][c]",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+      },
+      Object {
+        "kind": "ExampleBlock",
+        "nodes": Array [
+          Object {
+            "kind": "BlockTag",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: BlockTag",
+                "nodeExcerpt": "@example",
+              },
+            ],
+          },
+          Object {
+            "kind": "Excerpt: Spacing",
+            "nodeExcerpt": " ",
+          },
+          Object {
+            "kind": "Excerpt: ExampleBlock_Title",
+            "nodeExcerpt": "Basic usage",
+          },
+          Object {
+            "kind": "Section",
+            "nodes": Array [
+              Object {
+                "kind": "Paragraph",
+                "nodes": Array [
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
+                  },
+                ],
+              },
+              Object {
+                "kind": "FencedCode",
+                "nodes": Array [
+                  Object {
+                    "kind": "Excerpt: FencedCode_OpeningFence",
+                    "nodeExcerpt": "[c][c][c]",
+                  },
+                  Object {
+                    "kind": "Excerpt: FencedCode_Language",
+                    "nodeExcerpt": "ts",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "[n]",
+                  },
+                  Object {
+                    "kind": "Excerpt: FencedCode_Code",
+                    "nodeExcerpt": "add(1, 2);[n]",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "",
+                  },
+                  Object {
+                    "kind": "Excerpt: FencedCode_ClosingFence",
+                    "nodeExcerpt": "[c][c][c]",
+                  },
+                  Object {
+                    "kind": "Excerpt: Spacing",
+                    "nodeExcerpt": "[n]",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`03 Example block: multiple blocks with and without titles 1`] = `
+Object {
+  "buffer": "/**[n] * @example First example[n] * Content 1.[n] * @example[n] * Content 2.[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "@example First example",
+    "Content 1.",
+    "@example",
+    "Content 2.",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+      },
+      Object {
+        "kind": "ExampleBlock",
+        "nodes": Array [
+          Object {
+            "kind": "BlockTag",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: BlockTag",
+                "nodeExcerpt": "@example",
+              },
+            ],
+          },
+          Object {
+            "kind": "Excerpt: Spacing",
+            "nodeExcerpt": " ",
+          },
+          Object {
+            "kind": "Excerpt: ExampleBlock_Title",
+            "nodeExcerpt": "First example",
+          },
+          Object {
+            "kind": "Section",
+            "nodes": Array [
+              Object {
+                "kind": "Paragraph",
+                "nodes": Array [
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": "Content 1.",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      Object {
+        "kind": "ExampleBlock",
+        "nodes": Array [
+          Object {
+            "kind": "BlockTag",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: BlockTag",
+                "nodeExcerpt": "@example",
+              },
+            ],
+          },
+          Object {
+            "kind": "Section",
+            "nodes": Array [
+              Object {
+                "kind": "Paragraph",
+                "nodes": Array [
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": "Content 2.",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`04 Example block: title with surrounding whitespace 1`] = `
+Object {
+  "buffer": "/**[n] * @example    Trimmed title   [n] * Content.[n] */",
+  "gaps": Array [],
+  "lines": Array [
+    "@example    Trimmed title",
+    "Content.",
+  ],
+  "logMessages": Array [],
+  "nodes": Object {
+    "kind": "Comment",
+    "nodes": Array [
+      Object {
+        "kind": "Section",
+      },
+      Object {
+        "kind": "ExampleBlock",
+        "nodes": Array [
+          Object {
+            "kind": "BlockTag",
+            "nodes": Array [
+              Object {
+                "kind": "Excerpt: BlockTag",
+                "nodeExcerpt": "@example",
+              },
+            ],
+          },
+          Object {
+            "kind": "Excerpt: Spacing",
+            "nodeExcerpt": "    ",
+          },
+          Object {
+            "kind": "Excerpt: ExampleBlock_Title",
+            "nodeExcerpt": "Trimmed title",
+          },
+          Object {
+            "kind": "Section",
+            "nodes": Array [
+              Object {
+                "kind": "Paragraph",
+                "nodes": Array [
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": "Content.",
+                      },
+                    ],
+                  },
+                  Object {
+                    "kind": "SoftBreak",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: SoftBreak",
+                        "nodeExcerpt": "[n]",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+`;

@@ -110,6 +110,17 @@ export class DocEscapedText extends DocNode {
 }
 
 // @public
+export class DocExampleBlock extends DocBlock {
+    // @internal
+    constructor(parameters: IDocExampleBlockParameters | IDocExampleBlockParsedParameters);
+    // @override (undocumented)
+    get kind(): DocNodeKind | string;
+    // @override (undocumented)
+    protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
+    get title(): string;
+}
+
+// @public
 export class DocExcerpt extends DocNode {
     // @internal
     constructor(parameters: IDocExcerptParameters);
@@ -315,6 +326,8 @@ export enum DocNodeKind {
     // (undocumented)
     EscapedText = "EscapedText",
     // (undocumented)
+    ExampleBlock = "ExampleBlock",
+    // (undocumented)
     Excerpt = "Excerpt",
     // (undocumented)
     FencedCode = "FencedCode",
@@ -462,6 +475,8 @@ export enum ExcerptKind {
     ErrorText = "ErrorText",
     // (undocumented)
     EscapedText = "EscapedText",
+    // (undocumented)
+    ExampleBlock_Title = "ExampleBlock_Title",
     // (undocumented)
     FencedCode_ClosingFence = "FencedCode_ClosingFence",
     // (undocumented)
@@ -621,6 +636,22 @@ export interface IDocEscapedTextParsedParameters extends IDocNodeParsedParameter
     encodedTextExcerpt: TokenSequence;
     // (undocumented)
     escapeStyle: EscapeStyle;
+}
+
+// @public
+export interface IDocExampleBlockParameters extends IDocBlockParameters {
+    // (undocumented)
+    title?: string;
+}
+
+// @public
+export interface IDocExampleBlockParsedParameters extends IDocBlockParsedParameters {
+    // (undocumented)
+    spacingAfterTagExcerpt?: TokenSequence;
+    // (undocumented)
+    title: string;
+    // (undocumented)
+    titleExcerpt?: TokenSequence;
 }
 
 // @public

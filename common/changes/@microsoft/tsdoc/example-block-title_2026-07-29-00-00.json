@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Parse the text following an `@example` tag as an example title per documented spec, exposed via the new `DocExampleBlock` node; round-trip emission preserves the title on the tag line",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc"
+}
