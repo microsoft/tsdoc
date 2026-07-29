@@ -475,7 +475,6 @@ export enum ExcerptKind {
     ErrorText = "ErrorText",
     // (undocumented)
     EscapedText = "EscapedText",
-    // (undocumented)
     ExampleBlock_Title = "ExampleBlock_Title",
     // (undocumented)
     FencedCode_ClosingFence = "FencedCode_ClosingFence",
@@ -640,18 +639,14 @@ export interface IDocEscapedTextParsedParameters extends IDocNodeParsedParameter
 
 // @public
 export interface IDocExampleBlockParameters extends IDocBlockParameters {
-    // (undocumented)
-    title?: string;
+    readonly title?: string;
 }
 
 // @public
 export interface IDocExampleBlockParsedParameters extends IDocBlockParsedParameters {
-    // (undocumented)
-    spacingAfterTagExcerpt?: TokenSequence;
-    // (undocumented)
-    title: string;
-    // (undocumented)
-    titleExcerpt?: TokenSequence;
+    readonly spacingAfterTagExcerpt?: TokenSequence;
+    readonly title: string;
+    readonly titleExcerpt?: TokenSequence;
 }
 
 // @public
