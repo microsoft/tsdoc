@@ -2,7 +2,7 @@
   "changes": [
     {
       "packageName": "@microsoft/tsdoc",
-      "comment": "Fix round-trip emission of `@example` block titles so the title text is preserved on the tag line, and expose the tag-line title via new `DocBlock.title` and `DocBlock.body` accessors",
+      "comment": "Fix round-trip emission of `@example` block titles so the title text is preserved on the tag line, and expose the text on a block's tag line via new `DocBlock.tagLineContent` and `DocBlock.bodyContent` accessors",
       "type": "minor"
     }
   ],

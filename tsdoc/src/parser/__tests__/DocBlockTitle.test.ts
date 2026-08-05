@@ -45,11 +45,11 @@ test('title above a code sample', () => {
     ['/**', ' * @example Adding two numbers', ' * ```ts', ' * add(1, 2);', ' * ```', ' */'].join('\n')
   );
 
-  expect(exampleBlock.title).toBeDefined();
-  expect(getPlainText(exampleBlock.title!)).toEqual('Adding two numbers');
+  expect(exampleBlock.tagLineContent).toBeDefined();
+  expect(getPlainText(exampleBlock.tagLineContent!)).toEqual('Adding two numbers');
 
   // The body is everything after the title; here that is the fenced code sample.
-  expect(getChildKinds(exampleBlock.body)).toEqual([DocNodeKind.FencedCode]);
+  expect(getChildKinds(exampleBlock.bodyContent)).toEqual([DocNodeKind.FencedCode]);
 });
 
 // An example with the whole content on the tag line.
@@ -58,12 +58,12 @@ test('title only, with no body', () => {
     ['/**', ' * The CPU architecture.', ' * @example `"AMD64"`', ' */'].join('\n')
   );
 
-  expect(exampleBlock.title).toBeDefined();
+  expect(exampleBlock.tagLineContent).toBeDefined();
   // The code span in the title is preserved as a DocCodeSpan node.
-  expect(getChildKinds(exampleBlock.title!)).toEqual([DocNodeKind.CodeSpan]);
+  expect(getChildKinds(exampleBlock.tagLineContent!)).toEqual([DocNodeKind.CodeSpan]);
 
   // The body has no renderable content.
-  expect(exampleBlock.body.nodes).toHaveLength(0);
+  expect(exampleBlock.bodyContent.nodes).toHaveLength(0);
 });
 
 // An example with markup in the title.
@@ -72,15 +72,15 @@ test('title containing an inline tag', () => {
     ['/**', ' * @example Using {@link add} on negative numbers', ' * Body text.', ' */'].join('\n')
   );
 
-  expect(exampleBlock.title).toBeDefined();
+  expect(exampleBlock.tagLineContent).toBeDefined();
   // The "{@link add}" markup is preserved as a real DocLinkTag rather than flattened to literal text.
-  expect(getChildKinds(exampleBlock.title!)).toEqual([
+  expect(getChildKinds(exampleBlock.tagLineContent!)).toEqual([
     DocNodeKind.PlainText,
     DocNodeKind.LinkTag,
     DocNodeKind.PlainText
   ]);
 
-  expect(getPlainText(exampleBlock.body)).toContain('Body text.');
+  expect(getPlainText(exampleBlock.bodyContent)).toContain('Body text.');
 });
 
 // An example with content beginning on the next line has no title.
@@ -89,8 +89,8 @@ test('no title when content begins on the next line', () => {
     ['/**', ' * @example', ' * Some example content.', ' */'].join('\n')
   );
 
-  expect(exampleBlock.title).toBeUndefined();
-  expect(getPlainText(exampleBlock.body)).toContain('Some example content.');
+  expect(exampleBlock.tagLineContent).toBeUndefined();
+  expect(getPlainText(exampleBlock.bodyContent)).toContain('Some example content.');
 });
 
 // A tag line containing only whitespace is not a title.
@@ -99,8 +99,8 @@ test('no title when the tag line is only whitespace', () => {
     ['/**', ' * @example   ', ' * Some example content.', ' */'].join('\n')
   );
 
-  expect(exampleBlock.title).toBeUndefined();
-  expect(getPlainText(exampleBlock.body)).toContain('Some example content.');
+  expect(exampleBlock.tagLineContent).toBeUndefined();
+  expect(getPlainText(exampleBlock.bodyContent)).toContain('Some example content.');
 });
 
 // The title text is trimmed of surrounding whitespace.
@@ -109,8 +109,8 @@ test('title is trimmed of surrounding whitespace', () => {
     ['/**', ' * @example    Trimmed title   ', ' * Content.', ' */'].join('\n')
   );
 
-  expect(exampleBlock.title).toBeDefined();
-  expect(getPlainText(exampleBlock.title!)).toEqual('Trimmed title');
+  expect(exampleBlock.tagLineContent).toBeDefined();
+  expect(getPlainText(exampleBlock.tagLineContent!)).toEqual('Trimmed title');
 });
 
 // A title with body prose on the immediately following line (no blank line).
@@ -119,9 +119,9 @@ test('body prose on the next line is re-wrapped into a paragraph', () => {
     ['/**', ' * @example A title', ' * Body prose here.', ' */'].join('\n')
   );
 
-  expect(getPlainText(exampleBlock.title!)).toEqual('A title');
-  expect(getChildKinds(exampleBlock.body)).toEqual([DocNodeKind.Paragraph]);
-  expect(getPlainText(exampleBlock.body)).toEqual('Body prose here.');
+  expect(getPlainText(exampleBlock.tagLineContent!)).toEqual('A title');
+  expect(getChildKinds(exampleBlock.bodyContent)).toEqual([DocNodeKind.Paragraph]);
+  expect(getPlainText(exampleBlock.bodyContent)).toEqual('Body prose here.');
 });
 
 // A title separated from the body by a blank line.
@@ -130,9 +130,9 @@ test('body separated from the title by a blank line', () => {
     ['/**', ' * @example A title', ' *', ' * Body paragraph.', ' */'].join('\n')
   );
 
-  expect(getPlainText(exampleBlock.title!)).toEqual('A title');
-  expect(getChildKinds(exampleBlock.body)).toEqual([DocNodeKind.Paragraph]);
-  expect(getPlainText(exampleBlock.body)).toEqual('Body paragraph.');
+  expect(getPlainText(exampleBlock.tagLineContent!)).toEqual('A title');
+  expect(getChildKinds(exampleBlock.bodyContent)).toEqual([DocNodeKind.Paragraph]);
+  expect(getPlainText(exampleBlock.bodyContent)).toEqual('Body paragraph.');
 });
 
 // Multiple @example blocks are parsed independently.
@@ -149,11 +149,11 @@ test('multiple example blocks each expose their own title and body', () => {
 
   expect(exampleBlocks).toHaveLength(2);
 
-  expect(getPlainText(exampleBlocks[0].title!)).toEqual('First example');
-  expect(getPlainText(exampleBlocks[0].body)).toContain('Content 1.');
+  expect(getPlainText(exampleBlocks[0].tagLineContent!)).toEqual('First example');
+  expect(getPlainText(exampleBlocks[0].bodyContent)).toContain('Content 1.');
 
-  expect(exampleBlocks[1].title).toBeUndefined();
-  expect(getPlainText(exampleBlocks[1].body)).toContain('Content 2.');
+  expect(exampleBlocks[1].tagLineContent).toBeUndefined();
+  expect(getPlainText(exampleBlocks[1].bodyContent)).toContain('Content 2.');
 });
 
 // Policy: the title is "the first paragraph up to its first line break". TSDoc inline tags are
@@ -168,13 +168,13 @@ test('title with an inline tag that spans multiple lines', () => {
     ['/**', ' * @example Using {@link', ' * Foo} directly', ' * Body text.', ' */'].join('\n')
   );
 
-  expect(getChildKinds(exampleBlock.title!)).toEqual([
+  expect(getChildKinds(exampleBlock.tagLineContent!)).toEqual([
     DocNodeKind.PlainText,
     DocNodeKind.LinkTag,
     DocNodeKind.PlainText
   ]);
-  expect(getPlainText(exampleBlock.title!)).toEqual('Using  directly');
+  expect(getPlainText(exampleBlock.tagLineContent!)).toEqual('Using  directly');
 
   // The body begins only after the tag closes and the first paragraph-level line break is reached.
-  expect(getPlainText(exampleBlock.body)).toEqual('Body text.');
+  expect(getPlainText(exampleBlock.bodyContent)).toEqual('Body text.');
 });

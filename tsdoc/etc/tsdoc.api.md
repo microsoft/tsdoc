@@ -9,13 +9,13 @@ export class DocBlock extends DocNode {
     // @internal
     constructor(parameters: IDocBlockParameters | IDocBlockParsedParameters);
     get blockTag(): DocBlockTag;
-    get body(): DocSection;
+    get bodyContent(): DocSection;
     get content(): DocSection;
     // @override (undocumented)
     get kind(): DocNodeKind | string;
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-    get title(): DocParagraph | undefined;
+    get tagLineContent(): DocParagraph | undefined;
 }
 
 // @public

@@ -59,25 +59,27 @@ export class DocBlock extends DocNode {
   }
 
   /**
-   * The block's "title", i.e. the rich text that appears on the same line as the block tag.
+   * The rich text that appears on the same line as the block tag, or `undefined` if the tag line has
+   * no content.
    *
    * @remarks
-   * Per the TSDoc specification, the text that appears on the same line as certain block tags (such as
-   * `@example`) is interpreted as a title.  This accessor is a derived view over {@link DocBlock.content}:
-   * it returns the leading nodes of the first paragraph, up to (but not including) the first line break,
-   * re-wrapped in a synthesized {@link DocParagraph} with surrounding spaces trimmed.
+   * This is a derived view over {@link DocBlock.content}: it returns the leading nodes of the first
+   * paragraph, up to (but not including) the first line break, re-wrapped in a synthesized
+   * {@link DocParagraph} with surrounding spaces trimmed.  It is `undefined` when the tag line has no
+   * non-whitespace content (for example when the block's content begins on the next line).
    *
-   * The title supports the same inline content as any paragraph (for example `{@link}` tags or code
-   * spans).  It is `undefined` when the block has no non-whitespace text on the tag line (for example when
-   * the content begins on the next line), which a documentation tool may use to fall back to numeric indexing.
+   * The tag line content supports the same inline content as any paragraph (for example `{@link}`
+   * tags or code spans).  Because TSDoc inline tags may span multiple lines, an inline tag that opens
+   * on the tag line but closes on a later line is a single node with no intervening line break, so the
+   * tag line content extends across those lines up to where the tag closes.
    *
-   * Because TSDoc inline tags may span multiple lines, an inline tag that opens on the tag line but
-   * closes on a later line is a single node with no intervening line break, so the title extends across
-   * those lines up to where the tag closes.
+   * Individual tags assign their own meaning to this content.  For example, an `@example` block
+   * interprets its tag line content as the title of the example; a documentation tool may fall back to
+   * numeric indexing when it is `undefined`.
    *
    * The underlying nodes are shared with {@link DocBlock.content}; this view does not modify the block.
    */
-  public get title(): DocParagraph | undefined {
+  public get tagLineContent(): DocParagraph | undefined {
     const contentNodes: ReadonlyArray<DocNode> = this._content.nodes;
     if (contentNodes.length === 0) {
       return undefined;
@@ -90,51 +92,54 @@ export class DocBlock extends DocNode {
 
     const paragraphNodes: ReadonlyArray<DocNode> = (firstNode as DocParagraph).nodes;
     if (paragraphNodes.length === 0 || paragraphNodes[0].kind === DocNodeKind.SoftBreak) {
-      // The tag line has no text (the content begins with a line break), so there is no title.
+      // The block's content begins with a line break, so the tag line has no content.
       return undefined;
     }
 
-    const titleNodes: DocNode[] = [];
+    const tagLineNodes: DocNode[] = [];
     for (const node of paragraphNodes) {
       if (node.kind === DocNodeKind.SoftBreak) {
         break;
       }
-      titleNodes.push(node);
+      tagLineNodes.push(node);
     }
 
-    const titleParagraph: DocParagraph = new DocParagraph({ configuration: this.configuration }, titleNodes);
-    const trimmedTitle: DocParagraph = DocNodeTransforms.trimSpacesInParagraph(titleParagraph);
+    const tagLineParagraph: DocParagraph = new DocParagraph(
+      { configuration: this.configuration },
+      tagLineNodes
+    );
+    const trimmedContent: DocParagraph = DocNodeTransforms.trimSpacesInParagraph(tagLineParagraph);
 
-    // A tag line containing only whitespace is not a title.
-    if (trimmedTitle.nodes.length === 0) {
+    // A tag line containing only whitespace has no content.
+    if (trimmedContent.nodes.length === 0) {
       return undefined;
     }
 
-    return trimmedTitle;
+    return trimmedContent;
   }
 
   /**
-   * The block's content excluding its {@link DocBlock.title}.
+   * The block's {@link DocBlock.content} excluding its {@link DocBlock.tagLineContent}.
    *
    * @remarks
-   * This accessor is a derived view over {@link DocBlock.content}: when a {@link DocBlock.title} is present,
-   * the remainder of the first paragraph (the nodes after the first line break) is re-wrapped in a
-   * synthesized {@link DocParagraph}, followed by the remaining content nodes.  When there is no title, this
-   * returns the full content.
+   * This is a derived view over {@link DocBlock.content}: when {@link DocBlock.tagLineContent} is
+   * present, the remainder of the first paragraph (the nodes after the first line break) is re-wrapped
+   * in a synthesized {@link DocParagraph}, followed by the remaining content nodes.  When there is no
+   * tag line content, this returns the full content.
    *
    * The underlying nodes are shared with {@link DocBlock.content}; this view does not modify the block.
    */
-  public get body(): DocSection {
+  public get bodyContent(): DocSection {
     const bodySection: DocSection = new DocSection({ configuration: this.configuration });
     const contentNodes: ReadonlyArray<DocNode> = this._content.nodes;
 
-    if (this.title === undefined) {
+    if (this.tagLineContent === undefined) {
       bodySection.appendNodes(contentNodes);
       return bodySection;
     }
 
-    // The title consumed the leading portion of the first paragraph; recover the remainder that follows
-    // its first line break and re-wrap it in a synthesized paragraph.
+    // The tag line content consumed the leading portion of the first paragraph; recover the remainder
+    // that follows its first line break and re-wrap it in a synthesized paragraph.
     const paragraphNodes: ReadonlyArray<DocNode> = (contentNodes[0] as DocParagraph).nodes;
     let softBreakIndex: number = -1;
     for (let i: number = 0; i < paragraphNodes.length; ++i) {
@@ -144,7 +149,8 @@ export class DocBlock extends DocNode {
       }
     }
     if (softBreakIndex >= 0) {
-      // Skip the line breaks that separated the title from the body before re-wrapping the remainder.
+      // Skip the line breaks that separated the tag line content from the body before re-wrapping the
+      // remainder.
       let remainderStart: number = softBreakIndex + 1;
       while (
         remainderStart < paragraphNodes.length &&
