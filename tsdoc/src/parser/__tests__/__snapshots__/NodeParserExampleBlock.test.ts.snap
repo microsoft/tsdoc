@@ -16,7 +16,7 @@ Object {
         "kind": "Section",
       },
       Object {
-        "kind": "ExampleBlock",
+        "kind": "Block",
         "nodes": Array [
           Object {
             "kind": "BlockTag",
@@ -87,7 +87,7 @@ Object {
         "kind": "Section",
       },
       Object {
-        "kind": "ExampleBlock",
+        "kind": "Block",
         "nodes": Array [
           Object {
             "kind": "BlockTag",
@@ -99,19 +99,20 @@ Object {
             ],
           },
           Object {
-            "kind": "Excerpt: Spacing",
-            "nodeExcerpt": " ",
-          },
-          Object {
-            "kind": "Excerpt: ExampleBlock_Title",
-            "nodeExcerpt": "Adding two numbers",
-          },
-          Object {
             "kind": "Section",
             "nodes": Array [
               Object {
                 "kind": "Paragraph",
                 "nodes": Array [
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": " Adding two numbers",
+                      },
+                    ],
+                  },
                   Object {
                     "kind": "SoftBreak",
                     "nodes": Array [
@@ -168,7 +169,7 @@ Object {
         "kind": "Section",
       },
       Object {
-        "kind": "ExampleBlock",
+        "kind": "Block",
         "nodes": Array [
           Object {
             "kind": "BlockTag",
@@ -180,19 +181,20 @@ Object {
             ],
           },
           Object {
-            "kind": "Excerpt: Spacing",
-            "nodeExcerpt": " ",
-          },
-          Object {
-            "kind": "Excerpt: ExampleBlock_Title",
-            "nodeExcerpt": "Basic usage",
-          },
-          Object {
             "kind": "Section",
             "nodes": Array [
               Object {
                 "kind": "Paragraph",
                 "nodes": Array [
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": " Basic usage",
+                      },
+                    ],
+                  },
                   Object {
                     "kind": "SoftBreak",
                     "nodes": Array [
@@ -264,7 +266,7 @@ Object {
         "kind": "Section",
       },
       Object {
-        "kind": "ExampleBlock",
+        "kind": "Block",
         "nodes": Array [
           Object {
             "kind": "BlockTag",
@@ -276,19 +278,20 @@ Object {
             ],
           },
           Object {
-            "kind": "Excerpt: Spacing",
-            "nodeExcerpt": " ",
-          },
-          Object {
-            "kind": "Excerpt: ExampleBlock_Title",
-            "nodeExcerpt": "First example",
-          },
-          Object {
             "kind": "Section",
             "nodes": Array [
               Object {
                 "kind": "Paragraph",
                 "nodes": Array [
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": " First example",
+                      },
+                    ],
+                  },
                   Object {
                     "kind": "SoftBreak",
                     "nodes": Array [
@@ -323,7 +326,7 @@ Object {
         ],
       },
       Object {
-        "kind": "ExampleBlock",
+        "kind": "Block",
         "nodes": Array [
           Object {
             "kind": "BlockTag",
@@ -394,7 +397,7 @@ Object {
         "kind": "Section",
       },
       Object {
-        "kind": "ExampleBlock",
+        "kind": "Block",
         "nodes": Array [
           Object {
             "kind": "BlockTag",
@@ -406,19 +409,20 @@ Object {
             ],
           },
           Object {
-            "kind": "Excerpt: Spacing",
-            "nodeExcerpt": "    ",
-          },
-          Object {
-            "kind": "Excerpt: ExampleBlock_Title",
-            "nodeExcerpt": "Trimmed title",
-          },
-          Object {
             "kind": "Section",
             "nodes": Array [
               Object {
                 "kind": "Paragraph",
                 "nodes": Array [
+                  Object {
+                    "kind": "PlainText",
+                    "nodes": Array [
+                      Object {
+                        "kind": "Excerpt: PlainText",
+                        "nodeExcerpt": "    Trimmed title",
+                      },
+                    ],
+                  },
                   Object {
                     "kind": "SoftBreak",
                     "nodes": Array [

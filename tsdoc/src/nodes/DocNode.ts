@@ -21,7 +21,6 @@ export enum DocNodeKind {
   DeclarationReference = 'DeclarationReference',
   ErrorText = 'ErrorText',
   EscapedText = 'EscapedText',
-  ExampleBlock = 'ExampleBlock',
   HtmlAttribute = 'HtmlAttribute',
   HtmlEndTag = 'HtmlEndTag',
   HtmlStartTag = 'HtmlStartTag',

@@ -9,11 +9,13 @@ export class DocBlock extends DocNode {
     // @internal
     constructor(parameters: IDocBlockParameters | IDocBlockParsedParameters);
     get blockTag(): DocBlockTag;
+    get body(): DocSection;
     get content(): DocSection;
     // @override (undocumented)
     get kind(): DocNodeKind | string;
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
+    get title(): DocParagraph | undefined;
 }
 
 // @public
@@ -107,17 +109,6 @@ export class DocEscapedText extends DocNode {
     get kind(): DocNodeKind | string;
     // @override (undocumented)
     protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-}
-
-// @public
-export class DocExampleBlock extends DocBlock {
-    // @internal
-    constructor(parameters: IDocExampleBlockParameters | IDocExampleBlockParsedParameters);
-    // @override (undocumented)
-    get kind(): DocNodeKind | string;
-    // @override (undocumented)
-    protected onGetChildNodes(): ReadonlyArray<DocNode | undefined>;
-    get title(): string;
 }
 
 // @public
@@ -326,8 +317,6 @@ export enum DocNodeKind {
     // (undocumented)
     EscapedText = "EscapedText",
     // (undocumented)
-    ExampleBlock = "ExampleBlock",
-    // (undocumented)
     Excerpt = "Excerpt",
     // (undocumented)
     FencedCode = "FencedCode",
@@ -475,7 +464,6 @@ export enum ExcerptKind {
     ErrorText = "ErrorText",
     // (undocumented)
     EscapedText = "EscapedText",
-    ExampleBlock_Title = "ExampleBlock_Title",
     // (undocumented)
     FencedCode_ClosingFence = "FencedCode_ClosingFence",
     // (undocumented)
@@ -635,18 +623,6 @@ export interface IDocEscapedTextParsedParameters extends IDocNodeParsedParameter
     encodedTextExcerpt: TokenSequence;
     // (undocumented)
     escapeStyle: EscapeStyle;
-}
-
-// @public
-export interface IDocExampleBlockParameters extends IDocBlockParameters {
-    readonly title?: string;
-}
-
-// @public
-export interface IDocExampleBlockParsedParameters extends IDocBlockParsedParameters {
-    readonly spacingAfterTagExcerpt?: TokenSequence;
-    readonly title: string;
-    readonly titleExcerpt?: TokenSequence;
 }
 
 // @public

@@ -14,7 +14,6 @@ import type {
   DocDeclarationReference,
   DocErrorText,
   DocEscapedText,
-  DocExampleBlock,
   DocHtmlEndTag,
   DocHtmlStartTag,
   DocHtmlAttribute,
@@ -105,7 +104,12 @@ export class TSDocEmitter {
 
         if (
           docBlock.blockTag.tagNameWithUpperCase === StandardTags.returns.tagNameWithUpperCase ||
-          docBlock.blockTag.tagNameWithUpperCase === StandardTags.defaultValue.tagNameWithUpperCase
+          docBlock.blockTag.tagNameWithUpperCase === StandardTags.defaultValue.tagNameWithUpperCase ||
+          // An "@example" title is the text on the tag line; attach it to the tag line like "@returns".
+          // Guard on the title actually being present so that an untitled "@example" is not emitted with
+          // a trailing space.
+          (docBlock.blockTag.tagNameWithUpperCase === StandardTags.example.tagNameWithUpperCase &&
+            docBlock.title !== undefined)
         ) {
           this._writeContent(' ');
           this._hangingParagraph = true;
@@ -170,17 +174,6 @@ export class TSDocEmitter {
       case DocNodeKind.EscapedText:
         const docEscapedText: DocEscapedText = docNode as DocEscapedText;
         this._writeContent(docEscapedText.encodedText);
-        break;
-
-      case DocNodeKind.ExampleBlock:
-        const docExampleBlock: DocExampleBlock = docNode as DocExampleBlock;
-        this._ensureLineSkipped();
-        this._renderNode(docExampleBlock.blockTag);
-        if (docExampleBlock.title.length > 0) {
-          this._writeContent(' ');
-          this._writeContent(docExampleBlock.title);
-        }
-        this._renderNode(docExampleBlock.content);
         break;
 
       case DocNodeKind.FencedCode:

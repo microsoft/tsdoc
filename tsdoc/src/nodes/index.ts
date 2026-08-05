@@ -8,7 +8,6 @@ export * from './DocComment';
 export * from './DocDeclarationReference';
 export * from './DocErrorText';
 export * from './DocEscapedText';
-export * from './DocExampleBlock';
 export * from './DocExcerpt';
 export * from './DocFencedCode';
 export * from './DocHtmlAttribute';

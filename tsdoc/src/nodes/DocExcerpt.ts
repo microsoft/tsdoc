@@ -38,12 +38,6 @@ export enum ExcerptKind {
 
   EscapedText = 'EscapedText',
 
-  /**
-   * The title text that appears on the same line as an `@example` tag, which is parsed into a
-   * {@link DocExampleBlock}.
-   */
-  ExampleBlock_Title = 'ExampleBlock_Title',
-
   FencedCode_OpeningFence = 'FencedCode_OpeningFence',
   FencedCode_Language = 'FencedCode_Language',
   FencedCode_Code = 'FencedCode_Code',
