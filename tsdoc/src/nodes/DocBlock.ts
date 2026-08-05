@@ -68,8 +68,8 @@ export class DocBlock extends DocNode {
    * re-wrapped in a synthesized {@link DocParagraph} with surrounding spaces trimmed.
    *
    * The title supports the same inline content as any paragraph (for example `{@link}` tags or code
-   * spans).  It is `undefined` when the block has no text on the tag line (for example when the content
-   * begins on the next line), which a documentation tool may use to fall back to numeric indexing.
+   * spans).  It is `undefined` when the block has no non-whitespace text on the tag line (for example when
+   * the content begins on the next line), which a documentation tool may use to fall back to numeric indexing.
    *
    * Because TSDoc inline tags may span multiple lines, an inline tag that opens on the tag line but
    * closes on a later line is a single node with no intervening line break, so the title extends across
