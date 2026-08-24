@@ -124,6 +124,152 @@ Object {
 `);
 });
 
+// An example containing a title above a code sample.
+test('02b Round-trip @example title above a code sample', () => {
+  const input: string = `
+/**
+ * @example Adding two numbers
+ * \`\`\`ts
+ * add(1, 2);
+ * \`\`\`
+ */
+`;
+
+  expect(createSnapshot(input)).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+/**
+ * @example Adding two numbers
+ * \`\`\`ts
+ * add(1, 2);
+ * \`\`\`
+ *
+ */
+",
+}
+`);
+});
+
+// An example whose entire content is on the tag line.
+test('02c Round-trip @example title with no body', () => {
+  const input: string = `
+/**
+ * The CPU architecture.
+ * @example \`"AMD64"\`
+ */
+`;
+
+  expect(createSnapshot(input)).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+/**
+ * The CPU architecture.
+ *
+ * @example \`\\"AMD64\\"\`
+ */
+",
+}
+`);
+});
+
+// An example with inline markup in the title.
+test('02d Round-trip @example title with inline markup', () => {
+  const input: string = `
+/**
+ * @example Using {@link add} on negative numbers
+ * Body text.
+ */
+`;
+
+  expect(createSnapshot(input)).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+/**
+ * @example Using {@link add} on negative numbers
+ * Body text.
+ */
+",
+}
+`);
+});
+
+// An example with a modifier tag on the tag line ends the example block.
+test('02e Round-trip @example title followed by a modifier tag', () => {
+  const input: string = `
+/**
+ * @example Adding two numbers @internal
+ * \`\`\`ts
+ * add(1, 2);
+ * \`\`\`
+ */
+`;
+
+  expect(createSnapshot(input)).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+/**
+ * @example Adding two numbers
+ * \`\`\`ts
+ * add(1, 2);
+ * \`\`\`
+ *
+ * @internal
+ */
+",
+}
+`);
+});
+
+// An example whose content begins on the next line has no title.
+test('02f Round-trip @example with no title', () => {
+  const input: string = `
+/**
+ * @example
+ * An example without a title.
+ */
+`;
+
+  expect(createSnapshot(input)).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+/**
+ * @example
+ *
+ * An example without a title.
+ */
+",
+}
+`);
+});
+
+// A tag line containing only whitespace must not emit a trailing space after the tag.
+test('02g Round-trip @example with a whitespace-only tag line', () => {
+  const input: string = `
+/**
+ * @example${'   '}
+ * An example without a title.
+ */
+`;
+
+  expect(createSnapshot(input)).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+/**
+ * @example
+ *
+ * An example without a title.
+ */
+",
+}
+`);
+});
+
 test('03 TSDocEmitter.renderHtmlTag()', () => {
   const configuration: TSDocConfiguration = new TSDocConfiguration();
   const htmlTag: DocHtmlStartTag = new DocHtmlStartTag({
