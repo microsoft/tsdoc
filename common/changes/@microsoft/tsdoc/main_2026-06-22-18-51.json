@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "upgrade eslint version to ~9.39.4",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc"
+}
