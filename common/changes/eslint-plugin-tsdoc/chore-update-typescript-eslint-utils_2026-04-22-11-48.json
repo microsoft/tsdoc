@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "eslint-plugin-tsdoc",
+      "comment": "Update `@typescript-eslint/utils` dependency to `~8.58.0` for TypeScript 6 support",
+      "type": "patch"
+    }
+  ],
+  "packageName": "eslint-plugin-tsdoc"
+}
