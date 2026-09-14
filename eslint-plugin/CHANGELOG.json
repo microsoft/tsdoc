@@ -2,6 +2,26 @@
   "name": "eslint-plugin-tsdoc",
   "entries": [
     {
+      "version": "0.5.3",
+      "tag": "eslint-plugin-tsdoc_v0.5.3",
+      "date": "Mon, 14 Sep 2026 21:46:19 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Declare `eslint` as an optional peer dependency so published typings resolve against the consumer's ESLint under non-hoisted installers."
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc-config\" to `0.18.2`"
+          },
+          {
+            "comment": "Updating dependency \"@microsoft/tsdoc\" to `0.17.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.5.2",
       "tag": "eslint-plugin-tsdoc_v0.5.2",
       "date": "Wed, 25 Feb 2026 21:34:35 GMT",

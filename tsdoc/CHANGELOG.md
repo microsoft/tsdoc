@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Tue, 11 Nov 2025 00:51:42 GMT and should not be manually modified.
+This log was last generated on Mon, 14 Sep 2026 21:46:19 GMT and should not be manually modified.
+
+## 0.17.0
+Mon, 14 Sep 2026 21:46:19 GMT
+
+### Minor changes
+
+- Update emitter to not replace line breaks
 
 ## 0.16.0
 Tue, 11 Nov 2025 00:51:42 GMT
