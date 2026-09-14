@@ -33,6 +33,13 @@
   },
   "peerDependencies": {
     "eslint": ">=7"
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    }
+  },
+  "peerDependencies": {
+    "eslint": ">=7"
   },
   "devDependencies": {
     "tsdoc-build-rig": "workspace:*",
