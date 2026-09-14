@@ -31,6 +31,14 @@
     "@microsoft/tsdoc": "workspace:*",
     "@typescript-eslint/utils": "~8.56.0"
   },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    }
+  },
+  "peerDependencies": {
+    "eslint": ">=7"
+  },
   "devDependencies": {
     "tsdoc-build-rig": "workspace:*",
     "@rushstack/heft": "1.2.7",
