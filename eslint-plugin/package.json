@@ -31,8 +31,6 @@
     "@microsoft/tsdoc": "workspace:*",
     "@typescript-eslint/utils": "~8.56.0"
   },
-  "peerDependencies": {
-    "eslint": ">=7"
   "peerDependenciesMeta": {
     "eslint": {
       "optional": true
