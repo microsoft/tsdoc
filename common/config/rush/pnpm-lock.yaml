@@ -53,6 +53,9 @@ importers:
       '@types/estree':
         specifier: 1.0.1
         version: 1.0.1
+      '@typescript-eslint/parser':
+        specifier: ~8.56.0
+        version: 8.56.1(eslint@9.25.1)(typescript@5.8.3)
       eslint:
         specifier: ~9.25.1
         version: 9.25.1
