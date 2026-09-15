@@ -6,10 +6,10 @@
 # Apply and pack are performed in a single "rush publish" invocation, while the change files are
 # still present: "--apply" bumps package.json versions and regenerates CHANGELOG files, "--pack"
 # writes an npm tarball per publishable project into the release folder, and "--include-all" ensures
-# every "shouldPublish" project is packed. (Running "--pack --include-all" as a separate step after
-# the change files were already consumed can produce no tarballs -- see rushstack issue #735.) The
-# release pipeline skips any tarball whose version is already on the registry, so unchanged packages
-# packed by "--include-all" are never republished.
+# every "shouldPublish" project is packed. Rush requires "--include-all" whenever "--pack" is used,
+# so every publishable project is packed regardless of whether its version changed in this bump.
+# That is fine because ESRP ignores tarballs whose version is already published, so the unchanged
+# packages are simply skipped at publish time.
 #
 # Because "--target-branch" is omitted, "rush publish" leaves the bumps uncommitted in the working
 # tree, which lets us commit exactly those changes ourselves.
@@ -26,14 +26,6 @@ steps:
       --include-all
       --release-folder $(Build.ArtifactStagingDirectory)/packages
     displayName: 'Rush Publish (apply version bumps and pack)'
-    workingDirectory: ${{ parameters.RepoPath }}
-
-  # Drop tarballs whose version is already on the registry (packed by "--include-all" but unchanged
-  # in this bump), so the ESRP publish step only receives packages that need publishing.
-  - script: >
-      node common/config/azure-pipelines/scripts/filter-unpublished-tarballs.js
-      --packages-path $(Build.ArtifactStagingDirectory)/packages
-    displayName: 'Filter already-published packages'
     workingDirectory: ${{ parameters.RepoPath }}
 
   - bash: |
