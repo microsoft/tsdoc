@@ -1,0 +1,164 @@
+# Pipeline: tsdoc npm ESRP publish
+#
+# Trigger: automatically when the automated version bump PR (opened by "npm-publish.yaml") merges to
+#          "main". Merging that PR updates CHANGELOG files, which is what triggers this pipeline.
+# Purpose: locate the bump pipeline run that packed the tarballs for the merged PR (via the
+#          "bump-versions|<sha>" build tag), download those tarballs, and publish them to the npm
+#          feed through ESRP (the same secure release path rushstack uses).
+#
+# Setup notes (one-time, in Azure DevOps):
+#   * Register this file as a new pipeline definition (the ESRP "publish" pipeline).
+#   * Set the "BumpPipelineId" / "BumpPipelineProject" parameter defaults below to the AzDO
+#     definition ID and team project of the "npm-publish.yaml" (bump) pipeline so this pipeline can
+#     locate its runs and download the packed tarballs. tsdoc has a single bump pipeline, so there
+#     is exactly one ID to configure (rushstack hardcodes one per cohort, e.g. "BumpPipelineId: 10").
+
+name: tsdoc-esrp-publish_$(Date:yyyyMMdd)$(Rev:.rrr)
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - '**/CHANGELOG.md'
+
+pr: none
+
+parameters:
+  # AzDO definition ID of the bump pipeline (npm-publish.yaml). tsdoc has a single bump pipeline, so
+  # this is the one ID to configure after registering that pipeline:
+  #   https://dev.azure.com/RushStack/GitHubProjects/_build?definitionId=11
+  - name: BumpPipelineId
+    displayName: 'Definition ID of the bump-versions pipeline'
+    type: number
+    default: 11
+  - name: BumpPipelineProject
+    displayName: 'Team project that hosts the bump-versions pipeline'
+    type: string
+    default: 'GitHubProjects'
+  - name: NpmTag
+    displayName: 'NPM dist-tag'
+    type: string
+    default: latest
+  - name: DryRun
+    displayName: 'Dry run (ESRP validates without publishing)'
+    type: boolean
+    default: false
+  - name: CommitShaOverride
+    displayName: 'Commit SHA override (for testing)'
+    type: string
+    default: '$(Build.SourceVersion)'
+  - name: BumpPipelineRunIdOverride
+    displayName: 'Bump pipeline run ID override (for recovery)'
+    type: number
+    default: 0
+
+variables:
+  - name: FORCE_COLOR
+    value: 1
+  - name: RepoPath
+    value: '$(Build.SourcesDirectory)'
+  - name: PackagesPath
+    value: '$(Agent.TempDirectory)/packages'
+
+resources:
+  repositories:
+    - repository: 1esPipelines
+      type: git
+      name: 1ESPipelineTemplates/1ESPipelineTemplates
+      ref: refs/tags/release
+    # Provides the shared ESRP release template ("esrp-release.yaml"), the same publish config
+    # repository that rushstack and spfx publish through.
+    - repository: publishConfig
+      type: git
+      name: GitHubProjectsPublish/GitHubProjectsPublish
+      ref: refs/heads/main
+
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1esPipelines
+  parameters:
+    settings:
+      networkIsolationPolicy: CFSClean,CFSClean2,CFSClean3,DefaultDeny
+    pool:
+      name: Azure-Pipelines-1ESPT-ExDShared
+      os: windows
+    stages:
+      - stage: Prepare
+        dependsOn: []
+        displayName: 'Prepare NPM Publish'
+        jobs:
+          - job: PrepareNpmPublish
+            displayName: 'Prepare NPM Publish'
+            pool:
+              name: publish-rushstack
+              os: linux
+            steps:
+              - checkout: self
+                persistCredentials: true
+                path: tsdoc
+
+              - template: /common/config/azure-pipelines/templates/install-node.yaml@self
+
+              - ${{ if gt(parameters.BumpPipelineRunIdOverride, 0) }}:
+                  - bash: |
+                      echo "Using bump pipeline run override ${{ parameters.BumpPipelineRunIdOverride }}"
+                      echo "##vso[task.setvariable variable=IsVersionBumpMerge;isOutput=true]true"
+                      echo "##vso[task.setvariable variable=BumpPipelineDefinitionId;isOutput=true]${{ parameters.BumpPipelineId }}"
+                      echo "##vso[task.setvariable variable=BumpPipelineRunId;isOutput=true]${{ parameters.BumpPipelineRunIdOverride }}"
+                    name: FindBumpRun
+                    displayName: 'Use Bump Pipeline Run Override'
+
+              - ${{ else }}:
+                  - template: /common/config/azure-pipelines/templates/find-bump-pipeline-run.yaml@self
+                    parameters:
+                      PipelineId: ${{ parameters.BumpPipelineId }}
+                      CommitSha: ${{ parameters.CommitShaOverride }}
+                      TeamProject: ${{ parameters.BumpPipelineProject }}
+                      Name: FindBumpRun
+                      WorkingDirectory: $(RepoPath)
+
+      - stage: Publish
+        displayName: 'Publish NPM Packages via ESRP'
+        dependsOn:
+          - Prepare
+        condition: and(succeeded('Prepare'), eq(dependencies.Prepare.outputs['PrepareNpmPublish.FindBumpRun.IsVersionBumpMerge'], 'true'))
+        jobs:
+          - job: PublishNpmPackages
+            displayName: 'Publish NPM Packages via ESRP'
+            pool:
+              name: publish-rushstack
+              os: linux
+            variables:
+              - name: BumpPipelineRunId
+                value: $[ stageDependencies.Prepare.PrepareNpmPublish.outputs['FindBumpRun.BumpPipelineRunId'] ]
+              - name: BumpPipelineDefinitionId
+                value: $[ stageDependencies.Prepare.PrepareNpmPublish.outputs['FindBumpRun.BumpPipelineDefinitionId'] ]
+            templateContext:
+              type: releaseJob
+              isProduction: true
+            steps:
+              - checkout: none
+
+              - template: /common/config/azure-pipelines/templates/install-node.yaml@self
+
+              - task: 1ES.DownloadPipelineArtifact@1
+                inputs:
+                  artifactName: packages
+                  targetPath: $(PackagesPath)
+                  project: ${{ parameters.BumpPipelineProject }}
+                  definition: $(BumpPipelineDefinitionId)
+                  pipelineId: $(BumpPipelineRunId)
+                  buildType: specific
+                  buildVersionToDownload: specific
+                displayName: 'Download packed npm packages'
+
+              - bash: |
+                  ls -la "$(PackagesPath)"
+                displayName: 'List downloaded packages'
+
+              - template: /common/config/azure-pipelines/templates/esrp-release.yaml@publishConfig
+                parameters:
+                  packagesPath: $(PackagesPath)
+                  npmTag: ${{ parameters.NpmTag }}
+                  dryRun: ${{ parameters.DryRun }}
