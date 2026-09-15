@@ -1,0 +1,21 @@
+# Checks out the exact commit that triggered the pipeline and creates the automated feature branch
+# that the version bump will be committed to. The branch is later force-pushed and turned into a PR
+# by "push-and-create-github-pr.yaml", so the version bump never gets pushed directly to "main".
+parameters:
+  - name: FeatureBranch
+    type: string
+  - name: RepoPath
+    type: string
+    default: '$(Agent.BuildDirectory)/tsdoc'
+
+steps:
+  - bash: |
+      set -euo pipefail
+      # Restore the exact commit that selected this pipeline YAML before creating the automated
+      # branch, so the bump is based on the merge commit that triggered this run.
+      git fetch --no-tags origin "$(Build.SourceVersion)"
+      git checkout --detach "$(Build.SourceVersion)"
+      git checkout -B "${{ parameters.FeatureBranch }}"
+      echo "Created feature branch: ${{ parameters.FeatureBranch }}"
+    displayName: 'Create Feature Branch'
+    workingDirectory: ${{ parameters.RepoPath }}
