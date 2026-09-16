@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Fix TokenReader peek and backtrack methods so they honor an embedded token sequence's bounds.",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc"
+}
