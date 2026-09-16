@@ -7,6 +7,11 @@
 # from their (already bumped) package.json versions and does not depend on the change files, so it
 # is safe to run after "rush version --bump" has consumed them. Packing unchanged projects is
 # harmless because ESRP ignores tarballs whose version is already published.
+#
+# "--publish" is required alongside "--pack": Rush's pack step only actually runs "npm pack" and
+# copies the tarball into the release folder when "--publish" is set; without it the pack is a
+# dry-run and produces no tarballs. With "--pack" set this does NOT publish to the registry (Rush
+# takes the pack branch, never the npm-publish branch) -- ESRP performs the real publish later.
 parameters:
   - name: RepoPath
     type: string
@@ -16,6 +21,7 @@ steps:
   - script: >
       node common/scripts/install-run-rush.js publish
       --pack
+      --publish
       --include-all
       --release-folder $(Build.ArtifactStagingDirectory)/packages
     displayName: 'Rush Pack'
