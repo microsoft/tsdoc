@@ -1,5 +1,8 @@
 steps:
-  - script: 'rush record-published-versions --output-path $(Build.ArtifactStagingDirectory)/published-versions/published-versions.json'
+  - script: >
+      node common/scripts/install-run-rush.js
+      record-published-versions
+      --output-path $(Build.ArtifactStagingDirectory)/published-versions/published-versions.json
     displayName: 'Record Published Versions'
     workingDirectory: '$(Agent.BuildDirectory)/tsdoc'
 
