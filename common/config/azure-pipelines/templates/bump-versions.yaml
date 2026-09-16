@@ -23,6 +23,7 @@ steps:
       node common/scripts/install-run-rush.js publish
       --apply
       --pack
+      --publish
       --include-all
       --release-folder $(Build.ArtifactStagingDirectory)/packages
     displayName: 'Rush Publish (apply version bumps and pack)'
