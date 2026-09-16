@@ -1,6 +1,13 @@
 # Change Log - eslint-plugin-tsdoc
 
-This log was last generated on Wed, 25 Feb 2026 21:34:35 GMT and should not be manually modified.
+This log was last generated on Wed, 16 Sep 2026 01:24:29 GMT and should not be manually modified.
+
+## 0.5.3
+Wed, 16 Sep 2026 01:24:29 GMT
+
+### Patches
+
+- Declare `eslint` as an optional peer dependency so published typings resolve against the consumer's ESLint under non-hoisted installers.
 
 ## 0.5.2
 Wed, 25 Feb 2026 21:34:35 GMT
