@@ -25,7 +25,7 @@ steps:
   - bash: |
       set -euo pipefail
       git add -u -- common/changes
-      git add -- '**/CHANGELOG.md' '**/CHANGELOG.json' '**/package.json'
+      git add -- '**/CHANGELOG.md' '**/CHANGELOG.json' '**/package.json' 'common/config/rush/version-policies.json'
 
       if [ -n "$(git diff --cached --numstat)" ]; then
         git commit -m "Applying package version bumps
