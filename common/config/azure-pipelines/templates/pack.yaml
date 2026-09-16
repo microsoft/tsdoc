@@ -1,0 +1,23 @@
+# Packs every publishable ("shouldPublish") project into an npm tarball at its freshly bumped
+# version, into the release folder that the bump pipeline uploads as the "packages" artifact. Runs
+# only when the bump step actually produced version changes.
+#
+# Rush requires "--include-all" whenever "--pack" is used, so every publishable project is packed
+# regardless of whether its version changed in this bump. "--include-all" packs projects directly
+# from their (already bumped) package.json versions and does not depend on the change files, so it
+# is safe to run after "rush version --bump" has consumed them. Packing unchanged projects is
+# harmless because ESRP ignores tarballs whose version is already published.
+parameters:
+  - name: RepoPath
+    type: string
+    default: '$(Agent.BuildDirectory)/tsdoc'
+
+steps:
+  - script: >
+      node common/scripts/install-run-rush.js publish
+      --pack
+      --include-all
+      --release-folder $(Build.ArtifactStagingDirectory)/packages
+    displayName: 'Rush Pack'
+    workingDirectory: ${{ parameters.RepoPath }}
+    condition: and(succeeded(), eq(variables.HasChanges, 'true'))
