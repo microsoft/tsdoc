@@ -31,6 +31,16 @@ variables:
 
 resources:
   repositories:
+    # Checked out (with persisted credentials) so that the version-bump commit, branch push, PR, and
+    # build tag are all performed as the Azure Pipelines GitHub App identity ("azure-pipelines[bot]")
+    # rather than the "rushbot" user account. Bot-authored PRs are exempt from the Microsoft CLA
+    # check, whereas user-authored PRs (what "checkout: self" produced) require a CLA signature. This
+    # mirrors the rushstack repo, which checks out via the same "GitHubProjects" GitHub App endpoint.
+    - repository: tsdocGitHubApp
+      type: github
+      name: microsoft/tsdoc
+      endpoint: GitHubProjects
+      ref: refs/heads/main
     - repository: RushstackMainRepo
       type: github
       name: Microsoft/rushstack
@@ -72,7 +82,7 @@ extends:
                   targetPath: $(Build.ArtifactStagingDirectory)/json-schemas
                   artifactName: json-schemas
             steps:
-              - checkout: self
+              - checkout: tsdocGitHubApp
                 persistCredentials: true
                 path: tsdoc
 
