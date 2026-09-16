@@ -1,31 +1,25 @@
-# Applies the pending "rush change" files to bump package versions and update CHANGELOGs, packs the
-# resulting tarballs, and commits the version bump on the automated feature branch. Unlike the
-# previous flow, this does NOT push to "main" (pushing directly to "main" is blocked) -- the commit
-# is opened as a PR instead.
+# Applies the pending "rush change" files to bump package versions and update CHANGELOGs, then
+# commits the version bump on the automated feature branch. Packing the tarballs is a separate step
+# (see pack.yaml); this template only bumps and commits.
 #
-# Apply and pack are performed in a single "rush publish" invocation, while the change files are
-# still present: "--apply" bumps package.json versions and regenerates CHANGELOG files, "--pack"
-# writes an npm tarball per publishable project into the release folder, and "--include-all" ensures
-# every "shouldPublish" project is packed. Rush requires "--include-all" whenever "--pack" is used,
-# so every publishable project is packed regardless of whether its version changed in this bump.
-# That is fine because ESRP ignores tarballs whose version is already published, so the unchanged
-# packages are simply skipped at publish time.
+# "rush version --bump" applies the change files: it bumps package.json versions, regenerates the
+# CHANGELOG files, updates inter-project dependency ranges, and deletes the consumed change files.
+# We deliberately omit "--target-branch": every git operation in Rush's PublishGit is gated on a
+# target branch being set, so without it Rush performs NO git operations -- the bumps land in the
+# working tree and we commit them ourselves onto the feature branch (which is later opened as a PR
+# instead of pushed directly to "main").
 #
-# Because "--target-branch" is omitted, "rush publish" leaves the bumps uncommitted in the working
-# tree, which lets us commit exactly those changes ourselves.
+# Note: "rush publish --apply --include-all" does NOT bump versions -- "--include-all" routes to
+# Rush's "publish all" path, which packs every project at its current version and never applies the
+# change files. That is why version bumping must be done here with "rush version --bump".
 parameters:
   - name: RepoPath
     type: string
     default: '$(Agent.BuildDirectory)/tsdoc'
 
 steps:
-  - script: >
-      node common/scripts/install-run-rush.js publish
-      --apply
-      --pack
-      --include-all
-      --release-folder $(Build.ArtifactStagingDirectory)/packages
-    displayName: 'Rush Publish (apply version bumps and pack)'
+  - script: 'node common/scripts/install-run-rush.js version --bump'
+    displayName: 'Rush Version (apply version bumps)'
     workingDirectory: ${{ parameters.RepoPath }}
 
   - bash: |

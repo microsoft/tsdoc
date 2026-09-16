@@ -86,6 +86,8 @@ extends:
 
               - template: /common/config/azure-pipelines/templates/bump-versions.yaml@self
 
+              - template: /common/config/azure-pipelines/templates/pack.yaml@self
+
               - template: /common/config/azure-pipelines/templates/post-publish.yaml@self
 
               - template: /common/config/azure-pipelines/templates/push-and-create-github-pr.yaml@self
