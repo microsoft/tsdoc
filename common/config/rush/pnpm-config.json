@@ -280,6 +280,17 @@
     //     }
     //   }
     // }
+
+    /**
+     * The ".d.ts" files in "@typescript-eslint/types" reference the "typescript" package, but the package
+     * does not declare a dependency on it.  Because this repo disables hoisting, declaring the missing peer
+     * dependency here is what allows TypeScript to resolve "typescript" from inside that package.
+     */
+    "@typescript-eslint/types": {
+      "peerDependencies": {
+        "typescript": ">=4.8.4 <6.0.0"
+      }
+    }
   },
 
   /**
