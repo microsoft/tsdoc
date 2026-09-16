@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.17.0",
+      "tag": "@microsoft/tsdoc_v0.17.0",
+      "date": "Wed, 16 Sep 2026 01:24:29 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Update emitter to not replace line breaks"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.16.0",
       "tag": "@microsoft/tsdoc_v0.16.0",
       "date": "Tue, 11 Nov 2025 00:51:42 GMT",
