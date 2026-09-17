@@ -117,9 +117,13 @@ export class TokenReader {
 
   /**
    * Returns the next token that would be returned by _readToken(), without
-   * consuming anything.
+   * consuming anything. Throws if the reader has reached the end of an embedded range.
    */
   public peekToken(): Token {
+    if (this._currentIndex >= this._readerEndIndex) {
+      // If this happens, it's a parser bug
+      throw new Error('Cannot peek past end of stream');
+    }
     return this.tokens[this._currentIndex];
   }
 
@@ -180,7 +184,7 @@ export class TokenReader {
    * Returns the kind of the token immediately before the current token.
    */
   public peekPreviousTokenKind(): TokenKind {
-    if (this._currentIndex === 0) {
+    if (this._currentIndex === this._readerStartIndex) {
       return TokenKind.EndOfInput;
     }
     return this.tokens[this._currentIndex - 1].kind;
@@ -197,6 +201,10 @@ export class TokenReader {
    * Rewinds the stream pointer to a previous position in the stream.
    */
   public backtrackToMarker(marker: number): void {
+    if (marker < this._readerStartIndex) {
+      // If this happens, it's a parser bug
+      throw new Error('The marker is outside the reader range');
+    }
     if (marker > this._currentIndex) {
       // If this happens, it's a parser bug
       throw new Error('The marker has expired');
