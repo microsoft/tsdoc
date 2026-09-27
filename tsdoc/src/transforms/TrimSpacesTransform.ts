@@ -21,11 +21,21 @@ export class TrimSpacesTransform {
     // as soon as nonempty content is encountered.
     let finishedSkippingLeadingSpaces: boolean = false;
 
-    function pushAccumulatedText(): void {
+    function pushAccumulatedText(followedByInlineNode: boolean): void {
       const lines: string[] = accumulatedTextChunks.join('').split('\n');
       for (let i: number = 0; i < lines.length; i++) {
         const line: string = lines[i];
-        if (line.length !== 0) {
+        if (line.length === 0) {
+          // If the text ended with a line break and an inline node (e.g. a code span or {@link}) comes next,
+          // preserve the soft break; otherwise the text and the node would be joined without any separator.
+          if (followedByInlineNode && i !== 0 && i === lines.length - 1) {
+            transformedNodes.push(
+              new DocSoftBreak({
+                configuration: docParagraph.configuration
+              })
+            );
+          }
+        } else {
           if (i !== 0) {
             transformedNodes.push(
               new DocSoftBreak({
@@ -90,7 +100,7 @@ export class TrimSpacesTransform {
           if (accumulatedTextChunks.length > 0) {
             // TODO: We should probably track the accumulatedNodes somehow, e.g. so we can map them back to the
             // original excerpts.  But we need a developer scenario before we can design this API.
-            pushAccumulatedText();
+            pushAccumulatedText(true);
           }
 
           transformedNodes.push(node);
@@ -100,7 +110,7 @@ export class TrimSpacesTransform {
 
     // Push the accumulated text
     if (accumulatedTextChunks.length > 0) {
-      pushAccumulatedText();
+      pushAccumulatedText(false);
     }
 
     const transformedParagraph: DocParagraph = new DocParagraph({
