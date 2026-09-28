@@ -104,12 +104,11 @@ extends:
                 persistCredentials: true
                 path: tsdoc
 
-              - template: /common/config/azure-pipelines/templates/install-node.yaml@self
-
               - bash: |
                   mkdir -p "$(Build.ArtifactStagingDirectory)/published-versions"
                 displayName: 'Initialize artifact staging directory'
-                condition: always()
+
+              - template: /common/config/azure-pipelines/templates/install-node.yaml@self
 
               - ${{ if gt(parameters.BumpPipelineRunIdOverride, 0) }}:
                   - bash: |
