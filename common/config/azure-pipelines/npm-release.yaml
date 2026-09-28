@@ -93,10 +93,20 @@ extends:
             pool:
               name: publish-rushstack
               os: linux
+            templateContext:
+              outputParentDirectory: $(Build.ArtifactStagingDirectory)
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)/published-versions
+                  artifactName: published-versions
             steps:
               - checkout: self
                 persistCredentials: true
                 path: tsdoc
+
+              - bash: |
+                  mkdir -p "$(Build.ArtifactStagingDirectory)/published-versions"
+                displayName: 'Initialize artifact staging directory'
 
               - template: /common/config/azure-pipelines/templates/install-node.yaml@self
 
@@ -117,6 +127,18 @@ extends:
                       TeamProject: ${{ parameters.BumpPipelineProject }}
                       Name: FindBumpRun
                       WorkingDirectory: $(RepoPath)
+
+              - task: DownloadPipelineArtifact@2
+                condition: eq(variables['FindBumpRun.IsVersionBumpMerge'], 'true')
+                inputs:
+                  artifactName: published-versions
+                  targetPath: $(Build.ArtifactStagingDirectory)/published-versions
+                  project: ${{ parameters.BumpPipelineProject }}
+                  definition: $(FindBumpRun.BumpPipelineDefinitionId)
+                  pipelineId: $(FindBumpRun.BumpPipelineRunId)
+                  buildType: specific
+                  buildVersionToDownload: specific
+                displayName: 'Stage published versions artifact'
 
       - stage: Publish
         displayName: 'Publish NPM Packages via ESRP'

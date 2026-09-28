@@ -31,6 +31,14 @@ variables:
 
 resources:
   repositories:
+    # Use the Azure Pipelines GitHub App identity for the version-bump commit and PR. Unlike the
+    # "rushbot" user credentials from "checkout: self", this bot identity is exempt from the
+    # Microsoft CLA check and does not require a separate CLA-signoff pipeline run.
+    - repository: tsdocGitHubApp
+      type: github
+      name: microsoft/tsdoc
+      endpoint: GitHubProjects
+      ref: refs/heads/main
     - repository: RushstackMainRepo
       type: github
       name: Microsoft/rushstack
@@ -72,7 +80,7 @@ extends:
                   targetPath: $(Build.ArtifactStagingDirectory)/json-schemas
                   artifactName: json-schemas
             steps:
-              - checkout: self
+              - checkout: tsdocGitHubApp
                 persistCredentials: true
                 path: tsdoc
 
