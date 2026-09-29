@@ -2,6 +2,21 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.17.1",
+      "tag": "@microsoft/tsdoc_v0.17.1",
+      "date": "Tue, 29 Sep 2026 18:52:33 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add missing tsdoc-unsupported-html-name to TSDocConfiguration.allTsdocMessageIds so eslint-plugin-tsdoc does not crash when reportUnsupportedHtmlElements is enabled (GitHub #453)"
+          },
+          {
+            "comment": "Fix an issue where `TSDocEmitter` dropped a line break that appeared before an inline node such as a code span, `{@link}` tag, or HTML element, joining the adjacent words."
+          }
+        ]
+      }
+    },
+    {
       "version": "0.17.0",
       "tag": "@microsoft/tsdoc_v0.17.0",
       "date": "Wed, 16 Sep 2026 01:24:29 GMT",
