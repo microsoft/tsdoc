@@ -150,3 +150,54 @@ test('04 TSDocEmitter.renderDeclarationReference()', () => {
   });
   expect(htmlTag.emitAsTsdoc()).toMatchInlineSnapshot(`"my-package#(MyClass:class)"`);
 });
+
+test('05 Emit soft breaks before inline nodes', () => {
+  const input: string = `
+/**
+ * The policy is
+ * \`fail\`.
+ *
+ * See the
+ * {@link Foo} thing.
+ *
+ * This is an
+ * <b>element</b>.
+ *
+ * The policy is
+ * fail now.
+ *
+ * Then \`x\`
+ * then b.
+ *
+ * See {@link Foo}
+ * \`x\` too.
+ */
+`;
+
+  expect(createSnapshot(input)).toMatchInlineSnapshot(`
+Object {
+  "errors": Array [],
+  "output": "
+/**
+ * The policy is
+ * \`fail\`.
+ *
+ * See the
+ * {@link Foo} thing.
+ *
+ * This is an
+ * <b>element</b>.
+ *
+ * The policy is
+ * fail now.
+ *
+ * Then \`x\`
+ * then b.
+ *
+ * See {@link Foo}
+ * \`x\` too.
+ */
+",
+}
+`);
+});
