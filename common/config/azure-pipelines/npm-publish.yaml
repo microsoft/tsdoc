@@ -57,6 +57,7 @@ extends:
     sdl:
       sourceRepositoriesToScan:
         include:
+          - repository: tsdocGitHubApp
           - repository: RushstackMainRepo
     stages:
       - stage: BumpVersions
