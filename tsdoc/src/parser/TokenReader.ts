@@ -120,6 +120,10 @@ export class TokenReader {
    * consuming anything.
    */
   public peekToken(): Token {
+    if (this._currentIndex >= this._readerEndIndex) {
+      // Always return a real Token, matching peekTokenKind() === EndOfInput.
+      return this.tokens[this.tokens.length - 1];
+    }
     return this.tokens[this._currentIndex];
   }
 
@@ -180,7 +184,7 @@ export class TokenReader {
    * Returns the kind of the token immediately before the current token.
    */
   public peekPreviousTokenKind(): TokenKind {
-    if (this._currentIndex === 0) {
+    if (this._currentIndex === this._readerStartIndex) {
       return TokenKind.EndOfInput;
     }
     return this.tokens[this._currentIndex - 1].kind;
@@ -200,6 +204,10 @@ export class TokenReader {
     if (marker > this._currentIndex) {
       // If this happens, it's a parser bug
       throw new Error('The marker has expired');
+    }
+    if (marker < this._readerStartIndex) {
+      // If this happens, it's a parser bug
+      throw new Error('The marker is outside the TokenReader range');
     }
 
     this._currentIndex = marker;
