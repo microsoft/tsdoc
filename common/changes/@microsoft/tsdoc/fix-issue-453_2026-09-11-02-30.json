@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Add missing tsdoc-unsupported-html-name to TSDocConfiguration.allTsdocMessageIds so eslint-plugin-tsdoc does not crash when reportUnsupportedHtmlElements is enabled (GitHub #453)",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc"
+}

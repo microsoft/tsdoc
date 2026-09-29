@@ -486,6 +486,7 @@ export const allTsdocMessageIds: string[] = [
   'tsdoc-text-after-html-string',
   'tsdoc-missing-html-end-tag',
   'tsdoc-malformed-html-name',
+  'tsdoc-unsupported-html-name',
   'tsdoc-code-fence-opening-indent',
   'tsdoc-code-fence-specifier-syntax',
   'tsdoc-code-fence-closing-indent',
