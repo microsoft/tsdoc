@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "eslint-plugin-tsdoc",
+      "comment": "Add a new `forbidOverrideTag` option to the TSDoc ESLint rule to report and autofix `@override` tags.",
+      "type": "minor"
+    }
+  ],
+  "packageName": "eslint-plugin-tsdoc",
+  "email": "198982749+Copilot@users.noreply.github.com"
+}
