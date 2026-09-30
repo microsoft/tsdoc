@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@microsoft/tsdoc",
+      "comment": "Enforce embedded TokenReader boundaries when peeking and backtracking.",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@microsoft/tsdoc"
+}
