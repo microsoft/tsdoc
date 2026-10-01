@@ -104,7 +104,12 @@ export class TSDocEmitter {
 
         if (
           docBlock.blockTag.tagNameWithUpperCase === StandardTags.returns.tagNameWithUpperCase ||
-          docBlock.blockTag.tagNameWithUpperCase === StandardTags.defaultValue.tagNameWithUpperCase
+          docBlock.blockTag.tagNameWithUpperCase === StandardTags.defaultValue.tagNameWithUpperCase ||
+          // An "@example" title is the text on its tag line; attach it to the tag line like "@returns".
+          // Guard on the tag line content actually being present so that an untitled "@example" is not
+          // emitted with a trailing space.
+          (docBlock.blockTag.tagNameWithUpperCase === StandardTags.example.tagNameWithUpperCase &&
+            docBlock.tagLineContent !== undefined)
         ) {
           this._writeContent(' ');
           this._hangingParagraph = true;
