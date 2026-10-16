@@ -18,6 +18,10 @@
   },
   "homepage": "https://tsdoc.org/",
   "main": "lib/index.js",
+  "files": [
+    "lib/*.js",
+    "lib/**/*.d.ts"
+  ],
   "typings": "lib/index.d.ts",
   "license": "MIT",
   "dependencies": {
