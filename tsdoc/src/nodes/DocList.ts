@@ -19,7 +19,7 @@ export class DocList extends DocNodeContainer {
     super(parameters, childNodes);
     this.ordered = parameters.ordered;
     this.start = parameters.start === undefined ? 1 : parameters.start;
-    if (!Number.isInteger(this.start) || this.start < 0 || this.start > 999999999) {
+    if (typeof this.start !== 'number' || this.start % 1 !== 0 || this.start < 0 || this.start > 999999999) {
       throw new Error('The list start must be an integer from 0 through 999999999');
     }
   }

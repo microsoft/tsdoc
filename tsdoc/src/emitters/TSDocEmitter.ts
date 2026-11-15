@@ -408,7 +408,7 @@ export class TSDocEmitter {
       const marker: string = list.ordered ? `${index === 0 ? list.start : 1}.` : '-';
       this._ensureAtStartOfLine();
       this._writeContent(marker + ' ');
-      this._indent = parentIndent + ' '.repeat(marker.length + 1);
+      this._indent = parentIndent + new Array(marker.length + 2).join(' ');
       this._hangingParagraph = true;
       this._renderNode(item.content);
       this._ensureAtStartOfLine();
@@ -447,8 +447,8 @@ export class TSDocEmitter {
   private _escapeListMarker(content: string): string {
     return content.replace(
       /^( *)([-+*]|\d{1,9}\.)(?= |$)/,
-      (_match: string, spaces: string, marker: string) =>
-        spaces + marker.slice(0, -1) + '\\' + marker.slice(-1)
+      (match: string, spaces: string, marker: string) =>
+        match.slice(0, spaces.length) + marker.slice(0, -1) + '\\' + marker.slice(-1)
     );
   }
 

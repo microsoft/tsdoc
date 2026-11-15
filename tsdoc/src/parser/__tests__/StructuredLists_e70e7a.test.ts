@@ -1,6 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+// See LICENSE in the project root for license information.
+
 import * as tsdoc from '../../index';
-import * as typescript from 'typescript';
-import * as path from 'node:path';
 
 const {
   TSDocConfiguration,
@@ -13,14 +14,21 @@ const {
   PlainTextEmitter,
   TextRange
 } = tsdoc;
-const api = tsdoc as any;
+const api: typeof tsdoc = tsdoc;
 
-function configuration(enabled = true): any {
-  const config: any = new TSDocConfiguration();
+interface ITestList extends tsdoc.DocList {
+  readonly nodes: ReadonlyArray<tsdoc.DocListItem>;
+}
+interface IListContext {
+  docComment: tsdoc.DocComment;
+  configuration: tsdoc.TSDocConfiguration;
+}
+
+function configuration(enabled: boolean = true): tsdoc.TSDocConfiguration {
+  const config: tsdoc.TSDocConfiguration = new TSDocConfiguration();
   config.parseMarkdownLists = enabled;
   return config;
 }
-
 function comment(body: string): string {
   return (
     '/**\n' +
@@ -31,60 +39,91 @@ function comment(body: string): string {
     '\n */'
   );
 }
-
-function parse(body: string, enabled = true): any {
+function parse(body: string, enabled: boolean = true): tsdoc.ParserContext {
   return new TSDocParser(configuration(enabled)).parseString(comment(body));
 }
-
-function lists(section: any): any[] {
-  return section.nodes.filter((node: any) => node.kind === 'List');
+function lists(section: tsdoc.DocSection): ITestList[] {
+  return section.nodes.filter((node): node is ITestList => node.kind === DocNodeKind.List);
 }
-
-function text(node: any): string {
-  if (node.kind === 'Excerpt') return '';
-  if (node.kind === 'PlainText') return node.text;
-  if (node.kind === 'SoftBreak') return '\n';
-  if (node.kind === 'CodeSpan' || node.kind === 'FencedCode') return node.code;
-  if (node.kind === 'EscapedText') return node.decodedText;
-  return node.getChildNodes().map(text).join('');
+function text(node: tsdoc.DocNode): string {
+  switch (node.kind) {
+    case DocNodeKind.Excerpt:
+      return '';
+    case DocNodeKind.PlainText:
+      return (node as tsdoc.DocPlainText).text;
+    case DocNodeKind.SoftBreak:
+      return '\n';
+    case DocNodeKind.CodeSpan:
+    case DocNodeKind.FencedCode:
+      return (node as tsdoc.DocCodeSpan | tsdoc.DocFencedCode).code;
+    case DocNodeKind.EscapedText:
+      return (node as tsdoc.DocEscapedText).decodedText;
+    default:
+      return node.getChildNodes().map(text).join('');
+  }
 }
-
-function shape(node: any): any {
-  if (node.kind === 'Excerpt') return undefined;
-  if (node.kind === 'List')
+function shape(node: tsdoc.DocNode): unknown {
+  if (node.kind === DocNodeKind.Excerpt) return undefined;
+  if (node.kind === DocNodeKind.List) {
+    const list: tsdoc.DocList = node as tsdoc.DocList;
     return {
       kind: 'List',
-      ordered: node.ordered,
-      start: node.start,
-      items: node.nodes.map((item: any) => shape(item.content))
+      ordered: list.ordered,
+      start: list.start,
+      items: list.nodes.map((item) => shape((item as tsdoc.DocListItem).content))
     };
-  if (node.kind === 'Paragraph') {
-    const content = text(node).trim().replace(/\s+/g, ' ');
-    const markup = node.nodes
-      .filter((n: any) => !['PlainText', 'SoftBreak', 'EscapedText'].includes(n.kind))
-      .map((n: any) => {
-        if (n.kind === 'LinkTag')
-          return [n.kind, n.codeDestination?.emitAsTsdoc(), n.urlDestination, n.linkText];
-        if (n.kind === 'HtmlStartTag')
-          return [n.kind, n.name, n.selfClosingTag, n.htmlAttributes.map((a: any) => [a.name, a.value])];
-        if (n.kind === 'HtmlEndTag') return [n.kind, n.name];
-        if (n.kind === 'CodeSpan') return [n.kind, n.code];
-        return n.kind;
+  }
+  if (node.kind === DocNodeKind.Paragraph) {
+    const paragraph: tsdoc.DocParagraph = node as tsdoc.DocParagraph;
+    const content: string = text(node).trim().replace(/\s+/g, ' ');
+    const markup: unknown[] = paragraph.nodes
+      .filter(
+        (child) =>
+          child.kind !== DocNodeKind.PlainText &&
+          child.kind !== DocNodeKind.SoftBreak &&
+          child.kind !== DocNodeKind.EscapedText
+      )
+      .map((child): unknown => {
+        switch (child.kind) {
+          case DocNodeKind.LinkTag: {
+            const link: tsdoc.DocLinkTag = child as tsdoc.DocLinkTag;
+            return [link.kind, link.codeDestination?.emitAsTsdoc(), link.urlDestination, link.linkText];
+          }
+          case DocNodeKind.HtmlStartTag: {
+            const tag: tsdoc.DocHtmlStartTag = child as tsdoc.DocHtmlStartTag;
+            return [
+              tag.kind,
+              tag.name,
+              tag.selfClosingTag,
+              tag.htmlAttributes.map((attribute) => [attribute.name, attribute.value])
+            ];
+          }
+          case DocNodeKind.HtmlEndTag:
+            return [child.kind, (child as tsdoc.DocHtmlEndTag).name];
+          case DocNodeKind.CodeSpan:
+            return [child.kind, (child as tsdoc.DocCodeSpan).code];
+          default:
+            return child.kind;
+        }
       });
     return content || markup.length ? { kind: node.kind, content, markup } : undefined;
   }
-  if (node.kind === 'FencedCode') return { kind: node.kind, code: node.code, language: node.language };
+  if (node.kind === DocNodeKind.FencedCode) {
+    const fence: tsdoc.DocFencedCode = node as tsdoc.DocFencedCode;
+    return { kind: node.kind, code: fence.code, language: fence.language };
+  }
   return { kind: node.kind, children: node.getChildNodes().map(shape).filter(Boolean) };
 }
-
-function roundtrip(context: any): void {
-  const before = shape(context.docComment);
-  const output = context.docComment.emitAsTsdoc();
-  const reparsed = new TSDocParser(context.configuration).parseString(output);
-  expect(reparsed.log.messages.map((m: any) => m.messageId)).toEqual([]);
+function roundtrip(context: IListContext): void {
+  const before: unknown = shape(context.docComment);
+  const output: string = context.docComment.emitAsTsdoc();
+  const reparsed: tsdoc.ParserContext = new TSDocParser(context.configuration).parseString(output);
+  expect(reparsed.log.messages.map((message) => message.messageId)).toEqual([]);
   expect(shape(reparsed.docComment)).toEqual(before);
   expect(shape(context.docComment)).toEqual(before);
-  const again = new TSDocParser(context.configuration).parseString(reparsed.docComment.emitAsTsdoc());
+  const again: tsdoc.ParserContext = new TSDocParser(context.configuration).parseString(
+    reparsed.docComment.emitAsTsdoc()
+  );
   expect(shape(again.docComment)).toEqual(before);
 }
 
@@ -103,23 +142,23 @@ test.each([
   '12345678.',
   '123456789.'
 ])('parses marker %s', (marker) => {
-  const context = parse(`${marker} first\n${marker} second`);
-  const found = lists(context.docComment.summarySection);
+  const context: tsdoc.ParserContext = parse(`${marker} first\n${marker} second`);
+  const found: ITestList[] = lists(context.docComment.summarySection);
   expect(found).toHaveLength(1);
-  expect(found[0].ordered).toBe(marker.endsWith('.'));
-  expect(found[0].start).toBe(marker.endsWith('.') ? Number(marker.slice(0, -1)) : 1);
-  expect(found[0].nodes.map((n: any) => text(n).trim())).toEqual(['first', 'second']);
+  expect(found[0].ordered).toBe(/\.$/.test(marker));
+  expect(found[0].start).toBe(/\.$/.test(marker) ? Number(marker.slice(0, -1)) : 1);
+  expect(found[0].nodes.map((n) => text(n).trim())).toEqual(['first', 'second']);
   expect(context.log.messages).toHaveLength(0);
-  const emitted = context.docComment.emitAsTsdoc();
-  const canonical = marker.endsWith('.') ? `${Number(marker.slice(0, -1))}.` : '-';
+  const emitted: string = context.docComment.emitAsTsdoc();
+  const canonical: string = /\.$/.test(marker) ? `${Number(marker.slice(0, -1))}.` : '-';
   expect(emitted).toContain(` * ${canonical} first`);
-  expect(emitted).toContain(` * ${marker.endsWith('.') ? '1.' : '-'} second`);
+  expect(emitted).toContain(` * ${/\.$/.test(marker) ? '1.' : '-'} second`);
   roundtrip(context);
 });
 
 test.each(['-', '+', '*', '2.'])('empty item with marker %s', (marker) => {
-  const context = parse(`${marker}\n${marker} next`);
-  const found = lists(context.docComment.summarySection);
+  const context: tsdoc.ParserContext = parse(`${marker}\n${marker} next`);
+  const found: ITestList[] = lists(context.docComment.summarySection);
   expect(found).toHaveLength(1);
   expect(found[0].nodes).toHaveLength(2);
   expect(found[0].nodes[0].content.nodes).toEqual([]);
@@ -149,9 +188,9 @@ test.each([
     custom: '@example\n',
     see: '@see\n'
   };
-  const context = parse(prefix[section] + '- first\n- next');
-  const doc = context.docComment;
-  const selected: Record<string, any> = {
+  const context: tsdoc.ParserContext = parse(prefix[section] + '- first\n- next');
+  const doc: tsdoc.DocComment = context.docComment;
+  const selected: Record<string, tsdoc.DocSection | undefined> = {
     summary: doc.summarySection,
     remarks: doc.remarksBlock?.content,
     privateRemarks: doc.privateRemarks?.content,
@@ -162,7 +201,7 @@ test.each([
     custom: doc.customBlocks[0]?.content,
     see: doc.seeBlocks[0]?.content
   };
-  expect(lists(selected[section])).toHaveLength(1);
+  expect(lists(selected[section]!)).toHaveLength(1);
   roundtrip(context);
 });
 
@@ -171,37 +210,37 @@ test.each([
   '12. root\n    - child\n      7. leaf\n1. final',
   '- root\n  0. zero\n  1. one\n  + child\n- final'
 ])('nested hierarchy: %s', (body) => {
-  const context = parse(body);
-  const roots = lists(context.docComment.summarySection);
+  const context: tsdoc.ParserContext = parse(body);
+  const roots: ITestList[] = lists(context.docComment.summarySection);
   expect(roots).toHaveLength(1);
   expect(roots[0].nodes).toHaveLength(2);
   expect(lists(roots[0].nodes[0].content).length).toBeGreaterThan(0);
   expect(lists(roots[0].nodes[1].content)).toHaveLength(0);
   expect(text(roots[0].nodes[1]).trim()).toBe('final');
-  const child = lists(roots[0].nodes[0].content)[0];
-  expect(child.nodes.map((item: any) => text(item).trim().replace(/\s+/g, ' '))).toEqual(
-    body.startsWith('- root\n  0.')
+  const child: ITestList = lists(roots[0].nodes[0].content)[0];
+  expect(child.nodes.map((item) => text(item).trim().replace(/\s+/g, ' '))).toEqual(
+    body.indexOf('- root\n  0.') === 0
       ? ['zero', 'one']
-      : body.startsWith('12.')
+      : body.indexOf('12.') === 0
         ? ['child leaf']
         : ['nested leaf', 'sibling']
   );
-  if (!body.startsWith('- root\n  0.')) {
-    const grandchild = lists(child.nodes[0].content);
+  if (body.indexOf('- root\n  0.') !== 0) {
+    const grandchild: ITestList[] = lists(child.nodes[0].content);
     expect(grandchild).toHaveLength(1);
     expect(grandchild[0].ordered).toBe(true);
-    expect(grandchild[0].start).toBe(body.startsWith('12.') ? 7 : 4);
-    expect(grandchild[0].nodes.map((item: any) => text(item).trim())).toEqual(['leaf']);
+    expect(grandchild[0].start).toBe(body.indexOf('12.') === 0 ? 7 : 4);
+    expect(grandchild[0].nodes.map((item) => text(item).trim())).toEqual(['leaf']);
   }
   roundtrip(context);
 });
 
 test('marker padding does not change the nested content column', () => {
-  const context = parse('-   parent\n  3. child\n- final');
-  const root = lists(context.docComment.summarySection);
+  const context: tsdoc.ParserContext = parse('-   parent\n  3. child\n- final');
+  const root: ITestList[] = lists(context.docComment.summarySection);
   expect(root).toHaveLength(1);
   expect(root[0].nodes).toHaveLength(2);
-  const child = lists(root[0].nodes[0].content);
+  const child: ITestList[] = lists(root[0].nodes[0].content);
   expect(child).toHaveLength(1);
   expect(child[0].ordered).toBe(true);
   expect(child[0].start).toBe(3);
@@ -210,15 +249,15 @@ test('marker padding does not change the nested content column', () => {
 });
 
 test('roundtrip preserves an indented marker in a separate item paragraph', () => {
-  const context = parse('- parent\n\n   - literal');
+  const context: tsdoc.ParserContext = parse('- parent\n\n   - literal');
   expect(lists(context.docComment.summarySection)).toHaveLength(1);
   expect(text(context.docComment)).toContain('literal');
   roundtrip(context);
 });
 
 test('roundtrip preserves an indented ordered marker inside a nested item paragraph', () => {
-  const context = parse('12. parent\n    - child\n\n       3. literal\n1. final');
-  const root = lists(context.docComment.summarySection);
+  const context: tsdoc.ParserContext = parse('12. parent\n    - child\n\n       3. literal\n1. final');
+  const root: ITestList[] = lists(context.docComment.summarySection);
   expect(root).toHaveLength(1);
   expect(lists(root[0].nodes[0].content)).toHaveLength(1);
   roundtrip(context);
@@ -232,108 +271,94 @@ test.each([
   [' ', ' ', '- literal']
 ])('constructed paragraph retains significant leading spacing: %j', (...parts) => {
   expect(typeof api.DocList).toBe('function');
-  const config = configuration();
-  const paragraph = (texts: string[]) =>
+  const config: tsdoc.TSDocConfiguration = configuration();
+  const paragraph: (texts: string[]) => tsdoc.DocParagraph = (texts: string[]) =>
     new DocParagraph(
       { configuration: config },
       texts.map((value) => new DocPlainText({ configuration: config, text: value }))
     );
-  const item = new api.DocListItem({ configuration: config }, [paragraph(['parent']), paragraph(parts)]);
-  const list = new api.DocList({ configuration: config, ordered: false }, [item]);
-  const docComment = new DocComment({ configuration: config });
+  const item: tsdoc.DocListItem = new api.DocListItem({ configuration: config }, [
+    paragraph(['parent']),
+    paragraph(parts)
+  ]);
+  const list: tsdoc.DocList = new api.DocList({ configuration: config, ordered: false }, [item]);
+  const docComment: tsdoc.DocComment = new DocComment({ configuration: config });
   docComment.summarySection.appendNode(list);
   roundtrip({ docComment, configuration: config });
-  const reparsed = new TSDocParser(config).parseString(docComment.emitAsTsdoc());
-  const reparsedItems = lists(reparsed.docComment.summarySection)[0].nodes;
-  const reparsedParagraphs = reparsedItems[0].content.nodes.filter((node: any) => node.kind === 'Paragraph');
+  const reparsed: tsdoc.ParserContext = new TSDocParser(config).parseString(docComment.emitAsTsdoc());
+  const reparsedItems: readonly tsdoc.DocListItem[] = lists(reparsed.docComment.summarySection)[0].nodes;
+  const reparsedParagraphs: tsdoc.DocNode[] = reparsedItems[0].content.nodes.filter(
+    (node) => node.kind === 'Paragraph'
+  );
   expect(reparsedParagraphs).toHaveLength(2);
   expect(text(reparsedParagraphs[1]).replace(/\n$/, '')).toBe(parts.join(''));
 });
 
-test.each([
-  ['- literal'],
-  ['+', ' literal'],
-  ['*', ' ', 'literal'],
-  ['-']
-])('constructed literal marker remains paragraph text: %j', (...parts) => {
-  expect(typeof api.DocList).toBe('function');
-  const config = configuration();
-  const paragraph = (texts: string[]) =>
-    new DocParagraph(
-      { configuration: config },
-      texts.map((value) => new DocPlainText({ configuration: config, text: value }))
-    );
-  const first = paragraph(['parent']);
-  const literal = paragraph(parts);
-  const originalNodes = [...literal.nodes];
-  const item = new api.DocListItem({ configuration: config }, [first, literal]);
-  const list = new api.DocList({ configuration: config, ordered: false }, [item]);
-  const docComment = new DocComment({ configuration: config });
-  docComment.summarySection.appendNode(list);
-  roundtrip({ docComment, configuration: config });
-  expect(literal.nodes).toHaveLength(originalNodes.length);
-  literal.nodes.forEach((node, index) => {
-    expect(node).toBe(originalNodes[index]);
-    expect((node as any).text).toBe(parts[index]);
-  });
-});
+test.each([['- literal'], ['+', ' literal'], ['*', ' ', 'literal'], ['-']])(
+  'constructed literal marker remains paragraph text: %j',
+  (...parts) => {
+    expect(typeof api.DocList).toBe('function');
+    const config: tsdoc.TSDocConfiguration = configuration();
+    const paragraph: (texts: string[]) => tsdoc.DocParagraph = (texts: string[]) =>
+      new DocParagraph(
+        { configuration: config },
+        texts.map((value) => new DocPlainText({ configuration: config, text: value }))
+      );
+    const first: tsdoc.DocParagraph = paragraph(['parent']);
+    const literal: tsdoc.DocParagraph = paragraph(parts);
+    const originalNodes: tsdoc.DocNode[] = [...literal.nodes];
+    const item: tsdoc.DocListItem = new api.DocListItem({ configuration: config }, [first, literal]);
+    const list: tsdoc.DocList = new api.DocList({ configuration: config, ordered: false }, [item]);
+    const docComment: tsdoc.DocComment = new DocComment({ configuration: config });
+    docComment.summarySection.appendNode(list);
+    roundtrip({ docComment, configuration: config });
+    expect(literal.nodes).toHaveLength(originalNodes.length);
+    literal.nodes.forEach((node, index) => {
+      expect(node).toBe(originalNodes[index]);
+      expect((node as tsdoc.DocPlainText).text).toBe(parts[index]);
+    });
+  }
+);
 
 test('constructed soft-break continuation preserves a literal unordered marker', () => {
   expect(typeof api.DocList).toBe('function');
-  const config = configuration();
-  const paragraph = new DocParagraph({ configuration: config }, [
+  const config: tsdoc.TSDocConfiguration = configuration();
+  const paragraph: tsdoc.DocParagraph = new DocParagraph({ configuration: config }, [
     new DocPlainText({ configuration: config, text: 'parent' }),
     new tsdoc.DocSoftBreak({ configuration: config }),
     new DocPlainText({ configuration: config, text: '-' }),
     new DocPlainText({ configuration: config, text: ' literal' })
   ]);
-  const item = new api.DocListItem({ configuration: config }, [paragraph]);
-  const list = new api.DocList({ configuration: config, ordered: false }, [item]);
-  const docComment = new DocComment({ configuration: config });
+  const item: tsdoc.DocListItem = new api.DocListItem({ configuration: config }, [paragraph]);
+  const list: tsdoc.DocList = new api.DocList({ configuration: config, ordered: false }, [item]);
+  const docComment: tsdoc.DocComment = new DocComment({ configuration: config });
   docComment.summarySection.appendNode(list);
   roundtrip({ docComment, configuration: config });
 });
 
 test('public list parameter types and constructors are usable by TypeScript consumers', () => {
-  const file = path.resolve(__dirname, 'list-consumer.ts');
-  const source = `
-    import { TSDocConfiguration, DocList, DocListItem, DocSection,
-      DocNodeKind, IDocListParameters, IDocListItemParameters } from '../../index';
-    const configuration = new TSDocConfiguration();
-    configuration.parseMarkdownLists = true;
-    const parameters: IDocListParameters = { configuration, ordered: true, start: 3 };
-    const itemParameters: IDocListItemParameters = { configuration };
-    const item = new DocListItem(itemParameters, []);
-    const body: DocSection = item.content;
-    const list = new DocList(parameters, [item]);
-    const kind: DocNodeKind = DocNodeKind.ListItem;
-    const ordered: boolean = list.ordered;
-    const start: number = list.start;
-    // @ts-expect-error ordered is a required list parameter
-    const incomplete: IDocListParameters = { configuration };
-  `;
-  const options: typescript.CompilerOptions = {
-    strict: true,
-    noEmit: true,
-    skipLibCheck: true,
-    target: typescript.ScriptTarget.ES2018,
-    module: typescript.ModuleKind.CommonJS,
-    types: []
-  };
-  const host = typescript.createCompilerHost(options);
-  const read = host.getSourceFile.bind(host);
-  host.getSourceFile = (name, languageVersion, onError, shouldCreateNewSourceFile) =>
-    path.resolve(name) === file
-      ? typescript.createSourceFile(file, source, languageVersion, true)
-      : read(name, languageVersion, onError, shouldCreateNewSourceFile);
-  const program = typescript.createProgram([file], options, host);
-  const diagnostics = typescript.getPreEmitDiagnostics(program);
-  expect(diagnostics.map((d) => typescript.flattenDiagnosticMessageText(d.messageText, '\n'))).toEqual([]);
+  const config: tsdoc.TSDocConfiguration = new TSDocConfiguration();
+  config.parseMarkdownLists = true;
+  const parameters: tsdoc.IDocListParameters = { configuration: config, ordered: true, start: 3 };
+  const itemParameters: tsdoc.IDocListItemParameters = { configuration: config };
+  const item: tsdoc.DocListItem = new tsdoc.DocListItem(itemParameters, []);
+  const body: tsdoc.DocSection = item.content;
+  const list: tsdoc.DocList = new tsdoc.DocList(parameters, [item]);
+  const kind: tsdoc.DocNodeKind = DocNodeKind.ListItem;
+  const ordered: boolean = list.ordered;
+  const start: number = list.start;
+  // @ts-expect-error ordered is a required list parameter
+  const incomplete: tsdoc.IDocListParameters = { configuration: config };
+  expect(body).toBe(item.content);
+  expect(kind).toBe(item.kind);
+  expect(ordered).toBe(true);
+  expect(start).toBe(3);
+  expect(incomplete.configuration).toBe(config);
 });
 
 test('kind changes split lists and unordered marker changes do not', () => {
-  const context = parse('- first\n+ second\n* third\n8. fourth\n1. fifth\n- sixth');
-  const found = lists(context.docComment.summarySection);
+  const context: tsdoc.ParserContext = parse('- first\n+ second\n* third\n8. fourth\n1. fifth\n- sixth');
+  const found: ITestList[] = lists(context.docComment.summarySection);
   expect(found.map((n) => [n.ordered, n.start, n.nodes.length])).toEqual([
     [false, 1, 3],
     [true, 8, 2],
@@ -345,8 +370,8 @@ test('kind changes split lists and unordered marker changes do not', () => {
 test.each(['-text', '1234567890. text', '1) text', '\\- text', '---'])(
   'literal marker %s does not become a list',
   (literal) => {
-    const context = parse(`- real\n\n${literal}`);
-    const found = lists(context.docComment.summarySection);
+    const context: tsdoc.ParserContext = parse(`- real\n\n${literal}`);
+    const found: ITestList[] = lists(context.docComment.summarySection);
     expect(found).toHaveLength(1);
     expect(found[0].nodes).toHaveLength(1);
     expect(text(context.docComment.summarySection)).toContain(literal.replace('\\-', '-'));
@@ -354,8 +379,8 @@ test.each(['-text', '1234567890. text', '1) text', '\\- text', '---'])(
 );
 
 test('a list cannot interrupt ordinary prose without a blank line', () => {
-  const context = parse('intro\n- not an item\n\n- real\n- sibling');
-  const section = context.docComment.summarySection;
+  const context: tsdoc.ParserContext = parse('intro\n- not an item\n\n- real\n- sibling');
+  const section: tsdoc.DocSection = context.docComment.summarySection;
   expect(section.nodes[0].kind).toBe('Paragraph');
   expect(text(section.nodes[0])).toContain('- not an item');
   expect(lists(section)).toHaveLength(1);
@@ -364,12 +389,12 @@ test('a list cannot interrupt ordinary prose without a blank line', () => {
 });
 
 test('escaped markers, inline code, links, and HTML retain their node types', () => {
-  const context = parse(
+  const context: tsdoc.ParserContext = parse(
     '- {@link Widget | label} {@link https://example.com | site} `- code` <b title="value">bold</b>\n  \\- literal\n- end'
   );
-  const found = lists(context.docComment.summarySection);
+  const found: ITestList[] = lists(context.docComment.summarySection);
   expect(found).toHaveLength(1);
-  const kinds = found[0].nodes[0].content.nodes[0].nodes.map((n: any) => n.kind);
+  const kinds: string[] = (found[0].nodes[0].content.nodes[0] as tsdoc.DocParagraph).nodes.map((n) => n.kind);
   for (const kind of ['LinkTag', 'CodeSpan', 'HtmlStartTag', 'HtmlEndTag', 'EscapedText'])
     expect(kinds).toContain(kind);
   roundtrip(context);
@@ -378,7 +403,7 @@ test('escaped markers, inline code, links, and HTML retain their node types', ()
 test.each(['', 'const x = 1;\n', '- not an item\n@remarks not a tag\n', '  extra indentation\n'])(
   'fenced code is opaque and deindented: %j',
   (code) => {
-    const body =
+    const body: string =
       '- item\n\n  ```ts\n' +
       code
         .split('\n')
@@ -386,10 +411,12 @@ test.each(['', 'const x = 1;\n', '- not an item\n@remarks not a tag\n', '  extra
         .map((line) => '  ' + line + '\n')
         .join('') +
       '  ```\n- next';
-    const context = parse(body);
-    const found = lists(context.docComment.summarySection);
+    const context: tsdoc.ParserContext = parse(body);
+    const found: ITestList[] = lists(context.docComment.summarySection);
     expect(found).toHaveLength(1);
-    const fence = found[0].nodes[0].content.nodes.find((n: any) => n.kind === 'FencedCode');
+    const fence: tsdoc.DocFencedCode = found[0].nodes[0].content.nodes.filter(
+      (n): n is tsdoc.DocFencedCode => n.kind === 'FencedCode'
+    )[0];
     expect(fence).toBeDefined();
     expect(fence.code).toBe(code);
     expect(context.log.messages).toHaveLength(0);
@@ -399,25 +426,31 @@ test.each(['', 'const x = 1;\n', '- not an item\n@remarks not a tag\n', '  extra
 );
 
 test('nested ordered fence retains its code and returns to the parent list', () => {
-  const context = parse(
+  const context: tsdoc.ParserContext = parse(
     '5. root\n   - child\n\n     ```js\n     alpha\n       beta\n     ```\n   - next\n1. end'
   );
-  const found = lists(context.docComment.summarySection);
+  const found: ITestList[] = lists(context.docComment.summarySection);
   expect(found).toHaveLength(1);
-  const child = lists(found[0].nodes[0].content)[0];
-  const fence = child.nodes[0].content.nodes.find((n: any) => n.kind === 'FencedCode');
+  const child: ITestList = lists(found[0].nodes[0].content)[0];
+  const fence: tsdoc.DocFencedCode = child.nodes[0].content.nodes.filter(
+    (n): n is tsdoc.DocFencedCode => n.kind === 'FencedCode'
+  )[0];
   expect(fence.code).toBe('alpha\n  beta\n');
   roundtrip(context);
 });
 
 test('source offsets, excerpts and diagnostics refer to the original buffer', () => {
-  const source = 'prefix\n' + comment('- valid {@link Widget}\n  } invalid\n- final') + '\nsuffix';
-  const range = TextRange.fromStringRange(source, source.indexOf('/**'), source.indexOf('*/') + 2);
-  const context = new TSDocParser(configuration()).parseRange(range);
+  const source: string = 'prefix\n' + comment('- valid {@link Widget}\n  } invalid\n- final') + '\nsuffix';
+  const range: tsdoc.TextRange = TextRange.fromStringRange(
+    source,
+    source.indexOf('/**'),
+    source.indexOf('*/') + 2
+  );
+  const context: tsdoc.ParserContext = new TSDocParser(configuration()).parseRange(range);
   expect(lists(context.docComment.summarySection)).toHaveLength(1);
-  const excerpts: any[] = [];
-  const visit = (node: any): void => {
-    if (node.kind === DocNodeKind.Excerpt) excerpts.push(node);
+  const excerpts: tsdoc.DocExcerpt[] = [];
+  const visit: (node: tsdoc.DocNode) => void = (node: tsdoc.DocNode): void => {
+    if (node.kind === DocNodeKind.Excerpt) excerpts.push(node as tsdoc.DocExcerpt);
     node.getChildNodes().forEach(visit);
   };
   visit(context.docComment);
@@ -427,41 +460,47 @@ test('source offsets, excerpts and diagnostics refer to the original buffer', ()
       expect(excerpt.content.getContainingTextRange().buffer).toBe(source);
     }
   }
-  const successfulExcerpt = excerpts.find((excerpt) => excerpt.content.toString() === 'Widget');
+  const successfulExcerpt: tsdoc.DocExcerpt = excerpts.filter(
+    (excerpt) => excerpt.content.toString() === 'Widget'
+  )[0];
   expect(successfulExcerpt).toBeDefined();
-  const successfulRange = successfulExcerpt.content.getContainingTextRange();
+  const successfulRange: tsdoc.TextRange = successfulExcerpt.content.getContainingTextRange();
   expect(successfulRange.pos).toBe(source.indexOf('Widget'));
   expect(successfulRange.end).toBe(successfulRange.pos + 'Widget'.length);
   expect(source.slice(successfulRange.pos, successfulRange.end)).toBe('Widget');
-  const error = context.log.messages.find((m: any) => m.messageId === 'tsdoc-escape-right-brace');
+  const error: tsdoc.ParserMessage = context.log.messages.filter(
+    (m) => m.messageId === 'tsdoc-escape-right-brace'
+  )[0];
   expect(error).toBeDefined();
   expect(error!.textRange.pos).toBe(source.indexOf('} invalid'));
   expect(error!.textRange.buffer).toBe(source);
 });
 
 test('block tags exit lists and start independent sections', () => {
-  const context = parse('- summary\n@remarks\n- remark\n@param x - details\n\n- parameter');
+  const context: tsdoc.ParserContext = parse(
+    '- summary\n@remarks\n- remark\n@param x - details\n\n- parameter'
+  );
   expect(lists(context.docComment.summarySection)).toHaveLength(1);
-  expect(lists(context.docComment.remarksBlock.content)).toHaveLength(1);
+  expect(lists(context.docComment.remarksBlock!.content)).toHaveLength(1);
   expect(lists(context.docComment.params.blocks[0].content)).toHaveLength(1);
   roundtrip(context);
 });
 
 test('configuration defaults and clear reset parsing without changing disabled behavior', () => {
-  const config: any = new TSDocConfiguration();
+  const config: tsdoc.TSDocConfiguration = new TSDocConfiguration();
   expect(config.parseMarkdownLists).toBe(false);
-  const original = new TSDocParser(config).parseString(comment('- a\n- b'));
+  const original: tsdoc.ParserContext = new TSDocParser(config).parseString(comment('- a\n- b'));
   config.parseMarkdownLists = true;
   expect(
     lists(new TSDocParser(config).parseString(comment('- a\n- b')).docComment.summarySection)
   ).toHaveLength(1);
   config.clear();
   expect(config.parseMarkdownLists).toBe(false);
-  const disabled = new TSDocParser(config).parseString(comment('- a\n- b'));
+  const disabled: tsdoc.ParserContext = new TSDocParser(config).parseString(comment('- a\n- b'));
   expect(shape(disabled.docComment)).toEqual(shape(original.docComment));
 
-  const hasList = (node: any): boolean =>
-    node.kind === DocNodeKind.List || node.getChildNodes().some((child: any) => hasList(child));
+  const hasList: (node: tsdoc.DocNode) => boolean = (node: tsdoc.DocNode): boolean =>
+    node.kind === DocNodeKind.List || node.getChildNodes().some((child) => hasList(child));
   for (const body of [
     'hello\n{@link A}',
     '  leading  spaces\ncontinuation\ttext',
@@ -471,8 +510,8 @@ test('configuration defaults and clear reset parsing without changing disabled b
     '@remarks\n  indented  text\n\nsecond',
     '@param value - first\n  continued\ttext'
   ]) {
-    const legacy = parse(body, false);
-    const enabled = parse(body, true);
+    const legacy: tsdoc.ParserContext = parse(body, false);
+    const enabled: tsdoc.ParserContext = parse(body, true);
     expect(legacy.log.messages).toHaveLength(0);
     expect(enabled.log.messages).toHaveLength(0);
     expect(hasList(legacy.docComment)).toBe(false);
@@ -482,27 +521,30 @@ test('configuration defaults and clear reset parsing without changing disabled b
 });
 
 test('list whitespace handling stays local to surrounding paragraphs', () => {
-  const before = 'before  value\ncontinued text';
-  const after = 'after  value\n\\- literal';
-  const context = parse(`${before}\n\n- item\n- next\n\n${after}`);
-  const reparsed = new TSDocParser(context.configuration).parseString(context.docComment.emitAsTsdoc());
-  const standaloneBefore = parse(before);
-  const standaloneAfter = parse(after);
-  const expectedBefore = new TSDocParser(context.configuration).parseString(
+  const before: string = 'before  value\ncontinued text';
+  const after: string = 'after  value\n\\- literal';
+  const context: tsdoc.ParserContext = parse(`${before}\n\n- item\n- next\n\n${after}`);
+  const reparsed: tsdoc.ParserContext = new TSDocParser(context.configuration).parseString(
+    context.docComment.emitAsTsdoc()
+  );
+  const standaloneBefore: tsdoc.ParserContext = parse(before);
+  const standaloneAfter: tsdoc.ParserContext = parse(after);
+  const expectedBefore: tsdoc.ParserContext = new TSDocParser(context.configuration).parseString(
     standaloneBefore.docComment.emitAsTsdoc()
   );
-  const expectedAfter = new TSDocParser(context.configuration).parseString(
+  const expectedAfter: tsdoc.ParserContext = new TSDocParser(context.configuration).parseString(
     standaloneAfter.docComment.emitAsTsdoc()
   );
-  expect(reparsed.log.messages.map((message: any) => message.messageId)).toEqual(
-    context.log.messages.map((message: any) => message.messageId)
+  expect(reparsed.log.messages.map((message) => message.messageId)).toEqual(
+    context.log.messages.map((message) => message.messageId)
   );
-  expect(reparsed.docComment.summarySection.nodes.map((node: any) => node.kind)).toEqual([
+  expect(reparsed.docComment.summarySection.nodes.map((node) => node.kind)).toEqual([
     'Paragraph',
     'List',
     'Paragraph'
   ]);
-  const withoutBoundaryBreaks = (value: string): string => value.replace(/^\n+|\n+$/g, '');
+  const withoutBoundaryBreaks: (value: string) => string = (value: string): string =>
+    value.replace(/^\n+|\n+$/g, '');
   expect(withoutBoundaryBreaks(text(reparsed.docComment.summarySection.nodes[0]))).toBe(
     withoutBoundaryBreaks(text(expectedBefore.docComment.summarySection.nodes[0]))
   );
@@ -514,12 +556,12 @@ test('list whitespace handling stays local to surrounding paragraphs', () => {
 test('builder lists expose normal containers, traversal and text discovery', () => {
   expect(typeof api.DocList).toBe('function');
   expect(typeof api.DocListItem).toBe('function');
-  const config = configuration();
-  const paragraph = new DocParagraph({ configuration: config }, [
+  const config: tsdoc.TSDocConfiguration = configuration();
+  const paragraph: tsdoc.DocParagraph = new DocParagraph({ configuration: config }, [
     new DocPlainText({ configuration: config, text: 'hello' })
   ]);
-  const child = new api.DocListItem({ configuration: config }, [paragraph]);
-  const list = new api.DocList({ configuration: config, ordered: true, start: 4 }, [child]);
+  const child: tsdoc.DocListItem = new api.DocListItem({ configuration: config }, [paragraph]);
+  const list: tsdoc.DocList = new api.DocList({ configuration: config, ordered: true, start: 4 }, [child]);
   expect(list.kind).toBe(api.DocNodeKind.List);
   expect(child.kind).toBe(api.DocNodeKind.ListItem);
   expect(child.content).toBeInstanceOf(DocSection);
@@ -548,21 +590,21 @@ test('unordered builders also reject an invalid explicit start', () => {
 
 test('unordered builders preserve a valid explicit start', () => {
   expect(typeof api.DocList).toBe('function');
-  const list = new api.DocList({ configuration: configuration(), ordered: false, start: 42 });
+  const list: tsdoc.DocList = new api.DocList({ configuration: configuration(), ordered: false, start: 42 });
   expect(list.start).toBe(42);
 });
 
 test.each([0, 1, 42, 999999999])('builder start %s roundtrips without mutation', (start) => {
   expect(typeof api.DocList).toBe('function');
-  const config = configuration();
-  const item = new api.DocListItem({ configuration: config }, [
+  const config: tsdoc.TSDocConfiguration = configuration();
+  const item: tsdoc.DocListItem = new api.DocListItem({ configuration: config }, [
     new DocParagraph({ configuration: config }, [new DocPlainText({ configuration: config, text: 'built' })])
   ]);
-  const list = new api.DocList({ configuration: config, ordered: true, start }, [
+  const list: tsdoc.DocList = new api.DocList({ configuration: config, ordered: true, start }, [
     item,
     new api.DocListItem({ configuration: config })
   ]);
-  const docComment = new DocComment({ configuration: config });
+  const docComment: tsdoc.DocComment = new DocComment({ configuration: config });
   docComment.summarySection.appendNode(list);
   roundtrip({ docComment, configuration: config });
   expect(list.nodes[0]).toBe(item);
@@ -570,28 +612,28 @@ test.each([0, 1, 42, 999999999])('builder start %s roundtrips without mutation',
 });
 
 test('emitter can be reused after nested list rendering', () => {
-  const context = parse('- item\n  - child');
+  const context: tsdoc.ParserContext = parse('- item\n  - child');
   expect(lists(context.docComment.summarySection)).toHaveLength(1);
-  const emitter = new tsdoc.TSDocEmitter();
-  const first = new tsdoc.StringBuilder();
+  const emitter: tsdoc.TSDocEmitter = new tsdoc.TSDocEmitter();
+  const first: tsdoc.StringBuilder = new tsdoc.StringBuilder();
   emitter.renderComment(first, context.docComment);
-  const second = new tsdoc.StringBuilder();
-  const plain = parse('plain').docComment;
+  const second: tsdoc.StringBuilder = new tsdoc.StringBuilder();
+  const plain: tsdoc.DocComment = parse('plain').docComment;
   emitter.renderComment(second, plain);
   expect(second.toString()).toBe(plain.emitAsTsdoc());
   roundtrip(context);
 });
 
 test('rendering preserves every parsed child identity and source excerpt', () => {
-  const context = parse('- first\n  continuation\n\n  second paragraph\n- final');
+  const context: tsdoc.ParserContext = parse('- first\n  continuation\n\n  second paragraph\n- final');
   expect(lists(context.docComment.summarySection)).toHaveLength(1);
-  const snapshots: { node: any; children: any[]; excerpt?: string }[] = [];
-  function remember(node: any): void {
-    const children = [...node.getChildNodes()];
+  const snapshots: { node: tsdoc.DocNode; children: ReadonlyArray<tsdoc.DocNode>; excerpt?: string }[] = [];
+  function remember(node: tsdoc.DocNode): void {
+    const children: tsdoc.DocNode[] = [...node.getChildNodes()];
     snapshots.push({
       node,
       children,
-      excerpt: node.kind === 'Excerpt' ? node.content.toString() : undefined
+      excerpt: node.kind === 'Excerpt' ? (node as tsdoc.DocExcerpt).content.toString() : undefined
     });
     children.forEach(remember);
   }
@@ -599,52 +641,57 @@ test('rendering preserves every parsed child identity and source excerpt', () =>
   context.docComment.emitAsTsdoc();
   context.docComment.emitAsTsdoc();
   for (const snapshot of snapshots) {
-    const children = snapshot.node.getChildNodes();
+    const children: readonly tsdoc.DocNode[] = snapshot.node.getChildNodes();
     expect(children).toHaveLength(snapshot.children.length);
-    children.forEach((child: any, index: number) => expect(child).toBe(snapshot.children[index]));
-    if (snapshot.excerpt !== undefined) expect(snapshot.node.content.toString()).toBe(snapshot.excerpt);
+    children.forEach((child, index: number) => expect(child).toBe(snapshot.children[index]));
+    if (snapshot.excerpt !== undefined)
+      expect((snapshot.node as tsdoc.DocExcerpt).content.toString()).toBe(snapshot.excerpt);
   }
 });
 
 test('emission observes item edits, appended items and clearing after an earlier render', () => {
-  const context = parse('- original');
-  const found = lists(context.docComment.summarySection);
+  const context: tsdoc.ParserContext = parse('- original');
+  const found: ITestList[] = lists(context.docComment.summarySection);
   expect(found).toHaveLength(1);
-  const list = found[0];
+  const list: ITestList = found[0];
   context.docComment.emitAsTsdoc();
-  const paragraph = (value: string) =>
+  const paragraph: (value: string) => tsdoc.DocParagraph = (value: string) =>
     new DocParagraph({ configuration: context.configuration }, [
       new DocPlainText({ configuration: context.configuration, text: value })
     ]);
-  list.nodes[0].content.clearNodes();
-  list.nodes[0].content.appendNode(paragraph('replacement'));
+  (list.nodes[0] as tsdoc.DocListItem).content.clearNodes();
+  (list.nodes[0] as tsdoc.DocListItem).content.appendNode(paragraph('replacement'));
   list.appendNode(new api.DocListItem({ configuration: context.configuration }, [paragraph('appended')]));
-  const updated = new TSDocParser(context.configuration).parseString(context.docComment.emitAsTsdoc());
-  expect(lists(updated.docComment.summarySection)[0].nodes.map((item: any) => text(item).trim())).toEqual([
+  const updated: tsdoc.ParserContext = new TSDocParser(context.configuration).parseString(
+    context.docComment.emitAsTsdoc()
+  );
+  expect(lists(updated.docComment.summarySection)[0].nodes.map((item) => text(item).trim())).toEqual([
     'replacement',
     'appended'
   ]);
   list.clearNodes();
-  const cleared = new TSDocParser(context.configuration).parseString(context.docComment.emitAsTsdoc());
+  const cleared: tsdoc.ParserContext = new TSDocParser(context.configuration).parseString(
+    context.docComment.emitAsTsdoc()
+  );
   expect(lists(cleared.docComment.summarySection)).toHaveLength(0);
   expect(text(cleared.docComment).trim()).toBe('');
 });
 
 test('reusing one parser keeps successive list comments independent', () => {
-  const config = configuration();
-  const parser = new TSDocParser(config);
-  const first = parser.parseString(comment('- first\n  - child'));
+  const config: tsdoc.TSDocConfiguration = configuration();
+  const parser: tsdoc.TSDocParser = new TSDocParser(config);
+  const first: tsdoc.ParserContext = parser.parseString(comment('- first\n  - child'));
   expect(lists(first.docComment.summarySection)).toHaveLength(1);
-  const before = shape(first.docComment);
-  const source = 'prefix\n' + comment('9. second\n1. final') + '\nsuffix';
-  const second = parser.parseRange(
+  const before: unknown = shape(first.docComment);
+  const source: string = 'prefix\n' + comment('9. second\n1. final') + '\nsuffix';
+  const second: tsdoc.ParserContext = parser.parseRange(
     TextRange.fromStringRange(source, source.indexOf('/**'), source.indexOf('*/') + 2)
   );
-  const found = lists(second.docComment.summarySection);
+  const found: ITestList[] = lists(second.docComment.summarySection);
   expect(found).toHaveLength(1);
   expect(found[0].ordered).toBe(true);
   expect(found[0].start).toBe(9);
-  expect(found[0].nodes.map((item: any) => text(item).trim())).toEqual(['second', 'final']);
+  expect(found[0].nodes.map((item) => text(item).trim())).toEqual(['second', 'final']);
   expect(shape(first.docComment)).toEqual(before);
   expect(second.docComment).not.toBe(first.docComment);
   roundtrip(second);
@@ -652,80 +699,80 @@ test('reusing one parser keeps successive list comments independent', () => {
 
 test('empty lists emit nothing and omitted starts use one', () => {
   expect(typeof api.DocList).toBe('function');
-  const config = configuration();
-  const doc = parse('ordinary').docComment;
-  const before = doc.emitAsTsdoc();
-  const empty = new api.DocList({ configuration: config, ordered: true });
+  const config: tsdoc.TSDocConfiguration = configuration();
+  const doc: tsdoc.DocComment = parse('ordinary').docComment;
+  const before: string = doc.emitAsTsdoc();
+  const empty: tsdoc.DocList = new api.DocList({ configuration: config, ordered: true });
   expect(empty.start).toBe(1);
   doc.summarySection.appendNode(empty);
   expect(doc.emitAsTsdoc()).toBe(before);
   expect(empty.nodes).toHaveLength(0);
 
-  const itemList = new api.DocList({ configuration: config, ordered: false }, [
+  const itemList: tsdoc.DocList = new api.DocList({ configuration: config, ordered: false }, [
     new api.DocListItem({ configuration: config })
   ]);
-  const itemDoc = new DocComment({ configuration: config });
+  const itemDoc: tsdoc.DocComment = new DocComment({ configuration: config });
   itemDoc.summarySection.appendNode(itemList);
-  const reparsed = new TSDocParser(config).parseString(itemDoc.emitAsTsdoc());
-  const reparsedList = lists(reparsed.docComment.summarySection)[0];
+  const reparsed: tsdoc.ParserContext = new TSDocParser(config).parseString(itemDoc.emitAsTsdoc());
+  const reparsedList: ITestList = lists(reparsed.docComment.summarySection)[0];
   expect(reparsedList.nodes[0].content.nodes).toEqual([]);
 });
 
 test('constructed nested lists roundtrip', () => {
   expect(typeof api.DocList).toBe('function');
-  const config = configuration();
-  const paragraph = new DocParagraph({ configuration: config }, [
+  const config: tsdoc.TSDocConfiguration = configuration();
+  const paragraph: tsdoc.DocParagraph = new DocParagraph({ configuration: config }, [
     new DocPlainText({ configuration: config, text: 'leaf' })
   ]);
-  const child = new api.DocList({ configuration: config, ordered: true, start: 3 }, [
+  const child: tsdoc.DocList = new api.DocList({ configuration: config, ordered: true, start: 3 }, [
     new api.DocListItem({ configuration: config }, [paragraph])
   ]);
-  const parent = new api.DocList({ configuration: config, ordered: false }, [
+  const parent: tsdoc.DocList = new api.DocList({ configuration: config, ordered: false }, [
     new api.DocListItem({ configuration: config }, [child])
   ]);
-  const docComment = new DocComment({ configuration: config });
+  const docComment: tsdoc.DocComment = new DocComment({ configuration: config });
   docComment.summarySection.appendNode(parent);
   roundtrip({ docComment, configuration: config });
-  const reparsed = new TSDocParser(config).parseString(docComment.emitAsTsdoc());
-  const reparsedParent = lists(reparsed.docComment.summarySection)[0];
-  expect(reparsedParent.nodes[0].content.nodes.map((node: any) => node.kind)).toEqual([DocNodeKind.List]);
+  const reparsed: tsdoc.ParserContext = new TSDocParser(config).parseString(docComment.emitAsTsdoc());
+  const reparsedParent: ITestList = lists(reparsed.docComment.summarySection)[0];
+  expect(reparsedParent.nodes[0].content.nodes.map((node) => node.kind)).toEqual([DocNodeKind.List]);
 });
 
 test('a malformed inline tag keeps its diagnostic inside a nested item', () => {
-  const source = comment('- root\n  - {@link }\n- next');
-  const context = new TSDocParser(configuration()).parseString(source);
-  const outer = lists(context.docComment.summarySection);
+  const source: string = comment('- root\n  - {@link }\n- next');
+  const context: tsdoc.ParserContext = new TSDocParser(configuration()).parseString(source);
+  const outer: ITestList[] = lists(context.docComment.summarySection);
   expect(outer).toHaveLength(1);
   expect(outer[0].nodes).toHaveLength(2);
-  const nested = lists(outer[0].nodes[0].content)[0];
+  const nested: ITestList = lists(outer[0].nodes[0].content)[0];
   expect(nested.nodes).toHaveLength(1);
-  const plainSource = comment('{@link }');
-  const plain = new TSDocParser().parseString(plainSource);
+  const plainSource: string = comment('{@link }');
+  const plain: tsdoc.ParserContext = new TSDocParser().parseString(plainSource);
   expect(context.log.messages.map((m) => m.messageId)).toEqual(plain.log.messages.map((m) => m.messageId));
   expect(context.log.messages.length).toBeGreaterThan(0);
-  context.log.messages.forEach((message, index) => {
+  context.log.messages.forEach((message, index: number) => {
     expect(message.textRange.buffer).toBe(source);
-    const expected = plain.log.messages[index].textRange;
-    const offset = source.indexOf('{@link }') - plainSource.indexOf('{@link }');
+    const expected: tsdoc.TextRange = plain.log.messages[index].textRange;
+    const offset: number = source.indexOf('{@link }') - plainSource.indexOf('{@link }');
     expect(message.textRange.pos).toBe(expected.pos + offset);
     expect(message.textRange.end).toBe(expected.end + offset);
   });
 });
 
 test('a malformed escape keeps its full diagnostic range inside a deeply nested item', () => {
-  const fragment = 'bad \\q';
-  const source = comment(`- root\n  - child\n    - ${fragment}\n- next`);
-  const context = new TSDocParser(configuration()).parseString(source);
-  const plainSource = comment(fragment);
-  const plain = new TSDocParser().parseString(plainSource);
+  const fragment: string = 'bad \\q';
+  const source: string = comment(`- root\n  - child\n    - ${fragment}\n- next`);
+  const context: tsdoc.ParserContext = new TSDocParser(configuration()).parseString(source);
+  const plainSource: string = comment(fragment);
+  const plain: tsdoc.ParserContext = new TSDocParser().parseString(plainSource);
   expect(lists(context.docComment.summarySection)).toHaveLength(1);
-  expect(context.log.messages.map((message: any) => message.messageId)).toEqual(
-    plain.log.messages.map((message: any) => message.messageId)
+  expect(context.log.messages.map((message) => message.messageId)).toEqual(
+    plain.log.messages.map((message) => message.messageId)
   );
   expect(context.log.messages.length).toBeGreaterThan(0);
-  const offset = source.indexOf(fragment) - plainSource.indexOf(fragment);
-  context.log.messages.forEach((message: any, index: number) => {
-    const expected = plain.log.messages[index].textRange;
+  const offset: number = source.indexOf(fragment) - plainSource.indexOf(fragment);
+  context.log.messages.forEach((message, index: number) => {
+    const expected: tsdoc.TextRange = plain.log.messages[index].textRange;
     expect(message.textRange.buffer).toBe(source);
     expect(message.textRange.pos).toBe(expected.pos + offset);
     expect(message.textRange.end).toBe(expected.end + offset);

@@ -2362,7 +2362,7 @@ export class NodeParser {
 
     if (
       tokenBeforeDelimiter!.kind !== TokenKind.Newline &&
-      !(listIndent > 0 && tokenBeforeDelimiter!.toString() === ' '.repeat(listIndent))
+      !(listIndent > 0 && tokenBeforeDelimiter!.toString() === new Array(listIndent + 1).join(' '))
     ) {
       this._parserContext.log.addMessageForTextRange(
         TSDocMessageId.CodeFenceClosingIndent,

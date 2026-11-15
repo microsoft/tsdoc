@@ -87,9 +87,8 @@ export class ListParser {
     }
 
     const indent: number = spacing.length;
-    const marker: IListMarker | undefined = spacing.includes('\t')
-      ? undefined
-      : this._readMarker(reader, index);
+    const marker: IListMarker | undefined =
+      spacing.indexOf('\t') !== -1 ? undefined : this._readMarker(reader, index);
     let frame: IListFrame = this._frames[this._frames.length - 1];
     let sibling: boolean = false;
     while (frame) {
@@ -97,7 +96,7 @@ export class ListParser {
         sibling = true;
         break;
       }
-      if (!spacing.includes('\t') && indent >= frame.contentColumn) {
+      if (spacing.indexOf('\t') === -1 && indent >= frame.contentColumn) {
         break;
       }
       this._frames.pop();
@@ -189,7 +188,7 @@ export class ListParser {
     }
     const following: Token = reader.tokens[endIndex];
     if (following.kind === TokenKind.Spacing) {
-      if (following.toString().includes('\t')) {
+      if (following.toString().indexOf('\t') !== -1) {
         return undefined;
       }
     } else if (following.kind !== TokenKind.Newline && following.kind !== TokenKind.EndOfInput) {

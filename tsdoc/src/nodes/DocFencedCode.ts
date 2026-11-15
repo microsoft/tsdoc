@@ -169,10 +169,10 @@ export class DocFencedCode extends DocNode {
       if (this._codeExcerpt !== undefined) {
         this._code = this._codeExcerpt.content.toString();
         if (this._contentIndent) {
-          const prefix: string = ' '.repeat(this._contentIndent);
+          const prefix: string = new Array(this._contentIndent + 1).join(' ');
           this._code = this._code
             .split('\n')
-            .map((line) => (line.startsWith(prefix) ? line.slice(prefix.length) : line))
+            .map((line) => (line.indexOf(prefix) === 0 ? line.slice(prefix.length) : line))
             .join('\n');
         }
       }
