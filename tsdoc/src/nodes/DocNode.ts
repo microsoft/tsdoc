@@ -27,6 +27,8 @@ export enum DocNodeKind {
   InheritDocTag = 'InheritDocTag',
   InlineTag = 'InlineTag',
   LinkTag = 'LinkTag',
+  List = 'List',
+  ListItem = 'ListItem',
   MemberIdentifier = 'MemberIdentifier',
   MemberReference = 'MemberReference',
   MemberSelector = 'MemberSelector',

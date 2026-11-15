@@ -26,6 +26,8 @@ export class BuiltInDocNodes {
       { docNodeKind: DocNodeKind.InheritDocTag, constructor: nodes.DocInheritDocTag },
       { docNodeKind: DocNodeKind.InlineTag, constructor: nodes.DocInlineTag },
       { docNodeKind: DocNodeKind.LinkTag, constructor: nodes.DocLinkTag },
+      { docNodeKind: DocNodeKind.List, constructor: nodes.DocList },
+      { docNodeKind: DocNodeKind.ListItem, constructor: nodes.DocListItem },
       { docNodeKind: DocNodeKind.MemberIdentifier, constructor: nodes.DocMemberIdentifier },
       { docNodeKind: DocNodeKind.MemberReference, constructor: nodes.DocMemberReference },
       { docNodeKind: DocNodeKind.MemberSelector, constructor: nodes.DocMemberSelector },
@@ -39,6 +41,7 @@ export class BuiltInDocNodes {
     ]);
 
     docNodeManager.registerAllowableChildren(DocNodeKind.Section, [
+      DocNodeKind.List,
       DocNodeKind.FencedCode,
       DocNodeKind.Paragraph,
       DocNodeKind.HtmlStartTag,
@@ -57,5 +60,6 @@ export class BuiltInDocNodes {
       DocNodeKind.PlainText,
       DocNodeKind.SoftBreak
     ]);
+    docNodeManager.registerAllowableChildren(DocNodeKind.List, [DocNodeKind.ListItem]);
   }
 }

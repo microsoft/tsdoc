@@ -22,7 +22,11 @@ export class ParagraphSplitter {
     if (node instanceof DocSection) {
       ParagraphSplitter.splitParagraphsForSection(node);
 
-      // (We don't recurse here, since sections cannot contain subsections)
+      for (const child of node.nodes) {
+        if (child.kind === DocNodeKind.List) {
+          ParagraphSplitter.splitParagraphs(child);
+        }
+      }
     } else {
       for (const childNode of node.getChildNodes()) {
         ParagraphSplitter.splitParagraphs(childNode);

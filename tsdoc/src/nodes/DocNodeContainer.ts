@@ -15,7 +15,7 @@ export interface IDocNodeContainerParsedParameters extends IDocNodeParsedParamet
 
 /**
  * DocNodeContainer is the base class for DocNode classes that allow arbitrary child nodes to be added by the consumer.
- * The child classes are {@link DocParagraph} and {@link DocSection}.
+ * Child classes include {@link DocParagraph}, {@link DocSection}, and {@link DocList}.
  */
 export abstract class DocNodeContainer extends DocNode {
   private readonly _nodes: DocNode[] = [];

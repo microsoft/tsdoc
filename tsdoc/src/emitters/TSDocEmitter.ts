@@ -27,6 +27,7 @@ import type {
   DocMemberSelector,
   DocParamBlock
 } from '../nodes';
+import type { DocList, DocListItem } from '../nodes';
 import { DocNodeKind } from '../nodes/DocNode';
 import type { IStringBuilder } from './StringBuilder';
 import { DocNodeTransforms } from '../transforms/DocNodeTransforms';
@@ -60,6 +61,7 @@ export class TSDocEmitter {
   // But sometimes we want the paragraph to be attached to the previous element, e.g. when it's part of
   // an "@param" block.  Setting _hangingParagraph=true accomplishes that.
   private _hangingParagraph: boolean = false;
+  private _indent: string = '';
 
   public renderComment(output: IStringBuilder, docComment: DocComment): void {
     this._emitCommentFraming = true;
@@ -85,6 +87,7 @@ export class TSDocEmitter {
     this._lineState = LineState.Closed;
     this._previousLineHadContent = false;
     this._hangingParagraph = false;
+    this._indent = '';
 
     this._renderNode(docNode);
 
@@ -180,9 +183,14 @@ export class TSDocEmitter {
         this._writeContent(docFencedCode.language);
         this._writeNewline();
         this._writeContent(docFencedCode.code);
+        if (this._indent) {
+          this._ensureAtStartOfLine();
+        }
         this._writeContent('```');
         this._writeNewline();
-        this._writeNewline();
+        if (!this._indent) {
+          this._writeNewline();
+        }
         break;
 
       case DocNodeKind.HtmlAttribute:
@@ -313,11 +321,23 @@ export class TSDocEmitter {
         this._renderNodes(docSection.nodes);
         break;
 
+      case DocNodeKind.List:
+        this._renderList(docNode as DocList);
+        break;
+
+      case DocNodeKind.ListItem:
+        this._renderNode((docNode as DocListItem).content);
+        break;
+
       case DocNodeKind.SoftBreak:
         this._ensureAtStartOfLine();
         break;
 
       case DocNodeKind.Paragraph:
+        if (this._indent) {
+          this._renderListParagraph(docNode as DocParagraph);
+          break;
+        }
         const trimmedParagraph: DocParagraph = DocNodeTransforms.trimSpacesInParagraph(
           docNode as DocParagraph
         );
@@ -371,6 +391,90 @@ export class TSDocEmitter {
     }
   }
 
+  private _renderList(list: DocList): void {
+    if (list.nodes.length === 0) {
+      return;
+    }
+    if (this._hangingParagraph) {
+      this._ensureAtStartOfLine();
+    } else {
+      this._ensureLineSkipped();
+    }
+    this._hangingParagraph = false;
+    const parentIndent: string = this._indent;
+    let index: number = 0;
+    for (const node of list.nodes) {
+      const item: DocListItem = node as DocListItem;
+      const marker: string = list.ordered ? `${index === 0 ? list.start : 1}.` : '-';
+      this._ensureAtStartOfLine();
+      this._writeContent(marker + ' ');
+      this._indent = parentIndent + ' '.repeat(marker.length + 1);
+      this._hangingParagraph = true;
+      this._renderNode(item.content);
+      this._ensureAtStartOfLine();
+      this._indent = parentIndent;
+      this._hangingParagraph = false;
+      index++;
+    }
+  }
+
+  private _renderListParagraph(paragraph: DocParagraph): void {
+    const nodes: ReadonlyArray<DocNode> = paragraph.nodes;
+    const isPadding = (node: DocNode): boolean =>
+      node.kind === DocNodeKind.SoftBreak ||
+      (node.kind === DocNodeKind.PlainText && !(node as DocPlainText).text.trim());
+    let start: number = 0;
+    let end: number = nodes.length;
+    // Leading spaces can keep a literal marker from becoming a nested list.
+    while (start < end && nodes[start].kind === DocNodeKind.SoftBreak) {
+      start++;
+    }
+    while (end > start && isPadding(nodes[end - 1])) {
+      end--;
+    }
+    if (start === end) {
+      return;
+    }
+    if (this._hangingParagraph) {
+      this._hangingParagraph = false;
+    } else {
+      this._ensureLineSkipped();
+    }
+    this._renderParagraphContent(nodes, start, end);
+    this._writeNewline();
+  }
+
+  private _escapeListMarker(content: string): string {
+    return content.replace(
+      /^( *)([-+*]|\d{1,9}\.)(?= |$)/,
+      (_match: string, spaces: string, marker: string) =>
+        spaces + marker.slice(0, -1) + '\\' + marker.slice(-1)
+    );
+  }
+
+  private _renderParagraphContent(nodes: ReadonlyArray<DocNode>, start: number, end: number): void {
+    for (let index: number = start; index < end; index++) {
+      const node: DocNode = nodes[index];
+      if (node.kind === DocNodeKind.PlainText) {
+        const escapeMarker: boolean = !!this._indent || index === start;
+        let content: string = (node as DocPlainText).text;
+        while (index + 1 < end && nodes[index + 1].kind === DocNodeKind.PlainText) {
+          content += (nodes[++index] as DocPlainText).text;
+        }
+        if (index === end - 1) {
+          content = content.replace(/\s+$/, '');
+        }
+        // A literal marker at a paragraph boundary must not become list syntax.
+        if (escapeMarker && this._lineState !== LineState.MiddleOfLine) {
+          content = this._escapeListMarker(content);
+        }
+        this._writeContent(content);
+      } else {
+        this._renderNode(node);
+      }
+    }
+  }
+
   // Calls _writeNewline() only if we're not already at the start of a new line
   private _ensureAtStartOfLine(): void {
     if (this._lineState === LineState.MiddleOfLine) {
@@ -418,6 +522,7 @@ export class TSDocEmitter {
       if (this._emitCommentFraming) {
         this._output!.append(' ');
       }
+      this._output!.append(this._indent);
     }
 
     this._output!.append(content);
