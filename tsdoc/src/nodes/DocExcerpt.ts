@@ -63,6 +63,7 @@ export enum ExcerptKind {
   LinkTag_UrlDestination = 'LinkTag_UrlDestination',
   LinkTag_Pipe = 'LinkTag_Pipe',
   LinkTag_LinkText = 'LinkTag_LinkText',
+  ListItem_Prefix = 'ListItem_Prefix',
 
   MemberIdentifier_LeftQuote = 'MemberIdentifier_LeftQuote',
   MemberIdentifier_Identifier = 'MemberIdentifier_Identifier',

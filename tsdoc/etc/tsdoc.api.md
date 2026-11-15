@@ -221,6 +221,30 @@ export class DocLinkTag extends DocInlineTagBase {
 }
 
 // @public
+export class DocList extends DocNodeContainer {
+    constructor(parameters: IDocListParameters, childNodes?: ReadonlyArray<DocNode>);
+    // @override (undocumented)
+    get kind(): DocNodeKind;
+    // (undocumented)
+    readonly ordered: boolean;
+    // (undocumented)
+    readonly start: number;
+}
+
+// @public
+export class DocListItem extends DocNode {
+    constructor(parameters: IDocListItemParameters, childNodes?: ReadonlyArray<DocNode>);
+    // @internal
+    addPrefixExcerpt(sequence: TokenSequence): void;
+    // (undocumented)
+    readonly content: DocSection;
+    // @override (undocumented)
+    get kind(): DocNodeKind;
+    // @override (undocumented)
+    protected onGetChildNodes(): ReadonlyArray<DocNode>;
+}
+
+// @public
 export class DocMemberIdentifier extends DocNode {
     // @internal
     constructor(parameters: IDocMemberIdentifierParameters | IDocMemberIdentifierParsedParameters);
@@ -330,6 +354,10 @@ export enum DocNodeKind {
     InlineTag = "InlineTag",
     // (undocumented)
     LinkTag = "LinkTag",
+    // (undocumented)
+    List = "List",
+    // (undocumented)
+    ListItem = "ListItem",
     // (undocumented)
     MemberIdentifier = "MemberIdentifier",
     // (undocumented)
@@ -503,6 +531,8 @@ export enum ExcerptKind {
     // (undocumented)
     LinkTag_UrlDestination = "LinkTag_UrlDestination",
     // (undocumented)
+    ListItem_Prefix = "ListItem_Prefix",
+    // (undocumented)
     MemberIdentifier_Identifier = "MemberIdentifier_Identifier",
     // (undocumented)
     MemberIdentifier_LeftQuote = "MemberIdentifier_LeftQuote",
@@ -645,6 +675,8 @@ export interface IDocFencedCodeParsedParameters extends IDocNodeParsedParameters
     closingFenceExcerpt: TokenSequence;
     // (undocumented)
     codeExcerpt: TokenSequence;
+    // @internal
+    contentIndent?: number;
     // (undocumented)
     languageExcerpt?: TokenSequence;
     // (undocumented)
@@ -805,6 +837,18 @@ export interface IDocLinkTagParsedParameters extends IDocInlineTagBaseParsedPara
     spacingAfterPipeExcerpt?: TokenSequence;
     // (undocumented)
     urlDestinationExcerpt?: TokenSequence;
+}
+
+// @public
+export interface IDocListItemParameters extends IDocNodeParameters {
+}
+
+// @public
+export interface IDocListParameters extends IDocNodeContainerParameters {
+    // (undocumented)
+    ordered: boolean;
+    // (undocumented)
+    start?: number;
 }
 
 // @public
@@ -1252,6 +1296,7 @@ export class TSDocConfiguration {
     isHtmlElementSupported(htmlTag: string): boolean;
     isKnownMessageId(messageId: TSDocMessageId | string): boolean;
     isTagSupported(tagDefinition: TSDocTagDefinition): boolean;
+    parseMarkdownLists: boolean;
     setSupportedHtmlElements(htmlTags: string[]): void;
     setSupportForTag(tagDefinition: TSDocTagDefinition, supported: boolean): void;
     setSupportForTags(tagDefinitions: ReadonlyArray<TSDocTagDefinition>, supported: boolean): void;

@@ -48,6 +48,7 @@ import { type TSDocTagDefinition, TSDocTagSyntaxKind } from '../configuration/TS
 import { StandardTags } from '../details/StandardTags';
 import { PlainTextEmitter } from '../emitters/PlainTextEmitter';
 import { TSDocMessageId } from './TSDocMessageId';
+import { ListParser } from './ListParser';
 
 interface IFailure {
   // (We use "failureMessage" instead of "errorMessage" here so that DocErrorText doesn't
@@ -70,12 +71,16 @@ export class NodeParser {
   private readonly _parserContext: ParserContext;
   private readonly _configuration: TSDocConfiguration;
   private _currentSection: DocSection;
+  private readonly _listParser: ListParser | undefined;
 
   public constructor(parserContext: ParserContext) {
     this._parserContext = parserContext;
     this._configuration = parserContext.configuration;
 
     this._currentSection = parserContext.docComment.summarySection;
+    if (this._configuration.parseMarkdownLists) {
+      this._listParser = new ListParser(parserContext);
+    }
   }
 
   public parse(): void {
@@ -83,12 +88,28 @@ export class NodeParser {
 
     let done: boolean = false;
     while (!done) {
+      if (
+        this._listParser &&
+        (tokenReader.createMarker() === 0 || tokenReader.peekPreviousTokenKind() === TokenKind.Newline)
+      ) {
+        this._pushAccumulatedPlainText(tokenReader);
+        this._currentSection = this._listParser.prepareLine(tokenReader, this._currentSection);
+      }
+      if (
+        tokenReader.peekTokenKind() !== TokenKind.Newline &&
+        tokenReader.peekTokenKind() !== TokenKind.Spacing
+      ) {
+        this._listParser?.noteContent();
+      }
       // Extract the next token
       switch (tokenReader.peekTokenKind()) {
         case TokenKind.EndOfInput:
           done = true;
           break;
         case TokenKind.Newline:
+          if (this._listParser?.consumeStructuralLineBreak(tokenReader)) {
+            break;
+          }
           this._pushAccumulatedPlainText(tokenReader);
           tokenReader.readToken();
           this._pushNode(
@@ -105,7 +126,11 @@ export class NodeParser {
           break;
         case TokenKind.AtSign:
           this._pushAccumulatedPlainText(tokenReader);
+          const previousSection: DocSection = this._currentSection;
           this._parseAndPushBlock(tokenReader);
+          if (this._currentSection !== previousSection) {
+            this._listParser?.startSection(this._currentSection);
+          }
           break;
         case TokenKind.LeftCurlyBracket: {
           this._pushAccumulatedPlainText(tokenReader);
@@ -2150,12 +2175,18 @@ export class NodeParser {
 
     const startMarker: number = tokenReader.createMarker();
     const endOfOpeningDelimiterMarker: number = startMarker + 2;
+    const listIndent: number = this._listParser?.isContentStart(tokenReader)
+      ? this._listParser.contentColumn
+      : 0;
 
     switch (tokenReader.peekPreviousTokenKind()) {
       case TokenKind.Newline:
       case TokenKind.EndOfInput:
         break;
       default:
+        if (listIndent > 0) {
+          break;
+        }
         return this._backtrackAndCreateErrorRange(
           tokenReader,
           startMarker,
@@ -2260,6 +2291,28 @@ export class NodeParser {
     let closingFenceStartMarker: number = -1;
     done = false;
     let tokenBeforeDelimiter: Token;
+    // A fence can close immediately after its opening line inside an empty item block.
+    if (listIndent > 0) {
+      const marker: number = tokenReader.createMarker();
+      while (tokenReader.peekTokenKind() === TokenKind.Spacing) {
+        tokenReader.readToken();
+      }
+      if (
+        tokenReader.peekTokenKind() === TokenKind.Backtick &&
+        tokenReader.peekTokenAfterKind() === TokenKind.Backtick &&
+        tokenReader.peekTokenAfterAfterKind() === TokenKind.Backtick
+      ) {
+        codeEndMarker = marker;
+        closingFenceStartMarker = tokenReader.createMarker();
+        tokenBeforeDelimiter = this._parserContext.tokens[closingFenceStartMarker - 1];
+        tokenReader.readToken();
+        tokenReader.readToken();
+        tokenReader.readToken();
+        done = true;
+      } else {
+        tokenReader.backtrackToMarker(marker);
+      }
+    }
     while (!done) {
       switch (tokenReader.peekTokenKind()) {
         case TokenKind.EndOfInput:
@@ -2307,7 +2360,10 @@ export class NodeParser {
       }
     }
 
-    if (tokenBeforeDelimiter!.kind !== TokenKind.Newline) {
+    if (
+      tokenBeforeDelimiter!.kind !== TokenKind.Newline &&
+      !(listIndent > 0 && tokenBeforeDelimiter!.toString() === new Array(listIndent + 1).join(' '))
+    ) {
       this._parserContext.log.addMessageForTextRange(
         TSDocMessageId.CodeFenceClosingIndent,
         'The closing delimiter for a code fence must not be indented',
@@ -2374,6 +2430,7 @@ export class NodeParser {
       spacingAfterLanguageExcerpt,
 
       codeExcerpt,
+      contentIndent: listIndent,
 
       spacingBeforeClosingFenceExcerpt,
       closingFenceExcerpt,

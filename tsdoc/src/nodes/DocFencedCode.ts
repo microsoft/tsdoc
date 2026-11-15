@@ -25,6 +25,8 @@ export interface IDocFencedCodeParsedParameters extends IDocNodeParsedParameters
   spacingAfterLanguageExcerpt?: TokenSequence;
 
   codeExcerpt: TokenSequence;
+  /** Structural indentation outside the code itself. @internal */
+  contentIndent?: number;
 
   spacingBeforeClosingFenceExcerpt?: TokenSequence;
   closingFenceExcerpt: TokenSequence;
@@ -50,6 +52,7 @@ export class DocFencedCode extends DocNode {
 
   // The code content
   private _code: string | undefined;
+  private readonly _contentIndent: number;
   private readonly _codeExcerpt: DocExcerpt | undefined;
 
   // The closing ``` delimiter and padding
@@ -65,6 +68,7 @@ export class DocFencedCode extends DocNode {
    */
   public constructor(parameters: IDocFencedCodeParameters | IDocFencedCodeParsedParameters) {
     super(parameters);
+    this._contentIndent = DocNode.isParsedParameters(parameters) ? parameters.contentIndent || 0 : 0;
 
     if (DocNode.isParsedParameters(parameters)) {
       this._openingFenceExcerpt = new DocExcerpt({
@@ -164,6 +168,13 @@ export class DocFencedCode extends DocNode {
     if (this._code === undefined) {
       if (this._codeExcerpt !== undefined) {
         this._code = this._codeExcerpt.content.toString();
+        if (this._contentIndent) {
+          const prefix: string = new Array(this._contentIndent + 1).join(' ');
+          this._code = this._code
+            .split('\n')
+            .map((line) => (line.indexOf(prefix) === 0 ? line.slice(prefix.length) : line))
+            .join('\n');
+        }
       }
     }
     return this._code!;

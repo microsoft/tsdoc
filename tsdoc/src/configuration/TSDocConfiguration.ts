@@ -12,6 +12,8 @@ import { type TSDocMessageId, allTsdocMessageIds, allTsdocMessageIdsSet } from '
  * Configuration for the TSDocParser.
  */
 export class TSDocConfiguration {
+  /** Recognize structured Markdown lists instead of plain paragraph text. */
+  public parseMarkdownLists: boolean = false;
   private readonly _tagDefinitions: TSDocTagDefinition[];
   private readonly _tagDefinitionsByName: Map<string, TSDocTagDefinition>;
   private readonly _supportedTagDefinitions: Set<TSDocTagDefinition>;
@@ -39,6 +41,7 @@ export class TSDocConfiguration {
    * standard TSDoc tags.  Set `noStandardTags` to true for a completely empty `tagDefinitions` collection.
    */
   public clear(noStandardTags: boolean = false): void {
+    this.parseMarkdownLists = false;
     this._tagDefinitions.length = 0;
     this._tagDefinitionsByName.clear();
     this._supportedTagDefinitions.clear();

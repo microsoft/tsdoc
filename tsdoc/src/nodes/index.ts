@@ -29,3 +29,5 @@ export * from './DocParamCollection';
 export * from './DocPlainText';
 export * from './DocSection';
 export * from './DocSoftBreak';
+export { DocList, type IDocListParameters } from './DocList';
+export { DocListItem, type IDocListItemParameters } from './DocListItem';

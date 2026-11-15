@@ -35,3 +35,5 @@ export { TSDocMessageId } from './parser/TSDocMessageId';
 export { TSDocParser } from './parser/TSDocParser';
 
 export { DocNodeTransforms } from './transforms/DocNodeTransforms';
+export { DocList, type IDocListParameters } from './nodes/DocList';
+export { DocListItem, type IDocListItemParameters } from './nodes/DocListItem';
