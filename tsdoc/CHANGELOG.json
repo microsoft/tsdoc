@@ -2,6 +2,18 @@
   "name": "@microsoft/tsdoc",
   "entries": [
     {
+      "version": "0.18.0",
+      "tag": "@microsoft/tsdoc_v0.18.0",
+      "date": "Thu, 19 Nov 2026 21:19:40 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Fix round-trip emission of `@example` block titles so the title text is preserved on the tag line, and expose the text on a block's tag line via new `DocBlock.tagLineContent` and `DocBlock.bodyContent` accessors"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.17.1",
       "tag": "@microsoft/tsdoc_v0.17.1",
       "date": "Tue, 29 Sep 2026 18:52:33 GMT",

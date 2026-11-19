@@ -1,6 +1,13 @@
 # Change Log - @microsoft/tsdoc
 
-This log was last generated on Tue, 29 Sep 2026 18:52:33 GMT and should not be manually modified.
+This log was last generated on Thu, 19 Nov 2026 21:19:40 GMT and should not be manually modified.
+
+## 0.18.0
+Thu, 19 Nov 2026 21:19:40 GMT
+
+### Minor changes
+
+- Fix round-trip emission of `@example` block titles so the title text is preserved on the tag line, and expose the text on a block's tag line via new `DocBlock.tagLineContent` and `DocBlock.bodyContent` accessors
 
 ## 0.17.1
 Tue, 29 Sep 2026 18:52:33 GMT
