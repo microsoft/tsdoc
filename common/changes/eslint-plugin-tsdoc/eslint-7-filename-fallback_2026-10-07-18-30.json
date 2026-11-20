@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "eslint-plugin-tsdoc",
+      "comment": "Fix an \"Unexpected exception ... Received undefined\" warning on ESLint versions that do not define `context.filename` by falling back to `context.getFilename()`.",
+      "type": "patch"
+    }
+  ],
+  "packageName": "eslint-plugin-tsdoc"
+}
